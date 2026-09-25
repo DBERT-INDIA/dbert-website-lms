@@ -57,32 +57,7 @@ def cohort_enroll(cohort_id):
         return jsonify({"status": "error", "message": "Failed to enroll"}), 500
 
 
-@enrollment_bp.route("/attendance/ping", methods=["POST"])
-def attendance_ping():
-    """Lightweight client beacon to record active attendance."""
-    with get_db() as conn:
-        intern = AuthService.current_intern(conn)
-    if not intern:
-        return jsonify({"status": "error", "message": "Unauthorized"}), 401
 
-    try:
-        now = now_str()
-        today = now.split()[0]
-        with get_db() as conn:
-            existing = conn.execute(
-                "SELECT id FROM attendance WHERE intern_id=? AND date=?",
-                (intern["id"], today)
-            ).fetchone()
-            if not existing:
-                conn.execute(
-                    "INSERT INTO attendance (intern_id, date, timestamp, status) VALUES (?, ?, ?, 'Present')",
-                    (intern["id"], today, now)
-                )
-                conn.commit()
-        return jsonify({"status": "success", "attendance": "recorded"})
-    except Exception as e:
-        log_error("attendance-ping", e)
-        return jsonify({"status": "error", "message": "Attendance logging failed"}), 500
 
 
 @enrollment_bp.route("/launchpad", methods=["GET"])
