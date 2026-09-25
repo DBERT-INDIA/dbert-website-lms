@@ -1,0 +1,173 @@
+import os
+import tempfile
+import pytest
+
+os.environ["TESTING"] = "true"
+os.environ.setdefault("FLASK_DEBUG", "false")
+os.environ.setdefault("SMTP_PASS", "")
+
+# Provide strong dummy values so app.py doesn't crash on production security guards during tests
+os.environ.setdefault("FLASK_SECRET_KEY", "test-secret-key-for-ci-must-be-32c")
+os.environ.setdefault("ADMIN_PASSWORD", "test_admin_strong_pass_123")
+os.environ.setdefault("ADMIN_KEY", "test_admin_strong_key_123")
+os.environ.setdefault("ADMIN_USERNAME", "test_admin")
+
+from app import app as _app, init_db, get_db, set_password_hash, create_session, AUTH_COOKIE
+
+@pytest.fixture(scope="function")
+def app_client():
+    db_fd, db_path = tempfile.mkstemp(suffix=".db")
+    _app.config["TESTING"] = True
+    _app.config["DATABASE"] = db_path
+    os.environ["DB_FILE"] = db_path
+    
+    # Disable CSRF globally during tests by adding everything to exempt list
+    from app import CSRF_EXEMPT_ENDPOINTS
+    CSRF_EXEMPT_ENDPOINTS.update(["intern_login", "company_login", "forgot_password", "reset_password", "check_email", "admin_reset_intern_password", "intern_book_slot", "cohort_enroll", "staff_project_decision", "staff_login", "admin_login", "mentor_login", "logout", "api_razorpay_create_order", "api_razorpay_verify_payment", "api_razorpay_webhook", "apply", "signup_stage1", "company_signup", "portal_cv_save", "task_submit", "intern_update_profile", "messages_send", "enroll", "intern_save_wizard_step", "company_post_save", "company_post_publish", "company_post_unpublish", "company_post_delete", "admin_company_approve", "admin_company_suspend", "post_apply", "company_app_status", "admin_integrity_heal"])
+
+    with _app.app_context():
+        init_db()
+        # Clear rate limits
+        with get_db() as conn:
+            conn.execute("DELETE FROM rate_events")
+            conn.commit()
+
+    with _app.test_client() as client:
+        yield client, db_path
+        
+    _app.config.pop("DATABASE", None)
+    os.close(db_fd)
+    try:
+        os.unlink(db_path)
+    except OSError:
+        pass
+
+
+def seed_intern(db_path, email="test_intern99@test.com", password="TestPass123", name="Test Intern", status="Accepted"):
+    os.environ["DB_FILE"] = db_path
+    _app.config["DATABASE"] = db_path
+    with get_db() as conn:
+        conn.execute(
+            "INSERT OR IGNORE INTO intern_accounts "
+            "(name, email, password_hash, password_set, is_active) VALUES (?,?,?,1,1)",
+            (name, email, set_password_hash(password))
+        )
+        conn.execute(
+            "INSERT OR IGNORE INTO applications "
+            "(name, email, phone, city, college, course, semester, year_of_passing, domain, why_join, status) "
+            "VALUES (?, ?, '9876543210', 'City', 'College', 'B.Tech', '6', '2026', 'AI Agent Development', 'Test', ?)",
+            (name, email, status)
+        )
+        conn.commit()
+        return conn.execute("SELECT id FROM intern_accounts WHERE email=?", (email,)).fetchone()["id"]
+
+
+def seed_company(db_path, email="test_comp99@test.com", password="CompPass123", name="Test Corp", is_approved=1, is_active=1):
+    os.environ["DB_FILE"] = db_path
+    with get_db() as conn:
+        conn.execute(
+            "INSERT OR IGNORE INTO companies "
+            "(name, email, password_hash, is_active, is_approved) VALUES (?,?,?,?,?)",
+            (name, email, set_password_hash(password), is_active, is_approved)
+        )
+        conn.commit()
+        return conn.execute("SELECT id FROM companies WHERE email=?", (email,)).fetchone()["id"]
+
+
+def login_as_intern(client, db_path, email="test_intern99@test.com", password="TestPass123", name="Test Intern"):
+    seed_intern(db_path, email, password, name)
+    resp = client.post("/intern/login", json={"email": email, "password": password})
+    assert resp.status_code == 200, f"login_as_intern failed {resp.status_code}: {resp.data}"
+    return resp
+
+
+def login_as_company(client, db_path, email="test_comp99@test.com", password="CompPass123", name="Test Corp"):
+    seed_company(db_path, email, password, name)
+    resp = client.post("/company/login", json={"email": email, "password": password})
+    assert resp.status_code == 200, f"login_as_company failed {resp.status_code}: {resp.data}"
+    return resp
+
+
+def get_latest_reset_token_hash(db_path, email, account_type="intern"):
+    os.environ["DB_FILE"] = db_path
+    with get_db() as conn:
+        row = conn.execute(
+            "SELECT token FROM password_resets "
+            "WHERE email=? AND account_type=? AND used=0 ORDER BY id DESC LIMIT 1",
+            (email, account_type)
+        ).fetchone()
+    return row["token"] if row else None
+
+
+def inject_reset_token(db_path, email, account_type="intern"):
+    import secrets, hashlib, datetime
+    os.environ["DB_FILE"] = db_path
+    raw = secrets.token_urlsafe(32)
+    token_hash = hashlib.sha256(raw.encode()).hexdigest()
+    expires_at = (datetime.datetime.now() + datetime.timedelta(hours=1)).strftime("%Y-%m-%d %H:%M:%S")
+    with get_db() as conn:
+        acct_id = None
+        if account_type == "intern":
+            row = conn.execute("SELECT id FROM intern_accounts WHERE email=? LIMIT 1", (email,)).fetchone()
+        else:
+            row = conn.execute("SELECT id FROM companies WHERE email=? LIMIT 1", (email,)).fetchone()
+        if row:
+            acct_id = row["id"]
+        conn.execute("UPDATE password_resets SET used=1 WHERE email=? AND account_type=? AND used=0",
+                     (email, account_type))
+        conn.execute(
+            "INSERT INTO password_resets (account_type, account_id, email, token, expires_at) VALUES (?,?,?,?,?)",
+            (account_type, acct_id, email, token_hash, expires_at)
+        )
+        conn.commit()
+    return raw
+
+def seed_staff(db_path, email="test_staff99@test.com", password="StaffPass123", name="Test Staff", roles=None):
+    import os
+    from app import get_db, set_password_hash
+    os.environ["DB_FILE"] = db_path
+    with get_db() as conn:
+        conn.execute(
+            "INSERT OR IGNORE INTO staff_accounts (name, email, password_hash, is_active) VALUES (?, ?, ?, 1)",
+            (name, email, set_password_hash(password))
+        )
+        staff_id = conn.execute("SELECT id FROM staff_accounts WHERE email=?", (email,)).fetchone()["id"]
+        if roles:
+            for role in roles:
+                conn.execute(
+                    "INSERT OR IGNORE INTO staff_queue_roles (staff_id, queue_name) VALUES (?, ?)",
+                    (staff_id, role)
+                )
+        conn.commit()
+        return staff_id
+
+def login_as_staff(client, db_path, email="test_staff99@test.com", password="StaffPass123", name="Test Staff", roles=None):
+    seed_staff(db_path, email, password, name, roles)
+    resp = client.post("/staff/login", json={"email": email, "password": password})
+    assert resp.status_code in (200, 302), f"login_as_staff failed {resp.status_code}: {resp.data}"
+    return resp
+
+def login_as_admin(client, db_path, email="test_admin99@test.com", password="AdminPass123", name="Test Admin"):
+    seed_staff(db_path, email, password, name)
+    resp = client.post("/admin/login", json={"email": email, "password": password})
+    assert resp.status_code in (200, 302), f"login_as_admin failed {resp.status_code}: {resp.data}"
+    return resp
+
+def seed_mentor(db_path, email="test_mentor99@test.com", password="MentorPass123", name="Test Mentor", domain="AI Agent Development"):
+    os.environ["DB_FILE"] = db_path
+    with get_db() as conn:
+        conn.execute(
+            "INSERT OR IGNORE INTO mentors (name, email, domain, password_hash, is_active) VALUES (?, ?, ?, ?, 1)",
+            (name, email, domain, set_password_hash(password))
+        )
+        conn.commit()
+        return conn.execute("SELECT id FROM mentors WHERE email=?", (email,)).fetchone()["id"]
+
+def login_as_mentor(client, db_path, email="test_mentor99@test.com", password="MentorPass123", name="Test Mentor", domain="AI Agent Development"):
+    seed_mentor(db_path, email, password, name, domain)
+    resp = client.post("/mentor/login", json={"email": email, "password": password})
+    assert resp.status_code == 200, f"login_as_mentor failed {resp.status_code}: {resp.data}"
+    return resp
+
+def logout(client):
+    return client.get("/logout")

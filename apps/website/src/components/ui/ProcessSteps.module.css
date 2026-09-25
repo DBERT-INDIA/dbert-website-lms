@@ -1,0 +1,92 @@
+.proc {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  position: relative;
+}
+
+/* The hairline that connects the numbered nodes. */
+.proc::before {
+  content: '';
+  position: absolute;
+  top: 23px;
+  left: 6%;
+  right: 6%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--line-strong) 15%, var(--line-strong) 85%, transparent);
+}
+
+.step {
+  padding: 0 22px;
+  position: relative;
+}
+
+.n {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--ink);
+  border: 1px solid var(--line-strong);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-m);
+  font-size: .8rem;
+  color: var(--accent);
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+  transition: all .3s var(--ease);
+}
+
+.step:hover .n {
+  border-color: var(--accent);
+  box-shadow: 0 0 22px rgba(91, 140, 255, .3);
+}
+
+.step h3 {
+  font-size: 1.05rem;
+  margin-bottom: 8px;
+}
+
+.step p {
+  font-size: .88rem;
+}
+
+.dur {
+  font-family: var(--font-m);
+  font-size: .68rem;
+  color: var(--faint);
+  margin-top: 12px;
+  display: block;
+}
+
+.honest {
+  margin-top: 44px;
+  font-size: .95rem;
+  color: var(--muted);
+  max-width: 560px;
+  border-left: 2px solid var(--signal);
+  padding-left: 18px;
+}
+
+.honest b {
+  color: var(--text);
+  font-weight: 600;
+}
+
+@media (max-width: 1020px) {
+  .proc {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 34px 0;
+  }
+
+  .proc::before {
+    display: none;
+  }
+}
+
+@media (max-width: 620px) {
+  .proc {
+    grid-template-columns: 1fr;
+  }
+}

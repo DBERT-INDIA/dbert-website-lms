@@ -1,0 +1,145 @@
+.footer {
+  border-top: 1px solid var(--line);
+  background: var(--raise);
+  padding: 56px 0 30px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1.4fr repeat(3, 1fr);
+  gap: 40px;
+  margin-bottom: 44px;
+}
+
+.logo {
+  font-family: var(--font-d);
+  font-weight: 800;
+  font-size: 1.35rem;
+  letter-spacing: -.02em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text);
+}
+
+.logoMark {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--accent), #8FB2FF);
+  display: grid;
+  place-items: center;
+  color: #05070C;
+  font-size: .85rem;
+  font-family: var(--font-m);
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.blurb {
+  font-size: .88rem;
+  max-width: 280px;
+  margin-top: 14px;
+}
+
+/* Name, address, phone kept together and machine-readable — the SEO plan
+   depends on NAP consistency across the site. */
+.contact {
+  margin-top: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-family: var(--font-m);
+  font-size: .76rem;
+}
+
+.contact a {
+  color: var(--muted);
+  transition: color .2s;
+}
+
+.contact a:hover {
+  color: var(--accent);
+}
+
+.social {
+  margin-top: 16px;
+  display: flex;
+  gap: 14px;
+  font-family: var(--font-m);
+  font-size: .74rem;
+}
+
+.social a {
+  color: var(--faint);
+  transition: color .2s;
+}
+
+.social a:hover {
+  color: var(--accent);
+}
+
+.colLabel {
+  font-family: var(--font-m);
+  font-size: .68rem;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-bottom: 14px;
+}
+
+.col a {
+  display: block;
+  font-size: .88rem;
+  color: var(--muted);
+  padding: 5px 0;
+  transition: color .2s;
+}
+
+.col a:hover {
+  color: var(--accent);
+}
+
+.base {
+  border-top: 1px solid var(--line);
+  padding-top: 24px;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-family: var(--font-m);
+  font-size: .72rem;
+  color: var(--faint);
+}
+
+.made b {
+  color: var(--signal);
+  font-weight: 500;
+}
+
+.legal {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.legal a {
+  color: var(--faint);
+  transition: color .2s;
+}
+
+.legal a:hover {
+  color: var(--accent);
+}
+
+@media (max-width: 1020px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 620px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

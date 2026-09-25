@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% set page_title = course.title ~ " — AI Classroom" %}
+{% set page_robots = "noindex, nofollow" %}
+{% include "_head.html" %}
+</head>
+<body class="classroom">
+
+    <header class="classroom-header">
+        <div class="row" style="gap:10px; align-items:center;">
+            <button type="button" class="btn btn-ghost btn-sm classroom-tree-toggle" data-act-click="toggleTreeSidebar" aria-label="Toggle Syllabus"><i class="fa-solid fa-list-ul"></i> Syllabus</button>
+            <h1 style="font-size:16px; margin:0;">🎓 {{ course.title }} — Day <span id="currentDayNum">{{ enrollment.current_day or 1 }}</span></h1>
+        </div>
+        <div class="row" style="gap:12px; align-items:center;">
+            <span id="geminiBadge" class="badge {% if has_gemini_key %}b-green{% else %}b-amber{% endif %}"
+                  style="cursor:pointer" data-act-click="openGeminiModal">
+                {% if has_gemini_key %}
+                ⚡ BYOK Active
+                {% else %}
+                🔑 Connect Gemini (Free)
+                {% endif %}
+            </span>
+            <a href="/courses/{{ course.id }}" class="back-link" style="white-space:nowrap">
+                <i class="fa-solid fa-arrow-left"></i> Back to syllabus
+            </a>
+        </div>
+    </header>
+
+    {% if not has_gemini_key %}
+    <div id="geminiBanner" class="alert alert-info"
+         style="margin:0;border-radius:0;border-left:0;border-right:0;justify-content:space-between;align-items:center">
+        <div>
+            <b class="t-head">🔑 Gemini API key not connected:</b>
+            <span class="t-muted">Connect your free Google Gemini API key for unlimited, fast 1-on-1 AI tutoring.
+            (Fallback usage: {{ fallback_used }}/{{ fallback_limit }} today)</span>
+        </div>
+        <button data-act-click="openGeminiModal" class="btn btn-primary btn-sm" style="flex-shrink:0">
+            Test &amp; save key
+        </button>
+    </div>
+    {% endif %}
+
+    <!-- Gemini key test & save modal -->
+    <div id="geminiModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="geminiModalTitle">
+        <div class="modal-box" style="max-width:480px">
+            <div class="row-between mb-16">
+                <h3 id="geminiModalTitle" style="margin:0">🔑 Connect Google Gemini key</h3>
+                <button data-act-click="closeGeminiModal" class="t-muted" style="font-size:18px" aria-label="Close dialog">✕</button>
+            </div>
+
+            <p class="t-sm t-muted mb-16">
+                Enter your Google Gemini API key to unlock unthrottled AI tutoring. We test available
+                models live against Google's API before saving.
+            </p>
+            <form autocomplete="off" onsubmit="return false;" style="margin:0;padding:0;">
+                <div class="field">
+                    <label for="modalApiKeyInput">Gemini API key</label>
+                    <div style="position:relative; display:flex; align-items:center;">
+                        <input type="password" id="modalApiKeyInput" name="gemini_api_key_novault"
+                               autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+                               data-lpignore="true" data-1p-ignore="true" data-form-type="other"
+                               placeholder="AIzaSy…" style="font-family:var(--f-mono); padding-right:40px;">
+                        <button type="button" data-act-click="toggleModalApiKeyVisibility"
+                                style="position:absolute; right:10px; background:none; border:none; color:var(--tx-muted); cursor:pointer; font-size:14px; padding:4px;"
+                                aria-label="Toggle key visibility">
+                            <i class="fa-regular fa-eye" id="modalEyeIcon"></i>
+                        </button>
+                    </div>
+                    <div class="hint" style="text-align:right">
+                        <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener" class="t-gold">
+                            Get a free key from Google AI Studio ↗</a>
+                    </div>
+                </div>
+            </form>
+            <div id="modalStatusMsg" class="alert" role="alert" style="display:none"></div>
+            <div class="modal-foot">
+                <button data-act-click="closeGeminiModal" class="btn btn-ghost btn-sm">Cancel</button>
+                <button id="btnSaveGeminiKey" data-act-click="testAndSaveGeminiKey" class="btn btn-ai btn-sm">
+                    Test available models &amp; save
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="scrim" id="classroomScrim" data-act-click="closeTreeSidebar"></div>
+
+    <div class="classroom-layout">
+        <!-- Sidebar navigation tree -->
+        <aside class="tree-sidebar" id="treeSidebar">
+            {% for chapter in chapters %}
+            {% set outer_loop = loop %}
+            <div class="chapter-group">
+                <div class="chapter-title">Day {{ chapter.day_number }}: {{ chapter.title }}</div>
+                {% for subtopic in chapter.subtopics %}
+                <button class="subtopic-btn {% if loop.first and outer_loop.first %}active{% endif %}"
+                        data-subtopic-id="{{ subtopic.id }}"
+                        data-act-click="loadSubtopic" data-arg-click='[{{ course.id|tojson }}, {{ subtopic.id|tojson }}, "$el"]'>
+                    <span>▸ {{ subtopic.title }}</span>
+                </button>
+                {% endfor %}
+            </div>
+            {% endfor %}
+        </aside>
+
+        <!-- Main interactive AI chat classroom -->
+        <main class="chat-main">
+            <div class="chat-history" id="chatHistory">
+                <div class="chat-bubble assistant">
+                    Welcome to the AI Classroom. Select a subtopic from the sidebar or ask a question to begin.
+                </div>
+            </div>
+            <form autocomplete="off" onsubmit="return false;" class="chat-input-bar" style="margin:0;">
+                <label for="userMessage" class="sr-only">Message your AI tutor</label>
+                <input type="text" id="userMessage" name="chat_prompt_query"
+                       autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
+                       data-lpignore="true" data-1p-ignore="true" data-form-type="other"
+                       placeholder="Ask your AI tutor a question or request code examples…"
+                       data-act-keypress="sendMessage" data-key-keypress="Enter">
+                <button class="btn btn-ai" type="button" data-act-click="sendMessage">
+                    <i class="fa-solid fa-paper-plane"></i> Send
+                </button>
+            </form>
+        </main>
+
+        <!-- Key takeaways & quiz CTA -->
+        <aside class="takeaways-sidebar">
+            <div class="card mb-24">
+                <div class="card-head"><i class="fa-solid fa-lightbulb"></i><h3 id="subtopicTitle">Subtopic details</h3></div>
+                <p class="t-sm t-muted mb-16" id="subtopicBrief">Select a topic to view key takeaways and guidelines.</p>
+                <div id="takeawaysList" class="t-sm"></div>
+            </div>
+
+            <a href="#" id="dayQuizBtn" class="btn btn-primary btn-block">
+                Take day quiz <i class="fa-solid fa-arrow-right"></i>
+            </a>
+        </aside>
+    </div>
+
+<script nonce="{{ csp_nonce() }}">
+    let currentCourseId = {{ course.id }};
+    let activeSubtopicId = null;
+
+    /* Status message inside the Gemini modal. Was six repeated blocks of
+       hardcoded rgba(); now one helper driving the theme's .alert variants. */
+    function setModalStatus(kind, text) {
+        const el = document.getElementById('modalStatusMsg');
+        if (!el) return;
+        el.className = 'alert alert-' + kind;
+        el.style.display = 'flex';
+        el.textContent = text;
+    }
+
+    function toggleTreeSidebar() {
+        const sb = document.getElementById('treeSidebar');
+        const sc = document.getElementById('classroomScrim');
+        if (!sb) return;
+        const isOpen = sb.classList.contains('open');
+        sb.classList.toggle('open', !isOpen);
+        if (sc) sc.classList.toggle('active', !isOpen);
+    }
+    function closeTreeSidebar() {
+        const sb = document.getElementById('treeSidebar');
+        const sc = document.getElementById('classroomScrim');
+        if (sb) sb.classList.remove('open');
+        if (sc) sc.classList.remove('active');
+    }
+
+    function loadSubtopic(courseId, subtopicId, btnElem) {
+        closeTreeSidebar();
+        activeSubtopicId = subtopicId;
+        document.querySelectorAll('.subtopic-btn').forEach(btn => btn.classList.remove('active'));
+        if (btnElem) {
+            btnElem.classList.add('active');
+        } else {
+            const target = document.querySelector(`.subtopic-btn[data-subtopic-id="${subtopicId}"]`);
+            if (target) target.classList.add('active');
+        }
+
+        // Update quiz button URL
+        const quizBtn = document.getElementById('dayQuizBtn');
+        if (quizBtn) {
+            quizBtn.href = `/courses/${courseId}/quiz/${subtopicId}`;
+        }
+
+        fetch(`/courses/${courseId}/subtopic/${subtopicId}`)
+            .then(r => r.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    const quizBtn = document.getElementById('dayQuizBtn');
+                    if (quizBtn) {
+                        quizBtn.href = `/courses/${courseId}/quiz/${data.subtopic.day_number || 1}`;
+                    }
+                    document.getElementById('subtopicTitle').textContent = data.subtopic.title;
+                    document.getElementById('subtopicBrief').textContent = data.subtopic.brief;
+
+                    const takeawaysContainer = document.getElementById('takeawaysList');
+                    takeawaysContainer.innerHTML = '';
+                    if (data.subtopic.key_takeaways && data.subtopic.key_takeaways.length > 0) {
+                        const ul = document.createElement('ul');
+                        data.subtopic.key_takeaways.forEach(t => {
+                            const li = document.createElement('li');
+                            li.textContent = t;
+                            ul.appendChild(li);
+                        });
+                        takeawaysContainer.appendChild(ul);
+                    }
+
+                    // Render chat history
+                    const history = document.getElementById('chatHistory');
+                    history.innerHTML = '';
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    const phoneRegex = /^\+?\d{10,14}$/;
+
+                    // Filter out accidental browser-autofilled entries from display
+                    const cleanChats = (data.chats || []).filter((c, idx, arr) => {
+                        const m = (c.message || '').trim();
+                        if (c.role === 'user' && (emailRegex.test(m) || phoneRegex.test(m) || m === 'Pulluri Bhargavi')) {
+                            return false;
+                        }
+                        if (c.role === 'assistant' && idx > 0) {
+                            const prev = (arr[idx - 1].message || '').trim();
+                            if (emailRegex.test(prev) || phoneRegex.test(prev) || prev === 'Pulluri Bhargavi') {
+                                return false;
+                            }
+                        }
+                        return true;
+                    });
+
+                    if (cleanChats.length > 0) {
+                        cleanChats.forEach(c => {
+                            const div = document.createElement('div');
+                            div.className = `chat-bubble ${c.role}`;
+                            div.textContent = c.message;
+                            history.appendChild(div);
+                        });
+                    } else {
+                        const div = document.createElement('div');
+                        div.className = 'chat-bubble assistant';
+                        div.textContent = `Hello! Let's dive into '${data.subtopic.title}'. ${data.subtopic.brief}. Ask me any questions or request code examples to get started!`;
+                        history.appendChild(div);
+                    }
+                    history.scrollTop = history.scrollHeight;
+                }
+            }).catch(e => {
+                console.error('Error loading subtopic:', e);
+            });
+    }
+
+    function sendMessage() {
+        const input = document.getElementById('userMessage');
+        const msg = input.value.trim();
+        if (!msg) return;
+
+        // Block accidental submission of browser autofilled email or phone number
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const phoneRegex = /^\+?\d{10,14}$/;
+        if (emailRegex.test(msg) || phoneRegex.test(msg)) {
+            input.value = '';
+            return;
+        }
+
+        if (!activeSubtopicId) {
+            const firstBtn = document.querySelector('.subtopic-btn');
+            if (firstBtn) {
+                activeSubtopicId = parseInt(firstBtn.getAttribute('data-subtopic-id'));
+            }
+        }
+        if (!activeSubtopicId) return;
+
+        const history = document.getElementById('chatHistory');
+
+        // Render user bubble immediately
+        const userDiv = document.createElement('div');
+        userDiv.className = 'chat-bubble user';
+        userDiv.textContent = msg;
+        history.appendChild(userDiv);
+
+        input.value = '';
+        history.scrollTop = history.scrollHeight;
+
+        // Render thinking indicator
+        const thinkDiv = document.createElement('div');
+        thinkDiv.className = 'chat-bubble assistant';
+        thinkDiv.id = 'aiThinking';
+        thinkDiv.textContent = 'Thinking...';
+        history.appendChild(thinkDiv);
+        history.scrollTop = history.scrollHeight;
+
+        fetch(`/courses/${currentCourseId}/subtopic/${activeSubtopicId}/chat`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: msg })
+        })
+        .then(async (r) => {
+            const thinkEl = document.getElementById('aiThinking');
+            if (thinkEl) thinkEl.remove();
+
+            const contentType = r.headers.get('content-type') || '';
+            // If the server returned a JSON error response (e.g. 400/401/429)
+            if (contentType.includes('application/json') || (!r.ok && !contentType.includes('text/event-stream'))) {
+                let data = {};
+                try { data = await r.json(); } catch (e) {}
+                const aiDiv = document.createElement('div');
+                aiDiv.className = 'chat-bubble assistant';
+                aiDiv.textContent = data.message || data.reply || 'Error generating AI response.';
+                if (data.requires_key) {
+                    const btn = document.createElement('button');
+                    btn.style = 'display:inline-block;margin-top:8px;padding:6px 12px;background:var(--accent);color:#000;border:none;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;';
+                    btn.textContent = '🔑 Connect / Update Gemini Key';
+                    btn.onclick = openGeminiModal;
+                    aiDiv.appendChild(document.createElement('br'));
+                    aiDiv.appendChild(btn);
+                }
+                history.appendChild(aiDiv);
+                history.scrollTop = history.scrollHeight;
+                return;
+            }
+
+            // Real-time SSE streaming reader
+            const aiDiv = document.createElement('div');
+            aiDiv.className = 'chat-bubble assistant';
+            history.appendChild(aiDiv);
+
+            const reader = r.body.getReader();
+            const decoder = new TextDecoder('utf-8');
+            let buffer = '';
+            let fullText = '';
+
+            while (true) {
+                const { value, done } = await reader.read();
+                if (done) break;
+                buffer += decoder.decode(value, { stream: true });
+                const lines = buffer.split('\n');
+                buffer = lines.pop(); // keep partial line in buffer
+
+                for (const line of lines) {
+                    const trimmed = line.trim();
+                    if (trimmed.startsWith('data: ')) {
+                        try {
+                            const parsed = JSON.parse(trimmed.slice(6));
+                            if (parsed.chunk) {
+                                fullText += parsed.chunk;
+                                aiDiv.textContent = fullText;
+                                history.scrollTop = history.scrollHeight;
+                            }
+                            if (parsed.error) {
+                                aiDiv.textContent = parsed.error;
+                                if (parsed.requires_key) {
+                                    const btn = document.createElement('button');
+                                    btn.style = 'display:inline-block;margin-top:8px;padding:6px 12px;background:var(--accent);color:#000;border:none;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;';
+                                    btn.textContent = '🔑 Connect / Update Gemini Key';
+                                    btn.onclick = openGeminiModal;
+                                    aiDiv.appendChild(document.createElement('br'));
+                                    aiDiv.appendChild(btn);
+                                }
+                            }
+                        } catch (e) {
+                            // ignore parse error on keepalive lines
+                        }
+                    }
+                }
+            }
+            if (!fullText && !aiDiv.textContent) {
+                aiDiv.textContent = 'No response received from tutor.';
+            }
+            history.scrollTop = history.scrollHeight;
+        })
+        .catch(err => {
+            const thinkEl = document.getElementById('aiThinking');
+            if (thinkEl) thinkEl.remove();
+
+            const aiDiv = document.createElement('div');
+            aiDiv.className = 'chat-bubble assistant';
+            aiDiv.textContent = 'Network or server error while connecting to Gemini AI.';
+            history.appendChild(aiDiv);
+            history.scrollTop = history.scrollHeight;
+        });
+    }
+
+    function openGeminiModal() {
+        const m = document.getElementById('geminiModal');
+        if (m) m.style.display = 'flex';
+    }
+
+    function closeGeminiModal() {
+        const m = document.getElementById('geminiModal');
+        if (m) m.style.display = 'none';
+        const msg = document.getElementById('modalStatusMsg');
+        if (msg) msg.style.display = 'none';
+    }
+
+    function testAndSaveGeminiKey() {
+        const input = document.getElementById('modalApiKeyInput');
+        const key = input ? input.value.trim() : '';
+        const btn = document.getElementById('btnSaveGeminiKey');
+
+        if (!key) {
+            setModalStatus('err', 'Please paste a valid Gemini API key first.');
+            return;
+        }
+
+        if (btn) btn.disabled = true;
+        setModalStatus('info', 'Testing connection to Google Gemini API & verifying available models…');
+
+        fetch('/account/gemini-key', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ api_key: key })
+        })
+        .then(r => r.json())
+        .then(data => {
+            if (btn) btn.disabled = false;
+            if (data.status === 'success') {
+                setModalStatus('ok', `✓ Verified ${data.models_count || 1} available Gemini models. Key saved securely.`);
+                setTimeout(() => {
+                    closeGeminiModal();
+                    const badge = document.getElementById('geminiBadge');
+                    if (badge) {
+                        badge.className = 'badge b-green';
+                        badge.textContent = `⚡ BYOK Gemini Key Active (${data.models_count || 'Active'} Models)`;
+                    }
+                    const banner = document.getElementById('geminiBanner');
+                    if (banner) banner.remove();
+                }, 1200);
+            } else {
+                setModalStatus('err', data.message || 'Verification failed. Please check your key from Google AI Studio.');
+            }
+        })
+        .catch(err => {
+            if (btn) btn.disabled = false;
+            setModalStatus('err', 'Server or network error while testing key.');
+        });
+    }
+
+    function toggleModalApiKeyVisibility() {
+        const input = document.getElementById('modalApiKeyInput');
+        const icon = document.getElementById('modalEyeIcon');
+        if (!input || !icon) return;
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.className = 'fa-solid fa-eye-slash';
+        } else {
+            input.type = 'password';
+            icon.className = 'fa-regular fa-eye';
+        }
+    }
+    window.toggleModalApiKeyVisibility = toggleModalApiKeyVisibility;
+
+    // Sanitize chat input against browser autofill
+    function sanitizeChatInput() {
+        const input = document.getElementById('userMessage');
+        if (!input) return;
+        const v = input.value.trim();
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const phoneRegex = /^\+?\d{10,14}$/;
+        if (v && (emailRegex.test(v) || phoneRegex.test(v))) {
+            input.value = '';
+        }
+    }
+    document.addEventListener('DOMContentLoaded', sanitizeChatInput);
+    window.addEventListener('load', sanitizeChatInput);
+    setTimeout(sanitizeChatInput, 150);
+    setTimeout(sanitizeChatInput, 500);
+
+    // Auto-load first subtopic if present on DOM ready
+    window.addEventListener('load', () => {
+        sanitizeChatInput();
+        const firstBtn = document.querySelector('.subtopic-btn');
+        if (firstBtn) {
+            const subId = parseInt(firstBtn.getAttribute('data-subtopic-id'));
+            loadSubtopic(currentCourseId, subId, firstBtn);
+        }
+    });
+</script>
+</body>
+</html>

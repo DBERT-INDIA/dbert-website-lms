@@ -1,0 +1,388 @@
+.layout {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: var(--space-6);
+  max-width: 1040px;
+  margin: 0 auto;
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Hero & Meta Highlights ───────────────── */
+
+.metaStrip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 14px;
+  margin-bottom: 8px;
+}
+
+.metaPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  font-family: var(--font-m);
+  color: var(--muted);
+  background: var(--raise);
+  border: 1px solid var(--line);
+  padding: 5px 12px;
+  border-radius: 999px;
+}
+
+.metaPill strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* ── Curriculum Timeline ──────────────────── */
+
+.curriculumSection {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: var(--space-5);
+  position: relative;
+  overflow: hidden;
+}
+
+.curriculumHead {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+
+.curriculumHead h2 {
+  font-family: var(--font-d);
+  font-size: 1.4rem;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.curriculumSub {
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.curriculumStack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.curriculumBlock {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: var(--space-4);
+  transition: border-color 0.2s ease;
+}
+
+.curriculumBlock:hover {
+  border-color: rgba(0, 210, 255, 0.25);
+}
+
+.blockHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed var(--line);
+}
+
+.periodBadge {
+  font-family: var(--font-m);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--accent);
+  background: rgba(0, 210, 255, 0.08);
+  border: 1px solid rgba(0, 210, 255, 0.2);
+  padding: 3px 10px;
+  border-radius: 6px;
+}
+
+.paceBadge {
+  font-size: 0.72rem;
+  font-family: var(--font-m);
+  color: var(--muted);
+}
+
+.moduleTitle {
+  font-family: var(--font-d);
+  font-size: 1.15rem;
+  color: #fff;
+  margin-bottom: 14px;
+  line-height: 1.4;
+}
+
+.topicList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.topicItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.topicBullet {
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  margin-top: 8px;
+  box-shadow: 0 0 6px var(--accent);
+}
+
+/* ── Active Repos / Squads Section ────────── */
+
+.squadSection {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: var(--space-5);
+  margin-top: var(--space-5);
+}
+
+.squadHead {
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--line);
+}
+
+.squadHead h2 {
+  font-family: var(--font-d);
+  font-size: 1.25rem;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.squadLead {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.squadGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+}
+
+.squadCard {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: var(--space-4);
+  transition: all 0.2s ease;
+}
+
+.squadCard:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.squadTop {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.badgeGroup {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.squadCohortBadge {
+  font-family: var(--font-m);
+  font-size: 0.7rem;
+  color: #34d399;
+  background: rgba(52, 211, 153, 0.08);
+  border: 1px solid rgba(52, 211, 153, 0.25);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.squadRoleBadge {
+  font-family: var(--font-m);
+  font-size: 0.7rem;
+  color: var(--accent);
+  background: rgba(0, 210, 255, 0.08);
+  border: 1px solid rgba(0, 210, 255, 0.25);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.repoName {
+  font-family: var(--font-m);
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 6px;
+}
+
+.repoDesc {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+.tagRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.techTag {
+  font-family: var(--font-m);
+  font-size: 0.68rem;
+  color: var(--text);
+  background: var(--raise);
+  border: 1px solid var(--line);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+/* ── Sidebar ──────────────────────────────── */
+
+.sidebarCard {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: var(--space-4);
+}
+
+.feeLabel {
+  font-size: 0.75rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: var(--font-m);
+}
+
+.feeValue {
+  font-size: 2.2rem;
+  font-family: var(--font-m);
+  color: var(--accent);
+  margin: 4px 0;
+  display: block;
+}
+
+.feeMeta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: var(--muted);
+  font-family: var(--font-m);
+}
+
+.sidebarTitle {
+  font-family: var(--font-d);
+  font-size: 1rem;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.sidebarCopy {
+  font-size: 0.84rem;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+/* ── Checkout Form ────────────────────────── */
+
+.checkoutForm {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.checkoutTitle {
+  font-family: var(--font-d);
+  font-size: 1.05rem;
+  color: #fff;
+}
+
+.checkoutCopy {
+  font-size: 0.8rem;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+.error {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--err);
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.input {
+  width: 100%;
+  padding: 10px 12px;
+  background: var(--raise);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--text);
+  font-size: 0.85rem;
+  font-family: inherit;
+  transition: border-color 0.2s ease;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.submit {
+  width: 100%;
+  margin-top: 4px;
+}
+
+.successBlock {
+  text-align: center;
+  padding: var(--space-4) 0;
+}
+
+.successTitle {
+  font-family: var(--font-d);
+  color: var(--accent);
+  font-size: 1.2rem;
+  margin-top: 8px;
+}
+
+.successCopy {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-top: 6px;
+}

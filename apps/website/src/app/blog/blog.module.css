@@ -1,0 +1,254 @@
+/* Styles specific to /blog and technical articles. Written against v2 tokens. */
+
+.indexGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: var(--space-6);
+  margin-top: var(--space-6);
+}
+
+.cardTitle {
+  font-family: var(--font-d);
+  font-size: 1.45rem;
+  line-height: 1.35;
+  margin: var(--space-2) 0;
+}
+
+.postHead {
+  margin-bottom: var(--space-8);
+  border-bottom: 1px solid var(--line);
+  padding-bottom: var(--space-6);
+}
+
+.readTime {
+  font-family: var(--font-m);
+  font-size: 0.82rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.postTitle {
+  font-family: var(--font-d);
+  font-size: clamp(2.2rem, 5vw, 3.2rem);
+  line-height: 1.15;
+  color: var(--ink);
+  margin: var(--space-3) 0 var(--space-4) 0;
+  letter-spacing: -0.02em;
+}
+
+.postDesc {
+  font-size: 1.2rem;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: var(--space-4);
+  max-width: var(--max-ch);
+}
+
+.tagWrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.postBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding: clamp(var(--space-4), 5vw, var(--space-8));
+  background: var(--card);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-md);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* MDX Typography & Component Overrides */
+.mdxContent {
+  color: var(--text);
+  line-height: 1.85;
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+}
+
+.mdxContent h2 {
+  font-family: var(--font-d);
+  font-size: 1.8rem;
+  color: #FFFFFF;
+  margin-top: var(--space-8);
+  margin-bottom: var(--space-3);
+  border-bottom: 1px solid var(--line-strong);
+  padding-bottom: var(--space-2);
+}
+
+.mdxContent h3 {
+  font-family: var(--font-d);
+  font-size: 1.4rem;
+  color: #FFFFFF;
+  margin-top: var(--space-6);
+  margin-bottom: var(--space-2);
+}
+
+.mdxContent p {
+  margin: 0;
+  color: #D1D9E6;
+  line-height: 1.8;
+}
+
+.mdxContent ul,
+.mdxContent ol {
+  margin: 0;
+  padding-left: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  color: #D1D9E6;
+}
+
+.mdxContent li {
+  line-height: 1.75;
+}
+
+.mdxContent strong {
+  color: #FFFFFF;
+  font-weight: 600;
+}
+
+.mdxContent code {
+  font-family: var(--font-m);
+  font-size: 0.88em;
+  background: var(--raise);
+  color: var(--accent);
+  padding: 0.2em 0.45em;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--line);
+}
+
+.mdxContent pre {
+  font-family: var(--font-m);
+  font-size: 0.88rem;
+  background: var(--raise);
+  color: var(--ink);
+  padding: var(--space-4);
+  border-radius: var(--r-sm);
+  border: 1px solid var(--line);
+  overflow-x: auto;
+  line-height: 1.55;
+  margin: var(--space-2) 0;
+}
+
+.mdxContent pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: inherit;
+}
+
+.mdxContent blockquote {
+  margin: 0;
+  padding: var(--space-4) var(--space-5);
+  border-left: 3px solid var(--signal);
+  background: var(--raise);
+  border-radius: 0 var(--r-sm) var(--r-sm) 0;
+  font-style: italic;
+  color: var(--ink);
+}
+
+.mdxContent table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: var(--space-4) 0;
+  font-size: 0.95rem;
+}
+
+.mdxContent th {
+  text-align: left;
+  font-family: var(--font-m);
+  font-weight: 600;
+  color: var(--ink);
+  border-bottom: 2px solid var(--line);
+  padding: var(--space-3);
+  background: var(--raise);
+}
+
+.mdxContent td {
+  border-bottom: 1px solid var(--line);
+  padding: var(--space-3);
+  color: var(--muted);
+}
+
+/* Author Box Styling */
+.authorBox {
+  display: flex;
+  gap: var(--space-6);
+  align-items: flex-start;
+  padding: var(--space-6);
+  background: var(--raise);
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--r-md);
+  margin-top: var(--space-8);
+}
+
+.authorIcon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--card);
+  border: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.authorIconSvg {
+  width: 26px;
+  height: 26px;
+  color: var(--accent);
+}
+
+.authorDetails {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  flex-grow: 1;
+}
+
+.authorHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.authorName {
+  font-family: var(--font-d);
+  font-size: 1.3rem;
+  color: var(--ink);
+  margin: 0;
+}
+
+.authorRole {
+  font-family: var(--font-m);
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin: 0;
+}
+
+.postFoot {
+  margin-top: var(--space-8);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--line);
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .authorBox {
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+}
+

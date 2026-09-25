@@ -1,0 +1,248 @@
+/* Styles specific to the /learners group. Phase 5: each class declares exactly
+   what the inline object it replaced declared — nothing extra. Anything a
+   second group turns out to need gets promoted to globals.css.
+   Written against the v2 tokens, not the v1 alias layer (5.7 deletes those). */
+
+/* ── Hub: domain cards ────────────────────── */
+
+.domainGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+/* The badge used to share this row with an emoji, which the Phase 5 sweep
+   removed. Right-aligned explicitly so it stays put with one child. */
+.badgeRow {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: var(--space-2);
+}
+
+.badge {
+  font-size: .7rem;
+  color: var(--accent);
+  border: 1px solid rgba(91, 140, 255, .2);
+  padding: 2px 8px;
+  border-radius: 99px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.domainTitle {
+  font-family: var(--font-d);
+  font-size: 1.25rem;
+  margin-bottom: 8px;
+}
+
+.domainDesc {
+  font-size: .85rem;
+  color: var(--muted);
+  line-height: 1.5;
+  margin-bottom: var(--space-2);
+}
+
+.salary {
+  color: var(--accent);
+  font-weight: 600;
+  font-size: .85rem;
+  margin-bottom: var(--space-2);
+}
+
+.pathLink {
+  color: var(--text);
+  font-size: .85rem;
+  font-weight: 600;
+}
+
+/* ── Hub: next-step cards ─────────────────── */
+
+.nextGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--space-4);
+}
+
+.nextCard {
+  text-align: center;
+  padding: var(--space-4);
+}
+
+.nextDesc {
+  font-size: .85rem;
+  color: var(--muted);
+  margin-bottom: var(--space-3);
+}
+
+/* ── Jobs board ───────────────────────────── */
+
+.jobList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.jobCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.jobTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.companyTag {
+  font-size: .75rem;
+  color: var(--accent);
+  border: 1px solid rgba(91, 140, 255, .2);
+  padding: 2px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.jobSalary {
+  font-size: .85rem;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.jobTitle {
+  font-family: var(--font-d);
+  font-size: 1.45rem;
+  margin: 4px 0;
+}
+
+.jobDesc {
+  font-size: .92rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.reqBlock {
+  margin: 8px 0;
+  border-top: 1px solid var(--line);
+  padding-top: 8px;
+}
+
+.reqLabel {
+  font-size: .85rem;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.reqBody {
+  font-size: .85rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.jobFoot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.jobType {
+  font-size: .8rem;
+  color: var(--muted);
+}
+
+/* ── Course pages (four pages share this) ─── */
+
+.courseTagline {
+  font-size: 1.25rem;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: var(--space-3);
+}
+
+.courseLede {
+  font-size: 1.15rem;
+  color: var(--muted);
+  line-height: 1.75;
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+.projectTitle {
+  font-family: var(--font-d);
+  font-size: 1.4rem;
+  margin: 8px 0;
+}
+
+.techBlock {
+  padding: var(--space-8) 0 var(--space-12) 0;
+  text-align: center;
+}
+
+.techHeading {
+  font-family: var(--font-d);
+  margin-bottom: var(--space-4);
+}
+
+.techRow {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.techChip {
+  padding: 6px 14px;
+  background-color: var(--raise);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  font-size: .85rem;
+}
+
+/* ── Fellowship + interview prep ──────────── */
+
+.gridCentered {
+  align-items: center;
+}
+
+.accentPanel {
+  border: 1px solid var(--accent);
+  background: rgba(91, 140, 255, .02);
+  padding: var(--space-6);
+}
+
+.accentPanelTitle {
+  font-family: var(--font-d);
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+
+.accentList {
+  font-size: .92rem;
+  color: var(--muted);
+  padding-left: var(--space-3);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  line-height: 1.6;
+}
+
+/* ── Courses index ────────────────────────── */
+
+.courseIndexGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 18px;
+}
+
+.backLink {
+  color: var(--accent);
+}

@@ -1,0 +1,172 @@
+/* Shared form and card-state styles. Phase 5: these were repeated inline
+   across ContactForm, ConsultationForm, DemoRequestForm, InvestorForm,
+   ContributorForm and ContributorCards. Each class declares exactly the
+   properties of the inline object it replaces. */
+
+.field {
+  margin-bottom: var(--space-4);
+}
+
+.label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: .9rem;
+  font-weight: 500;
+}
+
+.hint {
+  color: var(--muted);
+  margin-bottom: var(--space-4);
+}
+
+/* Centred confirmation / empty-state panel. */
+.statePanel {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+  padding: var(--space-6);
+}
+
+.emptyState {
+  color: var(--muted);
+  text-align: center;
+  padding: var(--space-6) 0;
+}
+
+.narrowForm {
+  margin: 0 auto;
+  max-width: 600px;
+}
+
+.full {
+  width: 100%;
+}
+
+.spacedTop {
+  margin-top: var(--space-4);
+}
+
+.caption {
+  font-size: .8rem;
+  color: var(--accent);
+}
+
+.metaLine {
+  font-size: .78rem;
+  color: var(--muted);
+}
+
+.cardCopy {
+  font-size: .92rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.stack2 {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.figure {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* Rejected / error state tint. */
+.errorTint {
+  background-color: rgba(239, 68, 68, .06);
+  border: 1px solid rgba(239, 68, 68, .25);
+}
+
+/* ── Phase 5 continuation: the rest of the shared form chrome ────────────
+   Same rule as above — each class declares exactly the properties of the
+   inline object it replaces. Written against v2 tokens. */
+
+.column3 {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid var(--line);
+  background: var(--ink);
+  color: var(--text);
+}
+
+.errorNote {
+  color: var(--err);
+  font-size: .9rem;
+  padding: 8px;
+  background: rgba(239, 68, 68, .1);
+  border-radius: 4px;
+}
+
+.successBlock {
+  padding: var(--space-4);
+  text-align: center;
+}
+
+.successTitle {
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.successCopy {
+  color: var(--muted);
+  font-size: .9rem;
+}
+
+.introCopy {
+  color: var(--muted);
+  font-size: .9rem;
+  margin-bottom: var(--space-4);
+}
+
+.introCopySm {
+  color: var(--muted);
+  font-size: .85rem;
+  margin-bottom: var(--space-4);
+}
+
+.mutedCopy {
+  color: var(--muted);
+}
+
+.fullTop {
+  width: 100%;
+  margin-top: var(--space-2);
+}
+
+.centerBlock {
+  text-align: center;
+  margin: var(--space-6) 0;
+}
+
+.panel {
+  max-width: 600px;
+  margin: var(--space-6) auto;
+  text-align: center;
+  padding: var(--space-6);
+}
+
+.formShell {
+  margin: var(--space-6) auto;
+  max-width: 600px;
+}
+
+.navRow {
+  margin-top: var(--space-4);
+  display: flex;
+  gap: 12px;
+}
+
+.flex1 { flex: 1; }
+.flex2 { flex: 2; }
+.pushRight { margin-left: auto; }
+.spacedTop3 { margin-top: var(--space-3); }

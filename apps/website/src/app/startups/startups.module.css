@@ -1,0 +1,300 @@
+/* Styles specific to the /startups group. Phase 5: each class declares exactly
+   what the inline object it replaced declared — nothing extra. Anything a
+   second group turns out to need gets promoted to globals.css.
+   Written against the v2 tokens, not the v1 alias layer (5.7 deletes those). */
+
+.section {
+  margin-bottom: var(--space-12);
+}
+
+.sectionHead {
+  margin-bottom: var(--space-6);
+}
+
+.centerTop {
+  text-align: center;
+  margin-top: var(--space-6);
+}
+
+/* ── Service cards ────────────────────────── */
+
+.serviceGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--space-4);
+  margin-bottom: var(--space-12);
+}
+
+.serviceCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--space-4);
+}
+
+/* ── Incubation vs bootstrapping table ────── */
+
+.tableScroll {
+  overflow-x: auto;
+  margin-top: var(--space-6);
+}
+
+.compareTable {
+  width: 100%;
+  min-width: 600px;
+  border-collapse: collapse;
+  text-align: left;
+  background-color: var(--ink);
+  border: 1px solid var(--line);
+}
+
+.compareTable thead tr {
+  background-color: var(--raise);
+  border-bottom: 1px solid var(--line);
+}
+
+.compareTable th {
+  padding: 16px;
+  font-weight: 600;
+}
+
+.compareTable td {
+  padding: 16px;
+}
+
+.compareTable td:first-child {
+  font-weight: 500;
+}
+
+/* The final row is borderless, as it sits on the table's own border. */
+.compareTable tbody tr:not(:last-child) {
+  border-bottom: 1px solid var(--line);
+}
+
+.colAccent {
+  color: var(--accent);
+}
+
+.colMuted {
+  color: var(--muted);
+}
+
+/* ── Product cards ────────────────────────── */
+
+.productGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-4);
+}
+
+.productCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid var(--line);
+}
+
+.productTitle {
+  font-family: var(--font-d);
+  margin-bottom: 8px;
+}
+
+.productDesc {
+  font-size: .88rem;
+  color: var(--muted);
+  margin-bottom: var(--space-3);
+}
+
+.productLink {
+  color: var(--accent);
+  font-weight: 600;
+  font-size: .9rem;
+}
+
+/* Overrides .btn-outline's accent text where the button sits on a busy row. */
+.btnPlainText {
+  color: var(--text);
+}
+
+/* ── Portfolio grid ───────────────────────── */
+
+.portfolioCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--space-6);
+}
+
+.portfolioTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-2);
+}
+
+.portfolioLink {
+  font-size: .85rem;
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.portfolioName {
+  font-family: var(--font-d);
+  font-size: 1.6rem;
+  margin: 8px 0;
+}
+
+.portfolioFacts {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: var(--space-2);
+}
+
+.factLabel {
+  font-size: .85rem;
+  color: var(--text);
+}
+
+.factBody {
+  font-size: .88rem;
+  color: var(--muted);
+  line-height: 1.5;
+  margin-top: 2px;
+}
+
+.portfolioFoot {
+  margin-top: var(--space-4);
+}
+
+.metricBar {
+  background-color: rgba(91, 140, 255, .1);
+  padding: 10px;
+  border-radius: 4px;
+  text-align: center;
+  margin-bottom: var(--space-3);
+}
+
+.metricText {
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.btnBlock {
+  width: 100%;
+  text-align: center;
+  display: block;
+}
+
+/* ── Services index ───────────────────────── */
+
+.serviceIndexGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 18px;
+}
+
+/* ── Investor network ─────────────────────── */
+
+.reasonsCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.reasonList {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.reasonTitle {
+  color: var(--accent);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.formCard {
+  border: 1px solid var(--line);
+  background-color: var(--raise);
+}
+
+.formCardCopy {
+  color: var(--muted);
+  font-size: .9rem;
+  margin-bottom: var(--space-4);
+}
+
+/* ── Term sheets ──────────────────────────── */
+
+.termsLede {
+  line-height: 1.75;
+}
+
+.disclaimerCard {
+  margin-bottom: var(--space-8);
+  border-left: 4px solid var(--signal);
+  background-color: rgba(255, 180, 84, .05);
+}
+
+.disclaimerTitle {
+  color: var(--signal);
+  display: block;
+  margin-bottom: 8px;
+}
+
+.disclaimerCopy {
+  font-size: .9rem;
+  line-height: 1.6;
+}
+
+.clauseIntro {
+  line-height: 1.7;
+  color: var(--muted);
+  margin-bottom: var(--space-4);
+}
+
+.clauseList {
+  padding-left: var(--space-4);
+  line-height: 1.7;
+  color: var(--muted);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.downloadCard {
+  border: 1px solid var(--line);
+  text-align: center;
+  padding: var(--space-8);
+}
+
+.downloadCopy {
+  color: var(--muted);
+  margin-bottom: var(--space-4);
+}
+
+.downloadBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── Closing CTA ──────────────────────────── */
+
+.ctaCard {
+  text-align: center;
+  padding: var(--space-6);
+  background-color: var(--raise);
+  border: 1px solid var(--line);
+}
+
+.ctaCopy {
+  color: var(--muted);
+  max-width: 580px;
+  margin: 0 auto var(--space-4) auto;
+  line-height: 1.6;
+}

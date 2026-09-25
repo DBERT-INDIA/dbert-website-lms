@@ -1,0 +1,56 @@
+/* Phase 5: replaces the inline style objects in CaseStudyTemplate.
+   Each class declares exactly what the object it replaced declared. */
+
+.head {
+  margin-bottom: var(--space-8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.logoFrame {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.logoImg {
+  object-fit: cover;
+}
+
+.siteLink {
+  color: var(--accent);
+}
+
+.body {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.metricsCard {
+  background-color: rgba(91, 140, 255, .1);
+  border: 1px solid var(--accent);
+}
+
+.metricsTitle {
+  font-family: var(--font-d);
+  margin-bottom: var(--space-2);
+  color: var(--accent);
+}
+
+.metricsValue {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.foot {
+  text-align: center;
+  margin-top: var(--space-4);
+}

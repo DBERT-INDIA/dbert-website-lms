@@ -1,0 +1,90 @@
+/* Styles specific to /pricing. Phase 5: each class declares exactly what the
+   inline object it replaced declared. Written against the v2 tokens. */
+
+.tierGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.tierCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border: 1px solid var(--line);
+  padding: var(--space-4);
+}
+
+/* The middle tier is the recommended one and carries the accent border. */
+.tierCardFeatured {
+  border-color: var(--accent);
+}
+
+.tierAudience {
+  font-size: .8rem;
+  color: var(--accent);
+  font-weight: 600;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.tierTitle {
+  font-family: var(--font-d);
+  font-size: 1.4rem;
+  margin-bottom: var(--space-1);
+}
+
+.tierPrice {
+  font-size: 2rem;
+  color: var(--accent);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.tierDuration {
+  font-size: .82rem;
+  color: var(--muted);
+  display: block;
+  margin-bottom: var(--space-2);
+}
+
+.tierDesc {
+  font-size: .88rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.tierBtn {
+  margin-top: var(--space-3);
+}
+
+.customCard {
+  margin-bottom: var(--space-8);
+  border: 1px solid var(--line);
+}
+
+.customTitle {
+  font-family: var(--font-d);
+  font-size: 1.4rem;
+  margin-bottom: 8px;
+  color: var(--accent);
+}
+
+.customCopy {
+  font-size: .92rem;
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 12px;
+}
+
+.customCopyLast {
+  margin-bottom: 16px;
+}
+
+.customActions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}

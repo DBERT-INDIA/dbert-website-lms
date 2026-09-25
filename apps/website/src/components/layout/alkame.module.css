@@ -1,0 +1,361 @@
+/* Alkame case study (/startups/portfolio/alkame).
+   Phase 5: replaces 66 inline style objects, plus the injected <style> block
+   that carried the responsive collapse — media queries belong in a stylesheet,
+   not in a runtime <style> tag. Each class declares exactly what the object it
+   replaced declared. Written against the v2 tokens, not the v1 alias layer. */
+
+/* Clears the sticky jump-nav bar. */
+.row {
+  border-top: 2px solid rgba(91, 140, 255, .28);
+  scroll-margin-top: 76px;
+}
+
+.rowBody {
+  padding: var(--space-11) 0;
+}
+
+/* Sticky left column paired with a taller right column. */
+.stickyGrid {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(0, 1.6fr);
+  gap: var(--space-6);
+  align-items: start;
+}
+
+.stickyCol {
+  position: sticky;
+  top: 76px;
+  border-right: 1px solid var(--line);
+  padding-right: var(--space-5);
+}
+
+@media (max-width: 860px) {
+  .stickyGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .stickyCol {
+    position: static;
+    border-right: none;
+    border-bottom: 1px solid var(--line);
+    padding-right: 0;
+    padding-bottom: var(--space-4);
+  }
+}
+
+.rowIndex {
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.rowTitle {
+  margin-top: 8px;
+  margin-bottom: var(--space-3);
+}
+
+.rowNote {
+  font-size: .85rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* ── Hero ─────────────────────────────────── */
+
+.hero {
+  padding: var(--space-12) 0 var(--space-6) 0;
+}
+
+.heroGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--space-6);
+  align-items: center;
+}
+
+.logoRow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: var(--space-3);
+}
+
+.logoFrame {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.logoImg {
+  object-fit: cover;
+}
+
+.heroTitle {
+  font-family: var(--font-d);
+  font-size: clamp(2.2rem, 5vw, 3.2rem);
+  margin-bottom: var(--space-3);
+}
+
+.heroLede {
+  font-size: 1.05rem;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: var(--space-4);
+}
+
+.btnRow {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.facts {
+  background-color: rgba(91, 140, 255, .08);
+  border: 1px solid var(--accent);
+}
+
+.factsLabel {
+  font-size: .75rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: var(--space-3);
+}
+
+.factsList {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.factValue {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.factNote {
+  font-size: .8rem;
+  color: var(--muted);
+}
+
+/* ── 01 Research question ─────────────────── */
+
+/* Companion to the global .stack (space-4) and forms' .stack2 (space-2). */
+.stack3 {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.statGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: var(--space-3);
+}
+
+.source {
+  font-size: .75rem;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.question {
+  font-size: .92rem;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.accentCard {
+  border-left: 3px solid var(--accent);
+}
+
+.disclaimer {
+  font-size: .85rem;
+  color: var(--muted);
+  line-height: 1.6;
+  font-style: italic;
+}
+
+/* ── 02 Positioning ───────────────────────── */
+
+.compactCard {
+  padding: var(--space-3);
+}
+
+.priorWork {
+  font-size: .85rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+
+.priorContribution {
+  font-size: .83rem;
+  color: var(--text);
+  line-height: 1.5;
+  margin-bottom: 6px;
+}
+
+.priorGap {
+  font-size: .83rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.strong {
+  font-weight: 600;
+}
+
+.strongText {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* ── 03 Architecture ──────────────────────── */
+
+.pillarGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-3);
+}
+
+.pillarTitle {
+  color: var(--accent);
+  margin-bottom: 8px;
+  font-size: .95rem;
+}
+
+.pillarBody {
+  font-size: .82rem;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+/* ── 04 Challenges ────────────────────────── */
+
+.problem {
+  font-size: .85rem;
+  color: var(--text);
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+.problemLabel {
+  color: var(--err);
+  font-weight: 700;
+}
+
+.approach {
+  font-size: .85rem;
+  color: var(--muted);
+  line-height: 1.5;
+  margin-bottom: 6px;
+}
+
+.approachLabel {
+  color: var(--ok);
+  font-weight: 700;
+}
+
+.cite {
+  font-size: .72rem;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.citeSpaced {
+  margin-top: 10px;
+}
+
+/* ── 05 Regulatory ────────────────────────── */
+
+.regBody {
+  font-size: .85rem;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.regBodySpaced {
+  margin-bottom: 10px;
+}
+
+/* ── 06 Timeline ──────────────────────────── */
+
+.timeline {
+  position: relative;
+  padding-left: 24px;
+}
+
+.timelineRail {
+  position: absolute;
+  left: 5px;
+  top: 6px;
+  bottom: 6px;
+  width: 2px;
+  background: var(--line);
+}
+
+.timelineItem {
+  position: relative;
+}
+
+.timelineDot {
+  position: absolute;
+  left: -24px;
+  top: 4px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.timelineMonth {
+  font-size: .75rem;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.timelineBody {
+  font-size: .85rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* ── Team + CTA ───────────────────────────── */
+
+.teamBand {
+  background-color: var(--raise);
+  border-top: 2px solid rgba(91, 140, 255, .28);
+  padding: var(--space-10) 0;
+  scroll-margin-top: 76px;
+}
+
+.teamHeader {
+  text-align: center;
+  margin-bottom: var(--space-4);
+}
+
+.teamTitle {
+  margin-top: 8px;
+}
+
+.teamLede {
+  color: var(--muted);
+  max-width: 620px;
+  margin: 8px auto 0 auto;
+}
+
+.ctaRow {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}

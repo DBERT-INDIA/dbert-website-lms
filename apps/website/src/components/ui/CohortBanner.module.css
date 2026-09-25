@@ -1,0 +1,14 @@
+/* Phase 5: replaces CohortBanner's inline style object. */
+
+.banner {
+  background-color: var(--accent);
+  color: #fff;
+  padding: 12px 20px;
+  text-align: center;
+  font-weight: 600;
+  font-size: .95rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}

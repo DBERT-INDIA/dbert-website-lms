@@ -1,0 +1,48 @@
+/* Phase 5: replaces AlkameJumpNav's inline style objects, including the
+   active-link state, which is now a conditional class rather than three
+   conditional style properties. */
+
+.bar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background-color: rgba(5, 8, 22, .92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 0;
+  overflow-x: auto;
+}
+
+.label {
+  font-size: .78rem;
+  color: var(--muted);
+  font-weight: 700;
+  flex-shrink: 0;
+  margin-right: 2px;
+}
+
+.link {
+  font-size: .85rem;
+  font-weight: 600;
+  padding: 9px 16px;
+  border-radius: var(--r-sm);
+  white-space: nowrap;
+  text-decoration: none;
+  flex-shrink: 0;
+  border: 1px solid var(--line);
+  background-color: transparent;
+  color: var(--muted);
+  transition: background-color .15s ease, color .15s ease, border-color .15s ease;
+}
+
+.linkActive {
+  border-color: var(--accent);
+  background-color: rgba(91, 140, 255, .18);
+  color: var(--accent);
+}

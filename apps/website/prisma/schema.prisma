@@ -1,0 +1,204 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Startup Registration Form ───────────────────────────
+model StartupRegistration {
+  id              String   @id @default(cuid())
+  startupName     String
+  founderName     String
+  email           String
+  phone           String
+  city            String
+  stage           String   // Idea | MVP | Early Revenue | Scaling
+  domain          String
+  teamSize        String
+  currentFunding  String?
+  servicesNeeded  String[] // Array of selected services
+  description     String?  @db.Text
+  challengeStmt   String?  @db.Text
+  consent         Boolean  @default(false)
+  status          String   @default("new") // new | reviewed | contacted | active | archived
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+// ─── General Contact Form ────────────────────────────────
+model ContactSubmission {
+  id          String   @id @default(cuid())
+  name        String
+  email       String
+  phone       String?
+  subject     String
+  message     String   @db.Text
+  sourcePage  String   // Which page the form was submitted from
+  status      String   @default("new") // new | read | replied | archived
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ─── Consultation Booking ────────────────────────────────
+model ConsultationBooking {
+  id            String   @id @default(cuid())
+  name          String
+  email         String
+  phone         String
+  companyName   String?
+  companySize   String?
+  serviceType   String   // Discovery | Architecture | Implementation | Optimization
+  description   String?  @db.Text
+  preferredDate String?
+  status        String   @default("new")
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+// ─── Course/Program Enrollment Inquiry ───────────────────
+model EnrollmentInquiry {
+  id                String   @id @default(cuid())
+  name              String
+  email             String
+  phone             String
+  programName       String   // Incubation | Industrial Training | Paid Internship
+  domain            String?  // AI Agent Dev | Full Stack | Python Automation | Data Analytics
+  message           String?  @db.Text
+  razorpayOrderId   String?  // Razorpay order ID (created before payment)
+  razorpayPaymentId String?  // Razorpay payment ID (from successful client callback)
+  razorpaySignature String?  // Razorpay signature (from successful client callback)
+  amount            Int?     // Amount in paise
+  status            String   @default("new") // new | payment_pending | paid | failed
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+}
+
+// ─── Newsletter Subscriber ─────────────────────────────
+model NewsletterSubscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  source    String?  // Which page they subscribed from
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+// ─── Certificate Verification ────────────────────────────
+model Certificate {
+  id           String   @id @default(cuid())
+  certificateId String  @unique // Human-readable ID like "DBERT-2026-001"
+  holderName   String
+  programName  String
+  domain       String?
+  issueDate    DateTime
+  validUntil   DateTime?
+  verified     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+}
+
+// ─── Collaboration Request (DBERT Labs) ──────────────────
+model CollaborationRequest {
+  id              String   @id @default(cuid())
+  name            String
+  email           String
+  organization    String
+  organizationType String  // Academic | Industry | Independent Researcher | Other
+  researchArea    String
+  proposal        String   @db.Text
+  status          String   @default("new")
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+// ─── Admin User (for admin panel) ────────────────────────
+model AdminUser {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  passwordHash String
+  lastLogin    DateTime?
+  createdAt    DateTime @default(now())
+}
+
+// ─── SaaS Product Demo Request ───────────────────────────
+model DemoRequest {
+  id          String   @id @default(cuid())
+  name        String
+  email       String
+  phone       String?
+  companyName String?
+  productName String
+  message     String?  @db.Text
+  status      String   @default("new")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ─── Case Study Contributor (e.g. Alkame research interns) ──
+// projectSlug defaults to "alkame" but is generic so other case
+// studies can reuse this same feature later without a new model.
+model ProjectContributor {
+  id            String    @id @default(cuid())
+  projectSlug   String    @default("alkame")
+  name          String
+  email         String    // admin-only — never rendered on the public page
+  profilePicUrl String
+  comment       String    @db.Text
+  linkedinUrl   String
+  githubUrl     String
+  domain        String    // AI Agent Development | Full Stack Development | Python Automation | Data Analytics | Data Engineering / Quant Research
+  status        String    @default("pending") // pending | approved | rejected
+  createdAt     DateTime  @default(now())
+  reviewedAt    DateTime?
+}
+
+// ─── Cohort Internship Application (Aivara & Future Cohorts) ──
+model CohortApplication {
+  id                String    @id @default(cuid())
+  cohortSlug        String    @default("aivara") // e.g. "aivara", "aivara-summer-2026"
+  
+  // Step 1: Personal & Academic Details
+  fullName          String
+  email             String
+  phone             String
+  city              String
+  state             String
+  college           String
+  degree            String
+  graduationYear    String
+  cgpaOrPercentage  String?
+  
+  // Step 2: Internship Domain, CV & Web Profiles
+  domain            String    // 1 of the 5 domains
+  cvUrl             String    // Link to Resume/CV (Mandatory)
+  linkedinUrl       String?   // Optional
+  githubUrl         String?   // Optional
+  portfolioUrl      String?   // Optional
+  
+  // Step 3: Background, Context & Consents
+  familyBackground  String    @db.Text
+  motivation        String?   @db.Text
+  availability      String?
+  termsConsent      Boolean   @default(false)
+  newsletterConsent Boolean   @default(false)
+  
+  // Admin Review & Decisions
+  // Status: "pending" | "approved" | "approved_certified" | "rejected"
+  status            String    @default("pending")
+  adminNotes        String?   @db.Text
+  reviewedAt        DateTime?
+  reviewedBy        String?
+  
+  // Email Dispatch Status
+  emailSent         Boolean   @default(false)
+  emailSentAt       DateTime?
+  emailTypeSent     String?   // "approved" | "approved_certified" | "rejected"
+  emailResponseLog  String?   @db.Text
+  
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  @@index([cohortSlug, status])
+  @@index([email])
+}

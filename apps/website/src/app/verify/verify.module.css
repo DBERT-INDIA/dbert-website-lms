@@ -1,0 +1,41 @@
+/* Styles specific to /verify. Phase 5: each class declares exactly what the
+   inline object it replaced declared. Written against the v2 tokens. */
+
+.shell {
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.form {
+  margin-bottom: var(--space-4);
+}
+
+.submit {
+  width: 100%;
+}
+
+.validCard {
+  border: 1px solid var(--ok);
+  padding: var(--space-4);
+}
+
+.validTitle {
+  font-family: var(--font-d);
+  color: var(--ok);
+  margin-bottom: var(--space-2);
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: .9rem;
+}
+
+.issuer {
+  font-size: .8rem;
+  color: var(--muted);
+  border-top: 1px solid var(--line);
+  padding-top: 8px;
+  margin-top: 4px;
+}

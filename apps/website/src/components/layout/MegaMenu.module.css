@@ -1,0 +1,326 @@
+/* ═══ NAV — design system v2 ═══
+   Ported from design/dbert-redesign-v2.html. The v1 rules that hid .navLinks
+   and .navActions below 900px with no replacement are gone; the drawer below
+   860px is now the mobile navigation. */
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(6, 9, 15, .72);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid var(--line);
+}
+
+.navContainer {
+  max-width: var(--max);
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  /* Anchor for the mega panels — see .navItemMega. */
+  position: relative;
+}
+
+.navLogo {
+  font-family: var(--font-d);
+  font-weight: 800;
+  font-size: 1.35rem;
+  letter-spacing: -.02em;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text);
+  flex-shrink: 0;
+}
+
+.logoMark {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--accent), #8FB2FF);
+  display: grid;
+  place-items: center;
+  color: #05070C;
+  font-size: .85rem;
+  font-family: var(--font-m);
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.navLinks {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.navTrigger,
+.navLink {
+  font-size: .9rem;
+  font-weight: 500;
+  color: var(--muted);
+  padding: 9px 14px;
+  border-radius: 8px;
+  transition: all .2s;
+  background: none;
+  border: none;
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.navTrigger:hover,
+.navLink:hover,
+.navTrigger[aria-expanded='true'] {
+  color: var(--text);
+  background: rgba(148, 163, 196, .07);
+}
+
+.caret {
+  width: 12px;
+  height: 12px;
+  transition: transform .2s var(--ease);
+}
+
+.navTrigger[aria-expanded='true'] .caret {
+  transform: rotate(180deg);
+}
+
+.navActions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* ── Dropdown + mega panels ──
+   Toggled by click (Phase 2.3), not hover — the v1 hover-only panels were
+   unreachable by keyboard and on touch devices. */
+.navItem {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* Mega items are position:static so their panel resolves against .navContainer
+   instead of the trigger. Centering a 760px panel on a trigger that sits near
+   the viewport edge pushed its first column off-screen. */
+.navItemMega {
+  position: static;
+}
+
+.panel {
+  position: absolute;
+  top: 100%;
+  margin-top: 10px;
+  background: rgba(11, 16, 26, .97);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-md);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, .6);
+  z-index: 101;
+}
+
+.panelMega {
+  left: 24px;
+  width: min(760px, calc(100% - 48px));
+  padding: 28px;
+}
+
+.panelDropdown {
+  left: 0;
+  min-width: 210px;
+  max-width: calc(100vw - 48px);
+  padding: 10px;
+}
+
+/* Right-align the trailing dropdown so it cannot spill past the viewport. */
+.panelAlignRight {
+  left: auto;
+  right: 0;
+}
+
+.megaGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 28px;
+}
+
+.megaColTitle {
+  font-family: var(--font-m);
+  font-size: .68rem;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+}
+
+.linkList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.linkList a {
+  font-size: .9rem;
+  color: var(--muted);
+  display: block;
+  padding: 7px 10px;
+  border-radius: 6px;
+  transition: all .2s;
+}
+
+.linkList a:hover {
+  color: var(--text);
+  background: rgba(148, 163, 196, .07);
+}
+
+.highlightLink {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* ── Hamburger ── */
+.hamb {
+  display: none;
+  background: none;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  color: var(--text);
+  flex-shrink: 0;
+}
+
+.hamb svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* ── Drawer ── */
+.drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  pointer-events: none;
+}
+
+.drawerScrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(3, 5, 10, .65);
+  opacity: 0;
+  transition: opacity .3s;
+  border: none;
+  width: 100%;
+  cursor: default;
+}
+
+.drawerPanel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: min(88vw, 360px);
+  background: var(--raise);
+  border-left: 1px solid var(--line);
+  transform: translateX(100%);
+  transition: transform .35s var(--ease);
+  display: flex;
+  flex-direction: column;
+  padding: 22px;
+  overflow-y: auto;
+}
+
+.drawerOpen {
+  pointer-events: auto;
+}
+
+.drawerOpen .drawerScrim {
+  opacity: 1;
+}
+
+.drawerOpen .drawerPanel {
+  transform: translateX(0);
+}
+
+.drawerHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.drawerClose {
+  background: none;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  color: var(--text);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.drawerGroup {
+  border-top: 1px solid var(--line);
+  padding: 14px 0;
+}
+
+.gLabel {
+  font-family: var(--font-m);
+  font-size: .68rem;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-bottom: 8px;
+}
+
+.drawerGroup a {
+  display: block;
+  padding: 10px 4px;
+  font-weight: 500;
+  color: var(--text);
+  font-size: 1rem;
+  border-radius: 8px;
+}
+
+.drawerGroup a:active {
+  background: rgba(148, 163, 196, .08);
+}
+
+.drawerCta {
+  margin-top: 18px;
+  width: 100%;
+}
+
+@media (max-width: 860px) {
+  .navLinks,
+  .navActions .ghostAction {
+    display: none;
+  }
+
+  .hamb {
+    display: grid;
+  }
+}
+
+/* The drawer is desktop-irrelevant: keep it out of the tab order above 860px
+   even if a stale open state survived a resize. */
+@media (min-width: 861px) {
+  .drawer {
+    display: none;
+  }
+}

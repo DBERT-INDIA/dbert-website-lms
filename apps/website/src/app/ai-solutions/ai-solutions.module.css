@@ -1,0 +1,143 @@
+/* Styles specific to the /ai-solutions group. Phase 5: each class declares
+   exactly what the inline object it replaced declared — nothing extra.
+   Written against the v2 tokens, not the v1 alias layer (5.7 deletes those). */
+
+/* ── Hub: capability cards ────────────────── */
+
+.capabilityGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-4);
+}
+
+.capabilityCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--space-4);
+}
+
+.capabilityTitle {
+  font-family: var(--font-d);
+  font-size: 1.3rem;
+  margin-bottom: 8px;
+}
+
+/* ── Product index ────────────────────────── */
+
+.productGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--space-4);
+}
+
+.productTitle {
+  font-family: var(--font-d);
+  font-size: 1.35rem;
+  margin-bottom: 8px;
+}
+
+.productDesc {
+  font-size: .85rem;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: var(--space-3);
+}
+
+/* ── LLM training hub ─────────────────────── */
+
+.trackTitle {
+  font-family: var(--font-d);
+  font-size: 1.4rem;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.trackDesc {
+  font-size: .9rem;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.trackBtn {
+  width: 100%;
+  text-align: center;
+}
+
+.registryLink {
+  margin-top: 16px;
+}
+
+/* ── Code sample blocks ───────────────────── */
+
+.codeWrap {
+  max-width: 800px;
+}
+
+.codeWrapNarrow {
+  max-width: 700px;
+}
+
+.codeCard {
+  background: var(--ink);
+  border: 1px solid var(--line);
+}
+
+.code {
+  color: var(--accent);
+  font-family: var(--font-m);
+  font-size: .95rem;
+  overflow-x: auto;
+  margin: 0;
+  padding: 12px;
+  line-height: 1.5;
+}
+
+/* The single-line `ollama run` command is set larger and has no line-height,
+   since it never wraps. */
+.codeLg {
+  color: var(--accent);
+  font-family: var(--font-m);
+  font-size: 1.1rem;
+  overflow-x: auto;
+  margin: 0;
+  padding: 12px;
+}
+
+/* ── Integrations chip row (product detail pages) ─────
+   Referenced via s.techBlock/techHeading/techRow/techChip on every product
+   page but never defined — className resolved to "undefined" at runtime.
+   Added here rather than rewriting 5 call sites. */
+
+.techBlock {
+  max-width: none;
+  width: 100%;
+  padding: 72px max(24px, calc((100% - var(--max)) / 2)) 80px;
+  border-bottom: 1px solid var(--line);
+  background: var(--raise);
+}
+
+.techHeading {
+  font-family: var(--font-d);
+  text-align: left;
+  font-size: clamp(1.4rem, 2.3vw, 1.8rem);
+  margin-bottom: var(--space-5);
+}
+
+.techRow {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+.techChip {
+  background: var(--card);
+  border: 1px solid var(--line);
+  color: var(--muted);
+  font-family: var(--font-m);
+  font-size: .8rem;
+  padding: 6px 14px;
+  border-radius: var(--r-sm);
+}

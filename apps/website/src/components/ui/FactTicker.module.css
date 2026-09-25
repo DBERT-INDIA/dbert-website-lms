@@ -1,0 +1,56 @@
+.ticker {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: var(--raise);
+  overflow: hidden;
+  padding: 13px 0;
+  position: relative;
+  z-index: 1;
+}
+
+.track {
+  display: flex;
+  gap: 0;
+  width: max-content;
+  animation: tick 38s linear infinite;
+}
+
+.ticker:hover .track {
+  animation-play-state: paused;
+}
+
+.item {
+  font-family: var(--font-m);
+  font-size: .74rem;
+  color: var(--muted);
+  padding: 0 26px;
+  display: inline-flex;
+  align-items: center;
+  gap: 26px;
+  white-space: nowrap;
+}
+
+.item::after {
+  content: '✦';
+  color: var(--signal);
+  font-size: .65rem;
+}
+
+@keyframes tick {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* globals.css disables the animation under reduced motion; without this the
+   track would sit at its default offset and clip the first item. */
+@media (prefers-reduced-motion: reduce) {
+  .ticker {
+    overflow-x: auto;
+  }
+
+  .track {
+    width: auto;
+    flex-wrap: wrap;
+  }
+}

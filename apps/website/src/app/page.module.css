@@ -1,0 +1,196 @@
+/* Homepage — design system v2. Section order and values from
+   design/dbert-redesign-v2.html. */
+
+/* ═══ HERO ═══ */
+.hero {
+  padding: 84px 0 64px;
+  position: relative;
+}
+
+.heroGrid {
+  display: grid;
+  grid-template-columns: 1.05fr .95fr;
+  gap: 56px;
+  align-items: center;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--font-m);
+  font-size: .74rem;
+  color: var(--muted);
+  border: 1px solid var(--line-strong);
+  border-radius: 99px;
+  padding: 7px 15px;
+  margin-bottom: 26px;
+}
+
+.pulse {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ok);
+  box-shadow: 0 0 0 0 rgba(52, 211, 153, .5);
+  animation: pulse 2.2s infinite;
+  flex-shrink: 0;
+}
+
+@keyframes pulse {
+  70% {
+    box-shadow: 0 0 0 8px rgba(52, 211, 153, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(52, 211, 153, 0);
+  }
+}
+
+.sub {
+  font-size: 1.12rem;
+  max-width: 520px;
+  margin: 22px 0 32px;
+}
+
+.ctas {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.statBarSection {
+  padding: 24px 0 36px;
+  position: relative;
+}
+
+.statBar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: var(--space-5) var(--space-6);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.statNum {
+  font-family: var(--font-d);
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.statLabel {
+  font-family: var(--font-m);
+  font-size: 0.76rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.footnote {
+  font-family: var(--font-m);
+  font-size: .72rem;
+  color: var(--faint);
+  margin-top: 14px;
+  text-align: right;
+}
+
+.footnote sup {
+  color: var(--signal);
+}
+
+/* ═══ LADDER NOTE ═══ */
+.ladderNote {
+  margin-top: 34px;
+  text-align: right;
+}
+
+/* ═══ CRAWLER PROSE (Phase 7.1 expands this) ═══ */
+.about {
+  max-width: 680px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.about h2 {
+  font-size: 1.5rem;
+  margin-bottom: 16px;
+}
+
+/* ═══ CTA ═══ */
+.cta {
+  text-align: center;
+  padding: 110px 24px;
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid var(--line);
+}
+
+.cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 80% at 50% 100%, rgba(91, 140, 255, .13), transparent 70%);
+}
+
+.cta h2 {
+  max-width: 640px;
+  margin: 0 auto 18px;
+  position: relative;
+}
+
+.cta p {
+  max-width: 460px;
+  margin: 0 auto 34px;
+  position: relative;
+}
+
+.cta a {
+  position: relative;
+}
+
+.fine {
+  font-family: var(--font-m);
+  font-size: .7rem;
+  color: var(--faint);
+  margin-top: 22px;
+  position: relative;
+}
+
+@media (max-width: 1020px) {
+  .heroGrid {
+    grid-template-columns: 1fr;
+    gap: 52px;
+  }
+  .statBar {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+  }
+}
+
+@media (max-width: 620px) {
+  .hero {
+    padding: 52px 0 48px;
+  }
+  .statBar {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+    padding: var(--space-4);
+  }
+}
+
+/* Phase 5: replaces the last four inline style objects on the homepage. */
+.doorsSection { padding: 64px 0 80px; }
+.labelOk { color: var(--ok); }
+.labelSignal { color: var(--signal); }
+.flushTop { padding-top: 0; }

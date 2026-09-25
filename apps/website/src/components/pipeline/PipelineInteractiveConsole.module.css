@@ -1,0 +1,305 @@
+/* PipelineInteractiveConsole.module.css */
+
+.wrapper {
+  margin: var(--space-6) 0;
+  width: 100%;
+}
+
+.railHeader {
+  margin-bottom: var(--space-4);
+}
+
+.rail {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  width: 100%;
+}
+
+.tabBtn {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: 14px 12px;
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: relative;
+  transition: all 0.25s var(--ease);
+  color: var(--text);
+}
+
+.tabBtn:hover {
+  background: var(--card-hi);
+  border-color: var(--line-strong);
+  transform: translateY(-2px);
+}
+
+.tabBtnActive {
+  background: var(--raise);
+  border-color: var(--accent);
+  box-shadow: 0 0 20px rgba(91, 140, 255, 0.2);
+}
+
+.tabNodeWrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tabNum {
+  font-family: var(--font-m);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--signal);
+}
+
+.tabIcon {
+  color: var(--accent);
+}
+
+.tabTextCol {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tabShortName {
+  font-family: var(--font-d);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  line-height: 1.25;
+}
+
+.tabDuration {
+  font-family: var(--font-m);
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+.activePill {
+  position: absolute;
+  bottom: -1px;
+  left: 15%;
+  right: 15%;
+  height: 2px;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+}
+
+/* ── Active Stage Main Display Panel ── */
+.stagePanel {
+  background: var(--card);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-lg);
+  padding: var(--space-6);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.5);
+}
+
+.panelTop {
+  border-bottom: 1px solid var(--line);
+  padding-bottom: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+.iconBox {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--r-md);
+  background: var(--raise);
+  border: 1px solid var(--line-strong);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.stageHeading {
+  font-family: var(--font-d);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin: 6px 0 4px 0;
+}
+
+.stageTagline {
+  font-size: 0.95rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* ── Content Grid (Left specs, right code) ── */
+.contentGrid {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: var(--space-6);
+}
+
+.leftCol {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.stageDescription {
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: #D1D9E6;
+}
+
+.specsCard {
+  background: var(--raise);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  padding: 16px;
+}
+
+.specsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.specItem {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.specLabel {
+  font-family: var(--font-m);
+  font-size: 0.72rem;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.specValue {
+  font-family: var(--font-m);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ok);
+}
+
+.actionNotesBlock {
+  border-top: 1px solid var(--line);
+  padding-top: var(--space-3);
+}
+
+.actionList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ── Right Column: Code Transformations ── */
+.rightCol {
+  background: var(--raise);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.codeHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 10px;
+  margin-bottom: 12px;
+}
+
+.comparisonBox {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: var(--space-4);
+}
+
+.snippetBlock {
+  background: rgba(224, 122, 95, 0.04);
+  border: 1px solid rgba(224, 122, 95, 0.25);
+  border-radius: var(--r-sm);
+  padding: 10px 12px;
+}
+
+.snippetLabelRedline {
+  font-family: var(--font-m);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--err);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.codeSnippet {
+  font-family: var(--font-m);
+  font-size: 0.78rem;
+  color: #D1D9E6;
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-all;
+  line-height: 1.5;
+}
+
+.snippetBlockAfter {
+  background: rgba(52, 211, 153, 0.04);
+  border: 1px solid rgba(52, 211, 153, 0.25);
+  border-radius: var(--r-sm);
+  padding: 10px 12px;
+}
+
+.snippetLabelPassed {
+  font-family: var(--font-m);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--ok);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.codeSnippetClean {
+  font-family: var(--font-m);
+  font-size: 0.78rem;
+  color: #FFFFFF;
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-all;
+  line-height: 1.5;
+}
+
+.stageBottomNav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* ── Responsive Behavior ── */
+@media (max-width: 1024px) {
+  .rail {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .contentGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .rail {
+    grid-template-columns: 1fr;
+  }
+  .specsGrid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,196 @@
+.wrap {
+  position: relative;
+}
+
+.note {
+  position: absolute;
+  top: -44px;
+  right: 8px;
+  z-index: 2;
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.console {
+  background: linear-gradient(180deg, var(--card), #0B101C);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-lg);
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, .55),
+    0 0 0 1px rgba(91, 140, 255, .06),
+    0 0 90px rgba(91, 140, 255, .07);
+  overflow: hidden;
+  position: relative;
+  /* Imperceptibly off-square, like a pinned print. */
+  transform: rotate(.4deg);
+}
+
+.console::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(115deg, transparent 40%, rgba(91, 140, 255, .05) 50%, transparent 60%);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 18px;
+  border-bottom: 1px solid var(--line);
+  background: rgba(148, 163, 196, .04);
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+/* Traffic-light dots, from the v2 reference's console chrome. Deliberately
+   literal hex, not tokens — these are macOS window-control colours, not
+   part of the DBERT palette. */
+.dotRed { background: #FF5F57; }
+.dotAmber { background: #FEBC2E; }
+.dotGreen { background: #28C840; }
+
+.barTitle {
+  font-family: var(--font-m);
+  font-size: .72rem;
+  color: var(--faint);
+  margin-left: 10px;
+}
+
+.body {
+  padding: 20px 20px 8px;
+  font-family: var(--font-m);
+  font-size: .8rem;
+  line-height: 2.05;
+  min-height: 262px;
+}
+
+/* Lines fade in on a stagger driven purely by animation-delay, so the console
+   needs no client-side JS and renders identically from the server. */
+.line {
+  display: flex;
+  gap: 12px;
+  opacity: 0;
+  transform: translateY(6px);
+  animation: clShow .5s var(--ease) forwards;
+  animation-delay: calc(500ms + var(--i) * 620ms);
+}
+
+@keyframes clShow {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.st {
+  flex-shrink: 0;
+  width: 78px;
+  color: var(--faint);
+  font-size: .7rem;
+  padding-top: 2px;
+}
+
+.tag {
+  border-radius: 5px;
+  padding: 1px 8px;
+  font-size: .68rem;
+  flex-shrink: 0;
+  height: fit-content;
+  margin-top: 4px;
+}
+
+.tagBuild {
+  background: rgba(91, 140, 255, .14);
+  color: var(--accent);
+}
+
+.tagShip {
+  background: rgba(52, 211, 153, .13);
+  color: var(--ok);
+}
+
+.tagCohort {
+  background: rgba(255, 180, 84, .13);
+  color: var(--signal);
+}
+
+.msg {
+  color: #C6D0E2;
+}
+
+.msg em {
+  color: var(--faint);
+  font-style: normal;
+}
+
+.cursorRow {
+  opacity: 0;
+  animation: clShow .5s var(--ease) forwards;
+  animation-delay: calc(500ms + var(--i) * 620ms);
+}
+
+.prompt {
+  color: var(--accent);
+}
+
+.listening {
+  color: var(--faint);
+}
+
+.caret {
+  display: inline-block;
+  width: 8px;
+  height: 15px;
+  background: var(--accent);
+  vertical-align: middle;
+  animation: blink 1s steps(1) infinite;
+  margin-left: 2px;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+.foot {
+  border-top: 1px solid var(--line);
+  padding: 13px 20px;
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-m);
+  font-size: .7rem;
+  color: var(--faint);
+}
+
+.live {
+  color: var(--ok);
+}
+
+/* globals.css kills animations under reduced motion, which would leave every
+   line at opacity 0 — show them all immediately instead. */
+@media (prefers-reduced-motion: reduce) {
+  .line,
+  .cursorRow {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 620px) {
+  .console {
+    transform: none;
+  }
+
+  .note {
+    top: -40px;
+    right: 0;
+  }
+}

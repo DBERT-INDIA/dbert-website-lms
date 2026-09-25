@@ -1,0 +1,45 @@
+.errorAlert {
+  background-color: rgba(239, 68, 68, 0.1);
+  border: 1px solid var(--err);
+  color: var(--err);
+  padding: var(--space-2);
+  border-radius: var(--r-sm);
+  font-size: 0.85rem;
+  margin-bottom: var(--space-3);
+  text-align: center;
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: var(--space-3);
+}
+
+.fieldGroup label {
+  font-family: var(--font-b);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.fieldGroup input, .fieldGroup select, .fieldGroup textarea {
+  width: 100%;
+  background-color: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  color: var(--text);
+  padding: 10px 14px;
+  font-family: var(--font-b);
+  font-size: 0.9rem;
+}
+
+.fieldGroup input:focus, .fieldGroup select:focus, .fieldGroup textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.fieldGroup textarea {
+  resize: vertical;
+  min-height: 120px;
+}

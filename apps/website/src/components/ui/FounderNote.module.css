@@ -1,0 +1,83 @@
+.card {
+  max-width: 720px;
+  margin: 0 auto;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  padding: 52px 56px;
+  position: relative;
+  transform: rotate(-.35deg);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, .45);
+}
+
+/* Tape across the top edge. */
+.card::before {
+  content: '';
+  position: absolute;
+  top: -13px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-1.5deg);
+  width: 112px;
+  height: 26px;
+  background: rgba(255, 180, 84, .14);
+  border-left: 1px dashed rgba(255, 180, 84, .3);
+  border-right: 1px dashed rgba(255, 180, 84, .3);
+}
+
+.card :global(.doclabel) {
+  justify-content: center;
+}
+
+.card h2 {
+  font-size: 1.6rem;
+  text-align: center;
+  margin-bottom: 26px;
+}
+
+.body p {
+  font-size: 1rem;
+  line-height: 1.85;
+  margin-bottom: 18px;
+  color: #B9C3D6;
+}
+
+.body p:last-of-type {
+  margin-bottom: 28px;
+}
+
+.body em {
+  color: var(--text);
+  font-style: italic;
+}
+
+.sign {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 14px;
+  border-top: 1px solid var(--line);
+  padding-top: 24px;
+}
+
+.sig {
+  font-family: var(--font-h);
+  font-size: 2.1rem;
+  color: var(--text);
+  transform: rotate(-3deg);
+  line-height: 1;
+}
+
+.attribution {
+  font-family: var(--font-m);
+  font-size: .7rem;
+  color: var(--faint);
+  text-align: right;
+  line-height: 1.7;
+}
+
+@media (max-width: 860px) {
+  .card {
+    padding: 38px 28px;
+  }
+}

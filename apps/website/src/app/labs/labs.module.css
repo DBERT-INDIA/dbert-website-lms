@@ -1,0 +1,67 @@
+/* Styles specific to the /labs group. Phase 5: each class declares exactly what
+   the inline object it replaced declared. Written against the v2 tokens. */
+
+.hubLede {
+  max-width: 700px;
+}
+
+.hubGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+.ctaCard {
+  text-align: center;
+  padding: var(--space-6);
+}
+
+/* The inline object set marginBottom and then a margin shorthand, so the
+   shorthand won; this is what actually rendered. */
+.ctaCopy {
+  color: var(--muted);
+  max-width: 580px;
+  margin: 0 auto var(--space-4) auto;
+}
+
+.bulletList {
+  font-size: .9rem;
+  color: var(--muted);
+  padding-left: var(--space-4);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.briefTag {
+  font-size: .75rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: .5px;
+}
+
+.briefTitle {
+  font-family: var(--font-d);
+  font-size: 1.4rem;
+  margin: 6px 0;
+}
+
+.briefAbstract {
+  font-size: .92rem;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 12px;
+}
+
+.successPanel {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+  padding: var(--space-6);
+}
+
+.submitBtn {
+  width: 100%;
+  margin-top: var(--space-3);
+}

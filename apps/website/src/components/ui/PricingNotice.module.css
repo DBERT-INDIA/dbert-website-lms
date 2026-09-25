@@ -1,0 +1,41 @@
+/* Phase 5: replaces PricingNotice's inline style objects. */
+
+.panel {
+  margin-bottom: var(--space-6);
+  border: 1px solid var(--accent);
+  background-color: rgba(91, 140, 255, .05);
+  text-align: center;
+}
+
+.title {
+  font-family: var(--font-d);
+  margin-bottom: 8px;
+  color: var(--accent);
+}
+
+/* The inline object set marginBottom and then a margin shorthand, so the
+   shorthand won; this is what actually rendered. */
+.copy {
+  color: var(--text);
+  max-width: 600px;
+  margin: 0 auto var(--space-4) auto;
+  line-height: 1.6;
+}
+
+.founderNote {
+  padding: var(--space-3);
+  background-color: var(--ink);
+  border-radius: 4px;
+  border: 1px solid var(--line);
+  display: inline-block;
+}
+
+.founderCopy {
+  font-size: .9rem;
+  color: var(--muted);
+}
+
+.founderLink {
+  color: var(--accent);
+  font-weight: 600;
+}

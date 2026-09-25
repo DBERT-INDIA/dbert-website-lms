@@ -1,0 +1,128 @@
+{
+  "logo": {
+    "text": "DBERT",
+    "tagline": "Education · Research · Technology",
+    "href": "/"
+  },
+  "items": [
+    {
+      "label": "For Startups",
+      "type": "mega",
+      "columns": [
+        {
+          "title": "Services",
+          "links": [
+            { "label": "Technical Assistance", "href": "/startups/services/technical" },
+            { "label": "Hiring Assistance", "href": "/startups/services/hiring" },
+            { "label": "Legal & Compliance", "href": "/startups/services/legal" },
+            { "label": "AI/ML Infrastructure Setup", "href": "/startups/services/infrastructure" },
+            { "label": "Product Architecture Consulting", "href": "/startups/services/technical" }
+          ]
+        },
+        {
+          "title": "Funding & Equity",
+          "links": [
+            { "label": "Seed Funding", "href": "/startups/services/funding" },
+            { "label": "Core Incubation Services", "href": "/startups/services/equity" },
+            { "label": "Investor Network", "href": "/startups/investor-network" },
+            { "label": "Term Sheet Templates", "href": "/startups/services/equity/term-sheets" }
+          ]
+        },
+        {
+          "title": "Resources",
+          "links": [
+            { "label": "Register Your Startup", "href": "/startups/register", "highlight": true },
+            { "label": "Startup Portfolio", "href": "/startups/portfolio" }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Products",
+      "type": "dropdown",
+      "links": [
+        { "label": "DBERT Chat", "href": "/ai-solutions/products/dbert-chat" },
+        { "label": "Document AI", "href": "/ai-solutions/products/document-ai" },
+        { "label": "Certificate Verification API", "href": "/ai-solutions/products/certificate-verification-api" },
+        { "label": "Hiring Automation Suite", "href": "/ai-solutions/products/hiring-automation-suite" },
+        { "label": "Intern Management System", "href": "/ai-solutions/products/intern-management-system" }
+      ]
+    },
+    {
+      "label": "Enterprise AI Consulting",
+      "type": "mega",
+      "columns": [
+        {
+          "title": "Consulting",
+          "links": [
+            { "label": "AI Strategy Consulting", "href": "/ai-solutions/consultation" },
+            { "label": "AI Readiness Assessment", "href": "/ai-solutions/consultation" },
+            { "label": "MLOps & Deployment", "href": "/ai-solutions/consultation" }
+          ]
+        },
+        {
+          "title": "Custom LLM",
+          "links": [
+            { "label": "Fine-Tuning Pipeline", "href": "/ai-solutions/llm-training/pipeline" },
+            { "label": "DBERT_AI Model", "href": "/ai-solutions/llm-training/dbert-ai" },
+            { "label": "Private Model Hosting", "href": "/ai-solutions/llm-training/private-hosting" }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "For Learners",
+      "type": "mega",
+      "columns": [
+        {
+          "title": "Programs",
+          "links": [
+            { "label": "DBERT Launchpad", "href": "/learners/launchpad" },
+            { "label": "DBERT Accelerate", "href": "/learners/accelerate" },
+            { "label": "DBERT Fellowship (Paid)", "href": "/learners/fellowship" }
+          ]
+        },
+        {
+          "title": "Skills",
+          "links": [
+            { "label": "AI Agent Development", "href": "/learners/courses/ai-agent-development" },
+            { "label": "Generative AI", "href": "/learners/courses/generative-ai" },
+            { "label": "Machine Learning", "href": "/learners/courses/machine-learning" },
+            { "label": "Python Automation", "href": "/learners/courses/python-automation" },
+            { "label": "Full Stack Development", "href": "/learners/courses/full-stack-development" },
+            { "label": "Data Analytics", "href": "/learners/courses/data-analytics" },
+            { "label": "Interview Preparation", "href": "/learners/interview-prep" }
+          ]
+        },
+        {
+          "title": "Career",
+          "links": [
+            { "label": "Job Board", "href": "https://internship.dbert.online/jobs", "external": true },
+            { "label": "Apply for Fellowship", "href": "https://internship.dbert.online/apply", "external": true, "highlight": true }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "DBERT Labs",
+      "type": "link",
+      "href": "/labs"
+    },
+    {
+      "label": "About",
+      "type": "dropdown",
+      "links": [
+        { "label": "Our Story", "href": "/about" },
+        { "label": "Team", "href": "/about/team" },
+        { "label": "Credentials", "href": "/about/credentials" },
+        { "label": "Careers", "href": "/about/careers" },
+        { "label": "Contact", "href": "/about/contact" }
+      ]
+    }
+  ],
+  "cta": {
+    "label": "Apply for Fellowship",
+    "href": "https://internship.dbert.online/",
+    "external": true
+  }
+}

@@ -1,0 +1,67 @@
+.faqList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 800px;
+  margin: 0;
+}
+
+.faqItem {
+  background-color: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  transition: border-color 0.2s;
+  cursor: pointer;
+}
+
+.faqItem:hover {
+  border-color: rgba(79, 124, 255, 0.2);
+}
+
+.open {
+  border-color: rgba(79, 124, 255, 0.3) !important;
+}
+
+.faqQuestion {
+  width: 100%;
+  border: none;
+  background: none;
+  color: var(--text);
+  padding: var(--space-3) var(--space-4);
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-b);
+  font-weight: 600;
+  font-size: 0.98rem;
+  cursor: pointer;
+}
+
+.faqArrow {
+  color: var(--accent);
+  font-size: 0.8rem;
+  transition: transform 0.2s;
+}
+
+.faqAnswer {
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+  padding: 0 var(--space-4);
+  /* Phase 5: was a conditional inline style. 300px is the animatable cap the
+     inline version used — tall enough for every answer currently written. */
+  max-height: 0;
+  padding-bottom: 0;
+}
+
+.faqAnswerOpen {
+  max-height: 640px;
+  padding-bottom: var(--space-3);
+}
+
+.faqAnswer p {
+  font-size: 0.9rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
