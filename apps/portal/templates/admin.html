@@ -1074,19 +1074,25 @@
     document.getElementById('insApproved').textContent = ins.articles['APPROVED'] || 0;
     document.getElementById('insPublished').textContent = ins.articles['PUBLISHED'] || 0;
     
-    document.getElementById('insClicksList').innerHTML = (ins.clicks||[]).map(c => 
-      <div style="display:flex; justify-content:space-between;">
-        <span style="color:var(--tx-body);font-size:13px;"> + escHtml(c.brand) + </span>
-        <strong style="color:#fff;"> + c.clicks + </strong>
-      </div>
-    ).join('') || '<div style="color:var(--tx-muted);font-size:12px;">No clicks yet.</div>';
+    const clicksEl = document.getElementById('insClicksList');
+    if (clicksEl) {
+      clicksEl.innerHTML = (ins.clicks||[]).map(c => 
+        `<div style="display:flex; justify-content:space-between;">
+          <span style="color:var(--tx-body);font-size:13px;">${escHtml(c.brand)}</span>
+          <strong style="color:#fff;">${c.clicks}</strong>
+        </div>`
+      ).join('') || '<div style="color:var(--tx-muted);font-size:12px;">No clicks yet.</div>';
+    }
     
-    document.getElementById('insWritersList').innerHTML = (ins.top_interns||[]).map(w => 
-      <div style="display:flex; justify-content:space-between;">
-        <span style="color:var(--tx-body);font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:140px;" title="+escHtml(w.name)+"> + escHtml(w.name) + </span>
-        <strong style="color:var(--gold);"> + w.count +  ??</strong>
-      </div>
-    ).join('') || '<div style="color:var(--tx-muted);font-size:12px;">No published writers yet.</div>';
+    const writersEl = document.getElementById('insWritersList');
+    if (writersEl) {
+      writersEl.innerHTML = (ins.top_interns||[]).map(w => 
+        `<div style="display:flex; justify-content:space-between;">
+          <span style="color:var(--tx-body);font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:140px;" title="${escHtml(w.name)}">${escHtml(w.name)}</span>
+          <strong style="color:var(--gold);">${w.count}</strong>
+        </div>`
+      ).join('') || '<div style="color:var(--tx-muted);font-size:12px;">No published writers yet.</div>';
+    }
   }
 
   let _allArticles = [];
@@ -1097,17 +1103,19 @@
     if(!data || data.status!=='success') return;
     _allArticles = data.articles || [];
     const b = document.getElementById('articlesBody');
-    b.innerHTML = _allArticles.map(a => <tr>
-      <td> + a.id + </td>
-      <td> + escHtml(a.intern_name) + <br><small style="color:var(--tx-muted);">+escHtml(a.intern_email)+</small></td>
-      <td><span class="badge badge-blue"> + escHtml(a.domain) + </span></td>
-      <td><strong> + escHtml(a.title) + </strong></td>
-      <td><span class="badge"> + a.status + </span></td>
-      <td style="font-size:12px;color:var(--tx-muted);"> + (a.updated_at||'').split(' ')[0] + </td>
-      <td>
-        <button class="btn-sm ghost" onclick="openArticleReview( + a.id + )" title="Review"><i class="fas fa-edit"></i></button>
-      </td>
-    </tr>).join('') || '<tr><td colspan="7">No articles in queue.</td></tr>';
+    if (b) {
+      b.innerHTML = _allArticles.map(a => `<tr>
+        <td>${a.id}</td>
+        <td>${escHtml(a.intern_name)}<br><small style="color:var(--tx-muted);">${escHtml(a.intern_email)}</small></td>
+        <td><span class="badge badge-blue">${escHtml(a.domain)}</span></td>
+        <td><strong>${escHtml(a.title)}</strong></td>
+        <td><span class="badge">${escHtml(a.status)}</span></td>
+        <td style="font-size:12px;color:var(--tx-muted);">${escHtml((a.updated_at||'').split(' ')[0])}</td>
+        <td>
+          <button class="btn-sm ghost" onclick="openArticleReview(${a.id})" title="Review"><i class="fas fa-edit"></i></button>
+        </td>
+      </tr>`).join('') || '<tr><td colspan="7">No articles in queue.</td></tr>';
+    }
   }
 
   function openArticleReview(id) {
@@ -1150,16 +1158,18 @@
     const data = await apiFetch('/admin/spotlights');
     if(!data || data.status!=='success') return;
     const b = document.getElementById('spotlightsBody');
-    b.innerHTML = (data.spotlights||[]).map(s => <tr>
-      <td> + s.id + </td>
-      <td><span class="badge badge-blue"> + escHtml(s.target_brand||'') + </span></td>
-      <td> + escHtml(s.title) + </td>
-      <td><a href=" + escHtml(s.url) + " target="_blank" style="color:var(--gold);"> + escHtml(s.url) + </a></td>
-      <td> + (s.is_active ? '<span class="badge badge-green">Active</span>' : '<span class="badge badge-muted">Inactive</span>') + </td>
-      <td>
-        <button class="btn-sm ghost" onclick="deleteSpotlight( + s.id + )" title="Delete"><i class="fas fa-trash"></i></button>
-      </td>
-    </tr>).join('') || '<tr><td colspan="6">No spotlights found.</td></tr>';
+    if (b) {
+      b.innerHTML = (data.spotlights||[]).map(s => `<tr>
+        <td>${s.id}</td>
+        <td><span class="badge badge-blue">${escHtml(s.target_brand||'')}</span></td>
+        <td>${escHtml(s.title)}</td>
+        <td><a href="${escHtml(s.url)}" target="_blank" style="color:var(--gold);">${escHtml(s.url)}</a></td>
+        <td>${s.is_active ? '<span class="badge badge-green">Active</span>' : '<span class="badge badge-muted">Inactive</span>'}</td>
+        <td>
+          <button class="btn-sm ghost" onclick="deleteSpotlight(${s.id})" title="Delete"><i class="fas fa-trash"></i></button>
+        </td>
+      </tr>`).join('') || '<tr><td colspan="6">No spotlights found.</td></tr>';
+    }
   }
 
   async function deleteSpotlight(id) {

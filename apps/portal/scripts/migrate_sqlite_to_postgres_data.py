@@ -54,6 +54,38 @@ def migrate_data(sqlite_path: str, pg_url: str, schema: str = "dbert_internship"
         pg_cur.execute(f"SET search_path TO {schema}, public;")
     pg_conn.commit()
 
+    # Check if target schema has tables; if not, apply baseline POSTGRES_SCHEMA.sql
+    pg_cur.execute(
+        "SELECT COUNT(*) FROM information_schema.tables WHERE LOWER(table_schema) = LOWER(%s)",
+        (schema,)
+    )
+    existing_pg_tables = pg_cur.fetchone()[0]
+    if existing_pg_tables < 10:
+        print(f"[*] Schema '{schema}' has only {existing_pg_tables} tables. Applying baseline POSTGRES_SCHEMA.sql...")
+        schema_file = None
+        for cand in [
+            os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "docs", "POSTGRES_SCHEMA.sql"),
+            os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "docs", "POSTGRES_SCHEMA.sql"),
+            "docs/POSTGRES_SCHEMA.sql",
+            "apps/portal/docs/POSTGRES_SCHEMA.sql"
+        ]:
+            if os.path.exists(cand):
+                schema_file = cand
+                break
+        if schema_file:
+            print(f"[*] Applying schema from: {schema_file}")
+            with open(schema_file, "r", encoding="utf-8") as sf:
+                sql_content = sf.read()
+            try:
+                pg_cur.execute(f"SET search_path TO {schema}, public;")
+                pg_cur.execute(sql_content)
+                pg_conn.commit()
+                print("[+] Baseline PostgreSQL schema applied successfully.")
+            except Exception as e:
+                print(f"[!] Schema initialization notice: {e}")
+                pg_conn.rollback()
+                pg_cur.execute(f"SET search_path TO {schema}, public;")
+
     # Get list of tables from SQLite, topologically ordered (parent tables first)
     s_cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'")
     all_sqlite_tables = set(r[0] for r in s_cur.fetchall())
@@ -125,7 +157,12 @@ def migrate_data(sqlite_path: str, pg_url: str, schema: str = "dbert_internship"
             batch_values.append(val_tuple)
 
         # Truncate table in Postgres before loading clean data
-        pg_cur.execute(f'TRUNCATE TABLE "{schema}"."{table}" CASCADE;')
+        try:
+            pg_cur.execute(f'TRUNCATE TABLE "{schema}"."{table}" CASCADE;')
+            pg_conn.commit()
+        except Exception:
+            pg_conn.rollback()
+            pg_cur.execute(f"SET search_path TO {schema}, public;")
         
         # Execute batch insert using standard executemany, fallback to single-row if orphan FK exists
         try:
@@ -146,21 +183,29 @@ def migrate_data(sqlite_path: str, pg_url: str, schema: str = "dbert_internship"
 
         # Update program column default if present in pg_cols but missing in source data
         if "program" in pg_cols:
-            pg_cur.execute(f'UPDATE "{schema}"."{table}" SET program = \'fellowship\' WHERE program IS NULL OR program = \'\';')
-            pg_conn.commit()
+            try:
+                pg_cur.execute(f'UPDATE "{schema}"."{table}" SET program = \'fellowship\' WHERE program IS NULL OR program = \'\';')
+                pg_conn.commit()
+            except Exception:
+                pg_conn.rollback()
+                pg_cur.execute(f"SET search_path TO {schema}, public;")
 
         # Reset serial sequence for auto-increment ID columns
         if "id" in pg_cols:
-            pg_cur.execute(
-                f"""
-                SELECT setval(
-                    pg_get_serial_sequence('{schema}.{table}', 'id'),
-                    COALESCE((SELECT MAX(id) FROM "{schema}"."{table}"), 1),
-                    true
-                );
-                """
-            )
-            pg_conn.commit()
+            try:
+                pg_cur.execute(
+                    f"""
+                    SELECT setval(
+                        pg_get_serial_sequence('{schema}.{table}', 'id'),
+                        COALESCE((SELECT MAX(id) FROM "{schema}"."{table}"), 1),
+                        true
+                    );
+                    """
+                )
+                pg_conn.commit()
+            except Exception:
+                pg_conn.rollback()
+                pg_cur.execute(f"SET search_path TO {schema}, public;")
 
         row_cnt = len(rows)
         total_rows_migrated += row_cnt
@@ -183,11 +228,43 @@ def migrate_data(sqlite_path: str, pg_url: str, schema: str = "dbert_internship"
 
 
 if __name__ == "__main__":
+    # Auto-load .env
+    try:
+        from dotenv import load_dotenv
+        for env_path in [".env", "_env", "apps/portal/.env", "apps/portal/_env", "../.env", "../_env"]:
+            if os.path.exists(env_path):
+                load_dotenv(env_path)
+    except Exception:
+        pass
+
+    default_pg_url = os.environ.get("DATABASE_URL", "")
+    default_schema = os.environ.get("POSTGRES_SCHEMA", "dbert_internship")
+
+    # Find SQLite DB
+    sqlite_candidates = [
+        "apps/portal/internship.db",
+        "internship.db",
+        "../apps/portal/internship.db",
+        "../internship.db",
+        os.path.join(os.path.dirname(__file__), "..", "internship.db")
+    ]
+    default_sqlite = None
+    for cand in sqlite_candidates:
+        if os.path.exists(cand) and os.path.getsize(cand) > 10000:
+            default_sqlite = cand
+            break
+    if not default_sqlite:
+        default_sqlite = "internship.db"
+
     parser = argparse.ArgumentParser(description="Migrate SQLite database to PostgreSQL")
-    parser.add_argument("--sqlite", default="internship.db", help="Path to SQLite database")
-    parser.add_argument("--pg-url", required=True, help="PostgreSQL connection URL (e.g. postgresql://user:pass@localhost:5432/dbert_db)")
-    parser.add_argument("--schema", default="dbert_internship", help="Target PostgreSQL schema name")
+    parser.add_argument("--sqlite", default=default_sqlite, help=f"Path to SQLite database (default: {default_sqlite})")
+    parser.add_argument("--pg-url", default=default_pg_url, help="PostgreSQL connection URL (defaults to DATABASE_URL from .env)")
+    parser.add_argument("--schema", default=default_schema, help=f"Target PostgreSQL schema name (default: {default_schema})")
     args = parser.parse_args()
+
+    if not args.pg_url:
+        print("[-] ERROR: PostgreSQL URL is required. Provide --pg-url or set DATABASE_URL in .env")
+        sys.exit(1)
 
     success = migrate_data(args.sqlite, args.pg_url, args.schema)
     sys.exit(0 if success else 1)

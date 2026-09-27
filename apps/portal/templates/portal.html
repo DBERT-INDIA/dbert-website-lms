@@ -1194,23 +1194,20 @@
       if(data.status === 'success') {
         _myArticles = data.articles || [];
         const b = document.getElementById('pubListBody');
-        b.innerHTML = _myArticles.map(a => <tr>
-          <td style="padding:16px;">
-            <div style="font-weight:600;color:#fff;">+escHtml(a.title)+</div>
-            
-          </td>
-          <td style="padding:16px;">
-             
-             
-             
-             
-             
-          </td>
-          <td style="padding:16px;color:var(--tx-muted);font-size:13px;">+(a.updated_at||'').split(' ')[0]+</td>
-          <td style="padding:16px;text-align:right;">
-             <button class="btn-sm ghost" onclick="openArticleEditor(+a.id+)"></button>
-          </td>
-        </tr>).join('') || <tr><td colspan="4" style="padding:30px;text-align:center;color:var(--tx-muted);">You haven't written any articles yet.</td></tr>;
+        if(b) {
+          b.innerHTML = _myArticles.map(a => `<tr>
+            <td style="padding:16px;">
+              <div style="font-weight:600;color:#fff;">${escHtml(a.title)}</div>
+            </td>
+            <td style="padding:16px;">
+              <span class="badge ${a.status==='PUBLISHED'?'badge-green':(a.status==='APPROVED'?'badge-blue':'badge-amber')}">${escHtml(a.status||'DRAFT')}</span>
+            </td>
+            <td style="padding:16px;color:var(--tx-muted);font-size:13px;">${escHtml((a.updated_at||'').split(' ')[0])}</td>
+            <td style="padding:16px;text-align:right;">
+               <button class="btn-sm ghost" onclick="openArticleEditor(${a.id})"><i class="fas fa-edit"></i> Edit</button>
+            </td>
+          </tr>`).join('') || '<tr><td colspan="4" style="padding:30px;text-align:center;color:var(--tx-muted);">You haven\'t written any articles yet.</td></tr>';
+        }
       }
     }
   }
