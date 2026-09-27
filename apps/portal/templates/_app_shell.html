@@ -148,9 +148,9 @@
     } catch(e) {}
   }
 
-  // Set the interval globally (starts after 2s, repeats every 60s)
+  // Ping immediately on load, then strictly every 3 minutes (180s) to align with backend 110s throttle guard
   setTimeout(sendGlobalAttendancePing, 2000);
-  globalPingInterval = setInterval(sendGlobalAttendancePing, 60000);
+  globalPingInterval = setInterval(sendGlobalAttendancePing, 180000);
 
   // Expose to window in case portal.html wants to trigger it manually
   window.sendAttendancePing = sendGlobalAttendancePing;

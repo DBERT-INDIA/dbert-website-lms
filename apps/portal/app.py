@@ -1575,12 +1575,12 @@ def auto_assign_joining_date_on_accept(conn, app_row):
 
 
 def joining_unlocked(joining_date_str):
-    """True if now >= joining date at 18:00 server-local. Empty/invalid = unlocked."""
+    """True if today >= joining date. Empty/invalid = unlocked."""
     if not joining_date_str:
         return True
     try:
         jd = datetime.strptime(joining_date_str, "%Y-%m-%d").date()
-        return datetime.now() >= datetime.combine(jd, dtime(18, 0))   # dtime = datetime.time
+        return date.today() >= jd
     except ValueError:
         return True
 
