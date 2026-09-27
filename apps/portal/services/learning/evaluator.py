@@ -69,7 +69,39 @@ class StructuredEvaluator:
         if llm_caller:
             try:
                 prompt = StructuredEvaluator._build_eval_prompt(cleaned_response, concept, criteria, conversation_context)
-                raw_output = llm_caller(prompt)
+                
+                # Define Gemini Structured Output Schema
+                schema = {
+                    "type": "OBJECT",
+                    "properties": {
+                        "correctness": {"type": "NUMBER"},
+                        "partial_correctness": {"type": "BOOLEAN"},
+                        "reasoning_quality": {"type": "NUMBER"},
+                        "concept_understanding": {"type": "NUMBER"},
+                        "detected_misconceptions": {
+                            "type": "ARRAY",
+                            "items": {"type": "STRING"}
+                        },
+                        "confidence": {"type": "NUMBER"},
+                        "evidence_strength": {"type": "NUMBER"},
+                        "feedback": {"type": "STRING"},
+                        "suggested_action": {"type": "STRING"}
+                    },
+                    "required": [
+                        "correctness", "partial_correctness", "reasoning_quality", 
+                        "concept_understanding", "detected_misconceptions", 
+                        "confidence", "evidence_strength", "feedback", "suggested_action"
+                    ]
+                }
+                
+                # Some callers might not support response_schema kwargs, so we introspect or try/except
+                import inspect
+                sig = inspect.signature(llm_caller)
+                if 'response_schema' in sig.parameters:
+                    raw_output = llm_caller(prompt, response_schema=schema)
+                else:
+                    raw_output = llm_caller(prompt)
+                    
                 parsed = StructuredEvaluator._parse_and_validate_json(raw_output)
                 if parsed:
                     return parsed

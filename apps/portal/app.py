@@ -5390,11 +5390,24 @@ def course_subtopic_chat(course_id, subtopic_id):
 
                     if gl_v2_active and gl_session:
                         from services.learning.session_service import LearningSessionService
+                        from services.ai.gemini_provider import GeminiProvider
+                        
+                        llm_caller = None
+                        if raw_user_key:
+                            provider = GeminiProvider(raw_user_key, available_models=user_models)
+                            def gemini_caller(prompt: str) -> str:
+                                resp = provider.generate_content(prompt, temperature=0.2, max_tokens=1000)
+                                if resp.error:
+                                    raise Exception(resp.error)
+                                return resp.text or ""
+                            llm_caller = gemini_caller
+
                         LearningSessionService.process_turn_atomic(
                             conn=conn,
                             session_id=gl_session.session_id,
                             student_id=intern_id,
-                            student_input=user_message
+                            student_input=user_message,
+                            llm_caller=llm_caller
                         )
             except Exception as e:
                 log_error("save_chat_stream", e)
@@ -5539,12 +5552,30 @@ def api_learning_v2_turn():
 
     with get_db() as conn:
         from services.learning.session_service import LearningSessionService
+        from services.ai.gemini_provider import GeminiProvider
+        
+        user_key_row = conn.execute("SELECT * FROM intern_gemini_keys WHERE intern_id = ?", (intern["id"],)).fetchone()
+        llm_caller = None
+        if user_key_row:
+            raw_key = _decrypt_gemini_key(user_key_row["encrypted_key"])
+            user_models = json.loads(user_key_row["available_models_json"]) if user_key_row["available_models_json"] else []
+            provider = GeminiProvider(raw_key, available_models=user_models)
+            
+            def gemini_caller(prompt: str, response_schema=None) -> str:
+                resp = provider.generate_content(prompt, temperature=0.2, max_tokens=1000, response_schema=response_schema)
+                if resp.error:
+                    raise Exception(resp.error)
+                return resp.text or ""
+                
+            llm_caller = gemini_caller
+
         turn_result = LearningSessionService.process_turn_atomic(
             conn=conn,
             session_id=session_id,
             student_id=intern["id"],
             student_input=message,
-            idempotency_key=idempotency_key
+            idempotency_key=idempotency_key,
+            llm_caller=llm_caller
         )
 
     return jsonify({"status": "success", "data": turn_result})
