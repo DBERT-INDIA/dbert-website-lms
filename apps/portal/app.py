@@ -16187,53 +16187,88 @@ if __name__ == "__main__":
 
 @app.route("/admin/diag")
 def admin_diag():
-    import json
+    """Safe diagnostic endpoint — reads only, no mutations. Requires admin auth."""
+    user = require_role("admin")
+    if not user:
+        return jsonify({"status": "error", "message": "Unauthorized"}), 401
     try:
         with get_db() as conn:
-            acct = conn.execute("SELECT * FROM intern_accounts WHERE id=3167").fetchone()
-            acct_data = dict(acct) if acct else None
-            
-            fks = conn.execute("""
-                SELECT conname, pg_get_constraintdef(c.oid) as condef
-                FROM pg_constraint c
-                JOIN pg_class t ON c.conrelid = t.oid
-                WHERE t.relname = 'course_enrollments' AND contype = 'f';
-            """).fetchall()
-            
-            acct2 = conn.execute("SELECT * FROM intern_accounts WHERE id=5046").fetchone()
-            acct2_data = dict(acct2) if acct2 else None
+            identity = conn.database_identity() if hasattr(conn, "database_identity") else {"dialect": conn.dialect}
 
-            return json.dumps({
-                "fks": [dict(f) for f in fks],
-                "row_3167": acct_data,
-                "row_5046": acct2_data
-            }, default=str)
+            # Find all copies of critical tables across schemas
+            table_locations = conn.execute("""
+                SELECT table_schema, table_name
+                FROM information_schema.tables
+                WHERE table_name IN ('intern_accounts','course_enrollments','courses')
+                ORDER BY table_schema, table_name
+            """).fetchall() if conn.dialect == "postgres" else []
+
+            # FK constraint definitions
+            fk_info = []
+            if conn.dialect == "postgres":
+                fk_rows = conn.execute("""
+                    SELECT
+                        n.nspname AS schema,
+                        c.conname AS constraint_name,
+                        c.conrelid::regclass AS child_table,
+                        c.confrelid::regclass AS referenced_table,
+                        pg_get_constraintdef(c.oid) AS definition
+                    FROM pg_constraint c
+                    JOIN pg_namespace n ON n.oid = c.connamespace
+                    WHERE c.conname IN (
+                        'course_enrollments_intern_id_fkey',
+                        'course_enrollments_course_id_fkey'
+                    )
+                """).fetchall()
+                fk_info = [row_to_dict(f) for f in fk_rows]
+
+            # Spot-check known problem IDs
+            spot_checks = {}
+            for check_id in [3167, 4442, 5046, 5064]:
+                row = conn.execute(
+                    "SELECT id, email, is_active FROM intern_accounts WHERE id = ?",
+                    (check_id,)
+                ).fetchone()
+                spot_checks[str(check_id)] = row_to_dict(row) if row else None
+
+            # Orphan enrollment count
+            orphan_count = 0
+            if conn.dialect == "postgres":
+                oc = conn.execute("""
+                    SELECT COUNT(*) FROM course_enrollments ce
+                    LEFT JOIN intern_accounts ia ON ia.id = ce.intern_id
+                    WHERE ia.id IS NULL
+                """).fetchone()
+                orphan_count = oc[0] if oc else -1
+
+        return jsonify({
+            "status": "ok",
+            "db_identity": identity,
+            "table_locations": [row_to_dict(r) for r in table_locations],
+            "fk_constraints": fk_info,
+            "intern_spot_checks": spot_checks,
+            "orphan_enrollment_count": orphan_count,
+        })
     except Exception as e:
-        return str(e)
+        log_error("admin-diag", e)
+        return jsonify({"status": "error", "message": "Diagnostic failed — check server logs"}), 500
 
 
 @app.route("/admin/heal")
 def admin_heal():
+    """Deprecated stub — this endpoint no longer mutates database constraints.
+    Use /admin/diag for read-only diagnostics, or perform repairs via psql on EC2.
+    """
     user = require_role("admin")
     if not user:
-        return "Unauthorized", 401
-    try:
-        from heal_db import heal_database
-        heal_database()
-        
-        # Forcefully drop the problematic FK constraint to unblock the portal
-        with get_db() as conn:
-            try:
-                conn._raw_conn.autocommit = True
-                cur = conn._raw_conn.cursor()
-                cur.execute("ALTER TABLE course_enrollments DROP CONSTRAINT IF EXISTS course_enrollments_intern_id_fkey;")
-                cur.execute("ALTER TABLE course_enrollments DROP CONSTRAINT IF EXISTS course_enrollments_course_id_fkey;")
-                cur.close()
-                conn._raw_conn.autocommit = False
-            except Exception as e:
-                pass
-                
-        return "Database healed successfully. Check EC2 logs for details."
-    except Exception as e:
-        return f"Error: {e}"
+        return jsonify({"status": "error", "message": "Unauthorized"}), 401
+    return jsonify({
+        "status": "deprecated",
+        "message": (
+            "The /admin/heal endpoint no longer drops or alters FK constraints. "
+            "This was removed because silent constraint mutations caused data integrity issues. "
+            "Use /admin/diag for diagnostics, or run the repair SQL on EC2 directly via psql."
+        ),
+        "diag_url": "/admin/diag",
+    }), 410
 
