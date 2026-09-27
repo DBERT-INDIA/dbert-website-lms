@@ -582,20 +582,35 @@ class PostgreSQLAdapter(DatabaseAdapter):
     """
 
     def __init__(self, conn_or_url: Any):
+        import os
         if isinstance(conn_or_url, str):
             import psycopg2
-            import os
             self._raw_conn = psycopg2.connect(conn_or_url)
-            # Ensure the connection targets the exact schema where data was migrated
-            target_schema = os.environ.get("POSTGRES_SCHEMA", "dbert_internship")
-            with self._raw_conn.cursor() as cur:
-                cur.execute(f"SET search_path TO {target_schema}, public;")
-            self._raw_conn.commit()
         else:
             self._raw_conn = conn_or_url
         self._last_cursor: Any = None
         self._last_rowid: Optional[int] = None
         self._last_rowcount: int = -1
+        # Enforce schema on EVERY connection, both new and wrapped
+        self._configure_pg_schema()
+
+    def _configure_pg_schema(self) -> None:
+        """Set search_path to the configured PostgreSQL schema on every connection."""
+        import os, re
+        schema = os.environ.get("POSTGRES_SCHEMA", "dbert_internship").strip()
+        if not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", schema):
+            raise RuntimeError(f"Invalid POSTGRES_SCHEMA value: {schema!r}")
+        try:
+            with self._raw_conn.cursor() as cur:
+                cur.execute(
+                    "SELECT set_config('search_path', %s || ',public', false)",
+                    (schema,)
+                )
+            self._raw_conn.commit()
+            logger.info(f"[PostgreSQLAdapter] search_path set to: {schema}, public")
+        except Exception as e:
+            logger.error(f"[PostgreSQLAdapter] Failed to set search_path: {e}")
+            raise
 
     @property
     def dialect(self) -> str:
@@ -696,22 +711,26 @@ class PostgreSQLAdapter(DatabaseAdapter):
             self._raw_conn.close()
 
     def table_exists(self, table_name: str) -> bool:
+        import os
+        schema = os.environ.get("POSTGRES_SCHEMA", "dbert_internship").strip()
         query = (
             "SELECT 1 FROM information_schema.tables "
-            "WHERE table_schema = 'public' AND table_name = %s"
+            "WHERE table_schema = %s AND table_name = %s"
         )
         cur = self._raw_conn.cursor()
-        cur.execute(query, (table_name.lower(),))
+        cur.execute(query, (schema, table_name.lower()))
         return cur.fetchone() is not None
 
     def get_column_names(self, table_name: str) -> List[str]:
+        import os
+        schema = os.environ.get("POSTGRES_SCHEMA", "dbert_internship").strip()
         query = (
             "SELECT column_name FROM information_schema.columns "
-            "WHERE table_schema = 'public' AND table_name = %s "
+            "WHERE table_schema = %s AND table_name = %s "
             "ORDER BY ordinal_position"
         )
         cur = self._raw_conn.cursor()
-        cur.execute(query, (table_name.lower(),))
+        cur.execute(query, (schema, table_name.lower()))
         return [row[0] for row in cur.fetchall()]
 
     def ensure_column(self, table_name: str, column_name: str, column_definition: str):
@@ -720,6 +739,28 @@ class PostgreSQLAdapter(DatabaseAdapter):
             query = f"ALTER TABLE {table_name} ADD COLUMN {column_name} {column_definition}"
             self.execute(query)
             self.commit()
+
+    def database_identity(self) -> dict:
+        """Return safe diagnostic info about the current database connection."""
+        import os
+        try:
+            cur = self._raw_conn.cursor()
+            cur.execute(
+                "SELECT current_database(), current_schema(), "
+                "current_setting('search_path'), version()"
+            )
+            row = cur.fetchone()
+            cur.close()
+            return {
+                "dialect": "postgres",
+                "database": row[0],
+                "current_schema": row[1],
+                "search_path": row[2],
+                "server_version": row[3],
+                "configured_schema": os.environ.get("POSTGRES_SCHEMA", "dbert_internship"),
+            }
+        except Exception as e:
+            return {"dialect": "postgres", "error": str(e)}
 
     def _create_dummy_cursor(self) -> Any:
         class DummyCursor:
