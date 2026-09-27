@@ -3885,6 +3885,8 @@ def send_email_async(to_email, subject, html_body, name="", campaign="transactio
             msg = _build_email_message(to_email, subject, html_body, campaign)
             if EMAIL_PROVIDER == "ses":
                 _ses_send_raw(msg, to_email)
+            elif EMAIL_PROVIDER == "smtp":
+                _smtp_send_raw(msg, to_email)
             else:
                 # Default to DBERT Mailer microservice (https://mailer.aivaratech.online/send)
                 _cpanel_api_send(msg, to_email)
