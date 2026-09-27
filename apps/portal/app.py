@@ -3743,7 +3743,12 @@ def assign_mentor_email(domain):
             FROM mentors m WHERE m.domain=? AND m.is_active=1 ORDER BY cnt ASC, m.id ASC
         """, (STATUS_APPLY_PENDING, STATUS_UNDER_REVIEW, STATUS_ON_HOLD, STATUS_SELECTED,
               STATUS_ENROLLMENT_PENDING, STATUS_ENROLLED, STATUS_ACCEPTED, STATUS_PAID_ENROLLED, domain)).fetchall()
-    return rows[0]["email"] if rows else None
+    
+    if rows:
+        return rows[0]["email"]
+    
+    log_info("mentor_assignment", f"No active mentors found for {domain}. Falling back to default.")
+    return "careers@dbert.online"
 
 
 # â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
@@ -15974,6 +15979,29 @@ def cron_clean_tokens():
         return jsonify({"status": "success", "message": "Tokens cleaned"})
     except Exception as e:
         log_error("cron-clean-tokens", e)
+        return jsonify({"status": "error", "message": str(e)}), 500
+
+
+@app.route("/cron/process-outbox", methods=["POST", "GET"])
+def cron_process_outbox():
+    """Processes the transactional event outbox for notifications and emails."""
+    key = request.headers.get("X-Cron-Key", "").strip() or request.args.get("key", "").strip()
+    if not CRON_SECRET or key != CRON_SECRET:
+        return jsonify({"status": "error", "message": "Unauthorized"}), 401
+    try:
+        from services.outbox_service import process_outbox_batch
+        from services.notifications.dispatch import dispatch_event
+        
+        with get_db() as conn:
+            metrics = process_outbox_batch(conn, dispatcher_func=dispatch_event)
+            conn.commit()
+            
+        return jsonify({
+            "status": "success",
+            "metrics": metrics
+        })
+    except Exception as e:
+        log_error("cron-process-outbox", e)
         return jsonify({"status": "error", "message": str(e)}), 500
 
 
