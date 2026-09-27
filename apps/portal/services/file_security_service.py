@@ -298,7 +298,7 @@ def authorize_file_download(conn, user_context: Optional[Dict[str, Any]], filena
                     
         # Post Hire Deposits
         if not owner_email:
-            ph = conn.execute("SELECT intern_id FROM post_hire_deposits WHERE (proof_file = ? OR proof_file LIKE ?) LIMIT 1", (clean_file, f"%/{clean_file}")).fetchone()
+            ph = conn.execute("SELECT intern_id FROM post_hire_deposits WHERE (payment_screenshot = ? OR payment_screenshot LIKE ?) LIMIT 1", (clean_file, f"%/{clean_file}")).fetchone()
             if ph and ph["intern_id"]:
                 acc = conn.execute("SELECT email FROM intern_accounts WHERE id = ?", (ph["intern_id"],)).fetchone()
                 if acc: owner_email = acc["email"].lower()

@@ -12,11 +12,20 @@ class GeminiProvider:
     
     BASE_URL = "https://generativelanguage.googleapis.com/v1beta/models/{model}:{action}"
     
-    def __init__(self, api_key: str, available_models: List[str] = None):
+    def __init__(self, api_key: Optional[str] = None, available_models: List[str] = None):
+        import os
+        if not api_key:
+            api_key = os.environ.get("GEMINI_API_KEY")
+            if not api_key:
+                keys = [k.strip() for k in os.environ.get("GEMINI_API_KEYS", "").split(",") if k.strip()]
+                if keys:
+                    api_key = keys[0]
         self.api_key = api_key
         self.available_models = available_models
         
     def _make_request(self, model: str, body: Dict[str, Any], stream: bool = False, timeout: int = 30) -> requests.Response:
+        if not self.api_key:
+            raise GeminiAuthError("No Gemini API key configured on client or server.")
         action = "streamGenerateContent?alt=sse" if stream else "generateContent"
         url = self.BASE_URL.format(model=model, action=action)
         
@@ -128,6 +137,8 @@ class GeminiProvider:
 
     def generate_embeddings(self, texts: List[str], model: str = "text-embedding-004") -> List[List[float]]:
         """Generates embeddings for a batch of texts."""
+        if not self.api_key:
+            return []
         url = self.BASE_URL.format(model=model, action="batchEmbedContents")
         
         requests_payload = [

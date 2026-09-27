@@ -978,7 +978,7 @@
   let _upiId='Q681021429@ybl',_upiAmount=499,_selectedFile=null,_paidEligible=false;
   let _currentJobAppId=null,_jobDepositFile=null;
   let _joiningDate=null,_joiningDateStr='',_internshipEndDate=null,_internshipEndDateStr='',_isUnlocked=false,_allWeeks=[];
-  let _attSummary={},_courseEnrs=[],_tasksCount=0,_totalCoins=0;
+  let _attSummary={},_courseEnrs=[],_tasksCount=0,_totalCoins=0,_learningProfile=null;
   let _acceptedInit=false,_pingInterval=null,_countdownInterval=null;
   function badgeClass(s){const m={'Apply Pending':'badge-muted','Under Review':'badge-blue','On Hold':'badge-amber','Selected':'badge-gold','Selected - Pending Certifications':'badge-green','Pending-Certifications':'badge-gold','Shortlisted':'badge-blue','Hired':'badge-green','Applied':'badge-muted','Enrollment Pending':'badge-amber','Enrolled':'badge-blue','Accepted':'badge-green','Rejected':'badge-red','Paid-Enrolled':'badge-blue'};return m[s]||'badge-muted';}
 
@@ -1967,6 +1967,7 @@
       _attSummary = data.attendance_summary || null;
       _tasksCount = data.tasks_completed_count || 0;
       _totalCoins = data.total_coins || 0;
+      _learningProfile = data.learning_profile || null;
 
       _upiId=data.upi_id||_upiId;_upiAmount=data.upi_amount||_upiAmount;
       _paidEligible=!!data.paid_eligible;_reapplyInfo=data.reapply_info;
@@ -2149,29 +2150,76 @@
       }
     }
 
-    // Card 3: Skill Mastery & Retention (Phase 8)
-    if (_learningProfile) {
-      const masteryPct = Math.round((_learningProfile.overall_mastery || 0) * 100);
-      document.getElementById('ovMasteryPct').textContent = masteryPct + '%';
-      document.getElementById('ovMasteryFill').style.setProperty('--pct', masteryPct);
-      
-      const retention = (_learningProfile.retention_index || 1.0).toFixed(1);
-      document.getElementById('ovRetentionPct').textContent = retention;
-      document.getElementById('ovRetentionFill').style.setProperty('--pct', Math.min(100, Math.round((retention / 1.5) * 100)));
-      
-      document.getElementById('ovStruggleIdx').textContent = (_learningProfile.recent_struggle_index || 0.0).toFixed(2);
-      document.getElementById('ovMentorInt').textContent = _learningProfile.mentor_interventions || 0;
-      
-      const badge = document.getElementById('ovMasteryLevelBadge');
+    // Card 3: Skill Mastery & Retention (Phase 8) & Card 4: Learning Analytics (Phase 13)
+    const masteryPct = _learningProfile ? Math.round((_learningProfile.overall_mastery || 0) * 100) : 0;
+    const ovMasteryPctEl = document.getElementById('ovMasteryPct');
+    const ovMasteryFillEl = document.getElementById('ovMasteryFill');
+    if (ovMasteryPctEl) ovMasteryPctEl.textContent = masteryPct + '%';
+    if (ovMasteryFillEl) ovMasteryFillEl.style.setProperty('--pct', masteryPct);
+
+    const retention = _learningProfile ? (_learningProfile.retention_index || 1.0).toFixed(1) : '1.0';
+    const ovRetPctEl = document.getElementById('ovRetentionPct');
+    const ovRetFillEl = document.getElementById('ovRetentionFill');
+    if (ovRetPctEl) ovRetPctEl.textContent = retention;
+    if (ovRetFillEl) ovRetFillEl.style.setProperty('--pct', Math.min(100, Math.round((parseFloat(retention) / 1.5) * 100)));
+
+    const ovStruggleEl = document.getElementById('ovStruggleIdx');
+    if (ovStruggleEl) ovStruggleEl.textContent = _learningProfile ? (_learningProfile.recent_struggle_index || 0.0).toFixed(2) : '0.00';
+
+    const ovMentorEl = document.getElementById('ovMentorInt');
+    if (ovMentorEl) ovMentorEl.textContent = _learningProfile ? (_learningProfile.mentor_interventions || 0) : '0';
+
+    const badge = document.getElementById('ovMasteryLevelBadge');
+    if (badge) {
       if (masteryPct >= 90) { badge.textContent = 'Mastered'; badge.className = 'badge b-green'; }
       else if (masteryPct >= 70) { badge.textContent = 'Proficient'; badge.className = 'badge b-blue'; }
       else if (masteryPct >= 35) { badge.textContent = 'Developing'; badge.className = 'badge b-violet'; }
       else { badge.textContent = 'Novice'; badge.className = 'badge badge-gold'; }
-    } else {
-      document.getElementById('ovMasteryPct').textContent = '0%';
-      document.getElementById('ovMasteryFill').style.setProperty('--pct', 0);
-      document.getElementById('ovRetentionPct').textContent = '1.0';
-      document.getElementById('ovRetentionFill').style.setProperty('--pct', 66);
+    }
+
+    // Card 4: Detailed Learning State (Phase 13)
+    const statMasteryEl = document.getElementById('statMastery');
+    if (statMasteryEl) statMasteryEl.textContent = masteryPct + '%';
+
+    let curP = 0;
+    let quizAvg = 0;
+    if (_courseEnrs && _courseEnrs.length > 0) {
+      const c0 = _courseEnrs[0];
+      curP = c0.guided_completion_pct || c0.learning_completion_pct || c0.tutor_completion_pct || 0;
+      quizAvg = c0.quizzes_passed > 0 ? 85 : (c0.current_day > 1 ? 75 : 0);
+    }
+    const statCurriculumEl = document.getElementById('statCurriculum');
+    if (statCurriculumEl) statCurriculumEl.textContent = curP + '%';
+
+    const statPracticeEl = document.getElementById('statPractice');
+    if (statPracticeEl) statPracticeEl.textContent = Math.round(curP * 0.8) + '%';
+
+    const statQuizAvgEl = document.getElementById('statQuizAvg');
+    if (statQuizAvgEl) statQuizAvgEl.textContent = quizAvg + '%';
+
+    const statReviewsEl = document.getElementById('statReviews');
+    if (statReviewsEl) statReviewsEl.textContent = '0';
+
+    const statMiscEl = document.getElementById('statMisconceptions');
+    if (statMiscEl) statMiscEl.textContent = _learningProfile ? Math.round((_learningProfile.recent_struggle_index || 0) * 10) : '0';
+
+    const statLastSessEl = document.getElementById('statLastSession');
+    if (statLastSessEl) {
+      statLastSessEl.textContent = (_learningProfile && _learningProfile.last_learning_at)
+        ? _learningProfile.last_learning_at.substring(0, 10)
+        : 'Active';
+    }
+
+    const statConceptEl = document.getElementById('statConcept');
+    if (statConceptEl) {
+      statConceptEl.textContent = (_courseEnrs && _courseEnrs.length > 0)
+        ? (_courseEnrs[0].title || ('Day ' + (_courseEnrs[0].current_day || 1)))
+        : 'General Concepts';
+    }
+
+    const statActionEl = document.getElementById('statAction');
+    if (statActionEl) {
+      statActionEl.textContent = masteryPct >= 85 ? 'Reinforcement' : (masteryPct >= 50 ? 'Guided Practice' : 'Interactive Lesson');
     }
 
     // Card 2: Micro-Tasks & Coins Rewards

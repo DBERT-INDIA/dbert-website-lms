@@ -14,7 +14,8 @@ class GroundedRAGTutor:
         concept: Concept,
         student_query: str,
         student_id: int = 0,
-        course_id: int = 0
+        course_id: int = 0,
+        api_key: Optional[str] = None
     ) -> Dict[str, Any]:
         """
         Retrieves canonical learning material for the concept.
@@ -61,12 +62,13 @@ class GroundedRAGTutor:
                 from services.ai.gemini_provider import GeminiProvider
                 from services.learning.rag_retriever import RAGRetriever
                 
-                # Fetch embeddings for student query using system provider instance
-                provider = GeminiProvider()
+                # Fetch embeddings for student query using provider instance
+                provider = GeminiProvider(api_key=api_key)
                 query_embeddings = provider.generate_embeddings([student_query])
                 if query_embeddings and len(query_embeddings) > 0:
                     q_emb = query_embeddings[0]
-                    chunks = RAGRetriever.retrieve_chunks(conn, q_emb, course_id=0) # course ID omitted or generic for now, we filter by concept
+                    c_id = course_id if course_id > 0 else None
+                    chunks = RAGRetriever.retrieve_chunks(conn, q_emb, course_id=c_id, concept_id=concept.concept_id)
                     
                     if chunks:
                         context_items.append("--- SUPPLEMENTARY KNOWLEDGE BASE (RAG) ---")

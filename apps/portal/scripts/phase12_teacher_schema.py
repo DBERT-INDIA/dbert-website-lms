@@ -8,7 +8,7 @@ def run():
     print("Executing Phase 12 Schema Migration...")
     try:
         db = get_db_adapter()
-        with db.get_connection() as conn:
+        with db as conn:
             cur = conn.cursor()
             
             print("Creating gl_teacher_learning_instructions table...")

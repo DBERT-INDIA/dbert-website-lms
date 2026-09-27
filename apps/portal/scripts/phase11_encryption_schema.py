@@ -8,16 +8,11 @@ def run():
     print("Executing Phase 11 Schema Migration...")
     try:
         db = get_db_adapter()
-        with db.get_connection() as conn:
+        with db as conn:
             cur = conn.cursor()
             
-            # Check if encryption_version exists
-            cur.execute("SELECT column_name FROM information_schema.columns WHERE table_name='user_api_keys' AND column_name='encryption_version'")
-            if not cur.fetchone():
-                print("Adding encryption_version to user_api_keys...")
-                cur.execute('ALTER TABLE user_api_keys ADD COLUMN encryption_version INTEGER DEFAULT 1;')
-            else:
-                print("encryption_version already exists.")
+            print("Adding encryption_version column if not exists...")
+            cur.execute('ALTER TABLE user_api_keys ADD COLUMN IF NOT EXISTS encryption_version INTEGER DEFAULT 1;')
                 
             if hasattr(conn, "commit"):
                 conn.commit()

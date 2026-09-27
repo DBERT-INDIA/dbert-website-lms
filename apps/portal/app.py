@@ -861,9 +861,30 @@ def set_config(key, value):
         return False
 
 # â”€â”€ UP2.1: BYOK Gemini Key Encryption Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+def _get_gemini_fernet():
+    f = _fernet()
+    if f:
+        return f
+    try:
+        from cryptography.fernet import Fernet
+        import base64
+        import hashlib
+        derived_key = base64.urlsafe_b64encode(hashlib.sha256((_FLASK_SECRET_KEY or "dbert_gemini_encryption_secret_2026").encode()).digest())
+        return Fernet(derived_key)
+    except Exception:
+        return None
+
 def _encrypt_gemini_key(raw_key: str) -> str:
     if not raw_key:
         return ""
+    f = _get_gemini_fernet()
+    if f:
+        try:
+            return f.encrypt(raw_key.strip().encode('utf-8')).decode('utf-8')
+        except Exception as e:
+            log_error("encrypt_gemini_key_fernet", e)
+
+    # Legacy XOR/HMAC Fallback
     secret = (_FLASK_SECRET_KEY or "dbert_gemini_encryption_secret_2026").encode('utf-8')
     nonce = secrets.token_bytes(16)
     key_bytes = raw_key.encode('utf-8')
@@ -880,6 +901,13 @@ def _encrypt_gemini_key(raw_key: str) -> str:
 def _decrypt_gemini_key(encrypted_str: str) -> str:
     if not encrypted_str:
         return ""
+    f = _get_gemini_fernet()
+    if f:
+        try:
+            return f.decrypt(encrypted_str.encode('utf-8')).decode('utf-8')
+        except Exception:
+            pass  # Fall through to legacy XOR decode
+
     try:
         token = base64.urlsafe_b64decode(encrypted_str.encode('utf-8'))
         if len(token) < 17:
@@ -5322,6 +5350,25 @@ def course_subtopic_chat(course_id, subtopic_id):
             f"Respond to {first_name} now as their adaptive, expert AI tutor:"
         )
 
+        # Check BYOK key first (UP2.5) — fetch latest active key
+        user_key_row = conn.execute(
+            "SELECT encrypted_key, available_models_json FROM user_api_keys WHERE intern_id = ? ORDER BY id DESC LIMIT 1",
+            (intern["id"],)
+        ).fetchone()
+
+        enrollment_id = enrollment["id"]
+        intern_id = intern["id"]
+
+        raw_user_key = None
+        user_models = []
+        if user_key_row and user_key_row["encrypted_key"]:
+            raw_user_key = _decrypt_gemini_key(user_key_row["encrypted_key"])
+            if user_key_row["available_models_json"]:
+                try:
+                    user_models = json.loads(user_key_row["available_models_json"])
+                except Exception:
+                    user_models = []
+
         if gl_v2_active:
             try:
                 from services.learning.session_service import LearningSessionService
@@ -5331,7 +5378,7 @@ def course_subtopic_chat(course_id, subtopic_id):
                 gl_session = LearningSessionService.get_or_create_session(conn, intern["id"], course_id, subtopic_id)
                 concept = ConceptService.get_concept_by_subtopic(conn, subtopic_id)
                 if concept:
-                    grounded = GroundedRAGTutor.retrieve_grounded_context(conn, concept, user_message, student_id=intern["id"], course_id=course_id)
+                    grounded = GroundedRAGTutor.retrieve_grounded_context(conn, concept, user_message, student_id=intern["id"], course_id=course_id, api_key=raw_user_key)
                     prompt = GroundedRAGTutor.build_tutor_prompt(
                         student_name=intern.get("name") or "Intern",
                         concept=concept,
@@ -5343,26 +5390,7 @@ def course_subtopic_chat(course_id, subtopic_id):
             except Exception as ex_v2_prompt:
                 log_error("guided_learning_v2_prompt", ex_v2_prompt)
 
-        # Check BYOK key first (UP2.5) — fetch latest active key
-        user_key_row = conn.execute(
-            "SELECT encrypted_key, available_models_json FROM user_api_keys WHERE intern_id = ? ORDER BY id DESC LIMIT 1",
-            (intern["id"],)
-        ).fetchone()
-
-        enrollment_id = enrollment["id"]
-        intern_id = intern["id"]
-
     # Check key and fallback quota before streaming
-    raw_user_key = None
-    user_models = []
-    if user_key_row and user_key_row["encrypted_key"]:
-        raw_user_key = _decrypt_gemini_key(user_key_row["encrypted_key"])
-        if user_key_row["available_models_json"]:
-            try:
-                user_models = json.loads(user_key_row["available_models_json"])
-            except Exception:
-                user_models = []
-
     if not raw_user_key:
         if not can_use_fallback(intern_id):
             return jsonify({
@@ -5406,8 +5434,16 @@ def course_subtopic_chat(course_id, subtopic_id):
                         llm_caller = None
                         if raw_user_key:
                             provider = GeminiProvider(raw_user_key, available_models=user_models)
-                            def gemini_caller(prompt: str) -> str:
-                                resp = provider.generate_content(prompt, temperature=0.2, max_tokens=1000)
+                            def gemini_caller(prompt: str, response_schema=None) -> str:
+                                resp = provider.generate_content(prompt, temperature=0.2, max_tokens=1000, response_schema=response_schema)
+                                if resp.error:
+                                    raise Exception(resp.error)
+                                return resp.text or ""
+                            llm_caller = gemini_caller
+                        elif GEMINI_API_KEYS:
+                            provider = GeminiProvider(GEMINI_API_KEYS[0])
+                            def gemini_caller(prompt: str, response_schema=None) -> str:
+                                resp = provider.generate_content(prompt, temperature=0.2, max_tokens=1000, response_schema=response_schema)
                                 if resp.error:
                                     raise Exception(resp.error)
                                 return resp.text or ""
@@ -5565,7 +5601,7 @@ def api_learning_v2_turn():
         from services.learning.session_service import LearningSessionService
         from services.ai.gemini_provider import GeminiProvider
         
-        user_key_row = conn.execute("SELECT * FROM intern_gemini_keys WHERE intern_id = ?", (intern["id"],)).fetchone()
+        user_key_row = conn.execute("SELECT * FROM user_api_keys WHERE intern_id = ? ORDER BY id DESC LIMIT 1", (intern["id"],)).fetchone()
         llm_caller = None
         if user_key_row:
             raw_key = _decrypt_gemini_key(user_key_row["encrypted_key"])
@@ -5578,6 +5614,14 @@ def api_learning_v2_turn():
                     raise Exception(resp.error)
                 return resp.text or ""
                 
+            llm_caller = gemini_caller
+        elif GEMINI_API_KEYS:
+            provider = GeminiProvider(GEMINI_API_KEYS[0])
+            def gemini_caller(prompt: str, response_schema=None) -> str:
+                resp = provider.generate_content(prompt, temperature=0.2, max_tokens=1000, response_schema=response_schema)
+                if resp.error:
+                    raise Exception(resp.error)
+                return resp.text or ""
             llm_caller = gemini_caller
 
         turn_result = LearningSessionService.process_turn_atomic(
@@ -6028,7 +6072,10 @@ def course_quiz_submit(course_id, day_number):
         for idx, q in enumerate(questions):
             q_id = str(q.get("id", idx + 1))
             submitted_idx = answers.get(q_id)
-            is_correct = submitted_idx is not None and int(submitted_idx) == q.get("correct_index")
+            try:
+                is_correct = submitted_idx is not None and int(submitted_idx) == q.get("correct_index")
+            except (ValueError, TypeError):
+                is_correct = False
             if is_correct:
                 score += 1
                 
@@ -11835,6 +11882,18 @@ def intern_me():
         if course_enrollment_warning or attendance_status == "degraded" or tasks_status == "degraded" or coins_status == "degraded":
             overall_status = "degraded"
 
+        learning_profile = None
+        if acct:
+            try:
+                lp_row = conn.execute(
+                    "SELECT * FROM gl_student_learning_profile WHERE student_id = ?",
+                    (acct["id"],)
+                ).fetchone()
+                if lp_row:
+                    learning_profile = row_to_dict(lp_row)
+            except Exception as _lp_err:
+                log_error("intern-me-learning-profile", _lp_err)
+
         return jsonify({
             "status": overall_status,
             "attendance_status": attendance_status,
@@ -11873,7 +11932,7 @@ def intern_me():
             "tasks_completed_count": approved_tasks,
             "total_coins": total_coins,
             "course_enrollments": enriched_enrs,
-            "learning_profile": dict(conn.execute("SELECT * FROM gl_student_learning_profile WHERE student_id = ?", (acct["id"],)).fetchone()) if acct and conn.execute("SELECT * FROM gl_student_learning_profile WHERE student_id = ?", (acct["id"],)).fetchone() else None,
+            "learning_profile": learning_profile,
             "flow_state": {
                 "stage": flow_st["stage"],
                 "stage_num": flow_st["stage_num"],
