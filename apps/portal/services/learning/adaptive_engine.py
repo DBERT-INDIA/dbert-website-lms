@@ -26,6 +26,7 @@ class NextActionRecommendation:
     action: str  # One of the 10 standardized actions
     concept_id: str
     target_misconception_id: Optional[str] = None
+    misconception_payload: Optional[Dict[str, Any]] = None
     reason: str = ""
     suggested_prompt: str = ""
     next_concept_id: Optional[str] = None
@@ -36,6 +37,7 @@ class NextActionRecommendation:
 
 class AdaptiveActionEngine:
     ACTIONS = [
+        "SAFETY_ERROR",
         "EXPLAIN",
         "SIMPLIFY",
         "GIVE_EXAMPLE",
@@ -55,18 +57,29 @@ class AdaptiveActionEngine:
         concept: Concept,
         mastery: StudentMastery,
         latest_evaluation: Optional[EvaluationResult] = None,
-        review_due: bool = False,
-        consecutive_remediation_failures: int = 0
+        review_due: bool = False
     ) -> NextActionRecommendation:
         """
         Determines the single best next pedagogical action using strict decision hierarchy.
         """
         cid = concept.concept_id
 
+        # 0. SAFETY/ERROR check
+        if latest_evaluation and latest_evaluation.suggested_action in ("SAFETY_ERROR", "ERROR"):
+            return NextActionRecommendation(
+                action="SAFETY_ERROR",
+                concept_id=cid,
+                reason="Safety violation, nonsensical input, or system error detected in evaluation.",
+                suggested_prompt="I couldn't process that response appropriately. Let's return to the topic."
+            )
+
+        active_misconceptions = [m for m in mastery.misconceptions if not m.get("resolved")]
+        max_misconception_occurrences = max([m.get("occurrence_count", 1) for m in active_misconceptions], default=0)
+
         # 1. ESCALATE_TO_MENTOR check (Severe struggle)
         if (
             (mastery.total_attempts >= 5 and mastery.successful_attempts == 0) or
-            consecutive_remediation_failures >= 3
+            max_misconception_occurrences >= 3
         ):
             return NextActionRecommendation(
                 action="ESCALATE_TO_MENTOR",
@@ -85,14 +98,30 @@ class AdaptiveActionEngine:
             )
 
         # 3. REMEDIATE check (Active unresolved misconception detected)
-        active_misconceptions = [m for m in mastery.misconceptions if not m.get("resolved")]
         if active_misconceptions:
             target_misc = active_misconceptions[0]
             m_id = target_misc.get("misconception_id", "MISC")
+            
+            payload = {
+                "misconception_id": m_id,
+                "label": m_id,
+                "description": "Needs clarification.",
+                "remediation_strategy": "Explain why this intuition differs in practice.",
+                "evidence": target_misc.get("trigger_context", "")
+            }
+            
+            for m in concept.common_misconceptions:
+                if str(m.get("id", "")) == str(m_id) or str(m.get("name", "")) == str(m_id):
+                    payload["label"] = m.get("name", m.get("label", m_id))
+                    payload["description"] = m.get("description", m.get("pattern_description", payload["description"]))
+                    payload["remediation_strategy"] = m.get("remediation", m.get("remediation_strategy", payload["remediation_strategy"]))
+                    break
+                    
             return NextActionRecommendation(
                 action="REMEDIATE",
                 concept_id=cid,
                 target_misconception_id=m_id,
+                misconception_payload=payload,
                 reason=f"Active misconception detected: {m_id}. Targeted remediation required.",
                 suggested_prompt=f"Let's focus on a common point of confusion: {m_id}. Here is why that intuition differs in practice."
             )
