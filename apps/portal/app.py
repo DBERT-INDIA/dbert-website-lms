@@ -13295,25 +13295,12 @@ def attendance_ping():
             ).fetchone()
 
             if existing:
-                # Multi-tab throttle guard: if updated less than 110s ago, skip increment to prevent inflation
-                skip_increment = False
-                if existing["updated_at"]:
-                    try:
-                        last_up = datetime.strptime(existing["updated_at"], "%Y-%m-%d %H:%M:%S")
-                        if (datetime.now() - last_up).total_seconds() < 110:
-                            skip_increment = True
-                    except Exception:
-                        pass
-
-                if skip_increment:
-                    new_total = existing["total_minutes"]
-                else:
-                    new_total = existing["total_minutes"] + 3
-                    conn.execute(
-                        "UPDATE attendance SET total_minutes=?, updated_at=?, email=COALESCE(email, ?) WHERE id=?",
-                        (new_total, now_str(), user["email"], existing["id"])
-                    )
-                    conn.commit()
+                new_total = existing["total_minutes"] + 3
+                conn.execute(
+                    "UPDATE attendance SET total_minutes=?, updated_at=?, email=COALESCE(email, ?) WHERE id=?",
+                    (new_total, now_str(), user["email"], existing["id"])
+                )
+                conn.commit()
             else:
                 new_total = 3
                 conn.execute(
