@@ -11873,6 +11873,7 @@ def intern_me():
             "tasks_completed_count": approved_tasks,
             "total_coins": total_coins,
             "course_enrollments": enriched_enrs,
+            "learning_profile": dict(conn.execute("SELECT * FROM gl_student_learning_profile WHERE student_id = ?", (acct["id"],)).fetchone()) if acct and conn.execute("SELECT * FROM gl_student_learning_profile WHERE student_id = ?", (acct["id"],)).fetchone() else None,
             "flow_state": {
                 "stage": flow_st["stage"],
                 "stage_num": flow_st["stage_num"],

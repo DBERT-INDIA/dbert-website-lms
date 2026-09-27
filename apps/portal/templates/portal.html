@@ -267,7 +267,7 @@
           <!-- OVERVIEW QUICK-ACCESS CARDS GRID (Enrolled / Accepted) -->
           <div class="overview-cards-grid" id="overviewCardsGrid">
             
-            <!-- Card 1: Guided Learning & Course Progress -->
+            <!-- Card 1: Guided Learning & Internship Timeline -->
             <div class="glass-card" style="display:flex;flex-direction:column;justify-content:space-between;margin-bottom:0;min-height:270px;">
               <div>
                 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
@@ -283,7 +283,7 @@
                     <div class="ring-txt"><b id="ovCoursePct" style="font-size:13px;">0%</b></div>
                   </div>
                   <div>
-                    <span style="font-size:12.5px;font-weight:700;color:var(--tx-head);display:block;">Course Progress</span>
+                    <span style="font-size:12.5px;font-weight:700;color:var(--tx-head);display:block;">Internship Timeline</span>
                     <span style="font-size:10.5px;color:var(--tx-muted);">Track lessons &amp; quizzes</span>
                   </div>
                 </div>
@@ -356,6 +356,58 @@
               <a href="/tasks" class="btn-tutor" style="background:linear-gradient(135deg,var(--gold),var(--gold-deep));color:#000;font-size:13px;padding:10px 16px;margin-top:8px;text-decoration:none;text-align:center;">
                 <span>View Tasks &amp; Rewards →</span>
               </a>
+            </div>
+
+            <!-- Card 4: Detailed Learning State (Phase 13) -->
+            <div class="glass-card" style="grid-column: span 3; display:flex; flex-wrap:wrap; gap: 20px; justify-content: space-between;">
+                <div style="flex:1; min-width:200px;">
+                    <h3 style="color:var(--tx-head);font-size:15px;font-weight:800;margin-bottom:6px;">Learning Analytics</h3>
+                    <p style="color:var(--tx-muted);font-size:12px;margin-bottom:14px;line-height:1.5;">Real-time breakdown of your learning state.</p>
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+                        <div style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:8px;padding:8px 12px;">
+                            <span style="font-size:11px;color:var(--tx-muted);display:block;">Curriculum</span>
+                            <span style="font-size:16px;font-weight:800;color:var(--tx-head);" id="statCurriculum">0%</span>
+                        </div>
+                        <div style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:8px;padding:8px 12px;">
+                            <span style="font-size:11px;color:var(--tx-muted);display:block;">Skill Mastery</span>
+                            <span style="font-size:16px;font-weight:800;color:var(--tx-head);" id="statMastery">0%</span>
+                        </div>
+                        <div style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:8px;padding:8px 12px;">
+                            <span style="font-size:11px;color:var(--tx-muted);display:block;">Quiz Average</span>
+                            <span style="font-size:16px;font-weight:800;color:var(--tx-head);" id="statQuizAvg">0%</span>
+                        </div>
+                        <div style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:8px;padding:8px 12px;">
+                            <span style="font-size:11px;color:var(--tx-muted);display:block;">Practice</span>
+                            <span style="font-size:16px;font-weight:800;color:var(--tx-head);" id="statPractice">0%</span>
+                        </div>
+                    </div>
+                </div>
+                <div style="flex:1; min-width:200px;">
+                    <h3 style="color:var(--tx-head);font-size:15px;font-weight:800;margin-bottom:6px;">Current Focus</h3>
+                    <p style="color:var(--tx-muted);font-size:12px;margin-bottom:14px;line-height:1.5;">AI Tutor Context & Active Constraints</p>
+                    <div style="display:flex; flex-direction:column; gap:8px;">
+                        <div style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:4px;">
+                            <span style="font-size:12px;color:var(--tx-muted);">Current Concept</span>
+                            <span style="font-size:12px;color:var(--tx-head);font-weight:600;" id="statConcept">None</span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:4px;">
+                            <span style="font-size:12px;color:var(--tx-muted);">Current Action</span>
+                            <span style="font-size:12px;color:var(--tx-head);font-weight:600;" id="statAction">Waiting</span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:4px;">
+                            <span style="font-size:12px;color:var(--tx-muted);">Last AI Session</span>
+                            <span style="font-size:12px;color:var(--tx-head);font-weight:600;" id="statLastSession">Never</span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.05); padding-bottom:4px;">
+                            <span style="font-size:12px;color:var(--tx-muted);">Reviews Due</span>
+                            <span style="font-size:12px;color:var(--gold);font-weight:800;" id="statReviews">0</span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between;">
+                            <span style="font-size:12px;color:var(--tx-muted);">Active Misconceptions</span>
+                            <span style="font-size:12px;color:var(--red);font-weight:800;" id="statMisconceptions">0</span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Card 3: Latest Internships (Auto-replaced Attendance Card) -->
@@ -587,7 +639,7 @@
         <!-- Unlocked content -->
         <div id="learnUnlockedWrap" class="hidden">
           <div class="glass-card learning-section" id="learnCard1">
-            <div class="section-title"><i class="fas fa-book-open" style="color:var(--violet);"></i>Course Progress</div>
+            <div class="section-title"><i class="fas fa-book-open" style="color:var(--violet);"></i>Internship Timeline</div>
             <div id="learnProgress"></div>
           </div>
           <div class="glass-card learning-section">
