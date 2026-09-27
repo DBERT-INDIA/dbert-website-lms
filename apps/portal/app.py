@@ -5024,10 +5024,24 @@ def course_enroll(course_id):
                 }), 402
         
         if not existing:
+            # Verify canonical intern identity before FK-constrained INSERT
+            canonical = get_canonical_intern(conn, intern.get("email") or "")
+            if canonical is None:
+                log_error(
+                    "course-enroll",
+                    RuntimeError(f"Cannot enroll: intern not found in intern_accounts (id={intern.get('id')}, email={intern.get('email')})")
+                )
+                return jsonify({
+                    "status": "error",
+                    "message": "Account not found. Please contact support.",
+                }), 400
+
             conn.execute(
-                "INSERT INTO course_enrollments (intern_id, course_id, enrolled_at, last_accessed_at, current_day, email) "
-                "VALUES (?, ?, datetime('now','localtime'), datetime('now','localtime'), 1, ?)",
-                (intern["id"], course_id, intern.get("email") or "")
+                "INSERT INTO course_enrollments "
+                "(intern_id, course_id, enrolled_at, last_accessed_at, current_day, email) "
+                "VALUES (?, ?, datetime('now','localtime'), datetime('now','localtime'), 1, ?) "
+                "ON CONFLICT DO NOTHING",
+                (canonical["id"], course_id, (canonical["email"] or "").strip().lower())
             )
             conn.commit()
 
