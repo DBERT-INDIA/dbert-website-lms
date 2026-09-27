@@ -1,4 +1,5 @@
 # Canonical app â€” promoted from templates/app.py on 2026-06-04
+from services.intern_profile import AttendanceService, TaskSummaryService, ApplicationSummaryService
 from flask import Flask, render_template, request, jsonify, send_from_directory, Response, make_response, redirect, session, abort, g, has_request_context, flash, stream_with_context
 from urllib.parse import quote
 from markupsafe import Markup, escape
@@ -11571,47 +11572,71 @@ def intern_me():
             job_apps = []
             acct_email = (acct["email"] or "").strip().lower() if acct else ""
             if acct:
-                job_apps = conn.execute(
-                    "SELECT pa.id, pa.post_id, pa.status, pa.created_at, pa.decision_note, "
-                    "p.title AS post_title, p.domain AS post_domain, co.name AS company_name, "
-                    "p.post_type AS post_type, p.status AS post_status, "
-                    "d.status AS deposit_status "
-                    "FROM post_applications pa JOIN posts p ON p.id = pa.post_id "
-                    "JOIN companies co ON co.id = p.company_id "
-                    "LEFT JOIN post_hire_deposits d ON d.post_application_id = pa.id "
-                    "AND d.id = (SELECT MAX(id) FROM post_hire_deposits WHERE post_application_id = pa.id) "
-                    "WHERE (pa.intern_id = ? OR (pa.email IS NOT NULL AND LOWER(pa.email) = LOWER(?))) ORDER BY pa.id DESC",
-                    (acct["id"], acct_email),
-                ).fetchall()
+                try:
+                    job_apps = conn.execute(
+                        "SELECT pa.id, pa.post_id, pa.status, pa.created_at, pa.decision_note, "
+                        "p.title AS post_title, p.domain AS post_domain, co.name AS company_name, "
+                        "p.post_type AS post_type, p.status AS post_status, "
+                        "d.status AS deposit_status "
+                        "FROM post_applications pa JOIN posts p ON p.id = pa.post_id "
+                        "JOIN companies co ON co.id = p.company_id "
+                        "LEFT JOIN post_hire_deposits d ON d.post_application_id = pa.id "
+                        "AND d.id = (SELECT MAX(id) FROM post_hire_deposits WHERE post_application_id = pa.id) "
+                        "WHERE (pa.intern_id = ? OR (pa.email IS NOT NULL AND LOWER(pa.email) = LOWER(?))) ORDER BY pa.id DESC",
+                        (acct["id"], acct_email),
+                    ).fetchall()
+                except Exception as _e:
+                    log_error("intern-me-job-apps", _e)
+                    job_apps = []
             # Attendance summary for current week (Sun-Sat)
-            week_start, week_end = get_week_bounds()
-            ws = week_start.strftime("%Y-%m-%d")
-            att_row = conn.execute(
-                "SELECT total_minutes FROM attendance WHERE (intern_id=? OR (email IS NOT NULL AND LOWER(email)=LOWER(?))) AND week_start=?",
-                (acct["id"], acct_email, ws)
-            ).fetchone() if acct else None
-            att_mins = att_row["total_minutes"] if att_row else 0
-            attendance_summary = {
-                "total_minutes": att_mins,
-                "hours": round(att_mins / 60.0, 1),
-                "target_hours": 10,
-                "target_minutes": 600,
-                "pct": min(100, int(round((att_mins / 600.0) * 100))),
-                "status": "On Track" if att_mins >= 300 else "Action Needed"
-            }
+            try:
+                week_start, week_end = get_week_bounds()
+                ws = week_start.strftime("%Y-%m-%d")
+                att_row = conn.execute(
+                    "SELECT total_minutes FROM attendance WHERE (intern_id=? OR (email IS NOT NULL AND LOWER(email)=LOWER(?))) AND week_start=?",
+                    (acct["id"], acct_email, ws)
+                ).fetchone() if acct else None
+                att_mins = att_row["total_minutes"] if att_row else 0
+                attendance_summary = {
+                    "total_minutes": att_mins,
+                    "hours": round(att_mins / 60.0, 1),
+                    "target_hours": 10,
+                    "target_minutes": 600,
+                    "pct": min(100, int(round((att_mins / 600.0) * 100))),
+                    "status": "On Track" if att_mins >= 300 else "Action Needed"
+                }
+                attendance_status = "ok"
+            except Exception as _e:
+                log_error("intern-me-attendance", _e)
+                attendance_summary = {
+                    "total_minutes": 0, "hours": 0.0, "target_hours": 10, "target_minutes": 600, "pct": 0, "status": "Action Needed"
+                }
+                attendance_status = "degraded"
 
             # Approved micro-tasks count
-            approved_tasks = conn.execute(
-                "SELECT COUNT(*) as count FROM task_submissions WHERE (intern_id=? OR (email IS NOT NULL AND LOWER(email)=LOWER(?))) AND status='approved'",
-                (acct["id"], acct_email)
-            ).fetchone()["count"] if acct else 0
+            try:
+                approved_tasks = conn.execute(
+                    "SELECT COUNT(*) as count FROM task_submissions WHERE (intern_id=? OR (email IS NOT NULL AND LOWER(email)=LOWER(?))) AND status='approved'",
+                    (acct["id"], acct_email)
+                ).fetchone()["count"] if acct else 0
+                tasks_status = "ok"
+            except Exception as _e:
+                log_error("intern-me-tasks", _e)
+                approved_tasks = 0
+                tasks_status = "degraded"
 
             # Coins balance — the portal header shows SPENDABLE coins, so this is
             # the task ledger only. Reading the newest balance_after was doubly
             # wrong: it is a running total across every ledger_kind, and once
             # referral coins exist it would advertise withdrawable cash as
             # spendable credit.
-            total_coins = get_task_balance(conn, acct["id"], email=acct_email) if acct else 0
+            try:
+                total_coins = get_task_balance(conn, acct["id"], email=acct_email) if acct else 0
+                coins_status = "ok"
+            except Exception as _e:
+                log_error("intern-me-coins", _e)
+                total_coins = 0
+                coins_status = "degraded"
 
             # Course enrollments summary with local progress calculation
             enriched_enrs = []
@@ -11699,8 +11724,16 @@ def intern_me():
         safe_apps = [filter_fields("applications", row_to_dict(r), viewer_role="intern", is_owner=True) for r in apps]
         safe_enr = filter_fields("enrollments", row_to_dict(enr), viewer_role="intern", is_owner=True) if enr else None
 
+        # Determine overall status
+        overall_status = "success"
+        if course_enrollment_warning or attendance_status == "degraded" or tasks_status == "degraded" or coins_status == "degraded":
+            overall_status = "degraded"
+
         return jsonify({
-            "status": "success",
+            "status": overall_status,
+            "attendance_status": attendance_status,
+            "tasks_status": tasks_status,
+            "coins_status": coins_status,
             "course_enrollment_warning": course_enrollment_warning,
             "intern": {
                 "name":             acct["name"],

@@ -1845,7 +1845,7 @@
         return;
       }
       const data = await res.json();
-      if(data.status!=='success'){
+      if(data.status!=='success' && data.status!=='degraded'){
         if (data.message === 'Unauthorized') {
           window.location.href = '/#signin';
           return;
@@ -1856,6 +1856,10 @@
         return;
       }
       // Handle partial success — portal loads but a subsystem had a warning
+      if(data.status === 'degraded' && !data.course_enrollment_warning){
+        setTimeout(function(){ showToast('Portal loaded with degraded performance in some systems.', 'yellow'); }, 2000);
+      }
+      
       if(data.course_enrollment_warning){
         setTimeout(function(){
           showToast(
