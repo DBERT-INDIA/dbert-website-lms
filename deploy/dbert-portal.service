@@ -8,12 +8,7 @@ Group=ec2-user
 WorkingDirectory=/var/www/dbert-website-lms/apps/portal
 EnvironmentFile=/var/www/dbert-website-lms/apps/portal/.env
 Environment="PATH=/var/www/dbert-website-lms/apps/portal/.venv/bin:/usr/local/bin:/usr/bin"
-Environment="FLASK_SECRET_KEY=dbert_secure_production_secret_key_123!@#"
-Environment="ADMIN_USERNAME=dbert_admin_production"
-Environment="ADMIN_PASSWORD=dbert_secure_admin_password_production!@#"
-Environment="ADMIN_KEY=dbert_secure_admin_key_production!@#"
 
-# Gunicorn execution with 4 workers
 ExecStart=/var/www/dbert-website-lms/apps/portal/.venv/bin/gunicorn \
     --workers 4 \
     --bind 127.0.0.1:5001 \
