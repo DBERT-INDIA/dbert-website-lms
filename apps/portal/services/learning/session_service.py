@@ -278,7 +278,7 @@ class LearningSessionService:
         if next_action_rec.action == "ADVANCE" and next_action_rec.next_concept_id:
             target_concept_id = next_action_rec.next_concept_id
 
-        # 9. Update Session State
+        # 9. Update Session State and Write Turn Ledger
         now_iso = datetime.now(timezone.utc).isoformat()
         action_state = {
             "evaluation": eval_result.to_dict(),
@@ -286,6 +286,23 @@ class LearningSessionService:
             "next_review_at": next_review_iso,
             "review_interval_days": next_interval
         }
+        
+        import uuid
+        turn_uuid = str(uuid.uuid4())
+        
+        conn.execute(
+            """
+            INSERT INTO gl_learning_turns (
+                turn_uuid, session_id, student_id, concept_id, idempotency_key,
+                student_input, evaluation_json, recommendation_json, status, created_at, completed_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """,
+            (
+                turn_uuid, session_id, student_id, concept_id, idempotency_key,
+                student_input, json.dumps(eval_result.to_dict()), json.dumps(next_action_rec.to_dict()),
+                "completed", now_iso, now_iso
+            )
+        )
 
         conn.execute(
             """

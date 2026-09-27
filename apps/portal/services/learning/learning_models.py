@@ -95,6 +95,27 @@ CREATE TABLE IF NOT EXISTS gl_learning_sessions (
 CREATE INDEX IF NOT EXISTS idx_gl_sessions_student ON gl_learning_sessions(student_id, status);
 CREATE INDEX IF NOT EXISTS idx_gl_sessions_course ON gl_learning_sessions(student_id, course_id);
 
+-- 5. Learning Turns (Atomic Turn Tracking)
+CREATE TABLE IF NOT EXISTS gl_learning_turns (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    turn_uuid TEXT UNIQUE NOT NULL,
+    session_id TEXT NOT NULL,
+    student_id INTEGER NOT NULL,
+    concept_id TEXT NOT NULL,
+    idempotency_key TEXT,
+    student_input TEXT NOT NULL,
+    evaluation_json TEXT NOT NULL,
+    recommendation_json TEXT NOT NULL,
+    assistant_response TEXT,
+    status TEXT DEFAULT 'completed',
+    created_at TEXT NOT NULL,
+    completed_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_gl_turns_session ON gl_learning_turns(session_id);
+CREATE INDEX IF NOT EXISTS idx_gl_turns_student ON gl_learning_turns(student_id);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_gl_turns_idem ON gl_learning_turns(idempotency_key) WHERE idempotency_key IS NOT NULL;
+
+
 -- 5. Diagnostic Misconception Catalog
 CREATE TABLE IF NOT EXISTS gl_misconception_catalog (
     misconception_id TEXT PRIMARY KEY,
