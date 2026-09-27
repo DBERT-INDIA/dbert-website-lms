@@ -19,7 +19,8 @@
       <div class="nav-item" data-tab="mentors" data-act-click="switchTab" data-arg-click='["mentors"]'><i class="fas fa-user-tie"></i> Mentors</div>
       <div class="nav-item" data-tab="users" data-act-click="switchTab" data-arg-click='["users"]'><i class="fas fa-users"></i> Users</div>
       <div class="nav-item" data-tab="devices" data-act-click="switchTab" data-arg-click='["devices"]'><i class="fas fa-desktop"></i> Devices</div>
-      <div class="nav-item" data-tab="security" data-act-click="switchTab" data-arg-click='["security"]'><i class="fas fa-shield-halved"></i> Security</div>
+      <div class="nav-item" data-tab="articles" data-act-click="switchTab" data-arg-click='["articles"]'><i class="fas fa-newspaper"></i> Articles</div>`n      <div class="nav-item" data-tab="spotlights" data-act-click="switchTab" data-arg-click='["spotlights"]'><i class="fas fa-bullseye"></i> Spotlights</div>`n      <div class="nav-item" data-tab="security" data-act-click="switchTab" data-arg-click='["security"]'><i class="fas fa-shield-halved"></i> Security</div>
+      <div class="nav-item" data-tab="articles" data-act-click="switchTab" data-arg-click='["articles"]'><i class="fas fa-newspaper"></i> Articles</div>`n      <div class="nav-item" data-tab="spotlights" data-act-click="switchTab" data-arg-click='["spotlights"]'><i class="fas fa-bullseye"></i> Spotlights</div>
       <div class="nav-item" data-tab="addapp" data-act-click="switchTab" data-arg-click='["addapp"]'><i class="fas fa-plus-circle"></i> Add Application</div>
       <div class="nav-item" data-tab="upload" data-act-click="switchTab" data-arg-click='["upload"]'><i class="fas fa-upload"></i> CSV Import</div>
       <!-- Track 2 §8: link the separate admin pages (§1 companies, Track 1 §6 ledger) — real anchors, not tabs. -->
@@ -313,6 +314,62 @@
         </table>
       </div>
       <div class="pagination" id="secPg"></div>
+    </div>
+
+        <!-- ARTICLES QUEUE -->
+    <div class="section-panel" id="panel-articles">
+      <div class="filter-bar">
+        <h3>Content Review Queue</h3>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>ID</th><th>Intern</th><th>Domain</th><th>Title</th><th>Status</th><th>Updated</th><th>Actions</th></tr></thead>
+          <tbody id="articlesBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ARTICLE REVIEW MODAL -->
+    <div id="articleModal" class="modal-overlay hidden">
+      <div class="modal" style="max-width:800px;">
+        <div class="modal-header">
+          <h2 id="arTitle">Review Article</h2>
+          <button class="btn-close" onclick="closeModal('articleModal')">&times;</button>
+        </div>
+        <div class="modal-body" style="display:flex; gap:20px; flex-direction:column; max-height:70vh; overflow-y:auto;">
+          <div style="background:var(--bg-surface); padding:16px; border:1px solid var(--border); border-radius:6px;">
+            <div style="font-size:12px; color:var(--tx-muted); margin-bottom:12px;">Markdown Content:</div>
+            <pre id="arContent" style="white-space:pre-wrap; font-family:monospace; font-size:13px; color:#fff; margin:0;"></pre>
+          </div>
+          <div class="form-group">
+            <label class="field-label">Mentor Feedback</label>
+            <textarea id="arFeedback" class="field-input" rows="4" placeholder="Explain what needs to be fixed..."></textarea>
+          </div>
+          <div id="arPublishBox" class="form-group hidden" style="border-top:1px solid var(--border); padding-top:16px;">
+            <label class="field-label">Publish (Admin Only)</label>
+            <input type="url" id="arPubUrl" class="field-input" placeholder="https://dbert.online/blog/your-article"/>
+            <button class="btn-primary" style="margin-top:12px;" onclick="publishArticle()">Set Live</button>
+          </div>
+        </div>
+        <div class="modal-footer" style="display:flex; gap:10px; justify-content:flex-end;">
+          <button class="btn-primary ghost" onclick="reviewArticle('NEEDS_REVISION')"><i class="fas fa-undo"></i> Request Changes</button>
+          <button class="btn-primary" onclick="reviewArticle('APPROVED')"><i class="fas fa-check"></i> Approve Draft</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SPOTLIGHTS -->
+    <div class="section-panel" id="panel-spotlights">
+      <div class="filter-bar" style="justify-content: space-between;">
+        <h3 style="color:#fff;">Ecosystem Spotlights</h3>
+        <button class="btn-sm gold" onclick="openAddSpotlightModal()"><i class="fas fa-plus"></i> Add Slide</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>ID</th><th>Brand</th><th>Title</th><th>URL</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="spotlightsBody"></tbody>
+        </table>
+      </div>
     </div>
 
     <!-- ADD APPLICATION -->
@@ -633,7 +690,11 @@
     mentors:      {title:'Mentors', sub:'Manage mentor accounts', stats:false},
     users:        {title:'Users', sub:'All registered users', stats:false},
     devices:      {title:'Devices', sub:'Visitor device profiles', stats:false},
-    security:     {title:'Security', sub:'Recent blocked / abusive requests', stats:false},
+    articles:     {title:'Articles Queue', sub:'Review intern technical writing', stats:false},
+      spotlights:   {title:'Spotlights', sub:'Ecosystem carousel slides', stats:false},
+      security:     {title:'Security', sub:'Recent blocked / abusive requests', stats:false},
+      articles:     {title:'Articles Queue', sub:'Review intern technical writing', stats:false},
+      spotlights:   {title:'Spotlights', sub:'Ecosystem carousel slides', stats:false},
     addapp:       {title:'Add Application', sub:'Manually add an application', stats:false},
     upload:       {title:'CSV Import / Export', sub:'Bulk import and data export', stats:false},
   };
@@ -644,7 +705,11 @@
     mentors: ()=>loadMentors(),
     users: ()=>loadUsers(),
     devices: ()=>loadDevices(),
-    security: ()=>loadSecurity(),
+    articles: ()=>loadArticles(),
+      spotlights: ()=>loadSpotlights(),
+      security: ()=>loadSecurity(),
+      articles: ()=>loadArticles(),
+      spotlights: ()=>loadSpotlights(),
     addapp: ()=>{}, upload: ()=>{},
   };
 
@@ -998,6 +1063,124 @@
     if(!data||data.status!=='success') return;
     pgSet('dev', data.devices||[]);
   }
+
+        async function loadContentInsights(){
+    const data = await apiFetch('/admin/insights/content');
+    if(!data || data.status!=='success') return;
+    const ins = data.insights;
+    
+    document.getElementById('insDrafts').textContent = ins.articles['DRAFT'] || 0;
+    document.getElementById('insPending').textContent = ins.articles['PENDING_REVIEW'] || 0;
+    document.getElementById('insApproved').textContent = ins.articles['APPROVED'] || 0;
+    document.getElementById('insPublished').textContent = ins.articles['PUBLISHED'] || 0;
+    
+    document.getElementById('insClicksList').innerHTML = (ins.clicks||[]).map(c => 
+      <div style="display:flex; justify-content:space-between;">
+        <span style="color:var(--tx-body);font-size:13px;"> + escHtml(c.brand) + </span>
+        <strong style="color:#fff;"> + c.clicks + </strong>
+      </div>
+    ).join('') || '<div style="color:var(--tx-muted);font-size:12px;">No clicks yet.</div>';
+    
+    document.getElementById('insWritersList').innerHTML = (ins.top_interns||[]).map(w => 
+      <div style="display:flex; justify-content:space-between;">
+        <span style="color:var(--tx-body);font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:140px;" title="+escHtml(w.name)+"> + escHtml(w.name) + </span>
+        <strong style="color:var(--gold);"> + w.count +  ??</strong>
+      </div>
+    ).join('') || '<div style="color:var(--tx-muted);font-size:12px;">No published writers yet.</div>';
+  }
+
+  let _allArticles = [];
+  let _currentArticleId = null;
+
+  async function loadArticles(){
+    const data = await apiFetch('/admin/articles');
+    if(!data || data.status!=='success') return;
+    _allArticles = data.articles || [];
+    const b = document.getElementById('articlesBody');
+    b.innerHTML = _allArticles.map(a => <tr>
+      <td> + a.id + </td>
+      <td> + escHtml(a.intern_name) + <br><small style="color:var(--tx-muted);">+escHtml(a.intern_email)+</small></td>
+      <td><span class="badge badge-blue"> + escHtml(a.domain) + </span></td>
+      <td><strong> + escHtml(a.title) + </strong></td>
+      <td><span class="badge"> + a.status + </span></td>
+      <td style="font-size:12px;color:var(--tx-muted);"> + (a.updated_at||'').split(' ')[0] + </td>
+      <td>
+        <button class="btn-sm ghost" onclick="openArticleReview( + a.id + )" title="Review"><i class="fas fa-edit"></i></button>
+      </td>
+    </tr>).join('') || '<tr><td colspan="7">No articles in queue.</td></tr>';
+  }
+
+  function openArticleReview(id) {
+    _currentArticleId = id;
+    const a = _allArticles.find(x => x.id === id);
+    if(!a) return;
+    document.getElementById('arTitle').textContent = 'Review: ' + a.title;
+    document.getElementById('arContent').textContent = a.content_markdown;
+    document.getElementById('arFeedback').value = a.mentor_feedback || '';
+    
+    const pBox = document.getElementById('arPublishBox');
+    if(a.status === 'APPROVED' || a.status === 'PUBLISHED') {
+      pBox.classList.remove('hidden');
+      document.getElementById('arPubUrl').value = a.published_url || '';
+    } else {
+      pBox.classList.add('hidden');
+    }
+    
+    document.getElementById('articleModal').classList.remove('hidden');
+  }
+
+  async function reviewArticle(status) {
+    if(!_currentArticleId) return;
+    const feedback = document.getElementById('arFeedback').value;
+    const data = await apiFetch('/admin/articles/review', 'POST', {id: _currentArticleId, status, feedback});
+    if(data && data.status==='success') { showToast('Status updated.','green'); closeModal('articleModal'); loadArticles(); }
+    else showToast(data?.message || 'Error', 'red');
+  }
+
+  async function publishArticle() {
+    if(!_currentArticleId) return;
+    const published_url = document.getElementById('arPubUrl').value;
+    if(!published_url) return showToast('Enter live URL first','red');
+    const data = await apiFetch('/admin/articles/publish', 'POST', {id: _currentArticleId, published_url});
+    if(data && data.status==='success') { showToast('Published!','green'); closeModal('articleModal'); loadArticles(); }
+    else showToast(data?.message || 'Error', 'red');
+  }
+
+  async function loadSpotlights(){
+    const data = await apiFetch('/admin/spotlights');
+    if(!data || data.status!=='success') return;
+    const b = document.getElementById('spotlightsBody');
+    b.innerHTML = (data.spotlights||[]).map(s => <tr>
+      <td> + s.id + </td>
+      <td><span class="badge badge-blue"> + escHtml(s.target_brand||'') + </span></td>
+      <td> + escHtml(s.title) + </td>
+      <td><a href=" + escHtml(s.url) + " target="_blank" style="color:var(--gold);"> + escHtml(s.url) + </a></td>
+      <td> + (s.is_active ? '<span class="badge badge-green">Active</span>' : '<span class="badge badge-muted">Inactive</span>') + </td>
+      <td>
+        <button class="btn-sm ghost" onclick="deleteSpotlight( + s.id + )" title="Delete"><i class="fas fa-trash"></i></button>
+      </td>
+    </tr>).join('') || '<tr><td colspan="6">No spotlights found.</td></tr>';
+  }
+
+  async function deleteSpotlight(id) {
+    if(!confirm('Delete this spotlight slide?')) return;
+    const data = await apiFetch('/admin/spotlights/delete', 'POST', {id});
+    if(data && data.status==='success') { showToast('Deleted.','green'); loadSpotlights(); }
+    else showToast(data?.message || 'Error', 'red');
+  }
+
+  function openAddSpotlightModal() {
+     const title = prompt("Enter slide title (e.g. 'AivaraTech 2026 Open Source Tracker'):");
+     if (!title) return;
+     const url = prompt("Enter target URL (e.g. 'https://aivaratech.info'):");
+     if (!url) return;
+     const brand = prompt("Enter target brand (e.g. 'AivaraTech', 'Alkame'):");
+     apiFetch('/admin/spotlights/add', 'POST', {title, url, target_brand: brand, is_active: true}).then(d => {
+        if (d && d.status === 'success') { showToast('Added spotlight!', 'green'); loadSpotlights(); }
+        else showToast(d?.message || 'Error adding spotlight', 'red');
+     });
+  }
+
 
   async function loadSecurity(){
     const data = await apiFetch('/admin/abuse-log');
@@ -1422,3 +1605,11 @@
   </script>
 </body>
 </html>
+
+
+
+
+
+
+
+

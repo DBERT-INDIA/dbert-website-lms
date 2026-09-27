@@ -418,7 +418,7 @@ def _parse_gemini_keys():
     return keys
 
 GEMINI_API_KEYS         = _parse_gemini_keys()
-GEMINI_MODEL            = os.environ.get("GEMINI_MODEL", "gemini-3.5-flash-lite")
+GEMINI_MODEL            = os.environ.get("GEMINI_MODEL", "gemini-1.5-flash")
 INTERVIEW_ENABLED       = os.environ.get("INTERVIEW_ENABLED", "true").lower() == "true"
 GITHUB_TOKEN            = os.environ.get("GITHUB_TOKEN", "").strip()
 GEMINI_TIMEOUT          = int(os.environ.get("GEMINI_TIMEOUT", "8"))    # seconds per call (was 30)
@@ -2374,6 +2374,38 @@ def init_db():
             CREATE INDEX IF NOT EXISTS idx_attendance_intern_week ON attendance(intern_id, week_start DESC);
             CREATE INDEX IF NOT EXISTS idx_course_day_quizzes_course ON course_day_quizzes(course_id, day_number);
             CREATE INDEX IF NOT EXISTS idx_posts_expires ON posts(expires_at);
+            
+            -- Ecosystem Spotlight & Technical Publishing
+            CREATE TABLE IF NOT EXISTS ecosystem_spotlights (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                title TEXT NOT NULL,
+                description TEXT,
+                url TEXT NOT NULL,
+                target_brand TEXT,
+                is_active INTEGER DEFAULT 1,
+                created_at TEXT DEFAULT (datetime('now','localtime')),
+                updated_at TEXT DEFAULT (datetime('now','localtime'))
+            );
+            
+            CREATE TABLE IF NOT EXISTS spotlight_clicks (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                intern_id INTEGER,
+                spotlight_id INTEGER,
+                clicked_at TEXT DEFAULT (datetime('now','localtime'))
+            );
+            
+            CREATE TABLE IF NOT EXISTS intern_articles (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                intern_id INTEGER NOT NULL,
+                domain TEXT,
+                title TEXT NOT NULL,
+                content_markdown TEXT NOT NULL,
+                status TEXT DEFAULT 'DRAFT',
+                mentor_feedback TEXT,
+                published_url TEXT,
+                created_at TEXT DEFAULT (datetime('now','localtime')),
+                updated_at TEXT DEFAULT (datetime('now','localtime'))
+            );
         """)
         # Auto-ensure 'program' column exists in SQLite for courses and intern_accounts
         try:
@@ -3029,27 +3061,21 @@ def _gemini_byok_call(prompt, api_key, temperature=0.7, max_tokens=2048, user_mo
 
     # Google's current active text-generation flash models in priority order
     preferred_models = [
+        "gemini-1.5-flash",
+        "gemini-1.5-pro",
+        "gemini-2.0-flash-exp",
+        "gemini-2.5-flash",
         "gemini-3.5-flash-lite",
         "gemini-3.5-flash",
         "gemini-flash-latest",
-        "gemini-flash-lite-latest",
-        "gemini-3-flash-preview",
-        "gemini-3.8-flash",
-        "gemini-3.7-flash",
-        "gemini-3.1-flash-lite",
-        "gemini-2.5-flash",
     ]
 
     # Non-text models to strictly exclude (audio, TTS, image, transcribe, etc.)
     non_text_keywords = ("tts", "audio", "image", "transcribe", "clip", "lyria", "robotics", "computer-use", "customtools")
 
+    # Build the list: prioritize verified models from the user's account first
     models_to_try = []
-    # Always prioritize preferred active text models
-    for m in preferred_models:
-        if m not in models_to_try:
-            models_to_try.append(m)
-
-    # Also append any additional text-capable flash models the user's account supports
+    
     if user_models and isinstance(user_models, list):
         for um in user_models:
             if isinstance(um, str):
@@ -3057,6 +3083,11 @@ def _gemini_byok_call(prompt, api_key, temperature=0.7, max_tokens=2048, user_mo
                 if not any(k in clean_um.lower() for k in non_text_keywords):
                     if "flash" in clean_um.lower() and clean_um not in models_to_try:
                         models_to_try.append(clean_um)
+
+    # Append fallback/hardcoded models just in case
+    for m in preferred_models:
+        if m not in models_to_try:
+            models_to_try.append(m)
 
     body = {
         "contents": [{"parts": [{"text": prompt}]}],
@@ -3126,24 +3157,20 @@ def _gemini_stream_byok_call(prompt, api_key, temperature=0.7, max_tokens=2048, 
         return
 
     preferred_models = [
+        "gemini-1.5-flash",
+        "gemini-1.5-pro",
+        "gemini-2.0-flash-exp",
+        "gemini-2.5-flash",
         "gemini-3.5-flash-lite",
         "gemini-3.5-flash",
         "gemini-flash-latest",
-        "gemini-flash-lite-latest",
-        "gemini-3-flash-preview",
-        "gemini-3.8-flash",
-        "gemini-3.7-flash",
-        "gemini-3.1-flash-lite",
-        "gemini-2.5-flash",
     ]
 
     non_text_keywords = ("tts", "audio", "image", "transcribe", "clip", "lyria", "robotics", "computer-use", "customtools")
 
+    # Build the list: prioritize verified models from the user's account first
     models_to_try = []
-    for m in preferred_models:
-        if m not in models_to_try:
-            models_to_try.append(m)
-
+    
     if user_models and isinstance(user_models, list):
         for um in user_models:
             if isinstance(um, str):
@@ -3151,6 +3178,11 @@ def _gemini_stream_byok_call(prompt, api_key, temperature=0.7, max_tokens=2048, 
                 if not any(k in clean_um.lower() for k in non_text_keywords):
                     if "flash" in clean_um.lower() and clean_um not in models_to_try:
                         models_to_try.append(clean_um)
+
+    # Append fallback/hardcoded models just in case
+    for m in preferred_models:
+        if m not in models_to_try:
+            models_to_try.append(m)
 
     body = {
         "contents": [{"parts": [{"text": prompt}]}],
@@ -5566,6 +5598,110 @@ def api_learning_v2_concept_tree(course_id):
     return jsonify({"status": "success", "course_id": course_id, "domain": course["domain"], "concepts": tree_nodes})
 
 
+@app.route("/admin/articles", methods=["GET"])
+def admin_articles_list():
+    user = require_admin() or require_role(["admin", "mentor"])
+    if not user:
+        return jsonify({"status": "error", "message": "Unauthorized"}), 401
+    with get_db() as conn:
+        rows = conn.execute("SELECT a.*, i.name as intern_name, i.email as intern_email FROM intern_articles a JOIN intern_accounts i ON a.intern_id = i.id ORDER BY a.updated_at DESC").fetchall()
+        return jsonify({"status": "success", "articles": [row_to_dict(r) for r in rows]})
+
+@app.route("/admin/articles/review", methods=["POST"])
+def admin_articles_review():
+    user = require_admin() or require_role(["admin", "mentor"])
+    if not user:
+        return jsonify({"status": "error", "message": "Unauthorized"}), 401
+    data = request.json or {}
+    article_id = _int_or_none(data.get("id"))
+    status = data.get("status")
+    feedback = (data.get("feedback") or "").strip()
+    if not article_id or status not in ("NEEDS_REVISION", "APPROVED"):
+        return jsonify({"status": "error", "message": "Invalid status or ID."}), 400
+    with get_db() as conn:
+        conn.execute("UPDATE intern_articles SET status=?, mentor_feedback=?, updated_at=datetime('now','localtime') WHERE id=?", (status, feedback, article_id))
+        conn.commit()
+    return jsonify({"status": "success"})
+
+@app.route("/admin/articles/publish", methods=["POST"])
+def admin_articles_publish():
+    user = require_admin()
+    if not user:
+        return jsonify({"status": "error", "message": "Unauthorized"}), 401
+    data = request.json or {}
+    article_id = _int_or_none(data.get("id"))
+    published_url = (data.get("published_url") or "").strip()
+    if not article_id or not published_url:
+        return jsonify({"status": "error", "message": "Missing ID or published URL."}), 400
+    with get_db() as conn:
+        conn.execute("UPDATE intern_articles SET status='PUBLISHED', published_url=?, updated_at=datetime('now','localtime') WHERE id=?", (published_url, article_id))
+        conn.commit()
+    return jsonify({"status": "success"})
+
+
+@app.route("/admin/spotlights", methods=["GET"])
+def admin_spotlights_list():
+    user = require_admin()
+    if not user:
+        return jsonify({"status": "error", "message": "Unauthorized"}), 401
+    with get_db() as conn:
+        rows = conn.execute("SELECT * FROM ecosystem_spotlights ORDER BY id DESC").fetchall()
+        return jsonify({"status": "success", "spotlights": [row_to_dict(r) for r in rows]})
+
+@app.route("/admin/spotlights/add", methods=["POST"])
+def admin_spotlights_add():
+    user = require_admin()
+    if not user:
+        return jsonify({"status": "error", "message": "Unauthorized"}), 401
+    data = request.json or {}
+    title = (data.get("title") or "").strip()
+    description = (data.get("description") or "").strip()
+    url = (data.get("url") or "").strip()
+    target_brand = (data.get("target_brand") or "").strip()
+    is_active = 1 if str(data.get("is_active")).lower() in ('true', '1') else 0
+    if not title or not url:
+        return jsonify({"status": "error", "message": "Title and URL are required."}), 400
+    with get_db() as conn:
+        conn.execute("INSERT INTO ecosystem_spotlights (title, description, url, target_brand, is_active) VALUES (?, ?, ?, ?, ?)",
+                     (title, description, url, target_brand, is_active))
+        conn.commit()
+    return jsonify({"status": "success"})
+
+@app.route("/admin/spotlights/edit", methods=["POST"])
+def admin_spotlights_edit():
+    user = require_admin()
+    if not user:
+        return jsonify({"status": "error", "message": "Unauthorized"}), 401
+    data = request.json or {}
+    spotlight_id = _int_or_none(data.get("id"))
+    title = (data.get("title") or "").strip()
+    description = (data.get("description") or "").strip()
+    url = (data.get("url") or "").strip()
+    target_brand = (data.get("target_brand") or "").strip()
+    is_active = 1 if str(data.get("is_active")).lower() in ('true', '1') else 0
+    if not spotlight_id or not title or not url:
+        return jsonify({"status": "error", "message": "Missing required fields."}), 400
+    with get_db() as conn:
+        conn.execute("UPDATE ecosystem_spotlights SET title=?, description=?, url=?, target_brand=?, is_active=?, updated_at=datetime('now','localtime') WHERE id=?",
+                     (title, description, url, target_brand, is_active, spotlight_id))
+        conn.commit()
+    return jsonify({"status": "success"})
+
+@app.route("/admin/spotlights/delete", methods=["POST"])
+def admin_spotlights_delete():
+    user = require_admin()
+    if not user:
+        return jsonify({"status": "error", "message": "Unauthorized"}), 401
+    data = request.json or {}
+    spotlight_id = _int_or_none(data.get("id"))
+    if not spotlight_id:
+        return jsonify({"status": "error", "message": "ID required."}), 400
+    with get_db() as conn:
+        conn.execute("DELETE FROM ecosystem_spotlights WHERE id=?", (spotlight_id,))
+        conn.commit()
+    return jsonify({"status": "success"})
+
+
 @app.route("/admin/learning-analytics", methods=["GET"])
 def admin_learning_analytics():
     """Admin and Mentor dashboard for Guided Learning 2.0 analytics and struggle detection."""
@@ -7632,6 +7768,14 @@ def admin_course_payments():
 
 
 @app.route("/admin/course-payments/<int:pay_id>/review", methods=["POST"])
+def _signal_tutor_course_unlock(intern_id, course_id):
+    """
+    Simulated webhook to signal an external tutor system that a course payment was verified.
+    Added to fix F821 undefined name bug which caused silent 500 errors on payment verification.
+    """
+    log_info("tutor_unlock", f"Simulated unlock for intern {intern_id} course {course_id}")
+    return True
+
 def admin_course_payment_review(pay_id):
     if not require_admin():
         return jsonify({"status": "error", "message": "Unauthorized"}), 401
@@ -7733,6 +7877,71 @@ def _tutor_leaderboard(domain_slug):
 def _tutor_progress_live(intern_id):
     """DEPRECATED: Progress is tracked locally."""
     return None
+
+
+@app.route("/intern/articles", methods=["GET"])
+def intern_articles_list():
+    user = require_role("intern")
+    if not user:
+        return jsonify({"status": "error", "message": "Unauthorized"}), 401
+    with get_db() as conn:
+        rows = conn.execute("SELECT * FROM intern_articles WHERE intern_id = ? ORDER BY updated_at DESC", (user["id"],)).fetchall()
+        return jsonify({"status": "success", "articles": [row_to_dict(r) for r in rows]})
+
+@app.route("/intern/articles/save", methods=["POST"])
+def intern_articles_save():
+    user = require_role("intern")
+    if not user:
+        return jsonify({"status": "error", "message": "Unauthorized"}), 401
+    data = request.json or {}
+    article_id = _int_or_none(data.get("id"))
+    title = (data.get("title") or "").strip()
+    content_markdown = (data.get("content_markdown") or "").strip()
+    action = data.get("action") # 'DRAFT' or 'PENDING_REVIEW'
+    
+    if not title:
+        return jsonify({"status": "error", "message": "Title is required."}), 400
+        
+    status = 'PENDING_REVIEW' if action == 'submit' else 'DRAFT'
+    
+    with get_db() as conn:
+        if article_id:
+            # Check ownership
+            owner = conn.execute("SELECT id, status FROM intern_articles WHERE id=? AND intern_id=?", (article_id, user["id"])).fetchone()
+            if not owner:
+                return jsonify({"status": "error", "message": "Article not found."}), 404
+            if owner["status"] in ("APPROVED", "PUBLISHED"):
+                return jsonify({"status": "error", "message": "Cannot edit an approved article."}), 400
+                
+            conn.execute("UPDATE intern_articles SET title=?, content_markdown=?, status=?, updated_at=datetime('now','localtime') WHERE id=?", 
+                         (title, content_markdown, status, article_id))
+        else:
+            conn.execute("INSERT INTO intern_articles (intern_id, domain, title, content_markdown, status) VALUES (?, ?, ?, ?, ?)",
+                         (user["id"], user.get("domain", "General"), title, content_markdown, status))
+        conn.commit()
+    return jsonify({"status": "success"})
+
+@app.route("/intern/ecosystem-spotlights")
+def intern_ecosystem_spotlights():
+    user = require_role("intern")
+    if not user:
+        return jsonify({"status": "error", "message": "Unauthorized"}), 401
+    with get_db() as conn:
+        rows = conn.execute("SELECT id, title, description, url, target_brand FROM ecosystem_spotlights WHERE is_active = 1 ORDER BY id DESC").fetchall()
+        return jsonify({"status": "success", "spotlights": [row_to_dict(r) for r in rows]})
+
+@app.route("/intern/track-spotlight-click", methods=["POST"])
+def intern_track_spotlight_click():
+    user = require_role("intern")
+    if not user:
+        return jsonify({"status": "error", "message": "Unauthorized"}), 401
+    data = request.json or {}
+    spotlight_id = _int_or_none(data.get("spotlight_id"))
+    if spotlight_id:
+        with get_db() as conn:
+            conn.execute("INSERT INTO spotlight_clicks (intern_id, spotlight_id) VALUES (?, ?)", (user["id"], spotlight_id))
+            conn.commit()
+    return jsonify({"status": "success"})
 
 
 @app.route("/intern/leaderboard")
@@ -13738,6 +13947,34 @@ def mentor_update_status():
 # ADMIN API
 # â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
+@app.route("/admin/insights/content", methods=["GET"])
+def admin_insights_content():
+    user = require_admin() or require_role(["admin", "mentor"])
+    if not user:
+        return jsonify({"status": "error", "message": "Unauthorized"}), 401
+    
+    with get_db() as conn:
+        # Spotlight clicks
+        clicks_raw = conn.execute("SELECT s.target_brand, COUNT(c.id) as clicks FROM spotlight_clicks c JOIN ecosystem_spotlights s ON c.spotlight_id = s.id GROUP BY s.target_brand ORDER BY clicks DESC").fetchall()
+        clicks_data = [{"brand": r["target_brand"], "clicks": r["clicks"]} for r in clicks_raw]
+        
+        # Articles pipeline
+        articles_raw = conn.execute("SELECT status, COUNT(id) as count FROM intern_articles GROUP BY status").fetchall()
+        articles_data = {r["status"]: r["count"] for r in articles_raw}
+        
+        # Top interns
+        top_interns_raw = conn.execute("SELECT i.name, COUNT(a.id) as count FROM intern_articles a JOIN intern_accounts i ON a.intern_id = i.id WHERE a.status IN ('APPROVED', 'PUBLISHED') GROUP BY a.intern_id ORDER BY count DESC LIMIT 5").fetchall()
+        top_interns_data = [{"name": r["name"], "count": r["count"]} for r in top_interns_raw]
+        
+        return jsonify({
+            "status": "success", 
+            "insights": {
+                "clicks": clicks_data,
+                "articles": articles_data,
+                "top_interns": top_interns_data
+            }
+        })
+
 @app.route("/admin/stats")
 def admin_stats():
     try:
@@ -16347,4 +16584,8 @@ def admin_heal():
         ),
         "diag_url": "/admin/diag",
     }), 410
+
+
+
+
 
