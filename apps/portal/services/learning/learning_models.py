@@ -165,6 +165,21 @@ CREATE TABLE IF NOT EXISTS gl_course_chunks (
 );
 CREATE INDEX IF NOT EXISTS idx_gl_chunks_course ON gl_course_chunks(course_id);
 CREATE INDEX IF NOT EXISTS idx_gl_chunks_concept ON gl_course_chunks(concept_id);
+
+-- 8. Teacher Learning Instructions
+CREATE TABLE IF NOT EXISTS gl_teacher_learning_instructions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    teacher_id INTEGER NOT NULL,
+    student_id INTEGER NOT NULL,
+    course_id INTEGER NOT NULL,
+    concept_id TEXT,
+    instruction TEXT NOT NULL,
+    priority INTEGER DEFAULT 0,
+    starts_at TEXT,
+    expires_at TEXT,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX IF NOT EXISTS idx_gl_teacher_inst_student ON gl_teacher_learning_instructions(student_id, course_id, concept_id);
 """
     conn.executescript(SCHEMA_SQL)
     conn.commit()
@@ -247,3 +262,16 @@ class LearningSession:
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
+
+
+@dataclass
+class TeacherInstruction:
+    id: int
+    teacher_id: int
+    student_id: int
+    course_id: int
+    instruction: str
+    priority: int = 0
+    concept_id: Optional[str] = None
+    starts_at: Optional[str] = None
+    expires_at: Optional[str] = None

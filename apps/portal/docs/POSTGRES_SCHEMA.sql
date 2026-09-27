@@ -1283,3 +1283,21 @@ CREATE TABLE IF NOT EXISTS gl_course_chunks (
 );
 CREATE INDEX IF NOT EXISTS idx_gl_chunks_course ON gl_course_chunks(course_id);
 CREATE INDEX IF NOT EXISTS idx_gl_chunks_concept ON gl_course_chunks(concept_id);
+
+-- Table: gl_teacher_learning_instructions
+CREATE TABLE IF NOT EXISTS gl_teacher_learning_instructions (
+    id SERIAL PRIMARY KEY,
+    teacher_id INTEGER NOT NULL,
+    student_id INTEGER NOT NULL,
+    course_id INTEGER NOT NULL,
+    concept_id TEXT,
+    instruction TEXT NOT NULL,
+    priority INTEGER DEFAULT 0,
+    starts_at TEXT,
+    expires_at TEXT,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(teacher_id) REFERENCES mentors(id),
+    FOREIGN KEY(student_id) REFERENCES intern_accounts(id),
+    FOREIGN KEY(course_id) REFERENCES courses(id)
+);
+CREATE INDEX IF NOT EXISTS idx_gl_teacher_inst_student ON gl_teacher_learning_instructions(student_id, course_id, concept_id);

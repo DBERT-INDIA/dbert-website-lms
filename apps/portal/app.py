@@ -5331,7 +5331,7 @@ def course_subtopic_chat(course_id, subtopic_id):
                 gl_session = LearningSessionService.get_or_create_session(conn, intern["id"], course_id, subtopic_id)
                 concept = ConceptService.get_concept_by_subtopic(conn, subtopic_id)
                 if concept:
-                    grounded = GroundedRAGTutor.retrieve_grounded_context(conn, concept, user_message)
+                    grounded = GroundedRAGTutor.retrieve_grounded_context(conn, concept, user_message, student_id=intern["id"], course_id=course_id)
                     prompt = GroundedRAGTutor.build_tutor_prompt(
                         student_name=intern.get("name") or "Intern",
                         concept=concept,

@@ -12,7 +12,9 @@ class GroundedRAGTutor:
     def retrieve_grounded_context(
         conn,
         concept: Concept,
-        student_query: str
+        student_query: str,
+        student_id: int = 0,
+        course_id: int = 0
     ) -> Dict[str, Any]:
         """
         Retrieves canonical learning material for the concept.
@@ -74,6 +76,26 @@ class GroundedRAGTutor:
             except Exception as e:
                 import logging
                 logging.error(f"Semantic RAG retrieval failed: {e}")
+                
+        # 5. Teacher / Mentor Instructions (Phase 12)
+        if student_id and course_id:
+            try:
+                inst_rows = conn.execute("""
+                    SELECT instruction, priority 
+                    FROM gl_teacher_learning_instructions
+                    WHERE student_id = ? AND course_id = ? 
+                      AND (concept_id = ? OR concept_id IS NULL)
+                      AND (expires_at IS NULL OR expires_at > datetime('now'))
+                    ORDER BY priority DESC, created_at DESC
+                """, (student_id, course_id, concept.concept_id)).fetchall()
+                
+                if inst_rows:
+                    context_items.append("--- ACTIVE TEACHER/MENTOR DIRECTIVES ---")
+                    for row in inst_rows:
+                        context_items.append(f"MENTOR INSTRUCTION: {row['instruction']}")
+            except Exception as e:
+                import logging
+                logging.error(f"Failed to fetch teacher instructions: {e}")
 
         grounded_text = "\n\n".join(context_items)
 
