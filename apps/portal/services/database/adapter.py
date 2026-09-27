@@ -136,7 +136,7 @@ class RowWrapper:
 # 3. SQL DIALECT & QUERY TRANSLATOR
 # ==============================================================================
 
-def translate_sql(sql: str, target_dialect: str = "postgres") -> str:
+def translate_sql(sql: str, target_dialect: str = "postgres", auto_returning: bool = False) -> str:
     """Translates SQL statements between SQLite and PostgreSQL dialects.
     
     Features:
@@ -187,7 +187,17 @@ def translate_sql(sql: str, target_dialect: str = "postgres") -> str:
     )
 
     # 2. Tokenize and replace '?' with '%s' outside quotes and comments
-    return _convert_qmark_to_format(translated)
+    translated = _convert_qmark_to_format(translated)
+    
+    if dialect == "postgres" and auto_returning:
+        sql_stripped = translated.strip().upper()
+        if sql_stripped.startswith("INSERT ") and " RETURNING " not in sql_stripped:
+            if translated.rstrip().endswith(";"):
+                translated = translated.rstrip()[:-1] + " RETURNING id;"
+            else:
+                translated = translated + " RETURNING id"
+                
+    return translated
 
 
 def _convert_qmark_to_format(sql: str) -> str:
@@ -630,7 +640,8 @@ class PostgreSQLAdapter(DatabaseAdapter):
 
     def execute(self, query: str, params: Optional[Union[tuple, list, dict]] = None) -> CursorAdapter:
         # 1. Translate SQL query from SQLite syntax (? -> %s, datetime -> CURRENT_TIMESTAMP)
-        pg_query = translate_sql(query, "postgres")
+        # We pass auto_returning=True to safely handle INSERTs without relying on lastval()
+        pg_query = translate_sql(query, "postgres", auto_returning=True)
 
         # Ignore SQLite PRAGMAs on PostgreSQL
         if pg_query.strip().upper().startswith("PRAGMA "):
@@ -660,20 +671,8 @@ class PostgreSQLAdapter(DatabaseAdapter):
                         self._last_rowid = None
                 except Exception:
                     self._last_rowid = None
-            elif pg_query.strip().upper().startswith("INSERT "):
-                try:
-                    cur_lv = self._raw_conn.cursor()
-                    cur_lv.execute("SAVEPOINT lastval_sp")
-                    cur_lv.execute("SELECT lastval()")
-                    row = cur_lv.fetchone()
-                    if row:
-                        self._last_rowid = row[0]
-                    cur_lv.execute("RELEASE SAVEPOINT lastval_sp")
-                    cur_lv.close()
-                except Exception:
-                    cur_lv.execute("ROLLBACK TO SAVEPOINT lastval_sp")
-                    self._last_rowid = None
-                    cur_lv.close()
+            else:
+                self._last_rowid = None
 
             return CursorAdapter(cur)
         except Exception as e:
@@ -846,3 +845,4 @@ def get_db_adapter(
 
     # 4. Default SQLiteAdapter (Allowed ONLY for legacy unit testing when REQUIRE_POSTGRES is false)
     return SQLiteAdapter(db_target, timeout=timeout)
+
