@@ -206,7 +206,6 @@ def check_readiness(conn) -> Tuple[bool, Dict[str, Any]]:
     """
     checks = {
         "database_connected": False,
-        "wal_mode": False,
         "tables_accessible": False,
         "outbox_healthy": False
     }
