@@ -295,8 +295,8 @@ SMTP_HOST = os.environ.get("SMTP_HOST", "smtp.gmail.com")
 SMTP_PORT = int(os.environ.get("SMTP_PORT", "587"))
 SMTP_USER = os.environ.get("SMTP_USER", "careers@dbert.online")
 SMTP_PASS = os.environ.get("SMTP_PASS", "")  # never hardcode â€” supplied via .env
-FROM_EMAIL = os.environ.get("FROM_EMAIL", "careers@dbert.online")
-FROM_NAME  = os.environ.get("FROM_NAME", "DBERT Careers")
+FROM_EMAIL = os.environ.get("FROM_EMAIL", "contactus@dbert.online")
+FROM_NAME  = os.environ.get("FROM_NAME", "DBERT Support")
 # Email transport. "ses" = Amazon SES HTTPS API (port 443 â€” bypasses blocked SMTP :587,
 # and SES auto-signs DKIM once the domain is verified). "smtp" = legacy Gmail/SMTP (default).
 # SES creds come from the standard AWS chain: an EC2 IAM role (preferred) or
@@ -3748,7 +3748,7 @@ def assign_mentor_email(domain):
         return rows[0]["email"]
     
     log_info("mentor_assignment", f"No active mentors found for {domain}. Falling back to default.")
-    return "careers@dbert.online"
+    return "contactus@dbert.online"
 
 
 # â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
