@@ -1617,8 +1617,18 @@
           return;
         }
         if(loadScr) loadScr.classList.add('hidden');
-        showToast('Could not load your profile','red');
+        const reqId = res.headers.get('X-Request-ID') || '';
+        showToast('Could not load your profile. ' + (reqId ? 'Ref: ' + reqId : 'Please try again.'), 'red');
         return;
+      }
+      // Handle partial success — portal loads but a subsystem had a warning
+      if(data.course_enrollment_warning){
+        setTimeout(function(){
+          showToast(
+            'Portal loaded. Note: ' + (data.course_enrollment_warning.message || 'Course assignment needs attention.'),
+            'yellow'
+          );
+        }, 2000);
       }
 
       _intern  = data.intern || {};
