@@ -121,3 +121,38 @@
   });
 })();
 </script>
+
+<script nonce="{{ csp_nonce() }}">
+/* Global Intern Attendance Tracker
+   Tracks time on ANY page where the sidebar loads (dashboard, courses, tasks, etc)
+   Pings /attendance/ping every 60 seconds as long as the page is visible. */
+(function() {
+  let globalPingInterval = null;
+
+  async function sendGlobalAttendancePing() {
+    // Only track time if they are actively looking at the tab
+    if (document.visibilityState !== 'visible') return; 
+    
+    try {
+      const res = await fetch('/attendance/ping', { method: 'POST', credentials: 'include' });
+      const data = await res.json();
+      
+      if (res.status === 401 || data.reason === 'internship_ended') {
+        if (globalPingInterval) { clearInterval(globalPingInterval); globalPingInterval = null; }
+      }
+
+      if (data.status === 'success') {
+        const ev = new CustomEvent('dbert_attendance_synced', { detail: data });
+        window.dispatchEvent(ev);
+      }
+    } catch(e) {}
+  }
+
+  // Set the interval globally (starts after 2s, repeats every 60s)
+  setTimeout(sendGlobalAttendancePing, 2000);
+  globalPingInterval = setInterval(sendGlobalAttendancePing, 60000);
+
+  // Expose to window in case portal.html wants to trigger it manually
+  window.sendAttendancePing = sendGlobalAttendancePing;
+})();
+</script>
