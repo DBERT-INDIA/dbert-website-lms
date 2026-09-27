@@ -130,9 +130,6 @@
   let globalPingInterval = null;
 
   async function sendGlobalAttendancePing() {
-    // Only track time if they are actively looking at the tab
-    if (document.visibilityState !== 'visible') return; 
-    
     try {
       const res = await fetch('/attendance/ping', { method: 'POST', credentials: 'include' });
       const data = await res.json();
