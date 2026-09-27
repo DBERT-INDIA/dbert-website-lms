@@ -11327,34 +11327,61 @@ def intern_me():
             # Course enrollments summary with local progress calculation
             enriched_enrs = []
             flow_st = None
+            course_enrollment_warning = None
             if acct:
                 # Auto-enroll accepted intern on-the-fly if missing course enrollment
-                flow_st = get_intern_flow_state(conn, acct["email"])
-                if flow_st["is_accepted"] and flow_st["domain"]:
-                    auto_enroll_intern_in_domain_courses(conn, acct["id"], flow_st["domain"], email=acct_email)
+                try:
+                    flow_st = get_intern_flow_state(conn, acct["email"])
+                    if flow_st["is_accepted"] and flow_st["domain"]:
+                        auto_enroll_intern_in_domain_courses(
+                            conn, acct["id"], flow_st["domain"], email=acct_email
+                        )
+                except Exception as _enr_exc:
+                    log_error("intern-me-auto-enroll", _enr_exc)
+                    course_enrollment_warning = {
+                        "code": "COURSE_AUTO_ENROLLMENT_FAILED",
+                        "message": "Your portal loaded, but course assignment needs attention. Please contact support.",
+                    }
+                    # Attempt rollback so subsequent queries in this connection work
+                    try:
+                        conn.rollback()
+                    except Exception:
+                        pass
 
-                raw_enrs = conn.execute(
-                    "SELECT ce.*, c.title, c.slug, c.level, c.domain FROM course_enrollments ce JOIN courses c ON c.id=ce.course_id WHERE (ce.intern_id=? OR (ce.email IS NOT NULL AND LOWER(ce.email)=LOWER(?))) ORDER BY ce.id DESC",
-                    (acct["id"], acct_email)
-                ).fetchall()
-                for ce in raw_enrs:
-                    d = row_to_dict(ce)
-                    total_days = conn.execute(
-                        "SELECT MAX(day_number) FROM course_day_quizzes WHERE course_id = ?",
-                        (d["course_id"],)
-                    ).fetchone()[0] or 0
-                    quizzes_passed = conn.execute(
-                        "SELECT COUNT(DISTINCT day_quiz_id) FROM day_quiz_attempts "
-                        "WHERE enrollment_id = ? AND passed = 1",
-                        (d["id"],)
-                    ).fetchone()[0] or 0
-                    d["total_days"] = total_days
-                    d["quizzes_passed"] = quizzes_passed
-                    cur_day = d.get("current_day") or 1
-                    pct = round(((cur_day - 1) / total_days * 100) if total_days > 0 else 0, 1)
-                    d["guided_completion_pct"] = pct
-                    d["tutor_completion_pct"] = pct  # compatibility alias
-                    enriched_enrs.append(d)
+                try:
+                    raw_enrs = conn.execute(
+                        "SELECT ce.*, c.title, c.slug, c.level, c.domain "
+                        "FROM course_enrollments ce "
+                        "JOIN courses c ON c.id = ce.course_id "
+                        "WHERE (ce.intern_id = ? OR (ce.email IS NOT NULL AND LOWER(ce.email) = LOWER(?))) "
+                        "ORDER BY ce.id DESC",
+                        (acct["id"], acct_email)
+                    ).fetchall()
+                    for ce in raw_enrs:
+                        d = row_to_dict(ce)
+                        total_days = conn.execute(
+                            "SELECT MAX(day_number) FROM course_day_quizzes WHERE course_id = ?",
+                            (d["course_id"],)
+                        ).fetchone()[0] or 0
+                        quizzes_passed = conn.execute(
+                            "SELECT COUNT(DISTINCT day_quiz_id) FROM day_quiz_attempts "
+                            "WHERE enrollment_id = ? AND passed = 1",
+                            (d["id"],)
+                        ).fetchone()[0] or 0
+                        d["total_days"] = total_days
+                        d["quizzes_passed"] = quizzes_passed
+                        cur_day = d.get("current_day") or 1
+                        pct = round(((cur_day - 1) / total_days * 100) if total_days > 0 else 0, 1)
+                        d["guided_completion_pct"] = pct
+                        d["tutor_completion_pct"] = pct
+                        enriched_enrs.append(d)
+                except Exception as _enr_read_exc:
+                    log_error("intern-me-enr-read", _enr_read_exc)
+                    if course_enrollment_warning is None:
+                        course_enrollment_warning = {
+                            "code": "COURSE_READ_FAILED",
+                            "message": "Could not load your course list. Please refresh.",
+                        }
 
         if not acct:
             return jsonify({"status": "error", "message": "Account not found."}), 404
@@ -11385,6 +11412,7 @@ def intern_me():
 
         return jsonify({
             "status": "success",
+            "course_enrollment_warning": course_enrollment_warning,
             "intern": {
                 "name":             acct["name"],
                 "email":            acct["email"],
