@@ -1279,25 +1279,99 @@ PLATFORM_DOMAIN_COURSES = [
 ]
 
 
+def get_canonical_intern(conn, email: str):
+    """Return the single authoritative intern_accounts row for email, or None.
+
+    Always queries by LOWER(email) and only returns active accounts.
+    Use the returned row's .id and .email for all downstream writes —
+    never trust an ID from session state, legacy tables, or request payload
+    without verifying against this function.
+    """
+    email_clean = (email or "").strip().lower()
+    if not email_clean:
+        return None
+    return conn.execute(
+        "SELECT * FROM intern_accounts WHERE LOWER(email) = ? AND is_active = 1 LIMIT 1",
+        (email_clean,)
+    ).fetchone()
+
 def auto_enroll_intern_in_domain_courses(conn, intern_id, domain, email=None):
-    """Automatically enrolls an intern into the active course(s) for their domain."""
-    if not intern_id or not domain or domain not in VALID_DOMAINS:
+    """Automatically enrolls an intern into the active course(s) for their domain.
+    
+    Uses canonical intern identity (verified against intern_accounts) before
+    any INSERT to prevent ForeignKeyViolation crashes.
+    
+    Returns: number of newly enrolled courses (0 if already enrolled or error).
+    """
+    if not domain or domain not in VALID_DOMAINS:
+        log_info("auto-enroll", f"Skipped: invalid domain {domain!r}")
         return 0
-    if not email and intern_id:
-        acc = conn.execute("SELECT email FROM intern_accounts WHERE id=?", (intern_id,)).fetchone()
-        if acc:
-            email = (acc["email"] or "").strip().lower()
+
+    # Resolve canonical intern — never trust the passed intern_id without verifying
+    canonical = None
+    if email:
+        canonical = get_canonical_intern(conn, email)
+    if canonical is None and intern_id:
+        # fallback: look up by id to get email, then re-verify
+        row = conn.execute(
+            "SELECT email FROM intern_accounts WHERE id = ? AND is_active = 1 LIMIT 1",
+            (intern_id,)
+        ).fetchone()
+        if row:
+            canonical = get_canonical_intern(conn, row["email"])
+
+    if canonical is None:
+        log_error(
+            "auto-enroll",
+            RuntimeError(
+                f"Cannot enroll: intern not found in intern_accounts "
+                f"(intern_id={intern_id!r}, email={email!r})"
+            )
+        )
+        return 0
+
+    canonical_id = canonical["id"]
+    canonical_email = (canonical["email"] or "").strip().lower()
+
+    # Verify parent still exists just before writes (guards against race)
+    parent_check = conn.execute(
+        "SELECT id FROM intern_accounts WHERE id = ? LIMIT 1", (canonical_id,)
+    ).fetchone()
+    if not parent_check:
+        log_error(
+            "auto-enroll",
+            RuntimeError(
+                f"intern_accounts row disappeared between lookup and INSERT "
+                f"(id={canonical_id})"
+            )
+        )
+        return 0
+
     courses = conn.execute(
-        "SELECT id FROM courses WHERE domain=? AND is_active=1", (domain,)
+        "SELECT id FROM courses WHERE domain = ? AND is_active = 1", (domain,)
     ).fetchall()
+
     enrolled_count = 0
     for c in courses:
-        res = conn.execute("""
-            INSERT INTO course_enrollments (intern_id, course_id, enrolled_at, last_accessed_at, current_day, email)
-            VALUES (?, ?, ?, ?, 1, ?) ON CONFLICT DO NOTHING
-        """, (intern_id, c["id"], now_str(), now_str(), email))
-        if res.rowcount > 0:
-            enrolled_count += 1
+        try:
+            res = conn.execute(
+                """
+                INSERT INTO course_enrollments
+                    (intern_id, course_id, enrolled_at, last_accessed_at, current_day, email)
+                VALUES (?, ?, ?, ?, 1, ?)
+                ON CONFLICT DO NOTHING
+                """,
+                (canonical_id, c["id"], now_str(), now_str(), canonical_email)
+            )
+            if res.rowcount > 0:
+                enrolled_count += 1
+                log_info("auto-enroll", f"Enrolled intern {canonical_id} in course {c['id']}")
+            else:
+                log_info("auto-enroll", f"Already enrolled intern {canonical_id} in course {c['id']}, skipping")
+        except Exception as exc:
+            log_error("auto-enroll", exc)
+            # Do NOT re-raise — log and continue to next course
+
     return enrolled_count
 
 
