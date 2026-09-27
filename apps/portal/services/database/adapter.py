@@ -739,6 +739,14 @@ class PostgreSQLAdapter(DatabaseAdapter):
             self.execute(query)
             self.commit()
 
+    def cursor(self):
+        """Return a cursor from the underlying PostgreSQL connection."""
+        return self._raw_conn.cursor()
+
+    def __getattr__(self, name: str) -> Any:
+        """Forward unrecognized methods to underlying PostgreSQL connection for maximum compatibility."""
+        return getattr(self._raw_conn, name)
+
     def database_identity(self) -> dict:
         """Return safe diagnostic info about the current database connection."""
         import os

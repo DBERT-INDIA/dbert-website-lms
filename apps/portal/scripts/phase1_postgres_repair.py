@@ -70,5 +70,7 @@ def main():
     conn.commit()
     print("\n[SUCCESS] Phase 1 Repair Complete: PostgreSQL Root-Cause (FK Paradox) Resolved!")
 
+run = main
+
 if __name__ == "__main__":
     main()
