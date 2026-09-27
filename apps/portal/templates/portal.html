@@ -293,6 +293,44 @@
               </a>
             </div>
 
+            
+            <!-- Card 3: Skill Mastery & Retention (Phase 8) -->
+            <div class="glass-card" style="display:flex;flex-direction:column;justify-content:space-between;margin-bottom:0;min-height:270px;">
+              <div>
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+                  <div style="width:38px;height:38px;border-radius:10px;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.3);display:flex;align-items:center;justify-content:center;color:#10b981;font-size:16px;">
+                    <i class="fas fa-brain"></i>
+                  </div>
+                  <span class="badge b-green" id="ovMasteryLevelBadge">Proficient</span>
+                </div>
+                <h3 style="color:var(--tx-head);font-size:15px;font-weight:800;margin-bottom:6px;">True Skill Mastery</h3>
+                <p style="color:var(--tx-muted);font-size:12px;margin-bottom:14px;line-height:1.5;">Evaluated using a deterministic weighted evidence model based on AI interaction history.</p>
+                
+                <div style="display:flex;align-items:center;gap:14px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:8px;padding:8px 12px;margin-bottom:8px;">
+                  <div class="ring ring-sm ring-green" id="ovMasteryFill" style="--pct:0;width:40px;height:40px;flex-shrink:0;--ring-color:#10b981;">
+                    <div class="ring-txt"><b id="ovMasteryPct" style="font-size:11px;">0%</b></div>
+                  </div>
+                  <div>
+                    <span style="font-size:12.5px;font-weight:700;color:var(--tx-head);display:block;">Aggregate Mastery</span>
+                  </div>
+                </div>
+
+                <div style="display:flex;align-items:center;gap:14px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:8px;padding:8px 12px;margin-bottom:8px;">
+                  <div class="ring ring-sm ring-blue" id="ovRetentionFill" style="--pct:0;width:40px;height:40px;flex-shrink:0;--ring-color:#3b82f6;">
+                    <div class="ring-txt"><b id="ovRetentionPct" style="font-size:11px;">0</b></div>
+                  </div>
+                  <div>
+                    <span style="font-size:12.5px;font-weight:700;color:var(--tx-head);display:block;">Retention Index</span>
+                  </div>
+                </div>
+
+              </div>
+              <div style="display:flex; justify-content:space-between; margin-top: 8px;">
+                 <span style="font-size:11px;color:var(--tx-muted);"><i class="fas fa-exclamation-triangle" style="color:var(--gold);"></i> <span id="ovStruggleIdx">0.0</span> Struggle</span>
+                 <span style="font-size:11px;color:var(--tx-muted);"><i class="fas fa-user-shield" style="color:var(--violet);"></i> <span id="ovMentorInt">0</span> Mentor</span>
+              </div>
+            </div>
+
             <!-- Card 2: Micro-Tasks & Coins Rewards -->
             <div class="glass-card" style="display:flex;flex-direction:column;justify-content:space-between;margin-bottom:0;min-height:270px;">
               <div>
@@ -2057,6 +2095,31 @@
         courseBtnEl.href = '/courses';
         courseBtnEl.innerHTML = '<span>Continue Learning →</span>';
       }
+    }
+
+    // Card 3: Skill Mastery & Retention (Phase 8)
+    if (_learningProfile) {
+      const masteryPct = Math.round((_learningProfile.overall_mastery || 0) * 100);
+      document.getElementById('ovMasteryPct').textContent = masteryPct + '%';
+      document.getElementById('ovMasteryFill').style.setProperty('--pct', masteryPct);
+      
+      const retention = (_learningProfile.retention_index || 1.0).toFixed(1);
+      document.getElementById('ovRetentionPct').textContent = retention;
+      document.getElementById('ovRetentionFill').style.setProperty('--pct', Math.min(100, Math.round((retention / 1.5) * 100)));
+      
+      document.getElementById('ovStruggleIdx').textContent = (_learningProfile.recent_struggle_index || 0.0).toFixed(2);
+      document.getElementById('ovMentorInt').textContent = _learningProfile.mentor_interventions || 0;
+      
+      const badge = document.getElementById('ovMasteryLevelBadge');
+      if (masteryPct >= 90) { badge.textContent = 'Mastered'; badge.className = 'badge b-green'; }
+      else if (masteryPct >= 70) { badge.textContent = 'Proficient'; badge.className = 'badge b-blue'; }
+      else if (masteryPct >= 35) { badge.textContent = 'Developing'; badge.className = 'badge b-violet'; }
+      else { badge.textContent = 'Novice'; badge.className = 'badge badge-gold'; }
+    } else {
+      document.getElementById('ovMasteryPct').textContent = '0%';
+      document.getElementById('ovMasteryFill').style.setProperty('--pct', 0);
+      document.getElementById('ovRetentionPct').textContent = '1.0';
+      document.getElementById('ovRetentionFill').style.setProperty('--pct', 66);
     }
 
     // Card 2: Micro-Tasks & Coins Rewards

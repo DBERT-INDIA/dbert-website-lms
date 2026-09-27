@@ -1247,3 +1247,20 @@ CREATE INDEX idx_user_keys_intern ON user_api_keys(intern_id);
 
 -- Index: idx_withdrawals_intern
 CREATE INDEX idx_withdrawals_intern ON ambassador_withdrawals(intern_id, status);
+
+-- Table: gl_student_learning_profile
+CREATE TABLE IF NOT EXISTS gl_student_learning_profile (
+    student_id INTEGER PRIMARY KEY,
+    overall_mastery REAL DEFAULT 0.0,
+    overall_confidence REAL DEFAULT 0.0,
+    learning_velocity REAL DEFAULT 1.0,
+    preferred_explanation_depth TEXT DEFAULT 'STANDARD',
+    practice_strength REAL DEFAULT 0.0,
+    conceptual_strength REAL DEFAULT 0.0,
+    recent_struggle_index REAL DEFAULT 0.0,
+    retention_index REAL DEFAULT 1.0,
+    mentor_interventions INTEGER DEFAULT 0,
+    last_learning_at TEXT,
+    created_at TEXT NOT NULL,
+    updated_at TEXT NOT NULL
+);

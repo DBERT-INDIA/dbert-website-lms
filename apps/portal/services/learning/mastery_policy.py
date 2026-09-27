@@ -61,6 +61,66 @@ class MasteryPolicy:
             updated_at=now_iso
         )
 
+
+    @staticmethod
+    def update_student_profile(conn, student_id: int):
+        """
+        Calculates and updates the aggregated Student Learning Profile using a deterministic weighted evidence model.
+        """
+        now_iso = datetime.now(timezone.utc).isoformat()
+        
+        # 1. Fetch all concept masteries for the student
+        rows = conn.execute("SELECT * FROM gl_student_mastery WHERE student_id = ?", (student_id,)).fetchall()
+        
+        if not rows:
+            return
+            
+        total_concepts = len(rows)
+        mastery_sum = sum(r["mastery_score"] for r in rows)
+        confidence_sum = sum(r["confidence"] for r in rows)
+        
+        # Calculate recent struggles (concepts with attempts but 0 successes, or < 0.35 mastery)
+        struggles = sum(1 for r in rows if r["mastery_score"] < 0.35 and r["total_attempts"] > 2)
+        struggle_index = round(struggles / total_concepts, 2)
+        
+        overall_mastery = round(mastery_sum / total_concepts, 2)
+        overall_confidence = round(confidence_sum / total_concepts, 2)
+        
+        # Determine average learning velocity and retention based on spaced review performance
+        # (This is a simplified deterministic proxy for full retention modeling)
+        avg_velocity = sum(r["learning_velocity"] for r in rows) / total_concepts
+        avg_retention = sum(min(1.5, max(0.5, r["review_interval_days"] / 3.0)) for r in rows) / total_concepts
+        retention_index = round(avg_retention, 2)
+        
+        # Get mentor interventions count
+        mentor_events = conn.execute("SELECT COUNT(*) as c FROM gl_learning_turns WHERE student_id = ? AND recommendation_json LIKE '%ESCALATE_TO_MENTOR%'", (student_id,)).fetchone()
+        interventions = mentor_events["c"] if mentor_events else 0
+
+        # Upsert profile
+        conn.execute(
+            """
+            INSERT INTO gl_student_learning_profile (
+                student_id, overall_mastery, overall_confidence, learning_velocity,
+                recent_struggle_index, retention_index, mentor_interventions, last_learning_at,
+                created_at, updated_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ON CONFLICT(student_id) DO UPDATE SET
+                overall_mastery = excluded.overall_mastery,
+                overall_confidence = excluded.overall_confidence,
+                learning_velocity = excluded.learning_velocity,
+                recent_struggle_index = excluded.recent_struggle_index,
+                retention_index = excluded.retention_index,
+                mentor_interventions = excluded.mentor_interventions,
+                last_learning_at = excluded.last_learning_at,
+                updated_at = excluded.updated_at
+            """,
+            (
+                student_id, overall_mastery, overall_confidence, round(avg_velocity, 2),
+                struggle_index, retention_index, interventions, now_iso, now_iso, now_iso
+            )
+        )
+        conn.commit()
+
     @staticmethod
     def evaluate_and_update_mastery(
         conn,
@@ -227,6 +287,9 @@ class MasteryPolicy:
             }
         )
 
+        # 12. Update global profile
+        MasteryPolicy.update_student_profile(conn, student_id)
+        
         return mastery, event
 
     @staticmethod
