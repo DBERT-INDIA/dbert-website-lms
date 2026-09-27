@@ -4882,6 +4882,12 @@ def courses_catalog():
 
     with get_db() as conn:
         if intern:
+            # Enforce API key before allowing curriculum access
+            key_row = conn.execute("SELECT id FROM user_api_keys WHERE intern_id = ?", (intern["id"],)).fetchone()
+            if not key_row and not is_admin:
+                flash("Please connect your free Gemini API key first to unlock the curriculum.", "info")
+                return redirect("/account/gemini-key")
+
             flow_st = get_intern_flow_state(conn, intern["email"])
             intern_domain = flow_st.get("domain") or intern.get("domain")
             if "program" in intern.keys() and intern["program"]:
@@ -4933,6 +4939,12 @@ def course_detail(course_id):
             abort(404)
 
         if intern and course["domain"]:
+            # Enforce API key
+            key_row = conn.execute("SELECT id FROM user_api_keys WHERE intern_id = ?", (intern["id"],)).fetchone()
+            if not key_row and session.get("role") not in ("admin", "superadmin"):
+                flash("Please connect your free Gemini API key first to unlock the curriculum.", "info")
+                return redirect("/account/gemini-key")
+
             flow_st = get_intern_flow_state(conn, intern["email"])
             intern_domain = flow_st.get("domain") or intern.get("domain")
             if intern_domain and course["domain"] != intern_domain and session.get("role") not in ("admin", "superadmin"):
@@ -5369,6 +5381,12 @@ def course_learn_page(course_id):
         course = conn.execute("SELECT * FROM courses WHERE id = ?", (course_id,)).fetchone()
         if not course:
             abort(404)
+            
+        # Enforce API key
+        key_row = conn.execute("SELECT id FROM user_api_keys WHERE intern_id = ?", (intern["id"],)).fetchone()
+        if not key_row and session.get("role") not in ("admin", "superadmin"):
+            flash("Please connect your free Gemini API key first to unlock the curriculum.", "info")
+            return redirect("/account/gemini-key")
             
         enrollment = conn.execute(
             "SELECT * FROM course_enrollments WHERE (intern_id = ? OR (email IS NOT NULL AND LOWER(email) = LOWER(?))) AND course_id = ?",
