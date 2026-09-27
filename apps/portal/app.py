@@ -5860,6 +5860,9 @@ def course_quiz_page(course_id, day_number):
         if not enrollment:
             return redirect(f"/courses/{course_id}")
             
+        if day_number > enrollment["current_day"]:
+            return redirect(f"/courses/{course_id}/learn")
+            
         course = conn.execute("SELECT * FROM courses WHERE id = ?", (course_id,)).fetchone()
         if not course:
             abort(404)
@@ -5948,6 +5951,9 @@ def course_quiz_page(course_id, day_number):
             "options": q["options"]
         })
 
+    import time
+    session[f"quiz_start_{course_id}_{day_number}"] = time.time()
+    
     return render_template(
         "course_quiz.html",
         course=dict(course),
@@ -5964,10 +5970,24 @@ def course_quiz_submit(course_id, day_number):
     if not intern:
         return jsonify({"status": "error", "message": "Authentication required"}), 401
         
+    import time
     data = request.get_json(silent=True) or {}
     answers = data.get("answers") or {}
     tab_switches = int(data.get("tab_switches") or 0)
-    time_taken_sec = int(data.get("time_taken_sec") or 0)
+    client_time_taken = int(data.get("time_taken_sec") or 0)
+    
+    start_time = session.get(f"quiz_start_{course_id}_{day_number}")
+    if not start_time:
+        return jsonify({"status": "error", "message": "Invalid attempt. Please reload the quiz."}), 400
+        
+    server_time_taken = int(time.time() - start_time)
+    
+    # Use server time for integrity validation. 
+    # If client is way off or server time is unbelievably short (e.g. < 2 seconds for 5 questions), flag it.
+    if server_time_taken < 2:
+        return jsonify({"status": "error", "message": "Attempt too fast. Suspicious activity detected."}), 400
+        
+    time_taken_sec = server_time_taken
     
     with get_db() as conn:
         enrollment = conn.execute(
@@ -5990,11 +6010,42 @@ def course_quiz_submit(course_id, day_number):
         max_score = len(questions)
         score = 0
         
+        from services.learning.mastery_policy import MasteryPolicy
+        from services.learning.evaluator import EvaluationResult
+        from services.learning.concept_service import ConceptService
+        
         for idx, q in enumerate(questions):
             q_id = str(q.get("id", idx + 1))
             submitted_idx = answers.get(q_id)
-            if submitted_idx is not None and int(submitted_idx) == q.get("correct_index"):
+            is_correct = submitted_idx is not None and int(submitted_idx) == q.get("correct_index")
+            if is_correct:
                 score += 1
+                
+            concept_id = q.get("concept_id")
+            if concept_id:
+                try:
+                    concept = ConceptService.get_concept(conn, concept_id)
+                    if concept:
+                        eval_res = EvaluationResult(
+                            correctness=1.0 if is_correct else 0.0,
+                            partial_correctness=False,
+                            reasoning_quality=1.0 if is_correct else 0.0,
+                            concept_understanding=1.0 if is_correct else 0.0,
+                            detected_misconceptions=[],
+                            confidence=0.9,
+                            suggested_action="ADVANCE" if is_correct else "RETEST"
+                        )
+                        MasteryPolicy.evaluate_and_update_mastery(
+                            conn=conn,
+                            student_id=intern["id"],
+                            concept=concept,
+                            session_id=f"quiz_{quiz['id']}",
+                            student_input=str(submitted_idx),
+                            evaluation=eval_res
+                        )
+                except Exception as e:
+                    import logging
+                    logging.error(f"Failed to update mastery from quiz: {e}")
 
         pass_threshold = max(1, int(max_score * 0.7))
         passed = 1 if score >= pass_threshold else 0
