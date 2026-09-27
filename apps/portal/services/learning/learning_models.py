@@ -147,7 +147,25 @@ CREATE TABLE IF NOT EXISTS gl_student_learning_profile (
 """
 
 def init_learning_tables(conn) -> None:
-    """Idempotently executes table creation and indexes for Guided Learning 2.0."""
+    """Idempotently executes table creation and indexes for Guided Learning 2.0.
+-- 7. Course Chunks (RAG Knowledge Base)
+CREATE TABLE IF NOT EXISTS gl_course_chunks (
+    chunk_id TEXT PRIMARY KEY,
+    course_id INTEGER NOT NULL,
+    course_version TEXT NOT NULL,
+    module_id INTEGER,
+    concept_id TEXT,
+    subtopic_id INTEGER,
+    difficulty INTEGER DEFAULT 1,
+    content_type TEXT NOT NULL,
+    source TEXT NOT NULL,
+    text_content TEXT NOT NULL,
+    embedding_json TEXT NOT NULL,
+    created_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_gl_chunks_course ON gl_course_chunks(course_id);
+CREATE INDEX IF NOT EXISTS idx_gl_chunks_concept ON gl_course_chunks(concept_id);
+"""
     conn.executescript(SCHEMA_SQL)
     conn.commit()
 

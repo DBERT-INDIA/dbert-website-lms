@@ -40,16 +40,22 @@ class GeminiProvider:
         except requests.RequestException as e:
             raise GeminiProviderError(f"Network error: {e}")
             
-    def generate_content(self, prompt: str, temperature: float = 0.7, max_tokens: int = 2048) -> GeminiResponse:
+    def generate_content(self, prompt: str, temperature: float = 0.7, max_tokens: int = 2048, response_schema: Optional[Dict[str, Any]] = None) -> GeminiResponse:
         """Generates content trying the fallback chain until success."""
         chain = get_fallback_chain(self.available_models)
         
+        gen_config = {
+            "temperature": temperature,
+            "maxOutputTokens": max_tokens
+        }
+        
+        if response_schema:
+            gen_config["responseMimeType"] = "application/json"
+            gen_config["responseSchema"] = response_schema
+            
         body = {
             "contents": [{"parts": [{"text": prompt}]}],
-            "generationConfig": {
-                "temperature": temperature,
-                "maxOutputTokens": max_tokens
-            }
+            "generationConfig": gen_config
         }
         
         last_err = None
@@ -118,3 +124,32 @@ class GeminiProvider:
                 continue # Try next model on failure
                 
         yield "Error: Could not generate response from any available AI models."
+
+
+    def generate_embeddings(self, texts: List[str], model: str = "text-embedding-004") -> List[List[float]]:
+        """Generates embeddings for a batch of texts."""
+        url = self.BASE_URL.format(model=model, action="batchEmbedContents")
+        
+        requests_payload = [
+            {"model": f"models/{model}", "content": {"parts": [{"text": text}]}}
+            for text in texts
+        ]
+        
+        body = {"requests": requests_payload}
+        
+        try:
+            r = requests.post(url, params={"key": self.api_key}, json=body, timeout=30)
+            if r.status_code == 401 or r.status_code == 403:
+                raise GeminiAuthError(f"Authentication failed for {model}: {r.text}")
+            elif r.status_code == 429:
+                raise GeminiRateLimitError(f"Rate limited on {model}")
+            r.raise_for_status()
+            
+            data = r.json()
+            embeddings = []
+            for item in data.get("embeddings", []):
+                embeddings.append(item.get("values", []))
+                
+            return embeddings
+        except requests.RequestException as e:
+            raise GeminiProviderError(f"Embedding error: {e}")

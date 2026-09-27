@@ -53,6 +53,28 @@ class GroundedRAGTutor:
                 misc_notes.append(f"Clarification: {m.get('name', 'Issue')} - {m.get('description', '')} (Resolution: {m.get('remediation', '')})")
             context_items.append("PEDAGOGICAL NUANCES TO EMPHASIZE:\n" + "\n".join(misc_notes))
 
+        # 4. True Semantic RAG Context (Phase 9)
+        if student_query:
+            try:
+                from services.ai.gemini_provider import GeminiProvider
+                from services.learning.rag_retriever import RAGRetriever
+                
+                # Fetch embeddings for student query using system provider instance
+                provider = GeminiProvider()
+                query_embeddings = provider.generate_embeddings([student_query])
+                if query_embeddings and len(query_embeddings) > 0:
+                    q_emb = query_embeddings[0]
+                    chunks = RAGRetriever.retrieve_chunks(conn, q_emb, course_id=0) # course ID omitted or generic for now, we filter by concept
+                    
+                    if chunks:
+                        context_items.append("--- SUPPLEMENTARY KNOWLEDGE BASE (RAG) ---")
+                        for idx, chunk in enumerate(chunks):
+                            context_items.append(f"[Chunk {idx+1} | Source: {chunk['source']}]\n{chunk['text_content']}")
+                        source = "vector_rag"
+            except Exception as e:
+                import logging
+                logging.error(f"Semantic RAG retrieval failed: {e}")
+
         grounded_text = "\n\n".join(context_items)
 
         return {
