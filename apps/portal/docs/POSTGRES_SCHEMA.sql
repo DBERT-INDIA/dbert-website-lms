@@ -989,6 +989,7 @@ CREATE TABLE IF NOT EXISTS user_api_keys (
     key_hash TEXT UNIQUE,
     validated_at TEXT,
     available_models_json TEXT,
+    encryption_version INTEGER DEFAULT 1,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY(intern_id) REFERENCES intern_accounts(id)
 );

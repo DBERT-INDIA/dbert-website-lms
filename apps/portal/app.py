@@ -267,10 +267,16 @@ def csp_policy_for(nonce):
         if not nonce else
         f"script-src 'self' 'nonce-{nonce}' {_CSP_SCRIPT_ORIGINS}"
     )
+    style_src = (
+        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com"
+        if not nonce else
+        f"style-src 'self' 'nonce-{nonce}' https://fonts.googleapis.com https://cdnjs.cloudflare.com"
+    )
+    
     return (
         "default-src 'self'; "
         f"{script_src}; "
-        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; "
+        f"{style_src}; "
         "font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; "
         "img-src 'self' data: https:; "
         "connect-src 'self' https://onesignal.com https://*.onesignal.com https://api.onesignal.com https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com; "
@@ -3586,7 +3592,7 @@ CSRF_SAFE_METHODS = {"GET", "HEAD", "OPTIONS", "TRACE"}
 # Endpoints that legitimately cannot carry a token. Keep this list empty unless
 # there is a genuine server-to-server caller â€” every browser-originated POST
 # must be protected.
-CSRF_EXEMPT_ENDPOINTS = {"attendance_ping"}
+CSRF_EXEMPT_ENDPOINTS = set()
 
 
 def _csrf_token():
@@ -3618,7 +3624,7 @@ def _enforce_csrf():
         return None
     ep = request.endpoint or ""
     ep_short = ep.split(".")[-1]
-    if request.path.startswith("/api/payment/razorpay/webhook") or request.path == "/attendance/ping" or ep in CSRF_EXEMPT_ENDPOINTS or ep_short in CSRF_EXEMPT_ENDPOINTS:
+    if request.path.startswith("/api/payment/razorpay/webhook") or ep in CSRF_EXEMPT_ENDPOINTS or ep_short in CSRF_EXEMPT_ENDPOINTS:
         return None
 
     # P0-7: Server-to-server CSRF exemption with strong auth
@@ -5177,6 +5183,11 @@ def course_subtopic_chat(course_id, subtopic_id):
     intern = current_intern()
     if not intern:
         return jsonify({"status": "error", "message": "Authentication required"}), 401
+        
+    # Phase 11: AI Generation Rate Limit
+    gen_allowed, gen_retry = rate_check(f"ai_gen_{intern['id']}", 50, 3600)
+    if not gen_allowed:
+        return jsonify({"status": "error", "message": f"AI Generation rate limit reached. Try again later."}), 429
     if not is_enrolled_or_accepted(intern["email"]):
         return jsonify({"status": "error", "message": "Internship enrollment required."}), 403
         
@@ -6113,6 +6124,19 @@ def account_gemini_key():
     # POST - Save / Validate Key
     data = request.get_json(silent=True) or {}
     raw_key = (data.get("api_key") or request.form.get("api_key") or "").strip()
+    
+    # Phase 11: BYOK Endpoint Rate Limiting
+    val_allowed, val_retry = rate_check(f"byok_val_{intern['id']}", 5, 3600)
+    if not val_allowed:
+        return jsonify({"status": "error", "message": f"Too many key validation attempts. Try again in {val_retry}s."}), 429
+        
+    with get_db() as conn:
+        existing_key = conn.execute("SELECT id FROM user_api_keys WHERE intern_id = ?", (intern['id'],)).fetchone()
+        
+    if existing_key:
+        rep_allowed, rep_retry = rate_check(f"byok_rep_{intern['id']}", 3, 86400)
+        if not rep_allowed:
+            return jsonify({"status": "error", "message": f"Key replacement limit reached. Try again in {rep_retry}s."}), 429
     
     if not raw_key:
         return jsonify({"status": "error", "message": "API key is required"}), 400

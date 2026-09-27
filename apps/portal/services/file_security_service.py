@@ -256,7 +256,61 @@ def authorize_file_download(conn, user_context: Optional[Dict[str, Any]], filena
         return False, "forbidden_company_not_owner"
 
     if role == "mentor":
-        # Mentors can view task submissions
-        return True, "mentor_review_authorized"
+        # Phase 11: Mentor Object Authorization (ABAC)
+        mentor_id = user_context.get("id")
+        
+        # 1. Look up mentor details
+        mentor_row = conn.execute("SELECT email, domain FROM mentors WHERE id = ?", (mentor_id,)).fetchone()
+        if not mentor_row:
+            return False, "forbidden_mentor_not_found"
+            
+        m_email = mentor_row["email"].lower()
+        m_domain = mentor_row["domain"]
+
+        # 2. Check if the file belongs to an intern assigned to this mentor via applications
+        # The file can be a task_submission, enrollment screenshot, etc. 
+        # We find the owner's email first.
+        owner_email = None
+        
+        # Task submission
+        ts = conn.execute("SELECT email, intern_id FROM task_submissions WHERE (submission_file = ? OR submission_file LIKE ?) LIMIT 1", (clean_file, f"%/{clean_file}")).fetchone()
+        if ts:
+            if ts["email"]: owner_email = ts["email"].lower()
+            elif ts["intern_id"]:
+                acc = conn.execute("SELECT email FROM intern_accounts WHERE id = ?", (ts["intern_id"],)).fetchone()
+                if acc: owner_email = acc["email"].lower()
+                
+        # Course payments
+        if not owner_email:
+            cp = conn.execute("SELECT intern_id FROM course_payments WHERE (payment_screenshot = ? OR payment_screenshot LIKE ?) LIMIT 1", (clean_file, f"%/{clean_file}")).fetchone()
+            if cp and cp["intern_id"]:
+                acc = conn.execute("SELECT email FROM intern_accounts WHERE id = ?", (cp["intern_id"],)).fetchone()
+                if acc: owner_email = acc["email"].lower()
+                
+        # Enrollments
+        if not owner_email:
+            en = conn.execute("SELECT email, intern_id FROM enrollments WHERE (payment_screenshot = ? OR payment_screenshot LIKE ?) LIMIT 1", (clean_file, f"%/{clean_file}")).fetchone()
+            if en:
+                if en["email"]: owner_email = en["email"].lower()
+                elif en["intern_id"]:
+                    acc = conn.execute("SELECT email FROM intern_accounts WHERE id = ?", (en["intern_id"],)).fetchone()
+                    if acc: owner_email = acc["email"].lower()
+                    
+        # Post Hire Deposits
+        if not owner_email:
+            ph = conn.execute("SELECT intern_id FROM post_hire_deposits WHERE (proof_file = ? OR proof_file LIKE ?) LIMIT 1", (clean_file, f"%/{clean_file}")).fetchone()
+            if ph and ph["intern_id"]:
+                acc = conn.execute("SELECT email FROM intern_accounts WHERE id = ?", (ph["intern_id"],)).fetchone()
+                if acc: owner_email = acc["email"].lower()
+
+        if owner_email:
+            app_row = conn.execute("SELECT mentor_email, domain FROM applications WHERE LOWER(email) = ? ORDER BY id DESC LIMIT 1", (owner_email,)).fetchone()
+            if app_row:
+                if app_row["mentor_email"] and app_row["mentor_email"].lower() == m_email:
+                    return True, "mentor_explicitly_assigned"
+                if app_row["domain"] == m_domain:
+                    return True, "mentor_domain_match"
+                    
+        return False, "forbidden_mentor_not_assigned"
 
     return False, "forbidden_role"
