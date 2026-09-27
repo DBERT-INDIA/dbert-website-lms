@@ -11276,6 +11276,46 @@ def logout():
         return jsonify({"status": "error", "message": "Error"}), 500
 
 
+@app.route("/intern/latest-posts")
+def intern_latest_posts():
+    user = require_role("intern")
+    if not user:
+        return jsonify({"status": "error", "message": "Unauthorized"}), 401
+    
+    with get_db() as conn:
+        # Determine user domain
+        domain = None
+        enr = conn.execute("SELECT domain FROM enrollments WHERE email=? ORDER BY id DESC LIMIT 1", (user["email"],)).fetchone()
+        if enr:
+            domain = enr["domain"]
+        else:
+            app_row = conn.execute("SELECT domain FROM applications WHERE email=? ORDER BY id DESC LIMIT 1", (user["email"],)).fetchone()
+            if app_row:
+                domain = app_row["domain"]
+            else:
+                post_app = conn.execute("SELECT p.domain FROM post_applications pa JOIN posts p ON pa.post_id = p.id WHERE pa.intern_id=? ORDER BY pa.id DESC LIMIT 1", (user["id"],)).fetchone()
+                if post_app:
+                    domain = post_app["domain"]
+                    
+        if not domain:
+            return jsonify({"status": "success", "domain": None, "posts": []})
+            
+        posts_rows = conn.execute(
+            f"SELECT id, title, slug, location, work_mode, "
+            f"(SELECT name FROM companies WHERE id=company_id) AS company_name "
+            f"FROM posts WHERE domain=? AND post_type='internship' AND {_LIVE_SQL} "
+            f"ORDER BY published_at DESC LIMIT 3", (domain,)
+        ).fetchall()
+        
+        posts = []
+        for r in posts_rows:
+            d = dict(r)
+            d["url"] = f"/internships/{d['slug'] or 'post'}-{d['id']}"
+            posts.append(d)
+            
+        return jsonify({"status": "success", "domain": domain, "posts": posts})
+
+
 @app.route("/intern/me")
 def intern_me():
     try:

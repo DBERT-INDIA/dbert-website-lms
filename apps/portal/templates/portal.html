@@ -313,31 +313,24 @@
               </a>
             </div>
 
-            <!-- Card 3: Weekly Attendance & 10-Hour Target -->
-            <div class="glass-card" style="display:flex;flex-direction:column;justify-content:space-between;margin-bottom:0;min-height:270px;">
-              <div>
-                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-                  <div style="width:38px;height:38px;border-radius:10px;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.3);display:flex;align-items:center;justify-content:center;color:var(--green);font-size:16px;">
-                    <i class="fas fa-clock"></i>
-                  </div>
-                  <span class="badge badge-green" id="ovAttStatusBadge"><span class="ping-dot"></span><span id="ovAttBadgeText">Live Tracking</span></span>
+            <!-- Card 3: Latest Internships (Auto-replaced Attendance Card) -->
+            <div class="glass-card" style="display:flex;flex-direction:column;justify-content:flex-start;margin-bottom:0;min-height:270px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+                <div style="width:38px;height:38px;border-radius:10px;background:rgba(99,102,241,0.15);border:1px solid rgba(99,102,241,0.3);display:flex;align-items:center;justify-content:center;color:var(--primary);font-size:16px;">
+                  <i class="fas fa-briefcase"></i>
                 </div>
-                <h3 style="color:var(--tx-head);font-size:15px;font-weight:800;margin-bottom:6px;">Weekly Attendance (10h Target)</h3>
-                <p style="color:var(--tx-muted);font-size:12px;margin-bottom:14px;line-height:1.5;">10 hours/week logged-in target required for internship stipend &amp; certificate.</p>
-                <div style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:8px;padding:10px 14px;margin-bottom:14px;">
-                  <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--tx-muted);margin-bottom:6px;">
-                    <span>This Week Logged</span>
-                    <span id="ovAttHoursText" style="color:var(--green);font-weight:700;">0.0 / 10.0 hrs</span>
-                  </div>
-                  <div style="height:6px;background:rgba(255,255,255,0.08);border-radius:999px;overflow:hidden;">
-                    <div id="ovAttProgressFill" style="height:100%;width:0%;background:linear-gradient(90deg,var(--green),var(--blue));transition:width 0.4s ease;"></div>
-                  </div>
-                  <div id="internshipPeriodLabel" class="hidden" style="font-size:11px;color:var(--tx-muted);margin-top:8px;padding-top:6px;border-top:1px solid rgba(255,255,255,0.06);"></div>
-                </div>
+                <span class="badge badge-blue"><i class="fas fa-sync-alt" style="margin-right:4px;"></i>Auto-refreshing</span>
               </div>
-              <button id="ovAttCardBtn" data-act-click="switchTab" data-arg-click='["cohorts"]' class="btn-tutor" style="background:transparent;border:1px solid var(--border);color:var(--tx-head);font-size:13px;padding:10px 16px;margin-top:8px;text-align:center;cursor:pointer;">
-                <span>View Attendance Log →</span>
-              </button>
+              <h3 style="color:var(--tx-head);font-size:15px;font-weight:800;margin-bottom:6px;">Latest Internships</h3>
+              <p style="color:var(--tx-muted);font-size:12px;margin-bottom:14px;line-height:1.5;">Newest internship posts matching your domain.</p>
+              
+              <!-- Posts Container -->
+              <div id="latestPostsContainer" style="display:flex;flex-direction:column;gap:10px;flex:1;">
+                <!-- Skeletons -->
+                <div style="height:44px;background:rgba(255,255,255,0.03);border-radius:6px;animation:pulse 1.5s infinite;"></div>
+                <div style="height:44px;background:rgba(255,255,255,0.03);border-radius:6px;animation:pulse 1.5s infinite;"></div>
+                <div style="height:44px;background:rgba(255,255,255,0.03);border-radius:6px;animation:pulse 1.5s infinite;"></div>
+              </div>
             </div>
 
           </div>
@@ -2261,6 +2254,7 @@
     const lDot=document.getElementById('learnLockDot'); if(lDot) lDot.classList.toggle('hidden',_isUnlocked);
     if(_isUnlocked){onUnlock();renderTutorCard();}else{startCountdown();}
     loadAttendance();
+    loadLatestInternships();
   }
   async function loadAttendance(){
     try{
@@ -2277,6 +2271,36 @@
     }catch(e){console.error("loadAttendance err:", e);}
   }
   window.loadAttendance = loadAttendance;
+  async function loadLatestInternships(){
+    try {
+      const res = await fetch('/intern/latest-posts', {credentials: 'include'});
+      if (!res.ok) return;
+      const data = await res.json();
+      const container = document.getElementById('latestPostsContainer');
+      if (!container) return;
+      
+      if (data.status === 'success' && data.posts && data.posts.length > 0) {
+        container.innerHTML = data.posts.map(post => `
+          <a href="${post.url}" target="_blank" style="display:flex;align-items:center;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:8px 12px;text-decoration:none;transition:background 0.2s;">
+            <div style="flex:1;min-width:0;">
+              <div style="color:var(--tx-head);font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px;">${post.title}</div>
+              <div style="color:var(--tx-muted);font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                <i class="far fa-building" style="margin-right:4px;"></i>${post.company_name} &bull; ${post.location || post.work_mode}
+              </div>
+            </div>
+            <div style="color:var(--primary);margin-left:8px;"><i class="fas fa-chevron-right" style="font-size:11px;"></i></div>
+          </a>
+        `).join('');
+      } else {
+        container.innerHTML = `<div style="text-align:center;padding:12px;color:var(--tx-muted);font-size:12px;border:1px dashed rgba(255,255,255,0.1);border-radius:6px;">No posts available yet.</div>`;
+      }
+    } catch(e) {
+      console.error("loadLatestInternships err:", e);
+    }
+  }
+  // Auto-refresh internships every 60 seconds
+  setInterval(loadLatestInternships, 60000);
+
   function startCountdown(){
     if(_countdownInterval)clearInterval(_countdownInterval);
     _countdownInterval=setInterval(()=>{
