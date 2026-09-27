@@ -4959,10 +4959,11 @@ def course_detail(course_id):
             """, (intern["id"], intern.get("email") or "", course_id)).fetchone()
 
     return render_template(
-        "course_detail.html", 
-        course=dict(course), 
+        "course_detail.html",
+        course=dict(course),
         chapters=chapters_data,
         enrollment=dict(enrollment) if enrollment else None,
+        is_enrolled=enrollment is not None,
         flag_paid_1999_live=(get_config("FLAG_PAID_1999_LIVE", "0") == "1")
     )
 
