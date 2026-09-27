@@ -157,13 +157,19 @@ def translate_sql(sql: str, target_dialect: str = "postgres") -> str:
     # 1. Translate date/time functions
     translated = re.sub(
         r"datetime\s*\(\s*['\"]now['\"]\s*,\s*['\"]localtime['\"]\s*\)",
-        "CURRENT_TIMESTAMP",
+        "to_char(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS')",
         sql,
         flags=re.IGNORECASE,
     )
     translated = re.sub(
+        r"date\s*\(\s*['\"]now['\"]\s*,\s*['\"]localtime['\"]\s*\)",
+        "to_char(CURRENT_DATE, 'YYYY-MM-DD')",
+        translated,
+        flags=re.IGNORECASE,
+    )
+    translated = re.sub(
         r"datetime\s*\(\s*['\"]now['\"]\s*\)",
-        "CURRENT_TIMESTAMP",
+        "to_char(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS')",
         translated,
         flags=re.IGNORECASE,
     )
@@ -576,7 +582,17 @@ class PostgreSQLAdapter(DatabaseAdapter):
     """
 
     def __init__(self, conn_or_url: Any):
-        self._raw_conn = conn_or_url
+        if isinstance(conn_or_url, str):
+            import psycopg2
+            import os
+            self._raw_conn = psycopg2.connect(conn_or_url)
+            # Ensure the connection targets the exact schema where data was migrated
+            target_schema = os.environ.get("POSTGRES_SCHEMA", "dbert_internship")
+            with self._raw_conn.cursor() as cur:
+                cur.execute(f"SET search_path TO {target_schema}, public;")
+            self._raw_conn.commit()
+        else:
+            self._raw_conn = conn_or_url
         self._last_cursor: Any = None
         self._last_rowid: Optional[int] = None
         self._last_rowcount: int = -1
@@ -618,8 +634,31 @@ class PostgreSQLAdapter(DatabaseAdapter):
             self._last_rowcount = getattr(cur, "rowcount", -1)
 
             # Check if RETURNING id was requested or if lastrowid is available
-            if hasattr(cur, "lastrowid"):
+            if hasattr(cur, "lastrowid") and cur.lastrowid is not None:
                 self._last_rowid = cur.lastrowid
+            elif "RETURNING" in pg_query.upper():
+                try:
+                    row = cur.fetchone()
+                    if row:
+                        self._last_rowid = row[0]
+                    else:
+                        self._last_rowid = None
+                except Exception:
+                    self._last_rowid = None
+            elif pg_query.strip().upper().startswith("INSERT "):
+                try:
+                    cur_lv = self._raw_conn.cursor()
+                    cur_lv.execute("SAVEPOINT lastval_sp")
+                    cur_lv.execute("SELECT lastval()")
+                    row = cur_lv.fetchone()
+                    if row:
+                        self._last_rowid = row[0]
+                    cur_lv.execute("RELEASE SAVEPOINT lastval_sp")
+                    cur_lv.close()
+                except Exception:
+                    cur_lv.execute("ROLLBACK TO SAVEPOINT lastval_sp")
+                    self._last_rowid = None
+                    cur_lv.close()
 
             return CursorAdapter(cur)
         except Exception as e:
@@ -748,11 +787,21 @@ def get_db_adapter(
         db_target = os.environ.get("DATABASE_URL") or os.environ.get("DB_FILE") or "internship.db"
 
     # 3. Detect engine
-    if (
+    is_postgres_target = (
         (isinstance(db_target, str) and (db_target.startswith("postgresql://") or db_target.startswith("postgres://")))
         or engine == "postgres"
-    ):
+    )
+
+    require_postgres = os.environ.get("REQUIRE_POSTGRES", "false").lower() == "true" or os.environ.get("FLASK_ENV") == "production"
+
+    if is_postgres_target:
         return PostgreSQLAdapter(db_target)
 
-    # 4. Default SQLiteAdapter
+    if require_postgres:
+        raise RuntimeError(
+            "PostgreSQL runtime database is enforced (REQUIRE_POSTGRES=true or production env). "
+            "SQLite connections and fallbacks are strictly prohibited."
+        )
+
+    # 4. Default SQLiteAdapter (Allowed ONLY for legacy unit testing when REQUIRE_POSTGRES is false)
     return SQLiteAdapter(db_target, timeout=timeout)

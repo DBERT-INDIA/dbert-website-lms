@@ -2303,6 +2303,12 @@
     const summEl=document.getElementById('summThisWeek');if(summEl)summEl.innerHTML=`${h}h ${m}m ${mins>=600?'<span style="color:var(--green);">&#10003;</span>':'<span style="color:var(--amber);">&#9888;</span>'}`;
   }
   window.updateLiveCounter = updateLiveCounter;
+  window.addEventListener('dbert_attendance_synced', function(e) {
+    if (e.detail && typeof e.detail.total_minutes === 'number') {
+      updateLiveCounter(e.detail.total_minutes);
+      loadAttendance();
+    }
+  });
   function renderAttHistory(weeks){
     const tbody=document.getElementById('attTableBody');
     if(!tbody)return;

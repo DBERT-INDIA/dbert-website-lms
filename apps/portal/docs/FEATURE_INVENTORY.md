@@ -69,7 +69,7 @@
   - Daily quizzes & attempt tracking (`course_day_quizzes`, `day_quiz_attempts`): `ACTIVE`
   - Subtopic AI chat tutor (`/intern/tutor-chat`, `/generate-tutor-token`):
     - Chat tutor: `ACTIVE`
-    - `/generate-tutor-token`: `BROKEN` (undefined variable `course_id`)
+    - `/generate-tutor-token`: `ACTIVE` (course_id query/payload resolution fixed)
 - **Key Files:** [`templates/courses.html`](file:///c:/Users/user/Desktop/internship/templates/courses.html), [`app.py`](file:///c:/Users/user/Desktop/internship/app.py)
 
 ### 7. Tasks & Project Submissions

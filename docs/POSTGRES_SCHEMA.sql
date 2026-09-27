@@ -8,12 +8,27 @@ SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
 
+-- Ensure schema exists and search_path is set
+CREATE SCHEMA IF NOT EXISTS dbert_internship;
+SET search_path TO dbert_internship, public;
+
 -- Enable UUID extension if needed
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
 -- ----------------------------------------------------------------------------
 -- TABLES (65 definitions)
 -- ----------------------------------------------------------------------------
+
+-- Table: staff_accounts
+CREATE TABLE IF NOT EXISTS staff_accounts (
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    email TEXT NOT NULL UNIQUE,
+    password_hash TEXT NOT NULL,
+    is_active INTEGER DEFAULT 1,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    role TEXT DEFAULT 'admin'
+);
 
 -- Table: abuse_log
 CREATE TABLE IF NOT EXISTS abuse_log (
@@ -107,6 +122,23 @@ CREATE TABLE IF NOT EXISTS check_log (
     ip TEXT
 );
 
+-- Table: cohorts
+CREATE TABLE IF NOT EXISTS cohorts (
+    id          SERIAL PRIMARY KEY,
+    company_id  INTEGER NOT NULL,
+    title       TEXT NOT NULL,
+    description TEXT,
+    skills      TEXT,
+    platform    TEXT,
+    meeting_url TEXT,
+    starts_at   TEXT,
+    capacity    INTEGER DEFAULT 0,
+    status      TEXT DEFAULT 'pending',
+    created_at  TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at  TEXT DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(company_id) REFERENCES companies(id)
+);
+
 -- Table: cohort_enrollments
 CREATE TABLE IF NOT EXISTS cohort_enrollments (
     id            SERIAL PRIMARY KEY,
@@ -117,28 +149,6 @@ CREATE TABLE IF NOT EXISTS cohort_enrollments (
     UNIQUE(cohort_id, intern_id),
     FOREIGN KEY(cohort_id) REFERENCES cohorts(id),
     FOREIGN KEY(intern_id) REFERENCES intern_accounts(id)
-);
-
--- Table: cohorts
-CREATE TABLE IF NOT EXISTS cohorts (
-    id          SERIAL PRIMARY KEY,
-    company_id  INTEGER NOT NULL,
-    title       TEXT NOT NULL,
-    description TEXT,
-    skills      TEXT,
-    platform    TEXT,
-    -- 'Zoom'|'Discord'|...
-                meeting_url TEXT,
-    -- revealed to enrollees only
-                starts_at   TEXT,
-    -- 'YYYY-MM-DD HH:MM' (IST)
-                capacity    INTEGER DEFAULT 0,
-    -- 0 = unlimited
-                status      TEXT DEFAULT 'pending',
-    -- pending|published|rejected
-                created_at  TEXT DEFAULT CURRENT_TIMESTAMP,
-    updated_at  TEXT DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY(company_id) REFERENCES companies(id)
 );
 
 -- Table: coin_ledger_mirror
@@ -264,18 +274,6 @@ CREATE TABLE IF NOT EXISTS course_projects (
     FOREIGN KEY(course_id) REFERENCES courses(id)
 );
 
--- Table: course_subtopic_chats
-CREATE TABLE IF NOT EXISTS course_subtopic_chats (
-    id SERIAL PRIMARY KEY,
-    enrollment_id INTEGER NOT NULL,
-    subtopic_id INTEGER NOT NULL,
-    role TEXT NOT NULL,
-    message TEXT NOT NULL,
-    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY(enrollment_id) REFERENCES course_enrollments(id),
-    FOREIGN KEY(subtopic_id) REFERENCES course_subtopics(id)
-);
-
 -- Table: course_subtopics
 CREATE TABLE IF NOT EXISTS course_subtopics (
     id SERIAL PRIMARY KEY,
@@ -287,6 +285,18 @@ CREATE TABLE IF NOT EXISTS course_subtopics (
     prompt_seed TEXT,
     created_at TEXT DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY(chapter_id) REFERENCES course_chapters(id)
+);
+
+-- Table: course_subtopic_chats
+CREATE TABLE IF NOT EXISTS course_subtopic_chats (
+    id SERIAL PRIMARY KEY,
+    enrollment_id INTEGER NOT NULL,
+    subtopic_id INTEGER NOT NULL,
+    role TEXT NOT NULL,
+    message TEXT NOT NULL,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(enrollment_id) REFERENCES course_enrollments(id),
+    FOREIGN KEY(subtopic_id) REFERENCES course_subtopics(id)
 );
 
 -- Table: courses
@@ -659,11 +669,10 @@ CREATE TABLE IF NOT EXISTS messages (
 CREATE TABLE IF NOT EXISTS mobile_refresh_tokens (
     id SERIAL PRIMARY KEY,
     token_hash TEXT NOT NULL UNIQUE,
-    -- HASH of the refresh token,
-    never plaintext
-                intern_id  TEXT NOT NULL,
+    -- HASH of the refresh token, never plaintext
+    intern_id  TEXT NOT NULL,
     -- str(intern_accounts.id)
-                email      TEXT NOT NULL,
+    email      TEXT NOT NULL,
     issued_at  TEXT NOT NULL,
     expires_at TEXT NOT NULL,
     revoked    INTEGER NOT NULL DEFAULT 0,
@@ -899,17 +908,6 @@ CREATE TABLE IF NOT EXISTS signup_otps (
     created_at TEXT DEFAULT CURRENT_TIMESTAMP
 );
 
--- Table: staff_accounts
-CREATE TABLE IF NOT EXISTS staff_accounts (
-    id SERIAL PRIMARY KEY,
-    name TEXT NOT NULL,
-    email TEXT NOT NULL UNIQUE,
-    password_hash TEXT NOT NULL,
-    is_active INTEGER DEFAULT 1,
-    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-    role TEXT DEFAULT "admin"
-);
-
 -- Table: staff_queue_roles
 CREATE TABLE IF NOT EXISTS staff_queue_roles (
     id SERIAL PRIMARY KEY,
@@ -917,6 +915,34 @@ CREATE TABLE IF NOT EXISTS staff_queue_roles (
     queue_name TEXT NOT NULL,
     UNIQUE(staff_id, queue_name),
     FOREIGN KEY(staff_id) REFERENCES staff_accounts(id)
+);
+
+-- Table: tasks
+CREATE TABLE IF NOT EXISTS tasks (
+    id SERIAL PRIMARY KEY,
+    title TEXT NOT NULL,
+    description TEXT NOT NULL,
+    coin_reward INTEGER NOT NULL DEFAULT 10,
+    is_active INTEGER DEFAULT 1,
+    author_type TEXT DEFAULT 'admin',
+    author_id INTEGER,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    task_type TEXT DEFAULT 'general',
+    target_domain TEXT DEFAULT '',
+    payment_type TEXT DEFAULT 'paid',
+    submission_type TEXT DEFAULT 'url'
+);
+
+-- Table: task_versions
+CREATE TABLE IF NOT EXISTS task_versions (
+    id SERIAL PRIMARY KEY,
+    task_id INTEGER NOT NULL,
+    version_number INTEGER NOT NULL,
+    instructions TEXT NOT NULL,
+    rubric TEXT NOT NULL,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(task_id, version_number),
+    FOREIGN KEY(task_id) REFERENCES tasks(id)
 );
 
 -- Table: task_submissions
@@ -936,34 +962,6 @@ CREATE TABLE IF NOT EXISTS task_submissions (
     FOREIGN KEY(task_id) REFERENCES tasks(id),
     FOREIGN KEY(task_version_id) REFERENCES task_versions(id),
     FOREIGN KEY(reviewed_by_staff_id) REFERENCES staff_accounts(id)
-);
-
--- Table: task_versions
-CREATE TABLE IF NOT EXISTS task_versions (
-    id SERIAL PRIMARY KEY,
-    task_id INTEGER NOT NULL,
-    version_number INTEGER NOT NULL,
-    instructions TEXT NOT NULL,
-    rubric TEXT NOT NULL,
-    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE(task_id, version_number),
-    FOREIGN KEY(task_id) REFERENCES tasks(id)
-);
-
--- Table: tasks
-CREATE TABLE IF NOT EXISTS tasks (
-    id SERIAL PRIMARY KEY,
-    title TEXT NOT NULL,
-    description TEXT NOT NULL,
-    coin_reward INTEGER NOT NULL DEFAULT 10,
-    is_active INTEGER DEFAULT 1,
-    author_type TEXT DEFAULT 'admin',
-    author_id INTEGER,
-    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-    task_type TEXT DEFAULT 'general',
-    target_domain TEXT DEFAULT '',
-    payment_type TEXT DEFAULT 'paid',
-    submission_type TEXT DEFAULT 'url'
 );
 
 -- Table: tutor_progress

@@ -12,6 +12,7 @@
         {
           "title": "Services",
           "links": [
+            { "label": "Hire Pre-Vetted Engineers", "href": "/hire/pre-vetted-engineers", "highlight": true },
             { "label": "Technical Assistance", "href": "/startups/services/technical" },
             { "label": "Hiring Assistance", "href": "/startups/services/hiring" },
             { "label": "Legal & Compliance", "href": "/startups/services/legal" },
@@ -55,6 +56,7 @@
         {
           "title": "Consulting",
           "links": [
+            { "label": "AI Consultant Services", "href": "/ai-consultant", "highlight": true },
             { "label": "AI Strategy Consulting", "href": "/ai-solutions/consultation" },
             { "label": "AI Readiness Assessment", "href": "/ai-solutions/consultation" },
             { "label": "MLOps & Deployment", "href": "/ai-solutions/consultation" }

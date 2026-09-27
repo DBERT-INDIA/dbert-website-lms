@@ -409,6 +409,20 @@ export const seoConfig: Record<string, SeoEntry> = {
     noindex: true,
   },
 
+  // ── High-Converting SEO & Services ───────────────────────────────────────
+  '/hire/pre-vetted-engineers': {
+    keyword: 'hire pre-vetted AI engineers India',
+    title: 'Hire Pre-Vetted AI & Full Stack Engineers',
+    description:
+      'Hire pre-vetted AI, Full Stack, and Data engineers evaluated through live code reviews and system architecture benchmarks. Onboard proven talent in 48 hours.',
+  },
+  '/ai-consultant': {
+    keyword: 'enterprise AI strategy consultant',
+    title: 'Enterprise AI Consulting & Custom LLM Systems',
+    description:
+      'Enterprise AI consulting services specializing in RAG architectures, custom LLM fine-tuning, and automated workflows. Architect your enterprise roadmap.',
+  },
+
   // ── Cohorts ─────────────────────────────────────────────────────────────
   '/cohorts/aivara': {
     keyword: 'Aivara Technologies hiring cohort',

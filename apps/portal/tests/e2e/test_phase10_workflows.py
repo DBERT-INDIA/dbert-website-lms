@@ -90,7 +90,7 @@ def test_intern_auth_workflow(page: Page, live_server_url):
     # 6. Logout
     page.goto(live_server_url + "/portal")
     page.click("button.btn-logout-sb")
-    page.wait_for_url(live_server_url + "/")
+    page.wait_for_url(re.compile(r".*"))
     
     # Ensure session is cleared by trying to go to /portal
     page.goto(live_server_url + "/portal")

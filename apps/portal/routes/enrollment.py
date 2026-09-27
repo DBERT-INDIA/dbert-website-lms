@@ -64,12 +64,61 @@ def cohort_enroll(cohort_id):
 def launchpad_checkout():
     """Public landing page for DBERT Launchpad (2-month course track + AI tutor)."""
     from flask import render_template
-    return render_template("program.html", program_name="launchpad", title="DBERT Launchpad Program")
+    from app import PAID_PROGRAM_AMOUNT, UPI_ID
+    return render_template("program.html", program_name="launchpad", title="DBERT Launchpad Program", paid_amount=PAID_PROGRAM_AMOUNT, upi_id=UPI_ID)
 
 
 @enrollment_bp.route("/accelerate", methods=["GET"])
 def accelerate_checkout():
     """Public landing page for DBERT Accelerate (Live Project Sprints)."""
     from flask import render_template
-    return render_template("program.html", program_name="accelerate", title="DBERT Accelerate Sprints")
+    from app import PAID_PROGRAM_AMOUNT, UPI_ID
+    return render_template("program.html", program_name="accelerate", title="DBERT Accelerate Sprints", paid_amount=PAID_PROGRAM_AMOUNT, upi_id=UPI_ID)
+
+
+@enrollment_bp.route("/internships/<page_slug>", methods=["GET"])
+def seo_internship_landing(page_slug):
+    """Public SEO landing pages targeting high-intent tech internship queries."""
+    from flask import render_template, abort
+    from app import PAID_PROGRAM_AMOUNT, UPI_ID
+
+    seo_pages = {
+        "ai-automation-internship": {
+            "title": "AI Automation Internship — Remote & Virtual Cohort 2026",
+            "meta_desc": "Apply for DBERT AI Automation Internship. Build multi-provider LLM pipelines, autonomous agents, and RAG systems with stipend opportunities.",
+            "keyword": "AI Automation Internship",
+            "domain": "Generative AI & Agent Engineering"
+        },
+        "data-analyst-internship-work-from-home": {
+            "title": "Data Analyst Internship Work From Home — Paid Remote Track",
+            "meta_desc": "Work from home data analyst internship. Master SQL, Python data pipelines, Power BI dashboards, and PostgreSQL schema architecture.",
+            "keyword": "Data Analyst Internship Work From Home",
+            "domain": "Data Analytics & Business Intelligence"
+        },
+        "virtual-remote-internships": {
+            "title": "Virtual Remote Internships — Software & AI Development",
+            "meta_desc": "Gain verified software engineering experience through virtual remote internships at DBERT Labs. Real code reviews & GitHub contributions.",
+            "keyword": "Virtual Remote Internships",
+            "domain": "Software Engineering & Web Development"
+        },
+        "paid-internships": {
+            "title": "Paid Internships for Tech & AI Engineers — DBERT Fellowship",
+            "meta_desc": "Apply for performance-based paid internships and stipends. Build production lab software and earn industry-recognized verified credentials.",
+            "keyword": "Paid Internships for Students",
+            "domain": "All Engineering Tracks"
+        }
+    }
+
+    if page_slug not in seo_pages:
+        abort(404)
+
+    page_info = seo_pages[page_slug]
+    return render_template(
+        "seo_landing.html",
+        page=page_info,
+        page_slug=page_slug,
+        paid_amount=PAID_PROGRAM_AMOUNT,
+        upi_id=UPI_ID
+    )
+
 

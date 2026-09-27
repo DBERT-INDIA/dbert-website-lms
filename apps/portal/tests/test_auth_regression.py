@@ -391,3 +391,25 @@ class TestLogoutAndBrowserBackJourney:
         resp_interview = client.get("/interview")
         assert resp_interview.status_code == 302
         assert "/#signin" in resp_interview.headers.get("Location", "")
+
+    def test_generate_tutor_token_endpoint(self, app_client):
+        client, db_path = app_client
+        csrf_token = "test_csrf_tutor_123"
+        with client.session_transaction() as sess:
+            sess["_csrf"] = csrf_token
+
+        # Unauthenticated returns 401
+        res_unauth = client.post("/generate-tutor-token", headers={"X-CSRF-Token": csrf_token})
+        assert res_unauth.status_code == 401
+
+        # Authenticated redirects without error
+        email = "tutor_user@example.com"
+        seed_intern(db_path, email=email, password="Password123!")
+        token = create_session(email, "intern")
+        client.set_cookie("dbert_auth", token)
+        with client.session_transaction() as sess:
+            sess["_csrf"] = csrf_token
+
+        res_auth = client.post("/generate-tutor-token", json={"course_id": "101"}, headers={"X-CSRF-Token": csrf_token})
+        assert res_auth.status_code == 302
+        assert "/courses/101" in res_auth.headers.get("Location", "")

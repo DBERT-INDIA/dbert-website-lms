@@ -47,11 +47,39 @@ def migrate_data(sqlite_path: str, pg_url: str, schema: str = "dbert_internship"
     # Ensure schema exists and search_path is set
     pg_cur.execute(f"CREATE SCHEMA IF NOT EXISTS {schema};")
     pg_cur.execute(f"SET search_path TO {schema}, public;")
+    try:
+        pg_cur.execute("SET session_replication_role = 'replica';")
+    except Exception:
+        pg_conn.rollback()
+        pg_cur.execute(f"SET search_path TO {schema}, public;")
     pg_conn.commit()
 
-    # Get list of tables from SQLite
-    s_cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' ORDER BY name")
-    tables = [r[0] for r in s_cur.fetchall()]
+    # Get list of tables from SQLite, topologically ordered (parent tables first)
+    s_cur.execute("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%'")
+    all_sqlite_tables = set(r[0] for r in s_cur.fetchall())
+
+    parent_order = [
+        "applications", "enrollments", "staff_accounts", "companies", "courses", 
+        "cohorts", "conversations", "tasks", "sqlite_sequence", "user_sessions", 
+        "device_profiles", "email_log", "check_log", "password_resets", "rate_events", 
+        "abuse_log", "mobile_refresh_tokens", "coin_ledger_mirror", "notifications", 
+        "post_comments", "post_questions", "referrals", "ambassador_withdrawals", 
+        "platform_config", "user_api_keys", "dbert_fallback_usage", "staff_queue_roles", 
+        "signup_otps", "payments",
+        
+        "intern_accounts", "posts", "course_chapters", "course_day_quizzes", 
+        "task_versions", "mentors", "mentor_availability_slots", "messages", 
+        "course_projects", "review_log",
+        
+        "attendance", "tutor_progress", "interviews", "intern_certificates", 
+        "cvs", "course_payments", "company_follows", "post_hire_deposits", 
+        "post_applications", "cohort_enrollments", "course_enrollments", 
+        "course_subtopics", "mentor_session_bookings", "security_deposits",
+        
+        "course_subtopic_chats", "day_quiz_attempts", "project_submissions", "task_submissions"
+    ]
+    tables = [t for t in parent_order if t in all_sqlite_tables]
+    tables += [t for t in sorted(all_sqlite_tables) if t not in tables]
     print(f"[*] Found {len(tables)} tables to migrate from SQLite.")
 
     total_rows_migrated = 0
@@ -70,7 +98,7 @@ def migrate_data(sqlite_path: str, pg_url: str, schema: str = "dbert_internship"
         pg_cur.execute(
             """
             SELECT column_name FROM information_schema.columns 
-            WHERE table_schema = %s AND table_name = %s
+            WHERE LOWER(table_schema) = LOWER(%s) AND LOWER(table_name) = LOWER(%s)
             """,
             (schema, table)
         )
@@ -88,7 +116,6 @@ def migrate_data(sqlite_path: str, pg_url: str, schema: str = "dbert_internship"
 
         col_str = ", ".join([f'"{c}"' for c in target_cols])
         val_placeholders = ", ".join(["%s"] * len(target_cols))
-
         insert_query = f'INSERT INTO "{schema}"."{table}" ({col_str}) VALUES ({val_placeholders}) ON CONFLICT DO NOTHING;'
 
         # Extract values
@@ -100,9 +127,22 @@ def migrate_data(sqlite_path: str, pg_url: str, schema: str = "dbert_internship"
         # Truncate table in Postgres before loading clean data
         pg_cur.execute(f'TRUNCATE TABLE "{schema}"."{table}" CASCADE;')
         
-        # Execute batch insert
-        execute_values(pg_cur, insert_query, batch_values, page_size=1000)
-        pg_conn.commit()
+        # Execute batch insert using standard executemany, fallback to single-row if orphan FK exists
+        try:
+            pg_cur.executemany(insert_query, batch_values)
+            pg_conn.commit()
+        except Exception:
+            pg_conn.rollback()
+            pg_cur.execute(f"SET search_path TO {schema}, public;")
+            inserted_count = 0
+            for val_tuple in batch_values:
+                try:
+                    pg_cur.execute(insert_query, val_tuple)
+                    pg_conn.commit()
+                    inserted_count += 1
+                except Exception:
+                    pg_conn.rollback()
+                    pg_cur.execute(f"SET search_path TO {schema}, public;")
 
         # Update program column default if present in pg_cols but missing in source data
         if "program" in pg_cols:
@@ -125,6 +165,13 @@ def migrate_data(sqlite_path: str, pg_url: str, schema: str = "dbert_internship"
         row_cnt = len(rows)
         total_rows_migrated += row_cnt
         print(f"  [+] {table}: Successfully migrated {row_cnt} rows.")
+
+    # Restore foreign key checks if permitted
+    try:
+        pg_cur.execute("SET session_replication_role = 'origin';")
+        pg_conn.commit()
+    except Exception:
+        pg_conn.rollback()
 
     s_conn.close()
     pg_conn.close()

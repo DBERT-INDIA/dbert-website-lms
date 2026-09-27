@@ -1,0 +1,20 @@
+[Unit]
+Description=DBERT Main Website Next.js Application
+After=network.target
+
+[Service]
+User=ec2-user
+Group=ec2-user
+WorkingDirectory=/var/www/dbert-website-lms/apps/website
+Environment="NODE_ENV=production"
+Environment="PORT=3001"
+
+# Next.js production execution
+ExecStart=/usr/bin/env npm run start
+
+Restart=always
+RestartSec=5
+KillMode=mixed
+
+[Install]
+WantedBy=multi-user.target

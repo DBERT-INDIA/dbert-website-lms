@@ -60,8 +60,14 @@ class TestCSRFDefenseEnforcement:
         CSRF_EXEMPT_ENDPOINTS.clear()
         CSRF_EXEMPT_ENDPOINTS.add("attendance_ping")
         flask_app.config["WTF_CSRF_ENABLED"] = True
+        import app
+        original_cron_secret = app.CRON_SECRET
+        if not app.CRON_SECRET:
+            app.CRON_SECRET = "test_cron_secret_123"
 
         yield
+
+        app.CRON_SECRET = original_cron_secret
 
         # Restore original test harness exemptions
         CSRF_EXEMPT_ENDPOINTS.clear()
@@ -147,9 +153,10 @@ class TestCSRFDefenseEnforcement:
     def test_cron_endpoint_with_valid_secret_is_csrf_exempt(self, app_client):
         """Automated cron tasks carrying the valid X-Cron-Key bypass CSRF checks."""
         client, db_path = app_client
+        import app
         resp = client.post(
             "/cron/clean-tokens",
-            headers={"X-Cron-Key": CRON_SECRET}
+            headers={"X-Cron-Key": app.CRON_SECRET}
         )
         assert resp.status_code != 403
 
