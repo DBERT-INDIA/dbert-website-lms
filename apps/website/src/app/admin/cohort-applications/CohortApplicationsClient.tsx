@@ -175,36 +175,21 @@ export default function CohortApplicationsClient({
       </div>
 
       {/* Filter and Search Bar */}
-      <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', margin: '16px 0 24px' }}>
-        <div style={{ position: 'relative', flex: '1', minWidth: '220px' }}>
+      <div className={s.filterBar}>
+        <div className={s.searchWrap}>
           <input
             type="text"
             placeholder="Search candidate by name, email, or college..."
             value={searchQuery}
             onChange={e => setSearchQuery(e.target.value)}
-            style={{
-              width: '100%',
-              padding: '8px 12px',
-              background: 'rgba(255, 255, 255, 0.03)',
-              border: '1px solid var(--line)',
-              borderRadius: '6px',
-              color: 'var(--fg)',
-              fontSize: '0.88rem',
-            }}
+            className={s.filterInput}
           />
         </div>
 
         <select
           value={selectedDomain}
           onChange={e => setSelectedDomain(e.target.value)}
-          style={{
-            padding: '8px 12px',
-            background: 'rgba(255, 255, 255, 0.03)',
-            border: '1px solid var(--line)',
-            borderRadius: '6px',
-            color: 'var(--fg)',
-            fontSize: '0.88rem',
-          }}
+          className={s.filterSelect}
         >
           <option value="all">All Domains (5 tracks)</option>
           <option value="AI Agent Development">AI Agent Development</option>
@@ -217,18 +202,11 @@ export default function CohortApplicationsClient({
 
       {notification && (
         <div
-          style={{
-            padding: '10px 14px',
-            marginBottom: '16px',
-            borderRadius: '6px',
-            fontSize: '0.88rem',
-            background:
-              notification.type === 'success'
-                ? 'rgba(34, 197, 94, 0.15)'
-                : 'rgba(239, 68, 68, 0.15)',
-            color: notification.type === 'success' ? '#4ade80' : '#f87171',
-            border: `1px solid ${notification.type === 'success' ? 'rgba(34, 197, 94, 0.3)' : 'rgba(239, 68, 68, 0.3)'}`,
-          }}
+          className={
+            notification.type === 'success'
+              ? s.notificationSuccess
+              : s.notificationError
+          }
         >
           {notification.message}
         </div>
@@ -259,7 +237,7 @@ export default function CohortApplicationsClient({
                   </td>
                   <td className={s.nameCell}>
                     <strong>{app.fullName}</strong>
-                    <div className="cell-xs" style={{ color: 'var(--muted)', marginTop: '2px' }}>
+                    <div className={s.applicantSub}>
                       {app.email}
                       <br />
                       {app.phone} • {app.city}, {app.state}
@@ -269,33 +247,31 @@ export default function CohortApplicationsClient({
                     <span className={cs.adminDomainBadge}>{app.domain}</span>
                   </td>
                   <td className="cell-sm">
-                    <div style={{ maxWidth: '200px' }}>
+                    <div className={s.collegeInfo}>
                       <strong>{app.college}</strong>
-                      <div className="cell-xs" style={{ color: 'var(--muted)' }}>
+                      <div className={s.applicantSub}>
                         {app.degree} ({app.graduationYear})
                         {app.cgpaOrPercentage ? ` • CGPA: ${app.cgpaOrPercentage}` : ''}
                       </div>
                     </div>
                   </td>
                   <td className="cell-sm">
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                    <div className={s.cvLinkStack}>
                       <a
                         href={app.cvUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="btn btn-outline btn-xs"
-                        style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+                        className={`btn btn-outline btn-xs ${s.btnActionApprove}`}
                       >
                         <FileText size={12} /> View CV ↗
                       </a>
-                      <div style={{ display: 'flex', gap: '6px' }}>
+                      <div className={s.socialLinks}>
                         {app.linkedinUrl && (
                           <a
                             href={app.linkedinUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="cell-xs"
-                            style={{ color: 'var(--accent)' }}
+                            className={s.accentLink}
                           >
                             LinkedIn
                           </a>
@@ -305,8 +281,7 @@ export default function CohortApplicationsClient({
                             href={app.githubUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="cell-xs"
-                            style={{ color: 'var(--accent)' }}
+                            className={s.accentLink}
                           >
                             GitHub
                           </a>
@@ -336,23 +311,18 @@ export default function CohortApplicationsClient({
           <div className={cs.modalContent} onClick={e => e.stopPropagation()}>
             <div className={cs.modalHead}>
               <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <div className={s.modalHeaderMeta}>
                   <h3 className={cs.modalTitle}>{selectedApp.fullName}</h3>
                   {getStatusBadge(selectedApp.status)}
                 </div>
-                <div className="cell-xs" style={{ color: 'var(--muted)', marginTop: '4px' }}>
+                <div className={s.applicantSub}>
                   Applied: {new Date(selectedApp.createdAt).toLocaleString()} • Ref: {selectedApp.id}
                 </div>
               </div>
               <button
                 onClick={closeModal}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  color: 'var(--muted)',
-                  cursor: 'pointer',
-                  padding: '4px',
-                }}
+                className={s.modalCloseBtn}
+                aria-label="Close modal"
               >
                 <X size={20} />
               </button>
@@ -362,7 +332,7 @@ export default function CohortApplicationsClient({
             <div className={cs.detailSection}>
               <div className={cs.detailSectionTitle}>Contact &amp; Academics</div>
               <div className={cs.detailBox}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                <div className={s.detailGrid}>
                   <div><strong>Email:</strong> {selectedApp.email}</div>
                   <div><strong>Phone / WA:</strong> {selectedApp.phone}</div>
                   <div><strong>Location:</strong> {selectedApp.city}, {selectedApp.state}</div>
@@ -379,7 +349,7 @@ export default function CohortApplicationsClient({
             <div className={cs.detailSection}>
               <div className={cs.detailSectionTitle}>Internship Track &amp; Links</div>
               <div className={cs.detailBox}>
-                <div style={{ marginBottom: '10px' }}>
+                <div className={s.field}>
                   <strong>Selected Domain:</strong>{' '}
                   <span className={cs.adminDomainBadge}>{selectedApp.domain}</span>
                 </div>
@@ -388,8 +358,7 @@ export default function CohortApplicationsClient({
                     href={selectedApp.cvUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="btn btn-primary btn-sm"
-                    style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+                    className={`btn btn-primary btn-sm ${s.btnActionApprove}`}
                   >
                     <ExternalLink size={14} /> Open Candidate CV / Resume
                   </a>
@@ -430,7 +399,7 @@ export default function CohortApplicationsClient({
             {/* Family Background Statement */}
             <div className={cs.detailSection}>
               <div className={cs.detailSectionTitle}>Family Background Statement</div>
-              <div className={cs.detailBox} style={{ whiteSpace: 'pre-wrap' }}>
+              <div className={`${cs.detailBox} ${s.statementBox}`}>
                 {selectedApp.familyBackground}
               </div>
             </div>
@@ -439,7 +408,7 @@ export default function CohortApplicationsClient({
             {selectedApp.motivation && (
               <div className={cs.detailSection}>
                 <div className={cs.detailSectionTitle}>Motivation / Purpose</div>
-                <div className={cs.detailBox} style={{ whiteSpace: 'pre-wrap' }}>
+                <div className={`${cs.detailBox} ${s.statementBox}`}>
                   {selectedApp.motivation}
                 </div>
               </div>
@@ -448,7 +417,7 @@ export default function CohortApplicationsClient({
             {/* Newsletter & Consents */}
             <div className={cs.detailSection}>
               <div className={cs.detailSectionTitle}>Consents &amp; Permissions</div>
-              <div className="cell-sm" style={{ color: 'var(--muted)' }}>
+              <div className="cell-sm text-muted">
                 ✓ Terms &amp; Conditions Accepted: <strong>Yes</strong>
                 <br />
                 {selectedApp.newsletterConsent ? '✓' : '✗'} Future Contact &amp; Newsletter Consent:{' '}
@@ -468,7 +437,7 @@ export default function CohortApplicationsClient({
                     {selectedApp.emailSent ? 'Sent Successfully' : 'Not sent / Failed'} (Type: {selectedApp.emailTypeSent})
                   </div>
                   {selectedApp.emailResponseLog && (
-                    <div className="cell-xs" style={{ color: 'var(--muted)', marginTop: '4px', fontFamily: 'monospace' }}>
+                    <div className={s.auditLog}>
                       Log: {selectedApp.emailResponseLog}
                     </div>
                   )}
@@ -482,8 +451,8 @@ export default function CohortApplicationsClient({
                 Admin Decision: Select 1 of 3 Actions
               </div>
 
-              <div style={{ marginBottom: '12px' }}>
-                <label style={{ fontSize: '0.82rem', color: 'var(--muted)', display: 'block', marginBottom: '4px' }}>
+              <div className={s.field}>
+                <label className={s.notesLabel}>
                   Reviewer Notes / Feedback (included in official notification email):
                 </label>
                 <textarea
@@ -491,15 +460,7 @@ export default function CohortApplicationsClient({
                   value={adminNotes}
                   onChange={e => setAdminNotes(e.target.value)}
                   placeholder="Optional custom feedback or onboarding instruction..."
-                  style={{
-                    width: '100%',
-                    padding: '8px 12px',
-                    background: 'rgba(255, 255, 255, 0.03)',
-                    border: '1px solid var(--line)',
-                    borderRadius: '6px',
-                    color: 'var(--fg)',
-                    fontSize: '0.88rem',
-                  }}
+                  className={s.notesTextarea}
                 />
               </div>
 
@@ -508,8 +469,7 @@ export default function CohortApplicationsClient({
                 <button
                   onClick={() => handleDecision(selectedApp.id, 'approved')}
                   disabled={processingId === selectedApp.id}
-                  className="btn btn-primary btn-sm"
-                  style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+                  className={`btn btn-primary btn-sm ${s.btnActionApprove}`}
                 >
                   <CheckCircle size={15} />
                   1. Approve
@@ -519,14 +479,7 @@ export default function CohortApplicationsClient({
                 <button
                   onClick={() => handleDecision(selectedApp.id, 'approved_certified')}
                   disabled={processingId === selectedApp.id}
-                  className="btn btn-outline btn-sm"
-                  style={{
-                    borderColor: '#a855f7',
-                    color: '#c084fc',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                  }}
+                  className={`btn btn-outline btn-sm ${s.btnActionCertified}`}
                 >
                   <Award size={15} />
                   2. Approve with Certification
@@ -536,14 +489,7 @@ export default function CohortApplicationsClient({
                 <button
                   onClick={() => handleDecision(selectedApp.id, 'rejected')}
                   disabled={processingId === selectedApp.id}
-                  className="btn btn-outline btn-sm"
-                  style={{
-                    borderColor: 'rgba(239, 68, 68, 0.4)',
-                    color: '#f87171',
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                  }}
+                  className={`btn btn-outline btn-sm ${s.btnActionReject}`}
                 >
                   <XCircle size={15} />
                   3. Reject
@@ -553,6 +499,7 @@ export default function CohortApplicationsClient({
           </div>
         </div>
       )}
+
     </div>
   );
 }

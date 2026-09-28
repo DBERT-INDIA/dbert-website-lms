@@ -1,7 +1,9 @@
 import React from 'react';
+import Link from 'next/link';
 import FAQAccordion from '@/components/ui/FAQAccordion';
+import HandNote from '@/components/ui/HandNote';
 import s from '@/app/learners/learners.module.css';
-import { Bot, Sparkles, Database, Layers, ArrowRight, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { Bot, Database, Layers, ArrowRight, CheckCircle2 } from 'lucide-react';
 
 export const metadata = {
   title: 'Enterprise AI Strategy & Consultant Services | DBERT Labs',
@@ -67,16 +69,21 @@ export default function AIConsultantPage() {
         <div className="doclabel">
           § ENTERPRISE CONSULTING — AI STRATEGY <span className="rev">rev: 2026.1</span>
         </div>
-        <h1 className="page-title">
-          Enterprise AI Consulting & Custom LLM Systems
-        </h1>
+        <div className="stack-h justify-start align-baseline gap-3 flex-wrap mb-2">
+          <h1 className="page-title mb-0">
+            Enterprise AI Consulting &amp; Custom LLM Systems
+          </h1>
+          <HandNote tone="blue">
+            senior architect review ✍
+          </HandNote>
+        </div>
         <p className={s.courseTagline}>
-          From AI Readiness Audit to Production RAG Pipelines & Private LLM Deployment.
+          From AI Readiness Audit to Production RAG Pipelines &amp; Private LLM Deployment.
         </p>
         <p className={s.courseLede}>
           Transform complex operational bottlenecks with production-grade Generative AI systems. We help enterprises architect secure, low-latency AI agents, custom vector databases, and multi-provider LLM infrastructure.
         </p>
-        <div style={{ marginTop: '24px', display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+        <div className="stack-h gap-4 mt-6 flex-wrap">
           <a href="#consulting-audit" className="btn btn-primary btn-lg">
             Request AI Readiness Audit <ArrowRight className="inline-icon" />
           </a>
@@ -90,20 +97,20 @@ export default function AIConsultantPage() {
       <div className="section-band" id="services-overview">
         <div className="container">
           <div className="bento-grid-3">
-            <div className="bento-card center">
+            <div className="card card-lift text-center p-6">
               <span className="icon-chip"><Database aria-hidden="true" /></span>
               <h3 className="accent-note">Production RAG Architecture</h3>
-              <p>Enterprise retrieval-augmented generation using hybrid vector-keyword search, semantic document chunking, and persistent storage.</p>
+              <p className="body-copy">Enterprise retrieval-augmented generation using hybrid vector-keyword search, semantic document chunking, and persistent storage.</p>
             </div>
-            <div className="bento-card center">
+            <div className="card card-lift text-center p-6">
               <span className="icon-chip"><Bot aria-hidden="true" /></span>
               <h3 className="accent-note">Autonomous AI Agents</h3>
-              <p>Multi-step reasoning loops, tool-calling agents (MCP), and automated background pipeline execution with full audit logs.</p>
+              <p className="body-copy">Multi-step reasoning loops, tool-calling agents (MCP), and automated background pipeline execution with full audit logs.</p>
             </div>
-            <div className="bento-card center">
+            <div className="card card-lift text-center p-6">
               <span className="icon-chip"><Layers aria-hidden="true" /></span>
               <h3 className="accent-note">Private LLM Hosting</h3>
-              <p>Domain-specific model fine-tuning (LoRA/QLoRA), air-gapped deployment, and zero-latency token streaming setups.</p>
+              <p className="body-copy">Domain-specific model fine-tuning (LoRA/QLoRA), air-gapped deployment, and zero-latency token streaming setups.</p>
             </div>
           </div>
         </div>
@@ -111,32 +118,32 @@ export default function AIConsultantPage() {
 
       {/* Human Educational / How-To SEO Section */}
       <div className="container section-gap">
-        <div className="prose-wrapper">
+        <div className="measure-lg">
           <h2>How to Successfully Integrate Enterprise Generative AI Without Security Risks</h2>
-          <p>
+          <p className="body-copy">
             Deploying AI into enterprise workflows requires balancing model capabilities with data privacy, cost control, and latency SLAs. Here is our step-by-step engineering framework:
           </p>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px', margin: '32px 0' }}>
-            <div className="card-box" style={{ padding: '24px', background: 'var(--card-bg)', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
-              <h3 style={{ fontSize: '1.25rem', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <CheckCircle2 color="#10b981" /> Phase 1: AI Readiness & Data Audit
+          <div className="bento-grid-3 my-8">
+            <div className="card card-lift p-6">
+              <h3 className="card-heading-lg stack-h align-center gap-2 mb-3">
+                <CheckCircle2 className="text-signal shrink-0" size={20} /> Phase 1: AI Readiness &amp; Data Audit
               </h3>
-              <p>We audit internal data formats (PDFs, SQL schemas, unstructured logs) and evaluate security governance requirements before writing any code.</p>
+              <p className="body-copy">We audit internal data formats (PDFs, SQL schemas, unstructured logs) and evaluate security governance requirements before writing any code.</p>
             </div>
 
-            <div className="card-box" style={{ padding: '24px', background: 'var(--card-bg)', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
-              <h3 style={{ fontSize: '1.25rem', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <CheckCircle2 color="#10b981" /> Phase 2: Hybrid Prototype Architecture
+            <div className="card card-lift p-6">
+              <h3 className="card-heading-lg stack-h align-center gap-2 mb-3">
+                <CheckCircle2 className="text-signal shrink-0" size={20} /> Phase 2: Hybrid Prototype Architecture
               </h3>
-              <p>We build a production proof-of-concept incorporating streaming UI components, multi-provider fallbacks (OpenAI, Claude, Gemini), and sliding context windows.</p>
+              <p className="body-copy">We build a production proof-of-concept incorporating streaming UI components, multi-provider fallbacks (OpenAI, Claude, Gemini), and sliding context windows.</p>
             </div>
 
-            <div className="card-box" style={{ padding: '24px', background: 'var(--card-bg)', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
-              <h3 style={{ fontSize: '1.25rem', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <CheckCircle2 color="#10b981" /> Phase 3: MLOps & Security Isolation
+            <div className="card card-lift p-6">
+              <h3 className="card-heading-lg stack-h align-center gap-2 mb-3">
+                <CheckCircle2 className="text-signal shrink-0" size={20} /> Phase 3: MLOps &amp; Security Isolation
               </h3>
-              <p>We deploy the model pipeline inside your private AWS/GCP cloud VPC with token rate limiting, cost caps, and real-time observability telemetry.</p>
+              <p className="body-copy">We deploy the model pipeline inside your private AWS/GCP cloud VPC with token rate limiting, cost caps, and real-time observability telemetry.</p>
             </div>
           </div>
         </div>
@@ -144,21 +151,23 @@ export default function AIConsultantPage() {
 
       {/* CTA Band */}
       <div className="section-band" id="consulting-audit">
-        <div className="container center-text" style={{ maxWidth: '700px', margin: '0 auto', textAlign: 'center' }}>
+        <div className="container measure-sm text-center">
           <h2>Schedule an AI Architecture Consultation</h2>
-          <p style={{ margin: '16px 0 32px 0', color: 'var(--text-muted)' }}>
+          <p className="body-copy my-4 text-muted">
             Speak directly with a senior DBERT AI Systems Architect. Receive a tailored roadmap for your enterprise.
           </p>
-          <a href="https://internship.dbert.online/apply" className="btn btn-primary btn-lg" style={{ padding: '16px 36px', fontSize: '1.1rem' }}>
+          <Link href="/ai-solutions/consultation" className="btn btn-primary btn-lg">
             Book 30-Min AI Discovery Call
-          </a>
+          </Link>
         </div>
       </div>
 
       {/* FAQ Accordion */}
       <div className="container section-gap">
-        <h2 className="center-text" style={{ marginBottom: '32px' }}>Frequently Asked Questions</h2>
-        <FAQAccordion items={faqs} />
+        <h2 className="text-center mb-8">Frequently Asked Questions</h2>
+        <div className="measure">
+          <FAQAccordion items={faqs} />
+        </div>
       </div>
     </div>
   );

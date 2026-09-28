@@ -1,8 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
 import FAQAccordion from '@/components/ui/FAQAccordion';
+import HandNote from '@/components/ui/HandNote';
 import s from '@/app/learners/learners.module.css';
-import { UserCheck, ShieldCheck, Cpu, Code2, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { UserCheck, ShieldCheck, Cpu, ArrowRight, CheckCircle2 } from 'lucide-react';
 
 export const metadata = {
   title: 'Hire Pre-Vetted AI & Full Stack Engineers | DBERT Labs',
@@ -68,16 +69,21 @@ export default function HirePreVettedEngineersPage() {
         <div className="doclabel">
           § B2B HIRING — TALENT PLATFORM <span className="rev">rev: 2026.1</span>
         </div>
-        <h1 className="page-title">
-          Hire Pre-Vetted AI & Software Engineers in 48 Hours
-        </h1>
+        <div className="stack-h justify-start align-baseline gap-3 flex-wrap mb-2">
+          <h1 className="page-title mb-0">
+            Hire Pre-Vetted AI &amp; Software Engineers in 48 Hours
+          </h1>
+          <HandNote tone="blue">
+            top 1% cohort fellows ✎
+          </HandNote>
+        </div>
         <p className={s.courseTagline}>
-          Vetted through Live System Builds, Code Reviews, & Production Commit Histories — Not Resume Keywords.
+          Vetted through Live System Builds, Code Reviews, &amp; Production Commit Histories — Not Resume Keywords.
         </p>
         <p className={s.courseLede}>
           Stop wasting hundreds of engineering hours interviewing unqualified candidates. DBERT pre-screens engineers through active production sprints so you receive proven, deployment-ready talent.
         </p>
-        <div style={{ marginTop: '24px', display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+        <div className="stack-h gap-4 mt-6 flex-wrap">
           <a href="#contact-hiring" className="btn btn-primary btn-lg">
             Request Candidate Profiles <ArrowRight className="inline-icon" />
           </a>
@@ -91,20 +97,20 @@ export default function HirePreVettedEngineersPage() {
       <div className="section-band">
         <div className="container">
           <div className="bento-grid-3">
-            <div className="bento-card center">
+            <div className="card card-lift text-center p-6">
               <span className="icon-chip"><UserCheck aria-hidden="true" /></span>
               <h3 className="accent-note">Top 3% Technical Screening</h3>
-              <p>Only candidates who successfully pass code architecture evaluations, multi-tier security checks, and code reviews join our roster.</p>
+              <p className="body-copy">Only candidates who successfully pass code architecture evaluations, multi-tier security checks, and code reviews join our roster.</p>
             </div>
-            <div className="bento-card center">
+            <div className="card card-lift text-center p-6">
               <span className="icon-chip"><ShieldCheck aria-hidden="true" /></span>
               <h3 className="accent-note">14-Day Risk-Free Trial</h3>
-              <p>Evaluate your engineer in your actual codebase. If they aren’t the right fit, pay nothing during the trial period.</p>
+              <p className="body-copy">Evaluate your engineer in your actual codebase. If they aren’t the right fit, pay nothing during the trial period.</p>
             </div>
-            <div className="bento-card center">
+            <div className="card card-lift text-center p-6">
               <span className="icon-chip"><Cpu aria-hidden="true" /></span>
               <h3 className="accent-note">Production-Ready Engineers</h3>
-              <p>Our engineers are fluent in modern stacks: Next.js, Python FastAPI, PostgreSQL, LangChain, PyTorch, and Docker containers.</p>
+              <p className="body-copy">Our engineers are fluent in modern stacks: Next.js, Python FastAPI, PostgreSQL, LangChain, PyTorch, and Docker containers.</p>
             </div>
           </div>
         </div>
@@ -112,39 +118,39 @@ export default function HirePreVettedEngineersPage() {
 
       {/* Vetting Guide / Educational SEO Content */}
       <div className="container section-gap" id="vetting-process">
-        <div className="prose-wrapper">
+        <div className="measure-lg">
           <h2>How to Evaluate Engineering Talent Beyond Algorithmic LeetCode Puzzles</h2>
-          <p>
+          <p className="body-copy">
             Traditional technical hiring processes often fail because they test candidates on synthetic puzzle-solving rather than practical software engineering skills. At DBERT Labs, we evaluate candidates against real-world engineering benchmarks:
           </p>
           
-          <div className="grid-2-col" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '24px', margin: '32px 0' }}>
-            <div className="card-box" style={{ padding: '24px', background: 'var(--card-bg)', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
-              <h3 style={{ fontSize: '1.25rem', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <CheckCircle2 color="#10b981" /> 1. Production Code Review
+          <div className="bento-grid-2 my-8">
+            <div className="card card-lift p-6">
+              <h3 className="card-heading-lg stack-h align-center gap-2 mb-3">
+                <CheckCircle2 className="text-signal shrink-0" size={20} /> 1. Production Code Review
               </h3>
-              <p>Candidates submit pull requests against live modular applications. We evaluate error handling, modularity, type hints, and automated test coverage.</p>
+              <p className="body-copy">Candidates submit pull requests against live modular applications. We evaluate error handling, modularity, type hints, and automated test coverage.</p>
             </div>
 
-            <div className="card-box" style={{ padding: '24px', background: 'var(--card-bg)', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
-              <h3 style={{ fontSize: '1.25rem', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <CheckCircle2 color="#10b981" /> 2. System Architecture Design
+            <div className="card card-lift p-6">
+              <h3 className="card-heading-lg stack-h align-center gap-2 mb-3">
+                <CheckCircle2 className="text-signal shrink-0" size={20} /> 2. System Architecture Design
               </h3>
-              <p>Engineers design scalable REST/GraphQL backend architecture, configure database indexing, and implement JWT/OAuth security patterns.</p>
+              <p className="body-copy">Engineers design scalable REST/GraphQL backend architecture, configure database indexing, and implement JWT/OAuth security patterns.</p>
             </div>
 
-            <div className="card-box" style={{ padding: '24px', background: 'var(--card-bg)', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
-              <h3 style={{ fontSize: '1.25rem', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <CheckCircle2 color="#10b981" /> 3. Async Communication & Speed
+            <div className="card card-lift p-6">
+              <h3 className="card-heading-lg stack-h align-center gap-2 mb-3">
+                <CheckCircle2 className="text-signal shrink-0" size={20} /> 3. Async Communication &amp; Speed
               </h3>
-              <p>We test async collaboration skills, Git branch discipline, dynamic debugging speed, and documentation thoroughness.</p>
+              <p className="body-copy">We test async collaboration skills, Git branch discipline, dynamic debugging speed, and documentation thoroughness.</p>
             </div>
 
-            <div className="card-box" style={{ padding: '24px', background: 'var(--card-bg)', borderRadius: '12px', border: '1px solid var(--border-color)' }}>
-              <h3 style={{ fontSize: '1.25rem', marginBottom: '12px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <CheckCircle2 color="#10b981" /> 4. AI & LLM Engineering Competence
+            <div className="card card-lift p-6">
+              <h3 className="card-heading-lg stack-h align-center gap-2 mb-3">
+                <CheckCircle2 className="text-signal shrink-0" size={20} /> 4. AI &amp; LLM Engineering Competence
               </h3>
-              <p>For AI engineers, we audit context window management, sliding buffer algorithms, RAG vector embeddings, and fallback resiliency.</p>
+              <p className="body-copy">For AI engineers, we audit context window management, sliding buffer algorithms, RAG vector embeddings, and fallback resiliency.</p>
             </div>
           </div>
         </div>
@@ -152,21 +158,23 @@ export default function HirePreVettedEngineersPage() {
 
       {/* Hiring Form / CTA */}
       <div className="section-band" id="contact-hiring">
-        <div className="container center-text" style={{ maxWidth: '700px', margin: '0 auto', textAlign: 'center' }}>
+        <div className="container measure-sm text-center">
           <h2>Scale Your Engineering Team Today</h2>
-          <p style={{ margin: '16px 0 32px 0', color: 'var(--text-muted)' }}>
+          <p className="body-copy my-4 text-muted">
             Tell us about your technical requirements and timeline. Receive curated candidate profiles within 24 hours.
           </p>
-          <a href="https://internship.dbert.online/apply" className="btn btn-primary btn-lg" style={{ padding: '16px 36px', fontSize: '1.1rem' }}>
+          <Link href="/startups/services/hiring" className="btn btn-primary btn-lg">
             Schedule Talent Discovery Call
-          </a>
+          </Link>
         </div>
       </div>
 
       {/* FAQ Accordion */}
       <div className="container section-gap">
-        <h2 className="center-text" style={{ marginBottom: '32px' }}>Frequently Asked Questions</h2>
-        <FAQAccordion items={faqs} />
+        <h2 className="text-center mb-8">Frequently Asked Questions</h2>
+        <div className="measure">
+          <FAQAccordion items={faqs} />
+        </div>
       </div>
     </div>
   );

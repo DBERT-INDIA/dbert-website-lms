@@ -252,7 +252,7 @@ export default function AivaraCohortForm() {
             Our admissions board and technical review mentors will review your application, academic background, and CV.
             You will receive an official decision email regarding your status.
           </p>
-          <div style={{ marginTop: '20px', display: 'flex', gap: '12px' }}>
+          <div className="stack-h gap-3 mt-5 flex-wrap">
             <Link href="/" className="btn btn-outline">
               Return to DBERT Home
             </Link>
@@ -270,16 +270,16 @@ export default function AivaraCohortForm() {
 
   return (
     <div className={s.formContainer}>
-      <div className={`${s.formCard} ${s.successPanel}`} style={{ textAlign: 'center', padding: '48px 32px' }}>
-        <div className={s.successIcon} style={{ background: 'rgba(139, 92, 246, 0.15)', color: 'var(--brand-purple)', margin: '0 auto 20px' }}>
+      <div className={`${s.formCard} ${s.successPanel} text-center p-8`}>
+        <div className={`${s.successIcon} mx-auto mb-5 text-accent`}>
           <ShieldCheck size={40} />
         </div>
-        <h2 style={{ fontSize: '1.75rem', fontWeight: 700, marginBottom: '12px' }}>Aivara Cohort Applications Moved</h2>
-        <p style={{ maxWidth: '580px', margin: '0 auto 24px', color: 'var(--text-muted)', lineHeight: '1.6' }}>
+        <h2 className="card-title text-2xl font-bold mb-3">Aivara Cohort Applications Moved</h2>
+        <p className="prose text-muted mx-auto mb-6 max-w-xl">
           All Aivara Technologies hiring cohort applications, track selections, and mentor assignments are now managed through the official <strong>DBERT Internship &amp; Learning Platform</strong>.
         </p>
-        <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', flexWrap: 'wrap' }}>
-          <a href="https://internship.dbert.online/apply?cohort=aivara" className="btn btn-primary" style={{ padding: '14px 28px', fontSize: '1rem', fontWeight: 600 }}>
+        <div className="stack-h justify-center gap-4 flex-wrap">
+          <a href="https://internship.dbert.online/apply?cohort=aivara" className="btn btn-primary btn-lg font-semibold">
             Apply for Aivara Cohort on DBERT Platform &rarr;
           </a>
         </div>

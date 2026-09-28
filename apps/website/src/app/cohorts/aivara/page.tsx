@@ -9,9 +9,7 @@ import {
   Globe2,
   GraduationCap,
   Wifi,
-  CheckCircle2,
   Code2,
-  BookOpen,
 } from 'lucide-react';
 import styles from './aivara.module.css';
 
@@ -29,7 +27,7 @@ export default function AivaraCohortLandingPage() {
             § 02 — RECRUITMENT &amp; INCUBATION SPRINT <span className="rev">cohort: 2026.aivara</span>
           </div>
           <h1>Aivara Technologies Remote Internship Cohort</h1>
-          <p className="measure-sm" style={{ margin: '0 auto var(--space-6)' }}>
+          <p className={styles.heroLede}>
             A production-level technical internship designed specifically for college students and emerging developers. Build real systems, receive senior engineering code reviews, and earn performance-linked stipends from anywhere in India.
           </p>
 
@@ -103,17 +101,17 @@ export default function AivaraCohortLandingPage() {
         {/* Requirements Banner */}
         <div className={styles.reqBanner}>
           <div className={styles.reqItem}>
-            <Laptop size={22} color="var(--accent)" style={{ margin: '0 auto' }} />
+            <Laptop size={22} className={styles.reqIcon} />
             <h4>Working Personal Laptop</h4>
             <p>Any modern 64-bit OS with Git &amp; VS Code installed</p>
           </div>
           <div className={styles.reqItem}>
-            <Wifi size={22} color="var(--accent)" style={{ margin: '0 auto' }} />
+            <Wifi size={22} className={styles.reqIcon} />
             <h4>Stable Internet Access</h4>
             <p>For Git commits, documentation sync, and squad huddles</p>
           </div>
           <div className={styles.reqItem}>
-            <Clock size={22} color="var(--accent)" style={{ margin: '0 auto' }} />
+            <Clock size={22} className={styles.reqIcon} />
             <h4>10 Hours / Week Minimum</h4>
             <p>Self-scheduled participation over 7 operational days</p>
           </div>
@@ -124,7 +122,7 @@ export default function AivaraCohortLandingPage() {
           <div className="center mb-md">
             <span className="doclabel justify-center">PROGRAM OVERVIEW</span>
             <h2>About the Aivara Technologies Internship</h2>
-            <p className="measure-sm" style={{ margin: '0 auto' }}>
+            <p className={styles.subLede}>
               Bridging academic computer science education and real-world industrial software delivery.
             </p>
           </div>

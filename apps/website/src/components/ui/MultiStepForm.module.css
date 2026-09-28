@@ -42,7 +42,7 @@
 .activeDot {
   background-color: var(--accent);
   border-color: var(--accent);
-  color: var(--ink);
+  color: #05070C;
 }
 
 .errorAlert {
