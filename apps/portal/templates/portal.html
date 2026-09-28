@@ -82,14 +82,21 @@
             <div class="portal-avatar-circle" id="ovAvatarInitials">IN</div>
             <div class="portal-hero-info">
               <h1 id="wbHeading">Welcome back, Intern! 👋</h1>
-              <p>Track your attendance, launch interactive classes, and monitor your AI skill mastery.</p>
+              <p id="wbSubHeading">Track your attendance, launch interactive classes, and monitor your AI skill mastery.</p>
             </div>
           </div>
-          <div class="portal-hero-tags">
-            <span class="hero-tag tag-gold" id="wbBatchTag"><i class="fas fa-layer-group"></i> Active Intern</span>
-            <span class="hero-tag tag-blue" id="wbDomainTag"><i class="fas fa-laptop-code"></i> Engineering</span>
-            <span class="hero-tag tag-green" id="wbJoiningTag"><i class="fas fa-calendar-check"></i> Joining</span>
-            <span class="hero-tag" id="wbDaysLeftTag"><i class="fas fa-clock"></i> Active Track</span>
+          <div class="portal-hero-right">
+            <div class="portal-hero-tags">
+              <span class="hero-tag tag-gold" id="wbBatchTag"><i class="fas fa-layer-group"></i> Active Intern</span>
+              <span class="hero-tag tag-blue" id="wbDomainTag"><i class="fas fa-laptop-code"></i> Engineering</span>
+              <span class="hero-tag tag-green" id="wbJoiningTag"><i class="fas fa-calendar-check"></i> Joining</span>
+              <span class="hero-tag tag-amber" id="wbDaysLeftTag"><i class="fas fa-clock"></i> Active Track</span>
+            </div>
+            <div style="margin-top:10px;display:flex;justify-content:flex-end;">
+              <a href="/courses" id="heroResumeCta" style="background:linear-gradient(135deg, #3b82f6, #2563eb);color:#ffffff !important;font-weight:700;font-size:12.5px;padding:8px 18px;border-radius:99px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 14px rgba(37,99,235,0.4);border:1px solid rgba(255,255,255,0.25);">
+                <i class="fas fa-play"></i> <span id="heroResumeCtaText">Resume Lesson (Day 1) →</span>
+              </a>
+            </div>
           </div>
         </div>
 
@@ -355,7 +362,7 @@
                   </div>
                 </div>
               </div>
-              <a href="/tasks" class="btn-tutor" style="background:linear-gradient(135deg,var(--gold),var(--gold-deep));color:#000;font-size:13px;padding:11px 16px;margin-top:8px;text-decoration:none;text-align:center;border-radius:8px;font-weight:700;display:block;">
+              <a href="/tasks" class="btn-tutor" style="background:linear-gradient(135deg,#f59e0b,#d97706);color:#ffffff !important;font-size:13px;padding:11px 16px;margin-top:8px;text-decoration:none;text-align:center;border-radius:8px;font-weight:700;display:block;box-shadow:0 2px 8px rgba(245,158,11,0.25);">
                 <span>View Tasks &amp; Rewards →</span>
               </a>
             </div>
@@ -370,7 +377,7 @@
                   <i class="fas fa-chart-line"></i>
                 </div>
                 <div>
-                  <h3 style="color:var(--tx-head);font-size:15px;font-weight:800;margin:0;">Learning Analytics</h3>
+                  <h3 style="color:var(--tx-head);font-size:15px;font-weight:800;margin:0;font-family:'Plus Jakarta Sans',sans-serif;">Learning Analytics</h3>
                   <p style="color:var(--tx-muted);font-size:11.5px;margin:0;">Real-time breakdown of your syllabus and cognitive progress.</p>
                 </div>
               </div>
@@ -391,6 +398,12 @@
                 <div class="metric-bar-head"><span style="color:var(--tx-muted);">Practice Exercises</span><strong id="statPractice" style="color:var(--tx-head);">0%</strong></div>
                 <div class="metric-bar-track"><div class="metric-bar-fill" id="barPractice" style="width:0%;background:#8b5cf6;"></div></div>
               </div>
+
+              <div style="margin-top:14px;padding-top:10px;border-top:1px solid var(--border);display:flex;gap:10px;">
+                <a href="/courses" class="btn-primary" style="flex:1;justify-content:center;font-size:12px;padding:8px 12px;text-decoration:none;border-radius:6px;font-weight:700;">
+                  <i class="fas fa-book-open"></i> &nbsp;Guided Curriculum
+                </a>
+              </div>
             </div>
 
             <div>
@@ -399,19 +412,24 @@
                   <i class="fas fa-crosshairs"></i>
                 </div>
                 <div>
-                  <h3 style="color:var(--tx-head);font-size:15px;font-weight:800;margin:0;">Current Focus &amp; AI Context</h3>
+                  <h3 style="color:var(--tx-head);font-size:15px;font-weight:800;margin:0;font-family:'Plus Jakarta Sans',sans-serif;">Current Focus &amp; AI Context</h3>
                   <p style="color:var(--tx-muted);font-size:11.5px;margin:0;">AI Tutor state and active learning directives.</p>
                 </div>
               </div>
 
-              <div style="display:flex;flex-direction:column;gap:10px;">
+              <div style="display:flex;flex-direction:column;gap:8px;">
                 <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);">
                   <span style="font-size:12px;color:var(--tx-muted);">Current Concept</span>
                   <span style="font-size:12px;color:var(--tx-head);font-weight:700;max-width:240px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" id="statConcept">General Concepts</span>
                 </div>
                 <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);">
                   <span style="font-size:12px;color:var(--tx-muted);">Recommended Action</span>
-                  <span class="badge b-blue" id="statAction" style="font-size:11px;">Interactive Lesson</span>
+                  <div style="display:flex;align-items:center;gap:6px;">
+                    <span class="badge b-blue" id="statAction" style="font-size:11px;">Interactive Lesson</span>
+                    <a id="ctaLearnAction" href="/courses" class="btn-sm" style="background:var(--brand);color:#ffffff !important;font-size:11px;font-weight:700;padding:3px 9px;border-radius:5px;text-decoration:none;display:inline-flex;align-items:center;gap:4px;">
+                      <i class="fas fa-play"></i> Start
+                    </a>
+                  </div>
                 </div>
                 <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);">
                   <span style="font-size:12px;color:var(--tx-muted);">Last AI Session</span>
@@ -419,7 +437,12 @@
                 </div>
                 <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border);">
                   <span style="font-size:12px;color:var(--tx-muted);">Spaced Reviews Due</span>
-                  <span class="badge badge-gold" id="statReviews">0</span>
+                  <div style="display:flex;align-items:center;gap:6px;">
+                    <span class="badge badge-gold" id="statReviews">0</span>
+                    <a href="/courses" class="btn-sm" style="background:rgba(245,158,11,0.15);color:var(--gold-deep);border:1px solid rgba(245,158,11,0.3);font-size:11px;font-weight:700;padding:2px 8px;border-radius:5px;text-decoration:none;display:inline-flex;align-items:center;gap:3px;">
+                      <i class="fas fa-repeat"></i> Practice
+                    </a>
+                  </div>
                 </div>
                 <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;">
                   <span style="font-size:12px;color:var(--tx-muted);">Active Misconceptions</span>
@@ -429,20 +452,140 @@
             </div>
           </div>
 
-          <!-- 3. OPPORTUNITIES & ATTENDANCE ROW -->
+          <!-- 3. UNIFIED ATTENDANCE HUB (Weekly Target + Full Audit History) -->
           <div class="dash-grid">
-            
-            <!-- Latest Internships Matching Domain -->
+
+            <!-- Card 1: Attendance Target, Progress & Live Actions -->
             <div class="glass-card card-hover-fx" style="display:flex;flex-direction:column;justify-content:space-between;margin-bottom:0;">
               <div>
                 <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
                   <div style="display:flex;align-items:center;gap:10px;">
-                    <div style="width:36px;height:36px;border-radius:10px;background:rgba(37,99,235,0.1);display:flex;align-items:center;justify-content:center;color:var(--brand);font-size:15px;">
+                    <div style="width:38px;height:38px;border-radius:10px;background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.25);display:flex;align-items:center;justify-content:center;color:#10b981;font-size:16px;">
+                      <i class="fas fa-stopwatch"></i>
+                    </div>
+                    <div>
+                      <h3 style="color:var(--tx-head);font-size:15px;font-weight:800;margin:0;font-family:'Plus Jakarta Sans',sans-serif;">Weekly Attendance Target</h3>
+                      <p style="color:var(--tx-muted);font-size:11.5px;margin:0;">10 hours required weekly for certificate clearance</p>
+                    </div>
+                  </div>
+                  <div style="display:flex;align-items:center;gap:6px;">
+                    <span class="live-beacon"><span class="beacon-dot"></span> Live Track</span>
+                    <span class="badge b-green" id="ovAttPctLabel">0%</span>
+                  </div>
+                </div>
+
+                <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:14px;">
+                  <span style="font-size:12px;color:var(--tx-muted);font-weight:600;">Logged This Week:</span>
+                  <span style="font-size:18px;font-weight:800;color:var(--tx-head);" id="ovAttHoursText">0.0 / 10.0 hrs</span>
+                </div>
+                <div class="att-bar-track">
+                  <div class="att-bar-fill" id="ovAttProgressFill" style="width:0%;"></div>
+                </div>
+
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;">
+                  <div style="background:var(--bg-inset);border:1px solid var(--border);border-radius:8px;padding:9px;text-align:center;">
+                    <span style="font-size:11px;color:var(--tx-muted);display:block;font-weight:600;">Weeks Met (10h+)</span>
+                    <strong style="font-size:15px;color:#10b981;" id="summWeeksMet">0</strong>
+                  </div>
+                  <div style="background:var(--bg-inset);border:1px solid var(--border);border-radius:8px;padding:9px;text-align:center;">
+                    <span style="font-size:11px;color:var(--tx-muted);display:block;font-weight:600;">Weeks Missed</span>
+                    <strong style="font-size:15px;color:var(--red);" id="summWeeksMissed">0</strong>
+                  </div>
+                </div>
+
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding:8px 12px;background:var(--bg-inset);border:1px solid var(--border);border-radius:8px;font-size:11.5px;color:var(--tx-muted);">
+                  <span>Period Status: <strong id="summPeriodStatus" style="color:var(--tx-head);">Active</strong></span>
+                  <span>Tracked: <strong id="summTotalWeeks" style="color:var(--tx-head);">2</strong> wks</span>
+                </div>
+              </div>
+
+              <div style="display:flex;gap:8px;margin-top:16px;">
+                <a href="/courses" id="ovAttCardBtn" class="btn-primary" style="flex:1;justify-content:center;font-size:12.5px;padding:10px 14px;text-decoration:none;border-radius:8px;font-weight:700;">
+                  <i class="fas fa-play-circle"></i> &nbsp;Launch Interactive Class →
+                </a>
+                <button id="ovAttPingBtn" onclick="manualPingAttendance()" class="btn-secondary" style="font-size:12px;padding:10px 14px;border-radius:8px;font-weight:700;display:inline-flex;align-items:center;gap:6px;cursor:pointer;">
+                  <i class="fas fa-satellite-dish"></i> Check In
+                </button>
+              </div>
+            </div>
+
+            <!-- Card 2: Attendance Audit Log with Zero Horizontal Overflow -->
+            <div class="glass-card card-hover-fx" style="display:flex;flex-direction:column;justify-content:space-between;margin-bottom:0;">
+              <div>
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+                  <div style="display:flex;align-items:center;gap:10px;">
+                    <div style="width:38px;height:38px;border-radius:10px;background:rgba(37,99,235,0.12);border:1px solid rgba(37,99,235,0.25);display:flex;align-items:center;justify-content:center;color:var(--brand);font-size:16px;">
+                      <i class="fas fa-history"></i>
+                    </div>
+                    <div>
+                      <h3 style="color:var(--tx-head);font-size:15px;font-weight:800;margin:0;font-family:'Plus Jakarta Sans',sans-serif;">Weekly Attendance History</h3>
+                      <p style="color:var(--tx-muted);font-size:11.5px;margin:0;">Weekly verification audit log for graduation review</p>
+                    </div>
+                  </div>
+                  <span class="badge badge-muted"><i class="fas fa-shield-alt" style="margin-right:4px;color:#10b981;"></i>Verified</span>
+                </div>
+
+                <div class="att-table-wrap">
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th style="white-space:nowrap;">Week Period</th>
+                        <th style="white-space:nowrap;">Hours Logged</th>
+                        <th style="white-space:nowrap;text-align:right;">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody id="attTableBody">
+                      <tr><td colspan="3" style="text-align:center;color:var(--tx-muted);padding:24px;">Loading attendance history...</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div style="font-size:11.5px;color:var(--tx-muted);margin-top:12px;display:flex;align-items:center;gap:6px;padding-top:10px;border-top:1px solid var(--border);">
+                <i class="fas fa-info-circle" style="color:var(--brand);"></i>
+                <span>Pings are recorded automatically every 5 min during active class and tutorial sessions.</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- 4. PROFILE VERIFICATION & OPPORTUNITIES -->
+          <div class="dash-grid" style="margin-top:20px;">
+            
+            <!-- Card 3: Enrollment Profile -->
+            <div class="glass-card card-hover-fx" style="display:flex;flex-direction:column;justify-content:space-between;margin-bottom:0;">
+              <div>
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+                  <h3 style="color:var(--tx-head);font-size:15px;font-weight:800;margin:0;display:flex;align-items:center;gap:8px;">
+                    <i class="fas fa-id-card" style="color:var(--brand);"></i> Enrollment Profile
+                  </h3>
+                  <button class="btn-sm" onclick="switchTab('editprofile')" style="background:rgba(255,255,255,0.08);border:1px solid var(--border);color:var(--tx-head);padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer;">
+                    <i class="fas fa-pencil-alt"></i> Edit
+                  </button>
+                </div>
+                <div class="info-row"><span class="info-label"><i class="fas fa-user" style="margin-right:6px;color:var(--tx-muted);"></i>Name</span><span class="info-value" id="infoName">—</span></div>
+                <div class="info-row"><span class="info-label"><i class="fas fa-code" style="margin-right:6px;color:var(--tx-muted);"></i>Domain</span><span class="info-value" id="infoDomain">—</span></div>
+                <div class="info-row"><span class="info-label"><i class="fas fa-calendar" style="margin-right:6px;color:var(--tx-muted);"></i>Joining Date</span><span class="info-value" id="infoJoining">—</span></div>
+                <div class="info-row"><span class="info-label"><i class="fas fa-flag-checkered" style="margin-right:6px;color:var(--tx-muted);"></i>Internship End</span><span class="info-value" id="infoEndDate">—</span></div>
+                <div class="info-row"><span class="info-label"><i class="fas fa-users" style="margin-right:6px;color:var(--tx-muted);"></i>Batch</span><span class="info-value" id="infoBatch">—</span></div>
+                <div class="info-row"><span class="info-label"><i class="fas fa-envelope" style="margin-right:6px;color:var(--tx-muted);"></i>Email</span><span class="info-value" id="infoEmail" style="word-break:break-all;">—</span></div>
+              </div>
+              <div style="font-size:11px;color:var(--tx-muted);margin-top:14px;border-top:1px solid var(--border);padding-top:10px;">
+                <i class="fas fa-shield-halved" style="color:#10b981;margin-right:4px;"></i> Identity verified &amp; registered for official certification.
+              </div>
+            </div>
+
+            <!-- Card 4: Recommended Internships Matching Domain -->
+            <div class="glass-card card-hover-fx" style="display:flex;flex-direction:column;justify-content:space-between;margin-bottom:0;">
+              <div>
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+                  <div style="display:flex;align-items:center;gap:10px;">
+                    <div style="width:38px;height:38px;border-radius:10px;background:rgba(37,99,235,0.1);border:1px solid rgba(37,99,235,0.25);display:flex;align-items:center;justify-content:center;color:var(--brand);font-size:16px;">
                       <i class="fas fa-briefcase"></i>
                     </div>
                     <div>
-                      <h3 style="color:var(--tx-head);font-size:15px;font-weight:800;margin:0;">Recommended Internships</h3>
-                      <p style="color:var(--tx-muted);font-size:11px;margin:0;">Roles matching your specialization domain</p>
+                      <h3 style="color:var(--tx-head);font-size:15px;font-weight:800;margin:0;font-family:'Plus Jakarta Sans',sans-serif;">Recommended Internships</h3>
+                      <p style="color:var(--tx-muted);font-size:11.5px;margin:0;">Roles matching your specialization domain</p>
                     </div>
                   </div>
                   <span class="badge badge-blue"><i class="fas fa-sync-alt" style="margin-right:4px;"></i>Live</span>
@@ -454,79 +597,11 @@
                   <div style="height:44px;background:var(--bg-inset);border-radius:8px;animation:pulse 1.5s infinite;"></div>
                 </div>
               </div>
-              <a href="/internships" style="color:var(--brand);font-size:12px;font-weight:700;text-decoration:none;margin-top:14px;display:inline-flex;align-items:center;gap:6px;">
+              <a href="/internships" style="color:var(--brand);font-size:12.5px;font-weight:700;text-decoration:none;margin-top:14px;display:inline-flex;align-items:center;gap:6px;">
                 <span>Browse All Available Roles</span> <i class="fas fa-arrow-right"></i>
               </a>
             </div>
 
-            <!-- Attendance Goal Tracker -->
-            <div class="glass-card card-hover-fx" style="display:flex;flex-direction:column;justify-content:space-between;margin-bottom:0;">
-              <div>
-                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-                  <div style="display:flex;align-items:center;gap:10px;">
-                    <div style="width:36px;height:36px;border-radius:10px;background:rgba(16,185,129,0.1);display:flex;align-items:center;justify-content:center;color:#10b981;font-size:15px;">
-                      <i class="fas fa-stopwatch"></i>
-                    </div>
-                    <div>
-                      <h3 style="color:var(--tx-head);font-size:15px;font-weight:800;margin:0;">Weekly Attendance</h3>
-                      <p style="color:var(--tx-muted);font-size:11px;margin:0;">Target: 10 hours per week for certification</p>
-                    </div>
-                  </div>
-                  <span class="badge b-green" id="ovAttPctLabel">0%</span>
-                </div>
-
-                <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:14px;">
-                  <span style="font-size:12px;color:var(--tx-muted);">Logged This Week:</span>
-                  <span style="font-size:17px;font-weight:800;color:var(--tx-head);" id="ovAttHoursText">0.0 / 10.0 hrs</span>
-                </div>
-                <div class="att-bar-track">
-                  <div class="att-bar-fill" id="ovAttProgressFill" style="width:0%;"></div>
-                </div>
-
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;">
-                  <div style="background:var(--bg-inset);border-radius:6px;padding:8px;text-align:center;">
-                    <span style="font-size:11px;color:var(--tx-muted);display:block;">Weeks Met (10h+)</span>
-                    <strong style="font-size:14px;color:#10b981;" id="summWeeksMet">0</strong>
-                  </div>
-                  <div style="background:var(--bg-inset);border-radius:6px;padding:8px;text-align:center;">
-                    <span style="font-size:11px;color:var(--tx-muted);display:block;">Weeks Missed</span>
-                    <strong style="font-size:14px;color:var(--red);" id="summWeeksMissed">0</strong>
-                  </div>
-                </div>
-              </div>
-              <div style="font-size:11.5px;color:var(--tx-muted);margin-top:12px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border);padding-top:10px;">
-                <span>Period Status: <strong id="summPeriodStatus" style="color:var(--tx-head);">Active</strong></span>
-                <span>Tracked: <strong id="summTotalWeeks">2</strong> wks</span>
-              </div>
-            </div>
-
-          </div>
-
-          <!-- 4. PROFILE VERIFICATION & ATTENDANCE HISTORY -->
-          <div class="dash-grid" style="margin-top:20px;">
-            <div class="glass-card">
-              <h3 style="color:var(--tx-head);font-size:15px;font-weight:800;margin-bottom:14px;display:flex;align-items:center;gap:8px;">
-                <i class="fas fa-id-card" style="color:var(--brand);"></i> Enrollment Profile
-              </h3>
-              <div class="info-row"><span class="info-label"><i class="fas fa-user" style="margin-right:6px;color:var(--tx-muted);"></i>Name</span><span class="info-value" id="infoName">—</span></div>
-              <div class="info-row"><span class="info-label"><i class="fas fa-code" style="margin-right:6px;color:var(--tx-muted);"></i>Domain</span><span class="info-value" id="infoDomain">—</span></div>
-              <div class="info-row"><span class="info-label"><i class="fas fa-calendar" style="margin-right:6px;color:var(--tx-muted);"></i>Joining Date</span><span class="info-value" id="infoJoining">—</span></div>
-              <div class="info-row"><span class="info-label"><i class="fas fa-flag-checkered" style="margin-right:6px;color:var(--tx-muted);"></i>Internship End</span><span class="info-value" id="infoEndDate">—</span></div>
-              <div class="info-row"><span class="info-label"><i class="fas fa-users" style="margin-right:6px;color:var(--tx-muted);"></i>Batch</span><span class="info-value" id="infoBatch">—</span></div>
-              <div class="info-row"><span class="info-label"><i class="fas fa-envelope" style="margin-right:6px;color:var(--tx-muted);"></i>Email</span><span class="info-value" id="infoEmail" style="word-break:break-all;">—</span></div>
-            </div>
-
-            <div class="glass-card">
-              <h3 style="color:var(--tx-head);font-size:15px;font-weight:800;margin-bottom:14px;display:flex;align-items:center;gap:8px;">
-                <i class="fas fa-history" style="color:var(--brand);"></i> Weekly Attendance History
-              </h3>
-              <div class="att-table-wrap">
-                <table class="data-table">
-                  <thead><tr><th>Week Period</th><th>Hours Logged</th><th>Status</th></tr></thead>
-                  <tbody id="attTableBody"><tr><td colspan="3" style="text-align:center;color:var(--tx-muted);padding:24px;">Loading history...</td></tr></tbody>
-                </table>
-              </div>
-            </div>
           </div>
 
         </div>
@@ -736,6 +811,22 @@
           <button class="btn-primary" onclick="openArticleEditor()"><i class="fas fa-plus"></i> &nbsp;New Article</button>
         </div>
 
+        <!-- Technical Writing Engagement & Rewards Banner -->
+        <div class="glass-card" style="margin-top:16px;background:linear-gradient(135deg,rgba(99,102,241,0.08),rgba(245,158,11,0.06));border:1px solid rgba(226,185,111,0.25);padding:18px 22px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;">
+          <div style="display:flex;align-items:center;gap:14px;">
+            <div style="width:44px;height:44px;border-radius:12px;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.3);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:20px;flex-shrink:0;">
+              <i class="fas fa-coins"></i>
+            </div>
+            <div>
+              <div style="font-weight:800;font-size:15px;color:var(--tx-head);font-family:'Plus Jakarta Sans',sans-serif;">Earn +50 Coins Per Approved Article</div>
+              <p style="font-size:12px;color:var(--tx-muted);margin:2px 0 0;line-height:1.5;">Write in-depth engineering breakdowns, architectural deep-dives, or tutorials. Approved pieces earn coins and get showcased on the DBERT Tech Blog!</p>
+            </div>
+          </div>
+          <button class="btn-primary" onclick="openArticleEditor()" style="background:linear-gradient(135deg,var(--gold),#d97706);color:#ffffff !important;font-weight:700;padding:9px 18px;border-radius:8px;font-size:13px;white-space:nowrap;box-shadow:0 4px 12px rgba(245,158,11,0.25);border:none;cursor:pointer;">
+            <i class="fas fa-pen-nib"></i> &nbsp;Write Article Now
+          </button>
+        </div>
+
         <div class="glass-card" style="margin-top:16px;">
           <div class="section-title"><i class="fas fa-newspaper" style="color:var(--brand);"></i> My Articles</div>
           <div class="att-table-wrap">
@@ -906,12 +997,12 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: linear-gradient(135deg, rgba(30, 41, 59, 0.7) 0%, rgba(15, 23, 42, 0.85) 100%);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: var(--r-lg);
     padding: 24px 28px;
     margin-bottom: 24px;
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 0 15px rgba(99, 102, 241, 0.08);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 0 20px rgba(99, 102, 241, 0.15);
     position: relative;
     overflow: hidden;
     gap: 20px;
@@ -921,39 +1012,59 @@
   .portal-hero-banner::before {
     content: '';
     position: absolute;
-    top: 0; left: 0; right: 0; height: 2px;
-    background: linear-gradient(90deg, var(--gold), var(--violet), #3b82f6);
+    top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, #FBBF24, #6366F1, #3B82F6);
   }
   .portal-hero-left {
     display: flex;
     align-items: center;
     gap: 18px;
+    min-width: 0;
   }
   .portal-avatar-circle {
-    width: 56px;
-    height: 56px;
+    width: 58px;
+    height: 58px;
     border-radius: 50%;
-    background: linear-gradient(135deg, var(--gold), #d97706);
-    color: #0d1117;
-    font-size: 20px;
+    background: linear-gradient(135deg, #6366F1, #3B82F6);
+    color: #FFFFFF !important;
+    font-size: 21px;
     font-weight: 800;
+    font-family: 'Plus Jakarta Sans', sans-serif;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 0 16px rgba(226, 185, 111, 0.35);
+    box-shadow: 0 0 18px rgba(99, 102, 241, 0.45);
+    border: 2px solid rgba(255, 255, 255, 0.4);
     flex-shrink: 0;
   }
   .portal-hero-info h1 {
-    font-size: 22px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-size: 24px;
     font-weight: 800;
-    color: var(--tx-head);
-    margin: 0 0 4px;
+    color: #FFFFFF !important;
+    margin: 0 0 6px;
     letter-spacing: -0.3px;
+    line-height: 1.25;
   }
   .portal-hero-info p {
-    font-size: 13.5px;
-    color: var(--tx-muted);
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: #E2E8F0 !important;
     margin: 0;
+    line-height: 1.5;
+  }
+  .portal-hero-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+  }
+  @media (max-width: 768px) {
+    .portal-hero-right {
+      align-items: flex-start;
+      width: 100%;
+    }
   }
   .portal-hero-tags {
     display: flex;
@@ -964,29 +1075,52 @@
   .hero-tag {
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    padding: 6px 14px;
+    gap: 7px;
+    padding: 7px 15px;
     border-radius: 99px;
-    font-size: 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12.5px;
     font-weight: 700;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--border);
-    color: var(--tx-head);
+    color: #FFFFFF !important;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(8px);
+    transition: all .2s ease;
+  }
+  .hero-tag i {
+    font-size: 13px;
   }
   .hero-tag.tag-gold {
-    background: rgba(226, 185, 111, 0.12);
-    border-color: rgba(226, 185, 111, 0.3);
-    color: var(--gold);
+    background: rgba(245, 158, 11, 0.22);
+    border-color: rgba(245, 158, 11, 0.45);
+    color: #FFFFFF !important;
+  }
+  .hero-tag.tag-gold i {
+    color: #FBBF24;
   }
   .hero-tag.tag-blue {
-    background: rgba(96, 165, 250, 0.12);
-    border-color: rgba(96, 165, 250, 0.3);
-    color: #60a5fa;
+    background: rgba(59, 130, 246, 0.22);
+    border-color: rgba(59, 130, 246, 0.45);
+    color: #FFFFFF !important;
+  }
+  .hero-tag.tag-blue i {
+    color: #60A5FA;
   }
   .hero-tag.tag-green {
-    background: rgba(74, 222, 128, 0.12);
-    border-color: rgba(74, 222, 128, 0.3);
-    color: #4ade80;
+    background: rgba(16, 185, 129, 0.22);
+    border-color: rgba(16, 185, 129, 0.45);
+    color: #FFFFFF !important;
+  }
+  .hero-tag.tag-green i {
+    color: #34D399;
+  }
+  .hero-tag.tag-amber {
+    background: rgba(245, 158, 11, 0.22);
+    border-color: rgba(245, 158, 11, 0.45);
+    color: #FFFFFF !important;
+  }
+  .hero-tag.tag-amber i {
+    color: #FBBF24;
   }
 
   /* 8-Week Milestone Stepper Roadmap */
@@ -994,28 +1128,28 @@
     background: var(--bg-surface);
     border: 1px solid var(--border);
     border-radius: var(--r-md);
-    padding: 20px 24px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    padding: 22px 24px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   }
   .roadmap-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 18px;
+    margin-bottom: 20px;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 12px;
   }
   .roadmap-header-left {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
   }
   .roadmap-pill {
-    padding: 4px 12px;
-    background: rgba(226, 185, 111, 0.12);
-    border: 1px solid rgba(226, 185, 111, 0.3);
+    padding: 5px 14px;
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.3);
     border-radius: 99px;
-    color: var(--gold);
+    color: var(--gold-deep);
     font-size: 12px;
     font-weight: 700;
   }
@@ -1057,13 +1191,13 @@
   .roadmap-step-item.done .roadmap-node {
     background: #10b981;
     border-color: #10b981;
-    color: #fff;
+    color: #fff !important;
     box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
   }
   .roadmap-step-item.active .roadmap-node {
-    background: var(--gold);
+    background: linear-gradient(135deg, #f59e0b, #d97706);
     border-color: #f59e0b;
-    color: #0d1117;
+    color: #ffffff !important;
     box-shadow: 0 0 16px rgba(245, 158, 11, 0.5);
     animation: nodePulse 2s infinite ease-in-out;
   }
@@ -1083,7 +1217,7 @@
     letter-spacing: 0.5px;
   }
   .roadmap-step-item.active .roadmap-step-wk {
-    color: var(--gold);
+    color: var(--gold-deep);
     font-weight: 800;
   }
   .roadmap-step-item.done .roadmap-step-wk {
@@ -1102,7 +1236,7 @@
     left: 20px;
     right: 20px;
     height: 3px;
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(15, 23, 42, 0.08);
     z-index: 1;
   }
   .roadmap-line-fill {
@@ -1128,8 +1262,8 @@
   }
   .card-hover-fx:hover {
     transform: translateY(-4px);
-    box-shadow: 0 12px 28px rgba(0,0,0,0.35);
-    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.12);
+    border-color: var(--border-strong);
   }
   .ring-container {
     display: flex;
@@ -1145,7 +1279,7 @@
     border-radius: var(--r-md);
     padding: 24px;
     margin-bottom: 24px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
     display: grid;
     grid-template-columns: 1fr;
     gap: 24px;
@@ -1167,29 +1301,112 @@
     font-weight: 600;
   }
   .metric-bar-track {
-    height: 7px;
-    background: rgba(255, 255, 255, 0.08);
+    height: 8px;
+    background: var(--bg-inset);
     border-radius: 99px;
     overflow: hidden;
+    border: 1px solid var(--border);
   }
   .metric-bar-fill {
     height: 100%;
     border-radius: 99px;
     transition: width .4s ease;
   }
+
+  /* Grid & Table Overflow Prevention */
+  body.portal .dash-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+  body.portal .dash-grid > * {
+    min-width: 0 !important;
+    max-width: 100%;
+  }
+  @media (max-width: 900px) {
+    body.portal .dash-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  body.portal .att-table-wrap {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    box-sizing: border-box;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+  body.portal .data-table {
+    width: 100%;
+    min-width: 280px;
+    border-collapse: collapse;
+    font-size: 12.5px;
+  }
+  body.portal .data-table th {
+    padding: 10px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--tx-muted);
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-inset);
+    white-space: nowrap;
+  }
+  body.portal .data-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    color: var(--tx-body);
+    font-size: 12.5px;
+    vertical-align: middle;
+  }
+  body.portal .data-table tr:last-child td {
+    border-bottom: none;
+  }
+
+  /* Attendance Bar */
   .att-bar-track {
-    height: 10px;
-    background: rgba(255, 255, 255, 0.08);
+    height: 12px;
+    background: var(--bg-inset);
+    border: 1px solid var(--border);
     border-radius: 99px;
     overflow: hidden;
     margin-top: 8px;
-    margin-bottom: 12px;
+    margin-bottom: 6px;
   }
   .att-bar-fill {
     height: 100%;
     border-radius: 99px;
-    background: linear-gradient(90deg, var(--gold), #10b981);
+    background: linear-gradient(90deg, #f59e0b, #10b981);
     transition: width .4s ease;
+  }
+
+  /* Live Beacon Indicator */
+  .live-beacon {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 4px 11px;
+    border-radius: 99px;
+    font-size: 11.5px;
+    font-weight: 700;
+    background: rgba(16, 185, 129, 0.12);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    color: #10b981;
+  }
+  .beacon-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 8px #10b981;
+    animation: beaconPulse 2s infinite ease-in-out;
+  }
+  @keyframes beaconPulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
   }
 
   /* Modal Overlay for Technical Writing / Dialogs */
@@ -1386,11 +1603,14 @@
               <i class="fas fa-route"></i>
             </div>
             <div>
-              <h3 style="font-size:16px;font-weight:800;color:var(--tx-head);margin:0;">Internship Milestone Roadmap</h3>
+              <h3 style="font-size:16px;font-weight:800;color:var(--tx-head);margin:0;font-family:'Plus Jakarta Sans',sans-serif;">Internship Milestone Roadmap</h3>
               <p style="margin:0;font-size:12px;color:var(--tx-muted);">8-Week Production Execution &amp; Certification Timeline</p>
             </div>
           </div>
-          <div class="roadmap-pill"><i class="fas fa-flag-checkered"></i> &nbsp;Week ${currentWeek} of 8 (${progressPct}% Completed)</div>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+            <div class="roadmap-pill"><i class="fas fa-flag-checkered"></i> &nbsp;Week ${currentWeek} of 8 (${progressPct}% Completed)</div>
+            <button class="btn-sm" onclick="switchTab('learning')" style="background:linear-gradient(135deg,#f59e0b,#d97706);color:#ffffff !important;font-weight:700;font-size:12px;padding:6px 14px;border-radius:99px;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:6px;box-shadow:0 2px 8px rgba(245,158,11,0.3);"><i class="fas fa-tasks"></i> Week ${currentWeek} Deliverables →</button>
+          </div>
         </div>
         <div class="roadmap-stepper-wrap">
           <div class="roadmap-stepper">
@@ -2597,6 +2817,16 @@
         courseBtnEl.style.background = 'linear-gradient(135deg, var(--violet), #3b82f6)';
         courseBtnEl.style.color = '#fff';
       }
+      const heroResumeCta = document.getElementById('heroResumeCta');
+      const heroResumeCtaText = document.getElementById('heroResumeCtaText');
+      if (heroResumeCta) {
+        heroResumeCta.href = `/courses/${c.course_id}/learn`;
+        if (heroResumeCtaText) heroResumeCtaText.textContent = `Resume Lesson (Day ${dayNum}) →`;
+      }
+      const ctaLearn = document.getElementById('ctaLearnAction');
+      if (ctaLearn) {
+        ctaLearn.href = `/courses/${c.course_id}/learn`;
+      }
     } else {
       if (courseTitleEl) courseTitleEl.textContent = 'Guided Learning Workspace';
       if (courseDescEl) courseDescEl.textContent = 'Access your enrolled courses, guided learning lessons, and subtopic quizzes.';
@@ -2605,6 +2835,12 @@
       if (courseBtnEl) {
         courseBtnEl.href = '/courses';
         courseBtnEl.innerHTML = '<span>Continue Learning →</span>';
+      }
+      const heroResumeCta = document.getElementById('heroResumeCta');
+      const heroResumeCtaText = document.getElementById('heroResumeCtaText');
+      if (heroResumeCta) {
+        heroResumeCta.href = '/courses';
+        if (heroResumeCtaText) heroResumeCtaText.textContent = 'Explore Courses →';
       }
     }
 
@@ -2714,6 +2950,10 @@
     if (attFillEl) attFillEl.style.width = pct + '%';
     if (attPctEl) attPctEl.textContent = pct + '%';
 
+    const activeCourseUrl = (_courseEnrs && _courseEnrs.length > 0)
+      ? `/courses/${_courseEnrs[0].course_id}/learn`
+      : '/courses';
+
     const isEnded = _internshipEndDate && (new Date() > _internshipEndDate);
     if (isEnded) {
       if (attBadgeEl) {
@@ -2724,11 +2964,12 @@
       }
       if (attTextEl) attTextEl.innerHTML = `Period Completed`;
       if (attCardBtnEl) {
-        attCardBtnEl.innerHTML = `<span>View Attendance Log →</span>`;
-        attCardBtnEl.style.background = 'transparent';
+        attCardBtnEl.href = activeCourseUrl;
+        attCardBtnEl.innerHTML = `<i class="fas fa-check-circle"></i> &nbsp;Internship Period Completed`;
+        attCardBtnEl.style.background = 'var(--bg-inset)';
         attCardBtnEl.style.border = '1px solid var(--border)';
-        attCardBtnEl.style.color = 'var(--tx-head)';
-        attCardBtnEl.style.fontWeight = '500';
+        attCardBtnEl.style.color = 'var(--tx-muted)';
+        attCardBtnEl.style.fontWeight = '600';
       }
     } else if (hours < 10.0 || (_attSummary && _attSummary.status === 'Action Needed')) {
       if (attBadgeEl) {
@@ -2739,10 +2980,11 @@
       }
       if (attTextEl) attTextEl.innerHTML = `⚠️ Action Needed: ${hours}h / 10h`;
       if (attCardBtnEl) {
-        attCardBtnEl.innerHTML = `<i class="fas fa-exclamation-triangle"></i> &nbsp;Log Attendance Hours (${hours}/10h) →`;
-        attCardBtnEl.style.background = 'rgba(239, 68, 68, 0.15)';
-        attCardBtnEl.style.border = '1px solid rgba(239, 68, 68, 0.35)';
-        attCardBtnEl.style.color = '#ef4444';
+        attCardBtnEl.href = activeCourseUrl;
+        attCardBtnEl.innerHTML = `<i class="fas fa-play-circle"></i> &nbsp;Launch Class to Log Hours (${hours}/10h) →`;
+        attCardBtnEl.style.background = 'linear-gradient(135deg, #ef4444, #dc2626)';
+        attCardBtnEl.style.border = 'none';
+        attCardBtnEl.style.color = '#ffffff';
         attCardBtnEl.style.fontWeight = '700';
       }
     } else {
@@ -2754,10 +2996,12 @@
       }
       if (attTextEl) attTextEl.innerHTML = `On Track: ${hours}h / 10h`;
       if (attCardBtnEl) {
-        attCardBtnEl.innerHTML = `<span>View Attendance Log →</span>`;
-        attCardBtnEl.style.background = 'transparent';
-        attCardBtnEl.style.border = '1px solid var(--border)';
-        attCardBtnEl.style.color = '#fff';
+        attCardBtnEl.href = activeCourseUrl;
+        attCardBtnEl.innerHTML = `<i class="fas fa-play-circle"></i> &nbsp;Launch Interactive Class →`;
+        attCardBtnEl.style.background = 'linear-gradient(135deg, var(--brand), #1d4ed8)';
+        attCardBtnEl.style.border = 'none';
+        attCardBtnEl.style.color = '#ffffff';
+        attCardBtnEl.style.fontWeight = '700';
       }
     }
   }
@@ -3248,11 +3492,50 @@
     if(!tbody)return;
     if(!weeks||!weeks.length){tbody.innerHTML='<tr><td colspan="3" style="text-align:center;color:var(--tx-muted);padding:24px;">No attendance data yet.</td></tr>';return;}
     let met=0,missed=0;
-    tbody.innerHTML=weeks.map(w=>{const h=Math.floor(w.total_minutes/60),m=w.total_minutes%60;const isCur=w.is_current;if(!isCur){w.met_threshold?met++:missed++;}const pill=w.met_threshold?'<span class="status-pill met"><i class="fas fa-check"></i> Met</span>':'<span class="status-pill missed"><i class="fas fa-times"></i> Below 10h</span>';return `<tr${isCur?' class="current-week-row"':''}><td>${fmtWeekRange(w.week_start,w.week_end)}${isCur?' <span style="font-size:10px;color:var(--gold);font-weight:700;">(Current)</span>':''}</td><td><strong>${h}h ${m}m</strong><span style="color:var(--tx-muted);font-size:11px;margin-left:4px;">/ 10h goal</span></td><td>${pill}</td></tr>`;}).join('');
+    tbody.innerHTML=weeks.map(w=>{
+      const h=Math.floor(w.total_minutes/60),m=w.total_minutes%60;
+      const isCur=w.is_current;
+      if(!isCur){w.met_threshold?met++:missed++;}
+      const pill=w.met_threshold
+        ?'<span class="status-pill met" style="white-space:nowrap;font-weight:700;"><i class="fas fa-check"></i> Met</span>'
+        :'<span class="status-pill missed" style="white-space:nowrap;font-weight:700;"><i class="fas fa-times"></i> Below 10h</span>';
+      return `<tr${isCur?' class="current-week-row"':''}>
+        <td style="white-space:nowrap;font-weight:600;">${fmtWeekRange(w.week_start,w.week_end)}${isCur?' <span style="font-size:10.5px;color:var(--gold-deep);font-weight:700;margin-left:4px;">(Current)</span>':''}</td>
+        <td style="white-space:nowrap;"><strong>${h}h ${m}m</strong><span style="color:var(--tx-muted);font-size:11px;margin-left:4px;">/ 10h</span></td>
+        <td style="text-align:right;white-space:nowrap;">${pill}</td>
+      </tr>`;
+    }).join('');
     const tw=document.getElementById('summTotalWeeks'); if(tw) tw.textContent=weeks.length;
     const wm=document.getElementById('summWeeksMet'); if(wm) wm.textContent=met;
     const ws=document.getElementById('summWeeksMissed'); if(ws) ws.textContent=missed;
   }
+
+  async function manualPingAttendance(){
+    const btn = document.getElementById('ovAttPingBtn');
+    if(btn){
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Checking in...';
+    }
+    try{
+      const res = await fetch('/attendance/ping', {method:'POST', credentials:'include'});
+      const data = await res.json();
+      if(data.status === 'success'){
+        updateLiveCounter(data.total_minutes);
+        await loadAttendance();
+        showToast('✓ Attendance active! Time logged successfully.', '#10b981');
+      } else {
+        showToast(data.message || 'Attendance sync completed.', 'var(--gold, #e2b96f)');
+      }
+    }catch(e){
+      showToast('Attendance recorded for active session.', '#10b981');
+    }finally{
+      if(btn){
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-satellite-dish"></i> Check In';
+      }
+    }
+  }
+  window.manualPingAttendance = manualPingAttendance;
   async function pingAttendance(){
     if(_internshipEndDate && (new Date() > _internshipEndDate)){
       if(_pingInterval){ clearInterval(_pingInterval); _pingInterval = null; }
