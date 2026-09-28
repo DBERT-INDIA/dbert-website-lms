@@ -70,8 +70,7 @@
 - **Planned Fix**:
   - Implement progressive enhancement: SSR markup renders the real approved target figure (`end`).
   - When JS runs and enters viewport, client animation starts from 0 smoothly up to `end`. If JS fails, is disabled, or is scraped, the authentic numbers are visible immediately.
-- **Target Phase**: Phase 3 (Homepage Recomposition).
-- **Status**: OPEN.
+- **Status**: RESOLVED (Fixed in Phase 3: CountUp renders approved target end value in SSR markup with progressive client count-up enhancement).
 
 ---
 
@@ -84,8 +83,7 @@
   - `src/components/ui/FactTicker.tsx` duplicates the facts array twice in the DOM for continuous CSS marquee animation loop. In text extractors and slow animation frames, the duplicate text reads like an accidental double-render.
 - **Planned Fix**:
   - Refine FactTicker layout, ensure robust `aria-hidden="true"`, smooth the velocity, and visually demarcate the ticker as an ambient marquee bar distinct from core proof metrics.
-- **Target Phase**: Phase 3 (Homepage Recomposition).
-- **Status**: OPEN.
+- **Status**: RESOLVED (Fixed in Phase 3: applied edge gradient masks, refined velocity to 42s, and enforced ambient styling).
 
 ---
 

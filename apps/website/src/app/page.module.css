@@ -1,15 +1,16 @@
-/* Homepage — design system v2. Section order and values from
-   design/dbert-redesign-v2.html. */
+/* Homepage — design system v2.2 "The Studio Console"
+   Enhanced for visual scannability, high contrast, responsive rhythm,
+   and authentic artisanal accents. */
 
 /* ═══ HERO ═══ */
 .hero {
-  padding: 84px 0 64px;
+  padding: 88px 0 68px;
   position: relative;
 }
 
 .heroGrid {
   display: grid;
-  grid-template-columns: 1.05fr .95fr;
+  grid-template-columns: 1.08fr .92fr;
   gap: 56px;
   align-items: center;
 }
@@ -20,11 +21,14 @@
   gap: 9px;
   font-family: var(--font-m);
   font-size: .74rem;
-  color: var(--muted);
-  border: 1px solid var(--line-strong);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border: 1px solid var(--border-strong);
+  background: var(--surface-raised);
   border-radius: 99px;
-  padding: 7px 15px;
-  margin-bottom: 26px;
+  padding: 7px 16px;
+  margin-bottom: 24px;
 }
 
 .pulse {
@@ -32,7 +36,7 @@
   height: 7px;
   border-radius: 50%;
   background: var(--ok);
-  box-shadow: 0 0 0 0 rgba(52, 211, 153, .5);
+  box-shadow: 0 0 0 0 rgba(52, 211, 153, .6);
   animation: pulse 2.2s infinite;
   flex-shrink: 0;
 }
@@ -46,20 +50,33 @@
   }
 }
 
+.heroTitle {
+  font-family: var(--font-d);
+  font-size: clamp(2.6rem, 5.2vw, 4.2rem);
+  line-height: 1.08;
+  letter-spacing: -.02em;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+}
+
 .sub {
   font-size: 1.12rem;
-  max-width: 520px;
-  margin: 22px 0 32px;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  max-width: 530px;
+  margin: 0 0 32px;
 }
 
 .ctas {
   display: flex;
   gap: 14px;
   flex-wrap: wrap;
+  align-items: center;
 }
 
+/* ═══ STAT BAR ═══ */
 .statBarSection {
-  padding: 24px 0 36px;
+  padding: 24px 0 40px;
   position: relative;
 }
 
@@ -67,11 +84,11 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: var(--space-4);
-  background: var(--card);
-  border: 1px solid var(--line);
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--r-md);
   padding: var(--space-5) var(--space-6);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.35);
 }
 
 .statItem {
@@ -82,25 +99,25 @@
 
 .statNum {
   font-family: var(--font-d);
-  font-size: 1.85rem;
+  font-size: 2.1rem;
   font-weight: 700;
-  color: var(--text);
+  color: var(--text-primary);
   line-height: 1.1;
   letter-spacing: -0.02em;
 }
 
 .statLabel {
   font-family: var(--font-m);
-  font-size: 0.76rem;
-  color: var(--muted);
+  font-size: 0.74rem;
+  color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
 }
 
 .footnote {
   font-family: var(--font-m);
   font-size: .72rem;
-  color: var(--faint);
+  color: var(--text-faint);
   margin-top: 14px;
   text-align: right;
 }
@@ -115,25 +132,32 @@
   text-align: right;
 }
 
-/* ═══ CRAWLER PROSE (Phase 7.1 expands this) ═══ */
+/* ═══ CRAWLER PROSE / STUDIO PHILOSOPHY ═══ */
 .about {
-  max-width: 680px;
+  max-width: 720px;
   margin: 0 auto;
   text-align: center;
 }
 
 .about h2 {
-  font-size: 1.5rem;
+  font-family: var(--font-d);
+  font-size: 1.85rem;
+  color: var(--text-primary);
   margin-bottom: 16px;
 }
 
-/* ═══ CTA ═══ */
+.about p {
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+
+/* ═══ BOTTOM CTA ═══ */
 .cta {
   text-align: center;
   padding: 110px 24px;
   position: relative;
   overflow: hidden;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--border-subtle);
 }
 
 .cta::before {
@@ -141,36 +165,48 @@
   position: absolute;
   inset: 0;
   background: radial-gradient(ellipse 60% 80% at 50% 100%, rgba(91, 140, 255, .13), transparent 70%);
+  pointer-events: none;
 }
 
 .cta h2 {
-  max-width: 640px;
+  font-family: var(--font-d);
+  font-size: clamp(2rem, 4vw, 3rem);
+  max-width: 660px;
   margin: 0 auto 18px;
   position: relative;
+  color: var(--text-primary);
 }
 
 .cta p {
-  max-width: 460px;
+  color: var(--text-secondary);
+  max-width: 480px;
   margin: 0 auto 34px;
   position: relative;
-}
-
-.cta a {
-  position: relative;
+  font-size: 1.05rem;
 }
 
 .fine {
   font-family: var(--font-m);
-  font-size: .7rem;
-  color: var(--faint);
-  margin-top: 22px;
+  font-size: .72rem;
+  color: var(--text-faint);
+  margin-top: 24px;
   position: relative;
 }
 
-@media (max-width: 1020px) {
+/* Section Rhythm Utilities */
+.doorsSection {
+  padding: 72px 0 88px;
+  position: relative;
+}
+
+.labelOk { color: var(--ok); }
+.labelSignal { color: var(--signal); }
+.flushTop { padding-top: 0; }
+
+@media (max-width: 1040px) {
   .heroGrid {
     grid-template-columns: 1fr;
-    gap: 52px;
+    gap: 48px;
   }
   .statBar {
     grid-template-columns: repeat(2, 1fr);
@@ -178,19 +214,16 @@
   }
 }
 
-@media (max-width: 620px) {
+@media (max-width: 640px) {
   .hero {
-    padding: 52px 0 48px;
+    padding: 48px 0 40px;
   }
   .statBar {
     grid-template-columns: 1fr;
     gap: var(--space-3);
     padding: var(--space-4);
   }
+  .footnote {
+    text-align: left;
+  }
 }
-
-/* Phase 5: replaces the last four inline style objects on the homepage. */
-.doorsSection { padding: 64px 0 80px; }
-.labelOk { color: var(--ok); }
-.labelSignal { color: var(--signal); }
-.flushTop { padding-top: 0; }

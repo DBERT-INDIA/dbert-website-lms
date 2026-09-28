@@ -205,7 +205,7 @@ export default function HomePage() {
               studio status — 4 ventures in active build
             </div>
 
-            <h1>
+            <h1 className={styles.heroTitle}>
               The venture studio that{' '}
               <span className="marker">
                 writes the code.
@@ -222,12 +222,12 @@ export default function HomePage() {
 
             <div className={styles.ctas}>
               <Link href="/startups/register" className="btn btn-primary">
-                Apply for incubation{' '}
+                <span>Apply for incubation</span>
                 <span className="arr" aria-hidden="true">
                   →
                 </span>
               </Link>
-              <Link href="/learners" className="btn btn-ghost">
+              <Link href="/learners" className="btn btn-outline">
                 Explore learner programs
               </Link>
             </div>

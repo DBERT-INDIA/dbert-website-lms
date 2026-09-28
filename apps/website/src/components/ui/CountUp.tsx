@@ -18,9 +18,10 @@ type CountUpProps = {
  * Counts from 0 to `end` the first time it scrolls into view, on the same
  * cubic ease-out and 1100ms duration as the reference file.
  *
- * Like Reveal, the running value is written straight to the node instead of
- * being held in state — a 60fps animation should not drive a render pass per
- * frame. Under prefers-reduced-motion the final value is written once.
+ * Progressively enhanced: the SSR markup renders the approved `end` value
+ * directly, ensuring web crawlers, search engines, and JS-deferred browsers
+ * never display an uninitialized zero. When in view, client-side JS animates
+ * the transition smoothly. Under prefers-reduced-motion, `end` remains static.
  */
 export default function CountUp({
   end,
@@ -55,17 +56,20 @@ export default function CountUp({
           if (!entry.isIntersecting) return;
           observer.unobserve(entry.target);
 
+          // Reset to 0 just before triggering smooth count-up animation
+          render(0);
+
           const start = performance.now();
           const tick = (now: number) => {
             const progress = Math.min((now - start) / duration, 1);
-            // ease-out cubic, matching the reference
+            // ease-out cubic
             render(Math.round(end * (1 - Math.pow(1 - progress, 3))));
             if (progress < 1) frame = requestAnimationFrame(tick);
           };
           frame = requestAnimationFrame(tick);
         });
       },
-      { threshold: 0.5 }
+      { threshold: 0.2 }
     );
 
     observer.observe(el);
@@ -78,7 +82,7 @@ export default function CountUp({
 
   return (
     <Tag ref={ref} className={className}>
-      {prefix}0{suffix}
+      {prefix}{end}{suffix}
     </Tag>
   );
 }
