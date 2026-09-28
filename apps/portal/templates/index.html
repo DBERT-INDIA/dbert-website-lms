@@ -374,6 +374,12 @@
   ]
   </script>
 
+  <!-- Phase 13 & 19 — Multi-Step Signup Isolation -->
+  <style nonce="{{ csp_nonce() }}">
+    body.home .su-step { display: none !important; }
+    body.home .su-step.active { display: block !important; animation: fadeIn .2s ease both; }
+  </style>
+
   <!-- AUTH OVERLAY -->
   <div id="authOverlay">
     <div class="auth-wrapper">
@@ -408,7 +414,7 @@
             </div>
 
             <!-- STEP 1 — account -->
-            <div class="su-step" id="suStep1">
+            <div class="su-step active" id="suStep1">
               <div class="form-grid">
                 <div class="form-section-label">Create your account</div>
                 <div class="form-group"><label class="field-label" for="su_name">Full Name *</label><input type="text" id="su_name" class="field-input" placeholder="Your full name" autocomplete="name"/></div>
@@ -423,12 +429,12 @@
               <input type="text" name="company_website" id="su_company_website" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true" aria-label="Leave this field blank" style="position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;opacity:0;"/>
 
               <input type="hidden" id="su_ts"/>
-              <button class="btn-auth-submit" id="suBtn1" data-act-click="suNext1"><span class="btn-label"><i class="fas fa-user-plus"></i> &nbsp;Create account &amp; continue</span><span class="btn-spinner"></span></button>
+              <button type="button" class="btn-auth-submit" id="suBtn1" data-act-click="suNext1" onclick="suNext1();return false;"><span class="btn-label"><i class="fas fa-user-plus"></i> &nbsp;Create account &amp; continue</span><span class="btn-spinner"></span></button>
               <p style="text-align:center;margin-top:8px;margin-bottom:0;font-size:11px;color:#64748B;">Takes 2 minutes &middot; Offer letter within 2 hours of enrollment</p>
             </div>
 
             <!-- STEP 2 — academics -->
-            <div class="su-step" id="suStep2" style="display:none;">
+            <div class="su-step" id="suStep2" style="display:none !important;">
               <div class="form-grid">
                 <div class="form-section-label">Your academic background</div>
                 <div class="form-group"><label class="field-label" for="su_city">City *</label>
@@ -442,13 +448,13 @@
                   <select id="su_year" class="field-select"><option value="">-- Select Year --</option><option>2024</option><option>2025</option><option>2026</option><option>2027</option><option>2028</option><option>2029</option><option>2030</option><option>2031</option><option>2032</option></select></div>
               </div>
               <div class="su-nav">
-                <button type="button" class="btn-step-back" data-act-click="suGoStep" data-arg-click='[1]'><i class="fas fa-arrow-left"></i> Back</button>
-                <button class="btn-auth-submit" id="suBtn2" data-act-click="suNext2"><span class="btn-label">Continue &nbsp;<i class="fas fa-arrow-right"></i></span><span class="btn-spinner"></span></button>
+                <button type="button" class="btn-step-back" data-act-click="suGoStep" data-arg-click='[1]' onclick="suGoStep(1);return false;"><i class="fas fa-arrow-left"></i> Back</button>
+                <button type="button" class="btn-auth-submit" id="suBtn2" data-act-click="suNext2" onclick="suNext2();return false;"><span class="btn-label">Continue &nbsp;<i class="fas fa-arrow-right"></i></span><span class="btn-spinner"></span></button>
               </div>
             </div>
 
             <!-- STEP 3 — profile + goals -->
-            <div class="su-step" id="suStep3" style="display:none;">
+            <div class="su-step" id="suStep3" style="display:none !important;">
               <div class="form-grid">
                 <div class="form-section-label">Your profile &amp; goals</div>
                 <div class="form-group full"><label class="field-label" for="su_why">Why do you want to join? * <span id="whyCount" style="float:right;font-size:11px;color:var(--amber);">0 / 80 min</span></label><textarea id="su_why" class="field-textarea" rows="4" placeholder="Tell us why you want this internship, what excites you about the domain, and what you hope to achieve. (min 80 characters)" data-act-input="updateWhyCount"></textarea></div>
@@ -464,8 +470,8 @@
                   <select id="su_priority" class="field-select"><option value="">-- Select --</option><option>A guaranteed placement</option><option>Stipend / earning</option><option>Learning &amp; skills</option><option>Certificate &amp; resume value</option></select></div>
               </div>
               <div class="su-nav">
-                <button type="button" class="btn-step-back" data-act-click="suGoStep" data-arg-click='[2]'><i class="fas fa-arrow-left"></i> Back</button>
-                <button class="btn-auth-submit" id="suBtn3" data-act-click="suSubmit3"><span class="btn-label"><i class="fas fa-paper-plane"></i> &nbsp;Submit application</span><span class="btn-spinner"></span></button>
+                <button type="button" class="btn-step-back" data-act-click="suGoStep" data-arg-click='[2]' onclick="suGoStep(2);return false;"><i class="fas fa-arrow-left"></i> Back</button>
+                <button type="button" class="btn-auth-submit" id="suBtn3" data-act-click="suSubmit3" onclick="suSubmit3();return false;"><span class="btn-label"><i class="fas fa-paper-plane"></i> &nbsp;Submit application</span><span class="btn-spinner"></span></button>
               </div>
             </div>
           </div>
@@ -598,13 +604,30 @@
     document.getElementById('tabSignin').classList.toggle('active',tab==='signin');
     ['signupError','signinError'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('visible');});
     if(tab==='signin') resetSiFlow();
+    if(tab==='signup') suGoStep(_suStage||1);
     const ov=document.getElementById('authOverlay');if(ov) ov.scrollTop=0;
   }
   function togglePw(inputId,btn){const inp=document.getElementById(inputId);if(!inp)return;const show=inp.type==='password';inp.type=show?'text':'password';btn.querySelector('i').className=show?'fa fa-eye-slash':'fa fa-eye';}
   function updateWhyCount(){const ta=document.getElementById('su_why'),ctr=document.getElementById('whyCount');if(!ta||!ctr)return;const len=ta.value.length;ctr.textContent=len+' / 80 min';ctr.style.color=len>=80?'var(--green)':'var(--amber)';}
-  function showAuthError(id,msg){const el=document.getElementById(id);if(!el)return;el.querySelector('span').textContent=msg;el.classList.add('visible');}
+  function escapeHtml(str){if(!str)return '';return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+  function showAuthError(id,msg){const el=document.getElementById(id);if(!el)return;const sp=el.querySelector('span');if(sp)sp.innerHTML=msg;el.classList.add('visible');}
   function hideAuthError(id){const el=document.getElementById(id);if(el)el.classList.remove('visible');}
   function setLoading(id,v){const btn=document.getElementById(id);if(!btn)return;btn.disabled=v;btn.classList.toggle('loading',v);}
+  function switchToSigninWithEmail(email){
+    switchAuthTab('signin');
+    if(email){
+      const inp=document.getElementById('si_email');
+      if(inp){inp.value=email;doEmailCheck();}
+    }
+  }
+  window.escapeHtml=escapeHtml;
+  window.showAuthError=showAuthError;
+  window.hideAuthError=hideAuthError;
+  window.switchToSigninWithEmail=switchToSigninWithEmail;
+  window.switchAuthTab=switchAuthTab;
+  window.showAuthOverlay=showAuthOverlay;
+  window.hideAuthOverlay=hideAuthOverlay;
+  window.togglePw=togglePw;
 
   // ── FORGOT PASSWORD ──
   function openForgotModal(){
@@ -657,7 +680,8 @@
       const res=await fetch('/check-email',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'include',body:JSON.stringify({email})});
       const data=await res.json();
       if(data.status==='success'&&data.result!=='no_account'){
-        showAuthError('signupError','An account with this email ('+email+') already exists in our database. <a href="#" style="color:#D49A37;text-decoration:underline;font-weight:700;margin-left:4px;" data-act-click="switchAuthTab" data-arg-click=\'["signin"]\'>Sign In instead &rarr;</a>');
+        const escEmail=escapeHtml(email);
+        showAuthError('signupError','An account with this email ('+escEmail+') already exists in our database. <a href="#" style="color:#D49A37;text-decoration:underline;font-weight:700;margin-left:4px;" data-act-click="switchToSigninWithEmail" data-arg-click=\'["'+escEmail+'"]\' data-prevent-click onclick="switchToSigninWithEmail(\''+escEmail+'\');return false;">Sign In instead &rarr;</a>');
       }
     }catch(e){}
   }
@@ -668,8 +692,21 @@
   function suGoStep(n){
     _suStage=n;
     for(let i=1;i<=3;i++){
-      const step=document.getElementById('suStep'+i); if(step)step.style.display=(i===n)?'':'none';
-      const dot=document.getElementById('suDot'+i); if(dot){dot.classList.toggle('active',i===n);dot.classList.toggle('done',i<n);}
+      const step=document.getElementById('suStep'+i);
+      if(step){
+        if(i===n){
+          step.classList.add('active');
+          step.style.setProperty('display', 'block', 'important');
+        }else{
+          step.classList.remove('active');
+          step.style.setProperty('display', 'none', 'important');
+        }
+      }
+      const dot=document.getElementById('suDot'+i);
+      if(dot){
+        dot.classList.toggle('active',i===n);
+        dot.classList.toggle('done',i<n);
+      }
     }
     hideAuthError('signupError');
     try{document.getElementById('panelSignup').scrollTop=0;}catch(e){}
@@ -689,7 +726,8 @@
       const data=await res.json(); setLoading('suBtn1',false);
       if(data.status==='success'){dbertGA('signup_stage1',{});osLogin(email);suGoStep(2);}
       else if(res.status===409&&data.code==='account_exists'){
-        showAuthError('signupError','An account with this email ('+email+') already exists in our database. <a href="#" style="color:#D49A37;text-decoration:underline;font-weight:700;margin-left:4px;" data-act-click="switchAuthTab" data-arg-click=\'["signin"]\'>Sign In instead &rarr;</a>');
+        const escEmail=escapeHtml(email);
+        showAuthError('signupError','An account with this email ('+escEmail+') already exists in our database. <a href="#" style="color:#D49A37;text-decoration:underline;font-weight:700;margin-left:4px;" data-act-click="switchToSigninWithEmail" data-arg-click=\'["'+escEmail+'"]\' data-prevent-click onclick="switchToSigninWithEmail(\''+escEmail+'\');return false;">Sign In instead &rarr;</a>');
       }
       else{showAuthError('signupError',data.message||'Could not create your account.');}
     }catch(e){setLoading('suBtn1',false);showAuthError('signupError','Network error. Please try again.');}
@@ -744,6 +782,12 @@
       suGoStep(st===1?2:3);
     }catch(e){}
   }
+  window.checkSignupEmailExists=checkSignupEmailExists;
+  window.suGoStep=suGoStep;
+  window.suNext1=suNext1;
+  window.suNext2=suNext2;
+  window.suSubmit3=suSubmit3;
+  window.suResume=suResume;
 
   // ── SIGNIN FLOW (3-state: email check → login OR set password) ──
   let _siEmail='';

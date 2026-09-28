@@ -1726,6 +1726,9 @@ body.portal .lb-toggle.active{border-color:#000000; color:#000000 !important; ba
     body.home .btn-step-back{flex:0 0 auto;background:#161B28;border:1px solid #283144;color:#94A3B8;font-weight:700;border-radius:999px;padding:0 18px;cursor:pointer;font-family:inherit;font-size:12.5px;transition:.15s;}
     body.home .btn-step-back:hover{background:#1E2536;color:#FFFFFF;border-color:#38455E;}
     body.home .su-nav .btn-auth-submit{flex:1;margin-top:0;}
+    /* MULTI-STEP SIGNUP ISOLATION */
+    body.home .su-step{display:none !important;}
+    body.home .su-step.active{display:block !important;animation:fadeIn .2s ease both;}
 
     /* TOAST */
     body.home #toastEl{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#0F172A;border:1px solid #1E293B;color:#FFFFFF;padding:12px 22px;border-radius:10px;font-size:13px;font-weight:600;z-index:99999;transition:transform .3s ease,opacity .3s ease;opacity:0;max-width:380px;text-align:center;box-shadow:0 10px 25px rgba(0,0,0,0.25);pointer-events:none;}
