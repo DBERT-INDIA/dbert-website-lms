@@ -9,7 +9,12 @@
     "lint": "eslint .",
     "postinstall": "prisma generate",
     "check:seo": "node scripts/check-seo.mjs",
-    "check:links": "node scripts/check-links.mjs"
+    "check:links": "node scripts/check-links.mjs",
+    "audit:routes": "node scripts/audit-routes.mjs",
+    "audit:tokens": "node scripts/check-ui-tokens.mjs",
+    "audit:styles": "node scripts/check-inline-styles.mjs",
+    "audit:placeholders": "node scripts/check-placeholders.mjs",
+    "audit:headings": "node scripts/check-headings.mjs"
   },
   "keywords": [],
   "author": "",
