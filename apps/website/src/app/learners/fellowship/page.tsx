@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import StepTimeline from '@/components/ui/StepTimeline';
 import Faq from '@/components/seo/Faq';
+import HandNote from '@/components/ui/HandNote';
 import { pageMetadata } from '@/lib/seo';
 import { seoConfig } from '@/data/seo.config';
 import s from '../learners.module.css';
@@ -130,9 +131,14 @@ export default function FellowshipProgramPage() {
         <div className="doclabel">
           § 03 — FELLOWSHIP PROGRAMME <span className="rev">cohort track</span>
         </div>
-        <h1 className="page-title">
-          A paid AI internship where the code ships
-        </h1>
+        <div className="stack-h justify-center align-baseline gap-3 flex-wrap">
+          <h1 className="page-title">
+            A paid AI internship where the code ships
+          </h1>
+          <HandNote tone="blue">
+            live client repos · real stipends ✎
+          </HandNote>
+        </div>
         <p className="lede-wide">
           The DBERT Fellowship places you on a real client codebase under senior review — production
           systems for incubated startups, not practice projects. You leave with merged commits, a

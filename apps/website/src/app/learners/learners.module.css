@@ -22,38 +22,41 @@
 }
 
 .badge {
-  font-size: .7rem;
+  font-size: .72rem;
   color: var(--accent);
-  border: 1px solid rgba(91, 140, 255, .2);
-  padding: 2px 8px;
+  background: rgba(91, 140, 255, .1);
+  border: 1px solid rgba(91, 140, 255, .25);
+  padding: 3px 10px;
   border-radius: 99px;
   text-transform: uppercase;
   font-weight: 600;
+  letter-spacing: 0.04em;
 }
 
 .domainTitle {
   font-family: var(--font-d);
   font-size: 1.25rem;
+  color: var(--text-primary);
   margin-bottom: 8px;
 }
 
 .domainDesc {
-  font-size: .85rem;
-  color: var(--muted);
-  line-height: 1.5;
+  font-size: .88rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
   margin-bottom: var(--space-2);
 }
 
 .salary {
   color: var(--accent);
   font-weight: 600;
-  font-size: .85rem;
+  font-size: .88rem;
   margin-bottom: var(--space-2);
 }
 
 .pathLink {
-  color: var(--text);
-  font-size: .85rem;
+  color: var(--text-primary);
+  font-size: .88rem;
   font-weight: 600;
 }
 
@@ -118,30 +121,33 @@
 .jobTitle {
   font-family: var(--font-d);
   font-size: 1.45rem;
+  color: var(--text-primary);
   margin: 4px 0;
 }
 
 .jobDesc {
   font-size: .92rem;
-  color: var(--muted);
+  color: var(--text-secondary);
   line-height: 1.6;
 }
 
 .reqBlock {
   margin: 8px 0;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--border-subtle);
   padding-top: 8px;
 }
 
 .reqLabel {
   font-size: .85rem;
+  color: var(--text-primary);
+  font-weight: 600;
   display: block;
   margin-bottom: 2px;
 }
 
 .reqBody {
   font-size: .85rem;
-  color: var(--muted);
+  color: var(--text-secondary);
   line-height: 1.5;
 }
 
@@ -154,7 +160,7 @@
 
 .jobType {
   font-size: .8rem;
-  color: var(--muted);
+  color: var(--text-muted);
 }
 
 /* ── Course pages (four pages share this) ─── */
@@ -168,7 +174,7 @@
 
 .courseLede {
   font-size: 1.15rem;
-  color: var(--muted);
+  color: var(--text-secondary);
   line-height: 1.75;
   max-width: 780px;
   margin: 0 auto;
@@ -177,6 +183,7 @@
 .projectTitle {
   font-family: var(--font-d);
   font-size: 1.4rem;
+  color: var(--text-primary);
   margin: 8px 0;
 }
 
@@ -187,6 +194,7 @@
 
 .techHeading {
   font-family: var(--font-d);
+  color: var(--text-primary);
   margin-bottom: var(--space-4);
 }
 
@@ -201,10 +209,16 @@
 
 .techChip {
   padding: 6px 14px;
-  background-color: var(--raise);
-  border: 1px solid var(--line);
+  background-color: var(--surface-raised);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--r-sm);
+  color: var(--text-secondary);
   font-size: .85rem;
+  transition: border-color 0.2s ease;
+}
+
+.techChip:hover {
+  border-color: var(--border-strong);
 }
 
 /* ── Fellowship + interview prep ──────────── */

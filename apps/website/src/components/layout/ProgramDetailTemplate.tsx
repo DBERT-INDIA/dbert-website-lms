@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Script from 'next/script';
 import { CircleCheck, GitBranch, ExternalLink, Calendar, Zap, GitPullRequest, Award } from 'lucide-react';
+import HandNote from '../ui/HandNote';
 import f from '../ui/forms.module.css';
 import s from './ProgramDetailTemplate.module.css';
 
@@ -157,10 +158,15 @@ export default function ProgramDetailTemplate({
       
       <div className="mb-lg">
         <div className="doclabel">
-          § 01 — 2-MONTH INDUSTRIAL CURRICULUM <span className="rev">rev: 2026.2</span>
+          § 01 — {duration.toUpperCase()} INDUSTRIAL CURRICULUM <span className="rev">rev: 2026.2</span>
         </div>
-        <h1>{title}</h1>
-        <p>{subtitle || `${duration} Guided Education Curriculum`}</p>
+        <div className="stack-h align-baseline gap-3 flex-wrap">
+          <h1>{title}</h1>
+          <HandNote tone="amber">
+            evaluated code reviews · live PRs ✍
+          </HandNote>
+        </div>
+        <p className="body-copy">{subtitle || `${duration} Guided Education Curriculum`}</p>
 
         {/* Quick Program Meta Strip */}
         <div className={s.metaStrip}>
@@ -274,7 +280,7 @@ export default function ProgramDetailTemplate({
         </div>
 
         {/* Right Column: Sticky Sidebar with Details & Enrollment */}
-        <div className="stack">
+        <aside className={s.stickySidebar} aria-label="Program Investment and Enrollment">
           <div className={s.sidebarCard}>
             <span className={s.feeLabel}>Program Investment</span>
             <strong className={s.feeValue}>{price}</strong>
@@ -310,9 +316,36 @@ export default function ProgramDetailTemplate({
                 
                 {errorMsg && <div className={s.error}>{errorMsg}</div>}
                 
-                <input type="text" name="name" required placeholder="Full Name" value={formData.name} onChange={handleInputChange} className={s.input} />
-                <input type="email" name="email" required placeholder="Email Address" value={formData.email} onChange={handleInputChange} className={s.input} />
-                <input type="tel" name="phone" required placeholder="Phone Number" value={formData.phone} onChange={handleInputChange} className={s.input} />
+                <input
+                  type="text"
+                  name="name"
+                  required
+                  placeholder="Full Name"
+                  aria-label="Full Name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  className={s.input}
+                />
+                <input
+                  type="email"
+                  name="email"
+                  required
+                  placeholder="Email Address"
+                  aria-label="Email Address"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  className={s.input}
+                />
+                <input
+                  type="tel"
+                  name="phone"
+                  required
+                  placeholder="Phone Number"
+                  aria-label="Phone Number"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  className={s.input}
+                />
                 
                 <button type="submit" className={`btn btn-primary btn-sm ${s.submit}`} disabled={loading}>
                   {loading ? 'Processing...' : `Enrol for ${price}`}
@@ -320,7 +353,7 @@ export default function ProgramDetailTemplate({
               </form>
             )}
           </div>
-        </div>
+        </aside>
       </div>
     </div>
   );

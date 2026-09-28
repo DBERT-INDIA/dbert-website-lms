@@ -18,56 +18,61 @@
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  margin-top: 14px;
-  margin-bottom: 8px;
+  margin-top: 16px;
+  margin-bottom: 12px;
 }
 
 .metaPill {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-size: 0.75rem;
+  gap: 8px;
+  font-size: 0.78rem;
   font-family: var(--font-m);
-  color: var(--muted);
-  background: var(--raise);
-  border: 1px solid var(--line);
-  padding: 5px 12px;
+  color: var(--text-muted);
+  background: var(--surface-raised);
+  border: 1px solid var(--border-subtle);
+  padding: 6px 14px;
   border-radius: 999px;
+  transition: border-color 0.2s ease;
+}
+
+.metaPill:hover {
+  border-color: var(--border-strong);
 }
 
 .metaPill strong {
-  color: var(--text);
+  color: var(--text-primary);
   font-weight: 600;
 }
 
 /* ── Curriculum Timeline ──────────────────── */
 
 .curriculumSection {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: var(--space-5);
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-md);
+  padding: var(--space-6);
   position: relative;
   overflow: hidden;
 }
 
 .curriculumHead {
-  border-bottom: 1px solid var(--line);
-  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: var(--space-4);
   margin-bottom: var(--space-5);
 }
 
 .curriculumHead h2 {
   font-family: var(--font-d);
-  font-size: 1.4rem;
-  color: #fff;
-  margin-bottom: 4px;
+  font-size: 1.45rem;
+  color: var(--text-primary);
+  margin-bottom: 6px;
 }
 
 .curriculumSub {
-  font-size: 0.85rem;
-  color: var(--muted);
-  line-height: 1.5;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
 }
 
 .curriculumStack {
@@ -77,15 +82,16 @@
 }
 
 .curriculumBlock {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: var(--space-4);
-  transition: border-color 0.2s ease;
+  background: var(--surface-raised);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-md);
+  padding: var(--space-5);
+  transition: all 0.2s ease;
 }
 
 .curriculumBlock:hover {
-  border-color: rgba(0, 210, 255, 0.25);
+  border-color: var(--border-strong);
+  transform: translateY(-1px);
 }
 
 .blockHeader {
@@ -96,7 +102,7 @@
   gap: 8px;
   margin-bottom: 12px;
   padding-bottom: 10px;
-  border-bottom: 1px dashed var(--line);
+  border-bottom: 1px dashed var(--border-subtle);
 }
 
 .periodBadge {
@@ -106,8 +112,8 @@
   text-transform: uppercase;
   letter-spacing: 0.8px;
   color: var(--accent);
-  background: rgba(0, 210, 255, 0.08);
-  border: 1px solid rgba(0, 210, 255, 0.2);
+  background: rgba(91, 140, 255, 0.1);
+  border: 1px solid rgba(91, 140, 255, 0.25);
   padding: 3px 10px;
   border-radius: 6px;
 }
@@ -115,13 +121,13 @@
 .paceBadge {
   font-size: 0.72rem;
   font-family: var(--font-m);
-  color: var(--muted);
+  color: var(--text-muted);
 }
 
 .moduleTitle {
   font-family: var(--font-d);
-  font-size: 1.15rem;
-  color: #fff;
+  font-size: 1.2rem;
+  color: var(--text-primary);
   margin-bottom: 14px;
   line-height: 1.4;
 }
@@ -140,8 +146,8 @@
   align-items: flex-start;
   gap: 10px;
   font-size: 0.88rem;
-  color: var(--muted);
-  line-height: 1.55;
+  color: var(--text-secondary);
+  line-height: 1.6;
 }
 
 .topicBullet {
@@ -157,49 +163,48 @@
 /* ── Active Repos / Squads Section ────────── */
 
 .squadSection {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: var(--space-5);
-  margin-top: var(--space-5);
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-md);
+  padding: var(--space-6);
+  margin-top: var(--space-6);
 }
 
 .squadHead {
   margin-bottom: var(--space-4);
   padding-bottom: var(--space-3);
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 .squadHead h2 {
   font-family: var(--font-d);
-  font-size: 1.25rem;
-  color: #fff;
+  font-size: 1.3rem;
+  color: var(--text-primary);
   margin-bottom: 4px;
 }
 
 .squadLead {
-  font-size: 0.82rem;
-  color: var(--muted);
-  line-height: 1.5;
+  font-size: 0.86rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
 }
 
 .squadGrid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-3);
+  gap: var(--space-4);
 }
 
 .squadCard {
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: var(--space-4);
+  background: var(--surface-raised);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-md);
+  padding: var(--space-5);
   transition: all 0.2s ease;
 }
 
 .squadCard:hover {
-  border-color: rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.035);
+  border-color: var(--border-strong);
 }
 
 .squadTop {
@@ -220,9 +225,9 @@
 
 .squadCohortBadge {
   font-family: var(--font-m);
-  font-size: 0.7rem;
-  color: #34d399;
-  background: rgba(52, 211, 153, 0.08);
+  font-size: 0.72rem;
+  color: var(--ok);
+  background: rgba(52, 211, 153, 0.1);
   border: 1px solid rgba(52, 211, 153, 0.25);
   padding: 2px 8px;
   border-radius: 4px;
@@ -230,26 +235,26 @@
 
 .squadRoleBadge {
   font-family: var(--font-m);
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   color: var(--accent);
-  background: rgba(0, 210, 255, 0.08);
-  border: 1px solid rgba(0, 210, 255, 0.25);
+  background: rgba(91, 140, 255, 0.1);
+  border: 1px solid rgba(91, 140, 255, 0.25);
   padding: 2px 8px;
   border-radius: 4px;
 }
 
 .repoName {
   font-family: var(--font-m);
-  font-size: 0.92rem;
+  font-size: 0.95rem;
   font-weight: 600;
-  color: #fff;
+  color: var(--text-primary);
   margin-bottom: 6px;
 }
 
 .repoDesc {
-  font-size: 0.82rem;
-  color: var(--muted);
-  line-height: 1.5;
+  font-size: 0.84rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
   margin-bottom: 12px;
 }
 
@@ -258,31 +263,39 @@
   flex-wrap: wrap;
   gap: 6px;
   padding-top: 8px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid var(--border-subtle);
 }
 
 .techTag {
   font-family: var(--font-m);
-  font-size: 0.68rem;
-  color: var(--text);
-  background: var(--raise);
-  border: 1px solid var(--line);
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
   padding: 2px 8px;
   border-radius: 4px;
 }
 
 /* ── Sidebar ──────────────────────────────── */
 
+.stickySidebar {
+  position: sticky;
+  top: 96px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
 .sidebarCard {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: var(--space-4);
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-md);
+  padding: var(--space-5);
 }
 
 .feeLabel {
   font-size: 0.75rem;
-  color: var(--muted);
+  color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 1px;
   font-family: var(--font-m);
@@ -301,21 +314,21 @@
   align-items: center;
   gap: 8px;
   font-size: 0.82rem;
-  color: var(--muted);
+  color: var(--text-muted);
   font-family: var(--font-m);
 }
 
 .sidebarTitle {
   font-family: var(--font-d);
-  font-size: 1rem;
-  color: #fff;
+  font-size: 1.05rem;
+  color: var(--text-primary);
   margin-bottom: 8px;
 }
 
 .sidebarCopy {
-  font-size: 0.84rem;
-  color: var(--muted);
-  line-height: 1.55;
+  font-size: 0.86rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
 }
 
 /* ── Checkout Form ────────────────────────── */
@@ -328,14 +341,14 @@
 
 .checkoutTitle {
   font-family: var(--font-d);
-  font-size: 1.05rem;
-  color: #fff;
+  font-size: 1.1rem;
+  color: var(--text-primary);
 }
 
 .checkoutCopy {
-  font-size: 0.8rem;
-  color: var(--muted);
-  line-height: 1.4;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
 }
 
 .error {
@@ -350,18 +363,19 @@
 .input {
   width: 100%;
   padding: 10px 12px;
-  background: var(--raise);
-  border: 1px solid var(--line);
-  border-radius: 6px;
-  color: var(--text);
-  font-size: 0.85rem;
+  background: var(--surface-raised);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-sm);
+  color: var(--text-primary);
+  font-size: 0.88rem;
   font-family: inherit;
-  transition: border-color 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .input:focus {
   outline: none;
   border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(91, 140, 255, 0.25);
 }
 
 .submit {
@@ -377,12 +391,12 @@
 .successTitle {
   font-family: var(--font-d);
   color: var(--accent);
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   margin-top: 8px;
 }
 
 .successCopy {
-  font-size: 0.85rem;
-  color: var(--muted);
+  font-size: 0.88rem;
+  color: var(--text-secondary);
   margin-top: 6px;
 }

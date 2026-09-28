@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { pageMetadata } from '@/lib/seo';
+import HandNote from '@/components/ui/HandNote';
 import s from '../learners.module.css';
 import Reveal from '@/components/ui/Reveal';
 
@@ -135,8 +136,13 @@ export default function CoursesHubPage() {
           <div className="doclabel">
             § 01 — COURSES <span className="rev">skill tracks</span>
           </div>
-          <h1>AI and engineering courses with verifiable certificates</h1>
-          <p>
+          <div className="stack-h align-baseline gap-3 flex-wrap">
+            <h1>AI and engineering courses with verifiable certificates</h1>
+            <HandNote tone="amber">
+              production code · real pull requests ✍
+            </HandNote>
+          </div>
+          <p className="body-copy">
             Six focused technical tracks built around production engineering practices. Complete them through guided sprints, merge pull requests against real codebases, and verify your credentials on-chain. If you want the full sequence from beginner to paid fellowship, explore the{' '}
             <Link href="/learners" className={s.backLink}>
               career ladder
@@ -157,7 +163,7 @@ export default function CoursesHubPage() {
                   <h2 className="font-mono text-xl font-bold text-white group-hover:text-accent transition-colors mb-2">
                     {course.title}
                   </h2>
-                  <p className="text-xs text-muted leading-relaxed mb-4">
+                  <p className="text-xs leading-relaxed mb-4 text-[var(--text-secondary)]">
                     {course.description}
                   </p>
                 </div>
@@ -165,7 +171,7 @@ export default function CoursesHubPage() {
                   <div className="text-[11px] font-mono text-accent mb-2">
                     {course.tech}
                   </div>
-                  <div className="text-xs font-mono font-medium text-white flex items-center justify-between">
+                  <div className="text-xs font-mono font-medium text-[var(--text-primary)] flex items-center justify-between">
                     <span>Inspect Track Syllabus</span>
                     <span className="group-hover:translate-x-1 transition-transform">&rarr;</span>
                   </div>
