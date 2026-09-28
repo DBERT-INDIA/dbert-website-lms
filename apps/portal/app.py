@@ -5706,7 +5706,9 @@ def admin_articles_review():
     if not article_id or status not in ("NEEDS_REVISION", "APPROVED"):
         return jsonify({"status": "error", "message": "Invalid status or ID."}), 400
     with get_db() as conn:
-        conn.execute("UPDATE intern_articles SET status=?, mentor_feedback=?, updated_at=datetime('now','localtime') WHERE id=?", (status, feedback, article_id))
+        _ensure_articles_table(conn)
+        now_ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        conn.execute("UPDATE intern_articles SET status=?, mentor_feedback=?, updated_at=? WHERE id=?", (status, feedback, now_ts, article_id))
         conn.commit()
     return jsonify({"status": "success"})
 
@@ -5721,7 +5723,9 @@ def admin_articles_publish():
     if not article_id or not published_url:
         return jsonify({"status": "error", "message": "Missing ID or published URL."}), 400
     with get_db() as conn:
-        conn.execute("UPDATE intern_articles SET status='PUBLISHED', published_url=?, updated_at=datetime('now','localtime') WHERE id=?", (published_url, article_id))
+        _ensure_articles_table(conn)
+        now_ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        conn.execute("UPDATE intern_articles SET status='PUBLISHED', published_url=?, updated_at=? WHERE id=?", (published_url, now_ts, article_id))
         conn.commit()
     return jsonify({"status": "success"})
 
@@ -8033,12 +8037,39 @@ def _tutor_progress_live(intern_id):
     return None
 
 
+def _ensure_articles_table(conn):
+    try:
+        is_pg = getattr(conn, "dialect", "") == "postgres"
+        pk = "SERIAL PRIMARY KEY" if is_pg else "INTEGER PRIMARY KEY AUTOINCREMENT"
+        ts = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP" if is_pg else "TEXT DEFAULT (datetime('now','localtime'))"
+        conn.execute(f"""
+            CREATE TABLE IF NOT EXISTS intern_articles (
+                id {pk},
+                intern_id INTEGER NOT NULL,
+                domain TEXT,
+                title TEXT NOT NULL,
+                content_markdown TEXT NOT NULL,
+                status TEXT DEFAULT 'DRAFT',
+                mentor_feedback TEXT,
+                published_url TEXT,
+                created_at {ts},
+                updated_at {ts}
+            )
+        """)
+        conn.execute("CREATE INDEX IF NOT EXISTS idx_intern_articles_intern ON intern_articles(intern_id, status)")
+        if hasattr(conn, "commit"):
+            conn.commit()
+    except Exception as e:
+        log_error("ensure_articles_table", e)
+
+
 @app.route("/intern/articles", methods=["GET"])
 def intern_articles_list():
     user = require_role("intern")
     if not user:
         return jsonify({"status": "error", "message": "Unauthorized"}), 401
     with get_db() as conn:
+        _ensure_articles_table(conn)
         rows = conn.execute("SELECT * FROM intern_articles WHERE intern_id = ? ORDER BY updated_at DESC", (user["id"],)).fetchall()
         return jsonify({"status": "success", "articles": [row_to_dict(r) for r in rows]})
 
@@ -8051,14 +8082,16 @@ def intern_articles_save():
     article_id = _int_or_none(data.get("id"))
     title = (data.get("title") or "").strip()
     content_markdown = (data.get("content_markdown") or "").strip()
-    action = data.get("action") # 'DRAFT' or 'PENDING_REVIEW'
+    action = (data.get("action") or "").lower() # 'draft' or 'submit'
     
     if not title:
         return jsonify({"status": "error", "message": "Title is required."}), 400
         
     status = 'PENDING_REVIEW' if action == 'submit' else 'DRAFT'
+    now_ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     
     with get_db() as conn:
+        _ensure_articles_table(conn)
         if article_id:
             # Check ownership
             owner = conn.execute("SELECT id, status FROM intern_articles WHERE id=? AND intern_id=?", (article_id, user["id"])).fetchone()
@@ -8067,11 +8100,11 @@ def intern_articles_save():
             if owner["status"] in ("APPROVED", "PUBLISHED"):
                 return jsonify({"status": "error", "message": "Cannot edit an approved article."}), 400
                 
-            conn.execute("UPDATE intern_articles SET title=?, content_markdown=?, status=?, updated_at=datetime('now','localtime') WHERE id=?", 
-                         (title, content_markdown, status, article_id))
+            conn.execute("UPDATE intern_articles SET title=?, content_markdown=?, status=?, updated_at=? WHERE id=?", 
+                         (title, content_markdown, status, now_ts, article_id))
         else:
-            conn.execute("INSERT INTO intern_articles (intern_id, domain, title, content_markdown, status) VALUES (?, ?, ?, ?, ?)",
-                         (user["id"], user.get("domain", "General"), title, content_markdown, status))
+            conn.execute("INSERT INTO intern_articles (intern_id, domain, title, content_markdown, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                         (user["id"], user.get("domain", "General"), title, content_markdown, status, now_ts, now_ts))
         conn.commit()
     return jsonify({"status": "success"})
 

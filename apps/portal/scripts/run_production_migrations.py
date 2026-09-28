@@ -98,6 +98,38 @@ MIGRATIONS = [
         );
         CREATE INDEX IF NOT EXISTS idx_gl_teacher_inst_student 
         ON gl_teacher_learning_instructions(student_id, course_id, concept_id);
+    """),
+    ("Phase 14: Technical Publishing Hub & Spotlights (intern_articles)", """
+        CREATE TABLE IF NOT EXISTS intern_articles (
+            id SERIAL PRIMARY KEY,
+            intern_id INTEGER NOT NULL,
+            domain TEXT,
+            title TEXT NOT NULL,
+            content_markdown TEXT NOT NULL,
+            status TEXT DEFAULT 'DRAFT',
+            mentor_feedback TEXT,
+            published_url TEXT,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+        CREATE INDEX IF NOT EXISTS idx_intern_articles_intern ON intern_articles(intern_id, status);
+
+        CREATE TABLE IF NOT EXISTS ecosystem_spotlights (
+            id SERIAL PRIMARY KEY,
+            title TEXT NOT NULL,
+            description TEXT,
+            url TEXT NOT NULL,
+            target_brand TEXT,
+            is_active INTEGER DEFAULT 1,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+
+        CREATE TABLE IF NOT EXISTS spotlight_clicks (
+            id SERIAL PRIMARY KEY,
+            intern_id INTEGER,
+            spotlight_id INTEGER,
+            clicked_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
     """)
 ]
 
