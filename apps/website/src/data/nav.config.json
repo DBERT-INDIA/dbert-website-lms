@@ -8,6 +8,13 @@
     {
       "label": "For Startups",
       "type": "mega",
+      "featured": {
+        "badge": "Incubation Model",
+        "title": "Build For Equity",
+        "desc": "Skip early cash burn. We architect, build, and ship your MVP as your technical co-founder for 2–8% equity.",
+        "ctaLabel": "Explore Services",
+        "href": "/startups/services"
+      },
       "columns": [
         {
           "title": "Services",
@@ -16,15 +23,14 @@
             { "label": "Technical Assistance", "href": "/startups/services/technical" },
             { "label": "Hiring Assistance", "href": "/startups/services/hiring" },
             { "label": "Legal & Compliance", "href": "/startups/services/legal" },
-            { "label": "AI/ML Infrastructure Setup", "href": "/startups/services/infrastructure" },
-            { "label": "Product Architecture Consulting", "href": "/startups/services/technical" }
+            { "label": "AI/ML Infrastructure Setup", "href": "/startups/services/infrastructure" }
           ]
         },
         {
           "title": "Funding & Equity",
           "links": [
             { "label": "Seed Funding", "href": "/startups/services/funding" },
-            { "label": "Core Incubation Services", "href": "/startups/services/equity" },
+            { "label": "Equity Model & Terms", "href": "/startups/services/equity" },
             { "label": "Investor Network", "href": "/startups/investor-network" },
             { "label": "Term Sheet Templates", "href": "/startups/services/equity/term-sheets" }
           ]
@@ -42,31 +48,37 @@
       "label": "Products",
       "type": "dropdown",
       "links": [
-        { "label": "DBERT Chat", "href": "/ai-solutions/products/dbert-chat" },
-        { "label": "Document AI", "href": "/ai-solutions/products/document-ai" },
+        { "label": "DBERT Chat (Private LLM)", "href": "/ai-solutions/products/dbert-chat" },
+        { "label": "Document AI (Ingest & OCR)", "href": "/ai-solutions/products/document-ai" },
         { "label": "Certificate Verification API", "href": "/ai-solutions/products/certificate-verification-api" },
         { "label": "Hiring Automation Suite", "href": "/ai-solutions/products/hiring-automation-suite" },
         { "label": "Intern Management System", "href": "/ai-solutions/products/intern-management-system" }
       ]
     },
     {
-      "label": "Enterprise AI Consulting",
+      "label": "Enterprise AI",
       "type": "mega",
+      "featured": {
+        "badge": "Sovereign AI",
+        "title": "Private LLM Pipeline",
+        "desc": "Fine-tune and deploy sovereign LLMs in your VPC with zero telemetry and 100% intellectual property transfer.",
+        "ctaLabel": "View Architecture",
+        "href": "/ai-solutions/llm-training/pipeline"
+      },
       "columns": [
         {
-          "title": "Consulting",
+          "title": "Consulting & MLOps",
           "links": [
-            { "label": "AI Consultant Services", "href": "/ai-consultant", "highlight": true },
-            { "label": "AI Strategy Consulting", "href": "/ai-solutions/consultation" },
-            { "label": "AI Readiness Assessment", "href": "/ai-solutions/consultation" },
-            { "label": "MLOps & Deployment", "href": "/ai-solutions/consultation" }
+            { "label": "AI Consultant Interface", "href": "/ai-consultant", "highlight": true },
+            { "label": "Enterprise Consultation", "href": "/ai-solutions/consultation" },
+            { "label": "AI Readiness Assessment", "href": "/ai-solutions/consultation" }
           ]
         },
         {
-          "title": "Custom LLM",
+          "title": "Model Engineering",
           "links": [
             { "label": "Fine-Tuning Pipeline", "href": "/ai-solutions/llm-training/pipeline" },
-            { "label": "DBERT_AI Model", "href": "/ai-solutions/llm-training/dbert-ai" },
+            { "label": "DBERT_AI Architecture", "href": "/ai-solutions/llm-training/dbert-ai" },
             { "label": "Private Model Hosting", "href": "/ai-solutions/llm-training/private-hosting" }
           ]
         }
@@ -75,17 +87,24 @@
     {
       "label": "For Learners",
       "type": "mega",
+      "featured": {
+        "badge": "Production Engineering",
+        "title": "The AI Fellowship",
+        "desc": "Work on live enterprise squads, merge production pull requests, and deploy sovereign models.",
+        "ctaLabel": "Explore Fellowship",
+        "href": "/learners/fellowship"
+      },
       "columns": [
         {
-          "title": "Programs",
+          "title": "Progression Ladder",
           "links": [
-            { "label": "DBERT Launchpad", "href": "/learners/launchpad" },
-            { "label": "DBERT Accelerate", "href": "/learners/accelerate" },
-            { "label": "DBERT Fellowship (Paid)", "href": "/learners/fellowship" }
+            { "label": "DBERT Launchpad (0-to-1)", "href": "/learners/launchpad" },
+            { "label": "DBERT Accelerate (Mid-Level)", "href": "/learners/accelerate" },
+            { "label": "DBERT Fellowship (Paid)", "href": "/learners/fellowship", "highlight": true }
           ]
         },
         {
-          "title": "Skills",
+          "title": "Specialized Courses",
           "links": [
             { "label": "AI Agent Development", "href": "/learners/courses/ai-agent-development" },
             { "label": "Generative AI", "href": "/learners/courses/generative-ai" },
@@ -97,7 +116,7 @@
           ]
         },
         {
-          "title": "Career",
+          "title": "External Portal",
           "links": [
             { "label": "Job Board", "href": "https://internship.dbert.online/jobs", "external": true },
             { "label": "Apply for Fellowship", "href": "https://internship.dbert.online/apply", "external": true, "highlight": true }
@@ -114,11 +133,11 @@
       "label": "About",
       "type": "dropdown",
       "links": [
-        { "label": "Our Story", "href": "/about" },
-        { "label": "Team", "href": "/about/team" },
-        { "label": "Credentials", "href": "/about/credentials" },
-        { "label": "Careers", "href": "/about/careers" },
-        { "label": "Contact", "href": "/about/contact" }
+        { "label": "Our Story & Studio", "href": "/about" },
+        { "label": "Practitioners & Architects", "href": "/about/team" },
+        { "label": "Audited Credentials", "href": "/about/credentials" },
+        { "label": "Careers & Hiring", "href": "/about/careers" },
+        { "label": "Contact Us", "href": "/about/contact" }
       ]
     }
   ],

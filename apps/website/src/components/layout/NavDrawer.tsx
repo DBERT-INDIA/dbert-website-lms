@@ -28,13 +28,8 @@ type NavDrawerProps = {
 /**
  * Mobile navigation drawer.
  *
- * Replaces the v1 behaviour where every nav link was simply `display:none`
- * below 900px, leaving the site unnavigable on phones. Groups are built from
- * src/data/nav.config.json by the parent — nothing here is hardcoded.
- *
- * Closes on: scrim click, the button, Escape, any link click, and route
- * change (handled by the parent). Focus moves into the panel on open and
- * returns to the hamburger on close; Tab is trapped inside while open.
+ * Fully accessible drawer with focus management, trap-tabbing, scroll lock,
+ * and high-contrast touch targets (44px min height).
  */
 export default function NavDrawer({
   open,
@@ -113,7 +108,8 @@ export default function NavDrawer({
           rel="noopener noreferrer"
           onClick={onClose}
         >
-          {link.label}
+          <span>{link.label}</span>
+          <span className={styles.externalMark} aria-hidden="true">↗</span>
         </a>
       );
     }
@@ -125,7 +121,7 @@ export default function NavDrawer({
         className={className}
         onClick={onClose}
       >
-        {link.label}
+        <span>{link.label}</span>
       </Link>
     );
   };
@@ -152,7 +148,11 @@ export default function NavDrawer({
       >
         <div className={styles.drawerHead}>
           <span className={styles.navLogo}>
-            <span className={styles.logoMark}>D</span>DBERT
+            <span className={styles.logoMark} aria-hidden="true">D</span>
+            <span className={styles.brandContainer}>
+              DBERT
+              <span className={styles.livePulse} aria-hidden="true" />
+            </span>
           </span>
           <button
             ref={closeRef}
@@ -191,9 +191,20 @@ export default function NavDrawer({
             rel={cta.external ? 'noopener noreferrer' : undefined}
             onClick={onClose}
           >
-            {cta.label}
+            <span>{cta.label}</span>
+            <span className={styles.ctaArrow} aria-hidden="true">↗</span>
           </a>
         )}
+
+        <div className={styles.drawerFooter}>
+          <div className={styles.drawerStatus}>
+            <span className={styles.livePulse} aria-hidden="true" />
+            <span>Studio Console Live</span>
+          </div>
+          <span className="handnote" style={{ fontSize: '1rem', color: 'var(--signal)' }}>
+            handmade in Delhi ✍
+          </span>
+        </div>
       </div>
     </div>
   );

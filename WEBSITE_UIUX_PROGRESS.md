@@ -13,9 +13,9 @@
 | Phase | Phase Name | Status | Local Plan | Approved | Implemented | Phase Tests | Full Regression | Visual QA | Commit | Pushed | Notes |
 |---|---|---|---|---|---|---|---|---|---|---|---|
 | **0** | Baseline, Route Inventory & Visual Evidence | **COMPLETED** | Done (`WEBSITE_UIUX_PHASE_PLAN.md`) | Approved | Done | Passed (`check:seo`, `tsc`, `lint`, `build`) | Passed | Complete | `b42a791` | Pushed | Cataloged 90 routes; verified handcrafted assets; created audit tools |
-| **1** | Design System Consolidation | **COMPLETED** | Done (`WEBSITE_UIUX_PHASE_PLAN.md`) | Approved | Done | Passed (`check:seo`, `tsc`, `lint`, `build`) | Passed | Complete | Pending | Pending | Semantic token architecture, resolve SEO-ERR-001, create reference specification |
-| **2** | Global Shell: Header, Navigation, Footer | **READY FOR APPROVAL** | Prepared (`WEBSITE_UIUX_PHASE_PLAN.md`) | Awaiting | - | - | - | - | - | - | MegaMenu hierarchy, mobile drawer polish, footer layout |
-| **3** | Homepage Recomposition | **BLOCKED** | Pending | - | - | - | - | - | - | - | CountUp SSR fix, FactTicker polish, hero clarity |
+| **1** | Design System Consolidation | **COMPLETED** | Done (`WEBSITE_UIUX_PHASE_PLAN.md`) | Approved | Done | Passed (`check:seo`, `tsc`, `lint`, `build`) | Passed | Complete | `9532273` | Pushed | Semantic token architecture, resolve SEO-ERR-001, create reference specification |
+| **2** | Global Shell: Header, Navigation, Footer | **COMPLETED** | Done (`WEBSITE_UIUX_PHASE_PLAN.md`) | Approved | Done | Passed (`check:seo`, `tsc`, `lint`, `build`) | Passed | Complete | Pending | Pending | MegaMenu featured cards, active route tracking, 4-column footer, mobile drawer |
+| **3** | Homepage Recomposition | **READY FOR APPROVAL** | Prepared (`WEBSITE_UIUX_PHASE_PLAN.md`) | Awaiting | - | - | - | - | - | - | CountUp SSR fix, FactTicker polish, hero clarity |
 | **4** | Blog & Editorial Experience | **BLOCKED** | Pending | - | - | - | - | - | - | - | Resolve `BLOG-UI-001`, contrast fixes across MDX |
 | **5** | Learner Experience Redesign | **BLOCKED** | Pending | - | - | - | - | - | - | - | ProgramDetailTemplate, course cards, syllabus flow |
 | **6** | Startup Experience Redesign | **BLOCKED** | Pending | - | - | - | - | - | - | - | Founder value prop, equity terms, portfolio case studies |

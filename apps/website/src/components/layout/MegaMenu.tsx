@@ -9,16 +9,22 @@ import NavDrawer, { type DrawerGroup, type DrawerLink } from './NavDrawer';
 
 type NavColumn = { title: string; links: DrawerLink[] };
 
+type NavFeatured = {
+  badge: string;
+  title: string;
+  desc: string;
+  ctaLabel: string;
+  href: string;
+};
+
 type NavItem =
-  | { label: string; type: 'mega'; columns: NavColumn[] }
+  | { label: string; type: 'mega'; columns: NavColumn[]; featured?: NavFeatured }
   | { label: string; type: 'dropdown'; links: DrawerLink[] }
   | { label: string; type: 'link'; href: string };
 
 type NavConfig = {
   items: NavItem[];
   cta?: DrawerLink;
-  /** Optional. Add a `signIn` entry to nav.config.json to surface the ghost
-   *  action in the bar — see the Phase 2 note in CLAUDE-TASKS.md. */
   signIn?: DrawerLink;
 };
 
@@ -50,12 +56,13 @@ function buildDrawerGroups(items: NavItem[]): DrawerGroup[] {
 }
 
 function renderNavLink(link: DrawerLink) {
-  const className = link.highlight ? styles.highlightLink : undefined;
+  const className = `${styles.navItemLink}${link.highlight ? ` ${styles.highlightLink}` : ''}`;
 
   if (link.external) {
     return (
       <a href={link.href} className={className} target="_blank" rel="noopener noreferrer">
-        {link.label}
+        <span>{link.label}</span>
+        <span className={styles.externalMark} aria-hidden="true">↗</span>
       </a>
     );
   }
@@ -67,6 +74,34 @@ function renderNavLink(link: DrawerLink) {
   );
 }
 
+function isItemActive(item: NavItem, pathname: string): boolean {
+  if (item.type === 'link') {
+    return pathname === item.href;
+  }
+  if (item.label === 'For Startups') {
+    return pathname.startsWith('/startups') || pathname.startsWith('/hire');
+  }
+  if (item.label === 'Products') {
+    return pathname.startsWith('/ai-solutions/products');
+  }
+  if (item.label === 'Enterprise AI') {
+    return (
+      (pathname.startsWith('/ai-solutions') && !pathname.startsWith('/ai-solutions/products')) ||
+      pathname.startsWith('/ai-consultant')
+    );
+  }
+  if (item.label === 'For Learners') {
+    return pathname.startsWith('/learners') || pathname.startsWith('/cohorts');
+  }
+  if (item.label === 'DBERT Labs') {
+    return pathname.startsWith('/labs');
+  }
+  if (item.label === 'About') {
+    return pathname.startsWith('/about');
+  }
+  return false;
+}
+
 export default function MegaMenu() {
   const pathname = usePathname();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -74,8 +109,7 @@ export default function MegaMenu() {
   const navRef = useRef<HTMLDivElement>(null);
   const hambRef = useRef<HTMLButtonElement>(null);
 
-  // Close everything on route change. Adjusting state during render rather than
-  // in an effect avoids a second render pass (and the set-state-in-effect rule).
+  // Close everything on route change.
   const [lastPathname, setLastPathname] = useState(pathname);
   if (pathname !== lastPathname) {
     setLastPathname(pathname);
@@ -117,14 +151,23 @@ export default function MegaMenu() {
             <span className={styles.logoMark} aria-hidden="true">
               D
             </span>
-            DBERT
+            <span className={styles.brandContainer}>
+              DBERT
+              <span className={styles.livePulse} title="Studio Active" aria-label="Studio Active" />
+            </span>
           </Link>
 
           <nav className={styles.navLinks} aria-label="Primary">
             {navConfig.items.map((item, index) => {
+              const isActive = isItemActive(item, pathname);
+
               if (item.type === 'link') {
                 return (
-                  <Link key={item.label} href={item.href} className={styles.navLink}>
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    className={`${styles.navLink}${isActive ? ` ${styles.activeLink}` : ''}`}
+                  >
                     {item.label}
                   </Link>
                 );
@@ -141,7 +184,7 @@ export default function MegaMenu() {
                 >
                   <button
                     type="button"
-                    className={styles.navTrigger}
+                    className={`${styles.navTrigger}${isOpen ? ` ${styles.navTriggerOpen}` : ''}${isActive ? ` ${styles.activeLink}` : ''}`}
                     aria-expanded={isOpen}
                     aria-controls={panelId}
                     onClick={() => setOpenIndex(isOpen ? null : index)}
@@ -163,17 +206,34 @@ export default function MegaMenu() {
 
                   {isOpen && item.type === 'mega' && (
                     <div id={panelId} className={`${styles.panel} ${styles.panelMega}`}>
-                      <div className={styles.megaGrid}>
-                        {item.columns.map((column) => (
-                          <div key={column.title}>
-                            <h2 className={styles.megaColTitle}>{column.title}</h2>
-                            <ul className={styles.linkList}>
-                              {column.links.map((link) => (
-                                <li key={`${link.href}-${link.label}`}>{renderNavLink(link)}</li>
-                              ))}
-                            </ul>
+                      <div className={styles.megaContainer}>
+                        {item.featured && (
+                          <div className={styles.megaFeatured}>
+                            <div className={styles.featuredBadge}>{item.featured.badge}</div>
+                            <h3 className={styles.featuredTitle}>{item.featured.title}</h3>
+                            <p className={styles.featuredDesc}>{item.featured.desc}</p>
+                            <Link
+                              href={item.featured.href}
+                              className={styles.featuredCta}
+                              onClick={() => setOpenIndex(null)}
+                            >
+                              <span>{item.featured.ctaLabel}</span>
+                              <span aria-hidden="true">&rarr;</span>
+                            </Link>
                           </div>
-                        ))}
+                        )}
+                        <div className={styles.megaGrid}>
+                          {item.columns.map((column) => (
+                            <div key={column.title} className={styles.megaColumn}>
+                              <h2 className={styles.megaColTitle}>{column.title}</h2>
+                              <ul className={styles.linkList}>
+                                {column.links.map((link) => (
+                                  <li key={`${link.href}-${link.label}`}>{renderNavLink(link)}</li>
+                                ))}
+                              </ul>
+                            </div>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   )}
@@ -214,7 +274,8 @@ export default function MegaMenu() {
                 target={navConfig.cta.external ? '_blank' : undefined}
                 rel={navConfig.cta.external ? 'noopener noreferrer' : undefined}
               >
-                {navConfig.cta.label}
+                <span>{navConfig.cta.label}</span>
+                <span className={styles.ctaArrow} aria-hidden="true">↗</span>
               </a>
             )}
 

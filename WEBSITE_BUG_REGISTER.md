@@ -97,8 +97,7 @@
 - **Root Cause**: Direct flattening of route sitemaps into multi-column dropdowns without clear primary vs secondary visual grouping.
 - **Planned Fix**:
   - Redesign mega-menu visual hierarchy: highlight the primary "Featured Route" per vertical with high-contrast card styling, group secondary routes under concise categorised headers, and retain full keyboard accessibility and mobile drawer parity without deleting any route.
-- **Target Phase**: Phase 2 (Global Shell Redesign).
-- **Status**: OPEN.
+- **Status**: RESOLVED (Fixed in Phase 2: integrated featured cards, category column dividers, active route tracking, and 4-column footer architecture).
 
 ---
 
