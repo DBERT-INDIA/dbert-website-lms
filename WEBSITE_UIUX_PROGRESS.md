@@ -27,8 +27,8 @@
 | **12** | UX Functional QA | **COMPLETED** | Done (`WEBSITE_UIUX_PHASE_PLAN.md`) | Approved | Done | Passed (`audit:tokens`, `check:seo`, `tsc`, `lint`, `build`) | Passed | Complete | `c664452` | Pushed | Interactive flows QA: forms, verification API, payments, accordions, dialogs |
 | **13** | Performance & Rendering Polish | **COMPLETED** | Done (`WEBSITE_UIUX_PHASE_PLAN.md`) | Approved | Done | Passed (`audit:tokens`, `check:seo`, `tsc`, `lint`, `build`) | Passed | Complete | `5b7f1f8` | Pushed | AVIF/WebP image formats, rAF scroll throttling, reduced-motion bypass for RevealObserver |
 | **14** | SEO & Content Integrity Regression | **COMPLETED** | Done (`WEBSITE_UIUX_PHASE_PLAN.md`) | Approved | Done | Passed (`audit:tokens`, `check:seo`, `tsc`, `lint`, `build`) | Passed | Complete | `b23ccb6` | Pushed | Canonical URL domain unified to https://dbert.online, robots.txt sitemap aligned, 64 SEO entries verified |
-| **15** | Production Preflight | **READY FOR APPROVAL** | Prepared (`WEBSITE_UIUX_PHASE_PLAN.md`) | Awaiting | - | - | - | - | - | - | Production build, zero console errors, preflight checklist |
-| **16** | Final Whole-Repo Audit | **BLOCKED** | Pending | - | - | - | - | - | - | - | Zero orphaned styles, zero dead code, clean git tree |
+| **15** | Production Preflight | **COMPLETED** | Done (`WEBSITE_UIUX_PHASE_PLAN.md`) | Approved | Done | Passed (`audit:tokens`, `check:seo`, `tsc`, `lint`, `build`) | Passed | Complete | `b794e69` | Pushed | Preflight certificate published (WEBSITE_UIUX_PRODUCTION_PREFLIGHT.md), asset fix, 90 routes verified |
+| **16** | Final Whole-Repo Audit | **READY FOR APPROVAL** | Prepared (`WEBSITE_UIUX_PHASE_PLAN.md`) | Awaiting | - | - | - | - | - | - | Zero orphaned styles, zero dead code, clean git tree |
 
 ---
 
