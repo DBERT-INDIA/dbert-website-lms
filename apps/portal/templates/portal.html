@@ -822,7 +822,7 @@
             <h1>Technical Writing Hub</h1>
             <p>Publish engineering articles, case studies, and research to showcase your expertise.</p>
           </div>
-          <button class="btn-primary" id="btnNewArticle" data-act-click="openArticleEditor"><i class="fas fa-plus"></i> &nbsp;New Article</button>
+          <button class="btn-primary" id="btnNewArticle" data-act-click="openArticleEditor" onclick="openArticleEditor();return false;"><i class="fas fa-plus"></i> &nbsp;New Article</button>
         </div>
 
         <!-- Technical Writing Engagement & Rewards Banner -->
@@ -836,7 +836,7 @@
               <p style="font-size:12px;color:var(--tx-muted);margin:2px 0 0;line-height:1.5;">Write in-depth engineering breakdowns, architectural deep-dives, or tutorials. Approved pieces earn coins and get showcased on the DBERT Tech Blog!</p>
             </div>
           </div>
-          <button class="btn-primary" id="btnWriteArticleNow" data-act-click="openArticleEditor" style="background:linear-gradient(135deg,var(--gold),#d97706);color:#ffffff !important;font-weight:700;padding:9px 18px;border-radius:8px;font-size:13px;white-space:nowrap;box-shadow:0 4px 12px rgba(245,158,11,0.25);border:none;cursor:pointer;">
+          <button class="btn-primary" id="btnWriteArticleNow" data-act-click="openArticleEditor" onclick="openArticleEditor();return false;" style="background:linear-gradient(135deg,var(--gold),#d97706);color:#ffffff !important;font-weight:700;padding:9px 18px;border-radius:8px;font-size:13px;white-space:nowrap;box-shadow:0 4px 12px rgba(245,158,11,0.25);border:none;cursor:pointer;">
             <i class="fas fa-pen-nib"></i> &nbsp;Write Article Now
           </button>
         </div>
