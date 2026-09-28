@@ -101,3 +101,30 @@ Establish a single, mathematically cohesive design token architecture in `apps/w
 - **Phase 14 (SEO & Content Integrity)**: Validate metadata across 64 pages (including `/hire/pre-vetted-engineers` character count fix); run internal link crawler.
 - **Phase 15 (Production Preflight)**: Full production build, zero console errors, security check.
 - **Phase 16 (Final Whole-Repo Audit)**: Clean repository tree, zero dead styles, final git commit and push.
+
+---
+
+## 6. Phase 13: Performance & Rendering Polish (Detailed Execution Plan)
+
+### Objective
+Maximize client runtime efficiency, minimize Cumulative Layout Shift (CLS) and Largest Contentful Paint (LCP), optimize Next.js asset compression, throttle passive scroll listeners with `requestAnimationFrame`, and enforce 100% compliance with `prefers-reduced-motion: reduce` across all interactive client components while preserving authentic studio aesthetics (film grain, blueprint grid, handwritten annotations).
+
+### Scope of Work
+1. **Next.js Asset & Image Pipeline Optimization**:
+   - Update `apps/website/next.config.js` to enable cutting-edge image compression formats: `images: { formats: ['image/avif', 'image/webp'] }`.
+   - Verify explicit aspect ratio and dimensional properties on all `<Image>` calls to guarantee zero CLS.
+2. **Scroll Listener Throttling & Frame Hygiene**:
+   - Refactor `apps/website/src/components/ui/ScrollProgress.tsx` to debounce/schedule scroll calculations using `requestAnimationFrame`, avoiding unnecessary DOM read/write cycles during continuous user scrolling.
+   - Refactor `apps/website/src/components/ui/BackToTop.tsx` to optimize viewport scroll checks with `requestAnimationFrame` and honor `prefers-reduced-motion` in `window.scrollTo({ behavior })`.
+3. **Motion Sensitivity & Resource Conservation**:
+   - Update `apps/website/src/components/ui/RevealObserver.tsx` to bypass `IntersectionObserver` creation entirely when `prefers-reduced-motion: reduce` is active, immediately marking elements with `.in`.
+   - Confirm global film grain (`body::after`) and ambient marquee (`FactTicker.module.css`) honor reduced motion settings without visual artifacting.
+4. **Zero-Regression Verification**:
+   - `npm run audit:tokens`
+   - `node scripts/check-headings.mjs`
+   - `node scripts/check-inline-styles.mjs`
+   - `npm run check:seo`
+   - `npx tsc --noEmit`
+   - `npm run lint`
+   - `$env:DATABASE_URL=...; npm run build` (verify all 90 routes compile with AVIF/WebP enabled)
+
