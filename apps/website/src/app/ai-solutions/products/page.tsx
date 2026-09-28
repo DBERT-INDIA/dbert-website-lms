@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import FAQAccordion from '@/components/ui/FAQAccordion';
+import HandNote from '@/components/ui/HandNote';
 import { pageMetadata } from '@/lib/seo';
 import s from '../ai-solutions.module.css';
 
@@ -113,9 +114,14 @@ export default function SaaSProductsCatalogPage() {
           <div className="doclabel">
             § 01 — AI PRODUCTS CATALOG <span className="rev">rev: 2026.2</span>
           </div>
-          <h1 className="text-4xl font-mono font-bold text-white mb-3">
-            Deploy Sovereign, Production-Ready AI Systems
-          </h1>
+          <div className="stack-h justify-start align-baseline gap-3 flex-wrap mb-3">
+            <h1 className="text-4xl font-mono font-bold text-white mb-0">
+              Deploy Sovereign, Production-Ready AI Systems
+            </h1>
+            <HandNote tone="blue">
+              on-premise · zero telemetry ✎
+            </HandNote>
+          </div>
           <p className="lede-wide text-muted max-w-3xl leading-relaxed">
             Battle-tested artificial intelligence software product platforms engineered by our venture studio to integrate seamlessly into your secure production IT infrastructure—guaranteeing data sovereignty, deterministic inference speeds, and zero external token dependency.
           </p>

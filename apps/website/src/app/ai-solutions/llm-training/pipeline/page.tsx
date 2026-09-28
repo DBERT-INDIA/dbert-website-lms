@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import StepTimeline from '@/components/ui/StepTimeline';
 import FAQAccordion from '@/components/ui/FAQAccordion';
+import HandNote from '@/components/ui/HandNote';
 import PipelineInteractiveConsole from '@/components/pipeline/PipelineInteractiveConsole';
 import { pageMetadata } from '@/lib/seo';
 import { Cpu, Database, ShieldCheck, CheckCircle, Terminal, Zap, Layers, Server } from 'lucide-react';
@@ -85,9 +86,14 @@ export default function FineTuningPipelinePage() {
         <div className="doclabel">
           § 01 — FINE-TUNING METHODOLOGY <span className="rev">rev: 2026.2</span>
         </div>
-        <h1 className="page-title">
-          The 5-Stage Fine-Tuning Pipeline &mdash; Industrial MLOps
-        </h1>
+        <div className="stack-h justify-center align-baseline gap-3 flex-wrap">
+          <h1 className="page-title">
+            The 5-Stage Fine-Tuning Pipeline &mdash; Industrial MLOps
+          </h1>
+          <HandNote tone="amber">
+            bare-metal GPU clusters · sovereign VPCs ✍
+          </HandNote>
+        </div>
         <p className="lede-wide">
           A mathematically disciplined engineering lifecycle designed to transform raw, unstructured enterprise databases into hardened, specialized open-weights model checkpoints capable of high-speed local inference.
         </p>

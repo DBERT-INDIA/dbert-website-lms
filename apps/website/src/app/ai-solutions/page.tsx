@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import FAQAccordion from '@/components/ui/FAQAccordion';
+import HandNote from '@/components/ui/HandNote';
 import { pageMetadata } from '@/lib/seo';
 import s from './ai-solutions.module.css';
 import { Bot, Briefcase, Monitor } from 'lucide-react';
@@ -77,9 +78,14 @@ export default function AISolutionsLandingPage() {
           <div className="doclabel">
             § 01 — ENTERPRISE AI SOLUTIONS <span className="rev">rev: 2026.2</span>
           </div>
-          <h1 className="page-title-sm">
-            Production-Grade AI That Powers Sovereign Business Scale
-          </h1>
+          <div className="stack-h justify-center align-baseline gap-3 flex-wrap">
+            <h1 className="page-title-sm">
+              Production-Grade AI That Powers Sovereign Business Scale
+            </h1>
+            <HandNote tone="blue">
+              zero third-party token leaks ✎
+            </HandNote>
+          </div>
           <p className="page-intro">
             From experimental lab prototypes to deterministic enterprise deployment. We engineer custom-tuned model parameter weights, zero-leakage document ingestion pipelines, and resilient VPC hosting architectures that transform industrial operations across India.
           </p>

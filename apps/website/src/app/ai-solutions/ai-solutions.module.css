@@ -20,6 +20,7 @@
 .capabilityTitle {
   font-family: var(--font-d);
   font-size: 1.3rem;
+  color: var(--text-primary);
   margin-bottom: 8px;
 }
 
@@ -34,12 +35,13 @@
 .productTitle {
   font-family: var(--font-d);
   font-size: 1.35rem;
+  color: var(--text-primary);
   margin-bottom: 8px;
 }
 
 .productDesc {
-  font-size: .85rem;
-  color: var(--muted);
+  font-size: .88rem;
+  color: var(--text-secondary);
   line-height: 1.6;
   margin-bottom: var(--space-3);
 }
@@ -55,7 +57,7 @@
 
 .trackDesc {
   font-size: .9rem;
-  color: var(--muted);
+  color: var(--text-secondary);
   line-height: 1.6;
   margin-bottom: 16px;
 }
@@ -80,8 +82,9 @@
 }
 
 .codeCard {
-  background: var(--ink);
-  border: 1px solid var(--line);
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-md);
 }
 
 .code {
@@ -114,14 +117,15 @@
   max-width: none;
   width: 100%;
   padding: 72px max(24px, calc((100% - var(--max)) / 2)) 80px;
-  border-bottom: 1px solid var(--line);
-  background: var(--raise);
+  border-bottom: 1px solid var(--border-subtle);
+  background: var(--surface-raised);
 }
 
 .techHeading {
   font-family: var(--font-d);
   text-align: left;
   font-size: clamp(1.4rem, 2.3vw, 1.8rem);
+  color: var(--text-primary);
   margin-bottom: var(--space-5);
 }
 
@@ -133,11 +137,11 @@
 }
 
 .techChip {
-  background: var(--card);
-  border: 1px solid var(--line);
-  color: var(--muted);
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
   font-family: var(--font-m);
-  font-size: .8rem;
+  font-size: .82rem;
   padding: 6px 14px;
   border-radius: var(--r-sm);
 }
