@@ -25,8 +25,8 @@
 | **10** | Component Cleanup & Style Drift | **COMPLETED** | Done (`WEBSITE_UIUX_PHASE_PLAN.md`) | Approved | Done | Passed (`audit:tokens`, `check:seo`, `tsc`, `lint`, `build`) | Passed | Complete | `ade7bc4` | Pushed | Eliminated 100% CONTRAST_RISK; migrated inline styles across ai-consultant, hire, cohorts, admin |
 | **11** | Responsive & Accessibility Hardening | **COMPLETED** | Done (`WEBSITE_UIUX_PHASE_PLAN.md`) | Approved | Done | Passed (`audit:tokens`, `check:seo`, `tsc`, `lint`, `build`) | Passed | Complete | `c8d2cd5` | Pushed | Resolved A11Y-HEAD-001 (0 skipped levels across 66 pages), skip link (WCAG 2.4.1), coarse touch targets (WCAG 2.5.5) |
 | **12** | UX Functional QA | **COMPLETED** | Done (`WEBSITE_UIUX_PHASE_PLAN.md`) | Approved | Done | Passed (`audit:tokens`, `check:seo`, `tsc`, `lint`, `build`) | Passed | Complete | `c664452` | Pushed | Interactive flows QA: forms, verification API, payments, accordions, dialogs |
-| **13** | Performance & Rendering Polish | **READY FOR APPROVAL** | Prepared (`WEBSITE_UIUX_PHASE_PLAN.md`) | Awaiting | - | - | - | - | - | - | LCP/CLS optimization, film grain cost, reduced motion |
-| **14** | SEO & Content Integrity Regression | **BLOCKED** | Pending | - | - | - | - | - | - | - | Meta verification, link mesh check, keyword alignment |
+| **13** | Performance & Rendering Polish | **COMPLETED** | Done (`WEBSITE_UIUX_PHASE_PLAN.md`) | Approved | Done | Passed (`audit:tokens`, `check:seo`, `tsc`, `lint`, `build`) | Passed | Complete | `5b7f1f8` | Pushed | AVIF/WebP image formats, rAF scroll throttling, reduced-motion bypass for RevealObserver |
+| **14** | SEO & Content Integrity Regression | **READY FOR APPROVAL** | Prepared (`WEBSITE_UIUX_PHASE_PLAN.md`) | Awaiting | - | - | - | - | - | - | Meta verification, link mesh check, keyword alignment |
 | **15** | Production Preflight | **BLOCKED** | Pending | - | - | - | - | - | - | - | Production build, zero console errors, preflight checklist |
 | **16** | Final Whole-Repo Audit | **BLOCKED** | Pending | - | - | - | - | - | - | - | Zero orphaned styles, zero dead code, clean git tree |
 

@@ -128,3 +128,31 @@ Maximize client runtime efficiency, minimize Cumulative Layout Shift (CLS) and L
    - `npm run lint`
    - `$env:DATABASE_URL=...; npm run build` (verify all 90 routes compile with AVIF/WebP enabled)
 
+---
+
+## 7. Phase 14: SEO & Content Integrity Regression (Detailed Execution Plan)
+
+### Objective
+Exhaustively verify SEO metadata, OpenGraph tags, canonical URLs, structured data (JSON-LD), sitemap, and robots configurations across all routed pages. Guarantee that visual enhancements have not altered commercial claims, legal content, or broken internal link meshes.
+
+### Scope of Work
+1. **Canonical & URL Authority Alignment**:
+   - Align default site URL in `apps/website/src/app/layout.tsx` (`metadataBase`) and `apps/website/src/app/robots.ts` to `https://dbert.online` as the definitive production fallback, matching `sitemap.ts`.
+2. **Metadata & Structured Data Audit**:
+   - Verify `seoConfig` compliance using `npm run check:seo`: title length (≤ 52 chars), description length (140–155 chars), keyword presence, and 100% coverage across all routed pages without duplicate keyword allocations.
+   - Verify Organization schema in `layout.tsx` and educational schemas on course detail templates.
+3. **Sitemap & Robots Validation**:
+   - Verify `sitemap.ts` includes all indexable routes and dynamic blog posts while excluding `noindex` administrative endpoints.
+   - Verify `robots.ts` disallows `/admin/`, `/login/`, and `/api/` while properly referencing the absolute `sitemap.xml`.
+4. **Heading Hierarchy Integrity**:
+   - Run `node scripts/check-headings.mjs` to ensure 0 pages with missing `<h1>`, 0 pages with multiple `<h1>`, and 0 skipped heading levels across all 66 pages.
+5. **Zero-Regression Protocol**:
+   - `npm run audit:tokens`
+   - `node scripts/check-headings.mjs`
+   - `node scripts/check-inline-styles.mjs`
+   - `npm run check:seo`
+   - `npx tsc --noEmit`
+   - `npm run lint`
+   - `$env:DATABASE_URL=...; npm run build`
+
+
