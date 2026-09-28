@@ -1,7 +1,8 @@
 import React from 'react';
+import Link from 'next/link';
+import HandNote from '@/components/ui/HandNote';
 import { pageMetadata } from '@/lib/seo';
 import s from '../labs.module.css';
-
 
 export const metadata = pageMetadata('/labs/opensource');
 
@@ -15,9 +16,14 @@ export default function LabsOpensourcePage() {
           <div className="doclabel">
             § 01 — OPEN SOURCE REPOSITORIES <span className="rev">rev: 2026.2</span>
           </div>
-          <h1 className="page-title-sm">
-            Building in the Open, Shipping for Everyone
-          </h1>
+          <div className="stack-h justify-start align-baseline gap-3 flex-wrap mb-2">
+            <h1 className="page-title-sm mb-0">
+              Building in the Open, Shipping for Everyone
+            </h1>
+            <HandNote tone="blue">
+              public code · open weights ✎
+            </HandNote>
+          </div>
           <p className="page-intro">
             We support open-source software development. Explore our public code repositories, fine-tuned model weights, and multi-agent systems.
           </p>
@@ -45,7 +51,7 @@ export default function LabsOpensourcePage() {
           </h2>
           
           <div className="stack">
-            <div className="card">
+            <div className="card card-lift">
               <h3 className="card-heading">
                 DBERT_AI Custom Model
               </h3>
@@ -67,7 +73,7 @@ export default function LabsOpensourcePage() {
               </a>
             </div>
 
-            <div className="card">
+            <div className="card card-lift">
               <h3 className="card-heading">
                 Gayatri AI Repository Collaboration
               </h3>
@@ -92,13 +98,13 @@ export default function LabsOpensourcePage() {
         </section>
 
         {/* Action Call */}
-        <div className="card callout-plain">
+        <div className="card card-lift callout-plain">
           <div className="doclabel mb-2">§ 04 — JOIN RESEARCH COLLABORATION</div>
           <h2 className="card-title">Submit a Research Proposal</h2>
           <p className="page-lede">
             Are you interested in collaborating on academic briefs, contributing to open-source agent libraries, or testing local model configurations? Apply to DBERT Labs.
           </p>
-          <a href="/labs/collaborate" className="btn btn-primary btn-lg">Submit Research Proposal</a>
+          <Link href="/labs/collaborate" className="btn btn-primary btn-lg">Submit Research Proposal</Link>
         </div>
 
       </div>

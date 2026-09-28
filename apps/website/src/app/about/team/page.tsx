@@ -1,6 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import HandNote from '@/components/ui/HandNote';
 import { pageMetadata } from '@/lib/seo';
 import styles from '../about.module.css';
 
@@ -14,7 +15,12 @@ export default function TeamPage() {
           <div className="doclabel">
             § 05 — ENGINEERING LEADERSHIP <span className="rev">rev: 2026.2</span>
           </div>
-          <h1 className="page-title-sm">The Practitioners &amp; Architects Behind the Mission</h1>
+          <div className="stack-h justify-start align-baseline gap-3 flex-wrap mb-2">
+            <h1 className="page-title-sm mb-0">The Practitioners &amp; Architects Behind the Mission</h1>
+            <HandNote tone="blue">
+              mentors · architects · practitioners ✍
+            </HandNote>
+          </div>
           <p className="page-intro">
             Active software developers, research engineers, and legal compliance advisors guiding DBERT&apos;s venture incubation, sovereign AI architecture, and engineering fellowship ladders.
           </p>

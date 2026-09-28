@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import HandNote from '@/components/ui/HandNote';
 import { pageMetadata } from '@/lib/seo';
 import styles from '../about.module.css';
 
@@ -12,12 +13,17 @@ export default function CredentialsPage() {
         <div className="doclabel">
           § 05 — INSTITUTIONAL VERIFICATION <span className="rev">rev: 2026.2</span>
         </div>
-        <h1>Proven Engineering Credibility, Audited Impact</h1>
+        <div className="stack-h justify-start align-baseline gap-3 flex-wrap mb-2">
+          <h1>Proven Engineering Credibility, Audited Impact</h1>
+          <HandNote tone="blue">
+            MSME verified · UDYAM registered ✎
+          </HandNote>
+        </div>
         <p className="intro-copy">The institutional registrations, compliance standards, and open-weights engineering deployments validating DBERT.</p>
       </div>
 
       <div className={styles.cardStack}>
-        <div className="card">
+        <div className="card card-lift">
           <div className="doclabel mb-1">§ REGULATORY COMPLIANCE</div>
           <h2 className={styles.cardTitleTight}>MSME Registered Corporate Entity</h2>
           <p className="prose-sm mb-4">
@@ -28,7 +34,7 @@ export default function CredentialsPage() {
           </div>
         </div>
 
-        <div className="card">
+        <div className="card card-lift">
           <div className="doclabel mb-1">§ OPEN SCIENCE COMMITMENT</div>
           <h2 className={styles.cardTitleTight}>Sovereign AI &amp; Open-Source Repository Contributions</h2>
           <p className="prose-sm mb-4">
@@ -39,7 +45,7 @@ export default function CredentialsPage() {
           </div>
         </div>
 
-        <div className="card">
+        <div className="card card-lift">
           <div className="doclabel mb-1">§ PUBLISHED AI WEIGHTS</div>
           <h2 className={styles.cardTitleTight}>DBERT_AI Open-Weights Custom Model</h2>
           <p className={styles.modelCopy}>
@@ -55,7 +61,7 @@ export default function CredentialsPage() {
           </a>
         </div>
 
-        <div className="card">
+        <div className="card card-lift">
           <div className="doclabel mb-1">§ LEARNER IMPACT AUDITOR</div>
           <h2 className={styles.cardTitleTight}>1,500+ Upskilled Developers &amp; Fellows</h2>
           <p className="prose-sm mb-4">

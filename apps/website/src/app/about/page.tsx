@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import HandNote from '@/components/ui/HandNote';
 import { pageMetadata } from '@/lib/seo';
 import styles from './about.module.css';
 
@@ -35,7 +36,12 @@ export default function AboutPage() {
         <div className="doclabel">
           § 05 — INSTITUTIONAL ARCHITECTURE <span className="rev">rev: 2026.2</span>
         </div>
-        <h1>Applied AI Incubation &amp; Research</h1>
+        <div className="stack-h justify-start align-baseline gap-3 flex-wrap mb-2">
+          <h1>Applied AI Incubation &amp; Research</h1>
+          <HandNote tone="blue">
+            registered MSME · studio collective ✎
+          </HandNote>
+        </div>
         <p className="page-intro">
           Digital Blinc Education Research And Technology (DBERT) — Engineering live systems, incubating venture cohorts, and training production software engineers.
         </p>

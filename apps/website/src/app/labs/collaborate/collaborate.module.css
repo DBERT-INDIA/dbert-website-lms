@@ -20,15 +20,15 @@
   font-family: var(--font-b);
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--text);
+  color: var(--text-primary);
 }
 
 .fieldGroup input, .fieldGroup select, .fieldGroup textarea {
   width: 100%;
-  background-color: var(--card);
-  border: 1px solid var(--line);
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--r-sm);
-  color: var(--text);
+  color: var(--text-primary);
   padding: 10px 14px;
   font-family: var(--font-b);
   font-size: 0.9rem;

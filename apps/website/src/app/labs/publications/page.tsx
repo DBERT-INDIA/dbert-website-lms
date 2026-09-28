@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { pageMetadata } from '@/lib/seo';
+import HandNote from '@/components/ui/HandNote';
 import s from '../labs.module.css';
 
 export const metadata = pageMetadata('/labs/publications');
@@ -15,9 +16,14 @@ export default function LabsPublicationsPage() {
           <div className="doclabel">
             § 04 — RESEARCH BRIEFINGS <span className="rev">rev: 2026.3</span>
           </div>
-          <h1 className="page-title-sm">
-            Ideas Worth Publishing, Systems Worth Studying
-          </h1>
+          <div className="stack-h justify-start align-baseline gap-3 flex-wrap mb-2">
+            <h1 className="page-title-sm mb-0">
+              Ideas Worth Publishing, Systems Worth Studying
+            </h1>
+            <HandNote tone="amber">
+              public weights · Zenodo DOIs ✎
+            </HandNote>
+          </div>
           <p className="page-intro">
             Technical documents, engineering briefs, and peer-reviewed style publications detailing DBERT Labs system architectures, reproducible benchmarks, and hardware evaluation metrics.
           </p>
@@ -43,7 +49,7 @@ export default function LabsPublicationsPage() {
           </h2>
           
           <div className="stack">
-            <div className="card">
+            <div className="card card-lift">
               <div className="stack-h justify-between align-center mb-2">
                 <span className={s.briefTag}>
                   Technical Brief · 2026
@@ -73,7 +79,7 @@ export default function LabsPublicationsPage() {
               </div>
             </div>
 
-            <div className="card">
+            <div className="card card-lift">
               <div className="stack-h justify-between align-center mb-2">
                 <span className={s.briefTag}>
                   Technical Brief · 2026
@@ -106,7 +112,7 @@ export default function LabsPublicationsPage() {
         </section>
 
         {/* Action Call */}
-        <div className="card callout-plain">
+        <div className="card card-lift callout-plain">
           <h2 className="card-title">Submit an Engineering Research Proposal</h2>
           <p className="page-lede">
             Are you interested in co-authoring academic technical briefs, benchmarking sovereign infrastructure models, or expanding open-source agent libraries? Engage our research teams directly.

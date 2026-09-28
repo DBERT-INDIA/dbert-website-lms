@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { pageMetadata } from '@/lib/seo';
+import HandNote from '@/components/ui/HandNote';
 import s from './labs.module.css';
 import { BookOpen, Laptop, Microscope } from 'lucide-react';
 
@@ -13,7 +14,12 @@ export default function DBERTLabsLandingPage() {
         <div className="doclabel">
           § 04 — LABS ARCHIVES <span className="rev">rev: 2026.3</span>
         </div>
-        <h1>Where Breakthrough Systems Begin</h1>
+        <div className="stack-h justify-start align-baseline gap-3 flex-wrap mb-2">
+          <h1>Where Breakthrough Systems Begin</h1>
+          <HandNote tone="blue">
+            academic preprints · reproducible benchmarks ✍
+          </HandNote>
+        </div>
         <p className={s.hubLede}>
           DBERT Labs is an applied artificial intelligence engineering facility and technical research division. 
           We investigate multi-agent orchestration architectures, local LLM edge quantization, custom rag evaluation harnesses, and algorithmic financial intelligence—open-sourcing our findings and feeding validated systems directly into our incubation and learning ecosystems.
@@ -21,7 +27,7 @@ export default function DBERTLabsLandingPage() {
       </div>
 
       <div className={s.hubGrid}>
-        <div className="card stack-between">
+        <div className="card card-lift stack-between">
           <div>
             <span className="icon-chip"><Microscope aria-hidden="true" /></span>
             <h3 className="card-heading-lg">Research Segments</h3>
@@ -32,7 +38,7 @@ export default function DBERTLabsLandingPage() {
           <Link href="/labs/research" className="accent-label">Explore Technical Research &rarr;</Link>
         </div>
 
-        <div className="card stack-between">
+        <div className="card card-lift stack-between">
           <div>
             <span className="icon-chip"><BookOpen aria-hidden="true" /></span>
             <h3 className="card-heading-lg">Technical Publications</h3>
@@ -43,7 +49,7 @@ export default function DBERTLabsLandingPage() {
           <Link href="/labs/publications" className="accent-label">Explore Published Reports &rarr;</Link>
         </div>
 
-        <div className="card stack-between">
+        <div className="card card-lift stack-between">
           <div>
             <span className="icon-chip"><Laptop aria-hidden="true" /></span>
             <h3 className="card-heading-lg">Open Source Repositories</h3>
@@ -55,12 +61,12 @@ export default function DBERTLabsLandingPage() {
         </div>
       </div>
 
-      <div className={`card ${s.ctaCard}`}>
+      <div className={`card card-lift ${s.ctaCard}`}>
         <h2 className="card-title">Academic &amp; Institutional Collaboration</h2>
         <p className={s.ctaCopy}>
           Partner with DBERT Labs on custom engineering research sprints, sovereign AI cluster benchmarks, or specialized dataset alignment projects under verified legal frameworks.
         </p>
-        <div className="stack-h gap-4 mt-4">
+        <div className="stack-h gap-4 mt-4 justify-center">
           <Link href="/labs/collaborate" className="btn btn-primary">Submit Collaboration Proposal</Link>
           <Link href="/about/credentials" className="btn btn-outline">Inspect Institutional Verification</Link>
         </div>

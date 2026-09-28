@@ -1,8 +1,8 @@
 import React from 'react';
 import ContactForm from '@/components/ui/ContactForm';
+import HandNote from '@/components/ui/HandNote';
 import { pageMetadata } from '@/lib/seo';
 import styles from '../about.module.css';
-
 
 export const metadata = pageMetadata('/about/contact');
 
@@ -13,7 +13,12 @@ export default function ContactPage() {
         <div className="doclabel">
           § 01 — CONTACT &amp; SUPPORT CHANNELS <span className="rev">rev: 2026.2</span>
         </div>
-        <h1>Let&apos;s Build Something Together</h1>
+        <div className="stack-h justify-start align-baseline gap-3 flex-wrap mb-2">
+          <h1>Let&apos;s Build Something Together</h1>
+          <HandNote tone="amber">
+            response within 24h ✍
+          </HandNote>
+        </div>
         <p>Get in touch with our incubation team, customer support, or academic advisors.</p>
       </div>
 

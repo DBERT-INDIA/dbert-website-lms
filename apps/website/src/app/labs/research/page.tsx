@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { pageMetadata } from '@/lib/seo';
+import HandNote from '@/components/ui/HandNote';
 
 export const metadata = pageMetadata('/labs/research');
 
@@ -14,9 +15,14 @@ export default function LabsResearchPage() {
           <div className="doclabel">
             § 04 — RESEARCH SEGMENTS <span className="rev">rev: 2026.3</span>
           </div>
-          <h1 className="page-title-sm">
-            Pioneering the Next Wave of Intelligent Systems
-          </h1>
+          <div className="stack-h justify-start align-baseline gap-3 flex-wrap mb-2">
+            <h1 className="page-title-sm mb-0">
+              Pioneering the Next Wave of Intelligent Systems
+            </h1>
+            <HandNote tone="blue">
+              multi-agent systems · local quantization ✍
+            </HandNote>
+          </div>
           <p className="page-intro">
             Advancing the architectural boundaries of artificial intelligence. We research and deploy multi-agent communication topologies, local model parameter compression, and deterministic educational systems.
           </p>
@@ -42,7 +48,7 @@ export default function LabsResearchPage() {
           </h2>
           
           <div className="stack">
-            <div className="card">
+            <div className="card card-lift">
               <div className="doclabel mb-1">§ RESEARCH TRACK 01</div>
               <h3 className="card-heading">
                 Multi-Agent System Topologies &amp; Governance
@@ -61,7 +67,7 @@ export default function LabsResearchPage() {
               </div>
             </div>
 
-            <div className="card">
+            <div className="card card-lift">
               <div className="doclabel mb-1">§ RESEARCH TRACK 02</div>
               <h3 className="card-heading">
                 LLM Compression, Quantization &amp; Edge Execution
@@ -80,7 +86,7 @@ export default function LabsResearchPage() {
               </div>
             </div>
 
-            <div className="card">
+            <div className="card card-lift">
               <div className="doclabel mb-1">§ RESEARCH TRACK 03</div>
               <h3 className="card-heading">
                 Deterministic RAG &amp; Educational Evaluation Topologies
@@ -102,7 +108,7 @@ export default function LabsResearchPage() {
         </section>
 
         {/* Action Call */}
-        <div className="card callout-plain">
+        <div className="card card-lift callout-plain">
           <h2 className="card-title">Collaborate with DBERT Laboratories</h2>
           <p className="page-lede">
             Are you an academic researcher, open-source repository maintainer, or enterprise engineering team seeking to partner on sovereign LLM infrastructures or multi-agent evaluations? Engage our technical leadership.

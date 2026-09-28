@@ -1,9 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
+import HandNote from '@/components/ui/HandNote';
 import { pageMetadata } from '@/lib/seo';
 import { Briefcase, Sparkles, ArrowRight } from 'lucide-react';
 import styles from '../about.module.css';
-
 
 export const metadata = pageMetadata('/about/careers');
 
@@ -14,7 +14,12 @@ export default function CareersPage() {
         <div className="doclabel">
           § 01 — CAREERS &amp; RECRUITMENT <span className="rev">rev: 2026.2</span>
         </div>
-        <h1>Careers &amp; Hiring Cohorts</h1>
+        <div className="stack-h justify-start align-baseline gap-3 flex-wrap mb-2">
+          <h1>Careers &amp; Hiring Cohorts</h1>
+          <HandNote tone="blue">
+            sprints · mentorship · placements ✍
+          </HandNote>
+        </div>
         <p>Build the future of AI education, research, and technical incubation.</p>
       </div>
 
@@ -38,7 +43,7 @@ export default function CareersPage() {
           </div>
         </div>
 
-        <div className={`card ${styles.pad6}`}>
+        <div className={`card card-lift ${styles.pad6}`}>
           <span className="icon-chip"><Briefcase aria-hidden="true" /></span>
           <h2 className="card-title">General Talent Network</h2>
           <p className={styles.bodyMuted}>
