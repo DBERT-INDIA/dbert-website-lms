@@ -155,4 +155,32 @@ Exhaustively verify SEO metadata, OpenGraph tags, canonical URLs, structured dat
    - `npm run lint`
    - `$env:DATABASE_URL=...; npm run build`
 
+---
+
+## 8. Phase 15: Production Preflight (Detailed Execution Plan)
+
+### Objective
+Execute comprehensive preflight validation of the entire DBERT website platform prior to release. Validate environment variable fallbacks, static asset resolution, API route behaviors, external portal links, and generate the formal production preflight certificate `WEBSITE_UIUX_PRODUCTION_PREFLIGHT.md`.
+
+### Scope of Work
+1. **Environment Configuration Audit**:
+   - Audit required production environment variables (`DATABASE_URL`, `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_GA_ID`, `RAZORPAY_KEY_ID`, `RAZORPAY_KEY_SECRET`) and verify all components fail gracefully or fallback safely when keys are unpopulated during SSG builds.
+2. **Static Asset & Public Directory Verification**:
+   - Verify presence and integrity of `/favicon.svg`, `/og-image.jpg`, `/logo.png`, and MDX image references in `apps/website/public`.
+3. **External Portal Link Integrity**:
+   - Verify that all `internship.dbert.online` outbound link targets remain active, consistent, and correctly tagged with `rel="noopener noreferrer"`.
+4. **API Endpoint Smoke Test**:
+   - Verify `/api/verify`, `/api/contact`, `/api/cohorts/apply`, `/api/startups/register`, `/api/payments/create-order` respond with standard HTTP status codes and structured JSON schemas under test payloads.
+5. **Preflight Report Publication**:
+   - Author `WEBSITE_UIUX_PRODUCTION_PREFLIGHT.md` documenting route readiness, security headers, metadata health, asset integrity, and zero regressions.
+6. **Zero-Regression Gates**:
+   - `npm run audit:tokens`
+   - `node scripts/check-headings.mjs`
+   - `node scripts/check-inline-styles.mjs`
+   - `npm run check:seo`
+   - `npx tsc --noEmit`
+   - `npm run lint`
+   - `$env:DATABASE_URL=...; npm run build`
+
+
 
