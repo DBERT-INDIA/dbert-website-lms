@@ -149,9 +149,9 @@ export default function HiringServicePage() {
         </h2>
         <div className="bento-grid-3">
           <div className="bento-card">
-            <h4 className="block-title font-mono text-sm uppercase text-white mb-2">
+            <h3 className="block-title font-mono text-sm uppercase text-white mb-2">
               1. Audited Candidate Directory
-            </h4>
+            </h3>
             <p className="prose-sm text-muted">
               Access engineering fellows who have mastered our industrial training tracks—developing live RAG systems, managing Docker container microservices, and passing real architecture reviews.
             </p>
@@ -163,9 +163,9 @@ export default function HiringServicePage() {
           </div>
 
           <div className="bento-card">
-            <h4 className="block-title font-mono text-sm uppercase text-white mb-2">
+            <h3 className="block-title font-mono text-sm uppercase text-white mb-2">
               2. Custom Alignment Sprints
-            </h4>
+            </h3>
             <p className="prose-sm text-muted">
               We design and coordinate a free 15-day pre-onboarding alignment program. Selected candidate developers familiarize themselves with your exact Git workflows before formal signing.
             </p>
@@ -177,9 +177,9 @@ export default function HiringServicePage() {
           </div>
 
           <div className="bento-card">
-            <h4 className="block-title font-mono text-sm uppercase text-white mb-2">
+            <h3 className="block-title font-mono text-sm uppercase text-white mb-2">
               3. Operational Handoff Support
-            </h4>
+            </h3>
             <p className="prose-sm text-muted">
               Ensure strict statutory and legal compliance. We facilitate standard NDA agreements, audit recommendation letters via cryptographic verification, and support team integration.
             </p>
@@ -202,13 +202,13 @@ export default function HiringServicePage() {
 
         <div className="grid gap-6 md:grid-cols-2 my-4">
           <div className="card p-6 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-2">Anti-Plagiarism Repo Inspection</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-2">Anti-Plagiarism Repo Inspection</h3>
             <p className="text-xs text-muted">
               Before presenting any engineering candidate, our algorithms audit their submitted project repositories for synthetic generated boilerplate, anomalous timestamp spikes, and cloned tutorial code—ensuring authentic engineering proficiency.
             </p>
           </div>
           <div className="card p-6 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-2">Cryptographic Diploma Authentication</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-2">Cryptographic Diploma Authentication</h3>
             <p className="text-xs text-muted">
               Every learner achievement record in our directory is permanently embedded within an immutable relational database indexed by a SHA-256 cryptographic hash, completely eliminating fraudulent certificate submissions.
             </p>
@@ -304,17 +304,17 @@ export default function HiringServicePage() {
         <h2 className="section-title mb-4">Explore Complementary Venture Services</h2>
         <div className="grid gap-4 md:grid-cols-3">
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">Hiring Automation Suite</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">Hiring Automation Suite</h3>
             <p className="text-xs text-muted mb-3">License our autonomous Git code auditing and resume scoring pipeline to evaluate external developer applicants.</p>
             <Link href="/ai-solutions/products/hiring-automation-suite" className="accent-link text-xs">View Hiring Suite &rarr;</Link>
           </div>
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">Intern Management System</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">Intern Management System</h3>
             <p className="text-xs text-muted mb-3">Manage hired developer fellows, monitor daily sprint commits, and streamline PR code reviews with our dedicated portal.</p>
             <Link href="/ai-solutions/products/intern-management-system" className="accent-link text-xs">View Intern Portal &rarr;</Link>
           </div>
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">Technical Architecture Build</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">Technical Architecture Build</h3>
             <p className="text-xs text-muted mb-3">Pair hired developer fellows directly with senior DBERT venture engineering squads to launch your production AI MVP.</p>
             <Link href="/startups/services/technical" className="accent-link text-xs">View Technical Service &rarr;</Link>
           </div>

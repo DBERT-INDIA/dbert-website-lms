@@ -191,13 +191,13 @@ export default function CertificateVerificationAPIPage() {
 
         <div className="grid gap-6 md:grid-cols-2 my-4">
           <div className="card p-6 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-2">Immutable Relational Indexes</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-2">Immutable Relational Indexes</h3>
             <p className="text-xs text-muted">
               Once an engineered completion record or Letter of Recommendation is cryptographically committed to our relational ledger, modifying historical records requires multi-signature administrative authorization, rendering fraudulent credential injection impossible.
             </p>
           </div>
           <div className="card p-6 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-2">Defensive Anti-Enumeration</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-2">Defensive Anti-Enumeration</h3>
             <p className="text-xs text-muted">
               To protect candidate privacy against uninvited marketing aggregators, our gateway monitors access patterns. Sequential serial enumeration attempts are instantly trapped, ensuring only valid corporate recruiters access achievement verification data.
             </p>
@@ -287,17 +287,17 @@ export default function CertificateVerificationAPIPage() {
         <h2 className="section-title mb-4">Explore Complementary DBERT Platforms</h2>
         <div className="grid gap-4 md:grid-cols-3">
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">Hiring Automation Suite</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">Hiring Automation Suite</h3>
             <p className="text-xs text-muted mb-3">Integrate credential validation with automated git repository code audits and technical resume scoring.</p>
             <Link href="/ai-solutions/products/hiring-automation-suite" className="accent-link text-xs">View Hiring Suite &rarr;</Link>
           </div>
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">Intern Management System</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">Intern Management System</h3>
             <p className="text-xs text-muted mb-3">Track student task logs, supervise mentor pull-request code reviews, and issue verified completion LORs.</p>
             <Link href="/ai-solutions/products/intern-management-system" className="accent-link text-xs">View Intern Portal &rarr;</Link>
           </div>
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">Document AI Extraction</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">Document AI Extraction</h3>
             <p className="text-xs text-muted mb-3">Convert unstructured PDF invoices and complex legal contracts directly into validated JSON schemas.</p>
             <Link href="/ai-solutions/products/document-ai" className="accent-link text-xs">View Document AI &rarr;</Link>
           </div>

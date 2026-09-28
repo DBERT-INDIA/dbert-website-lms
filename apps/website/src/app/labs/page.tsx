@@ -26,6 +26,7 @@ export default function DBERTLabsLandingPage() {
         </p>
       </div>
 
+      <h2 className="sr-only">Research &amp; Open Development Tracks</h2>
       <div className={s.hubGrid}>
         <div className="card card-lift stack-between">
           <div>

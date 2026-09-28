@@ -144,9 +144,9 @@ export default function FundingServicePage() {
         </h2>
         <div className="bento-grid-3">
           <div className="bento-card">
-            <h4 className="block-title font-mono text-sm uppercase text-white mb-2">
+            <h3 className="block-title font-mono text-sm uppercase text-white mb-2">
               1. Non-Dilutive Micro-Grants
-            </h4>
+            </h3>
             <p className="prose-sm text-muted">
               DBERT allocates targeted non-equity micro-grants to incubated portfolio companies to directly absorb initial development expenses and compute hosting invoices.
             </p>
@@ -158,9 +158,9 @@ export default function FundingServicePage() {
           </div>
 
           <div className="bento-card">
-            <h4 className="block-title font-mono text-sm uppercase text-white mb-2">
+            <h3 className="block-title font-mono text-sm uppercase text-white mb-2">
               2. Technical Pitch Optimization
-            </h4>
+            </h3>
             <p className="prose-sm text-muted">
               We refine your investor communications. We transform technical jargon into clear value metrics, mapping architecture summaries and target user unit economics to investor standards.
             </p>
@@ -172,9 +172,9 @@ export default function FundingServicePage() {
           </div>
 
           <div className="bento-card">
-            <h4 className="block-title font-mono text-sm uppercase text-white mb-2">
+            <h3 className="block-title font-mono text-sm uppercase text-white mb-2">
               3. Institutional Data Rooms
-            </h4>
+            </h3>
             <p className="prose-sm text-muted">
               Bypass prolonged due diligence delays. We establish complete electronic data rooms containing clean Git histories, corporate filings, IP assignments, and SAFE agreements.
             </p>
@@ -197,13 +197,13 @@ export default function FundingServicePage() {
 
         <div className="grid gap-6 md:grid-cols-2 my-4">
           <div className="card p-6 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-2">Anti-Dilution Cap Protection</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-2">Anti-Dilution Cap Protection</h3>
             <p className="text-xs text-muted">
               We simulate subsequent investment rounds using advanced cap-table modeling software—identifying potential dilution traps, unratcheted liquidation preferences, and board seat imbalances before you sign binding terms.
             </p>
           </div>
           <div className="card p-6 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-2">Audit-Proof Expense Registers</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-2">Audit-Proof Expense Registers</h3>
             <p className="text-xs text-muted">
               Micro-grant accounting is maintained within transparent, auditable expense registers. When external funds perform corporate forensic reviews, every rupee spent on servers and compute architecture is cleanly verified against vendor receipts.
             </p>
@@ -291,17 +291,17 @@ export default function FundingServicePage() {
         <h2 className="section-title mb-4">Explore Complementary Venture Services</h2>
         <div className="grid gap-4 md:grid-cols-3">
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">Investor Network Hub</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">Investor Network Hub</h3>
             <p className="text-xs text-muted mb-3">Discover our direct referral pathways to technology angel syndicates and institutional venture capital funds.</p>
             <Link href="/startups/investor-network" className="accent-link text-xs">View Investor Network &rarr;</Link>
           </div>
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">Annotated Term Sheets</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">Annotated Term Sheets</h3>
             <p className="text-xs text-muted mb-3">Review standardized venture investment term sheet templates with transparent plain-language explanations.</p>
             <Link href="/startups/services/equity/term-sheets" className="accent-link text-xs">View Term Sheets &rarr;</Link>
           </div>
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">Legal &amp; IP Compliance</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">Legal &amp; IP Compliance</h3>
             <p className="text-xs text-muted mb-3">Secure Private Limited incorporations, execute founder vesting schedules, and register with DPIIT Startup India.</p>
             <Link href="/startups/services/legal" className="accent-link text-xs">View Legal Service &rarr;</Link>
           </div>

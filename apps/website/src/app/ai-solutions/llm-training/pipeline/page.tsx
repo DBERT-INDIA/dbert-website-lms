@@ -356,13 +356,13 @@ export default function FineTuningPipelinePage() {
         </p>
         <div className="grid gap-6 md:grid-cols-2 my-4">
           <div className="card p-6 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-2">Automated PII Scrubbing &amp; Anonymization</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-2">Automated PII Scrubbing &amp; Anonymization</h3>
             <p className="text-xs text-muted">
               Before raw client databases ever touch a training GPU memory buffer, Stage 02 executes automated regular expression and NER (Named Entity Recognition) masking algorithms. Social security numbers, bank routing codes, personal employee phone numbers, and customer addresses are systematically scrubbed and replaced with deterministic schema tokens.
             </p>
           </div>
           <div className="card p-6 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-2">Air-Gapped GPU Cluster Execution</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-2">Air-Gapped GPU Cluster Execution</h3>
             <p className="text-xs text-muted">
               All LoRA and QLoRA gradient calculation loops execute inside completely air-gapped Virtual Private Cloud instances on our dedicated hosting architecture. Training clusters feature zero external egress internet connectivity—preventing third-party weight tracking, unauthorized checkpoint downloading, or cloud vendor telemetry pingbacks.
             </p>
@@ -385,17 +385,17 @@ export default function FineTuningPipelinePage() {
         <h2 className="section-title mb-4">Explore Complementary Capabilities</h2>
         <div className="grid gap-4 md:grid-cols-3">
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">DBERT_AI Public Weights</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">DBERT_AI Public Weights</h3>
             <p className="text-xs text-muted mb-3">Inspect our flagship in-house open model compiled through this exact 5-stage industrial lifecycle.</p>
             <Link href="/ai-solutions/llm-training/dbert-ai" className="accent-link text-xs">Explore DBERT_AI &rarr;</Link>
           </div>
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">Private Bare-Metal Hosting</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">Private Bare-Metal Hosting</h3>
             <p className="text-xs text-muted mb-3">Deploy your compiled GGUF and AWQ checkpoints directly onto secure local on-premises hardware arrays.</p>
             <Link href="/ai-solutions/llm-training/private-hosting" className="accent-link text-xs">View Private Hosting &rarr;</Link>
           </div>
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">AI Agent Development Training</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">AI Agent Development Training</h3>
             <p className="text-xs text-muted mb-3">Train your internal software engineering staff to format datasets and construct local LangChain agents.</p>
             <Link href="/learners/courses/ai-agent-development" className="accent-link text-xs">Explore Agent Course &rarr;</Link>
           </div>

@@ -151,19 +151,19 @@ export default function InvestorNetworkPage() {
 
           <div className="grid gap-6 md:grid-cols-3 my-6">
             <div className="card p-6 bg-card border border-line">
-              <h4 className="font-mono text-sm font-bold text-white mb-2">1. Unit Compute Economics</h4>
+              <h3 className="font-mono text-sm font-bold text-white mb-2">1. Unit Compute Economics</h3>
               <p className="text-xs text-muted leading-relaxed">
                 We verify that model inference velocities and token execution invoices scale linearly—rejecting startups reliant on unhedged public cloud commercial API billing that deteriorates structural operating margins.
               </p>
             </div>
             <div className="card p-6 bg-card border border-line">
-              <h4 className="font-mono text-sm font-bold text-white mb-2">2. IP &amp; Weight Ownership</h4>
+              <h3 className="font-mono text-sm font-bold text-white mb-2">2. IP &amp; Weight Ownership</h3>
               <p className="text-xs text-muted leading-relaxed">
                 We confirm complete corporate legal and statutory ownership over compiled GGUF/AWQ model weight checkpoints, proprietary historical training datasets, and automated deployment scripts.
               </p>
             </div>
             <div className="card p-6 bg-card border border-line">
-              <h4 className="font-mono text-sm font-bold text-white mb-2">3. Zero-Trust Cyber Zoning</h4>
+              <h3 className="font-mono text-sm font-bold text-white mb-2">3. Zero-Trust Cyber Zoning</h3>
               <p className="text-xs text-muted leading-relaxed">
                 We audit end-to-end security posture, verifying containerized Nginx rate-limiting proxy gateways, encrypted PostgreSQL storage buffers, and strict compliance with global digital personal data protection mandates.
               </p>
@@ -247,17 +247,17 @@ export default function InvestorNetworkPage() {
           <h2 className="text-2xl font-mono font-bold text-white mb-4">Explore Definitive Venture Resources</h2>
           <div className="grid gap-4 md:grid-cols-3">
             <div className="card p-4 bg-card border border-line">
-              <h4 className="font-mono text-sm font-bold text-white mb-1">Services-Against-Equity Track</h4>
+              <h3 className="font-mono text-sm font-bold text-white mb-1">Services-Against-Equity Track</h3>
               <p className="text-xs text-muted mb-3">Review how we invest senior software engineering squads in exchange for milestone corporate equity.</p>
               <Link href="/startups/services/equity" className="accent-link text-xs">Explore Equity Model &rarr;</Link>
             </div>
             <div className="card p-4 bg-card border border-line">
-              <h4 className="font-mono text-sm font-bold text-white mb-1">Compute Funding &amp; Micro-Grants</h4>
+              <h3 className="font-mono text-sm font-bold text-white mb-1">Compute Funding &amp; Micro-Grants</h3>
               <p className="text-xs text-muted mb-3">Discover our non-dilutive milestone compute server grants up to ₹5,00,000 designed to preserve cash runway.</p>
               <Link href="/startups/services/funding" className="accent-link text-xs">View Compute Grants &rarr;</Link>
             </div>
             <div className="card p-4 bg-card border border-line">
-              <h4 className="font-mono text-sm font-bold text-white mb-1">Active Venture Portfolio</h4>
+              <h3 className="font-mono text-sm font-bold text-white mb-1">Active Venture Portfolio</h3>
               <p className="text-xs text-muted mb-3">Browse our active commercial startups operating inside the DBERT Labs incubator ecosystem.</p>
               <Link href="/startups/portfolio" className="accent-link text-xs">Browse Startup Portfolio &rarr;</Link>
             </div>

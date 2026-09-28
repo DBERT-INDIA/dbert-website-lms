@@ -186,13 +186,13 @@ export default function CustomLLMLandingPage() {
         </p>
         <div className="grid gap-6 md:grid-cols-2 my-4">
           <div className="card p-6 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-2">Cryptographic Weight Integrity</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-2">Cryptographic Weight Integrity</h3>
             <p className="text-xs text-muted">
               Every compiled GGUF or AWQ model checkpoint is signed with a cryptographic SHA-256 hash checksum. When deploying across enterprise multi-node containers, deployment pipelines verify checksum parity to guarantee model weights have not suffered from tampering or silent storage corruption.
             </p>
           </div>
           <div className="card p-6 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-2">Containerized vLLM &amp; Ollama Isolation</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-2">Containerized vLLM &amp; Ollama Isolation</h3>
             <p className="text-xs text-muted">
               Inference endpoints operate within isolated Docker container runtimes configured with strict memory limits and Nginx rate-limiting shields. External client applications communicate exclusively through sanitized RESTful APIs, isolating bare-metal GPU execution registers from unauthorized shell access.
             </p>
@@ -268,17 +268,17 @@ export default function CustomLLMLandingPage() {
         <h2 className="section-title mb-4">Explore Complementary Capabilities</h2>
         <div className="grid gap-4 md:grid-cols-3">
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">AI System Consultation</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">AI System Consultation</h3>
             <p className="text-xs text-muted mb-3">Partner with our principal AI engineers to run a foundational 10-day Technical Architecture &amp; Bottleneck Audit.</p>
             <Link href="/ai-solutions/consultation" className="accent-link text-xs">Book AI Consultation &rarr;</Link>
           </div>
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">AI Agent Development Course</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">AI Agent Development Course</h3>
             <p className="text-xs text-muted mb-3">Train your software engineering staff to construct autonomous LangChain agents and pgvector semantic pipelines.</p>
             <Link href="/learners/courses/ai-agent-development" className="accent-link text-xs">View AI Agent Course &rarr;</Link>
           </div>
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">Cloud GPU Infrastructure</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">Cloud GPU Infrastructure</h3>
             <p className="text-xs text-muted mb-3">Provision bare-metal GPU clusters and secure Virtual Private Clouds optimized for vLLM model execution.</p>
             <Link href="/startups/services/infrastructure" className="accent-link text-xs">View Infrastructure &rarr;</Link>
           </div>

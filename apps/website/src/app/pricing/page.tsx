@@ -261,17 +261,17 @@ export default function PricingPage() {
             <h2 className="mb-4">Explore Venture &amp; Legal Frameworks</h2>
             <div className="bento-grid-3">
               <div className="card card-lift">
-                <h4 className="font-mono text-sm font-bold text-white mb-1">Annotated Term Sheets</h4>
+                <h3 className="font-mono text-sm font-bold text-white mb-1">Annotated Term Sheets</h3>
                 <p className="text-xs text-muted mb-3">Inspect standardized venture co-development term sheet templates with clause annotations.</p>
                 <Link href="/startups/services/equity/term-sheets" className="accent-link text-xs">View Term Sheets &rarr;</Link>
               </div>
               <div className="card card-lift">
-                <h4 className="font-mono text-sm font-bold text-white mb-1">Funding &amp; Equity</h4>
+                <h3 className="font-mono text-sm font-bold text-white mb-1">Funding &amp; Equity</h3>
                 <p className="text-xs text-muted mb-3">Discover how our co-development model helps founders reach market validation with zero agency debt.</p>
                 <Link href="/startups/services/funding" className="accent-link text-xs">View Funding &rarr;</Link>
               </div>
               <div className="card card-lift">
-                <h4 className="font-mono text-sm font-bold text-white mb-1">Legal &amp; IP Compliance</h4>
+                <h3 className="font-mono text-sm font-bold text-white mb-1">Legal &amp; IP Compliance</h3>
                 <p className="text-xs text-muted mb-3">Review incorporation support, intellectual property assignments, and compliance guidelines.</p>
                 <Link href="/startups/services/legal" className="accent-link text-xs">View Legal Details &rarr;</Link>
               </div>

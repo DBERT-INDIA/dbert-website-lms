@@ -166,7 +166,7 @@ export default function TermSheetsPage() {
             {/* Clause 1 */}
             <div className="p-5 bg-zinc-900/60 rounded-lg border border-line">
               <div className="flex justify-between align-start mb-2">
-                <h4 className="font-mono text-sm text-white font-bold">Clause 1: Milestone-Gated IP &amp; Code Assignment</h4>
+                <h3 className="font-mono text-sm text-white font-bold">Clause 1: Milestone-Gated IP &amp; Code Assignment</h3>
                 <span className="badge badge-accent font-mono text-xs">Founder Protection</span>
               </div>
               <p className="font-mono text-xs text-zinc-400 bg-zinc-950 p-3 rounded border border-zinc-800 mb-3 leading-relaxed">
@@ -180,7 +180,7 @@ export default function TermSheetsPage() {
             {/* Clause 2 */}
             <div className="p-5 bg-zinc-900/60 rounded-lg border border-line">
               <div className="flex justify-between align-start mb-2">
-                <h4 className="font-mono text-sm text-white font-bold">Clause 2: Anti-Clawback &amp; Shared Execution Risk</h4>
+                <h3 className="font-mono text-sm text-white font-bold">Clause 2: Anti-Clawback &amp; Shared Execution Risk</h3>
                 <span className="badge badge-emerald font-mono text-xs">Zero Financial Risk</span>
               </div>
               <p className="font-mono text-xs text-zinc-400 bg-zinc-950 p-3 rounded border border-zinc-800 mb-3 leading-relaxed">
@@ -194,7 +194,7 @@ export default function TermSheetsPage() {
             {/* Clause 3 */}
             <div className="p-5 bg-zinc-900/60 rounded-lg border border-line">
               <div className="flex justify-between align-start mb-2">
-                <h4 className="font-mono text-sm text-white font-bold">Clause 3: Non-Interfering Governance &amp; Pro-Rata Dilution</h4>
+                <h3 className="font-mono text-sm text-white font-bold">Clause 3: Non-Interfering Governance &amp; Pro-Rata Dilution</h3>
                 <span className="badge badge-blue font-mono text-xs">Cap Table Cleanliness</span>
               </div>
               <p className="font-mono text-xs text-zinc-400 bg-zinc-950 p-3 rounded border border-zinc-800 mb-3 leading-relaxed">

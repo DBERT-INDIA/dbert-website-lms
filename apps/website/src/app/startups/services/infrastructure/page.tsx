@@ -144,9 +144,9 @@ export default function InfrastructureServicePage() {
         </h2>
         <div className="bento-grid-3">
           <div className="bento-card">
-            <h4 className="block-title font-mono text-sm uppercase text-white mb-2">
+            <h3 className="block-title font-mono text-sm uppercase text-white mb-2">
               1. GPU Compute Provisioning
-            </h4>
+            </h3>
             <p className="prose-sm text-muted">
               We precisely size your compute workloads—establishing AWS EC2 instances (G4dn, G5, P4 VRAM capacities) or high-efficiency bare-metal RunPod clusters to fit your exact context horizons.
             </p>
@@ -158,9 +158,9 @@ export default function InfrastructureServicePage() {
           </div>
 
           <div className="bento-card">
-            <h4 className="block-title font-mono text-sm uppercase text-white mb-2">
+            <h3 className="block-title font-mono text-sm uppercase text-white mb-2">
               2. Private Serving Environments
-            </h4>
+            </h3>
             <p className="prose-sm text-muted">
               Host open-weights neural networks safely. We spin up localized model serving container registries using Ollama or vLLM, locking down data privacy and eliminating external token fees.
             </p>
@@ -172,9 +172,9 @@ export default function InfrastructureServicePage() {
           </div>
 
           <div className="bento-card">
-            <h4 className="block-title font-mono text-sm uppercase text-white mb-2">
+            <h3 className="block-title font-mono text-sm uppercase text-white mb-2">
               3. Vector Database Clustering
-            </h4>
+            </h3>
             <p className="prose-sm text-muted">
               Scale enterprise RAG queries without bottlenecks. We deploy high-throughput PostgreSQL relational database clusters natively equipped with optimized pgvector semantic indexing.
             </p>
@@ -197,13 +197,13 @@ export default function InfrastructureServicePage() {
 
         <div className="grid gap-6 md:grid-cols-2 my-4">
           <div className="card p-6 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-2">Zero-Trust Network Zoning</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-2">Zero-Trust Network Zoning</h3>
             <p className="text-xs text-muted">
               We implement rigid zero-trust security perimeter policies. Database read/write replicas and localized GPU inference ports remain isolated inside private subnet firewalls, accessible exclusively via authenticated SSH Bastion gates and mutual TLS connections.
             </p>
           </div>
           <div className="card p-6 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-2">Rate-Limit Burst Throttling</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-2">Rate-Limit Burst Throttling</h3>
             <p className="text-xs text-muted">
               By standing up specialized algorithmic rate-limiting reverse proxies at the ingress gate, our architecture absorbs unexpected spikes in incoming client traffic—protecting backend inference containers from out-of-memory kernel panics and computational freeze-ups.
             </p>
@@ -291,17 +291,17 @@ export default function InfrastructureServicePage() {
         <h2 className="section-title mb-4">Explore Complementary Venture Services</h2>
         <div className="grid gap-4 md:grid-cols-3">
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">Private LLM Hosting</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">Private LLM Hosting</h3>
             <p className="text-xs text-muted mb-3">Learn about our physical bare-metal enterprise hosting arrays designed for sovereign AI operational secrecy.</p>
             <Link href="/ai-solutions/llm-training/private-hosting" className="accent-link text-xs">View Hardware Hosting &rarr;</Link>
           </div>
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">Technical Architecture Build</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">Technical Architecture Build</h3>
             <p className="text-xs text-muted mb-3">Pair infrastructure setups directly with senior software engineering squads writing features for your main codebase.</p>
             <Link href="/startups/services/technical" className="accent-link text-xs">View Technical Service &rarr;</Link>
           </div>
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">Funding &amp; Micro-Grants</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">Funding &amp; Micro-Grants</h3>
             <p className="text-xs text-muted mb-3">Access dilution-free micro-grants ranging up to ₹5,00,000 directly allocated to offset your GPU server bills.</p>
             <Link href="/startups/services/funding" className="accent-link text-xs">View Funding Support &rarr;</Link>
           </div>

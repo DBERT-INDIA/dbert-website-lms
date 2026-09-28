@@ -206,13 +206,13 @@ export default function DBERTChatPage() {
 
         <div className="grid gap-6 md:grid-cols-2 my-4">
           <div className="card p-6 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-2">Zero Token Training Leaks</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-2">Zero Token Training Leaks</h3>
             <p className="text-xs text-muted">
               We contractually and technically enforce that zero incoming operational prompts, document payloads, or generated completion summaries are ever routed to model training clusters or third-party behavioral aggregation algorithms.
             </p>
           </div>
           <div className="card p-6 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-2">Role-Based Access Control (RBAC)</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-2">Role-Based Access Control (RBAC)</h3>
             <p className="text-xs text-muted">
               Integrate directly with enterprise Single Sign-On (SSO) and LDAP identity providers. Enforce strict collection-level read and write permissions ensuring interns and executives only retrieve documentation commensurate with their security clearance.
             </p>
@@ -302,17 +302,17 @@ export default function DBERTChatPage() {
         <h2 className="section-title mb-4">Explore Complementary DBERT Platforms</h2>
         <div className="grid gap-4 md:grid-cols-3">
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">Document AI Extraction</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">Document AI Extraction</h3>
             <p className="text-xs text-muted mb-3">Convert messy corporate PDFs, scanned invoices, and forms directly into structured JSON schemas.</p>
             <Link href="/ai-solutions/products/document-ai" className="accent-link text-xs">View Document AI &rarr;</Link>
           </div>
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">Private LLM Hosting</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">Private LLM Hosting</h3>
             <p className="text-xs text-muted mb-3">Review transparent hardware architecture and bare-metal server infrastructure in Indian datacenters.</p>
             <Link href="/ai-solutions/llm-training/private-hosting" className="accent-link text-xs">View Private Hosting &rarr;</Link>
           </div>
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">Hiring Automation Suite</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">Hiring Automation Suite</h3>
             <p className="text-xs text-muted mb-3">Audit candidate codebases, run resume scoring pipelines, and streamline technical recruiting.</p>
             <Link href="/ai-solutions/products/hiring-automation-suite" className="accent-link text-xs">View Hiring Suite &rarr;</Link>
           </div>

@@ -180,13 +180,13 @@ export default function HiringAutomationPage() {
 
         <div className="grid gap-6 md:grid-cols-2 my-4">
           <div className="card p-6 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-2">Role-Based Access Control (RBAC)</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-2">Role-Based Access Control (RBAC)</h3>
             <p className="text-xs text-muted">
               Configure fine-grained access boundaries between HR generalists, external technical interviewers, and VP of Engineering evaluators. External interviewers view relevant repository scorecards without accessing compensation metadata or historical hiring transcripts.
             </p>
           </div>
           <div className="card p-6 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-2">Encrypted Record Persistence</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-2">Encrypted Record Persistence</h3>
             <p className="text-xs text-muted">
               All parsed applicant profiles, GitHub personal authentication tokens, and algorithmic assessment scores are encrypted at rest via AES-256 within secure relational database schemas, ensuring compliance with Indian data privacy statutes.
             </p>
@@ -276,17 +276,17 @@ export default function HiringAutomationPage() {
         <h2 className="section-title mb-4">Explore Complementary DBERT Platforms</h2>
         <div className="grid gap-4 md:grid-cols-3">
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">Intern Management System</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">Intern Management System</h3>
             <p className="text-xs text-muted mb-3">Manage hired technical apprentices, monitor daily sprint commits, and streamline review mentorship.</p>
             <Link href="/ai-solutions/products/intern-management-system" className="accent-link text-xs">View Intern Portal &rarr;</Link>
           </div>
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">Certificate Verification API</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">Certificate Verification API</h3>
             <p className="text-xs text-muted mb-3">Cryptographically authenticate candidate graduation diplomas and recommendation letters in real time.</p>
             <Link href="/ai-solutions/products/certificate-verification-api" className="accent-link text-xs">View Verification API &rarr;</Link>
           </div>
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">Document AI Extraction</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">Document AI Extraction</h3>
             <p className="text-xs text-muted mb-3">Convert unstructured PDF candidate portfolios and financial contracts into strict JSON schemas.</p>
             <Link href="/ai-solutions/products/document-ai" className="accent-link text-xs">View Document AI &rarr;</Link>
           </div>

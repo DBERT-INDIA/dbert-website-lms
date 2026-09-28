@@ -145,9 +145,9 @@ export default function TechnicalServicePage() {
         </h2>
         <div className="bento-grid-3">
           <div className="bento-card">
-            <h4 className="block-title font-mono text-sm uppercase text-white mb-2">
+            <h3 className="block-title font-mono text-sm uppercase text-white mb-2">
               1. Framework &amp; Agent Design
-            </h4>
+            </h3>
             <p className="prose-sm text-muted">
               We construct clean state-machine communication patterns for your agent workflows, replacing non-deterministic prompt scripts with reliable type-safe orchestrators.
             </p>
@@ -159,9 +159,9 @@ export default function TechnicalServicePage() {
           </div>
 
           <div className="bento-card">
-            <h4 className="block-title font-mono text-sm uppercase text-white mb-2">
+            <h3 className="block-title font-mono text-sm uppercase text-white mb-2">
               2. Vector Index Optimization
-            </h4>
+            </h3>
             <p className="prose-sm text-muted">
               Guarantee your Retrieval-Augmented Generation (RAG) pipelines retrieve precise contextual documents in milliseconds under concurrent enterprise traffic.
             </p>
@@ -173,9 +173,9 @@ export default function TechnicalServicePage() {
           </div>
 
           <div className="bento-card">
-            <h4 className="block-title font-mono text-sm uppercase text-white mb-2">
+            <h3 className="block-title font-mono text-sm uppercase text-white mb-2">
               3. MLOps &amp; CI/CD Pipelines
-            </h4>
+            </h3>
             <p className="prose-sm text-muted">
               Ship updates safely without breaking production. We provision GPU hosting infrastructure, harden container environments, and execute simulated stress testing.
             </p>
@@ -198,13 +198,13 @@ export default function TechnicalServicePage() {
 
         <div className="grid gap-6 md:grid-cols-2 my-4">
           <div className="card p-6 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-2">Zero Public Training Vulnerability</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-2">Zero Public Training Vulnerability</h3>
             <p className="text-xs text-muted">
               By routing analytical pipelines through hardened on-premise Ollama or vLLM container endpoints, we guarantee that zero corporate customer queries or proprietary databases ever inadvertently feed commercial third-party training datasets.
             </p>
           </div>
           <div className="card p-6 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-2">Automated Resilience Testing</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-2">Automated Resilience Testing</h3>
             <p className="text-xs text-muted">
               We subject your backend API microservices and database read/write replicas to automated simulated load bursts—ensuring graceful degradation, predictive throttling, and zero memory exhaustion during abrupt traffic surges.
             </p>
@@ -292,17 +292,17 @@ export default function TechnicalServicePage() {
         <h2 className="section-title mb-4">Explore Complementary Venture Services</h2>
         <div className="grid gap-4 md:grid-cols-3">
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">Cloud &amp; AI Infrastructure</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">Cloud &amp; AI Infrastructure</h3>
             <p className="text-xs text-muted mb-3">Provision private GPU clusters, local Ollama runtime registries, and secure virtual private network configurations.</p>
             <Link href="/startups/services/infrastructure" className="accent-link text-xs">View Infrastructure Service &rarr;</Link>
           </div>
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">Hiring &amp; Team Support</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">Hiring &amp; Team Support</h3>
             <p className="text-xs text-muted mb-3">Access DBERT Labs directory of 1,500+ vetted AI engineering fellows trained on real production codebases.</p>
             <Link href="/startups/services/hiring" className="accent-link text-xs">View Hiring Support &rarr;</Link>
           </div>
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">DBERT Chat Product</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">DBERT Chat Product</h3>
             <p className="text-xs text-muted mb-3">Deploy air-gapped conversational agent interfaces running over your proprietary operational database registers.</p>
             <Link href="/ai-solutions/products/dbert-chat" className="accent-link text-xs">View DBERT Chat &rarr;</Link>
           </div>

@@ -144,9 +144,9 @@ export default function LegalServicePage() {
         </h2>
         <div className="bento-grid-3">
           <div className="bento-card">
-            <h4 className="block-title font-mono text-sm uppercase text-white mb-2">
+            <h3 className="block-title font-mono text-sm uppercase text-white mb-2">
               1. Business Incorporation
-            </h4>
+            </h3>
             <p className="prose-sm text-muted">
               We assist with drafting strict MOA/AOA charter instruments, executing integrated SPICe+ MCA filings, securing DIN and DSC tokens, and registering local PAN and GST numbers.
             </p>
@@ -158,9 +158,9 @@ export default function LegalServicePage() {
           </div>
 
           <div className="bento-card">
-            <h4 className="block-title font-mono text-sm uppercase text-white mb-2">
+            <h3 className="block-title font-mono text-sm uppercase text-white mb-2">
               2. Statutory Benefit Registrations
-            </h4>
+            </h3>
             <p className="prose-sm text-muted">
               We navigate complex Government of India programs, executing DPIIT registration to secure official Startup India status, 3-year income tax holidays, and MSME Udyam benefits.
             </p>
@@ -172,9 +172,9 @@ export default function LegalServicePage() {
           </div>
 
           <div className="bento-card">
-            <h4 className="block-title font-mono text-sm uppercase text-white mb-2">
+            <h3 className="block-title font-mono text-sm uppercase text-white mb-2">
               3. AI Contract &amp; IP Drafting
-            </h4>
+            </h3>
             <p className="prose-sm text-muted">
               Protect your neural models and datasets. We draft explicit founder vesting agreements, employee NDAs, proprietary software licensing terms, and convertible SAFE structures.
             </p>
@@ -197,13 +197,13 @@ export default function LegalServicePage() {
 
         <div className="grid gap-6 md:grid-cols-2 my-4">
           <div className="card p-6 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-2">Cap Table Integrity Defense</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-2">Cap Table Integrity Defense</h3>
             <p className="text-xs text-muted">
               By enforcing clear equity cliff thresholds and milestone-contingent share issuances, we ensure your cap table remains clean, transparent, and institutionally investable throughout subsequent seed and Series A valuation rounds.
             </p>
           </div>
           <div className="card p-6 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-2">AI Dataset Copyright Compliance</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-2">AI Dataset Copyright Compliance</h3>
             <p className="text-xs text-muted">
               We conduct preemptive procedural reviews of your web data pipelines and open-source model licenses (MIT, Apache 2.0, Llama Community) to ensure your deployed conversational systems remain safe from copyright infringement litigation.
             </p>
@@ -291,17 +291,17 @@ export default function LegalServicePage() {
         <h2 className="section-title mb-4">Explore Complementary Venture Services</h2>
         <div className="grid gap-4 md:grid-cols-3">
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">Annotated Term Sheets</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">Annotated Term Sheets</h3>
             <p className="text-xs text-muted mb-3">Inspect detailed venture capital term sheet templates for Indian founders with clause-by-clause breakdowns.</p>
             <Link href="/startups/services/equity/term-sheets" className="accent-link text-xs">View Term Sheets &rarr;</Link>
           </div>
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">Equity-Based Incubation</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">Equity-Based Incubation</h3>
             <p className="text-xs text-muted mb-3">Learn how our bilateral software co-development model works—what we deliver, what we take, and what you keep.</p>
             <Link href="/startups/services/equity" className="accent-link text-xs">View Equity Incubation &rarr;</Link>
           </div>
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">Technical Architecture Build</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">Technical Architecture Build</h3>
             <p className="text-xs text-muted mb-3">Connect legal protection directly to production engineering squads writing code for your core AI product.</p>
             <Link href="/startups/services/technical" className="accent-link text-xs">View Technical Service &rarr;</Link>
           </div>

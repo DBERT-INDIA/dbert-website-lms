@@ -143,9 +143,9 @@ export default function ConsultationPage() {
         </h2>
         <div className="bento-grid-3">
           <div className="bento-card">
-            <h4 className="block-title font-mono text-sm uppercase text-white mb-2">
+            <h3 className="block-title font-mono text-sm uppercase text-white mb-2">
               1. Discovery &amp; Bottleneck Audit
-            </h4>
+            </h3>
             <p className="prose-sm text-muted">
               We dissect your active operational workflows to pinpoint high-yield artificial intelligence automation opportunities and compile rigorous financial ROI projections.
             </p>
@@ -157,9 +157,9 @@ export default function ConsultationPage() {
           </div>
 
           <div className="bento-card">
-            <h4 className="block-title font-mono text-sm uppercase text-white mb-2">
+            <h3 className="block-title font-mono text-sm uppercase text-white mb-2">
               2. System Architecture Blueprint
-            </h4>
+            </h3>
             <p className="prose-sm text-muted">
               We draft definitive schematics detailing semantic vector databases, reverse proxy rate limits, isolated subnet firewalls, and model serving container topologies.
             </p>
@@ -171,9 +171,9 @@ export default function ConsultationPage() {
           </div>
 
           <div className="bento-card">
-            <h4 className="block-title font-mono text-sm uppercase text-white mb-2">
+            <h3 className="block-title font-mono text-sm uppercase text-white mb-2">
               3. Pipeline Execution &amp; MLOps
-            </h4>
+            </h3>
             <p className="prose-sm text-muted">
               Our studio engineering squads build production integrations, configure containerized bare-metal GPU nodes, and execute simulated concurrent high-load tests.
             </p>
@@ -195,19 +195,20 @@ export default function ConsultationPage() {
         </p>
         <div className="grid gap-6 md:grid-cols-2 my-4">
           <div className="card p-6 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-2">Zero-Leakage Model Serving</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-2">Zero-Leakage Model Serving</h3>
             <p className="text-xs text-muted">
               We design air-gapped localized model inference architectures where sensitive business data never exits your Virtual Private Cloud. Open-weights models process documents completely inside private RAM, protecting corporate attorney-client privileges and customer confidentiality.
             </p>
           </div>
           <div className="card p-6 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-2">Ingress Rate-Limiting &amp; Proxy Shields</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-2">Ingress Rate-Limiting &amp; Proxy Shields</h3>
             <p className="text-xs text-muted">
               All client request endpoints reside behind containerized Nginx reverse proxies utilizing token bucket algorithms and SSL mutual TLS termination—preventing automated Distributed Denial-of-Service (DDoS) exploitation and unauthorized token consumption attacks.
             </p>
           </div>
         </div>
       </div>
+
 
       {/* Commercial Consulting Packages */}
       <div className="container pad-block border-t border-line">
@@ -288,17 +289,17 @@ export default function ConsultationPage() {
         <h2 className="section-title mb-4">Explore Complementary Capabilities</h2>
         <div className="grid gap-4 md:grid-cols-3">
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">Custom LLM Training</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">Custom LLM Training</h3>
             <p className="text-xs text-muted mb-3">Audit our 5-stage fine-tuning lifecycle and explore custom neural network weights compiled for enterprise domains.</p>
             <Link href="/ai-solutions/llm-training" className="accent-link text-xs">View Custom LLM Suite &rarr;</Link>
           </div>
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">Private Hardware Hosting</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">Private Hardware Hosting</h3>
             <p className="text-xs text-muted mb-3">Inspect our physical bare-metal hardware server arrays designed for sovereign AI operational secrecy.</p>
             <Link href="/ai-solutions/llm-training/private-hosting" className="accent-link text-xs">View Private Hosting &rarr;</Link>
           </div>
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">Cloud Infrastructure Service</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">Cloud Infrastructure Service</h3>
             <p className="text-xs text-muted mb-3">Deploy cost-optimized AWS and RunPod Virtual Private Clouds equipped with containerized pgvector clusters.</p>
             <Link href="/startups/services/infrastructure" className="accent-link text-xs">View Infrastructure Service &rarr;</Link>
           </div>

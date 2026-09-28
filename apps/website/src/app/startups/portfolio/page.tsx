@@ -74,7 +74,8 @@ export default function StartupsPortfolioPage() {
       {/* Startup Portfolio Grid (Secondary BG) */}
       <div className="section-band-lg">
         <div className="container">
-          <div className="doclabel mb-4">§ 02 — CO-DEVELOPED CASE STUDIES</div>
+          <div className="doclabel mb-2">§ 02 — CO-DEVELOPED CASE STUDIES</div>
+          <h2 className="section-title mb-6">Featured Startup Case Studies</h2>
           <div className="bento-grid-2">
             {startups.map((startup, idx) => (
               <div key={idx} className={`bento-card on-ink ${s.portfolioCard}`}>

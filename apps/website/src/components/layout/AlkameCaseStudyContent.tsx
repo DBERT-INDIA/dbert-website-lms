@@ -151,6 +151,7 @@ export default function AlkameCaseStudyContent() {
       </div>
 
       {/* Sticky jump-nav — stays visible while scrolling, highlights the active section */}
+      <h2 className="sr-only">Research Methodology &amp; System Architecture</h2>
       <AlkameJumpNav />
 
       {/* 01 — Research Question */}

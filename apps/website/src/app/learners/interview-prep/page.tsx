@@ -34,6 +34,7 @@ export default function InterviewPrepPage() {
       {/* Key Metrics Grid (Secondary BG) */}
       <div className="section-band">
         <div className="container">
+          <h2 className="sr-only">Key Preparation Tracks</h2>
           <div className="bento-grid-3">
             <div className="bento-card center">
               <span className="icon-chip"><Mic aria-hidden="true" /></span>

@@ -184,19 +184,19 @@ export default function SaaSProductsCatalogPage() {
 
           <div className="grid gap-6 md:grid-cols-3 my-6">
             <div className="card p-6 bg-card border border-line">
-              <h4 className="font-mono text-sm font-bold text-white mb-2">1. Dockerized Container Run-Times</h4>
+              <h3 className="font-mono text-sm font-bold text-white mb-2">1. Dockerized Container Run-Times</h3>
               <p className="text-xs text-muted leading-relaxed">
                 Applications ship as self-contained Docker images incorporating optimized vLLM or Ollama local inference engines, pre-configured Nginx reverse proxy gates, and strict rate-limiting token bucket protections.
               </p>
             </div>
             <div className="card p-6 bg-card border border-line">
-              <h4 className="font-mono text-sm font-bold text-white mb-2">2. Hardened Vector Stores</h4>
+              <h3 className="font-mono text-sm font-bold text-white mb-2">2. Hardened Vector Stores</h3>
               <p className="text-xs text-muted leading-relaxed">
                 Semantic retrieval operates on localized PostgreSQL relational database clusters natively equipped with the pgvector extension and Hierarchical Navigable Small World (HNSW) indexing—ensuring sub-100ms vector query execution.
               </p>
             </div>
             <div className="card p-6 bg-card border border-line">
-              <h4 className="font-mono text-sm font-bold text-white mb-2">3. Zero-Trust Access Zoning</h4>
+              <h3 className="font-mono text-sm font-bold text-white mb-2">3. Zero-Trust Access Zoning</h3>
               <p className="text-xs text-muted leading-relaxed">
                 Database storage volumes and GPU inference ports remain completely isolated within private network subnets, accessible strictly via SSH Bastion authentication gateways and mutual TLS encryption.
               </p>
@@ -219,17 +219,17 @@ export default function SaaSProductsCatalogPage() {
           <h2 className="text-2xl font-mono font-bold text-white mb-4">Explore Complementary Engineering Divisions</h2>
           <div className="grid gap-4 md:grid-cols-3">
             <div className="card p-4 bg-card border border-line">
-              <h4 className="font-mono text-sm font-bold text-white mb-1">Cloud &amp; AI Infrastructure</h4>
+              <h3 className="font-mono text-sm font-bold text-white mb-1">Cloud &amp; AI Infrastructure</h3>
               <p className="text-xs text-muted mb-3">Provision bare-metal GPU server clusters and design zero-trust Virtual Private Clouds for your enterprise.</p>
               <Link href="/startups/services/infrastructure" className="accent-link text-xs">View Infrastructure Service &rarr;</Link>
             </div>
             <div className="card p-4 bg-card border border-line">
-              <h4 className="font-mono text-sm font-bold text-white mb-1">AI Agent Course</h4>
+              <h3 className="font-mono text-sm font-bold text-white mb-1">AI Agent Course</h3>
               <p className="text-xs text-muted mb-3">Train your corporate software developers in constructing autonomous RAG workflows and local LangChain agents.</p>
               <Link href="/learners/courses/ai-agent-development" className="accent-link text-xs">Explore AI Agent Training &rarr;</Link>
             </div>
             <div className="card p-4 bg-card border border-line">
-              <h4 className="font-mono text-sm font-bold text-white mb-1">Venture Studio Incubation</h4>
+              <h3 className="font-mono text-sm font-bold text-white mb-1">Venture Studio Incubation</h3>
               <p className="text-xs text-muted mb-3">Embed our proprietary product modules natively into your startup architecture under a services-against-equity structure.</p>
               <Link href="/startups/services" className="accent-link text-xs">Explore Venture Studio &rarr;</Link>
             </div>

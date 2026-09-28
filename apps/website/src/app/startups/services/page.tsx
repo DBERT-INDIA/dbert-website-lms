@@ -253,17 +253,17 @@ export default function StartupServicesHubPage() {
             <h2 className="text-2xl font-mono font-bold text-white mb-4">Explore Complementary DBERT Divisions</h2>
             <div className="grid gap-4 md:grid-cols-3">
               <div className="card p-4 bg-card border border-line">
-                <h4 className="font-mono text-sm font-bold text-white mb-1">Industrial AI Training</h4>
+                <h3 className="font-mono text-sm font-bold text-white mb-1">Industrial AI Training</h3>
                 <p className="text-xs text-muted mb-3">Explore our core apprentice training cohorts where engineers construct production RAG and LLM infrastructures.</p>
                 <Link href="/learners" className="accent-link text-xs">Explore Learners Hub &rarr;</Link>
               </div>
               <div className="card p-4 bg-card border border-line">
-                <h4 className="font-mono text-sm font-bold text-white mb-1">Commercial AI Solutions</h4>
+                <h3 className="font-mono text-sm font-bold text-white mb-1">Commercial AI Solutions</h3>
                 <p className="text-xs text-muted mb-3">Deploy air-gapped enterprise product tools including DBERT Chat, Document AI, and Hiring Automation Suite.</p>
                 <Link href="/ai-solutions/products" className="accent-link text-xs">View Products Suite &rarr;</Link>
               </div>
               <div className="card p-4 bg-card border border-line">
-                <h4 className="font-mono text-sm font-bold text-white mb-1">Private LLM Hosting</h4>
+                <h3 className="font-mono text-sm font-bold text-white mb-1">Private LLM Hosting</h3>
                 <p className="text-xs text-muted mb-3">Inspect physical bare-metal hardware enterprise arrays designed for mathematical customer operational secrecy.</p>
                 <Link href="/ai-solutions/llm-training/private-hosting" className="accent-link text-xs">View Private Hosting &rarr;</Link>
               </div>

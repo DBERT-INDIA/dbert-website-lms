@@ -96,6 +96,10 @@ export default function AIConsultantPage() {
       {/* Services Grid */}
       <div className="section-band" id="services-overview">
         <div className="container">
+          <div className="section-head text-center mb-8">
+            <div className="doclabel justify-center">§ 02 — SPECIALIZED ARCHITECTURE TRACKS</div>
+            <h2>Core Engineering Capabilities</h2>
+          </div>
           <div className="bento-grid-3">
             <div className="card card-lift text-center p-6">
               <span className="icon-chip"><Database aria-hidden="true" /></span>

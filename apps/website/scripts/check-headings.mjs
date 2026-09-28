@@ -23,7 +23,24 @@ console.log(`Auditing heading hierarchy across ${pageFiles.length} pages...`);
 const headingReports = [];
 
 for (const file of pageFiles) {
-  const content = readFileSync(file, 'utf8');
+  let content = readFileSync(file, 'utf8');
+  if (content.includes('ProgramDetailTemplate')) {
+    try {
+      content += '\n' + readFileSync('src/components/layout/ProgramDetailTemplate.tsx', 'utf8');
+    } catch {}
+  } else if (content.includes('CaseStudyTemplate')) {
+    try {
+      content += '\n' + readFileSync('src/components/layout/CaseStudyTemplate.tsx', 'utf8');
+    } catch {}
+  } else if (content.includes('AlkameCaseStudyContent')) {
+    try {
+      content += '\n' + readFileSync('src/components/layout/AlkameCaseStudyContent.tsx', 'utf8');
+    } catch {}
+  } else if (content.includes('LaunchpadDomainView')) {
+    try {
+      content += '\n' + readFileSync('src/components/layout/ProgramDetailTemplate.tsx', 'utf8');
+    } catch {}
+  }
   
   // Find all headings
   const headings = [...content.matchAll(/<(h[1-6])([^>]*)>([\s\S]*?)<\/\1>/gi)].map(m => ({
@@ -69,5 +86,6 @@ if (multipleH1s.length > 0) {
 }
 if (skippedLevels.length > 0) {
   console.log(`\nPages with skipped heading levels:`);
-  skippedLevels.slice(0, 10).forEach(p => console.log(`  ⚠ ${p.file}: ${p.skips.join(', ')}`));
+  skippedLevels.forEach(p => console.log(`  ⚠ ${p.file}: ${p.skips.join(', ')}`));
 }
+

@@ -191,13 +191,13 @@ export default function DBERTAIModelPage() {
         </p>
         <div className="grid gap-6 md:grid-cols-2 my-4">
           <div className="card p-6 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-2">Memory Sandboxing &amp; Container Isolation</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-2">Memory Sandboxing &amp; Container Isolation</h3>
             <p className="text-xs text-muted">
               When executing DBERT_AI via Ollama or vLLM container runtimes, inference ports operate within restricted Linux namespace boundaries. Even during intense high-load concurrent queries, host system registers remain mathematically isolated from container memory buffers.
             </p>
           </div>
           <div className="card p-6 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-2">Zero External Telemetry Pingbacks</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-2">Zero External Telemetry Pingbacks</h3>
             <p className="text-xs text-muted">
               Unlike commercial desktop applications and API wrappers that silently transmit usage telemetry back to cloud vendors, DBERT_AI is 100% self-contained. Your confidential corporate queries and retrieved vector embeddings remain sealed inside your local hardware array.
             </p>
@@ -273,17 +273,17 @@ export default function DBERTAIModelPage() {
         <h2 className="section-title mb-4">Explore Complementary Capabilities</h2>
         <div className="grid gap-4 md:grid-cols-3">
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">5-Stage Training Pipeline</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">5-Stage Training Pipeline</h3>
             <p className="text-xs text-muted mb-3">Audit the exact data sanitization, instruction formatting, and quantization lifecycle used to engineer DBERT_AI.</p>
             <Link href="/ai-solutions/llm-training/pipeline" className="accent-link text-xs">View Training Pipeline &rarr;</Link>
           </div>
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">Private Bare-Metal Hosting</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">Private Bare-Metal Hosting</h3>
             <p className="text-xs text-muted mb-3">Learn about our high-availability hardware server racks and zero-trust VPC environments designed for local models.</p>
             <Link href="/ai-solutions/llm-training/private-hosting" className="accent-link text-xs">View Hardware Hosting &rarr;</Link>
           </div>
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">Python Automation Training</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">Python Automation Training</h3>
             <p className="text-xs text-muted mb-3">Master foundational Linux terminal scripts, Python syntax, and Ollama execution registries in our Launchpad program.</p>
             <Link href="/learners/courses/python-automation" className="accent-link text-xs">Explore Python Course &rarr;</Link>
           </div>

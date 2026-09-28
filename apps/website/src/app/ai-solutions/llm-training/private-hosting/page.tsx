@@ -84,6 +84,7 @@ export default function PrivateHostingPage() {
       {/* Key Metrics Grid (Secondary BG) */}
       <div className="section-band">
         <div className="container">
+          <h2 className="sr-only">Key Hosting Architecture Highlights</h2>
           <div className="bento-grid-3">
             <div className="bento-card center">
               <span className="icon-chip"><Cloud aria-hidden="true" /></span>

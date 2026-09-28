@@ -35,6 +35,12 @@ export default function AivaraCohortLandingPage() {
           <AivaraApplySection />
         </div>
 
+        {/* Section Heading for Pillars */}
+        <div className="section-head text-center my-8">
+          <div className="doclabel justify-center">§ 03 — COHORT PILLARS &amp; FORMAT</div>
+          <h2>Key Internship Benefits &amp; Structure</h2>
+        </div>
+
         {/* 6 Key Internship Pillar Cards */}
         <div className={styles.highlightsGrid}>
           {/* 1. 100% Remote */}
@@ -102,17 +108,17 @@ export default function AivaraCohortLandingPage() {
         <div className={styles.reqBanner}>
           <div className={styles.reqItem}>
             <Laptop size={22} className={styles.reqIcon} />
-            <h4>Working Personal Laptop</h4>
+            <h3>Working Personal Laptop</h3>
             <p>Any modern 64-bit OS with Git &amp; VS Code installed</p>
           </div>
           <div className={styles.reqItem}>
             <Wifi size={22} className={styles.reqIcon} />
-            <h4>Stable Internet Access</h4>
+            <h3>Stable Internet Access</h3>
             <p>For Git commits, documentation sync, and squad huddles</p>
           </div>
           <div className={styles.reqItem}>
             <Clock size={22} className={styles.reqIcon} />
-            <h4>10 Hours / Week Minimum</h4>
+            <h3>10 Hours / Week Minimum</h3>
             <p>Self-scheduled participation over 7 operational days</p>
           </div>
         </div>

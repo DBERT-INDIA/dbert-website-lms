@@ -96,6 +96,10 @@ export default function HirePreVettedEngineersPage() {
       {/* Key Metrics Grid */}
       <div className="section-band">
         <div className="container">
+          <div className="section-head text-center mb-8">
+            <div className="doclabel justify-center">§ 02 — VETTING CRITERIA &amp; PROCESS</div>
+            <h2>Industrial Vetting Standards</h2>
+          </div>
           <div className="bento-grid-3">
             <div className="card card-lift text-center p-6">
               <span className="icon-chip"><UserCheck aria-hidden="true" /></span>

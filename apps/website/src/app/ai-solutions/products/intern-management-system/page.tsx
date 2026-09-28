@@ -180,13 +180,13 @@ export default function InternManagementPage() {
 
         <div className="grid gap-6 md:grid-cols-2 my-4">
           <div className="card p-6 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-2">Multi-Tenant Data Isolation</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-2">Multi-Tenant Data Isolation</h3>
             <p className="text-xs text-muted">
               Whether deployed for a single Indian technical university or a corporate training conglomerate, student identities and code review logs are strictly partitioned using schema-level tenant indexing, preventing cross-organization data leakage.
             </p>
           </div>
           <div className="card p-6 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-2">Cryptographic Audit Trails</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-2">Cryptographic Audit Trails</h3>
             <p className="text-xs text-muted">
               Every mentor approval, score alteration, and certificate issuance triggers an immutable log entry stored within encrypted audit tables. This guarantees total transparency during statutory MSME or educational accreditation reviews.
             </p>
@@ -276,17 +276,17 @@ export default function InternManagementPage() {
         <h2 className="section-title mb-4">Explore Complementary DBERT Platforms</h2>
         <div className="grid gap-4 md:grid-cols-3">
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">Certificate Verification API</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">Certificate Verification API</h3>
             <p className="text-xs text-muted mb-3">Enable recruiters to instantly evaluate issued internship completion diplomas and LOR serial IDs.</p>
             <Link href="/ai-solutions/products/certificate-verification-api" className="accent-link text-xs">View Verification API &rarr;</Link>
           </div>
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">Hiring Automation Suite</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">Hiring Automation Suite</h3>
             <p className="text-xs text-muted mb-3">Streamline technical talent acquisition by auditing Git repositories and running automated resume scoring.</p>
             <Link href="/ai-solutions/products/hiring-automation-suite" className="accent-link text-xs">View Hiring Suite &rarr;</Link>
           </div>
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">DBERT Chat Console</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">DBERT Chat Console</h3>
             <p className="text-xs text-muted mb-3">Deploy secure RAG AI assistants over technical training documentation and enterprise Git codebases.</p>
             <Link href="/ai-solutions/products/dbert-chat" className="accent-link text-xs">View DBERT Chat &rarr;</Link>
           </div>

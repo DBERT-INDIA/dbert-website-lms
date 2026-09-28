@@ -198,13 +198,13 @@ export default function DocumentAIPage() {
 
         <div className="grid gap-6 md:grid-cols-2 my-4">
           <div className="card p-6 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-2">Volatile Memory Sandboxing</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-2">Volatile Memory Sandboxing</h3>
             <p className="text-xs text-muted">
               Invoices and contracts are parsed within ephemeral RAM sandboxes. Once extracted schema values are acknowledged by your client server via webhook, temporary processing images are purged from operational buffers immediately.
             </p>
           </div>
           <div className="card p-6 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-2">Air-Gapped On-Premise Execution</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-2">Air-Gapped On-Premise Execution</h3>
             <p className="text-xs text-muted">
               For financial auditors and government compliance operations, Document AI can be instantiated wholly entirely offline within your localized Docker or Kubernetes clusters, guaranteeing zero public cloud exposure.
             </p>
@@ -294,17 +294,17 @@ export default function DocumentAIPage() {
         <h2 className="section-title mb-4">Explore Complementary DBERT Platforms</h2>
         <div className="grid gap-4 md:grid-cols-3">
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">DBERT Chat Console</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">DBERT Chat Console</h3>
             <p className="text-xs text-muted mb-3">Deploy conversational chat interfaces over extracted corporate document archives with pgvector RAG.</p>
             <Link href="/ai-solutions/products/dbert-chat" className="accent-link text-xs">View DBERT Chat &rarr;</Link>
           </div>
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">Certificate Verification API</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">Certificate Verification API</h3>
             <p className="text-xs text-muted mb-3">Cryptographically check employee completion credentials and training diplomas via ultra-fast API.</p>
             <Link href="/ai-solutions/products/certificate-verification-api" className="accent-link text-xs">View Verification API &rarr;</Link>
           </div>
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">Technical Architecture Review</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">Technical Architecture Review</h3>
             <p className="text-xs text-muted mb-3">Audit startup technology stacks, codebase repositories, and architectural debt before venture rounds.</p>
             <Link href="/startups/services/technical" className="accent-link text-xs">View Technical Services &rarr;</Link>
           </div>

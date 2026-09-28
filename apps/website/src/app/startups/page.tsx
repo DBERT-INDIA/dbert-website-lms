@@ -98,6 +98,7 @@ export default function StartupsLandingPage() {
         {/* Honest Disclosure / Operational Thesis Section */}
         <section className={s.section}>
           <div className="doclabel mb-2">§ 02 — HONEST DISCLOSURE: WHO THIS IS FOR (AND NOT FOR)</div>
+          <h2 className="section-title mb-4">Incubation Eligibility &amp; Selection Criteria</h2>
           <div className="grid gap-6 md:grid-cols-2">
             <div className="card border-l-4 border-emerald-500">
               <h3 className="card-heading-lg mb-2 text-emerald-400">Who Incubation Is Built For:</h3>

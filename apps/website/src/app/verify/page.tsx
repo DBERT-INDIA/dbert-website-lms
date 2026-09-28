@@ -86,7 +86,7 @@ export default function CertificateVerifyPage() {
 
         {result && (
           <div className={`card card-lift ${s.validCard}`}>
-            <h3 className={s.validTitle}>Valid Certificate</h3>
+            <h2 className={s.validTitle}>Valid Certificate</h2>
             <div className={s.details}>
               <div><strong>Holder:</strong> {result.holderName}</div>
               <div><strong>Program:</strong> {result.programName}</div>

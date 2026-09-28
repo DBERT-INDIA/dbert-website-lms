@@ -144,9 +144,9 @@ export default function EquityServicePage() {
         </h2>
         <div className="bento-grid-3">
           <div className="bento-card">
-            <h4 className="block-title font-mono text-sm uppercase text-white mb-2">
+            <h3 className="block-title font-mono text-sm uppercase text-white mb-2">
               1. Full-Stack AI MVP Development
-            </h4>
+            </h3>
             <p className="prose-sm text-muted">
               Our dedicated software squads architect your primary production features—developing clean modern dashboards, establishing relational databases, and writing custom AI logic.
             </p>
@@ -158,9 +158,9 @@ export default function EquityServicePage() {
           </div>
 
           <div className="bento-card">
-            <h4 className="block-title font-mono text-sm uppercase text-white mb-2">
+            <h3 className="block-title font-mono text-sm uppercase text-white mb-2">
               2. Hardened Legal Protections
-            </h4>
+            </h3>
             <p className="prose-sm text-muted">
               We eliminate legal ambiguity. Our incubation packages incorporate transparent standardized agreements, milestone-backed vesting schedules, and 100% IP transfer covenants.
             </p>
@@ -172,9 +172,9 @@ export default function EquityServicePage() {
           </div>
 
           <div className="bento-card">
-            <h4 className="block-title font-mono text-sm uppercase text-white mb-2">
+            <h3 className="block-title font-mono text-sm uppercase text-white mb-2">
               3. Post-Launch MLOps Scaling
-            </h4>
+            </h3>
             <p className="prose-sm text-muted">
               We stand by our code post-launch. For 90 days after going live, DBERT system engineers monitor runtime containers, tune database queries, and manage infrastructure capacity.
             </p>
@@ -197,13 +197,13 @@ export default function EquityServicePage() {
 
         <div className="grid gap-6 md:grid-cols-2 my-4">
           <div className="card p-6 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-2">Codebase Continuity Assurance</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-2">Codebase Continuity Assurance</h3>
             <p className="text-xs text-muted">
               Every feature is documented within exhaustive Git README logs, architectural ADR diagrams, and structured modular folders. If you later hire full-time internal engineering leads, handoff execution occurs without operational friction.
             </p>
           </div>
           <div className="card p-6 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-2">Milestone Performance Locks</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-2">Milestone Performance Locks</h3>
             <p className="text-xs text-muted">
               Our equity entitlement remains legally linked to verifiable deployment milestones. You do not cede unreserved equity upfront; our ownership vests precisely as we deploy functional software features to production servers.
             </p>
@@ -291,17 +291,17 @@ export default function EquityServicePage() {
         <h2 className="section-title mb-4">Explore Complementary Venture Services</h2>
         <div className="grid gap-4 md:grid-cols-3">
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">Annotated Term Sheets</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">Annotated Term Sheets</h3>
             <p className="text-xs text-muted mb-3">Review annotated legal term sheet templates with plain-language clause breakdowns for Indian startup founders.</p>
             <Link href="/startups/services/equity/term-sheets" className="accent-link text-xs">View Term Sheets &rarr;</Link>
           </div>
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">Funding Readiness &amp; Grants</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">Funding Readiness &amp; Grants</h3>
             <p className="text-xs text-muted mb-3">Access DBERT micro-grants ranging up to ₹5,00,000 to offset server costs and connect with active tech angel networks.</p>
             <Link href="/startups/services/funding" className="accent-link text-xs">View Funding Support &rarr;</Link>
           </div>
           <div className="card p-4 bg-card border border-line">
-            <h4 className="font-mono text-sm font-bold text-white mb-1">Hiring &amp; Alignment Sprints</h4>
+            <h3 className="font-mono text-sm font-bold text-white mb-1">Hiring &amp; Alignment Sprints</h3>
             <p className="text-xs text-muted mb-3">Filter our directory of 1,500+ DBERT learners and execute 15-day technical alignment sprints before making formal team hires.</p>
             <Link href="/startups/services/hiring" className="accent-link text-xs">View Hiring Support &rarr;</Link>
           </div>
