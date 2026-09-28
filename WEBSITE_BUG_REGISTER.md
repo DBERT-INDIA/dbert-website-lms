@@ -47,8 +47,7 @@
 - **Planned Fix**:
   - Shorten string to 148–152 characters while retaining the primary keyword `"hire pre-vetted AI engineers India"`.
   - Example candidate: `"Hire pre-vetted AI, Full Stack, and Data engineers evaluated through live code reviews and system benchmarks. Onboard proven tech talent in 48 hours."` (151 chars).
-- **Target Phase**: Phase 0 / Phase 1 baseline fix.
-- **Status**: OPEN.
+- **Status**: RESOLVED (Fixed in Phase 1: description shortened to 151 chars; 100% passes `npm run check:seo`).
 
 ---
 

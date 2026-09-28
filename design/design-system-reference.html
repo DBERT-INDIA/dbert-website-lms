@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DBERT Studio Console — Design System Reference (v2.2)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;700&family=Caveat:wght@600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Surface Hierarchy */
+      --surface-base: #06090F;
+      --surface-raised: #0B101A;
+      --surface-card: #0F1523;
+      --surface-card-hover: #141C2E;
+      --surface-overlay: rgba(6, 9, 15, 0.85);
+
+      --ink: var(--surface-base);
+      --raise: var(--surface-raised);
+      --card: var(--surface-card);
+      --card-hi: var(--surface-card-hover);
+
+      /* Borders */
+      --border-subtle: rgba(148, 163, 196, .12);
+      --border-strong: rgba(148, 163, 196, .22);
+      --border-focus: #5B8CFF;
+      --line: var(--border-subtle);
+      --line-strong: var(--border-strong);
+
+      /* Accents & Brand Signals */
+      --accent: #5B8CFF;
+      --accent-soft: rgba(91, 140, 255, .12);
+      --signal: #FFB454;
+      --ok: #34D399;
+      --err: #E07A5F;
+
+      /* Typography & Contrast */
+      --text-primary: #EEF2FA;
+      --text-secondary: #D1D9E6;
+      --text-muted: #93A0B8;
+      --text-faint: #7A726A;
+      --text-on-accent: #05070C;
+
+      --text: var(--text-primary);
+      --muted: var(--text-muted);
+      --faint: var(--text-faint);
+
+      /* Font Families */
+      --font-d: 'Bricolage Grotesque', sans-serif;
+      --font-b: 'Inter', sans-serif;
+      --font-m: 'JetBrains Mono', monospace;
+      --font-h: 'Caveat', cursive; /* Protected Handcrafted Signature */
+
+      --r-sm: 8px;
+      --r-md: 14px;
+      --r-lg: 20px;
+      --ease: cubic-bezier(.22, 1, .36, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--surface-base);
+      color: var(--text-primary);
+      font-family: var(--font-b);
+      line-height: 1.6;
+      padding: 48px 24px;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    /* Blueprint grid */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(148, 163, 196, .03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148, 163, 196, .03) 1px, transparent 1px);
+      background-size: 56px 56px;
+      mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, #000 30%, transparent 75%);
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    header {
+      margin-bottom: 48px;
+      border-bottom: 1px solid var(--border-strong);
+      padding-bottom: 24px;
+    }
+
+    .eyebrow {
+      font-family: var(--font-m);
+      font-size: 0.78rem;
+      color: var(--accent);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      font-family: var(--font-d);
+      font-size: 2.8rem;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+      color: var(--text-primary);
+    }
+
+    .lead {
+      color: var(--text-secondary);
+      font-size: 1.15rem;
+      max-width: 720px;
+    }
+
+    section {
+      margin-bottom: 48px;
+    }
+
+    .section-title {
+      font-family: var(--font-d);
+      font-size: 1.6rem;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .grid-surfaces {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    .surface-swatch {
+      padding: 24px;
+      border-radius: var(--r-md);
+      border: 1px solid var(--border-subtle);
+    }
+
+    .swatch-title {
+      font-family: var(--font-m);
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .swatch-hex {
+      font-family: var(--font-m);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* Handcrafted Signature UI Elements */
+    .handnote {
+      font-family: var(--font-h);
+      font-size: 1.35rem;
+      color: var(--signal);
+      line-height: 1.2;
+      transform: rotate(-2.5deg);
+      display: inline-block;
+    }
+    .handnote.blue { color: #8FB2FF; }
+
+    .marker { position: relative; white-space: nowrap; }
+    .marker svg {
+      position: absolute;
+      left: -2%;
+      bottom: -.16em;
+      width: 104%;
+      height: .34em;
+      overflow: visible;
+    }
+    .marker svg path {
+      fill: none;
+      stroke: var(--signal);
+      stroke-width: 5;
+      stroke-linecap: round;
+      stroke-dasharray: 1000;
+      stroke-dashoffset: 1000;
+      animation: draw 1.1s var(--ease) .55s forwards;
+    }
+    @keyframes draw { to { stroke-dashoffset: 0; } }
+
+    .hl-swipe {
+      background: linear-gradient(104deg, transparent .6%, rgba(255, 180, 84, .26) 2.4%, rgba(255, 180, 84, .22) 97%, transparent 98%);
+      padding: 0 .15em;
+      border-radius: 2px;
+      color: var(--text-primary);
+    }
+
+    .redline-del {
+      text-decoration: line-through;
+      text-decoration-color: var(--err);
+      text-decoration-thickness: 2px;
+      color: var(--text-faint);
+    }
+
+    .proof-mark {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-family: var(--font-m);
+      font-size: 0.76rem;
+      padding: 3px 10px;
+      border-radius: var(--r-sm);
+      background: rgba(52, 211, 153, 0.08);
+      border: 1px solid rgba(52, 211, 153, 0.3);
+      color: var(--ok);
+    }
+
+    .proof-mark-signal {
+      background: rgba(255, 180, 84, 0.08);
+      border: 1px solid rgba(255, 180, 84, 0.3);
+      color: var(--signal);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-weight: 600;
+      font-size: 0.92rem;
+      padding: 13px 26px;
+      border-radius: var(--r-sm);
+      border: 1px solid transparent;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.25s var(--ease);
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: var(--text-on-accent);
+      border-color: var(--accent);
+    }
+    .btn-primary:hover {
+      background: #7CA3FF;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(91, 140, 255, 0.28);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text-primary);
+      border-color: var(--border-strong);
+    }
+    .btn-outline:hover {
+      border-color: var(--text-primary);
+      background: var(--surface-card-hover);
+    }
+
+    .card {
+      background: var(--surface-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--r-md);
+      padding: 28px;
+      position: relative;
+    }
+
+    .card-lift {
+      transition: transform 320ms var(--ease), border-color 320ms var(--ease), box-shadow 320ms var(--ease);
+    }
+    .card-lift:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-strong);
+      box-shadow: 0 16px 36px -10px rgba(0, 0, 0, 0.45);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="eyebrow">DBERT Design System Specification — v2.2</div>
+      <h1>The Studio Console</h1>
+      <p class="lead">Single source of truth for semantic surface tokens, high-contrast typography, and handcrafted signature elements. All artisanal accents are permanent brand invariants.</p>
+    </header>
+
+    <!-- 1. Surfaces -->
+    <section>
+      <h2 class="section-title">1. Surface Hierarchy</h2>
+      <div class="grid-surfaces">
+        <div class="surface-swatch" style="background: var(--surface-base);">
+          <div class="swatch-title">--surface-base</div>
+          <div class="swatch-hex">#06090F (Base canvas)</div>
+        </div>
+        <div class="surface-swatch" style="background: var(--surface-raised);">
+          <div class="swatch-title">--surface-raised</div>
+          <div class="swatch-hex">#0B101A (Elevation 1)</div>
+        </div>
+        <div class="surface-swatch" style="background: var(--surface-card);">
+          <div class="swatch-title">--surface-card</div>
+          <div class="swatch-hex">#0F1523 (Elevation 2)</div>
+        </div>
+        <div class="surface-swatch" style="background: var(--surface-card-hover);">
+          <div class="swatch-title">--surface-card-hover</div>
+          <div class="swatch-hex">#141C2E (Elevation 3)</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Typography & Contrast -->
+    <section>
+      <h2 class="section-title">2. Typography & Contrast Hierarchy</h2>
+      <div class="card" style="display: flex; flex-direction: column; gap: 16px;">
+        <div style="color: var(--text-primary); font-family: var(--font-d); font-size: 1.8rem; font-weight: 700;">
+          --text-primary: Display Title (#EEF2FA)
+        </div>
+        <div style="color: var(--text-secondary); font-size: 1.05rem;">
+          --text-secondary: High-readability body copy (#D1D9E6). Solves dark-on-dark contrast failure on cards.
+        </div>
+        <div style="color: var(--text-muted); font-size: 0.95rem;">
+          --text-muted: Descriptive supporting paragraph and subtitle text (#93A0B8).
+        </div>
+        <div style="color: var(--text-faint); font-family: var(--font-m); font-size: 0.82rem;">
+          --text-faint: Technical timestamps, git commit metadata, and rev numbers (#7A726A).
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Handcrafted Signature UI Elements -->
+    <section>
+      <h2 class="section-title">3. Handcrafted Signature UI Elements (Protected Invariants)</h2>
+      <div class="card" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; align-items: start;">
+        <div>
+          <div class="swatch-title" style="margin-bottom: 12px;">Handwritten Margin Notes (Caveat)</div>
+          <p style="margin-bottom: 8px;">Studio Live Terminal: <span class="handnote">this is our actual day ✍</span></p>
+          <p>Learner Progression: <span class="handnote blue">structured progression ↗</span></p>
+        </div>
+
+        <div>
+          <div class="swatch-title" style="margin-bottom: 12px;">Marker Underline & Swipe</div>
+          <p style="margin-bottom: 12px;">We ship <span class="marker">production-ready AI<svg><path d="M0 8 Q 50 2, 100 8" /></svg></span> to VPC.</p>
+          <p>Verified <span class="hl-swipe">zero cash burn</span> incubation.</p>
+        </div>
+
+        <div>
+          <div class="swatch-title" style="margin-bottom: 12px;">Proof Marks & Redline Strike</div>
+          <p style="margin-bottom: 10px;"><span class="redline-del">legacy agency model</span></p>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <span class="proof-mark">✓ 42 TESTS PASSED</span>
+            <span class="proof-mark proof-mark-signal">⚡ LIVE TELEMETRY</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Interactive Components -->
+    <section>
+      <h2 class="section-title">4. Standard Button & Card Primitives</h2>
+      <div class="card card-lift" style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
+        <a href="#" class="btn btn-primary">Primary CTA (Apply for Incubation)</a>
+        <a href="#" class="btn btn-outline">Secondary CTA (Browse Products)</a>
+        <span class="handnote" style="margin-left: auto;">hover card to test elevation lift</span>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

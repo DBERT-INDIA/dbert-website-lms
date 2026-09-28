@@ -414,7 +414,7 @@ export const seoConfig: Record<string, SeoEntry> = {
     keyword: 'hire pre-vetted AI engineers India',
     title: 'Hire Pre-Vetted AI & Full Stack Engineers',
     description:
-      'Hire pre-vetted AI, Full Stack, and Data engineers evaluated through live code reviews and system architecture benchmarks. Onboard proven talent in 48 hours.',
+      'Hire pre-vetted AI, Full Stack, and Data engineers evaluated through live code reviews and system benchmarks. Onboard proven tech talent in 48 hours.',
   },
   '/ai-consultant': {
     keyword: 'enterprise AI strategy consultant',

@@ -18,28 +18,50 @@
    which is why there is no @import url(...) at the top of this file.
    ═══════════════════════════════════════════════════════════ */
 
-/* ── 1. Design tokens (v2) ─────────────────── */
+/* ── 1. Design tokens (v2.2 Semantic Architecture) ─────────── */
 :root {
-  --ink: #06090F;
-  --raise: #0B101A;
-  --card: #0F1523;
-  --card-hi: #141C2E;
-  --line: rgba(148, 163, 196, .12);
-  --line-strong: rgba(148, 163, 196, .22);
+  /* Surface Hierarchy */
+  --surface-base: #06090F;
+  --surface-raised: #0B101A;
+  --surface-card: #0F1523;
+  --surface-card-hover: #141C2E;
+  --surface-overlay: rgba(6, 9, 15, 0.85);
+
+  /* Legacy base aliases preserved for backward compatibility */
+  --ink: var(--surface-base);
+  --raise: var(--surface-raised);
+  --card: var(--surface-card);
+  --card-hi: var(--surface-card-hover);
+
+  /* Lines & Borders */
+  --border-subtle: rgba(148, 163, 196, .12);
+  --border-strong: rgba(148, 163, 196, .22);
+  --border-focus: #5B8CFF;
+  --line: var(--border-subtle);
+  --line-strong: var(--border-strong);
+
+  /* Accents & Brand Signals */
   --accent: #5B8CFF;
   --accent-soft: rgba(91, 140, 255, .12);
   --signal: #FFB454;
   --ok: #34D399;
-  --text: #EEF2FA;
-  --muted: #93A0B8;
-  --faint: #7A726A;
   --err: #E07A5F;
 
-  /* next/font supplies the --font-*-src variables from layout.tsx */
+  /* Typography & Foreground Contrast Hierarchy */
+  --text-primary: #EEF2FA;
+  --text-secondary: #D1D9E6;
+  --text-muted: #93A0B8;
+  --text-faint: #7A726A;
+  --text-on-accent: #05070C;
+  --text: var(--text-primary);
+  --muted: var(--text-muted);
+  --faint: var(--text-faint);
+
+  /* Font Families (next/font supplies the --font-*-src variables from layout.tsx) */
   --font-d: var(--font-bricolage-src), 'Bricolage Grotesque', sans-serif;
   --font-b: var(--font-inter-src), 'Inter', sans-serif;
   --font-m: var(--font-jetbrains-src), 'JetBrains Mono', monospace;
-  --font-h: var(--font-caveat-src), 'Caveat', cursive;
+  --font-h: var(--font-caveat-src), 'Caveat', cursive; /* Protected Handcrafted Signature */
 
   --max: 1200px;
   --r-sm: 8px;
@@ -47,8 +69,7 @@
   --r-lg: 20px;
   --ease: cubic-bezier(.22, 1, .36, 1);
 
-  /* 8px spacing scale. Not part of the deleted v1 alias layer — this is the
-     live scale every module is written against. */
+  /* 8px spacing scale */
   --space-1: 8px;
   --space-2: 16px;
   --space-3: 24px;
