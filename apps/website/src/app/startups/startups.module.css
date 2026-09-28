@@ -44,31 +44,36 @@
   min-width: 600px;
   border-collapse: collapse;
   text-align: left;
-  background-color: var(--ink);
-  border: 1px solid var(--line);
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-md);
+  overflow: hidden;
 }
 
 .compareTable thead tr {
-  background-color: var(--raise);
-  border-bottom: 1px solid var(--line);
+  background-color: var(--surface-raised);
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 .compareTable th {
   padding: 16px;
   font-weight: 600;
+  color: var(--text-primary);
 }
 
 .compareTable td {
   padding: 16px;
+  color: var(--text-secondary);
 }
 
 .compareTable td:first-child {
   font-weight: 500;
+  color: var(--text-primary);
 }
 
 /* The final row is borderless, as it sits on the table's own border. */
 .compareTable tbody tr:not(:last-child) {
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 .colAccent {
@@ -76,7 +81,7 @@
 }
 
 .colMuted {
-  color: var(--muted);
+  color: var(--text-muted);
 }
 
 /* ── Product cards ────────────────────────── */
@@ -91,17 +96,29 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  border: 1px solid var(--line);
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-md);
+  padding: var(--space-5);
+  transition: all 0.2s ease;
+}
+
+.productCard:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-2px);
 }
 
 .productTitle {
   font-family: var(--font-d);
+  color: var(--text-primary);
+  font-size: 1.15rem;
   margin-bottom: 8px;
 }
 
 .productDesc {
   font-size: .88rem;
-  color: var(--muted);
+  color: var(--text-secondary);
+  line-height: 1.55;
   margin-bottom: var(--space-3);
 }
 
@@ -122,7 +139,15 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-md);
   padding: var(--space-6);
+  transition: all 0.2s ease;
+}
+
+.portfolioCard:hover {
+  border-color: var(--border-strong);
 }
 
 .portfolioTop {
@@ -141,6 +166,7 @@
 .portfolioName {
   font-family: var(--font-d);
   font-size: 1.6rem;
+  color: var(--text-primary);
   margin: 8px 0;
 }
 
@@ -153,13 +179,14 @@
 
 .factLabel {
   font-size: .85rem;
-  color: var(--text);
+  color: var(--text-primary);
+  font-weight: 600;
 }
 
 .factBody {
   font-size: .88rem;
-  color: var(--muted);
-  line-height: 1.5;
+  color: var(--text-secondary);
+  line-height: 1.55;
   margin-top: 2px;
 }
 
@@ -218,12 +245,14 @@
 }
 
 .formCard {
-  border: 1px solid var(--line);
-  background-color: var(--raise);
+  border: 1px solid var(--border-subtle);
+  background-color: var(--surface-raised);
+  border-radius: var(--r-md);
+  padding: var(--space-6);
 }
 
 .formCardCopy {
-  color: var(--muted);
+  color: var(--text-secondary);
   font-size: .9rem;
   margin-bottom: var(--space-4);
 }
@@ -267,13 +296,15 @@
 }
 
 .downloadCard {
-  border: 1px solid var(--line);
+  border: 1px solid var(--border-subtle);
+  background-color: var(--surface-card);
+  border-radius: var(--r-md);
   text-align: center;
   padding: var(--space-8);
 }
 
 .downloadCopy {
-  color: var(--muted);
+  color: var(--text-secondary);
   margin-bottom: var(--space-4);
 }
 
@@ -287,13 +318,14 @@
 
 .ctaCard {
   text-align: center;
-  padding: var(--space-6);
-  background-color: var(--raise);
-  border: 1px solid var(--line);
+  padding: var(--space-8);
+  background-color: var(--surface-raised);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-md);
 }
 
 .ctaCopy {
-  color: var(--muted);
+  color: var(--text-secondary);
   max-width: 580px;
   margin: 0 auto var(--space-4) auto;
   line-height: 1.6;

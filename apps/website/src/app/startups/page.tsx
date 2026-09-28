@@ -128,7 +128,7 @@ export default function StartupsLandingPage() {
                 ? '/startups/investor-network' 
                 : `/startups/services/${srv.slug}`;
               return (
-                <div key={idx} className={`card ${s.serviceCard}`}>
+                <div key={idx} className={`card card-lift ${s.serviceCard}`}>
                   <div>
                     <h3 className="card-heading-lg">{srv.title}</h3>
                     <p className="body-copy">{srv.desc}</p>

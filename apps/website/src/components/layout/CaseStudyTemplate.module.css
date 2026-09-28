@@ -36,6 +36,8 @@
 .metricsCard {
   background-color: rgba(91, 140, 255, .1);
   border: 1px solid var(--accent);
+  border-radius: var(--r-md);
+  padding: var(--space-5);
 }
 
 .metricsTitle {
@@ -47,7 +49,7 @@
 .metricsValue {
   font-size: 1.1rem;
   font-weight: 600;
-  color: var(--text);
+  color: var(--text-primary);
 }
 
 .foot {

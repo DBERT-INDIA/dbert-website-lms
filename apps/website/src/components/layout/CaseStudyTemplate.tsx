@@ -1,5 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
+import HandNote from '../ui/HandNote';
 import f from '../ui/forms.module.css';
 import s from './CaseStudyTemplate.module.css';
 
@@ -33,9 +35,14 @@ export default function CaseStudyTemplate({
           </div>
         )}
         <div className="doclabel">
-          § 01 — CASE STUDY STUDY ANALYSIS <span className="rev">rev: 2026.2</span>
+          § 01 — VENTURE CASE STUDY ANALYSIS <span className="rev">rev: 2026.2</span>
         </div>
-        <h1>{name}</h1>
+        <div className="stack-h justify-center align-baseline gap-3 flex-wrap">
+          <h1>{name}</h1>
+          <HandNote tone="amber">
+            audited production architecture ✍
+          </HandNote>
+        </div>
         <p>
           <a href={externalLink} target="_blank" rel="noopener noreferrer" className={s.siteLink}>
             Visit Website ({logoText}) ↗
@@ -67,7 +74,7 @@ export default function CaseStudyTemplate({
         )}
 
         <div className={s.foot}>
-          <a href="/startups/register" className="btn btn-primary">Get Similar Support for Your Startup</a>
+          <Link href="/startups/register" className="btn btn-primary">Get Similar Support for Your Startup</Link>
         </div>
       </div>
     </div>
