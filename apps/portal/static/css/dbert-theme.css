@@ -1174,6 +1174,7 @@ body.doc a{color:var(--doc-accent)}
 
     /* GRID + dash */
     body.portal .dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;}
+    body.portal .dash-grid > * { min-width: 0; }
     body.portal .info-row{display:grid;grid-template-columns:140px 1fr;align-items:center;padding:9px 0;border-bottom:1px solid var(--bg-raised);font-size:13px;gap:12px;}
     body.portal .info-row:last-child{border-bottom:none;}.info-label{color:var(--tx-muted);}.info-value{color:var(--tx-head);font-weight:600;text-align:left;}
 

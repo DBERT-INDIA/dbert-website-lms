@@ -796,7 +796,7 @@ def make_timing_token():
     sig = hmac.new(app.secret_key.encode(), ts.encode(), hashlib.sha256).hexdigest()
     return base64.urlsafe_b64encode(ts.encode()).decode() + "." + sig
 
-def verify_timing_token(token, min_ms=3000, max_ms=3600 * 1000):
+def verify_timing_token(token, min_ms=500, max_ms=3600 * 1000):
     """True only if the token is authentic AND elapsed is in [min_ms, max_ms]."""
     if app.config.get("TESTING"):
         return True
