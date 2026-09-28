@@ -111,7 +111,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           "name": "Digital Blinc Education Research And Technology",
           "alternateName": "DBERT",
           "url": process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.online',
-          "logo": `${process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.online'}/logo.png`,
+          "logo": `${process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.online'}/logo.svg`,
           // TODO-CONFIRM: founder's full legal name for the `founder` property.
           "founder": {
             "@type": "Person",

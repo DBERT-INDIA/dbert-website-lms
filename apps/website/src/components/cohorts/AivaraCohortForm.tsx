@@ -279,7 +279,12 @@ export default function AivaraCohortForm() {
           All Aivara Technologies hiring cohort applications, track selections, and mentor assignments are now managed through the official <strong>DBERT Internship &amp; Learning Platform</strong>.
         </p>
         <div className="stack-h justify-center gap-4 flex-wrap">
-          <a href="https://internship.dbert.online/apply?cohort=aivara" className="btn btn-primary btn-lg font-semibold">
+          <a
+            href="https://internship.dbert.online/apply?cohort=aivara"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="btn btn-primary btn-lg font-semibold"
+          >
             Apply for Aivara Cohort on DBERT Platform &rarr;
           </a>
         </div>
