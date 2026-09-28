@@ -16,7 +16,11 @@ export default function RevealObserver() {
     const elements = Array.from(document.querySelectorAll<HTMLElement>('.rv:not(.in)'));
     if (elements.length === 0) return;
 
-    if (typeof IntersectionObserver === 'undefined') {
+    const prefersReducedMotion =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (typeof IntersectionObserver === 'undefined' || prefersReducedMotion) {
       elements.forEach((el) => el.classList.add('in'));
       return;
     }

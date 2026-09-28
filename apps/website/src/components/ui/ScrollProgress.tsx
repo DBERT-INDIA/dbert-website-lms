@@ -1,16 +1,32 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import styles from './ScrollProgress.module.css';
 
 export default function ScrollProgress() {
   const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const handleScroll = () => {
+    if (typeof window === 'undefined') return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      return;
+    }
+
+    let ticking = false;
+
+    const updateProgress = () => {
       const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
       if (totalScroll > 0) {
         const currentProgress = (window.scrollY / totalScroll) * 100;
         setProgress(Number(currentProgress.toFixed(2)));
+      }
+      ticking = false;
+    };
+
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateProgress);
+        ticking = true;
       }
     };
 
@@ -21,26 +37,10 @@ export default function ScrollProgress() {
   if (progress <= 0) return null;
 
   return (
-    <div
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        height: '3px',
-        zIndex: 9999,
-        pointerEvents: 'none',
-        background: 'transparent',
-      }}
-      aria-hidden="true"
-    >
+    <div className={styles.progressContainer} aria-hidden="true">
       <div
-        style={{
-          width: `${progress}%`,
-          height: '100%',
-          background: 'linear-gradient(90deg, var(--accent), var(--signal))',
-          transition: 'width 0.1s linear',
-        }}
+        className={styles.progressBar}
+        style={{ width: `${progress}%` }}
       />
     </div>
   );
