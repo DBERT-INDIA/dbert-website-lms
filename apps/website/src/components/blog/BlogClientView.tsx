@@ -80,33 +80,17 @@ export default function BlogClientView({ initialArticles }: BlogClientViewProps)
           </div>
 
           {/* Search Box */}
-          <div style={{ position: 'relative', minWidth: '260px', flex: '1', maxWidth: '360px' }}>
+          <div className={s.searchWrap}>
             <Search
               size={16}
-              style={{
-                position: 'absolute',
-                left: '12px',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                color: 'var(--muted)',
-                pointerEvents: 'none',
-              }}
+              className={s.searchIcon}
             />
             <input
               type="text"
               placeholder="Search research & guides..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              style={{
-                width: '100%',
-                padding: '9px 12px 9px 36px',
-                borderRadius: 'var(--r-sm)',
-                background: 'var(--card)',
-                border: '1px solid var(--line-strong)',
-                color: 'var(--text)',
-                fontSize: '0.88rem',
-                outline: 'none',
-              }}
+              className={s.searchInput}
             />
           </div>
         </div>
@@ -117,8 +101,7 @@ export default function BlogClientView({ initialArticles }: BlogClientViewProps)
             <button
               type="button"
               onClick={() => setSelectedTag('all')}
-              className={`tag-chip ${selectedTag === 'all' ? 'border-accent text-accent' : ''}`}
-              style={{ cursor: 'pointer' }}
+              className={`tag-chip ${s.filterBtn} ${selectedTag === 'all' ? s.filterBtnActive : ''}`}
             >
               All Topics ({initialArticles.length})
             </button>
@@ -127,8 +110,7 @@ export default function BlogClientView({ initialArticles }: BlogClientViewProps)
                 key={tag}
                 type="button"
                 onClick={() => setSelectedTag(tag === selectedTag ? 'all' : tag)}
-                className={`tag-chip ${selectedTag === tag ? 'border-accent text-accent' : ''}`}
-                style={{ cursor: 'pointer' }}
+                className={`tag-chip ${s.filterBtn} ${selectedTag === tag ? s.filterBtnActive : ''}`}
               >
                 #{tag}
               </button>

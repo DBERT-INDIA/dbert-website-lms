@@ -31,7 +31,7 @@
   - Replace `.mdxContent th` color with `var(--text)`.
   - Replace `.authorName` color with `var(--text)`.
 - **Target Phase**: Phase 4 (Blog & Editorial Experience).
-- **Status**: OPEN.
+- **Status**: RESOLVED (Fixed in Phase 4: replaced `var(--ink)` with `var(--text-primary)` / `var(--text-secondary)`, refactored MDX typography with semantic tokens, added HandNote annotations, and eliminated inline styles).
 
 ---
 

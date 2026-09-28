@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import { getPostMeta, getBlogSlugs } from '@/lib/blog';
 import AuthorBox from '@/components/blog/AuthorBox';
 import ArticleSchema from '@/components/seo/ArticleSchema';
+import HandNote from '@/components/ui/HandNote';
 import s from '../blog.module.css';
 
 export async function generateStaticParams() {
@@ -78,12 +79,15 @@ export default async function BlogPostPage({ params }: BlogPostProps) {
           </div>
           <h1 className={s.postTitle}>{meta.title}</h1>
           <p className={s.postDesc}>{meta.desc}</p>
-          <div className={s.tagWrap}>
-            {meta.tags && meta.tags.map((tag, i) => (
-              <span key={i} className="marker">
-                #{tag}
-              </span>
-            ))}
+          <div className="stack-h justify-between align-center flex-wrap gap-3">
+            <div className={s.tagWrap}>
+              {meta.tags && meta.tags.map((tag, i) => (
+                <span key={i} className="tag-chip">
+                  #{tag}
+                </span>
+              ))}
+            </div>
+            <HandNote tone="blue">verified lab benchmark ✎</HandNote>
           </div>
         </div>
 
