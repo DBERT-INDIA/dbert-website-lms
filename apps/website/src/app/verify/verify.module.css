@@ -8,15 +8,57 @@
 
 .form {
   margin-bottom: var(--space-4);
+  padding: var(--space-6);
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: var(--space-4);
+}
+
+.fieldGroup label {
+  font-family: var(--font-b);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.fieldGroup input {
+  width: 100%;
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-sm);
+  color: var(--text-primary);
+  padding: 10px 14px;
+  font-family: var(--font-m);
+  font-size: 0.9rem;
+}
+
+.fieldGroup input:focus {
+  outline: none;
+  border-color: var(--accent);
 }
 
 .submit {
   width: 100%;
 }
 
+.errorAlert {
+  background-color: rgba(239, 68, 68, 0.1);
+  border: 1px solid var(--err);
+  color: var(--err);
+  padding: var(--space-3);
+  border-radius: var(--r-sm);
+  font-size: 0.85rem;
+  margin-bottom: var(--space-4);
+  text-align: center;
+}
+
 .validCard {
   border: 1px solid var(--ok);
-  padding: var(--space-4);
+  padding: var(--space-6);
 }
 
 .validTitle {
@@ -30,12 +72,13 @@
   flex-direction: column;
   gap: 8px;
   font-size: .9rem;
+  color: var(--text-primary);
 }
 
 .issuer {
   font-size: .8rem;
-  color: var(--muted);
-  border-top: 1px solid var(--line);
+  color: var(--text-secondary);
+  border-top: 1px solid var(--border-subtle);
   padding-top: 8px;
   margin-top: 4px;
 }

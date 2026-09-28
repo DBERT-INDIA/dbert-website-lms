@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import FAQAccordion from '@/components/ui/FAQAccordion';
+import HandNote from '@/components/ui/HandNote';
 import { pageMetadata } from '@/lib/seo';
 import s from './pricing.module.css';
 
@@ -102,9 +103,14 @@ export default function PricingPage() {
             <div className="doclabel">
               § 01 — COMMERCIAL STRUCTURES <span className="rev">rev: 2026.2</span>
             </div>
-            <h1 className="page-title-sm">
-              Transparent, Outcome-Focused Model
-            </h1>
+            <div className="stack-h justify-start align-baseline gap-3 flex-wrap mb-2">
+              <h1 className="page-title-sm mb-0">
+                Transparent, Outcome-Focused Model
+              </h1>
+              <HandNote tone="amber">
+                flat-rate · zero income share ✎
+              </HandNote>
+            </div>
             <p className="page-intro">
               We reject hidden tuition markups, predatory lock-ins, and ambiguous hourly billing. Explore how we structure apprentice pathways, startup co-development equity tracks, and enterprise AI sprints.
             </p>

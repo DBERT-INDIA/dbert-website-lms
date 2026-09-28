@@ -16,7 +16,7 @@
 /* The inline object set marginBottom and then a margin shorthand, so the
    shorthand won; this is what actually rendered. */
 .copy {
-  color: var(--text);
+  color: var(--text-primary);
   max-width: 600px;
   margin: 0 auto var(--space-4) auto;
   line-height: 1.6;
@@ -24,15 +24,15 @@
 
 .founderNote {
   padding: var(--space-3);
-  background-color: var(--ink);
-  border-radius: 4px;
-  border: 1px solid var(--line);
+  background-color: var(--surface-card);
+  border-radius: var(--r-sm);
+  border: 1px solid var(--border-subtle);
   display: inline-block;
 }
 
 .founderCopy {
   font-size: .9rem;
-  color: var(--muted);
+  color: var(--text-secondary);
 }
 
 .founderLink {

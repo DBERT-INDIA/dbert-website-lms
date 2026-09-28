@@ -1,9 +1,8 @@
 'use client';
 
-import s from './verify.module.css';
-
 import React, { useState } from 'react';
-import styles from './verify.module.css';
+import HandNote from '@/components/ui/HandNote';
+import s from './verify.module.css';
 
 interface VerificationResult {
   holderName: string;
@@ -39,7 +38,7 @@ export default function CertificateVerifyPage() {
       } else {
         setErrorMsg('Verification failed. Please check ID format.');
       }
-    } catch (err) {
+    } catch {
       setErrorMsg('Network error. Please try again.');
     } finally {
       setLoading(false);
@@ -52,17 +51,25 @@ export default function CertificateVerifyPage() {
         <div className="doclabel justify-center">
           § 01 — CRYPTOGRAPHIC VERIFICATION <span className="rev">rev: 2026.2</span>
         </div>
-        <h1>Verify Certificate</h1>
+        <div className="stack-h justify-center align-baseline gap-3 flex-wrap mb-2">
+          <h1>Verify Certificate</h1>
+          <HandNote tone="blue">
+            tamper-proof · on-chain hashes ✍
+          </HandNote>
+        </div>
         <p className="measure-sm">
           Enter a certificate identification key to verify student credentials, completion statuses, and MSME registrations.
         </p>
       </div>
 
       <div className={s.shell}>
-        <form className={`card ${s.form}`} onSubmit={handleVerify}>
-          <div className={styles.fieldGroup}>
-            <label>Certificate ID *</label>
+        <form className={`card card-lift ${s.form}`} onSubmit={handleVerify}>
+          <div className={s.fieldGroup}>
+            <label htmlFor="cert-id">Certificate ID *</label>
             <input 
+              id="cert-id"
+              name="certId"
+              aria-label="Certificate ID"
               type="text" 
               required 
               value={certId} 
@@ -75,10 +82,10 @@ export default function CertificateVerifyPage() {
           </button>
         </form>
 
-        {errorMsg && <div className={styles.errorAlert}>{errorMsg}</div>}
+        {errorMsg && <div className={s.errorAlert}>{errorMsg}</div>}
 
         {result && (
-          <div className={`card ${s.validCard}`}>
+          <div className={`card card-lift ${s.validCard}`}>
             <h3 className={s.validTitle}>Valid Certificate</h3>
             <div className={s.details}>
               <div><strong>Holder:</strong> {result.holderName}</div>

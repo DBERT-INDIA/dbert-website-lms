@@ -1,6 +1,6 @@
 import React from 'react';
+import HandNote from '@/components/ui/HandNote';
 import { pageMetadata } from '@/lib/seo';
-
 
 export const metadata = pageMetadata('/privacy');
 
@@ -12,7 +12,12 @@ export default function PrivacyPage() {
           <div className="doclabel">
             § 01 — STATUTORY COMPLIANCE <span className="rev">rev: 2026.2</span>
           </div>
-          <h1>Privacy Policy</h1>
+          <div className="stack-h justify-start align-baseline gap-3 flex-wrap mb-2">
+            <h1 className="mb-0">Privacy Policy</h1>
+            <HandNote tone="blue">
+              statutory MSME framework ✍
+            </HandNote>
+          </div>
           <p className="page-intro">
             How Digital Blinc Education Research And Technology (DBERT) protects, isolates, and secures developer, student, and startup partner data.
           </p>

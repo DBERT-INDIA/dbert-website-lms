@@ -1,7 +1,6 @@
 import React from 'react';
-import { Metadata } from 'next';
+import HandNote from '@/components/ui/HandNote';
 import { pageMetadata } from '@/lib/seo';
-
 
 export const metadata = pageMetadata('/refund');
 
@@ -13,7 +12,12 @@ export default function RefundPage() {
           <div className="doclabel">
             § 01 — STATUTORY POLICY <span className="rev">rev: 2026.2</span>
           </div>
-          <h1>Refund Policy</h1>
+          <div className="stack-h justify-start align-baseline gap-3 flex-wrap mb-2">
+            <h1 className="mb-0">Refund Policy</h1>
+            <HandNote tone="amber">
+              7-day evaluation window ✎
+            </HandNote>
+          </div>
           <p className="page-intro">
             Clear, transparent guidelines regarding program fee transactions, evaluation windows, and incubation retainers.
           </p>
