@@ -12,7 +12,6 @@
   border-radius: var(--r-md);
   overflow: hidden;
   transition: border-color 0.2s;
-  cursor: pointer;
 }
 
 .faqItem:hover {
@@ -41,8 +40,12 @@
 
 .faqArrow {
   color: var(--accent);
-  font-size: 0.8rem;
-  transition: transform 0.2s;
+  transition: transform 0.25s var(--ease, ease);
+  flex-shrink: 0;
+}
+
+.faqArrowOpen {
+  transform: rotate(180deg);
 }
 
 .faqAnswer {

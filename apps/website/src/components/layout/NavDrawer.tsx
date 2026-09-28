@@ -201,7 +201,7 @@ export default function NavDrawer({
             <span className={styles.livePulse} aria-hidden="true" />
             <span>Studio Console Live</span>
           </div>
-          <span className="handnote" style={{ fontSize: '1rem', color: 'var(--signal)' }}>
+          <span className={`handnote ${styles.drawerHandnote}`}>
             handmade in Delhi ✍
           </span>
         </div>

@@ -4,7 +4,7 @@ import db from '@/lib/db';
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    const certId = searchParams.get('certId');
+    const certId = searchParams.get('certId') || searchParams.get('id');
 
     if (!certId) {
       return NextResponse.json({ error: 'Missing certificate ID parameters' }, { status: 400 });

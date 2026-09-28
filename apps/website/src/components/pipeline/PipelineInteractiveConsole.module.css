@@ -56,6 +56,11 @@
   color: var(--signal);
 }
 
+.doclabelSignal {
+  color: var(--signal) !important;
+  border-color: var(--signal) !important;
+}
+
 .tabIcon {
   color: var(--accent);
 }

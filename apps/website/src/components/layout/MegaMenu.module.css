@@ -447,6 +447,11 @@
   color: var(--text-muted);
 }
 
+.drawerHandnote {
+  font-size: 1rem;
+  color: var(--signal);
+}
+
 @media (max-width: 960px) {
   .navLinks,
   .navActions .ghostAction {

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { ArrowUp } from 'lucide-react';
+import styles from './BackToTop.module.css';
 
 export default function BackToTop() {
   const [visible, setVisible] = useState(false);
@@ -26,27 +27,10 @@ export default function BackToTop() {
       type="button"
       onClick={scrollToTop}
       aria-label="Back to top"
-      style={{
-        position: 'fixed',
-        bottom: '24px',
-        left: '24px',
-        zIndex: 90,
-        width: '42px',
-        height: '42px',
-        borderRadius: '50%',
-        background: 'var(--card)',
-        border: '1px solid var(--line-strong)',
-        color: 'var(--text)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        cursor: 'pointer',
-        boxShadow: '0 8px 24px rgba(0, 0, 0, 0.4)',
-        transition: 'all 0.25s var(--ease)',
-      }}
-      className="card-lift"
+      className={`card-lift ${styles.backToTop}`}
     >
-      <ArrowUp size={18} />
+      <ArrowUp size={18} aria-hidden="true" />
     </button>
   );
 }
+

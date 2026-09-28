@@ -121,6 +121,10 @@ export default function ProgramDetailTemplate({
         }
       };
 
+      if (typeof window !== 'undefined' && !(window as any).Razorpay) {
+        throw new Error('Payment gateway SDK is loading. Please check your internet connection or allow checkout scripts.');
+      }
+
       const razorpay = new (window as any).Razorpay(options);
       razorpay.on('payment.failed', function (response: any) {
         const reason = response?.error?.reason || 'Payment failed';

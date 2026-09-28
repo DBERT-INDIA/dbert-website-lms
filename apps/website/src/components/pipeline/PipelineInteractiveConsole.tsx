@@ -256,7 +256,7 @@ export default function PipelineInteractiveConsole() {
             </div>
             <div>
               <div className="flex items-center gap-3 flex-wrap">
-                <span className="doclabel" style={{ color: 'var(--signal)', borderColor: 'var(--signal)' }}>
+                <span className={`doclabel ${styles.doclabelSignal}`}>
                   STAGE {activeStage.num} OF 05
                 </span>
                 <span className="tag-chip text-xs font-mono">{activeStage.duration}</span>

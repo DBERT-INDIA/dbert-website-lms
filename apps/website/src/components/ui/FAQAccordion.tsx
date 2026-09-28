@@ -24,27 +24,31 @@ export default function FAQAccordion({ items }: FAQAccordionProps) {
     <div className={styles.faqList}>
       {items.map((item, index) => {
         const isOpen = activeIndex === index;
+        const answerId = `faq-answer-${index}`;
         return (
           <div 
             key={index} 
             className={`${styles.faqItem} ${isOpen ? styles.open : ''}`}
-            onClick={() => toggleAccordion(index)}
           >
             <button 
+              type="button"
               className={styles.faqQuestion} 
               aria-expanded={isOpen}
+              aria-controls={answerId}
+              onClick={() => toggleAccordion(index)}
             >
               <span>{item.question}</span>
               <ChevronDown 
                 size={18} 
-                className={styles.faqArrow} 
-                style={{ 
-                  transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)', 
-                  transition: 'transform 0.25s var(--ease)' 
-                }}
+                className={`${styles.faqArrow} ${isOpen ? styles.faqArrowOpen : ''}`} 
+                aria-hidden="true"
               />
             </button>
-            <div className={`${styles.faqAnswer}${isOpen ? ` ${styles.faqAnswerOpen}` : ''}`}>
+            <div 
+              id={answerId}
+              role="region"
+              className={`${styles.faqAnswer}${isOpen ? ` ${styles.faqAnswerOpen}` : ''}`}
+            >
               <p>{item.answer}</p>
             </div>
           </div>

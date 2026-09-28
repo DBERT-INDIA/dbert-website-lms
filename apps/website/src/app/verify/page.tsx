@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, Suspense, useCallback } from 'react';
+import { useSearchParams } from 'next/navigation';
 import HandNote from '@/components/ui/HandNote';
 import s from './verify.module.css';
 
@@ -12,22 +13,23 @@ interface VerificationResult {
   verified: boolean;
 }
 
-export default function CertificateVerifyPage() {
-  const [certId, setCertId] = useState('');
+function VerifyFormContent() {
+  const searchParams = useSearchParams();
+  const initialCertId = searchParams.get('certId') || searchParams.get('id') || '';
+  const [certId, setCertId] = useState(initialCertId);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<VerificationResult | null>(null);
   const [errorMsg, setErrorMsg] = useState('');
 
-  const handleVerify = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!certId) return;
+  const executeVerify = useCallback(async (idToVerify: string) => {
+    if (!idToVerify.trim()) return;
 
     setLoading(true);
     setErrorMsg('');
     setResult(null);
 
     try {
-      const res = await fetch(`/api/verify?certId=${encodeURIComponent(certId)}`);
+      const res = await fetch(`/api/verify?certId=${encodeURIComponent(idToVerify.trim())}`);
       if (res.ok) {
         const data = await res.json();
         if (data.verified) {
@@ -43,8 +45,63 @@ export default function CertificateVerifyPage() {
     } finally {
       setLoading(false);
     }
+  }, []);
+
+  /* eslint-disable react-hooks/set-state-in-effect -- Auto-verify certificate on mount when arriving via QR code or direct URL parameter */
+  useEffect(() => {
+    if (initialCertId) {
+      executeVerify(initialCertId);
+    }
+  }, [initialCertId, executeVerify]);
+  /* eslint-enable react-hooks/set-state-in-effect */
+
+  const handleVerify = (e: React.FormEvent) => {
+    e.preventDefault();
+    executeVerify(certId);
   };
 
+  return (
+    <>
+      <form className={`card card-lift ${s.form}`} onSubmit={handleVerify}>
+        <div className={s.fieldGroup}>
+          <label htmlFor="cert-id">Certificate ID *</label>
+          <input 
+            id="cert-id"
+            name="certId"
+            aria-label="Certificate ID"
+            type="text" 
+            required 
+            value={certId} 
+            onChange={(e) => setCertId(e.target.value)} 
+            placeholder="e.g. DBERT-2026-001" 
+          />
+        </div>
+        <button type="submit" className={`btn btn-primary btn-sm ${s.submit}`} disabled={loading}>
+          {loading ? 'Verifying...' : 'Verify Certificate'}
+        </button>
+      </form>
+
+      {errorMsg && <div className={s.errorAlert}>{errorMsg}</div>}
+
+      {result && (
+        <div className={`card card-lift ${s.validCard}`}>
+          <h2 className={s.validTitle}>Valid Certificate</h2>
+          <div className={s.details}>
+            <div><strong>Holder:</strong> {result.holderName}</div>
+            <div><strong>Program:</strong> {result.programName}</div>
+            {result.domain && <div><strong>Domain:</strong> {result.domain}</div>}
+            <div><strong>Issue Date:</strong> {new Date(result.issueDate).toLocaleDateString()}</div>
+            <div className={s.issuer}>
+              Issued by Digital Blinc Education Research And Technology (MSME Registered)
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
+export default function CertificateVerifyPage() {
   return (
     <div className="container pad-block">
       <div className="mb-lg center">
@@ -63,42 +120,15 @@ export default function CertificateVerifyPage() {
       </div>
 
       <div className={s.shell}>
-        <form className={`card card-lift ${s.form}`} onSubmit={handleVerify}>
-          <div className={s.fieldGroup}>
-            <label htmlFor="cert-id">Certificate ID *</label>
-            <input 
-              id="cert-id"
-              name="certId"
-              aria-label="Certificate ID"
-              type="text" 
-              required 
-              value={certId} 
-              onChange={(e) => setCertId(e.target.value)} 
-              placeholder="e.g. DBERT-2026-001" 
-            />
+        <Suspense fallback={
+          <div className="card card-lift text-center p-6 text-muted">
+            Loading verification console...
           </div>
-          <button type="submit" className={`btn btn-primary btn-sm ${s.submit}`} disabled={loading}>
-            {loading ? 'Verifying...' : 'Verify Certificate'}
-          </button>
-        </form>
-
-        {errorMsg && <div className={s.errorAlert}>{errorMsg}</div>}
-
-        {result && (
-          <div className={`card card-lift ${s.validCard}`}>
-            <h2 className={s.validTitle}>Valid Certificate</h2>
-            <div className={s.details}>
-              <div><strong>Holder:</strong> {result.holderName}</div>
-              <div><strong>Program:</strong> {result.programName}</div>
-              {result.domain && <div><strong>Domain:</strong> {result.domain}</div>}
-              <div><strong>Issue Date:</strong> {new Date(result.issueDate).toLocaleDateString()}</div>
-              <div className={s.issuer}>
-                Issued by Digital Blinc Education Research And Technology (MSME Registered)
-              </div>
-            </div>
-          </div>
-        )}
+        }>
+          <VerifyFormContent />
+        </Suspense>
       </div>
     </div>
   );
 }
+
