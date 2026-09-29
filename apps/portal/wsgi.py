@@ -3,6 +3,7 @@ WSGI entrypoint for DBERT Internship Portal
 Used by production WSGI servers:
 - Gunicorn (Linux): gunicorn -w 4 -b 127.0.0.1:5000 wsgi:app
 - Waitress (Windows): waitress-serve --listen=127.0.0.1:5000 wsgi:app
+- Passenger (cPanel): uses `application` variable (set below)
 """
 import os
 import sys
@@ -11,6 +12,9 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from app import app
+
+# cPanel Passenger requires the WSGI callable to be named `application`
+application = app
 
 if __name__ == "__main__":
     app.run()

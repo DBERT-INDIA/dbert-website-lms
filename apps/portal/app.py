@@ -156,9 +156,10 @@ if app_logger.hasHandlers():
 app_logger.addHandler(handler)
 
 app.config["SESSION_COOKIE_SECURE"] = COOKIE_SECURE
-# Phase 8.0: trust exactly ONE proxy hop (Nginx). Safe only because Nginx overwrites
-# X-Forwarded-For / X-Real-IP with the true client IP (see SECURITY_DEPLOY.md).
-app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
+# Phase 8.0: trust exactly ONE proxy hop (Nginx/Apache). Safe only because the
+# reverse proxy overwrites X-Forwarded-For / X-Real-IP with the true client IP.
+# x_prefix=1 added for cPanel/Apache Passenger compatibility.
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
 
 # Phase 11: Request Tracing & Phase 21: Telemetry Metrics
 @app.before_request
