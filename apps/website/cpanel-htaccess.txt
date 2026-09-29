@@ -1,0 +1,18 @@
+# DBERT Website — cPanel / Passenger Apache proxy rules
+# This file goes inside the public/ sub-directory of your cPanel Node.js app
+# (NOT in public_html directly — Passenger handles that).
+#
+# If you set the "Application URL" in cPanel's Node.js App to your domain root,
+# cPanel automatically writes the necessary passenger_wsgi or Passenger hooks.
+# This .htaccess is for the public/ static assets proxy only.
+
+# Serve static files directly from this folder without hitting Node.js
+Options -MultiViews
+RewriteEngine On
+
+# Static assets served directly
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ - [L]
+
+# Everything else goes to the Node.js Passenger app
+RewriteRule ^(.*)$ http://localhost:%{ENV:PASSENGER_BASE_URI_SUFFIX}$1 [P,L]
