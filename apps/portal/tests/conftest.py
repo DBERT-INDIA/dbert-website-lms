@@ -14,6 +14,10 @@ os.environ.setdefault("ADMIN_USERNAME", "test_admin")
 
 from app import app as _app, init_db, get_db, set_password_hash, create_session, AUTH_COOKIE
 
+@pytest.fixture(scope="session")
+def app():
+    return _app
+
 @pytest.fixture(scope="function")
 def app_client():
     db_fd, db_path = tempfile.mkstemp(suffix=".db")

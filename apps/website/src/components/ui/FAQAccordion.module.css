@@ -7,34 +7,36 @@
 }
 
 .faqItem {
-  background-color: var(--card);
-  border: 1px solid var(--line);
+  background-color: var(--surface-card);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--r-md);
   overflow: hidden;
-  transition: border-color 0.2s;
+  transition: all 0.25s var(--ease);
 }
 
 .faqItem:hover {
-  border-color: rgba(79, 124, 255, 0.2);
+  border-color: rgba(0, 242, 254, 0.35);
+  box-shadow: 0 4px 20px rgba(0, 242, 254, 0.05);
 }
 
 .open {
-  border-color: rgba(79, 124, 255, 0.3) !important;
+  border-color: var(--accent) !important;
+  box-shadow: 0 8px 24px rgba(0, 242, 254, 0.08) !important;
 }
 
 .faqQuestion {
   width: 100%;
   border: none;
   background: none;
-  color: var(--text);
+  color: var(--text-primary);
   padding: var(--space-3) var(--space-4);
   text-align: left;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-family: var(--font-b);
-  font-weight: 600;
-  font-size: 0.98rem;
+  font-family: var(--font-tech);
+  font-weight: 700;
+  font-size: 1rem;
   cursor: pointer;
 }
 

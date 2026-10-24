@@ -1,0 +1,63 @@
+/* ═══ ADSENSE SLOT CONTAINER — Option A Dark Foundry ═══
+   Matches #050811 surface tokens, subtle line borders, and monospace labels */
+
+.adContainer {
+  margin: 36px 0;
+  background: var(--card); /* #080C18 */
+  border: 1px solid var(--line); /* #141C2E */
+  border-radius: var(--r-md);
+  padding: 16px 20px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.adContainer:hover {
+  border-color: rgba(0, 242, 254, 0.3);
+}
+
+.adHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.adTag {
+  font-family: var(--font-m);
+  font-size: 0.64rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.adPolicy {
+  font-family: var(--font-m);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+}
+
+.adBody {
+  min-height: 90px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(5, 8, 17, 0.6);
+  border-radius: var(--r-sm);
+  padding: 12px;
+}
+
+.adNotice {
+  font-family: var(--font-m);
+  font-size: 0.68rem;
+  color: var(--text-faint);
+  text-align: center;
+  margin-top: 8px;
+  letter-spacing: 0.04em;
+}

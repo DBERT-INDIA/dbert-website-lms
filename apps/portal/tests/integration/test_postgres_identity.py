@@ -25,11 +25,11 @@ def test_postgres_search_path_enforcement(app):
         # Ensure that intern_accounts exists ONLY in dbert_internship, not public
         with adapter.get_connection() as conn:
             cur = conn.cursor()
-            cur.execute(\"\"\"
+            cur.execute("""
                 SELECT table_schema 
                 FROM information_schema.tables 
                 WHERE table_name = 'intern_accounts'
-            \"\"\")
+            """)
             schemas = [row[0] for row in cur.fetchall()]
             
             assert "dbert_internship" in schemas, "intern_accounts is missing from dbert_internship"

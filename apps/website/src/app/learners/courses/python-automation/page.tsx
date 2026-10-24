@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import FAQAccordion from '@/components/ui/FAQAccordion';
 import { pageMetadata } from '@/lib/seo';
+import RegionalOpportunityBento from '@/components/ui/RegionalOpportunityBento';
 import s from '../../learners.module.css';
 import { Bot, Bug, Settings, CheckCircle, ShieldCheck } from 'lucide-react';
 
@@ -261,10 +262,76 @@ export default function PythonAutomationCoursePage() {
         </div>
       </div>
 
+      {/* Live Regional Opportunities */}
+      <RegionalOpportunityBento
+        sectionNumber="§ 08"
+        title="Python Automation Internships in Mumbai & Tech Corridors"
+        description="Connect directly to real-world test automation, data harvesting, and workflow orchestration sprints across Mumbai, Bengaluru, Delhi NCR, and Pune."
+        domainName="Python Automation"
+        hubHref="https://internship.dbert.online/internships/python-automation"
+        jobsHref="https://internship.dbert.online/jobs/python-automation"
+        opportunities={[
+          {
+            title: 'QA & Test Automation Engineering Intern',
+            roleDescription: 'Construct comprehensive PyTest test suites, Selenium browser runs, and CI/CD regression verification pipelines.',
+            cityTag: 'Mumbai',
+            location: 'Mumbai · Hybrid / Remote',
+            stipend: '₹7,500 – ₹14,000 / mo',
+            href: 'https://internship.dbert.online/internships/qa-automation-intern-mumbai-remote-68',
+            tags: ['Selenium', 'PyTest', 'Python', 'CI/CD'],
+          },
+          {
+            title: 'Lead Generation & Data Pipeline Automation Intern',
+            roleDescription: 'Automate commercial prospect enrichment, multi-source scraping, and CRM synchronization workflows.',
+            cityTag: 'Bangalore',
+            location: 'Bengaluru · Hybrid',
+            stipend: '₹8,500 – ₹16,000 / mo',
+            href: 'https://internship.dbert.online/internships/lead-generation-automation-intern-bangalore-remote-64',
+            tags: ['Playwright', 'BeautifulSoup', 'Redis', 'Python'],
+          },
+          {
+            title: 'Price Monitoring & Competitive Intelligence Intern',
+            roleDescription: 'Build high-frequency price tracking scrapers with rotating proxy pools and automated Slack change alerts.',
+            cityTag: 'Delhi NCR',
+            location: 'Delhi NCR · Remote',
+            stipend: '₹8,000 – ₹15,000 / mo',
+            href: 'https://internship.dbert.online/internships/price-monitoring-automation-intern-delhi-ncr-remote-65',
+            tags: ['Scrapy', 'Proxies', 'Webhooks', 'Docker'],
+          },
+          {
+            title: 'Document Processing & PDF Extraction Intern',
+            roleDescription: 'Parse structured tables from semi-formatted invoices, extract entities, and populate central relational tables.',
+            cityTag: 'Hyderabad',
+            location: 'Hyderabad · Remote',
+            stipend: '₹7,000 – ₹13,000 / mo',
+            href: 'https://internship.dbert.online/internships/document-processing-automation-intern-hyderabad-remote-66',
+            tags: ['pdfplumber', 'Regex', 'PostgreSQL', 'Python'],
+          },
+          {
+            title: 'Social Media & Brand Monitoring Bot Intern',
+            roleDescription: 'Construct scheduled social sentiment bots, keyword tracking hooks, and automated analytics digest emails.',
+            cityTag: 'Pune',
+            location: 'Pune · Hybrid',
+            stipend: '₹7,500 – ₹13,500 / mo',
+            href: 'https://internship.dbert.online/internships/social-media-automation-intern-pune-remote-67',
+            tags: ['REST APIs', 'Celery', 'Redis', 'Python'],
+          },
+          {
+            title: 'Web Scraping & Data Pipeline Automation Remote',
+            roleDescription: 'Engineer resilient extraction pipelines with headless browsers, anti-bot bypass, and JSON schema validation.',
+            cityTag: 'Remote',
+            location: 'Virtual · Anywhere India',
+            stipend: '₹8,000 – ₹15,000 / mo',
+            href: 'https://internship.dbert.online/internships/web-scraping-intern-remote-55',
+            tags: ['Playwright', 'Scrapy', 'Celery', 'PostgreSQL'],
+          },
+        ]}
+      />
+
       {/* CTA Block */}
       <div className="container pb-block">
         <div className="bento-card callout-plain p-8 border border-line bg-card text-center">
-          <div className="doclabel mb-1">§ 08 — INITIALIZE CAREER ACCELERATION</div>
+          <div className="doclabel mb-1">§ 09 — INITIALIZE CAREER ACCELERATION</div>
           <h2 className="card-title text-2xl font-bold text-white mb-2">Automate Industrial Systems &mdash; Launch Your Career</h2>
           <p className="page-lede text-sm text-muted max-w-xl mx-auto mb-6">
             Ready to write scalable scraping scripts, configure automated concurrent tasks, and deploy proxy rotation architectures directly to your professional portfolio? Apply for DBERT Industrial Training today.

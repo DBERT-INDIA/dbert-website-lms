@@ -1,19 +1,15 @@
-/* Styles specific to the /learners group. Phase 5: each class declares exactly
-   what the inline object it replaced declared — nothing extra. Anything a
-   second group turns out to need gets promoted to globals.css.
-   Written against the v2 tokens, not the v1 alias layer (5.7 deletes those). */
+/* Learners — Option A Cyber-Industrial Foundry
+   Solid single-color background (#050811), clean cyber borders, PR terminal container */
 
 /* ── Hub: domain cards ────────────────────── */
 
 .domainGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: var(--space-4);
   margin-bottom: var(--space-8);
 }
 
-/* The badge used to share this row with an emoji, which the Phase 5 sweep
-   removed. Right-aligned explicitly so it stays put with one child. */
 .badgeRow {
   display: flex;
   justify-content: flex-end;
@@ -22,42 +18,55 @@
 }
 
 .badge {
-  font-size: .72rem;
+  font-family: var(--font-m);
+  font-size: 0.7rem;
   color: var(--accent);
-  background: rgba(91, 140, 255, .1);
-  border: 1px solid rgba(91, 140, 255, .25);
+  background: rgba(0, 229, 255, 0.08);
+  border: 1px solid rgba(0, 229, 255, 0.25);
   padding: 3px 10px;
-  border-radius: 99px;
+  border-radius: var(--r-sm);
   text-transform: uppercase;
   font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
 }
 
 .domainTitle {
   font-family: var(--font-d);
   font-size: 1.25rem;
-  color: var(--text-primary);
+  color: var(--text);
   margin-bottom: 8px;
 }
 
 .domainDesc {
-  font-size: .88rem;
-  color: var(--text-secondary);
+  font-size: 0.88rem;
+  color: var(--muted);
   line-height: 1.55;
   margin-bottom: var(--space-2);
 }
 
 .salary {
+  font-family: var(--font-m);
   color: var(--accent);
   font-weight: 600;
-  font-size: .88rem;
+  font-size: 0.82rem;
   margin-bottom: var(--space-2);
 }
 
 .pathLink {
-  color: var(--text-primary);
-  font-size: .88rem;
+  font-family: var(--font-m);
+  color: var(--text);
+  font-size: 0.84rem;
   font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.pathLink:hover {
+  color: var(--accent);
+}
+
+/* ── Terminal Section ─────────────────────── */
+.terminalSection {
+  margin: var(--space-10) 0;
 }
 
 /* ── Hub: next-step cards ─────────────────── */
@@ -70,13 +79,17 @@
 
 .nextCard {
   text-align: center;
-  padding: var(--space-4);
+  padding: var(--space-6);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
 }
 
 .nextDesc {
-  font-size: .85rem;
+  font-size: 0.88rem;
   color: var(--muted);
-  margin-bottom: var(--space-3);
+  margin-bottom: var(--space-4);
+  line-height: 1.6;
 }
 
 /* ── Jobs board ───────────────────────────── */
@@ -93,6 +106,10 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: var(--space-5);
 }
 
 .jobTop {
@@ -103,17 +120,20 @@
 }
 
 .companyTag {
-  font-size: .75rem;
+  font-family: var(--font-m);
+  font-size: 0.72rem;
   color: var(--accent);
-  border: 1px solid rgba(91, 140, 255, .2);
-  padding: 2px 8px;
-  border-radius: 4px;
+  border: 1px solid rgba(0, 229, 255, 0.25);
+  background: rgba(0, 229, 255, 0.06);
+  padding: 3px 8px;
+  border-radius: var(--r-sm);
   text-transform: uppercase;
   font-weight: 600;
 }
 
 .jobSalary {
-  font-size: .85rem;
+  font-family: var(--font-m);
+  font-size: 0.85rem;
   color: var(--accent);
   font-weight: 600;
 }
@@ -121,33 +141,34 @@
 .jobTitle {
   font-family: var(--font-d);
   font-size: 1.45rem;
-  color: var(--text-primary);
-  margin: 4px 0;
+  color: var(--text);
+  margin: 6px 0;
 }
 
 .jobDesc {
-  font-size: .92rem;
-  color: var(--text-secondary);
+  font-size: 0.92rem;
+  color: var(--muted);
   line-height: 1.6;
 }
 
 .reqBlock {
   margin: 8px 0;
-  border-top: 1px solid var(--border-subtle);
+  border-top: 1px solid var(--line);
   padding-top: 8px;
 }
 
 .reqLabel {
-  font-size: .85rem;
-  color: var(--text-primary);
+  font-family: var(--font-m);
+  font-size: 0.78rem;
+  color: var(--text);
   font-weight: 600;
   display: block;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
 }
 
 .reqBody {
-  font-size: .85rem;
-  color: var(--text-secondary);
+  font-size: 0.85rem;
+  color: var(--muted);
   line-height: 1.5;
 }
 
@@ -155,108 +176,5 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 4px;
-}
-
-.jobType {
-  font-size: .8rem;
-  color: var(--text-muted);
-}
-
-/* ── Course pages (four pages share this) ─── */
-
-.courseTagline {
-  font-size: 1.25rem;
-  color: var(--accent);
-  font-weight: 600;
-  margin-bottom: var(--space-3);
-}
-
-.courseLede {
-  font-size: 1.15rem;
-  color: var(--text-secondary);
-  line-height: 1.75;
-  max-width: 780px;
-  margin: 0 auto;
-}
-
-.projectTitle {
-  font-family: var(--font-d);
-  font-size: 1.4rem;
-  color: var(--text-primary);
-  margin: 8px 0;
-}
-
-.techBlock {
-  padding: var(--space-8) 0 var(--space-12) 0;
-  text-align: center;
-}
-
-.techHeading {
-  font-family: var(--font-d);
-  color: var(--text-primary);
-  margin-bottom: var(--space-4);
-}
-
-.techRow {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  justify-content: center;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-.techChip {
-  padding: 6px 14px;
-  background-color: var(--surface-raised);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--r-sm);
-  color: var(--text-secondary);
-  font-size: .85rem;
-  transition: border-color 0.2s ease;
-}
-
-.techChip:hover {
-  border-color: var(--border-strong);
-}
-
-/* ── Fellowship + interview prep ──────────── */
-
-.gridCentered {
-  align-items: center;
-}
-
-.accentPanel {
-  border: 1px solid var(--accent);
-  background: rgba(91, 140, 255, .02);
-  padding: var(--space-6);
-}
-
-.accentPanelTitle {
-  font-family: var(--font-d);
-  color: var(--accent);
-  margin-bottom: 12px;
-}
-
-.accentList {
-  font-size: .92rem;
-  color: var(--muted);
-  padding-left: var(--space-3);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-2);
-  line-height: 1.6;
-}
-
-/* ── Courses index ────────────────────────── */
-
-.courseIndexGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 18px;
-}
-
-.backLink {
-  color: var(--accent);
+  margin-top: 8px;
 }

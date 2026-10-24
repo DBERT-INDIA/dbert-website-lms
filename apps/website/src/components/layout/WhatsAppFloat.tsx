@@ -1,5 +1,8 @@
+'use client';
+
 import React from 'react';
 import styles from './WhatsAppFloat.module.css';
+import { trackEvent } from '@/lib/analytics';
 
 export default function WhatsAppFloat() {
   return (
@@ -9,6 +12,7 @@ export default function WhatsAppFloat() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat with Us on WhatsApp"
+      onClick={() => trackEvent('whatsapp_click')}
     >
       <svg 
         width="28" 

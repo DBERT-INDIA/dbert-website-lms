@@ -1,0 +1,198 @@
+/* Shared form and card-state styles. Phase 5: these were repeated inline
+   across ContactForm, ConsultationForm, DemoRequestForm, InvestorForm,
+   ContributorForm and ContributorCards. Each class declares exactly the
+   properties of the inline object it replaces. */
+
+.field {
+  margin-bottom: var(--space-4);
+}
+
+.label {
+  display: block;
+  margin-bottom: 6px;
+  font-family: var(--font-m);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.hint {
+  color: var(--faint);
+  font-size: 0.8rem;
+  margin-bottom: var(--space-4);
+}
+
+/* Centred confirmation / empty-state panel. */
+.statePanel {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+  padding: var(--space-6);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+}
+
+.emptyState {
+  color: var(--faint);
+  text-align: center;
+  padding: var(--space-6) 0;
+  font-family: var(--font-m);
+  font-size: 0.85rem;
+}
+
+.narrowForm {
+  margin: 0 auto;
+  max-width: 600px;
+}
+
+.full {
+  width: 100%;
+}
+
+.spacedTop {
+  margin-top: var(--space-4);
+}
+
+.caption {
+  font-family: var(--font-m);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+}
+
+.metaLine {
+  font-family: var(--font-m);
+  font-size: 0.75rem;
+  color: var(--faint);
+}
+
+.cardCopy {
+  font-size: 0.92rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.stack2 {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.figure {
+  font-family: var(--font-d);
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+/* Rejected / error state tint. */
+.errorTint {
+  background-color: rgba(255, 77, 77, 0.08);
+  border: 1px solid rgba(255, 77, 77, 0.3);
+}
+
+/* ── Phase 5 continuation: the rest of the shared form chrome ────────────
+   Same rule as above — each class declares exactly the properties of the
+   inline object it replaces. Written against v2 tokens. */
+
+.column3 {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--line);
+  background: var(--ink);
+  color: var(--text);
+  font-family: var(--font-b);
+  font-size: 0.9rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(0, 229, 255, 0.15);
+}
+
+.errorNote {
+  color: var(--err);
+  font-family: var(--font-m);
+  font-size: 0.8rem;
+  padding: 10px 12px;
+  background: rgba(255, 77, 77, 0.1);
+  border: 1px solid rgba(255, 77, 77, 0.3);
+  border-radius: var(--r-sm);
+}
+
+.successBlock {
+  padding: var(--space-4);
+  text-align: center;
+}
+
+.successTitle {
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.successCopy {
+  color: var(--muted);
+  font-size: .9rem;
+}
+
+.introCopy {
+  color: var(--muted);
+  font-size: .9rem;
+  margin-bottom: var(--space-4);
+}
+
+.introCopySm {
+  color: var(--muted);
+  font-size: .85rem;
+  margin-bottom: var(--space-4);
+}
+
+.mutedCopy {
+  color: var(--muted);
+}
+
+.fullTop {
+  width: 100%;
+  margin-top: var(--space-2);
+}
+
+.centerBlock {
+  text-align: center;
+  margin: var(--space-6) 0;
+}
+
+.panel {
+  max-width: 600px;
+  margin: var(--space-6) auto;
+  text-align: center;
+  padding: var(--space-6);
+}
+
+.formShell {
+  margin: var(--space-6) auto;
+  max-width: 600px;
+}
+
+.navRow {
+  margin-top: var(--space-4);
+  display: flex;
+  gap: 12px;
+}
+
+.flex1 { flex: 1; }
+.flex2 { flex: 2; }
+.pushRight { margin-left: auto; }
+.spacedTop3 { margin-top: var(--space-3); }

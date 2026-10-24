@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+{% set page_title_full = "Internship Sourcing Dashboard - Admin" %}
+{% include "_head.html" %}
+<meta name="robots" content="noindex, nofollow">
+<script src="https://cdn.tailwindcss.com" nonce="{{ csp_nonce() }}"></script>
+<style nonce="{{ csp_nonce() }}">
+    .bar-bg { background-color: #e2e8f0; border-radius: 9999px; overflow: hidden; height: 12px; width: 100%; margin-top: 8px; }
+    .bar-fill { height: 100%; border-radius: 9999px; transition: width 1s ease-in-out; }
+    
+    .toggle-group { display: flex; border-radius: 6px; overflow: hidden; border: 1px solid #1a73e8; }
+    .toggle-btn { padding: 6px 16px; background: #fff; color: #1a73e8; border: none; cursor: pointer; font-weight: bold; font-size: 14px; transition: 0.2s; outline: none; }
+    .toggle-btn.active { background: #1a73e8; color: #fff; }
+</style>
+</head>
+<body class="has-staff-sidebar bg-gray-50 antialiased font-sans">
+
+<div class="max-w-7xl mx-auto p-6 md:p-10">
+    
+    <!-- Header & Back Button -->
+    <div class="flex justify-between items-center mb-6">
+        <div>
+            <h1 class="text-3xl font-bold tracking-tight text-gray-900 m-0">Internship Sourcing Dashboard</h1>
+            <p class="text-gray-500 text-sm mt-1 m-0">Real-time visibility into live internships.</p>
+        </div>
+        <a href="/admin" class="px-4 py-2 bg-blue-600 text-white rounded-md font-bold text-sm hover:bg-blue-700 transition">← Back to Admin</a>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm mb-8 flex flex-wrap items-center justify-between gap-4">
+        <div class="flex flex-wrap items-center gap-6">
+            <div>
+                <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Market Region</label>
+                <div class="toggle-group">
+                    <button class="toggle-btn active" id="btn-india" data-act-click="setRegion" data-arg-click='["India"]'>Indian</button>
+                    <button class="toggle-btn" id="btn-intl" data-act-click="setRegion" data-arg-click='["International"]'>International</button>
+                </div>
+            </div>
+            
+            <div>
+                <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Domain</label>
+                <select id="filter-domain" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2">
+                    <option value="">All Domains</option>
+                    <option value="Data Analyst">Data Analyst</option>
+                    <option value="Full Stack Development">Full Stack Development</option>
+                    <option value="AI Agent Development">AI Agent Development</option>
+                    <option value="Python Automation">Python Automation</option>
+                </select>
+            </div>
+            
+            <div>
+                <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Work Model</label>
+                <select id="filter-model" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2">
+                    <option value="">All Models</option>
+                    <option value="Remote">Remote</option>
+                    <option value="Hybrid">Hybrid</option>
+                    <option value="Onsite">Onsite</option>
+                </select>
+            </div>
+        </div>
+        
+        <button id="btn-reset-filters" data-act-click="resetFilters" class="text-sm text-gray-500 hover:text-gray-900 border border-gray-300 px-3 py-2 rounded-md">Clear Filters ↻</button>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      
+      <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm flex flex-col justify-center">
+        <h3 class="text-gray-400 text-xs font-bold uppercase tracking-wider mb-2 m-0">Matching Internships</h3>
+        <div class="text-4xl font-black text-gray-900" id="kpi-total">--</div>
+        <p class="text-xs text-green-600 mt-2 font-bold m-0">Currently live and active</p>
+      </div>
+
+      <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm flex flex-col justify-center">
+        <h3 class="text-gray-400 text-xs font-bold uppercase tracking-wider mb-2 m-0">Fully Remote Roles</h3>
+        <div class="text-4xl font-black text-gray-900" id="kpi-remote">--</div>
+        <p class="text-xs text-gray-500 mt-2 font-medium m-0">Accessible from anywhere</p>
+      </div>
+
+      <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm flex flex-col justify-center">
+        <h3 class="text-gray-400 text-xs font-bold uppercase tracking-wider mb-2 m-0">Top Stipend Bracket</h3>
+        <div class="text-2xl font-black text-gray-900 mt-2" id="kpi-stipend">--</div>
+        <p class="text-xs text-gray-500 mt-2 font-medium m-0">Excludes undisclosed roles</p>
+      </div>
+
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+      
+      <!-- Domains Breakdown -->
+      <div class="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm">
+        <h2 class="text-lg font-bold text-gray-900 mb-6 m-0">Domain Distribution</h2>
+        <div id="domains-container">Loading...</div>
+      </div>
+
+      <!-- Live Duration Breakdown -->
+      <div class="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm">
+        <h2 class="text-lg font-bold text-gray-900 mb-6 m-0">Work Models & Top Cities</h2>
+        <div id="models-container" class="mb-8">Loading...</div>
+        <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4 m-0">Top Cities (Onsite / Hybrid)</h3>
+        <div id="cities-container">Loading...</div>
+      </div>
+
+    </div>
+
+    <!-- Bottom Data Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+      
+      <!-- Timeline Pipeline -->
+      <div class="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm">
+        <h2 class="text-lg font-bold text-gray-900 mb-6 m-0">Stipend Brackets (Normalized INR)</h2>
+        <div id="stipends-container" class="space-y-4">Loading...</div>
+        <p class="text-xs text-gray-400 mt-6 text-center m-0">* Converted mathematically to standard monthly INR blocks.</p>
+      </div>
+
+      <!-- Leads Table -->
+      <div class="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm flex flex-col h-full">
+        <h2 class="text-lg font-bold text-gray-900 mb-4 m-0">Active Internship Leads</h2>
+        <div class="overflow-y-auto flex-grow" style="max-height: 400px;">
+            <table class="min-w-full text-left text-sm whitespace-nowrap">
+                <thead class="uppercase tracking-wider border-b-2 border-gray-200 bg-white sticky top-0">
+                    <tr>
+                        <th class="px-4 py-3 text-gray-500 font-bold">Company / Role</th>
+                        <th class="px-4 py-3 text-gray-500 font-bold">Location</th>
+                        <th class="px-4 py-3 text-gray-500 font-bold">Applies</th>
+                        <th class="px-4 py-3 text-gray-500 font-bold">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="jobs-table-body" class="divide-y divide-gray-100">
+                    <tr><td colspan="4" class="p-4 text-center">Loading data...</td></tr>
+                </tbody>
+            </table>
+        </div>
+      </div>
+
+    </div>
+</div>
+
+<script nonce="{{ csp_nonce() }}">
+let currentRegion = 'India';
+
+function setRegion(region) {
+    currentRegion = region;
+    document.getElementById('btn-india').classList.toggle('active', region === 'India');
+    document.getElementById('btn-intl').classList.toggle('active', region === 'International');
+    loadData();
+}
+
+function resetFilters() {
+    document.getElementById('filter-domain').value = "";
+    document.getElementById('filter-model').value = "";
+    loadData();
+}
+
+function loadData() {
+    let domain = document.getElementById('filter-domain').value;
+    let model = document.getElementById('filter-model').value;
+    
+    let url = '/api/admin/sourcing-stats?region=' + encodeURIComponent(currentRegion);
+    if(domain) url += '&domain=' + encodeURIComponent(domain);
+    if(model) url += '&work_model=' + encodeURIComponent(model);
+    
+    fetch(url)
+        .then(res => res.json())
+        .then(res => {
+            if(res.status === 'success') {
+                renderDashboard(res.data);
+            } else {
+                alert("Error loading data: " + res.message);
+            }
+        })
+        .catch(err => console.error(err));
+}
+
+function renderDashboard(data) {
+    // 1. KPIs
+    document.getElementById('kpi-total').innerText = data.total;
+    
+    let remoteObj = data.work_models.find(r => r.model === 'Remote');
+    document.getElementById('kpi-remote').innerText = remoteObj ? remoteObj.count : 0;
+    
+    let paidStipends = data.stipends.filter(s => s.stipend.includes('₹'));
+    document.getElementById('kpi-stipend').innerText = paidStipends.length > 0 ? paidStipends[0].stipend : 'Not Disclosed';
+    
+    // 2. Domains (CSS Bar Chart)
+    let dHtml = '';
+    let dMax = Math.max(...data.domains.map(d => d.count), 1);
+    data.domains.forEach(d => {
+        let pct = (d.count / dMax) * 100;
+        dHtml += `
+        <div class="mb-5">
+          <div class="flex justify-between items-end mb-1">
+            <span class="font-bold text-gray-800 text-sm">${d.domain}</span>
+            <span class="text-sm font-bold text-gray-400">${d.count}</span>
+          </div>
+          <div class="bar-bg"><div class="bar-fill bg-blue-500" style="width: ${pct}%"></div></div>
+        </div>`;
+    });
+    document.getElementById('domains-container').innerHTML = dHtml || '<p class="text-gray-400">No data</p>';
+    
+    // 3. Work Models (CSS Bar Chart)
+    let mHtml = '';
+    let mMax = Math.max(...data.work_models.map(d => d.count), 1);
+    data.work_models.forEach(d => {
+        let pct = (d.count / mMax) * 100;
+        let color = d.model === 'Remote' ? 'bg-green-500' : (d.model === 'Hybrid' ? 'bg-yellow-500' : 'bg-red-500');
+        mHtml += `
+        <div class="mb-4">
+          <div class="flex justify-between items-end mb-1">
+            <span class="font-bold text-gray-800 text-sm">${d.model}</span>
+            <span class="text-sm font-bold text-gray-400">${d.count}</span>
+          </div>
+          <div class="bar-bg h-2"><div class="bar-fill ${color}" style="width: ${pct}%"></div></div>
+        </div>`;
+    });
+    document.getElementById('models-container').innerHTML = mHtml || '<p class="text-gray-400">No data</p>';
+    
+    // 4. Top Cities (CSS Bar Chart)
+    let cHtml = '';
+    let cMax = Math.max(...data.cities.map(d => d.count), 1);
+    data.cities.forEach(d => {
+        let pct = (d.count / cMax) * 100;
+        cHtml += `
+        <div class="mb-3">
+          <div class="flex justify-between items-end mb-1">
+            <span class="font-medium text-gray-700 text-xs">${d.city}</span>
+            <span class="text-xs font-bold text-gray-400">${d.count}</span>
+          </div>
+          <div class="bar-bg h-1.5"><div class="bar-fill bg-indigo-500" style="width: ${pct}%"></div></div>
+        </div>`;
+    });
+    document.getElementById('cities-container').innerHTML = cHtml || '<p class="text-gray-400 text-sm">No onsite/hybrid cities found.</p>';
+    
+    // 5. Stipends List
+    let sHtml = '';
+    data.stipends.slice(0, 7).forEach(s => {
+        sHtml += `
+        <div class="flex items-center justify-between p-3 rounded-lg bg-gray-50 border border-gray-100">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded bg-blue-500 flex items-center justify-center text-white text-sm font-bold">₹</div>
+                <span class="font-bold text-sm text-gray-800">${s.stipend}</span>
+            </div>
+            <span class="font-black text-gray-900">${s.count}</span>
+        </div>`;
+    });
+    document.getElementById('stipends-container').innerHTML = sHtml || '<p class="text-gray-400">No data</p>';
+    
+    // 6. Data Table
+    const tbody = document.getElementById('jobs-table-body');
+    tbody.innerHTML = '';
+    
+    if(data.jobs.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" class="text-center p-4 text-gray-500">No matching internships found.</td></tr>';
+        return;
+    }
+    
+    data.jobs.forEach(job => {
+        let badgeColor = 'bg-red-100 text-red-800';
+        if(job.work_model === 'Remote') badgeColor = 'bg-green-100 text-green-800';
+        if(job.work_model === 'Hybrid') badgeColor = 'bg-yellow-100 text-yellow-800';
+        
+        let tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td class="px-4 py-3 border-b border-gray-50">
+                <div class="font-bold text-gray-900">${job.company}</div>
+                <div class="text-xs text-gray-500">${job.role}</div>
+            </td>
+            <td class="px-4 py-3 border-b border-gray-50">
+                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-bold ${badgeColor} mr-2">${job.work_model}</span>
+                <span class="text-xs text-gray-600">${job.location}</span>
+            </td>
+            <td class="px-4 py-3 border-b border-gray-50">
+                <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-black bg-blue-100 text-blue-800">${job.clicks} Applies</span>
+            </td>
+            <td class="px-4 py-3 border-b border-gray-50">
+                <a href="/admin/sourcing/click/${job.id}" target="_blank" class="text-blue-600 hover:text-blue-800 font-bold text-sm">View ↗</a>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+// Initial load & event bindings
+document.addEventListener("DOMContentLoaded", function() {
+    loadData();
+    var bIndia = document.getElementById('btn-india');
+    if (bIndia) bIndia.addEventListener('click', function(){ setRegion('India'); });
+    var bIntl = document.getElementById('btn-intl');
+    if (bIntl) bIntl.addEventListener('click', function(){ setRegion('International'); });
+    var fDom = document.getElementById('filter-domain');
+    if (fDom) fDom.addEventListener('change', loadData);
+    var fMod = document.getElementById('filter-model');
+    if (fMod) fMod.addEventListener('change', loadData);
+    var rBtn = document.getElementById('btn-reset-filters');
+    if (rBtn) rBtn.addEventListener('click', resetFilters);
+});
+window.setRegion = setRegion;
+window.resetFilters = resetFilters;
+window.loadData = loadData;
+</script>
+</body>
+</html>

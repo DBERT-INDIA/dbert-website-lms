@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Bricolage_Grotesque, Inter, JetBrains_Mono, Caveat } from 'next/font/google'
+import { Bricolage_Grotesque, Inter, JetBrains_Mono, Space_Grotesk } from 'next/font/google'
 import './globals.css'
 import Script from 'next/script'
 import MegaMenu from '@/components/layout/MegaMenu'
@@ -10,11 +10,9 @@ import RevealObserver from '@/components/ui/RevealObserver'
 import Breadcrumbs from '@/components/seo/Breadcrumbs'
 import ScrollProgress from '@/components/ui/ScrollProgress'
 import BackToTop from '@/components/ui/BackToTop'
+import { GA_MEASUREMENT_ID } from '@/lib/analytics'
 
-/* Design system v2 typefaces. All four are variable fonts, so no `weight` is
-   specified — the full axis ships in one file. Self-hosted and preloaded by
-   next/font, which removes the render-blocking Google Fonts @import that
-   globals.css used to carry. */
+/* Design system v2 typefaces with Option A Space Grotesk editorial precision. */
 const bricolage = Bricolage_Grotesque({
   subsets: ['latin'],
   display: 'swap',
@@ -27,25 +25,21 @@ const inter = Inter({
   variable: '--font-inter-src',
 })
 
-/* Mono and Caveat set micro-copy and margin annotations, never the LCP element.
-   Preloading all four families put ~244KB on the critical path and pushed mobile
-   LCP to 6.9s; these two now load lazily instead. */
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-space-src',
+})
+
 const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
-  style: ['normal', 'italic'], // italic sets the `born from:` provenance lines
+  style: ['normal', 'italic'],
   display: 'swap',
   preload: false,
   variable: '--font-jetbrains-src',
 })
 
-const caveat = Caveat({
-  subsets: ['latin'],
-  display: 'swap',
-  preload: false,
-  variable: '--font-caveat-src',
-})
-
-const fontVariables = `${bricolage.variable} ${inter.variable} ${jetbrainsMono.variable} ${caveat.variable}`
+const fontVariables = `${bricolage.variable} ${inter.variable} ${jetbrainsMono.variable} ${spaceGrotesk.variable}`
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -84,27 +78,23 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={fontVariables}>
       <head>
-        {/* GA4 — insert ONCE here, NOT on individual pages.
-            lazyOnload rather than afterInteractive: the gtag bundle is ~163KB,
-            the single largest transfer on the page, and loading it during
-            hydration cost ~290ms of blocking time on mobile. */}
-        {process.env.NEXT_PUBLIC_GA_ID && (
-          <>
-            <link rel="preconnect" href="https://www.googletagmanager.com" />
-            <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
-              strategy="lazyOnload"
-            />
-            <Script id="ga4-init" strategy="lazyOnload">
-              {`
-                window.dataLayer = window.dataLayer || [];
-                function gtag(){dataLayer.push(arguments);}
-                gtag('js', new Date());
-                gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
-              `}
-            </Script>
-          </>
-        )}
+        {/* GA4 Telemetry (G-GZ17KZ7MDW) — loads seamlessly across static export */}
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
+          strategy="lazyOnload"
+        />
+        <Script id="ga4-init" strategy="lazyOnload">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_MEASUREMENT_ID}', {
+              page_path: window.location.pathname,
+              send_page_view: true
+            });
+          `}
+        </Script>
         <Script id="org-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Organization",

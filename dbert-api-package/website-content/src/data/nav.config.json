@@ -1,0 +1,149 @@
+{
+  "logo": {
+    "text": "DBERT",
+    "tagline": "Education · Research · Technology",
+    "href": "/"
+  },
+  "items": [
+    {
+      "label": "For Startups",
+      "type": "mega",
+      "featured": {
+        "badge": "Incubation Model",
+        "title": "Build For Equity",
+        "desc": "Skip early cash burn. We architect, build, and ship your MVP as your technical co-founder for 2–8% equity.",
+        "ctaLabel": "Explore Services",
+        "href": "/startups/services"
+      },
+      "columns": [
+        {
+          "title": "Services",
+          "links": [
+            { "label": "Hire Pre-Vetted Engineers", "href": "/hire/pre-vetted-engineers", "highlight": true },
+            { "label": "Technical Assistance", "href": "/startups/services/technical" },
+            { "label": "Hiring Assistance", "href": "/startups/services/hiring" },
+            { "label": "Legal & Compliance", "href": "/startups/services/legal" },
+            { "label": "AI/ML Infrastructure Setup", "href": "/startups/services/infrastructure" }
+          ]
+        },
+        {
+          "title": "Funding & Equity",
+          "links": [
+            { "label": "Seed Funding", "href": "/startups/services/funding" },
+            { "label": "Equity Model & Terms", "href": "/startups/services/equity" },
+            { "label": "Investor Network", "href": "/startups/investor-network" },
+            { "label": "Term Sheet Templates", "href": "/startups/services/equity/term-sheets" }
+          ]
+        },
+        {
+          "title": "Resources",
+          "links": [
+            { "label": "Register Your Startup", "href": "/startups/register", "highlight": true },
+            { "label": "Startup Portfolio", "href": "/startups/portfolio" }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "Products",
+      "type": "dropdown",
+      "links": [
+        { "label": "DBERT Chat (Private LLM)", "href": "/ai-solutions/products/dbert-chat" },
+        { "label": "Document AI (Ingest & OCR)", "href": "/ai-solutions/products/document-ai" },
+        { "label": "Certificate Verification API", "href": "/ai-solutions/products/certificate-verification-api" },
+        { "label": "Hiring Automation Suite", "href": "/ai-solutions/products/hiring-automation-suite" },
+        { "label": "Intern Management System", "href": "/ai-solutions/products/intern-management-system" }
+      ]
+    },
+    {
+      "label": "Enterprise AI",
+      "type": "mega",
+      "featured": {
+        "badge": "Sovereign AI",
+        "title": "Private LLM Pipeline",
+        "desc": "Fine-tune and deploy sovereign LLMs in your VPC with zero telemetry and 100% intellectual property transfer.",
+        "ctaLabel": "View Architecture",
+        "href": "/ai-solutions/llm-training/pipeline"
+      },
+      "columns": [
+        {
+          "title": "Consulting & MLOps",
+          "links": [
+            { "label": "AI Consultant Interface", "href": "/ai-consultant", "highlight": true },
+            { "label": "Enterprise Consultation", "href": "/ai-solutions/consultation" },
+            { "label": "AI Readiness Assessment", "href": "/ai-solutions/consultation" }
+          ]
+        },
+        {
+          "title": "Model Engineering",
+          "links": [
+            { "label": "Fine-Tuning Pipeline", "href": "/ai-solutions/llm-training/pipeline" },
+            { "label": "DBERT_AI Architecture", "href": "/ai-solutions/llm-training/dbert-ai" },
+            { "label": "Private Model Hosting", "href": "/ai-solutions/llm-training/private-hosting" }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "For Learners",
+      "type": "mega",
+      "featured": {
+        "badge": "Production Engineering",
+        "title": "The AI Fellowship",
+        "desc": "Work on live enterprise squads, merge production pull requests, and deploy sovereign models.",
+        "ctaLabel": "Explore Fellowship",
+        "href": "/learners/fellowship"
+      },
+      "columns": [
+        {
+          "title": "Progression Ladder",
+          "links": [
+            { "label": "DBERT Launchpad (0-to-1)", "href": "/learners/launchpad" },
+            { "label": "DBERT Accelerate (Mid-Level)", "href": "/learners/accelerate" },
+            { "label": "DBERT Fellowship (Paid)", "href": "/learners/fellowship", "highlight": true }
+          ]
+        },
+        {
+          "title": "Specialized Courses",
+          "links": [
+            { "label": "AI Agent Development", "href": "/learners/courses/ai-agent-development" },
+            { "label": "Generative AI", "href": "/learners/courses/generative-ai" },
+            { "label": "Machine Learning", "href": "/learners/courses/machine-learning" },
+            { "label": "Python Automation", "href": "/learners/courses/python-automation" },
+            { "label": "Full Stack Development", "href": "/learners/courses/full-stack-development" },
+            { "label": "Data Analytics", "href": "/learners/courses/data-analytics" },
+            { "label": "Interview Preparation", "href": "/learners/interview-prep" }
+          ]
+        },
+        {
+          "title": "External Portal",
+          "links": [
+            { "label": "Job Board", "href": "https://internship.dbert.online/jobs", "external": true },
+            { "label": "Apply for Fellowship", "href": "https://internship.dbert.online/apply", "external": true, "highlight": true }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "DBERT Labs",
+      "type": "link",
+      "href": "/labs"
+    },
+    {
+      "label": "About",
+      "type": "dropdown",
+      "links": [
+        { "label": "Our Story & Studio", "href": "/about" },
+        { "label": "Practitioners & Architects", "href": "/about/team" },
+        { "label": "Audited Credentials", "href": "/about/credentials" },
+        { "label": "Careers & Hiring", "href": "/about/careers" },
+        { "label": "Contact Us", "href": "/about/contact" }
+      ]
+    }
+  ],
+  "cta": {
+    "label": "Apply for Fellowship",
+    "href": "https://internship.dbert.online/",
+    "external": true
+  }
+}

@@ -1,0 +1,80 @@
+# ==============================================================================
+# DBERT.online — Apache Static Site Configuration for cPanel
+# ==============================================================================
+
+DirectoryIndex index.html
+Options -MultiViews -Indexes
+
+RewriteEngine On
+RewriteBase /
+
+# 1. Force HTTPS
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# 1.1 Redirect /jobs and /internships to internship.dbert.online subdomain
+RewriteCond %{HTTP_HOST} ^(www\.)?dbert\.online$ [NC]
+RewriteRule ^jobs/?$ https://internship.dbert.online/jobs [L,R=301]
+
+RewriteCond %{HTTP_HOST} ^(www\.)?dbert\.online$ [NC]
+RewriteRule ^internships/?(.*)$ https://internship.dbert.online/internships/$1 [L,R=301]
+
+# 2. Serve static physical files or directories if they exist
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# 3. Directory Index support for subfolders without trailing slash
+RewriteCond %{DOCUMENT_ROOT}/$1/index.html -f
+RewriteRule ^(.*)/?$ $1/index.html [L]
+
+# 3.1 Dynamic Blog Reader fallback for newly approved posts (maintains clean /blog/<slug> URL)
+RewriteCond %{REQUEST_URI} ^/blog/([a-zA-Z0-9_-]+)/?$
+RewriteCond %{DOCUMENT_ROOT}/blog/%1/index.html !-f
+RewriteCond %{DOCUMENT_ROOT}/blog/%1.html !-f
+RewriteRule ^blog/([a-zA-Z0-9_-]+)/?$ blog/reader/index.html?slug=$1 [L,QSA]
+
+# 4. Custom 404 Error Document
+ErrorDocument 404 /404.html
+
+# 5. Security Headers
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# 6. Ensure Correct MIME Types for CSS, JS, and Fonts
+<IfModule mod_mime.c>
+  AddType text/css .css
+  AddType application/javascript .js
+  AddType image/svg+xml .svg
+  AddType font/woff2 .woff2
+  AddType font/woff .woff
+  AddType font/ttf .ttf
+</IfModule>
+
+# 7. Grant Public Access to all static assets and subfolders
+<FilesMatch "\.(css|js|woff2|woff|ttf|svg|png|jpg|jpeg|gif|ico|webp|txt|xml|html)$">
+  <IfModule mod_authz_core.c>
+    Require all granted
+  </IfModule>
+</FilesMatch>
+
+# 8. Browser Caching for Next.js Static Assets
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css "access plus 1 year"
+  ExpiresByType application/javascript "access plus 1 year"
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/png "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType image/x-icon "access plus 1 year"
+</IfModule>
+
+# 9. Gzip / Deflate Compression
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/javascript application/json
+</IfModule>

@@ -1,0 +1,255 @@
+/* ═══ REGIONAL OPPORTUNITY BENTO — Option A Dark Foundry ═══
+   Bilateral keyword anchors linking dbert.online -> internship.dbert.online */
+
+.section {
+  padding: 56px 0;
+  border-top: 1px solid var(--line);
+  background: var(--surface-base);
+  position: relative;
+}
+
+.header {
+  margin-bottom: 32px;
+}
+
+.doclabel {
+  font-family: var(--font-m);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+  display: block;
+}
+
+.title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+
+.lede {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  line-height: 1.6;
+  max-width: 720px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 28px;
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+  text-decoration: none;
+}
+
+.card:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0, 242, 254, 0.08);
+}
+
+.metaRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.cityTag {
+  font-family: var(--font-m);
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgba(0, 242, 254, 0.08);
+  color: var(--accent);
+  border: 1px solid rgba(0, 242, 254, 0.25);
+}
+
+.stipendTag {
+  font-family: var(--font-m);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #34d399; /* Mint / Emerald */
+}
+
+.roleTitle {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 8px;
+  line-height: 1.4;
+  transition: color 0.2s;
+}
+
+.card:hover .roleTitle {
+  color: var(--accent);
+}
+
+.roleDesc {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 16px;
+  flex-grow: 1;
+}
+
+.tagsRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.techChip {
+  font-family: var(--font-m);
+  font-size: 0.68rem;
+  color: var(--text-faint);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 2px 7px;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.actionRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  font-family: var(--font-m);
+  font-size: 0.75rem;
+}
+
+.actionText {
+  color: var(--accent);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.statusIndicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-faint);
+}
+
+.liveDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #34d399;
+  box-shadow: 0 0 6px #34d399;
+}
+
+/* Bottom Hub & Filter Bar */
+.bottomHubBar {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.hubPrompt {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.hubTitle {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.hubSub {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.hubLinks {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.hubBtn {
+  font-family: var(--font-m);
+  font-size: 0.76rem;
+  font-weight: 700;
+  padding: 8px 14px;
+  border-radius: var(--r-sm);
+  text-decoration: none;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hubBtnPrimary {
+  background: var(--accent);
+  color: #050811;
+}
+
+.hubBtnPrimary:hover {
+  background: #ffffff;
+  box-shadow: 0 0 12px rgba(0, 242, 254, 0.4);
+}
+
+.hubBtnOutline {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--line);
+}
+
+.hubBtnOutline:hover {
+  color: #ffffff;
+  border-color: var(--accent);
+}
+
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  .bottomHubBar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .hubLinks {
+    width: 100%;
+  }
+  .hubBtn {
+    flex: 1;
+    justify-content: center;
+  }
+}

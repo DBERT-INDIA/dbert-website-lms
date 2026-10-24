@@ -1,0 +1,295 @@
+/* Homepage — Option A Cyber-Industrial Foundry + Handcrafted Craftsmanship
+   Strict single-color solid background (#050811), zero blueprint grids, zero dotted lines.
+   High contrast, responsive HUD layout, human touches. */
+
+/* ═══ HERO ═══ */
+.hero {
+  padding: 88px 0 68px;
+  position: relative;
+  background: var(--bg);
+}
+
+.heroGrid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 52px;
+  align-items: center;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-m);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid rgba(0, 229, 255, 0.3);
+  background: rgba(0, 229, 255, 0.05);
+  border-radius: var(--r-sm);
+  padding: 6px 14px;
+  margin-bottom: 24px;
+}
+
+.pulse {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ok);
+  box-shadow: 0 0 0 0 rgba(0, 230, 153, 0.6);
+  animation: pulse 2.2s infinite;
+  flex-shrink: 0;
+}
+
+@keyframes pulse {
+  70% {
+    box-shadow: 0 0 0 8px rgba(0, 230, 153, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 230, 153, 0);
+  }
+}
+
+.heroTitle {
+  font-family: var(--font-d);
+  font-size: clamp(2.6rem, 5vw, 4.2rem);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  color: var(--text);
+  margin-bottom: 22px;
+  font-weight: 700;
+}
+
+.sub {
+  font-size: 1.12rem;
+  color: var(--muted);
+  line-height: 1.65;
+  max-width: 540px;
+  margin: 0 0 32px;
+}
+
+.ctas {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.heroTelemetry {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  font-family: var(--font-m);
+  font-size: 0.72rem;
+  color: var(--faint);
+  letter-spacing: 0.04em;
+}
+
+.heroTelemetryItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.heroTelemetryDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* ═══ STAT BAR ═══ */
+.statBarSection {
+  padding: 16px 0 44px;
+  position: relative;
+  background: var(--bg);
+}
+
+.statBar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-4);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: var(--space-5) var(--space-6);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: relative;
+}
+
+.statItem:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: -12px;
+  top: 15%;
+  height: 70%;
+  width: 1px;
+  background: var(--line);
+}
+
+.statHud {
+  font-family: var(--font-m);
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+
+.statNum {
+  font-family: var(--font-d);
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.statLabel {
+  font-family: var(--font-m);
+  font-size: 0.74rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.footnote {
+  font-family: var(--font-m);
+  font-size: 0.72rem;
+  color: var(--faint);
+  margin-top: 14px;
+  text-align: right;
+}
+
+.footnote sup {
+  color: var(--signal);
+}
+
+/* ═══ DOORS SECTION ═══ */
+.doorsSection {
+  padding: 64px 0 84px;
+  position: relative;
+  background: var(--bg);
+}
+
+/* ═══ LADDER NOTE ═══ */
+.ladderNote {
+  margin-top: 34px;
+  text-align: right;
+}
+
+/* ═══ CRAWLER PROSE / STUDIO PHILOSOPHY ═══ */
+.about {
+  max-width: 740px;
+  margin: 0 auto;
+  text-align: center;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: 44px 36px;
+}
+
+.about h2 {
+  font-family: var(--font-d);
+  font-size: 1.85rem;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+
+.about p {
+  color: var(--muted);
+  line-height: 1.75;
+  font-size: 0.95rem;
+}
+
+.about p a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.about p a:hover {
+  color: #fff;
+}
+
+/* ═══ BOTTOM CTA ═══ */
+.cta {
+  text-align: center;
+  padding: 110px 24px;
+  position: relative;
+  overflow: hidden;
+  background: var(--bg);
+  border-top: 1px solid var(--line);
+}
+
+.cta h2 {
+  font-family: var(--font-d);
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  max-width: 680px;
+  margin: 0 auto 18px;
+  position: relative;
+  color: var(--text);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.cta p {
+  color: var(--muted);
+  max-width: 500px;
+  margin: 0 auto 34px;
+  position: relative;
+  font-size: 1.08rem;
+  line-height: 1.6;
+}
+
+.fine {
+  font-family: var(--font-m);
+  font-size: 0.74rem;
+  color: var(--faint);
+  margin-top: 26px;
+  position: relative;
+  letter-spacing: 0.04em;
+}
+
+/* Section Rhythm Utilities */
+.labelOk { color: var(--ok); }
+.labelSignal { color: var(--signal); }
+.flushTop { padding-top: 0; }
+
+@media (max-width: 1040px) {
+  .heroGrid {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+  .statBar {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+  }
+  .statItem:not(:last-child)::after {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero {
+    padding: 48px 0 40px;
+  }
+  .statBar {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+    padding: var(--space-4);
+  }
+  .footnote {
+    text-align: left;
+  }
+}

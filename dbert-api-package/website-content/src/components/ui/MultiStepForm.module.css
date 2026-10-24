@@ -1,0 +1,172 @@
+.formContainer {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.stepsIndicator {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-4);
+  position: relative;
+}
+
+.stepsIndicator::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--line);
+  z-index: 0;
+}
+
+.stepDot {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--r-sm);
+  background-color: var(--raise);
+  border: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-m);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--faint);
+  position: relative;
+  z-index: 1;
+  transition: all 0.25s ease;
+}
+
+.activeDot {
+  background-color: var(--accent);
+  border-color: var(--accent);
+  color: #050811;
+  box-shadow: 0 0 14px rgba(0, 229, 255, 0.4);
+}
+
+.errorAlert {
+  background-color: rgba(255, 77, 77, 0.1);
+  border: 1px solid var(--err);
+  color: var(--err);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--r-sm);
+  font-family: var(--font-m);
+  font-size: 0.8rem;
+  margin-bottom: var(--space-3);
+  text-align: center;
+}
+
+.formStep {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.stepTitle {
+  font-family: var(--font-d);
+  font-size: 1.45rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: var(--space-2);
+  color: var(--text);
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fieldGroup label {
+  font-family: var(--font-m);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.fieldGroup input, .fieldGroup select, .fieldGroup textarea {
+  width: 100%;
+  background-color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  color: var(--text);
+  padding: 12px 14px;
+  font-family: var(--font-b);
+  font-size: 0.9rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.fieldGroup input:focus, .fieldGroup select:focus, .fieldGroup textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(0, 229, 255, 0.15);
+}
+
+.fieldGroup textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.checkboxContainer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-2);
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+}
+
+.checkboxLabel input {
+  accent-color: var(--accent);
+  width: 16px;
+  height: 16px;
+}
+
+.checkboxLabel span {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.consentCheckbox {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  cursor: pointer;
+  margin-top: var(--space-2);
+}
+
+.consentCheckbox input {
+  accent-color: var(--accent);
+  width: 16px;
+  height: 16px;
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+
+.consentCheckbox span {
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.formNav {
+  display: flex;
+  margin-top: var(--space-4);
+  border-top: 1px solid var(--line);
+  padding-top: var(--space-3);
+}
+
+@media (max-width: 500px) {
+  .checkboxContainer {
+    grid-template-columns: 1fr;
+  }
+}

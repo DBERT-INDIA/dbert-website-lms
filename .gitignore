@@ -1,3 +1,62 @@
+# Databases & SQLite files (Strictly kept locally - never committed)
+*.db
+*.db*
+*.db-journal
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite3
+*.wal
+*.shm
+apps/portal/*.db*
+apps/portal/cgi-bin/*.db*
+dbert-api-package/databases/*.db*
+databases/*.db*
+
+# Environment & Secrets (Strictly kept locally - never committed)
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+apps/portal/.env
+apps/website/.env
+apps/website/cpanel-build/.env
+dbert-api-package/.env
+*credentials*
+*secret*
+*.csv
+!.env.example
+!.env.production.sample
+!apps/portal/.env.example
+!apps/website/.env.example
+!dbert-api-package/.env.example
+!dbert-api-package/.env.production.sample
+
+# Binary executables & compiled extensions
+*.exe
+*.pyd
+*.dll
+*.so
+*.dylib
+*.dist-info/
+*.egg-info/
+apps/portal/bin/
+
+# Large binary archives & test scratches
+scratch/
+*.zip
+*.tar.gz
+*.tgz
+
+# Uploaded candidate files & user submissions (Keep locally)
+apps/portal/uploads/*
+!apps/portal/uploads/.gitkeep
+dbert-api-package/uploads/*
+!dbert-api-package/uploads/.gitkeep
+uploads/*
+!uploads/.gitkeep
+
 # Python & Pytest
 __pycache__/
 *.py[cod]
@@ -5,27 +64,17 @@ __pycache__/
 .pytest_cache/
 .coverage
 htmlcov/
-*.db
-*.sqlite3
-
-# Uploads & Temporary artifacts
-apps/portal/uploads/*
-!apps/portal/uploads/.gitkeep
 *.log
 *.tmp
 *.bak
-*.csv
 
-# Node & Frontend
+# Node & Frontend build artifacts
 node_modules/
 .next/
 build/
 dist/
+out/
+cpanel-build/
 *.tsbuildinfo
-
-# Environment & Secrets
-.env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.DS_Store
+Thumbs.db

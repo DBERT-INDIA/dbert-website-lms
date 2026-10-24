@@ -5,8 +5,8 @@
 }
 
 .prod {
-  background: var(--card);
-  border: 1px solid var(--line);
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--r-md);
   padding: 28px;
   transition: all .3s var(--ease);
@@ -18,15 +18,17 @@
 
 .prod:hover {
   transform: translateY(-4px);
-  border-color: rgba(91, 140, 255, .35);
-  background: var(--card-hi);
+  border-color: rgba(0, 242, 254, .40);
+  background: var(--surface-card-hover);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, .8), 0 0 20px rgba(0, 242, 254, .08);
 }
 
 .ic {
   width: 44px;
   height: 44px;
-  border-radius: 11px;
-  background: var(--accent-soft);
+  border-radius: 10px;
+  background: rgba(0, 242, 254, .1);
+  border: 1px solid rgba(0, 242, 254, .2);
   display: grid;
   place-items: center;
   color: var(--accent);
@@ -38,7 +40,10 @@
 }
 
 .prod h3 {
-  font-size: 1.08rem;
+  font-family: var(--font-tech);
+  font-weight: 700;
+  font-size: 1.12rem;
+  color: var(--text-primary);
 }
 
 .prod p {

@@ -1,0 +1,13 @@
+User-Agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /login/
+Disallow: /api/
+
+User-Agent: Mediapartners-Google
+Allow: /
+
+User-Agent: Googlebot-Image
+Allow: /
+
+Sitemap: https://dbert.online/sitemap.xml

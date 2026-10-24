@@ -18,41 +18,41 @@
    which is why there is no @import url(...) at the top of this file.
    ═══════════════════════════════════════════════════════════ */
 
-/* ── 1. Design tokens (v2.2 Semantic Architecture) ─────────── */
+/* ── 1. Design tokens (Option A: Cyber-Industrial Foundry) ─── */
 :root {
-  /* Surface Hierarchy */
-  --surface-base: #06090F;
-  --surface-raised: #0B101A;
-  --surface-card: #0F1523;
-  --surface-card-hover: #141C2E;
-  --surface-overlay: rgba(6, 9, 15, 0.85);
+  /* Surface Hierarchy (Solid #050811 Canvas) */
+  --surface-base: #050811;
+  --surface-raised: #080D18;
+  --surface-card: #090E1A;
+  --surface-card-hover: #0E1626;
+  --surface-overlay: rgba(5, 8, 17, 0.92);
 
-  /* Legacy base aliases preserved for backward compatibility */
+  /* Legacy base aliases */
   --ink: var(--surface-base);
   --raise: var(--surface-raised);
   --card: var(--surface-card);
   --card-hi: var(--surface-card-hover);
 
-  /* Lines & Borders */
-  --border-subtle: rgba(148, 163, 196, .12);
-  --border-strong: rgba(148, 163, 196, .22);
-  --border-focus: #5B8CFF;
+  /* Lines & Borders — Razor Cyan */
+  --border-subtle: rgba(0, 242, 254, 0.16);
+  --border-strong: rgba(0, 242, 254, 0.32);
+  --border-focus: #00F2FE;
   --line: var(--border-subtle);
   --line-strong: var(--border-strong);
 
   /* Accents & Brand Signals */
-  --accent: #5B8CFF;
-  --accent-soft: rgba(91, 140, 255, .12);
+  --accent: #00F2FE;
+  --accent-soft: rgba(0, 242, 254, 0.12);
   --signal: #FFB454;
-  --ok: #34D399;
+  --ok: #10B981;
   --err: #E07A5F;
 
   /* Typography & Foreground Contrast Hierarchy */
-  --text-primary: #EEF2FA;
-  --text-secondary: #D1D9E6;
-  --text-muted: #93A0B8;
-  --text-faint: #7A726A;
-  --text-on-accent: #05070C;
+  --text-primary: #E8F4FF;
+  --text-secondary: #CBD5E1;
+  --text-muted: #94A3B8;
+  --text-faint: #64748B;
+  --text-on-accent: #050811;
   --text: var(--text-primary);
   --muted: var(--text-muted);
   --faint: var(--text-faint);
@@ -60,8 +60,9 @@
   /* Font Families (next/font supplies the --font-*-src variables from layout.tsx) */
   --font-d: var(--font-bricolage-src), 'Bricolage Grotesque', sans-serif;
   --font-b: var(--font-inter-src), 'Inter', sans-serif;
+  --font-tech: var(--font-space-src), 'Space Grotesk', sans-serif;
   --font-m: var(--font-jetbrains-src), 'JetBrains Mono', monospace;
-  --font-h: var(--font-caveat-src), 'Caveat', cursive; /* Protected Handcrafted Signature */
+  --font-h: var(--font-space-src), 'Space Grotesk', sans-serif; /* Human Craftsmanship Italic */
 
   --max: 1200px;
   --r-sm: 8px;
@@ -83,81 +84,26 @@
   --space-16: 128px;
 }
 
-/* Phase 5.7 deleted the v1 alias layer that used to live here — ~25 --color-*,
-   --font-*, --radius-*, --shadow-* and --max-width names mapped onto the v2
-   tokens above so unmigrated pages kept rendering. Every page and component is
-   now written against the v2 tokens directly, so the aliases had no consumers.
-   Nothing should be written against the old names again.
-
-   The [data-theme="enterprise"] token overrides went with them: they only ever
-   set --radius-* and --color-accent*, all of which were alias names, so by the
-   time the last page was migrated the block was already a no-op. What the
-   theme still does — dim the glow on /startups, /ai-solutions and /admin —
-   is the rule below, and ThemeSetter still sets the attribute for it. */
 [data-theme="enterprise"] .glow-spot {
-  opacity: .1;
+  opacity: .15;
   filter: blur(100px);
 }
 
-/* ── 3. Reset, base, atmosphere ────────────── */
+/* ── 3. Reset, base, atmosphere (Solid 1-Colour Canvas) ────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 
 body {
-  background: var(--ink);
+  background: var(--surface-base);
   color: var(--text);
-  font-family: var(--font-b);
+  font-family: var(--font-tech);
   font-size: 16px;
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
 
-/* Blueprint grid — fades out toward the bottom of the viewport. */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background-image:
-    linear-gradient(rgba(148, 163, 196, .03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(148, 163, 196, .03) 1px, transparent 1px);
-  background-size: 56px 56px;
-  mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, #000 30%, transparent 75%);
-  -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 0%, #000 30%, transparent 75%);
-}
-
-/* Film grain — kills the flat "rendered" look.
- *
- * Two deliberate departures from the reference, both measured:
- *  1. `background-size` tiles the noise at 200px. The reference set no size, so
- *     the SVG stretched to the element box and the browser rasterised
- *     feTurbulence across the whole surface. That alone cost 2.1s of mobile LCP.
- *  2. `inset` is -4% rather than -50%. The keyframes translate at most 3%, so
- *     -4% is all the bleed the animation needs; -50% painted 4x the viewport.
- * Together these keep the effect identical and give back ~9 Lighthouse points.
- */
-body::after {
-  content: '';
-  position: fixed;
-  inset: -4%;
-  pointer-events: none;
-  z-index: 99;
-  opacity: .035;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 200px 200px;
-  background-repeat: repeat;
-  animation: grain 9s steps(6) infinite;
-}
-
-@keyframes grain {
-  0%, 100% { transform: translate(0, 0); }
-  20% { transform: translate(-3%, 2%); }
-  40% { transform: translate(2%, -3%); }
-  60% { transform: translate(-2%, -2%); }
-  80% { transform: translate(3%, 2%); }
-}
+/* ZERO blueprint grids, ZERO check lines, ZERO noise grain */
 
 ::selection { background: var(--signal); color: #1A1206; }
 
@@ -241,27 +187,72 @@ code { font-family: var(--font-m); font-size: .9em; }
   color: var(--text);
 }
 
-/* Handwritten margin notes. */
+/* Handwritten margin notes (Human Craftsmanship Italic) */
 .handnote {
-  font-family: var(--font-h);
-  font-size: 1.25rem;
+  font-family: var(--font-tech);
+  font-style: italic;
+  font-size: 1.15rem;
   color: var(--signal);
   line-height: 1.25;
-  transform: rotate(-2.5deg);
+  transform: rotate(-1.5deg);
   display: inline-block;
 }
-.handnote.blue { color: #8FB2FF; }
+.handnote.blue { color: var(--accent); }
 
-/* Buttons. NOTE: .btn/.btn-primary/.btn-ghost are v2 definitions and
-   deliberately replace their v1 equivalents site-wide — see the Phase 1 entry
-   in the progress log. v1-only variants (.btn-outline/.btn-lg/.btn-sm) are
-   kept in section 6 and must stay declared after these to win on padding. */
+/* Option A Cyber Card */
+.cyber-panel {
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-md);
+  transition: all 0.25s var(--ease);
+}
+.cyber-panel:hover {
+  border-color: rgba(0, 242, 254, 0.40);
+  box-shadow: 0 8px 30px rgba(0, 242, 254, 0.08);
+}
+
+/* Human Field Note Annotation */
+.field-note {
+  background: rgba(255, 180, 84, 0.04);
+  border-left: 3px solid var(--signal);
+  font-family: var(--font-tech);
+  font-style: italic;
+  color: #E2E8F0;
+  padding: 14px 18px;
+  border-radius: 0 var(--r-sm) var(--r-sm) 0;
+}
+
+/* Tactile Stamped Seal */
+.stamp-seal {
+  border: 1.5px dashed var(--signal);
+  color: var(--signal);
+  font-family: var(--font-m);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transform: rotate(-1.5deg);
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+
+/* Monospace HUD Label */
+.hud-label {
+  font-family: var(--font-m);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* Buttons — Option A Cyber Precision */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  font-weight: 600;
+  font-family: var(--font-tech);
+  font-weight: 700;
   font-size: .92rem;
   padding: 13px 26px;
   border-radius: var(--r-sm);
@@ -272,23 +263,25 @@ code { font-family: var(--font-m); font-size: .9em; }
 }
 .btn-primary {
   background: var(--accent);
-  color: #05070C;
+  color: #050811;
   border-color: var(--accent);
 }
 .btn-primary:hover {
-  background: #7CA3FF;
+  background: #7CF6FF;
   transform: translateY(-2px);
-  box-shadow: 0 10px 28px rgba(91, 140, 255, .28);
+  box-shadow: 0 0 24px rgba(0, 242, 254, 0.45);
 }
-.btn-ghost {
+.btn-ghost, .btn-outline {
   background: transparent;
-  color: var(--text);
-  border-color: var(--line-strong);
+  color: var(--accent);
+  border-color: rgba(0, 242, 254, 0.28);
 }
-.btn-ghost:hover {
+.btn-ghost:hover, .btn-outline:hover {
   border-color: var(--accent);
   color: var(--accent);
+  background: rgba(0, 242, 254, 0.08);
   transform: translateY(-2px);
+  box-shadow: 0 0 18px rgba(0, 242, 254, 0.20);
 }
 .btn .arr { transition: transform .25s var(--ease); }
 .btn:hover .arr { transform: translateX(3px); }
@@ -808,9 +801,9 @@ code { font-family: var(--font-m); font-size: .9em; }
   box-shadow: 0 4px 20px rgba(0, 0, 0, .4);
 }
 .bento-card:hover {
-  border-color: var(--line-strong);
+  border-color: rgba(0, 242, 254, 0.40);
   background: var(--card-hi);
-  box-shadow: 0 18px 44px rgba(0, 0, 0, .4);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, .8), 0 0 20px rgba(0, 242, 254, 0.08);
   transform: translateY(-4px);
 }
 
@@ -822,7 +815,7 @@ code { font-family: var(--font-m); font-size: .9em; }
   top: 0;
   bottom: 0;
   width: 1px;
-  background: linear-gradient(to bottom, var(--accent) 0%, rgba(255, 255, 255, .03) 100%);
+  background: linear-gradient(to bottom, var(--accent) 0%, rgba(0, 242, 254, .05) 100%);
   z-index: 1;
 }
 .timeline-step-item { position: relative; display: flex; gap: var(--space-4); margin-bottom: var(--space-6); z-index: 2; }
@@ -831,9 +824,10 @@ code { font-family: var(--font-m); font-size: .9em; }
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: var(--ink);
-  border: 1px solid var(--line-strong);
+  background: var(--surface-card);
+  border: 1px solid var(--accent);
   color: var(--accent);
+  box-shadow: 0 0 12px rgba(0, 242, 254, 0.25);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -846,7 +840,7 @@ code { font-family: var(--font-m); font-size: .9em; }
   flex-grow: 1;
   background: var(--card);
   border: 1px solid var(--line);
-  padding: var(--space-3);
+  padding: var(--space-4);
   border-radius: var(--r-md);
 }
 
@@ -1634,6 +1628,100 @@ code { font-family: var(--font-m); font-size: .9em; }
 .proof-mark-signal:hover {
   background: rgba(255, 180, 84, 0.16);
   border-color: var(--signal);
+}
+
+/* ═══ SUBPAGE FOUNDRY SECTION SYSTEM ═══ */
+
+/* Fix missing spacing utility */
+.mb-xl {
+  margin-bottom: var(--space-12);
+}
+
+/* 1. Subpage Hero Section with integrated 2-column grid */
+.section-subpage-hero {
+  padding: 80px 0 68px;
+  position: relative;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+
+.subpage-hero-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 52px;
+  align-items: center;
+}
+
+@media (max-width: 992px) {
+  .subpage-hero-grid {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+}
+
+/* 2. Full-bleed Ambient Fact Ticker Ribbon */
+.section-ticker-ribbon {
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  background: rgba(11, 16, 26, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  position: relative;
+  z-index: 2;
+}
+
+/* 3. Discrete Subpage Sections with High-Contrast Alternating Bands */
+.subpage-section {
+  padding: 84px 0;
+  position: relative;
+  background: var(--bg);
+}
+
+.subpage-section.band {
+  background: var(--raise);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.subpage-section.band-alt {
+  background: #070B16;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+@media (max-width: 768px) {
+  .section-subpage-hero { padding: 56px 0 44px; }
+  .subpage-section { padding: 56px 0; }
+}
+
+/* 4. Section Head Sub */
+.section-head-sub {
+  margin-bottom: 48px;
+  position: relative;
+}
+
+.section-head-sub h2,
+.section-head-sub h3 {
+  font-family: var(--font-d);
+  font-size: clamp(1.8rem, 3.2vw, 2.4rem);
+  color: var(--text);
+  margin-top: 8px;
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+}
+
+.section-head-sub p {
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.65;
+  max-width: 680px;
+}
+
+.section-divider {
+  width: 100%;
+  height: 1px;
+  background: var(--line);
+  margin: var(--space-12) 0;
 }
 
 

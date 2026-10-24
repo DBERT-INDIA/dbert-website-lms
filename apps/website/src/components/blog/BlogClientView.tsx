@@ -11,19 +11,66 @@ interface BlogClientViewProps {
 }
 
 export default function BlogClientView({ initialArticles }: BlogClientViewProps) {
+  const [articles, setArticles] = useState<BlogPostMeta[]>(initialArticles);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTag, setSelectedTag] = useState<string>('all');
+  const [isLiveSynced, setIsLiveSynced] = useState(false);
+
+  React.useEffect(() => {
+    let isMounted = true;
+    async function syncDynamicArticles() {
+      try {
+        const res = await fetch('https://internship.dbert.online/api/public/blog-posts', {
+          headers: { 'Accept': 'application/json' },
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data.status === 'success' && Array.isArray(data.posts) && data.posts.length > 0) {
+          if (!isMounted) return;
+          setArticles((prev) => {
+            const existingSlugs = new Set(prev.map((a) => a.slug));
+            const newPosts: BlogPostMeta[] = [];
+            data.posts.forEach((p: any) => {
+              if (!existingSlugs.has(p.slug)) {
+                newPosts.push({
+                  slug: p.slug,
+                  title: p.title,
+                  desc: p.desc || '',
+                  readTime: p.readTime || '5 min read',
+                  date: p.date || new Date().toISOString().split('T')[0],
+                  author: p.author || 'DBERT Fellow',
+                  authorRole: p.authorRole || 'Engineering Contributor',
+                  authorBio: 'Technical publication by DBERT engineering contributor.',
+                  tags: Array.isArray(p.tags) ? p.tags : ['Engineering'],
+                  canonicalUrl: p.canonicalUrl,
+                });
+              }
+            });
+            if (newPosts.length === 0) return prev;
+            setIsLiveSynced(true);
+            return [...newPosts, ...prev];
+          });
+        }
+      } catch (err) {
+        // Fallback silently to pre-rendered articles
+      }
+    }
+    syncDynamicArticles();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   const allTags = useMemo(() => {
     const tagsSet = new Set<string>();
-    initialArticles.forEach((art) => {
+    articles.forEach((art) => {
       art.tags?.forEach((t) => tagsSet.add(t));
     });
     return Array.from(tagsSet);
-  }, [initialArticles]);
+  }, [articles]);
 
   const filteredArticles = useMemo(() => {
-    return initialArticles.filter((art) => {
+    return articles.filter((art) => {
       const matchesSearch =
         searchQuery === '' ||
         art.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -34,9 +81,9 @@ export default function BlogClientView({ initialArticles }: BlogClientViewProps)
 
       return matchesSearch && matchesTag;
     });
-  }, [initialArticles, searchQuery, selectedTag]);
+  }, [articles, searchQuery, selectedTag]);
 
-  const featuredArticle = initialArticles[0];
+  const featuredArticle = articles[0];
 
   return (
     <div>
@@ -103,7 +150,7 @@ export default function BlogClientView({ initialArticles }: BlogClientViewProps)
               onClick={() => setSelectedTag('all')}
               className={`tag-chip ${s.filterBtn} ${selectedTag === 'all' ? s.filterBtnActive : ''}`}
             >
-              All Topics ({initialArticles.length})
+              All Topics ({articles.length})
             </button>
             {allTags.map((tag) => (
               <button

@@ -1,0 +1,382 @@
+{
+  "verified_at": "2026-10-24T09:34:19.008558",
+  "source": "apps/portal/internship.db",
+  "target": "sqlite:///scratch/target_test.db",
+  "total_tables": 74,
+  "passed_tables": 74,
+  "failed_tables": 0,
+  "total_source_rows": 46135,
+  "total_target_rows": 46135,
+  "tables": {
+    "abuse_log": {
+      "source_count": 1700,
+      "target_count": 1700,
+      "status": "PASS"
+    },
+    "ambassador_withdrawals": {
+      "source_count": 0,
+      "target_count": 0,
+      "status": "PASS"
+    },
+    "application_status_history": {
+      "source_count": 225,
+      "target_count": 225,
+      "status": "PASS"
+    },
+    "applications": {
+      "source_count": 4593,
+      "target_count": 4593,
+      "status": "PASS"
+    },
+    "check_log": {
+      "source_count": 0,
+      "target_count": 0,
+      "status": "PASS"
+    },
+    "coin_ledger_mirror": {
+      "source_count": 1,
+      "target_count": 1,
+      "status": "PASS"
+    },
+    "companies": {
+      "source_count": 5,
+      "target_count": 5,
+      "status": "PASS"
+    },
+    "conversations": {
+      "source_count": 122,
+      "target_count": 122,
+      "status": "PASS"
+    },
+    "course_payments": {
+      "source_count": 0,
+      "target_count": 0,
+      "status": "PASS"
+    },
+    "courses": {
+      "source_count": 7,
+      "target_count": 7,
+      "status": "PASS"
+    },
+    "device_profiles": {
+      "source_count": 7028,
+      "target_count": 7028,
+      "status": "PASS"
+    },
+    "ecosystem_spotlights": {
+      "source_count": 0,
+      "target_count": 0,
+      "status": "PASS"
+    },
+    "email_log": {
+      "source_count": 6745,
+      "target_count": 6745,
+      "status": "PASS"
+    },
+    "enrollment_status_history": {
+      "source_count": 0,
+      "target_count": 0,
+      "status": "PASS"
+    },
+    "enrollments": {
+      "source_count": 411,
+      "target_count": 411,
+      "status": "PASS"
+    },
+    "event_outbox": {
+      "source_count": 295,
+      "target_count": 295,
+      "status": "PASS"
+    },
+    "gl_concepts": {
+      "source_count": 101,
+      "target_count": 101,
+      "status": "PASS"
+    },
+    "gl_course_chunks": {
+      "source_count": 0,
+      "target_count": 0,
+      "status": "PASS"
+    },
+    "gl_learning_events": {
+      "source_count": 0,
+      "target_count": 0,
+      "status": "PASS"
+    },
+    "gl_learning_sessions": {
+      "source_count": 0,
+      "target_count": 0,
+      "status": "PASS"
+    },
+    "gl_learning_turns": {
+      "source_count": 0,
+      "target_count": 0,
+      "status": "PASS"
+    },
+    "gl_student_learning_profile": {
+      "source_count": 0,
+      "target_count": 0,
+      "status": "PASS"
+    },
+    "gl_teacher_learning_instructions": {
+      "source_count": 0,
+      "target_count": 0,
+      "status": "PASS"
+    },
+    "intern_articles": {
+      "source_count": 10,
+      "target_count": 10,
+      "status": "PASS"
+    },
+    "intern_certificates": {
+      "source_count": 15,
+      "target_count": 15,
+      "status": "PASS"
+    },
+    "interviews": {
+      "source_count": 576,
+      "target_count": 576,
+      "status": "PASS"
+    },
+    "mentors": {
+      "source_count": 4,
+      "target_count": 4,
+      "status": "PASS"
+    },
+    "mobile_refresh_tokens": {
+      "source_count": 0,
+      "target_count": 0,
+      "status": "PASS"
+    },
+    "notifications": {
+      "source_count": 5977,
+      "target_count": 5977,
+      "status": "PASS"
+    },
+    "password_resets": {
+      "source_count": 381,
+      "target_count": 381,
+      "status": "PASS"
+    },
+    "payment_events": {
+      "source_count": 0,
+      "target_count": 0,
+      "status": "PASS"
+    },
+    "payments": {
+      "source_count": 0,
+      "target_count": 0,
+      "status": "PASS"
+    },
+    "platform_config": {
+      "source_count": 11,
+      "target_count": 11,
+      "status": "PASS"
+    },
+    "post_hire_deposits": {
+      "source_count": 0,
+      "target_count": 0,
+      "status": "PASS"
+    },
+    "rate_events": {
+      "source_count": 23,
+      "target_count": 23,
+      "status": "PASS"
+    },
+    "referrals": {
+      "source_count": 46,
+      "target_count": 46,
+      "status": "PASS"
+    },
+    "scraped_internship_comments": {
+      "source_count": 35,
+      "target_count": 35,
+      "status": "PASS"
+    },
+    "scraped_internships": {
+      "source_count": 3622,
+      "target_count": 3622,
+      "status": "PASS"
+    },
+    "security_deposits": {
+      "source_count": 52,
+      "target_count": 52,
+      "status": "PASS"
+    },
+    "signup_otps": {
+      "source_count": 0,
+      "target_count": 0,
+      "status": "PASS"
+    },
+    "spotlight_clicks": {
+      "source_count": 0,
+      "target_count": 0,
+      "status": "PASS"
+    },
+    "staff_accounts": {
+      "source_count": 4,
+      "target_count": 4,
+      "status": "PASS"
+    },
+    "tasks": {
+      "source_count": 2,
+      "target_count": 2,
+      "status": "PASS"
+    },
+    "user_sessions": {
+      "source_count": 786,
+      "target_count": 786,
+      "status": "PASS"
+    },
+    "intern_accounts": {
+      "source_count": 2442,
+      "target_count": 2442,
+      "status": "PASS"
+    },
+    "cohorts": {
+      "source_count": 1,
+      "target_count": 1,
+      "status": "PASS"
+    },
+    "posts": {
+      "source_count": 75,
+      "target_count": 75,
+      "status": "PASS"
+    },
+    "messages": {
+      "source_count": 128,
+      "target_count": 128,
+      "status": "PASS"
+    },
+    "course_chapters": {
+      "source_count": 37,
+      "target_count": 37,
+      "status": "PASS"
+    },
+    "course_day_quizzes": {
+      "source_count": 34,
+      "target_count": 34,
+      "status": "PASS"
+    },
+    "course_projects": {
+      "source_count": 3,
+      "target_count": 3,
+      "status": "PASS"
+    },
+    "gl_misconception_catalog": {
+      "source_count": 0,
+      "target_count": 0,
+      "status": "PASS"
+    },
+    "gl_student_mastery": {
+      "source_count": 0,
+      "target_count": 0,
+      "status": "PASS"
+    },
+    "mentor_availability_slots": {
+      "source_count": 0,
+      "target_count": 0,
+      "status": "PASS"
+    },
+    "review_log": {
+      "source_count": 0,
+      "target_count": 0,
+      "status": "PASS"
+    },
+    "staff_queue_roles": {
+      "source_count": 8,
+      "target_count": 8,
+      "status": "PASS"
+    },
+    "task_versions": {
+      "source_count": 2,
+      "target_count": 2,
+      "status": "PASS"
+    },
+    "attendance": {
+      "source_count": 4984,
+      "target_count": 4984,
+      "status": "PASS"
+    },
+    "company_follows": {
+      "source_count": 0,
+      "target_count": 0,
+      "status": "PASS"
+    },
+    "course_enrollments": {
+      "source_count": 572,
+      "target_count": 572,
+      "status": "PASS"
+    },
+    "cvs": {
+      "source_count": 149,
+      "target_count": 149,
+      "status": "PASS"
+    },
+    "dbert_fallback_usage": {
+      "source_count": 71,
+      "target_count": 71,
+      "status": "PASS"
+    },
+    "tutor_progress": {
+      "source_count": 0,
+      "target_count": 0,
+      "status": "PASS"
+    },
+    "user_api_keys": {
+      "source_count": 70,
+      "target_count": 70,
+      "status": "PASS"
+    },
+    "cohort_enrollments": {
+      "source_count": 1,
+      "target_count": 1,
+      "status": "PASS"
+    },
+    "post_applications": {
+      "source_count": 635,
+      "target_count": 635,
+      "status": "PASS"
+    },
+    "post_comments": {
+      "source_count": 14,
+      "target_count": 14,
+      "status": "PASS"
+    },
+    "post_questions": {
+      "source_count": 0,
+      "target_count": 0,
+      "status": "PASS"
+    },
+    "course_subtopics": {
+      "source_count": 101,
+      "target_count": 101,
+      "status": "PASS"
+    },
+    "mentor_session_bookings": {
+      "source_count": 0,
+      "target_count": 0,
+      "status": "PASS"
+    },
+    "task_submissions": {
+      "source_count": 34,
+      "target_count": 34,
+      "status": "PASS"
+    },
+    "day_quiz_attempts": {
+      "source_count": 965,
+      "target_count": 965,
+      "status": "PASS"
+    },
+    "project_submissions": {
+      "source_count": 0,
+      "target_count": 0,
+      "status": "PASS"
+    },
+    "course_subtopic_chats": {
+      "source_count": 3032,
+      "target_count": 3032,
+      "status": "PASS"
+    }
+  }
+}

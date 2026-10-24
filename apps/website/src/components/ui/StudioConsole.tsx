@@ -1,7 +1,23 @@
 import React from 'react';
 import styles from './StudioConsole.module.css';
 
-export type FeedTag = 'build' | 'ship' | 'cohort';
+export type FeedTag =
+  | 'build'
+  | 'ship'
+  | 'cohort'
+  | 'deploy'
+  | 'equity'
+  | 'audit'
+  | 'review'
+  | 'stipend'
+  | 'verify'
+  | 'infer'
+  | 'parse'
+  | 'vpc'
+  | 'chai'
+  | 'commit'
+  | 'grant'
+  | 'sprint';
 
 export type FeedLine = {
   /** Timestamp, e.g. "09:41:07". */
@@ -26,6 +42,19 @@ const tagClass: Record<FeedTag, string> = {
   build: styles.tagBuild,
   ship: styles.tagShip,
   cohort: styles.tagCohort,
+  deploy: styles.tagDeploy || styles.tagBuild,
+  equity: styles.tagEquity || styles.tagShip,
+  audit: styles.tagAudit || styles.tagCohort,
+  review: styles.tagReview || styles.tagBuild,
+  stipend: styles.tagStipend || styles.tagShip,
+  verify: styles.tagVerify || styles.tagCohort,
+  infer: styles.tagInfer || styles.tagBuild,
+  parse: styles.tagParse || styles.tagShip,
+  vpc: styles.tagVpc || styles.tagCohort,
+  chai: styles.tagChai || styles.tagShip,
+  commit: styles.tagCommit || styles.tagBuild,
+  grant: styles.tagGrant || styles.tagCohort,
+  sprint: styles.tagSprint || styles.tagCohort,
 };
 
 /**

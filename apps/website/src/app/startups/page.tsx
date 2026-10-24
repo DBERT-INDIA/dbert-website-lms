@@ -4,6 +4,11 @@ import StepTimeline from '@/components/ui/StepTimeline';
 import FAQAccordion from '@/components/ui/FAQAccordion';
 import HandNote from '@/components/ui/HandNote';
 import HandDrawnArrow from '@/components/ui/HandDrawnArrow';
+import FastCalculator from '@/components/ui/FastCalculator';
+import StudioConsole, { type FeedLine } from '@/components/ui/StudioConsole';
+import FactTicker from '@/components/ui/FactTicker';
+import AudienceDoors, { type Door } from '@/components/ui/AudienceDoors';
+import TrackedLink from '@/components/ui/TrackedLink';
 import Link from 'next/link';
 import { pageMetadata } from '@/lib/seo';
 import s from './startups.module.css';
@@ -49,7 +54,7 @@ export default function StartupsLandingPage() {
         description: 'Equity-based artificial intelligence startup incubation in Delhi NCR, providing dedicated software engineering squads, sovereign infrastructure seed grants (₹50K–₹5L), and audited AI developer recruitment without cash burn.',
         provider: {
           '@type': 'Organization',
-          name: 'DBERT (Digital Blinc Education Research And Technology)',
+          name: 'DBBERT (Digital Blinc Education Research And Technology)',
           url: 'https://dbert.online'
         },
         areaServed: {
@@ -73,33 +78,168 @@ export default function StartupsLandingPage() {
     ]
   };
 
+  const startupTelemetryFeed: FeedLine[] = [
+    {
+      time: '10:14:02',
+      tag: 'deploy',
+      message: 'alkame — quantitative risk models & time-series',
+      detail: '· v1.4 live in production',
+    },
+    {
+      time: '10:16:33',
+      tag: 'equity',
+      message: 'gayatri ai term sheet milestone 2 signed',
+      detail: '· 4% advisory equity locked',
+    },
+    {
+      time: '10:19:15',
+      tag: 'sprint',
+      message: 'squad deployed modular RAG pipeline to client VPC',
+      detail: '· 42 tests passed',
+    },
+    {
+      time: '10:22:40',
+      tag: 'audit',
+      message: 'new AI startup repository audited',
+      detail: '· 8 latency bottlenecks eliminated',
+    },
+    {
+      time: '10:25:12',
+      tag: 'grant',
+      message: '₹2,50,000 infrastructure compute grant allocated',
+      detail: '· vLLM GPU cluster active',
+    },
+  ];
+
+  const startupFacts = [
+    '4-8 week zero-to-MVP',
+    '100% IP ownership retained by founders',
+    '2% to 8% advisory equity',
+    '₹50k to ₹5L compute seed grant',
+    'rolling monthly cohorts',
+    'direct founder & partner code reviews',
+    'zero cash clawback if venture pivots',
+    'current stack: Next.js · Postgres · PyTorch · vLLM',
+  ];
+
+  const founderDoors: Door[] = [
+    {
+      kind: 'founder',
+      who: 'Stage 01 · Zero to MVP',
+      title: 'Pre-Seed MVP Build',
+      description: 'Skip agency cash burn. We architect, write the code, and ship your production AI MVP as your technical co-founder.',
+      ctaLabel: 'Apply for Incubation',
+      href: '/startups/register',
+    },
+    {
+      kind: 'enterprise',
+      who: 'Stage 02 · Compute Seed Grants',
+      title: 'GPU & Cloud Grants',
+      description: '₹50,000 to ₹5,00,000 in non-dilutive compute grants for local model weights, vector databases, and API credits.',
+      ctaLabel: 'Inspect Funding',
+      href: '/startups/services/funding',
+    },
+    {
+      kind: 'learner',
+      who: 'Stage 03 · Direct Talent Handoff',
+      title: 'Hire Your Builders',
+      description: 'Transition proven DBERT fellowship engineers directly into your full-time core team with zero recruiting markups.',
+      ctaLabel: 'Browse Squads',
+      href: '/startups/services/hiring',
+    },
+  ];
+
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <CohortBanner deadlineDate="October 15th, 2026" />
-      <div className="container pad-block">
-        
-        {/* Hero Banner Header */}
-        <div className="mb-lg">
-          <div className="doclabel">
-            § 01 — VENTURE STUDIO INCUBATION <span className="rev">rev: 2026.2</span>
-          </div>
-          <h1 className="relative inline-block">
-            An AI Startup Incubator That Builds With You, For Equity
-            <HandNote className="absolute -right-12 -top-6 text-lg hidden md:block" tone="blue">
-              Actual code!
-            </HandNote>
-          </h1>
-          <p className="intro-copy">
-            From initial concept commits to validated production scaling — DBERT powers early-stage Indian AI founders with dedicated software engineering squads, sovereign infrastructure seed grants, and verified developer pipelines without early cash dilution.
-          </p>
-        </div>
 
-        {/* Honest Disclosure / Operational Thesis Section */}
-        <section className={s.section}>
-          <div className="doclabel mb-2">§ 02 — HONEST DISCLOSURE: WHO THIS IS FOR (AND NOT FOR)</div>
-          <h2 className="section-title mb-4">Incubation Eligibility &amp; Selection Criteria</h2>
-          <div className="grid gap-6 md:grid-cols-2">
+      {/* ══════════ SECTION 1: HERO (2-COLUMN GRID) ══════════ */}
+      <section className="section-subpage-hero">
+        <div className="wrap subpage-hero-grid">
+          <div>
+            <div className="doclabel">
+              § 01 — VENTURE STUDIO INCUBATION <span className="rev">rev: 2026.2</span>
+            </div>
+            <h1 className="relative inline-block">
+              An AI Startup Incubator That Builds With You, For Equity
+              <HandNote className="absolute -right-12 -top-6 text-lg hidden md:block" tone="blue">
+                Actual code!
+              </HandNote>
+            </h1>
+            <p className="intro-copy">
+              From initial concept commits to validated production scaling — DBERT powers early-stage Indian AI founders with dedicated software engineering squads, sovereign infrastructure seed grants, and verified developer pipelines without early cash dilution.
+            </p>
+            <div className="stack-h gap-3 mt-6 flex-wrap">
+              <TrackedLink
+                href="/startups/register"
+                eventName="cta_click"
+                eventParams={{ location: 'startups_hero', target: 'apply_incubation' }}
+                className="btn btn-primary"
+              >
+                Apply for Incubation →
+              </TrackedLink>
+              <Link href="/startups/portfolio" className="btn btn-outline">
+                View Portfolio Ventures
+              </Link>
+            </div>
+          </div>
+
+          <div>
+            <StudioConsole
+              title="dbert-venture · active sprint telemetry"
+              lines={startupTelemetryFeed}
+              footLeft="sprint cycle · 14 days agile"
+              footRight="● 4 ventures in active build"
+              note={
+                <HandNote tone="amber">
+                  founders keep 100% of their IP ✎
+                </HandNote>
+              }
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════ SECTION 2: FULL-BLEED AMBIENT FACT TICKER ══════════ */}
+      <div className="section-ticker-ribbon">
+        <FactTicker facts={startupFacts} />
+      </div>
+
+      {/* ══════════ SECTION 3: FOUNDER STAGE DOORS ══════════ */}
+      <section className="subpage-section">
+        <div className="wrap">
+          <div className="section-head-sub">
+            <div className="doclabel">§ 02 — CHOOSE YOUR INCUBATION TRACK</div>
+            <h2>Three Pathways From Concept to Production</h2>
+            <p>Skip agency cash burn and trade engineering execution for aligned equity.</p>
+          </div>
+          <AudienceDoors doors={founderDoors} />
+        </div>
+      </section>
+
+      {/* ══════════ SECTION 4: INTERACTIVE FAST CALCULATOR (BANDED) ══════════ */}
+      <section className="subpage-section band">
+        <div className="wrap">
+          <div className="section-head-sub">
+            <div className="doclabel">§ 03 — FAST EQUITY &amp; SQUAD CALCULATOR</div>
+            <h2>Model Your Incubation Engineering Squad</h2>
+            <p>
+              Calculate your sprint duration, squad composition, estimated commercial agency equivalent, and founder equity allocation under standard Founder Advisor Standard Template (FAST) guidelines.
+            </p>
+          </div>
+          <FastCalculator />
+        </div>
+      </section>
+
+      {/* ══════════ SECTION 5: HONEST DISCLOSURE & MANIFESTO ══════════ */}
+      <section className="subpage-section">
+        <div className="wrap">
+          <div className="section-head-sub">
+            <div className="doclabel">§ 04 — HONEST DISCLOSURE: WHO THIS IS FOR (AND NOT FOR)</div>
+            <h2>Incubation Eligibility &amp; Selection Criteria</h2>
+          </div>
+          <div className="grid gap-6 md:grid-cols-2 mb-10">
             <div className="card border-l-4 border-emerald-500">
               <h3 className="card-heading-lg mb-2 text-emerald-400">Who Incubation Is Built For:</h3>
               <ul className="list-disc pl-5 text-sm text-muted space-y-2">
@@ -117,12 +257,39 @@ export default function StartupsLandingPage() {
               </ul>
             </div>
           </div>
-        </section>
 
-        {/* Full Service Roster (8 Services) */}
-        <section className={s.section}>
-          <div className="doclabel mb-3">§ 03 — SPECIALIZED INCUBATION SERVICES</div>
-          <h2 className="section-title mb-4">Comprehensive Operational Infrastructure</h2>
+          <div className={s.sayNoSection}>
+            <div className={s.sayNoTag}>[STUDIO MANIFESTO // RADICAL CANDOR]</div>
+            <h3 className="card-heading-lg text-text">Why We Say No: 3 Candid Rejection Realities</h3>
+            <p className="text-sm text-muted mb-4">
+              We reject approximately 80% of applications. Because our senior engineers sit on your GitHub commits and take equity risk, we cannot take vanity projects. Here is why we usually say no:
+            </p>
+            <div className={s.sayNoGrid}>
+              <div className={s.sayNoItem}>
+                <h4>1. Zero Algorithmic Moat</h4>
+                <p>Thin OpenAI API wrappers with no proprietary domain heuristics, no private data pipelines, and no local fine-tuning cannot survive commodity competition. We only build ventures with architectural substance.</p>
+              </div>
+              <div className={s.sayNoItem}>
+                <h4>2. The Absentee Founder</h4>
+                <p>We do not build for founders who want to check in once a month. Our squads operate on 2-week linear sprints. We require founders who join PR reviews, test edge cases, and talk to users daily.</p>
+              </div>
+              <div className={s.sayNoItem}>
+                <h4>3. Premature Vanity Scaling</h4>
+                <p>Founders asking for a 20-person team before achieving proof-of-value. We believe in lean, hyper-competent 3–5 engineer squads that ship working production code in weeks, not bloated corporate overhead.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════ SECTION 6: SPECIALIZED SERVICES (BAND-ALT) ══════════ */}
+      <section className="subpage-section band-alt">
+        <div className="wrap">
+          <div className="section-head-sub">
+            <div className="doclabel">§ 05 — SPECIALIZED INCUBATION SERVICES</div>
+            <h2>Comprehensive Operational Infrastructure</h2>
+            <p>From architectural audit to corporate term sheets and GPU seed grants.</p>
+          </div>
           <div className={s.serviceGrid}>
             {startupServices.map((srv, idx) => {
               const href = srv.slug === 'investor-network' 
@@ -139,14 +306,16 @@ export default function StartupsLandingPage() {
               );
             })}
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Incubation Model vs Traditional Bootstrapping Comparison Table */}
-        <section className={s.section}>
-          <div>
-            <div className="doclabel mb-2">§ 04 — ECONOMIC ARCHITECTURE</div>
+      {/* ══════════ SECTION 7: ECONOMIC COMPARISON ══════════ */}
+      <section className="subpage-section">
+        <div className="wrap">
+          <div className="section-head-sub">
+            <div className="doclabel">§ 06 — ECONOMIC ARCHITECTURE</div>
             <h2>Why DBERT Venture Studio vs. Traditional Bootstrapping?</h2>
-            <p className="prose-sm text-muted mb-4">An objective comparison of capital preservation, execution latency, and technical debt risk across early startup stages.</p>
+            <p>An objective comparison of capital preservation, execution latency, and technical debt risk across early startup stages.</p>
           </div>
           <div className={s.tableScroll}>
             <table className={s.compareTable}>
@@ -185,16 +354,18 @@ export default function StartupsLandingPage() {
             <span className="text-sm text-muted">Want to audit our standardized legal equity documents first?</span>
             <Link href="/startups/services/equity/term-sheets" className="btn btn-outline btn-sm">Inspect India Term Sheet Templates &rarr;</Link>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Incubated Portfolio Strip */}
-        <section className={s.section}>
-          <div className={s.sectionHead}>
-            <div className="doclabel mb-1">§ 05 — PROVEN CASE STUDIES &amp; PORTFOLIO</div>
+      {/* ══════════ SECTION 8: PORTFOLIO & SELECTION PIPELINE (BAND) ══════════ */}
+      <section className="subpage-section band">
+        <div className="wrap">
+          <div className="section-head-sub">
+            <div className="doclabel">§ 07 — PROVEN CASE STUDIES &amp; PORTFOLIO</div>
             <h2>Startups Co-Engineered in the DBERT Studio</h2>
-            <p className="prose-sm text-muted">Explore verified technical architecture case studies and production metrics from early-stage AI ventures built by our engineering squads.</p>
+            <p>Explore verified technical architecture case studies and production metrics from early-stage AI ventures built by our engineering squads.</p>
           </div>
-          <div className="grid gap-6 md:grid-cols-2 mb-6">
+          <div className="grid gap-6 md:grid-cols-2 mb-8">
             <div className="card">
               <span className="pill mb-2">Fintech &amp; Trading AI</span>
               <h3 className="card-heading-lg">Alkame Inc.</h3>
@@ -208,41 +379,44 @@ export default function StartupsLandingPage() {
               <Link href="/startups/portfolio/gayatri-ai" className="accent-label">Inspect Gayatri AI Architecture &rarr;</Link>
             </div>
           </div>
-          <div className="stack-h justify-center">
+          <div className="stack-h justify-center mb-12">
             <Link href="/startups/portfolio" className="btn btn-outline">View Complete Incubated Portfolio Hub &rarr;</Link>
           </div>
-        </section>
 
-        {/* Selection Process Timeline */}
-        <section className={s.section}>
-          <div className={s.sectionHead}>
-            <div className="doclabel mb-1">§ 06 — EVALUATION PIPELINE</div>
+          <div className="section-divider"></div>
+
+          <div className="section-head-sub text-center">
+            <div className="doclabel justify-center">§ 08 — EVALUATION PIPELINE</div>
             <h2>Four-Stage Incubation Onboarding</h2>
-            <p className="prose-sm text-muted">A structured, deterministic selection process engineered to align operational culture before code execution.</p>
+            <p className="mx-auto">A structured, deterministic selection process engineered to align operational culture before code execution.</p>
           </div>
           <div className="measure">
             <StepTimeline steps={selectionProcess} />
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Founder Frequently Asked Questions */}
-        <section className={s.section}>
-          <div className={s.sectionHead}>
-            <div className="doclabel mb-1">§ 07 — INCUBATION KNOWLEDGE BASE</div>
+      {/* ══════════ SECTION 9: FAQS (BAND-ALT) ══════════ */}
+      <section className="subpage-section band-alt">
+        <div className="wrap">
+          <div className="section-head-sub">
+            <div className="doclabel">§ 09 — INCUBATION KNOWLEDGE BASE</div>
             <h2>Founder Frequently Asked Questions</h2>
-            <p className="prose-sm text-muted">Transparent operational clarifications regarding equity agreements, intellectual property assignments, and seed grants.</p>
+            <p>Transparent operational clarifications regarding equity agreements, intellectual property assignments, and seed grants.</p>
           </div>
           <div className="measure">
             <FAQAccordion items={faqs} />
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Proprietary Enterprise Technology Stack */}
-        <section className={s.section}>
-          <div className={s.sectionHead}>
-            <div className="doclabel mb-1">§ 08 — PROPRIETARY SAAS ADVANTAGE</div>
+      {/* ══════════ SECTION 10: PROPRIETARY SAAS & BOTTOM CTA ══════════ */}
+      <section className="subpage-section">
+        <div className="wrap">
+          <div className="section-head-sub text-center">
+            <div className="doclabel justify-center">§ 10 — PROPRIETARY SAAS ADVANTAGE</div>
             <h2>The DBERT Enterprise Technology Stack</h2>
-            <p className="prose-sm text-muted">We do not just advise; we engineer production software. Incubated startup founders receive immediate enterprise access to our sovereign SaaS suites and fine-tuned local models.</p>
+            <p className="mx-auto">We do not just advise; we engineer production software. Incubated startup founders receive immediate enterprise access to our sovereign SaaS suites and fine-tuned local models.</p>
           </div>
           <div className={s.productGrid}>
             {[
@@ -261,33 +435,41 @@ export default function StartupsLandingPage() {
               </div>
             ))}
           </div>
-          <div className="stack-h gap-4 mt-6 justify-center">
+
+          <div className="stack-h gap-4 my-8 justify-center">
             <Link href="/ai-solutions" className="btn btn-outline">Explore All Enterprise AI Solutions</Link>
             <Link href="/labs/research" className="btn btn-outline">Inspect DBERT Research Briefings</Link>
           </div>
-        </section>
 
-        {/* Primary Call to Action Card */}
-        <div className={`card ${s.ctaCard}`}>
-          <div className="doclabel mb-2">§ 09 — SUBMIT VENTURE PROPOSAL</div>
-          <h2 className="card-title">Turn Your AI Architecture into a Scalable Venture</h2>
-          <p className={s.ctaCopy}>
-            Evaluate your technical engineering bottlenecks, specify required GPU compute parameters, and submit your venture proposal directly to the DBERT engineering advisory board today.
-          </p>
-          <div className="stack-h gap-4 justify-center mt-6">
-            <div className="relative inline-block">
-              <Link href="/startups/register" className="btn btn-primary relative z-10">Apply for Incubation &rarr;</Link>
-              <div className="absolute -right-12 -top-10 z-20 pointer-events-none transform rotate-12 hidden md:block">
-                <HandDrawnArrow color="var(--signal)" width={55} height={55} className="transform rotate-90" />
+          {/* Primary Call to Action Card */}
+          <div className={`card ${s.ctaCard} mt-12`}>
+            <div className="doclabel mb-2">§ 11 — SUBMIT VENTURE PROPOSAL</div>
+            <h2 className="card-title">Turn Your AI Architecture into a Scalable Venture</h2>
+            <p className={s.ctaCopy}>
+              Evaluate your technical engineering bottlenecks, specify required GPU compute parameters, and submit your venture proposal directly to the DBERT engineering advisory board today.
+            </p>
+            <div className="stack-h gap-4 justify-center mt-6">
+              <div className="relative inline-block">
+                <TrackedLink
+                  href="/startups/register"
+                  eventName="cta_click"
+                  eventParams={{ location: 'startups_bottom_cta', target: 'apply_incubation' }}
+                  className="btn btn-primary relative z-10"
+                >
+                  Apply for Incubation &rarr;
+                </TrackedLink>
+                <div className="absolute -right-12 -top-10 z-20 pointer-events-none transform rotate-12 hidden md:block">
+                  <HandDrawnArrow color="var(--signal)" width={55} height={55} className="transform rotate-90" />
+                </div>
+                <HandNote className="absolute -bottom-8 -right-4 whitespace-nowrap text-sm hidden md:block" tone="blue">
+                  Submit today!
+                </HandNote>
               </div>
-              <HandNote className="absolute -bottom-8 -right-4 whitespace-nowrap text-sm hidden md:block" tone="blue">
-                Submit today!
-              </HandNote>
+              <Link href="/about/team" className="btn btn-ghost">Meet Technical Leadership</Link>
             </div>
-            <Link href="/about/team" className="btn btn-ghost">Meet Technical Leadership</Link>
           </div>
         </div>
-      </div>
+      </section>
     </>
   );
 }

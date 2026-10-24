@@ -445,7 +445,11 @@
     <nav class="public-nav">
       <a href="/jobs">Jobs</a>
       <a href="/internships">Internships</a>
+      {% if is_logged_in or is_intern or current_user or is_admin %}
+      <a href="{{ logged_in_url or '/portal' }}" class="signin" title="Go to your {{ logged_in_label or 'Portal' }}"><i class="fas fa-th-large" style="margin-right:5px;"></i> {{ logged_in_label or 'Portal' }}</a>
+      {% else %}
       <a href="/#signin" class="signin">Sign in</a>
+      {% endif %}
     </nav></div>
   </header>
 
@@ -492,8 +496,8 @@
               <a class="btn btn-ghost" href="{{ '/internships' if post.post_type == 'internship' else '/jobs' }}" style="background:#F8FAFC; border:1px solid #CBD5E1; color:#334155; font-weight:600; padding:10px 20px; border-radius:10px; text-decoration:none; display:inline-flex; align-items:center; gap:8px; font-size:13.5px;"><i class="fas fa-layer-group"></i> Browse more openings</a>
             </div>
           </div>
-        {% elif is_intern %}
-          <button class="btn btn-primary" id="applyBtn" data-act-click="$addClass" data-arg-click='["applyModal", "open"]' style="background:linear-gradient(135deg, #E2B96F, #C89945); color:#0F172A; font-weight:800; padding:13px 32px; border-radius:999px; border:none; cursor:pointer; font-size:15px; display:inline-flex; align-items:center; gap:9px; box-shadow:0 4px 14px rgba(200,153,69,0.35); transition:transform 0.15s ease;"><i class="fas fa-paper-plane"></i> Apply Now</button>
+        {% elif is_intern or is_logged_in %}
+          <button class="btn btn-primary" id="applyBtn" type="button" data-act-click="$addClass" data-arg-click='["applyModal", "open"]' style="background:linear-gradient(135deg, #E2B96F, #C89945); color:#0F172A; font-weight:800; padding:13px 32px; border-radius:999px; border:none; cursor:pointer; font-size:15px; display:inline-flex; align-items:center; gap:9px; box-shadow:0 4px 14px rgba(200,153,69,0.35); transition:transform 0.15s ease;"><i class="fas fa-paper-plane"></i> Apply Now</button>
         {% else %}
           <div style="display:flex; flex-direction:column; align-items:flex-start; gap:8px;">
             <a class="btn btn-primary" href="/apply/{{ post.id }}" style="background:linear-gradient(135deg, #E2B96F, #C89945); color:#0F172A; font-weight:800; padding:13px 32px; border-radius:999px; text-decoration:none; font-size:15px; display:inline-flex; align-items:center; gap:9px; box-shadow:0 4px 14px rgba(200,153,69,0.35);"><i class="fas fa-paper-plane"></i> Apply Now</a>
@@ -710,7 +714,11 @@
       <a href="/jobs">Jobs</a>
       <a href="/internships">Internships</a>
       <a href="/">Home</a>
+      {% if is_logged_in or is_intern or current_user or is_admin %}
+      <a href="{{ logged_in_url or '/portal' }}">{{ logged_in_label or 'Portal' }}</a>
+      {% else %}
       <a href="/#signin">Sign in</a>
+      {% endif %}
     </div>
     <div style="display:flex;align-items:center;gap:16px;">
       <a class="wa" href="https://wa.me/917060372107" rel="noopener" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
@@ -718,26 +726,26 @@
     </div>
   </footer>
 
-  {% if is_intern and not already_applied %}
+  {% if (is_intern or is_logged_in) and not already_applied %}
   <div class="modal" id="applyModal" role="dialog" aria-modal="true" aria-labelledby="applyModalTitle" style="background:rgba(0,0,0,0.75); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); z-index:9999;">
     <div class="modal-box" style="background:#0F172A; border:1px solid rgba(226,185,111,0.3); border-radius:16px; padding:28px 28px 24px; max-width:540px; width:92%; box-shadow:0 24px 48px rgba(0,0,0,0.6); color:#F8FAFC;">
       <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px;">
         <h2 id="applyModalTitle" style="margin:0; font-size:18px; font-weight:800; color:#FFFFFF; display:flex; align-items:center; gap:8px;">
           <i class="fas fa-paper-plane" style="color:#E2B96F; font-size:16px;"></i> Apply — {{ post.title }}
         </h2>
-        <button type="button" class="btn btn-ghost btn-sm" style="padding:4px 8px; border:none; color:#94A3B8; cursor:pointer; font-size:16px;" data-act-click="$removeClass" data-arg-click='["applyModal", "open"]' aria-label="Close dialog"><i class="fas fa-times"></i></button>
+        <button type="button" class="btn btn-ghost btn-sm" id="closeApplyModalX" style="padding:4px 8px; border:none; color:#94A3B8; cursor:pointer; font-size:16px;" data-act-click="$removeClass" data-arg-click='["applyModal", "open"]' aria-label="Close dialog"><i class="fas fa-times"></i></button>
       </div>
       <p style="font-size:13px; color:#94A3B8; margin:0 0 18px; line-height:1.55;">
         A short note is required. It’s shown as your interest signal to the hiring team; your CV &amp; status stay private.
       </p>
       <div class="field" style="margin-bottom:16px;">
         <label for="applyComment" style="display:block; font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:#E2B96F; margin-bottom:8px;">Why are you a great fit? *</label>
-        <textarea id="applyComment" rows="4" style="width:100%; box-sizing:border-box; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.2); color:#FFFFFF; font-family:inherit; font-size:14px; padding:12px 14px; border-radius:10px; outline:none; resize:vertical; min-height:110px; line-height:1.55;" placeholder="Highlight your relevant skills, past projects, or why you want to contribute to this role..."></textarea>
+        <textarea id="applyComment" rows="4" style="width:100%; box-sizing:border-box; background:rgba(255,255,200,0.05); border:1px solid rgba(255,255,255,0.2); color:#FFFFFF; font-family:inherit; font-size:14px; padding:12px 14px; border-radius:10px; outline:none; resize:vertical; min-height:110px; line-height:1.55;" placeholder="Highlight your relevant skills, past projects, or why you want to contribute to this role..."></textarea>
       </div>
       <div id="applyMsg" class="note" role="alert" style="min-height:20px; font-size:13px; margin-bottom:14px;"></div>
 
       <div class="modal-foot" style="display:flex; gap:12px; justify-content:flex-end; align-items:center;">
-        <button type="button" class="btn btn-ghost btn-sm" data-act-click="$removeClass" data-arg-click='["applyModal", "open"]' style="padding:9px 18px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:transparent; color:#E2E8F0; font-size:13px; font-weight:600; cursor:pointer;">Cancel</button>
+        <button type="button" class="btn btn-ghost btn-sm" id="closeApplyModalCancel" data-act-click="$removeClass" data-arg-click='["applyModal", "open"]' style="padding:9px 18px; border-radius:8px; border:1px solid rgba(255,255,255,0.2); background:transparent; color:#E2E8F0; font-size:13px; font-weight:600; cursor:pointer;">Cancel</button>
         <button type="button" class="btn btn-primary btn-sm" id="applySubmit" data-act-click="submitApply" style="padding:10px 22px; border-radius:8px; background:linear-gradient(135deg, #E2B96F, #C89945); color:#0F172A; font-size:13.5px; font-weight:700; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:8px;"><i class="fas fa-paper-plane"></i> Submit application</button>
       </div>
     </div>
@@ -747,27 +755,35 @@
     var BOARD_URL = POST_TYPE ? '/internships' : '/jobs';
     var MY_APPS_URL = {{ my_apps_url|tojson }};
     function showApplied(){
-      document.getElementById('applyModal').classList.remove('open');
-      document.getElementById('applyZone').innerHTML =
-        '<div class="applied-box" style="background:#F0FDF4; border:1.5px solid #86EFAC; border-radius:14px; padding:20px 24px;">'
-      + '<div class="hd" style="font-size:16px; font-weight:800; color:#166534; margin-bottom:6px; display:flex; align-items:center; gap:8px;"><i class="fas fa-circle-check" style="color:#22C55E; font-size:18px;"></i> Applied — your application is in!</div>'
-      + '<p style="font-size:14px; color:#374151; margin:0 0 16px; line-height:1.55;">The company review team can see your interest and profile. Track real-time status and your next steps directly in My Applications.</p>'
-      + '<div class="next-cta" style="display:flex; gap:12px; flex-wrap:wrap;">'
-      + '<a class="btn btn-primary" href="'+MY_APPS_URL+'" style="background:linear-gradient(135deg,#E2B96F,#C89945); color:#0F172A; font-weight:700; padding:10px 20px; border-radius:10px; text-decoration:none; display:inline-flex; align-items:center; gap:8px; font-size:13.5px;"><i class="fas fa-briefcase"></i> View in My Applications</a>'
-      + '<a class="btn btn-ghost" href="'+BOARD_URL+'" style="background:#F8FAFC; border:1px solid #CBD5E1; color:#334155; font-weight:600; padding:10px 20px; border-radius:10px; text-decoration:none; display:inline-flex; align-items:center; gap:8px; font-size:13.5px;"><i class="fas fa-layer-group"></i> Browse more openings</a>'
-      + '</div></div>';
+      var m = document.getElementById('applyModal');
+      if (m) m.classList.remove('open');
+      var az = document.getElementById('applyZone');
+      if (az) {
+        az.innerHTML =
+          '<div class="applied-box" style="background:#F0FDF4; border:1.5px solid #86EFAC; border-radius:14px; padding:20px 24px;">'
+        + '<div class="hd" style="font-size:16px; font-weight:800; color:#166534; margin-bottom:6px; display:flex; align-items:center; gap:8px;"><i class="fas fa-circle-check" style="color:#22C55E; font-size:18px;"></i> Applied — your application is in!</div>'
+        + '<p style="font-size:14px; color:#374151; margin:0 0 16px; line-height:1.55;">The company review team can see your interest and profile. Track real-time status and your next steps directly in My Applications.</p>'
+        + '<div class="next-cta" style="display:flex; gap:12px; flex-wrap:wrap;">'
+        + '<a class="btn btn-primary" href="'+MY_APPS_URL+'" style="background:linear-gradient(135deg,#E2B96F,#C89945); color:#0F172A; font-weight:700; padding:10px 20px; border-radius:10px; text-decoration:none; display:inline-flex; align-items:center; gap:8px; font-size:13.5px;"><i class="fas fa-briefcase"></i> View in My Applications</a>'
+        + '<a class="btn btn-ghost" href="'+BOARD_URL+'" style="background:#F8FAFC; border:1px solid #CBD5E1; color:#334155; font-weight:600; padding:10px 20px; border-radius:10px; text-decoration:none; display:inline-flex; align-items:center; gap:8px; font-size:13.5px;"><i class="fas fa-layer-group"></i> Browse more openings</a>'
+        + '</div></div>';
+      }
     }
     async function submitApply(){
       var msg = document.getElementById('applyMsg');
       var comment = document.getElementById('applyComment').value.trim();
       if(!comment){
-        msg.style.color = '#EF4444';
-        msg.textContent = 'Please add a comment explaining why you are a fit.';
+        if(msg){
+          msg.style.color = '#EF4444';
+          msg.textContent = 'Please add a comment explaining why you are a fit.';
+        }
         return;
       }
       var submitBtn = document.getElementById('applySubmit');
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+      if(submitBtn){
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+      }
       try{
         var r = await fetch('/posts/{{ post.id }}/apply', {
           method:'POST', headers:{'Content-Type':'application/json'},
@@ -779,20 +795,77 @@
           showApplied();
           return;
         } else {
-          msg.style.color = '#EF4444';
-          msg.textContent = d.message || 'Could not submit application.';
+          if(msg){
+            msg.style.color = '#EF4444';
+            msg.textContent = d.message || 'Could not submit application.';
+          }
         }
       }catch(e){
-        msg.style.color = '#EF4444';
-        msg.textContent = 'Network error. Please try again.';
+        if(msg){
+          msg.style.color = '#EF4444';
+          msg.textContent = 'Network error. Please try again.';
+        }
       }
-      submitBtn.disabled = false;
-      submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit application';
+      if(submitBtn){
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit application';
+      }
     }
-    // Auto-open the apply modal when arriving via the funnel (?apply=1).
-    if(new URLSearchParams(location.search).get('apply') === '1'){
-      document.getElementById('applyModal').classList.add('open');
-    }
+    window.submitApply = submitApply;
+
+    document.addEventListener('DOMContentLoaded', function(){
+      var appBtn = document.getElementById('applyBtn');
+      var modal = document.getElementById('applyModal');
+      if(appBtn && modal){
+        appBtn.addEventListener('click', function(){
+          modal.classList.add('open');
+          var txt = document.getElementById('applyComment');
+          if(txt) setTimeout(function(){ txt.focus(); }, 50);
+        });
+      }
+      var closeX = document.getElementById('closeApplyModalX');
+      if(closeX && modal){
+        closeX.addEventListener('click', function(){ modal.classList.remove('open'); });
+      }
+      var closeCancel = document.getElementById('closeApplyModalCancel');
+      if(closeCancel && modal){
+        closeCancel.addEventListener('click', function(){ modal.classList.remove('open'); });
+      }
+      if(modal){
+        modal.addEventListener('click', function(e){
+          if(e.target === modal) modal.classList.remove('open');
+        });
+        document.addEventListener('keydown', function(e){
+          if(e.key === 'Escape') modal.classList.remove('open');
+        });
+      }
+
+      // Auto-open the apply modal when arriving via the funnel (?apply=1).
+      if(new URLSearchParams(location.search).get('apply') === '1' && modal){
+        modal.classList.add('open');
+      }
+
+      // Progressive enhancement: switch sign in to portal if cookies present
+      try {
+        var hasAuth = document.cookie.split(';').some(function(c) {
+          var trimmed = c.trim();
+          return trimmed.startsWith('dbert_auth=') || trimmed.startsWith('dbert_session=');
+        });
+        if (hasAuth) {
+          var btn = document.querySelector('.public-nav a.signin');
+          if (btn && btn.getAttribute('href') === '/#signin') {
+            btn.href = '/portal';
+            btn.innerHTML = '<i class="fas fa-th-large" style="margin-right:5px;"></i> Portal';
+            btn.title = 'Go to your portal';
+          }
+          var footLink = document.querySelector('.public-foot .fl a[href="/#signin"]');
+          if (footLink) {
+            footLink.href = '/portal';
+            footLink.textContent = 'Portal';
+          }
+        }
+      } catch (e) {}
+    });
   </script>
   {% endif %}
 </body>

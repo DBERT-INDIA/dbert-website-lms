@@ -56,16 +56,24 @@
 
     // Ping the server to credit +3 minutes
     async function sendAttendancePing() {
-        if (_isPinging) return;
+        if (_isPinging) return { status: 'skipped', reason: 'already_pinging' };
         _isPinging = true;
 
         try {
-            // Prevent duplicate server calls if another tab just pinged in the last 110s
+            // Strictly check that intern has accrued at least 180 active study seconds
+            let activeSec = parseInt(localStorage.getItem(KEY_ACTIVE_SEC) || '0', 10);
+            if (isNaN(activeSec)) activeSec = 0;
+            if (activeSec < TARGET_ACTIVE_SEC) {
+                _isPinging = false;
+                return { status: 'skipped', reason: 'not_enough_active_time', active_sec: activeSec };
+            }
+
+            // Prevent duplicate server calls if another tab or ping occurred in the last 170s
             const lastPing = parseInt(localStorage.getItem(KEY_LAST_PING) || '0', 10);
             const now = Date.now();
-            if (now - lastPing < 110000) {
+            if (now - lastPing < 170000) {
                 _isPinging = false;
-                return;
+                return { status: 'skipped', reason: 'cooldown_active' };
             }
 
             // Retrieve CSRF token if meta tag exists
@@ -90,16 +98,16 @@
                     _accrualTimer = null;
                 }
                 _isPinging = false;
-                return;
+                return { status: 'error', reason: 'unauthorized' };
             }
 
             if (!res.ok) {
                 _isPinging = false;
-                return;
+                return { status: 'error', reason: 'http_error' };
             }
 
             const data = await res.json();
-            if (data.status === 'success') {
+            if (data.status === 'success' && !data.skipped) {
                 localStorage.setItem(KEY_LAST_PING, Date.now().toString());
 
                 // Deduct 180s from accumulated active seconds
@@ -115,14 +123,18 @@
 
                 // Broadcast sync event to any other open tabs
                 window.dispatchEvent(new CustomEvent('dbert_attendance_synced', { detail: data }));
+            } else if (data.skipped && data.reason === 'cooldown_active') {
+                localStorage.setItem(KEY_LAST_PING, Date.now().toString());
             } else if (data.reason === 'internship_ended') {
                 if (_accrualTimer) {
                     clearInterval(_accrualTimer);
                     _accrualTimer = null;
                 }
             }
+            return data;
         } catch (err) {
             // Network failure will retry on next cycle
+            return { status: 'error', reason: 'network_error' };
         } finally {
             _isPinging = false;
         }

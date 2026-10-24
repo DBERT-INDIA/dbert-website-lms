@@ -79,7 +79,7 @@ class CertificateService:
 
         cert_id = CertificateService.generate_certificate_id(course_id, intern_id)
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        url = custom_url or f"/certificate/{cert_id}"
+        url = custom_url or f"/portal/certificate/{cert_id}"
 
         conn.execute(
             """
@@ -87,9 +87,21 @@ class CertificateService:
             (intern_id, course_id, course_title, cert_id, issued_at, url, tier, email)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
             """,
-            (intern_id, course_id, course_title, cert_id, now, url, tier, email.lower())
+            (intern_id, course_id, course_title, cert_id, now, url, tier, (email or "").lower())
         )
         conn.commit()
+
+        try:
+            from services.outbox_service import enqueue_outbox_event, EVENT_CERTIFICATE_ISSUED
+            enqueue_outbox_event(
+                conn,
+                event_type=EVENT_CERTIFICATE_ISSUED,
+                aggregate_type="certificate",
+                aggregate_id=cert_id,
+                payload={"intern_id": intern_id, "course_id": course_id, "cert_id": cert_id, "email": email}
+            )
+        except Exception:
+            pass
 
         return {
             "cert_id": cert_id,
@@ -99,3 +111,49 @@ class CertificateService:
             "tier": tier,
             "already_issued": False
         }
+
+    @staticmethod
+    def issue_course_completion_certificate(
+        conn,
+        intern_id: int,
+        course_id: int,
+        email: Optional[str] = None
+    ) -> Dict[str, Any]:
+        """Automatically issues a course completion certificate if the course was completed."""
+        course = conn.execute("SELECT id, title, domain FROM courses WHERE id = ?", (course_id,)).fetchone()
+        if not course:
+            return {"error": "Course not found", "already_issued": False}
+
+        if not email:
+            acct = conn.execute("SELECT email, name FROM intern_accounts WHERE id = ?", (intern_id,)).fetchone()
+            email = acct["email"] if acct else ""
+
+        tier = "course_completion"
+        existing = conn.execute(
+            """
+            SELECT cert_id, url FROM intern_certificates 
+            WHERE (intern_id = ? OR (email IS NOT NULL AND LOWER(email) = LOWER(?)))
+              AND course_id = ?
+            LIMIT 1
+            """,
+            (intern_id, email or "", course_id)
+        ).fetchone()
+
+        if existing:
+            return {
+                "cert_id": existing["cert_id"],
+                "url": existing["url"] or f"/portal/certificate/{existing['cert_id']}",
+                "already_issued": True,
+                "course_title": course["title"]
+            }
+
+        return CertificateService.issue_certificate(
+            conn=conn,
+            intern_id=intern_id,
+            course_id=course_id,
+            course_title=course["title"],
+            email=email or "",
+            tier=tier,
+            custom_url=None
+        )
+

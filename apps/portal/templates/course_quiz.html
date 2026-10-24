@@ -44,12 +44,52 @@
       </div>
       {% endfor %}
 
-      <div class="mt-24" style="text-align:right">
-        <button type="submit" class="btn btn-primary">
-          Submit quiz answers <i class="fa-solid fa-arrow-right"></i>
+      <div class="mt-24" style="display:flex; justify-content:space-between; align-items:center;">
+        <button type="button" id="prevBtn" class="btn" data-act-click="prevQ" style="display:none;">
+          <i class="fa-solid fa-arrow-left"></i> Back
+        </button>
+        <div style="flex:1;"></div>
+        <button type="button" id="nextBtn" class="btn btn-primary" data-act-click="nextQ">
+          Next <i class="fa-solid fa-arrow-right"></i>
+        </button>
+        <button type="submit" id="submitBtn" class="btn btn-primary" style="display:none; background:var(--green); border-color:var(--green);">
+          Submit Quiz <i class="fa-solid fa-check"></i>
         </button>
       </div>
     </form>
+
+    <script nonce="{{ csp_nonce() }}">
+      let currentQ = 0;
+      let totalQ = {{ questions|length }};
+      function showQ(idx) {
+          const cards = document.querySelectorAll('.question-card');
+          cards.forEach((el, i) => {
+              el.style.display = (i === idx) ? 'block' : 'none';
+          });
+          const pb = document.getElementById('prevBtn');
+          if (pb) pb.style.display = (idx === 0) ? 'none' : 'inline-block';
+          const nb = document.getElementById('nextBtn');
+          const sb = document.getElementById('submitBtn');
+          if (idx === totalQ - 1) {
+              if (nb) nb.style.display = 'none';
+              if (sb) sb.style.display = 'inline-block';
+          } else {
+              if (nb) nb.style.display = 'inline-block';
+              if (sb) sb.style.display = 'none';
+          }
+      }
+      function nextQ() { if(currentQ < totalQ - 1) { currentQ++; showQ(currentQ); } }
+      function prevQ() { if(currentQ > 0) { currentQ--; showQ(currentQ); } }
+      window.nextQ = nextQ;
+      window.prevQ = prevQ;
+      document.addEventListener('DOMContentLoaded', () => {
+          showQ(0);
+          const nb = document.getElementById('nextBtn');
+          if (nb) nb.addEventListener('click', nextQ);
+          const pb = document.getElementById('prevBtn');
+          if (pb) pb.addEventListener('click', prevQ);
+      });
+    </script>
 
   </div>
 </div>
@@ -120,10 +160,22 @@
 
             modal.style.display = 'flex';
             if (data.passed) {
-                title.textContent = '🎉 Day quiz passed!';
-                title.style.color = 'var(--green)';
-                text.textContent = `Score: ${data.score} / ${data.max_score}`;
-                sub.textContent = 'Day ' + data.next_day + ' is now unlocked for your learning path.';
+                if (data.course_completed || data.certificate_issued) {
+                    title.textContent = '🎓 Course Completed & Certificate Earned!';
+                    title.style.color = 'var(--gold, #f59e0b)';
+                    text.textContent = `Final Score: ${data.score} / ${data.max_score} — 100% Curriculum Mastered!`;
+                    sub.textContent = 'Congratulations! Your official DBERT Verified Certificate has been automatically issued.';
+                    const actBtn = document.getElementById('resultActionBtn');
+                    if (actBtn) {
+                        actBtn.innerHTML = 'View & Print Certificate <i class="fa-solid fa-graduation-cap"></i>';
+                        actBtn.href = data.cert_url ? `${data.cert_url}/print` : '/portal';
+                    }
+                } else {
+                    title.textContent = '🎉 Day quiz passed!';
+                    title.style.color = 'var(--green)';
+                    text.textContent = `Score: ${data.score} / ${data.max_score}`;
+                    sub.textContent = 'Day ' + data.next_day + ' is now unlocked for your learning path.';
+                }
             } else {
                 title.textContent = '❌ Quiz failed — try again';
                 title.style.color = 'var(--red)';

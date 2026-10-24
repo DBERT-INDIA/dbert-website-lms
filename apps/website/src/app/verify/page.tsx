@@ -4,6 +4,7 @@ import React, { useState, useEffect, Suspense, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import HandNote from '@/components/ui/HandNote';
 import s from './verify.module.css';
+import { trackEvent } from '@/lib/analytics';
 
 interface VerificationResult {
   holderName: string;
@@ -34,6 +35,10 @@ function VerifyFormContent() {
         const data = await res.json();
         if (data.verified) {
           setResult(data);
+          trackEvent('certificate_verified', {
+            program_name: data.programName,
+            domain: data.domain || 'general',
+          });
         } else {
           setErrorMsg('Certificate ID not found or invalid.');
         }

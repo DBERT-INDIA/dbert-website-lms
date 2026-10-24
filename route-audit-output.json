@@ -1,0 +1,1154 @@
+[
+  {
+    "route": "/about/careers",
+    "h1Text": "Careers &amp; Hiring Cohorts",
+    "cssModules": [
+      "../about.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": true,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 2,
+    "lines": 58
+  },
+  {
+    "route": "/about/contact",
+    "h1Text": "Let&apos;s Build Something Together",
+    "cssModules": [
+      "../about.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": true,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 0,
+    "lines": 61
+  },
+  {
+    "route": "/about/credentials",
+    "h1Text": "Proven Engineering Credibility, Audited Impact",
+    "cssModules": [
+      "../about.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": true,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 0,
+    "lines": 80
+  },
+  {
+    "route": "/about",
+    "h1Text": "Applied AI Incubation &amp; Research",
+    "cssModules": [
+      "./about.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": true,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 1,
+    "lines": 124
+  },
+  {
+    "route": "/about/team",
+    "h1Text": "The Practitioners &amp; Architects Behind the Mission",
+    "cssModules": [
+      "../about.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": true,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 1,
+    "lines": 95
+  },
+  {
+    "route": "/ai-consultant",
+    "h1Text": "Enterprise AI Consulting &amp; Custom LLM Systems",
+    "cssModules": [
+      "@/app/learners/learners.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": true,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 2,
+    "lines": 179
+  },
+  {
+    "route": "/ai-solutions/consultation",
+    "h1Text": "Architect Your AI-Powered Future &mdash; Deterministically",
+    "cssModules": [],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": false,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 1,
+    "lines": 318
+  },
+  {
+    "route": "/ai-solutions/llm-training/dbert-ai",
+    "h1Text": "DBERT_AI &mdash; Sovereign Intelligence You Can Deploy Anywhere",
+    "cssModules": [
+      "../../ai-solutions.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": false,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 3,
+    "lines": 311
+  },
+  {
+    "route": "/ai-solutions/llm-training",
+    "h1Text": "Own Your Intelligence &mdash; Custom Model Engineering",
+    "cssModules": [
+      "../ai-solutions.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": false,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 5,
+    "lines": 306
+  },
+  {
+    "route": "/ai-solutions/llm-training/pipeline",
+    "h1Text": "The 5-Stage Fine-Tuning Pipeline &mdash; Industrial MLOps",
+    "cssModules": [],
+    "inlineStylesCount": 3,
+    "handcrafted": {
+      "hasHandNote": true,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 1,
+    "lines": 425
+  },
+  {
+    "route": "/ai-solutions/llm-training/private-hosting",
+    "h1Text": "Private LLM Hosting in India — Your Data, Zero External Dependencies",
+    "cssModules": [],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": false,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 1,
+    "lines": 257
+  },
+  {
+    "route": "/ai-solutions",
+    "h1Text": "Production-Grade AI That Powers Sovereign Business Scale",
+    "cssModules": [
+      "./ai-solutions.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": true,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 2,
+    "lines": 205
+  },
+  {
+    "route": "/ai-solutions/products/certificate-verification-api",
+    "h1Text": "Instant Trust &mdash; Cryptographic Credential Verification API",
+    "cssModules": [
+      "../../ai-solutions.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": false,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 1,
+    "lines": 317
+  },
+  {
+    "route": "/ai-solutions/products/dbert-chat",
+    "h1Text": "Enterprise Conversations &mdash; Private, Intelligent, Secure",
+    "cssModules": [
+      "../../ai-solutions.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": false,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": true,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 1,
+    "lines": 332
+  },
+  {
+    "route": "/ai-solutions/products/document-ai",
+    "h1Text": "Transform Unstructured Data Into Actionable JSON Intelligence",
+    "cssModules": [
+      "../../ai-solutions.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": false,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 1,
+    "lines": 324
+  },
+  {
+    "route": "/ai-solutions/products/hiring-automation-suite",
+    "h1Text": "Hire Smarter &mdash; AI-Driven Technical Talent Intelligence",
+    "cssModules": [
+      "../../ai-solutions.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": false,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 1,
+    "lines": 305
+  },
+  {
+    "route": "/ai-solutions/products/intern-management-system",
+    "h1Text": "Accelerate Talent &mdash; From Apprentices to Production Engineers",
+    "cssModules": [
+      "../../ai-solutions.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": false,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 1,
+    "lines": 305
+  },
+  {
+    "route": "/ai-solutions/products",
+    "h1Text": "Deploy Sovereign, Production-Ready AI Systems",
+    "cssModules": [
+      "../ai-solutions.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": true,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 2,
+    "lines": 259
+  },
+  {
+    "route": "/blog",
+    "h1Text": "AI Engineering Blog India",
+    "cssModules": [
+      "./blog.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": true,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 0,
+    "lines": 37
+  },
+  {
+    "route": "/blog/[slug]",
+    "h1Text": "{meta.title}",
+    "cssModules": [
+      "../blog.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": true,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 0,
+    "lines": 116
+  },
+  {
+    "route": "/cohorts/aivara",
+    "h1Text": "Aivara Technologies Remote Internship Cohort",
+    "cssModules": [
+      "./aivara.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": false,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 0,
+    "lines": 167
+  },
+  {
+    "route": "/hire/pre-vetted-engineers",
+    "h1Text": "Hire Pre-Vetted AI &amp; Software Engineers in 48 Hours",
+    "cssModules": [
+      "@/app/learners/learners.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": true,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 2,
+    "lines": 186
+  },
+  {
+    "route": "/labs/collaborate",
+    "h1Text": "Labs Collaboration Proposal",
+    "cssModules": [
+      "./collaborate.module.css",
+      "../labs.module.css",
+      "@/components/ui/forms.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": true,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 1,
+    "linkBtnCount": 1,
+    "lines": 137
+  },
+  {
+    "route": "/labs/opensource",
+    "h1Text": "Building in the Open, Shipping for Everyone",
+    "cssModules": [
+      "../labs.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": true,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 1,
+    "lines": 114
+  },
+  {
+    "route": "/labs",
+    "h1Text": "Where Breakthrough Systems Begin",
+    "cssModules": [
+      "./labs.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": true,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 1,
+    "lines": 79
+  },
+  {
+    "route": "/labs/publications",
+    "h1Text": "Ideas Worth Publishing, Systems Worth Studying",
+    "cssModules": [
+      "../labs.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": true,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 1,
+    "lines": 131
+  },
+  {
+    "route": "/labs/research",
+    "h1Text": "Pioneering the Next Wave of Intelligent Systems",
+    "cssModules": [],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": true,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 1,
+    "lines": 127
+  },
+  {
+    "route": "/learners/accelerate",
+    "h1Text": "",
+    "cssModules": [],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": false,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 0,
+    "lines": 67
+  },
+  {
+    "route": "/learners/courses/ai-agent-development",
+    "h1Text": "Become an AI Agent Development Engineer",
+    "cssModules": [
+      "../../learners.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": false,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 2,
+    "lines": 282
+  },
+  {
+    "route": "/learners/courses/data-analytics",
+    "h1Text": "Become a Data Analytics &amp; BI Professional",
+    "cssModules": [
+      "../../learners.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": false,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 4,
+    "lines": 353
+  },
+  {
+    "route": "/learners/courses/full-stack-development",
+    "h1Text": "Become a Full Stack AI Software Developer",
+    "cssModules": [
+      "../../learners.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": false,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 2,
+    "lines": 282
+  },
+  {
+    "route": "/learners/courses/generative-ai",
+    "h1Text": "Become a Generative AI Systems Engineer",
+    "cssModules": [
+      "../../learners.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": false,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 3,
+    "lines": 283
+  },
+  {
+    "route": "/learners/courses/machine-learning",
+    "h1Text": "Become a Machine Learning &amp; Fine-Tuning Engineer",
+    "cssModules": [
+      "../../learners.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": false,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 3,
+    "lines": 294
+  },
+  {
+    "route": "/learners/courses",
+    "h1Text": "AI and engineering courses with verifiable certificates",
+    "cssModules": [
+      "../learners.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": true,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 1,
+    "lines": 193
+  },
+  {
+    "route": "/learners/courses/python-automation",
+    "h1Text": "Become a Python Automation &amp; Scraping Engineer",
+    "cssModules": [
+      "../../learners.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": false,
+      "hasHandArrow": false,
+      "hasMarker": true,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 2,
+    "lines": 282
+  },
+  {
+    "route": "/learners/fellowship",
+    "h1Text": "A paid AI internship where the code ships",
+    "cssModules": [
+      "../learners.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": true,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": true,
+      "hasRedline": true
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 1,
+    "lines": 405
+  },
+  {
+    "route": "/learners/interview-prep",
+    "h1Text": "Land Your First AI Engineering Role",
+    "cssModules": [
+      "../learners.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": false,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 1,
+    "lines": 106
+  },
+  {
+    "route": "/learners/jobs",
+    "h1Text": "Your Next Career Move Starts Here",
+    "cssModules": [
+      "../learners.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": false,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 2,
+    "lines": 123
+  },
+  {
+    "route": "/learners/launchpad",
+    "h1Text": "",
+    "cssModules": [],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": false,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 0,
+    "lines": 10
+  },
+  {
+    "route": "/learners",
+    "h1Text": "AI career programs built as a progressive engineering ladder\n          \n            Structured Path",
+    "cssModules": [
+      "./learners.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": true,
+      "hasHandArrow": true,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 2,
+    "lines": 254
+  },
+  {
+    "route": "/",
+    "h1Text": "The venture studio that{' '}\n              \n                writes the code.",
+    "cssModules": [
+      "./page.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": true,
+      "hasHandArrow": true,
+      "hasMarker": true,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 2,
+    "lines": 530
+  },
+  {
+    "route": "/pricing",
+    "h1Text": "Transparent, Outcome-Focused Model",
+    "cssModules": [
+      "./pricing.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": true,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 3,
+    "lines": 302
+  },
+  {
+    "route": "/privacy",
+    "h1Text": "Privacy Policy",
+    "cssModules": [],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": true,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 0,
+    "lines": 71
+  },
+  {
+    "route": "/refund",
+    "h1Text": "Refund Policy",
+    "cssModules": [],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": true,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 0,
+    "lines": 63
+  },
+  {
+    "route": "/startups/investor-network",
+    "h1Text": "The DBERT Investor Network &mdash; Vetted Deal Flow",
+    "cssModules": [
+      "../startups.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": false,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 2,
+    "lines": 287
+  },
+  {
+    "route": "/startups",
+    "h1Text": "An AI Startup Incubator That Builds With You, For Equity\n            \n              Actual code!",
+    "cssModules": [
+      "./startups.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": true,
+      "hasHandArrow": true,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 5,
+    "lines": 295
+  },
+  {
+    "route": "/startups/portfolio/alkame",
+    "h1Text": "",
+    "cssModules": [],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": false,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 0,
+    "lines": 11
+  },
+  {
+    "route": "/startups/portfolio/cognitive-solutions",
+    "h1Text": "",
+    "cssModules": [],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": false,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 0,
+    "lines": 23
+  },
+  {
+    "route": "/startups/portfolio/digital-blaize",
+    "h1Text": "",
+    "cssModules": [],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": false,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 0,
+    "lines": 22
+  },
+  {
+    "route": "/startups/portfolio/gayatri-ai",
+    "h1Text": "",
+    "cssModules": [],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": false,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 0,
+    "lines": 22
+  },
+  {
+    "route": "/startups/portfolio",
+    "h1Text": "Startups We Helped Build and Launch",
+    "cssModules": [
+      "../startups.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": false,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 2,
+    "lines": 127
+  },
+  {
+    "route": "/startups/register",
+    "h1Text": "Apply for Incubation",
+    "cssModules": [],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": false,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 0,
+    "lines": 29
+  },
+  {
+    "route": "/startups/services/equity",
+    "h1Text": "Launch Your AI MVP Without Burning Operating Cash",
+    "cssModules": [],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": false,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 2,
+    "lines": 326
+  },
+  {
+    "route": "/startups/services/equity/term-sheets",
+    "h1Text": "Services-Against-Equity Term Sheets &amp; Legal Frameworks",
+    "cssModules": [
+      "../../../startups.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": false,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 3,
+    "lines": 260
+  },
+  {
+    "route": "/startups/services/funding",
+    "h1Text": "Fuel Your AI Growth from Day One &mdash; Dilution-Free",
+    "cssModules": [],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": false,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 2,
+    "lines": 326
+  },
+  {
+    "route": "/startups/services/hiring",
+    "h1Text": "Assemble the AI Engineering Team That Ships\r\n          \r\n            Zero risk!",
+    "cssModules": [],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": true,
+      "hasHandArrow": true,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 3,
+    "lines": 339
+  },
+  {
+    "route": "/startups/services/infrastructure",
+    "h1Text": "Deploy Production AI at Scale &mdash; Reliably &amp; Securely",
+    "cssModules": [],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": false,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 2,
+    "lines": 326
+  },
+  {
+    "route": "/startups/services/legal",
+    "h1Text": "Protect Your Corporate Entity &amp; IP from Day One",
+    "cssModules": [],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": false,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 2,
+    "lines": 326
+  },
+  {
+    "route": "/startups/services",
+    "h1Text": "What an Incubated Startup Actually Gets",
+    "cssModules": [
+      "../startups.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": false,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 2,
+    "lines": 295
+  },
+  {
+    "route": "/startups/services/technical",
+    "h1Text": "Engineer Production-Grade AI Systems &amp; MVP Pipelines",
+    "cssModules": [
+      "../../startups.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": false,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 2,
+    "lines": 327
+  },
+  {
+    "route": "/terms",
+    "h1Text": "Terms &amp; Conditions",
+    "cssModules": [],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": true,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 0,
+    "lines": 63
+  },
+  {
+    "route": "/verify",
+    "h1Text": "Verify Certificate",
+    "cssModules": [
+      "./verify.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": true,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 1,
+    "linkBtnCount": 1,
+    "lines": 135
+  },
+  {
+    "route": "/_admin/alkame-contributors",
+    "h1Text": "Alkame Contributors",
+    "cssModules": [
+      "../admin.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": false,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 1,
+    "linkBtnCount": 1,
+    "lines": 58
+  },
+  {
+    "route": "/_admin/cohort-applications",
+    "h1Text": "Aivara Cohort Applications",
+    "cssModules": [
+      "../admin.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": false,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 1,
+    "linkBtnCount": 1,
+    "lines": 63
+  },
+  {
+    "route": "/_admin/leads",
+    "h1Text": "DBERT Admin Dashboard",
+    "cssModules": [
+      "../admin.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": false,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 1,
+    "linkBtnCount": 2,
+    "lines": 74
+  },
+  {
+    "route": "/_admin/login",
+    "h1Text": "DBERT Admin",
+    "cssModules": [
+      "../admin.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": false,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 1,
+    "linkBtnCount": 1,
+    "lines": 77
+  }
+]

@@ -2,6 +2,8 @@ import React from 'react';
 import Link from 'next/link';
 import FAQAccordion from '@/components/ui/FAQAccordion';
 import HandNote from '@/components/ui/HandNote';
+import StudioConsole, { type FeedLine } from '@/components/ui/StudioConsole';
+import FactTicker from '@/components/ui/FactTicker';
 import s from '@/app/learners/learners.module.css';
 import { UserCheck, ShieldCheck, Cpu, ArrowRight, CheckCircle2 } from 'lucide-react';
 
@@ -29,6 +31,48 @@ export default function HirePreVettedEngineersPage() {
       question: 'How do you guarantee candidate quality and commitment?',
       answer: 'Every engineer undergoes behavioral assessment, technical code audit, and security background verification. We provide a 14-day risk-free trial period for all full-time placement engagements.'
     }
+  ];
+
+  const hiringTelemetryFeed: FeedLine[] = [
+    {
+      time: '10:04:12',
+      tag: 'review',
+      message: 'Full Stack Fellow PR audited for venture client',
+      detail: '· Next.js 15 & Postgres multi-tenant schema',
+    },
+    {
+      time: '10:14:45',
+      tag: 'verify',
+      message: 'Cryptographic LOR & commit history verified',
+      detail: '· 42 commits merged on client production repo',
+    },
+    {
+      time: '10:28:30',
+      tag: 'deploy',
+      message: 'Applied AI Fellow onboarded to pre-seed startup',
+      detail: '· 48h match turnaround · zero recruiter fee',
+    },
+    {
+      time: '10:35:18',
+      tag: 'audit',
+      message: 'System architecture benchmark completed',
+      detail: '· 99.8% test coverage · JWT + OAuth auth',
+    },
+    {
+      time: '10:49:02',
+      tag: 'stipend',
+      message: 'Trial period completed with 100% satisfaction',
+      detail: '· permanent full-time offer extended',
+    },
+  ];
+
+  const hiringFacts = [
+    'top 3% technical screening bar',
+    'zero recruiter commissions or markup',
+    '14-day risk-free trial on your actual repo',
+    'evaluated on live Git pull requests & system design',
+    'onboard pre-vetted talent in 48-72 hours',
+    'full IP assignment and contractor legal compliance',
   ];
 
   const jsonLd = {
@@ -60,45 +104,58 @@ export default function HirePreVettedEngineersPage() {
   };
 
   return (
-    <div className="glow-wrapper">
+    <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <div className="glow-spot"></div>
 
-      {/* Hero Header Section */}
-      <div className="container page-head">
-        <div className="doclabel">
-          § B2B HIRING — TALENT PLATFORM <span className="rev">rev: 2026.1</span>
+      {/* ══════════ SECTION 1: HERO (2-COLUMN GRID) ══════════ */}
+      <section className="section-subpage-hero">
+        <div className="wrap subpage-hero-grid">
+          <div>
+            <div className="doclabel">
+              § B2B HIRING — TALENT PLATFORM <span className="rev">rev: 2026.1</span>
+            </div>
+            <h1 className="relative inline-block">
+              Hire Pre-Vetted AI &amp; Software Engineers in 48 Hours
+              <HandNote className="absolute -right-8 -top-6 text-lg hidden md:block" tone="blue">
+                top 1% cohort fellows ✎
+              </HandNote>
+            </h1>
+            <p className="intro-copy">
+              Vetted through live system builds, code reviews, and production commit histories — not resume keywords. Onboard deployment-ready engineering squads without agency recruitment markups.
+            </p>
+            <div className="stack-h gap-4 mt-6 flex-wrap">
+              <a href="#contact-hiring" className="btn btn-primary">
+                Request Candidate Profiles <ArrowRight className="inline-icon" />
+              </a>
+              <a href="#vetting-process" className="btn btn-outline">
+                Our Vetting Methodology
+              </a>
+            </div>
+          </div>
+
+          <div>
+            <StudioConsole
+              title="dbert-talent · candidate vetting & dispatch telemetry"
+              lines={hiringTelemetryFeed}
+              footLeft="industrial talent verification"
+              footRight="● 48h turnaround"
+            />
+          </div>
         </div>
-        <div className="stack-h justify-start align-baseline gap-3 flex-wrap mb-2">
-          <h1 className="page-title mb-0">
-            Hire Pre-Vetted AI &amp; Software Engineers in 48 Hours
-          </h1>
-          <HandNote tone="blue">
-            top 1% cohort fellows ✎
-          </HandNote>
-        </div>
-        <p className={s.courseTagline}>
-          Vetted through Live System Builds, Code Reviews, &amp; Production Commit Histories — Not Resume Keywords.
-        </p>
-        <p className={s.courseLede}>
-          Stop wasting hundreds of engineering hours interviewing unqualified candidates. DBERT pre-screens engineers through active production sprints so you receive proven, deployment-ready talent.
-        </p>
-        <div className="stack-h gap-4 mt-6 flex-wrap">
-          <a href="#contact-hiring" className="btn btn-primary btn-lg">
-            Request Candidate Profiles <ArrowRight className="inline-icon" />
-          </a>
-          <a href="#vetting-process" className="btn btn-outline btn-lg">
-            Our Vetting Methodology
-          </a>
-        </div>
+      </section>
+
+      {/* ══════════ SECTION 2: FULL-BLEED AMBIENT FACT TICKER ══════════ */}
+      <div className="section-ticker-ribbon">
+        <FactTicker facts={hiringFacts} />
       </div>
 
-      {/* Key Metrics Grid */}
-      <div className="section-band">
-        <div className="container">
-          <div className="section-head text-center mb-8">
+      {/* ══════════ SECTION 3: KEY METRICS GRID ══════════ */}
+      <section className="subpage-section">
+        <div className="wrap">
+          <div className="section-head-sub text-center">
             <div className="doclabel justify-center">§ 02 — VETTING CRITERIA &amp; PROCESS</div>
             <h2>Industrial Vetting Standards</h2>
+            <p className="mx-auto">Audited on live pull requests and distributed systems rather than algorithmic puzzles.</p>
           </div>
           <div className="bento-grid-3">
             <div className="card card-lift text-center p-6">
@@ -118,15 +175,18 @@ export default function HirePreVettedEngineersPage() {
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Vetting Guide / Educational SEO Content */}
-      <div className="container section-gap" id="vetting-process">
-        <div className="measure-lg">
-          <h2>How to Evaluate Engineering Talent Beyond Algorithmic LeetCode Puzzles</h2>
-          <p className="body-copy">
-            Traditional technical hiring processes often fail because they test candidates on synthetic puzzle-solving rather than practical software engineering skills. At DBERT Labs, we evaluate candidates against real-world engineering benchmarks:
-          </p>
+      {/* ══════════ SECTION 4: VETTING METHODOLOGY (BAND) ══════════ */}
+      <section className="subpage-section band" id="vetting-process">
+        <div className="wrap measure-lg">
+          <div className="section-head-sub">
+            <div className="doclabel">§ 03 — PRACTICAL EVALUATION METHODOLOGY</div>
+            <h2>How to Evaluate Engineering Talent Beyond Algorithmic LeetCode Puzzles</h2>
+            <p>
+              Traditional technical hiring processes often fail because they test candidates on synthetic puzzle-solving rather than practical software engineering skills. At DBERT Labs, we evaluate candidates against real-world engineering benchmarks:
+            </p>
+          </div>
           
           <div className="bento-grid-2 my-8">
             <div className="card card-lift p-6">
@@ -158,11 +218,12 @@ export default function HirePreVettedEngineersPage() {
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Hiring Form / CTA */}
-      <div className="section-band" id="contact-hiring">
-        <div className="container measure-sm text-center">
+      {/* ══════════ SECTION 5: CONTACT & DISCOVERY CTA ══════════ */}
+      <section className="subpage-section" id="contact-hiring">
+        <div className="wrap measure-sm text-center">
+          <div className="doclabel justify-center mb-2">§ 04 — TALENT DISCOVERY</div>
           <h2>Scale Your Engineering Team Today</h2>
           <p className="body-copy my-4 text-muted">
             Tell us about your technical requirements and timeline. Receive curated candidate profiles within 24 hours.
@@ -171,15 +232,18 @@ export default function HirePreVettedEngineersPage() {
             Schedule Talent Discovery Call
           </Link>
         </div>
-      </div>
+      </section>
 
-      {/* FAQ Accordion */}
-      <div className="container section-gap">
-        <h2 className="text-center mb-8">Frequently Asked Questions</h2>
-        <div className="measure">
+      {/* ══════════ SECTION 6: FAQS (BAND-ALT) ══════════ */}
+      <section className="subpage-section band-alt">
+        <div className="wrap measure">
+          <div className="section-head-sub text-center">
+            <div className="doclabel justify-center">§ 05 — FREQUENTLY ASKED QUESTIONS</div>
+            <h2>Candidate Screening &amp; Engagement FAQs</h2>
+          </div>
           <FAQAccordion items={faqs} />
         </div>
-      </div>
-    </div>
+      </section>
+    </>
   );
 }

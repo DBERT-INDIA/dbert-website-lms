@@ -1,7 +1,5 @@
-/* Styles specific to the /startups group. Phase 5: each class declares exactly
-   what the inline object it replaced declared — nothing extra. Anything a
-   second group turns out to need gets promoted to globals.css.
-   Written against the v2 tokens, not the v1 alias layer (5.7 deletes those). */
+/* Startups — Option A Cyber-Industrial Foundry
+   Single-color background (#050811), high contrast, HUD-style comparisons. */
 
 .section {
   margin-bottom: var(--space-12);
@@ -29,7 +27,62 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  padding: var(--space-5);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.serviceCard:hover {
+  border-color: rgba(0, 229, 255, 0.4);
+  transform: translateY(-2px);
+}
+
+/* ── Rejection Manifesto (Why We Say No) ──── */
+.sayNoSection {
+  background: var(--card);
+  border: 1px solid rgba(255, 180, 84, 0.3);
+  border-radius: var(--r-md);
+  padding: var(--space-6);
+  margin-bottom: var(--space-12);
+  position: relative;
+}
+
+.sayNoTag {
+  font-family: var(--font-m);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: var(--signal);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.sayNoGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+}
+
+.sayNoItem {
+  background: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
   padding: var(--space-4);
+}
+
+.sayNoItem h4 {
+  font-family: var(--font-d);
+  font-size: 1.05rem;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.sayNoItem p {
+  font-size: 0.86rem;
+  color: var(--muted);
+  line-height: 1.55;
 }
 
 /* ── Incubation vs bootstrapping table ────── */
@@ -44,36 +97,40 @@
   min-width: 600px;
   border-collapse: collapse;
   text-align: left;
-  background-color: var(--surface-card);
-  border: 1px solid var(--border-subtle);
+  background-color: var(--card);
+  border: 1px solid var(--line);
   border-radius: var(--r-md);
   overflow: hidden;
 }
 
 .compareTable thead tr {
-  background-color: var(--surface-raised);
-  border-bottom: 1px solid var(--border-subtle);
+  background-color: var(--raise);
+  border-bottom: 1px solid var(--line);
 }
 
 .compareTable th {
   padding: 16px;
-  font-weight: 600;
-  color: var(--text-primary);
+  font-family: var(--font-m);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text);
 }
 
 .compareTable td {
   padding: 16px;
-  color: var(--text-secondary);
+  color: var(--muted);
+  border-bottom: 1px solid var(--line);
+  font-size: 0.9rem;
 }
 
 .compareTable td:first-child {
-  font-weight: 500;
-  color: var(--text-primary);
+  font-weight: 600;
+  color: var(--text);
 }
 
-/* The final row is borderless, as it sits on the table's own border. */
-.compareTable tbody tr:not(:last-child) {
-  border-bottom: 1px solid var(--border-subtle);
+.compareTable tbody tr:last-child td {
+  border-bottom: none;
 }
 
 .colAccent {
@@ -81,7 +138,7 @@
 }
 
 .colMuted {
-  color: var(--text-muted);
+  color: var(--faint);
 }
 
 /* ── Product cards ────────────────────────── */
@@ -96,39 +153,39 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-color: var(--surface-card);
-  border: 1px solid var(--border-subtle);
+  background-color: var(--card);
+  border: 1px solid var(--line);
   border-radius: var(--r-md);
   padding: var(--space-5);
   transition: all 0.2s ease;
 }
 
 .productCard:hover {
-  border-color: var(--border-strong);
+  border-color: rgba(0, 229, 255, 0.35);
   transform: translateY(-2px);
 }
 
 .productTitle {
   font-family: var(--font-d);
-  color: var(--text-primary);
+  color: var(--text);
   font-size: 1.15rem;
   margin-bottom: 8px;
 }
 
 .productDesc {
-  font-size: .88rem;
-  color: var(--text-secondary);
+  font-size: 0.88rem;
+  color: var(--muted);
   line-height: 1.55;
   margin-bottom: var(--space-3);
 }
 
 .productLink {
   color: var(--accent);
-  font-weight: 600;
-  font-size: .9rem;
+  font-family: var(--font-m);
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
 }
 
-/* Overrides .btn-outline's accent text where the button sits on a busy row. */
 .btnPlainText {
   color: var(--text);
 }
@@ -139,15 +196,15 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background-color: var(--surface-card);
-  border: 1px solid var(--border-subtle);
+  background-color: var(--card);
+  border: 1px solid var(--line);
   border-radius: var(--r-md);
   padding: var(--space-6);
   transition: all 0.2s ease;
 }
 
 .portfolioCard:hover {
-  border-color: var(--border-strong);
+  border-color: rgba(0, 229, 255, 0.35);
 }
 
 .portfolioTop {
@@ -158,15 +215,15 @@
 }
 
 .portfolioLink {
-  font-size: .85rem;
+  font-family: var(--font-m);
+  font-size: 0.82rem;
   color: var(--accent);
-  text-decoration: underline;
 }
 
 .portfolioName {
   font-family: var(--font-d);
   font-size: 1.6rem;
-  color: var(--text-primary);
+  color: var(--text);
   margin: 8px 0;
 }
 
@@ -178,14 +235,16 @@
 }
 
 .factLabel {
-  font-size: .85rem;
-  color: var(--text-primary);
-  font-weight: 600;
+  font-family: var(--font-m);
+  font-size: 0.76rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .factBody {
-  font-size: .88rem;
-  color: var(--text-secondary);
+  font-size: 0.88rem;
+  color: var(--text);
   line-height: 1.55;
   margin-top: 2px;
 }
@@ -195,15 +254,17 @@
 }
 
 .metricBar {
-  background-color: rgba(91, 140, 255, .1);
+  background-color: rgba(0, 229, 255, 0.08);
+  border: 1px solid rgba(0, 229, 255, 0.2);
   padding: 10px;
-  border-radius: 4px;
+  border-radius: var(--r-sm);
   text-align: center;
   margin-bottom: var(--space-3);
 }
 
 .metricText {
-  font-size: .85rem;
+  font-family: var(--font-m);
+  font-size: 0.82rem;
   font-weight: 600;
   color: var(--accent);
 }
@@ -222,111 +283,25 @@
   gap: 18px;
 }
 
-/* ── Investor network ─────────────────────── */
-
-.reasonsCard {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.reasonList {
-  list-style: none;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-}
-
-.reasonTitle {
-  color: var(--accent);
-  display: block;
-  margin-bottom: 4px;
-}
-
-.formCard {
-  border: 1px solid var(--border-subtle);
-  background-color: var(--surface-raised);
-  border-radius: var(--r-md);
-  padding: var(--space-6);
-}
-
-.formCardCopy {
-  color: var(--text-secondary);
-  font-size: .9rem;
-  margin-bottom: var(--space-4);
-}
-
-/* ── Term sheets ──────────────────────────── */
-
-.termsLede {
-  line-height: 1.75;
-}
-
-.disclaimerCard {
-  margin-bottom: var(--space-8);
-  border-left: 4px solid var(--signal);
-  background-color: rgba(255, 180, 84, .05);
-}
-
-.disclaimerTitle {
-  color: var(--signal);
-  display: block;
-  margin-bottom: 8px;
-}
-
-.disclaimerCopy {
-  font-size: .9rem;
-  line-height: 1.6;
-}
-
-.clauseIntro {
-  line-height: 1.7;
-  color: var(--muted);
-  margin-bottom: var(--space-4);
-}
-
-.clauseList {
-  padding-left: var(--space-4);
-  line-height: 1.7;
-  color: var(--muted);
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.downloadCard {
-  border: 1px solid var(--border-subtle);
-  background-color: var(--surface-card);
-  border-radius: var(--r-md);
-  text-align: center;
-  padding: var(--space-8);
-}
-
-.downloadCopy {
-  color: var(--text-secondary);
-  margin-bottom: var(--space-4);
-}
-
-.downloadBtn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
 /* ── Closing CTA ──────────────────────────── */
 
 .ctaCard {
   text-align: center;
   padding: var(--space-8);
-  background-color: var(--surface-raised);
-  border: 1px solid var(--border-subtle);
+  background-color: var(--card);
+  border: 1px solid var(--line);
   border-radius: var(--r-md);
 }
 
 .ctaCopy {
-  color: var(--text-secondary);
+  color: var(--muted);
   max-width: 580px;
   margin: 0 auto var(--space-4) auto;
   line-height: 1.6;
+}
+
+@media (max-width: 860px) {
+  .sayNoGrid {
+    grid-template-columns: 1fr;
+  }
 }

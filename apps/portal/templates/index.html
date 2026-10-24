@@ -383,11 +383,11 @@
   <!-- AUTH OVERLAY -->
   <div id="authOverlay">
     <div class="auth-wrapper">
-      <button class="auth-back" data-act-click="hideAuthOverlay"><i class="fas fa-arrow-left"></i> Back to Portal</button>
-      <div class="auth-brand">
-        <div class="auth-brand-icon"><i class="fas fa-briefcase"></i></div>
-        <h2>DBERT</h2>
-        <p>Internship Portal 2026</p>
+      <button class="auth-back" data-act-click="hideAuthOverlay" style="background:#F1F5F9;border:1px solid #CBD5E1;color:#0F172A;border-radius:999px;padding:6px 14px;font-weight:700;"><i class="fas fa-arrow-left"></i> Back to Portal</button>
+      <div class="auth-brand" style="margin-bottom:12px;text-align:center;">
+        <div class="auth-brand-icon" style="background:linear-gradient(135deg,#2563EB,#1D4ED8);color:#FFFFFF;box-shadow:0 4px 14px rgba(37,99,235,0.3);width:42px;height:42px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;font-size:18px;"><i class="fas fa-graduation-cap"></i></div>
+        <h2 style="color:#0F172A;font-size:22px;font-weight:800;margin:6px 0 2px;">DBERT Portal</h2>
+        <span class="handwritten-tag">✨ Official Student Entrance</span>
       </div>
       <div class="auth-tabs">
         <button class="auth-tab active" id="tabSignup" data-act-click="switchAuthTab" data-arg-click='["signup"]'>Sign Up &amp; Apply</button>
@@ -399,10 +399,16 @@
         <div class="auth-panel active" id="panelSignup">
           <div class="auth-error" id="signupError" role="alert"><i class="fa fa-circle-exclamation"></i><span id="signupErrorText"></span></div>
           <div class="auth-success" id="signupSuccess">
-            <div class="success-icon-wrap"><i class="fas fa-check"></i></div>
-            <h3>Application Submitted!</h3>
-            <p>Your application is now <strong style="color:var(--brand);">Under Review</strong>. Redirecting to your portal&hellip;</p>
-            <div class="success-tags"><span class="success-tag">Status: Under Review</span></div>
+            <div class="success-icon-wrap" style="background:rgba(37,99,235,0.1);border-color:rgba(37,99,235,0.25);color:#2563EB;"><i class="fas fa-search"></i></div>
+            <h3 style="color:#0F172A;font-weight:800;font-size:20px;">Application Submitted!</h3>
+            <p style="color:#475569;font-size:13.5px;line-height:1.6;margin-bottom:16px;">Your application has been received and is currently <strong style="color:#2563EB;">Under Review</strong>. Our mentors are evaluating your academic profile & domain preference.</p>
+            <div class="success-tags" style="display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:20px;">
+              <span class="handwritten-badge-gold">⚡ Status: Under Review</span>
+              <span class="handwritten-badge-green">🛡️ Academic Clearance Pending</span>
+            </div>
+            <a href="/portal" class="btn-auth-submit" style="text-decoration:none;">
+              <i class="fas fa-arrow-right"></i> Launch My Portal →
+            </a>
           </div>
           <div id="signupFormWrap">
             <div class="su-steps" id="suSteps">
@@ -416,30 +422,38 @@
             <!-- STEP 1 — account -->
             <div class="su-step active" id="suStep1">
               <div class="form-grid">
-                <div class="form-section-label">Create your account</div>
+                <div class="form-section-label" style="grid-column:1/-1;font-weight:800;color:#0F172A;font-size:13px;display:flex;justify-content:space-between;align-items:center;">Create your account <span class="handwritten-tag" style="font-size:0.95rem !important;">Step 1 of 3</span></div>
                 <div class="form-group"><label class="field-label" for="su_name">Full Name *</label><input type="text" id="su_name" class="field-input" placeholder="Your full name" autocomplete="name"/></div>
                 <div class="form-group"><label class="field-label" for="su_email">Email *</label><input type="email" id="su_email" class="field-input" placeholder="you@example.com" autocomplete="email" data-act-blur="checkSignupEmailExists"/></div>
                 <div class="form-group full"><label class="field-label" for="su_phone">Phone / WhatsApp *</label><div class="phone-input-wrap"><span class="phone-prefix">+91</span><input type="tel" id="su_phone" class="field-input phone-field" placeholder="10-digit mobile number" maxlength="10" autocomplete="tel"/></div></div>
-                <div class="form-group"><label class="field-label" for="su_password">Password *</label><div class="pw-field"><input type="password" id="su_password" class="field-input" placeholder="At least 8 characters" autocomplete="new-password"/><button class="pw-toggle" type="button" data-act-click="togglePw" data-arg-click='["su_password", "$el"]' aria-label="Show/hide"><i class="fa fa-eye"></i></button></div></div>
-                <div class="form-group"><label class="field-label" for="su_confirm">Confirm Password *</label><div class="pw-field"><input type="password" id="su_confirm" class="field-input" placeholder="Re-enter password" autocomplete="new-password"/><button class="pw-toggle" type="button" data-act-click="togglePw" data-arg-click='["su_confirm", "$el"]' aria-label="Show/hide"><i class="fa fa-eye"></i></button></div></div>
+                <div class="form-group"><label class="field-label" for="su_password">Password *</label><div class="pw-field" style="position:relative;"><input type="password" id="su_password" class="field-input" placeholder="At least 8 characters" autocomplete="new-password"/><button class="pw-toggle" type="button" data-act-click="togglePw" data-arg-click='["su_password", "$el"]' aria-label="Show/hide" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:#64748B;cursor:pointer;"><i class="fa fa-eye"></i></button></div></div>
+                <div class="form-group"><label class="field-label" for="su_confirm">Confirm Password *</label><div class="pw-field" style="position:relative;"><input type="password" id="su_confirm" class="field-input" placeholder="Re-enter password" autocomplete="new-password"/><button class="pw-toggle" type="button" data-act-click="togglePw" data-arg-click='["su_confirm", "$el"]' aria-label="Show/hide" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:#64748B;cursor:pointer;"><i class="fa fa-eye"></i></button></div></div>
               </div>
-              <label class="su-chk"><input type="checkbox" id="su_terms" aria-label="I agree to the Terms &amp; Conditions and Privacy Policy"/><span>I agree to the <a href="/terms" target="_blank" rel="noopener">Terms &amp; Conditions</a> and <a href="/privacy" target="_blank" rel="noopener">Privacy Policy</a>. <span style="color:#ff6b6b;">*</span></span></label>
-              <label class="su-chk"><input type="checkbox" id="su_newsletter" aria-label="Send me internship tips, opportunities &amp; updates by email"/><span>Send me internship tips, opportunities &amp; updates by email <span style="color:#94A3B8;">(optional)</span>.</span></label>
-              <!-- 8.4 bot defenses: off-screen honeypot (must stay empty) + signed timing token -->
-              <input type="text" name="company_website" id="su_company_website" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true" aria-label="Leave this field blank" style="display:none !important;"/>
+              <label class="su-chk" style="color:#475569;margin-top:10px;"><input type="checkbox" id="su_terms" aria-label="I agree to the Terms &amp; Conditions and Privacy Policy"/><span>I agree to the <a href="/terms" target="_blank" rel="noopener" style="color:#2563EB;">Terms &amp; Conditions</a> and <a href="/privacy" target="_blank" rel="noopener" style="color:#2563EB;">Privacy Policy</a>. <span style="color:#ff6b6b;">*</span></span></label>
+              <label class="su-chk" style="color:#475569;"><input type="checkbox" id="su_newsletter" aria-label="Send me internship tips, opportunities &amp; updates by email"/><span>Send me internship tips, opportunities &amp; updates by email <span style="color:#64748B;">(optional)</span>.</span></label>
+              <input type="text" name="company_website" id="su_company_website" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true" aria-label="Leave this field blank" style="display:none !important;position:absolute !important;left:-9999px !important;top:-9999px !important;width:0 !important;height:0 !important;opacity:0 !important;pointer-events:none !important;"/>
 
               <input type="hidden" id="su_ts"/>
               <button type="button" class="btn-auth-submit" id="suBtn1" data-act-click="suNext1" onclick="suNext1();return false;"><span class="btn-label"><i class="fas fa-user-plus"></i> &nbsp;Create account &amp; continue</span><span class="btn-spinner"></span></button>
-              <p style="text-align:center;margin-top:8px;margin-bottom:0;font-size:11px;color:#64748B;">Takes 2 minutes &middot; Offer letter within 2 hours of enrollment</p>
+              <p style="text-align:center;margin-top:10px;margin-bottom:0;font-size:11.5px;color:#64748B;">Takes 2 minutes &middot; Fast-track mentor evaluation</p>
             </div>
 
             <!-- STEP 2 — academics -->
             <div class="su-step" id="suStep2" style="display:none !important;">
               <div class="form-grid">
-                <div class="form-section-label">Your academic background</div>
+                <div class="form-section-label" style="grid-column:1/-1;font-weight:800;color:#0F172A;font-size:13px;display:flex;justify-content:space-between;align-items:center;">Your academic background <span class="handwritten-tag" style="font-size:0.95rem !important;">Step 2 of 3</span></div>
                 <div class="form-group"><label class="field-label" for="su_city">City *</label>
                   <select id="su_city" class="field-select"><option value="">-- Select City --</option><option>Delhi</option><option>Mumbai</option><option>Bengaluru</option><option>Hyderabad</option><option>Chennai</option><option>Pune</option><option>Kolkata</option><option>Jaipur</option><option>Ahmedabad</option><option>Lucknow</option><option>Chandigarh</option><option>Bhopal</option><option>Indore</option><option>Noida</option><option>Other</option></select></div>
-                <div class="form-group full"><label class="field-label" for="su_college">College / University *</label><input type="text" id="su_college" class="field-input" placeholder="Your college name" autocomplete="organization"/></div>
+                <div class="form-group full"><label class="field-label" for="su_college">College / University *</label><input type="text" id="su_college" class="field-input" placeholder="College / University Name (e.g., VIT, IIT, Delhi University)" autocomplete="off"/></div>
+                <div class="form-group full"><label class="field-label" for="su_domain">Preferred Internship Track *</label>
+                  <select id="su_domain" class="field-select">
+                    <option value="">-- Select Preferred Track --</option>
+                    <option value="AI Agent Development">AI Agent Development</option>
+                    <option value="Full Stack Development">Full Stack Development</option>
+                    <option value="Data Analyst">Data Analyst</option>
+                    <option value="Python Automation">Python Automation</option>
+                  </select>
+                </div>
                 <div class="form-group"><label class="field-label" for="su_course">Course *</label>
                   <select id="su_course" class="field-select"><option value="">-- Select Course --</option><option>B.Tech</option><option>B.E.</option><option>BCA</option><option>B.Sc</option><option>BBA</option><option>B.Com</option><option>M.Tech</option><option>MCA</option><option>M.Sc</option><option>MBA</option><option>Diploma</option><option>Other</option></select></div>
                 <div class="form-group"><label class="field-label" for="su_semester">Semester *</label>
@@ -447,8 +461,8 @@
                 <div class="form-group"><label class="field-label" for="su_year">Year of Passing *</label>
                   <select id="su_year" class="field-select"><option value="">-- Select Year --</option><option>2024</option><option>2025</option><option>2026</option><option>2027</option><option>2028</option><option>2029</option><option>2030</option><option>2031</option><option>2032</option></select></div>
               </div>
-              <div class="su-nav">
-                <button type="button" class="btn-step-back" data-act-click="suGoStep" data-arg-click='[1]' onclick="suGoStep(1);return false;"><i class="fas fa-arrow-left"></i> Back</button>
+              <div class="su-nav" style="display:flex;gap:10px;margin-top:16px;">
+                <button type="button" class="btn-step-back" data-act-click="suGoStep" data-arg-click='[1]' onclick="suGoStep(1);return false;" style="background:#F1F5F9;border:1px solid #CBD5E1;color:#0F172A;border-radius:999px;padding:10px 18px;font-weight:700;cursor:pointer;"><i class="fas fa-arrow-left"></i> Back</button>
                 <button type="button" class="btn-auth-submit" id="suBtn2" data-act-click="suNext2" onclick="suNext2();return false;"><span class="btn-label">Continue &nbsp;<i class="fas fa-arrow-right"></i></span><span class="btn-spinner"></span></button>
               </div>
             </div>
@@ -456,22 +470,22 @@
             <!-- STEP 3 — profile + goals -->
             <div class="su-step" id="suStep3" style="display:none !important;">
               <div class="form-grid">
-                <div class="form-section-label">Your profile &amp; goals</div>
-                <div class="form-group full"><label class="field-label" for="su_why">Why do you want to join? * <span id="whyCount" style="float:right;font-size:11px;color:var(--amber);">0 / 80 min</span></label><textarea id="su_why" class="field-textarea" rows="4" placeholder="Tell us why you want this internship, what excites you about the domain, and what you hope to achieve. (min 80 characters)" data-act-input="updateWhyCount"></textarea></div>
-                <div class="form-group"><label class="field-label" for="su_linkedin">LinkedIn URL <span style="color:var(--tx-muted);font-size:10px;">(optional)</span></label><input type="url" id="su_linkedin" class="field-input" placeholder="https://linkedin.com/in/yourprofile"/></div>
-                <div class="form-group"><label class="field-label" for="su_github">GitHub URL <span style="color:var(--tx-muted);font-size:10px;">(optional)</span></label><input type="url" id="su_github" class="field-input" placeholder="https://github.com/yourprofile"/></div>
-                <div class="form-group full"><label class="field-label" for="su_portfolio">Portfolio / Personal Website <span style="color:var(--tx-muted);font-size:10px;">(optional)</span></label><input type="url" id="su_portfolio" class="field-input" placeholder="https://yourportfolio.com"/></div>
-                <div class="form-section-label">A few quick questions</div>
-                <div class="form-group"><label class="field-label" for="su_start">When do you hope to start in this field? *</label>
+                <div class="form-section-label" style="grid-column:1/-1;font-weight:800;color:#0F172A;font-size:13px;display:flex;justify-content:space-between;align-items:center;">Your profile &amp; goals <span class="handwritten-tag" style="font-size:0.95rem !important;">Step 3 of 3</span></div>
+                <div class="form-group full"><label class="field-label" for="su_why">Why do you want to join? * <span id="whyCount" style="float:right;font-size:11px;color:#D97706;">0 / 80 min</span></label><textarea id="su_why" class="field-textarea" rows="3" placeholder="Tell us why you want this internship, what excites you about the domain, and what you hope to achieve. (min 80 characters)" data-act-input="updateWhyCount"></textarea></div>
+                <div class="form-group"><label class="field-label" for="su_linkedin">LinkedIn URL <span style="color:#64748B;font-size:10px;">(optional)</span></label><input type="url" id="su_linkedin" class="field-input" placeholder="https://linkedin.com/in/yourprofile"/></div>
+                <div class="form-group"><label class="field-label" for="su_github">GitHub URL <span style="color:#64748B;font-size:10px;">(optional)</span></label><input type="url" id="su_github" class="field-input" placeholder="https://github.com/yourprofile"/></div>
+                <div class="form-group full"><label class="field-label" for="su_portfolio">Portfolio / Personal Website <span style="color:#64748B;font-size:10px;">(optional)</span></label><input type="url" id="su_portfolio" class="field-input" placeholder="https://yourportfolio.com"/></div>
+                <div class="form-section-label" style="grid-column:1/-1;font-weight:800;color:#0F172A;font-size:12.5px;margin-top:6px;">A few quick questions</div>
+                <div class="form-group"><label class="field-label" for="su_start">When do you hope to start? *</label>
                   <select id="su_start" class="field-select"><option value="">-- Select --</option><option>As soon as possible</option><option>In 1&ndash;3 months</option><option>In 6+ months</option><option>Just exploring for now</option></select></div>
-                <div class="form-group"><label class="field-label" for="su_learnmode">How are you building your skills now? *</label>
+                <div class="form-group"><label class="field-label" for="su_learnmode">How are you learning? *</label>
                   <select id="su_learnmode" class="field-select"><option value="">-- Select --</option><option>Mostly self-taught</option><option>College curriculum only</option><option>Online paid courses</option><option>With a mentor / guided program</option></select></div>
-                <div class="form-group full"><label class="field-label" for="su_priority">What matters most to you in an internship? *</label>
+                <div class="form-group full"><label class="field-label" for="su_priority">What matters most? *</label>
                   <select id="su_priority" class="field-select"><option value="">-- Select --</option><option>A guaranteed placement</option><option>Stipend / earning</option><option>Learning &amp; skills</option><option>Certificate &amp; resume value</option></select></div>
               </div>
-              <div class="su-nav">
-                <button type="button" class="btn-step-back" data-act-click="suGoStep" data-arg-click='[2]' onclick="suGoStep(2);return false;"><i class="fas fa-arrow-left"></i> Back</button>
-                <button type="button" class="btn-auth-submit" id="suBtn3" data-act-click="suSubmit3" onclick="suSubmit3();return false;"><span class="btn-label"><i class="fas fa-paper-plane"></i> &nbsp;Submit application</span><span class="btn-spinner"></span></button>
+              <div class="su-nav" style="display:flex;gap:10px;margin-top:16px;">
+                <button type="button" class="btn-step-back" data-act-click="suGoStep" data-arg-click='[2]' onclick="suGoStep(2);return false;" style="background:#F1F5F9;border:1px solid #CBD5E1;color:#0F172A;border-radius:999px;padding:10px 18px;font-weight:700;cursor:pointer;"><i class="fas fa-arrow-left"></i> Back</button>
+                <button type="button" class="btn-auth-submit" id="suBtn3" data-act-click="suSubmit3" onclick="suSubmit3();return false;"><span class="btn-label"><i class="fas fa-paper-plane"></i> &nbsp;Submit Application</span><span class="btn-spinner"></span></button>
               </div>
             </div>
           </div>
@@ -483,41 +497,41 @@
 
           <!-- Step 1: Email check -->
           <div id="siStepEmail">
-            <div class="form-grid" style="grid-template-columns:1fr;">
+            <div class="form-grid" style="grid-template-columns:1fr;margin-bottom:12px;">
               <div class="form-group"><label class="field-label" for="si_email">Email or Mobile Number</label><input type="text" id="si_email" class="field-input" placeholder="you@example.com or 10-digit mobile" autocomplete="username"/></div>
             </div>
-            <button class="btn-auth-submit" id="siEmailBtn" data-act-click="doEmailCheck"><span class="btn-label"><i class="fas fa-arrow-right"></i> &nbsp;Continue</span><span class="btn-spinner"></span></button>
-            <p style="text-align:center;margin-top:16px;font-size:12px;color:var(--tx-muted);">No account yet? <a href="#" style="color:var(--gold);font-weight:700;" data-act-click="switchAuthTab" data-arg-click='["signup"]' data-prevent-click onclick="switchAuthTab('signup');return false;">Sign Up &amp; Apply &rarr;</a></p>
+            <button class="btn-auth-submit" id="siEmailBtn" data-act-click="doEmailCheck"><span class="btn-label"><i class="fas fa-arrow-right"></i> &nbsp;Continue to Sign In</span><span class="btn-spinner"></span></button>
+            <p style="text-align:center;margin-top:16px;font-size:12.5px;color:#475569;">No account yet? <a href="#" style="color:#2563EB;font-weight:700;" data-act-click="switchAuthTab" data-arg-click='["signup"]' data-prevent-click onclick="switchAuthTab('signup');return false;">Sign Up &amp; Apply &rarr;</a></p>
           </div>
 
           <!-- Step 2a: Normal login (has_password) -->
           <div id="siStepLogin" style="display:none;">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:var(--r-sm);padding:10px 14px;">
-              <i class="fas fa-user" style="color:var(--tx-muted);font-size:12px;"></i>
-              <span id="siEmailDisplay" style="font-size:13px;color:var(--tx-muted);flex:1;"></span>
-              <button data-act-click="resetSiFlow" style="background:none;border:none;color:var(--gold);font-size:11px;cursor:pointer;font-weight:700;">Change</button>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:12px;padding:10px 14px;">
+              <i class="fas fa-user" style="color:#64748B;font-size:12px;"></i>
+              <span id="siEmailDisplay" style="font-size:13px;color:#0F172A;font-weight:600;flex:1;"></span>
+              <button data-act-click="resetSiFlow" style="background:none;border:none;color:#2563EB;font-size:11px;cursor:pointer;font-weight:700;">Change</button>
             </div>
-            <div class="form-grid" style="grid-template-columns:1fr;">
-              <div class="form-group"><label class="field-label" for="si_password">Password</label><div class="pw-field"><input type="password" id="si_password" class="field-input" placeholder="Your password" autocomplete="current-password"/><button class="pw-toggle" type="button" data-act-click="togglePw" data-arg-click='["si_password", "$el"]' aria-label="Show/hide"><i class="fa fa-eye"></i></button></div></div>
+            <div class="form-grid" style="grid-template-columns:1fr;margin-bottom:12px;">
+              <div class="form-group"><label class="field-label" for="si_password">Password</label><div class="pw-field" style="position:relative;"><input type="password" id="si_password" class="field-input" placeholder="Your password" autocomplete="current-password"/><button class="pw-toggle" type="button" data-act-click="togglePw" data-arg-click='["si_password", "$el"]' aria-label="Show/hide" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:#64748B;cursor:pointer;"><i class="fa fa-eye"></i></button></div></div>
             </div>
-            <button class="btn-auth-submit" id="signinBtn" data-act-click="doSignin"><span class="btn-label"><i class="fas fa-arrow-right-to-bracket"></i> &nbsp;Sign In</span><span class="btn-spinner"></span></button>
-            <p style="text-align:center;margin-top:14px;font-size:12px;"><a href="#" style="color:var(--gold);font-weight:700;text-decoration:none;" data-act-click="openForgotModal" data-prevent-click>Forgot password?</a></p>
+            <button class="btn-auth-submit" id="signinBtn" data-act-click="doSignin"><span class="btn-label"><i class="fas fa-arrow-right-to-bracket"></i> &nbsp;Sign In to Portal</span><span class="btn-spinner"></span></button>
+            <p style="text-align:center;margin-top:14px;font-size:12px;"><a href="#" style="color:#2563EB;font-weight:700;text-decoration:none;" data-act-click="openForgotModal" data-prevent-click>Forgot password?</a></p>
           </div>
 
           <!-- Step 2b: Set password (legacy no_password accounts) -->
           <div id="siStepSetPw" style="display:none;">
-            <div style="background:rgba(226,185,111,.07);border:1px solid rgba(226,185,111,.2);border-radius:var(--r-sm);padding:12px 14px;margin-bottom:16px;font-size:13px;color:var(--tx-muted);line-height:1.7;">
-              <i class="fas fa-info-circle" style="color:var(--gold);margin-right:6px;"></i>
-              Your application is on file. This is your <strong style="color:var(--tx-body);">first login</strong> — please create a password to access your portal.
+            <div style="background:rgba(37,99,235,0.08);border:1px solid rgba(37,99,235,0.2);border-radius:12px;padding:12px 14px;margin-bottom:16px;font-size:13px;color:#475569;line-height:1.6;">
+              <i class="fas fa-info-circle" style="color:#2563EB;margin-right:6px;"></i>
+              Your application is on file. This is your <strong style="color:#0F172A;">first login</strong> — please create a password to access your portal.
             </div>
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:var(--r-sm);padding:10px 14px;">
-              <i class="fas fa-user" style="color:var(--tx-muted);font-size:12px;"></i>
-              <span id="siEmailDisplayPw" style="font-size:13px;color:var(--tx-muted);flex:1;"></span>
-              <button data-act-click="resetSiFlow" style="background:none;border:none;color:var(--gold);font-size:11px;cursor:pointer;font-weight:700;">Change</button>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;background:#F8FAFC;border:1px solid #E2E8F0;border-radius:12px;padding:10px 14px;">
+              <i class="fas fa-user" style="color:#64748B;font-size:12px;"></i>
+              <span id="siEmailDisplayPw" style="font-size:13px;color:#0F172A;font-weight:600;flex:1;"></span>
+              <button data-act-click="resetSiFlow" style="background:none;border:none;color:#2563EB;font-size:11px;cursor:pointer;font-weight:700;">Change</button>
             </div>
-            <div class="form-grid" style="grid-template-columns:1fr;">
-              <div class="form-group"><label class="field-label" for="si_newpw">Create Password *</label><div class="pw-field"><input type="password" id="si_newpw" class="field-input" placeholder="At least 8 characters" autocomplete="new-password"/><button class="pw-toggle" type="button" data-act-click="togglePw" data-arg-click='["si_newpw", "$el"]' aria-label="Show/hide"><i class="fa fa-eye"></i></button></div></div>
-              <div class="form-group"><label class="field-label" for="si_confirmpw">Confirm Password *</label><div class="pw-field"><input type="password" id="si_confirmpw" class="field-input" placeholder="Re-enter password" autocomplete="new-password"/><button class="pw-toggle" type="button" data-act-click="togglePw" data-arg-click='["si_confirmpw", "$el"]' aria-label="Show/hide"><i class="fa fa-eye"></i></button></div></div>
+            <div class="form-grid" style="grid-template-columns:1fr;margin-bottom:12px;">
+              <div class="form-group"><label class="field-label" for="si_newpw">Create Password *</label><div class="pw-field" style="position:relative;"><input type="password" id="si_newpw" class="field-input" placeholder="At least 8 characters" autocomplete="new-password"/><button class="pw-toggle" type="button" data-act-click="togglePw" data-arg-click='["si_newpw", "$el"]' aria-label="Show/hide" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:#64748B;cursor:pointer;"><i class="fa fa-eye"></i></button></div></div>
+              <div class="form-group"><label class="field-label" for="si_confirmpw">Confirm Password *</label><div class="pw-field" style="position:relative;"><input type="password" id="si_confirmpw" class="field-input" placeholder="Re-enter password" autocomplete="new-password"/><button class="pw-toggle" type="button" data-act-click="togglePw" data-arg-click='["si_confirmpw", "$el"]' aria-label="Show/hide" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:#64748B;cursor:pointer;"><i class="fa fa-eye"></i></button></div></div>
             </div>
             <button class="btn-auth-submit" id="setpwBtn" data-act-click="doSetPassword"><span class="btn-label"><i class="fas fa-lock"></i> &nbsp;Set Password &amp; Sign In</span><span class="btn-spinner"></span></button>
           </div>
@@ -548,7 +562,7 @@
 
       <div id="forgotFormArea">
         <div class="form-group"><label class="field-label" for="fp_email" style="color:#FFFFFF;font-size:11px;font-weight:800;letter-spacing:0.6px;text-transform:uppercase;margin-bottom:6px;display:block;">Email</label><input type="email" id="fp_email" class="field-input" placeholder="you@example.com" autocomplete="email"/></div>
-        <input type="text" name="company_website" id="fp_company_website" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true" aria-label="Leave this field blank" style="position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;opacity:0;"/>
+        <input type="text" name="company_website" id="fp_company_website" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true" aria-label="Leave this field blank" style="display:none !important;position:absolute !important;left:-9999px !important;top:-9999px !important;width:0 !important;height:0 !important;opacity:0 !important;pointer-events:none !important;"/>
 
         <button class="btn-auth-submit" id="forgotBtn" data-act-click="submitForgot" style="margin-top:14px;"><span class="btn-label"><i class="fas fa-paper-plane"></i> &nbsp;Send Reset Link</span><span class="btn-spinner"></span></button>
       </div>
@@ -735,13 +749,14 @@
   async function suNext2(){
     hideAuthError('signupError');
     const city=_suVal('su_city'),college=_suVal('su_college'),course=_suVal('su_course'),
-          semester=_suVal('su_semester'),year=_suVal('su_year');
-    if(!city||!college||!course||!semester||!year){showAuthError('signupError','Please fill in all required fields.');return;}
+          semester=_suVal('su_semester'),year=_suVal('su_year'),domain=_suVal('su_domain');
+    if(!city||!college||!course||!semester||!year||!domain){showAuthError('signupError','Please fill in all required fields, including your preferred track.');return;}
+    if(/^(student|college|university|n\/?a|none|nil)$/i.test(college.trim())){
+      showAuthError('signupError','Please enter your actual College or University name (e.g. VIT, IIT, Delhi University).');return;
+    }
     setLoading('suBtn2',true);
     try{
-      // T9: domain is no longer collected at signup -- interns browse posts and apply
-      // directly; the operative domain comes from whichever post they apply to.
-      const res=await fetch('/signup/stage2',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'include',body:JSON.stringify({city,college,course,semester,year_of_passing:year})});
+      const res=await fetch('/signup/stage2',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'include',body:JSON.stringify({city,college,course,semester,year_of_passing:year,domain})});
       const data=await res.json(); setLoading('suBtn2',false);
       if(data.status==='success'){dbertGA('signup_stage2',{});suGoStep(3);}
       else if(res.status===401){switchAuthTab('signin');showAuthError('signinError','Please sign in to continue your application.');}
@@ -777,7 +792,7 @@
       if(st>=2){
         const set=(id,v)=>{const el=document.getElementById(id);if(el&&v)el.value=v;};
         set('su_city',it.city);set('su_college',it.college);set('su_course',it.course);
-        set('su_semester',it.semester);set('su_year',it.year_of_passing);
+        set('su_semester',it.semester);set('su_year',it.year_of_passing);set('su_domain',it.domain);
       }
       suGoStep(st===1?2:3);
     }catch(e){}

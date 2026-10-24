@@ -1,7 +1,10 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
 import styles from './AudienceDoors.module.css';
 import Reveal from './Reveal';
+import { trackEvent } from '@/lib/analytics';
 
 export type AudienceKind = 'founder' | 'enterprise' | 'learner';
 
@@ -35,7 +38,17 @@ export default function AudienceDoors({ doors }: AudienceDoorsProps) {
     <div className={styles.grid}>
       {doors.map((door) => (
         <Reveal key={door.href} as="div">
-          <Link href={door.href} className={`${styles.door} ${toneClass[door.kind]}`}>
+          <Link
+            href={door.href}
+            className={`${styles.door} ${toneClass[door.kind]}`}
+            onClick={() =>
+              trackEvent('door_click', {
+                kind: door.kind,
+                destination: door.href,
+                label: door.title,
+              })
+            }
+          >
             <div className={styles.who}>{door.who}</div>
             <h3>{door.title}</h3>
             <p>{door.description}</p>

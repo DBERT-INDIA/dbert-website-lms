@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { Rocket } from 'lucide-react';
 import f from './forms.module.css';
 import styles from './MultiStepForm.module.css'; // Reusing form styles
+import { trackEvent } from '@/lib/analytics';
 
 interface DemoRequestFormProps {
   productName: string;
@@ -42,14 +43,10 @@ export default function DemoRequestForm({ productName }: DemoRequestFormProps) {
 
       if (res.ok) {
         setSuccess(true);
-        try {
-          const w = window as any;
-          if (w.gtag) {
-            w.gtag('event', 'demo_request_submit', {
-              product_name: productName
-            });
-          }
-        } catch (err) {}
+        trackEvent('generate_lead', {
+          form_name: 'demo_request',
+          product_name: productName
+        });
       } else {
         const data = await res.json();
         setErrorMsg(data.error || 'Something went wrong. Please try again.');

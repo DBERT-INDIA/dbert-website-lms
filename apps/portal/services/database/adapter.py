@@ -832,7 +832,8 @@ def get_db_adapter(
             pass
 
     if db_target is None:
-        db_target = os.environ.get("DATABASE_URL") or os.environ.get("DB_FILE") or "internship.db"
+        default_db = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "internship.db"))
+        db_target = os.environ.get("DATABASE_URL") or os.environ.get("DB_FILE") or default_db
 
     # 3. Detect engine
     is_postgres_target = (

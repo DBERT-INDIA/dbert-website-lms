@@ -5,6 +5,7 @@ import styles from './MultiStepForm.module.css';
 import { CircleCheck } from 'lucide-react';
 import f from './forms.module.css';
 import Link from 'next/link';
+import { trackEvent } from '@/lib/analytics';
 
 export default function StartupRegisterForm() {
   const [step, setStep] = useState<number>(1);
@@ -98,16 +99,12 @@ export default function StartupRegisterForm() {
 
       if (res.ok) {
         setSuccess(true);
-        // Trigger GA4 event if tracking helper is available
-        try {
-          const w = window as any;
-          if (w.gtag) {
-            w.gtag('event', 'startup_register_submit', {
-              startup_stage: formData.stage,
-              domain: formData.domain
-            });
-          }
-        } catch (err) {}
+        trackEvent('generate_lead', {
+          form_name: 'startup_register',
+          startup_stage: formData.stage,
+          domain: formData.domain,
+          team_size: formData.teamSize
+        });
         sessionStorage.removeItem('dbert_startup_form');
         sessionStorage.removeItem('dbert_startup_step');
       } else {

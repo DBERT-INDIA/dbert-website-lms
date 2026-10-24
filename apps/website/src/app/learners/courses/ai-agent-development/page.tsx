@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import FAQAccordion from '@/components/ui/FAQAccordion';
 import { pageMetadata } from '@/lib/seo';
+import RegionalOpportunityBento from '@/components/ui/RegionalOpportunityBento';
 import s from '../../learners.module.css';
 import { Bot, Briefcase, Zap, CheckCircle, ShieldCheck } from 'lucide-react';
 
@@ -261,10 +262,76 @@ export default function AIAgentCoursePage() {
         </div>
       </div>
 
+      {/* Live Regional Opportunities */}
+      <RegionalOpportunityBento
+        sectionNumber="§ 08"
+        title="AI Agent & Autonomous Workflow Internships in India"
+        description="Direct entry into active startup development squads building tool-calling agents, multi-agent swarms, and RAG pipelines across Mumbai, Bengaluru, Delhi NCR, and remote environments."
+        domainName="AI Agent Development"
+        hubHref="https://internship.dbert.online/internships/ai-agent-development"
+        jobsHref="https://internship.dbert.online/jobs/ai-agent-development"
+        opportunities={[
+          {
+            title: 'AI Sales Assistant & Lead Qualifier Bot Intern',
+            roleDescription: 'Construct conversational customer qualification bots, function-calling CRM synchronizers, and WhatsApp API webhooks.',
+            cityTag: 'Mumbai',
+            location: 'Mumbai · Hybrid / Remote',
+            stipend: '₹9,000 – ₹16,000 / mo',
+            href: 'https://internship.dbert.online/internships/ai-sales-assistant-bot-intern-mumbai-remote-14',
+            tags: ['LangChain', 'Function Calling', 'FastAPI', 'Python'],
+          },
+          {
+            title: 'AI Workflow Automation & Agent Orchestrator Intern',
+            roleDescription: 'Orchestrate multi-step LLM task graphs, automated report synthesis pipelines, and human-in-the-loop review nodes.',
+            cityTag: 'Bangalore',
+            location: 'Bengaluru · Hybrid',
+            stipend: '₹10,000 – ₹18,000 / mo',
+            href: 'https://internship.dbert.online/internships/ai-workflow-automation-intern-bangalore-remote-10',
+            tags: ['LangGraph', 'CrewAI', 'Redis', 'Python'],
+          },
+          {
+            title: 'Agentic Search & Neural Information Retrieval Intern',
+            roleDescription: 'Design hybrid dense-sparse vector retrievers, reciprocal rank fusion (RRF) algorithms, and citation validation nodes.',
+            cityTag: 'Delhi NCR',
+            location: 'Delhi NCR · Remote',
+            stipend: '₹9,500 – ₹17,000 / mo',
+            href: 'https://internship.dbert.online/internships/agentic-search-systems-intern-delhi-ncr-remote-11',
+            tags: ['RAG', 'pgvector', 'Qdrant', 'FastAPI'],
+          },
+          {
+            title: 'AI Coding Assistant & Repo Tool Integration Intern',
+            roleDescription: 'Integrate AST code parsers, automated unit test generation agents, and pull-request analysis bots.',
+            cityTag: 'Hyderabad',
+            location: 'Hyderabad · Remote',
+            stipend: '₹9,000 – ₹16,000 / mo',
+            href: 'https://internship.dbert.online/internships/ai-coding-assistant-intern-hyderabad-remote-12',
+            tags: ['Tree-sitter', 'Python', 'GitHub Actions', 'vLLM'],
+          },
+          {
+            title: 'Knowledge Base RAG & Embedding Pipeline Intern',
+            roleDescription: 'Implement chunking strategies, parent-document retrievers, and contextual compression for enterprise knowledge bases.',
+            cityTag: 'Pune',
+            location: 'Pune · Hybrid',
+            stipend: '₹8,500 – ₹15,000 / mo',
+            href: 'https://internship.dbert.online/internships/knowledge-base-rag-agent-intern-pune-remote-13',
+            tags: ['ChromaDB', 'LlamaIndex', 'Python', 'Docker'],
+          },
+          {
+            title: 'Production RAG Pipeline Engineering Remote Intern',
+            roleDescription: 'Build end-to-end question-answering systems with rerankers, semantic cache layers, and latency budgets.',
+            cityTag: 'Remote',
+            location: 'Virtual · Anywhere India',
+            stipend: '₹10,000 – ₹18,000 / mo',
+            href: 'https://internship.dbert.online/internships/rag-pipeline-engineering-intern-remote-1',
+            tags: ['RAG', 'Ollama', 'FastAPI', 'LangGraph'],
+          },
+        ]}
+      />
+
       {/* CTA Block */}
       <div className="container pb-block">
         <div className="bento-card callout-plain p-8 border border-line bg-card text-center">
-          <div className="doclabel mb-1">§ 08 — INITIALIZE CAREER ACCELERATION</div>
+          <div className="doclabel mb-1">§ 09 — INITIALIZE CAREER ACCELERATION</div>
           <h2 className="card-title text-2xl font-bold text-white mb-2">Launch Your AI Agent Engineering Career</h2>
           <p className="page-lede text-sm text-muted max-w-xl mx-auto mb-6">
             Ready to design resilient multi-agent state machines, serve open-weights models locally, and deploy auditable software to your personal Git repository? Enrol in DBERT Industrial Training today.

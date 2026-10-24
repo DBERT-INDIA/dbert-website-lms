@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import styles from './MegaMenu.module.css';
 import navConfigJson from '@/data/nav.config.json';
 import NavDrawer, { type DrawerGroup, type DrawerLink } from './NavDrawer';
+import { trackEvent } from '@/lib/analytics';
 
 type NavColumn = { title: string; links: DrawerLink[] };
 
@@ -60,7 +61,13 @@ function renderNavLink(link: DrawerLink) {
 
   if (link.external) {
     return (
-      <a href={link.href} className={className} target="_blank" rel="noopener noreferrer">
+      <a
+        href={link.href}
+        className={className}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={() => trackEvent('nav_link_click', { label: link.label, href: link.href, external: true })}
+      >
         <span>{link.label}</span>
         <span className={styles.externalMark} aria-hidden="true">↗</span>
       </a>
@@ -68,7 +75,11 @@ function renderNavLink(link: DrawerLink) {
   }
 
   return (
-    <Link href={link.href} className={className}>
+    <Link
+      href={link.href}
+      className={className}
+      onClick={() => trackEvent('nav_link_click', { label: link.label, href: link.href, external: false })}
+    >
       {link.label}
     </Link>
   );
@@ -147,14 +158,15 @@ export default function MegaMenu() {
     <>
       <header className={styles.navbar}>
         <div className={styles.navContainer} ref={navRef}>
-          <Link href="/" className={styles.navLogo}>
+          <Link href="/" className={styles.navLogo} onClick={() => trackEvent('nav_logo_click')}>
             <span className={styles.logoMark} aria-hidden="true">
               D
             </span>
             <span className={styles.brandContainer}>
               DBERT
-              <span className={styles.livePulse} title="Studio Active" aria-label="Studio Active" />
+              <span className={styles.livePulse} title="NCR Studio Active" aria-label="NCR Studio Active" />
             </span>
+            <span className={styles.statusChip}>IND-NCR // ACTIVE</span>
           </Link>
 
           <nav className={styles.navLinks} aria-label="Primary">
@@ -273,6 +285,7 @@ export default function MegaMenu() {
                 className="btn btn-primary btn-sm"
                 target={navConfig.cta.external ? '_blank' : undefined}
                 rel={navConfig.cta.external ? 'noopener noreferrer' : undefined}
+                onClick={() => trackEvent('incubation_apply_click', { location: 'navbar_cta' })}
               >
                 <span>{navConfig.cta.label}</span>
                 <span className={styles.ctaArrow} aria-hidden="true">↗</span>

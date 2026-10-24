@@ -6,6 +6,7 @@ import { getPostMeta, getBlogSlugs } from '@/lib/blog';
 import AuthorBox from '@/components/blog/AuthorBox';
 import ArticleSchema from '@/components/seo/ArticleSchema';
 import HandNote from '@/components/ui/HandNote';
+import AdSenseSlot from '@/components/ads/AdSenseSlot';
 import s from '../blog.module.css';
 
 export async function generateStaticParams() {
@@ -52,12 +53,7 @@ export default async function BlogPostPage({ params }: BlogPostProps) {
     const imported = await import(`@/content/blog/${slug}.mdx`);
     ContentComponent = imported.default;
   } catch {
-    try {
-      const importedMd = await import(`@/content/blog/${slug}.md`);
-      ContentComponent = importedMd.default;
-    } catch {
-      notFound();
-    }
+    notFound();
   }
 
   return (
@@ -96,6 +92,8 @@ export default async function BlogPostPage({ params }: BlogPostProps) {
             <p className="body-copy">Error rendering MDX document contents.</p>
           )}
         </article>
+
+        <AdSenseSlot slotId="blog-post-bottom" />
 
         <AuthorBox
           name={meta.author}

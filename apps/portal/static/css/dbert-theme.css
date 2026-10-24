@@ -3432,3 +3432,540 @@ body.portal .lb-toggle.active{border-color:#000000; color:#000000 !important; ba
     body.pg-cv-pdf .entry .org{ color: var(--tx-muted); font-size: 9.5pt; }
     body.pg-cv-pdf ul { margin: 3px 0 3px 14px; padding: 0; } body.pg-cv-pdf li { margin: 2px 0; }
     body.pg-cv-pdf .foot{ margin-top: 14px; border-top: 1px solid var(--doc-line); padding-top: 6px; color: var(--tx-muted); font-size: 7pt; text-align: center; }
+
+
+/* ==========================================================================
+   PORTAL MODERN UI/UX OVERHAUL & TYPOGRAPHY ENHANCEMENTS
+   ========================================================================== */
+
+/* 1. Handwriting Accent Typography */
+.font-handwriting, .handwritten {
+  font-family: 'Caveat', 'Kalam', cursive, sans-serif !important;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+
+.handwritten-tag {
+  font-family: 'Caveat', cursive, sans-serif !important;
+  font-size: 1.15rem !important;
+  font-weight: 700 !important;
+  color: #2563EB !important;
+  background: rgba(37, 99, 235, 0.08) !important;
+  border: 1px dashed rgba(37, 99, 235, 0.35) !important;
+  padding: 2px 12px !important;
+  border-radius: 999px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  line-height: 1.2 !important;
+}
+
+.handwritten-badge-gold {
+  font-family: 'Caveat', cursive, sans-serif !important;
+  font-size: 1.15rem !important;
+  font-weight: 700 !important;
+  color: #D97706 !important;
+  background: rgba(251, 191, 36, 0.15) !important;
+  border: 1px solid rgba(217, 119, 6, 0.3) !important;
+  padding: 2px 12px !important;
+  border-radius: 999px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  line-height: 1.2 !important;
+}
+
+.handwritten-badge-green {
+  font-family: 'Caveat', cursive, sans-serif !important;
+  font-size: 1.15rem !important;
+  font-weight: 700 !important;
+  color: #15803D !important;
+  background: rgba(34, 197, 94, 0.12) !important;
+  border: 1px solid rgba(34, 197, 94, 0.3) !important;
+  padding: 2px 12px !important;
+  border-radius: 999px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  line-height: 1.2 !important;
+}
+
+/* 2. Industry-Standard Rounded CTA Pill Buttons */
+.cta-pill-btn, .btn-cta, .btn-pill {
+  border-radius: 999px !important;
+  padding: 12px 24px !important;
+  font-weight: 800 !important;
+  font-size: 13.5px !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  letter-spacing: 0.3px !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  cursor: pointer !important;
+  border: none !important;
+}
+
+.cta-pill-primary {
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35), 0 2px 4px rgba(0, 0, 0, 0.08) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.25) !important;
+}
+
+.cta-pill-primary:hover {
+  transform: translateY(-2px) scale(1.02) !important;
+  box-shadow: 0 8px 22px rgba(37, 99, 235, 0.45) !important;
+  color: #FFFFFF !important;
+}
+
+.cta-pill-secondary {
+  background: #FFFFFF !important;
+  color: #0F172A !important;
+  border: 1.5px solid #CBD5E1 !important;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06) !important;
+}
+
+.cta-pill-secondary:hover {
+  transform: translateY(-2px) !important;
+  border-color: #2563EB !important;
+  color: #2563EB !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.15) !important;
+}
+
+.cta-pill-amber {
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(217, 119, 6, 0.3) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.25) !important;
+}
+
+.cta-pill-amber:hover {
+  transform: translateY(-2px) scale(1.02) !important;
+  box-shadow: 0 8px 20px rgba(217, 119, 6, 0.42) !important;
+  color: #FFFFFF !important;
+}
+
+/* 3. Refined Card & Layout Formatting */
+body.portal .glass-card {
+  background: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
+  border-radius: 20px !important;
+  padding: 24px !important;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.03) !important;
+  transition: all 0.25s ease !important;
+}
+
+body.portal .glass-card:hover {
+  border-color: #CBD5E1 !important;
+  box-shadow: 0 10px 30px -4px rgba(15, 23, 42, 0.08) !important;
+}
+
+body.portal .info-row {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 10px 14px !important;
+  background: #F8FAFC !important;
+  border: 1px solid #E2E8F0 !important;
+  border-radius: 12px !important;
+  margin-bottom: 8px !important;
+  font-size: 13px !important;
+}
+
+body.portal .info-row:last-child {
+  margin-bottom: 0 !important;
+}
+
+body.portal .info-label {
+  color: #475569 !important;
+  font-weight: 600 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+}
+
+body.portal .info-value {
+  color: #0F172A !important;
+  font-weight: 700 !important;
+}
+
+body.portal .metric-bar-item {
+  margin-bottom: 14px;
+}
+
+body.portal .metric-bar-track {
+  height: 9px;
+  background: #E2E8F0;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-top: 5px;
+}
+
+body.portal .metric-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body.portal .att-table-wrap {
+  border: 1px solid #E2E8F0;
+  border-radius: 14px;
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+body.portal .data-table th {
+  background: #F8FAFC;
+  color: #475569;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  padding: 12px 16px;
+  border-bottom: 1px solid #E2E8F0;
+}
+
+body.portal .data-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #F1F5F9;
+  color: #0F172A;
+  font-size: 13px;
+}
+
+
+/* ==========================================================================
+   AUTH UI / UX OVERHAUL (SIGN IN & SIGN UP SCREENS MATCHING PORTAL)
+   ========================================================================== */
+
+body.home .auth-wrapper, .auth-wrapper {
+  max-width: 500px !important;
+  margin: auto !important;
+}
+
+body.home .auth-card, .auth-card {
+  background: #FFFFFF !important;
+  border: 1px solid #E2E8F0 !important;
+  border-radius: 24px !important;
+  padding: 28px 30px !important;
+  box-shadow: 0 20px 50px -10px rgba(15, 23, 42, 0.15), 0 10px 20px -5px rgba(15, 23, 42, 0.08) !important;
+  color: #0F172A !important;
+}
+
+body.home .auth-tabs, .auth-tabs {
+  background: #F1F5F9 !important;
+  border: 1px solid #E2E8F0 !important;
+  border-radius: 999px !important;
+  padding: 4px !important;
+  margin-bottom: 16px !important;
+  gap: 4px !important;
+}
+
+body.home .auth-tab, .auth-tab {
+  flex: 1 !important;
+  padding: 10px 18px !important;
+  border: none !important;
+  border-radius: 999px !important;
+  background: transparent !important;
+  color: #64748B !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+body.home .auth-tab.active, .auth-tab.active {
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%) !important;
+  color: #FFFFFF !important;
+  font-weight: 800 !important;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3) !important;
+}
+
+body.home .field-label, .field-label {
+  color: #475569 !important;
+  font-size: 12.5px !important;
+  font-weight: 700 !important;
+  margin-bottom: 5px !important;
+}
+
+body.home .field-input, body.home .field-select, body.home .field-textarea,
+.field-input, .field-select, .field-textarea {
+  background: #F8FAFC !important;
+  border: 1.5px solid #E2E8F0 !important;
+  border-radius: 12px !important;
+  color: #0F172A !important;
+  padding: 10px 14px !important;
+  font-size: 13.5px !important;
+  transition: all 0.2s ease !important;
+}
+
+body.home .field-input:focus, body.home .field-select:focus, body.home .field-textarea:focus,
+.field-input:focus, .field-select:focus, .field-textarea:focus {
+  outline: none !important;
+  border-color: #2563EB !important;
+  background: #FFFFFF !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15) !important;
+}
+
+body.home .btn-auth-submit, .btn-auth-submit {
+  width: 100% !important;
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%) !important;
+  color: #FFFFFF !important;
+  font-weight: 800 !important;
+  font-size: 14px !important;
+  border: none !important;
+  border-radius: 999px !important;
+  padding: 12px 24px !important;
+  cursor: pointer !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.35) !important;
+}
+
+body.home .btn-auth-submit:hover:not(:disabled), .btn-auth-submit:hover:not(:disabled) {
+  transform: translateY(-2px) scale(1.01) !important;
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.45) !important;
+  color: #FFFFFF !important;
+}
+
+body.home .su-steps, .su-steps {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 10px !important;
+  margin: 0 0 18px !important;
+}
+
+body.home .su-dot span, .su-dot span {
+  width: 30px !important;
+  height: 30px !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-weight: 800 !important;
+  font-size: 12px !important;
+  background: #F1F5F9 !important;
+  color: #64748B !important;
+  border: 1.5px solid #CBD5E1 !important;
+}
+
+body.home .su-dot.active span, body.home .su-dot.done span,
+.su-dot.active span, .su-dot.done span {
+  background: #2563EB !important;
+  color: #FFFFFF !important;
+  border-color: #2563EB !important;
+  box-shadow: 0 3px 10px rgba(37, 99, 235, 0.3) !important;
+}
+
+body.home .su-dot.active label, body.home .su-dot.done label,
+.su-dot.active label, .su-dot.done label {
+  color: #2563EB !important;
+  font-weight: 800 !important;
+}
+
+body.home .su-line, .su-line {
+  background: #E2E8F0 !important;
+  height: 2px !important;
+}
+
+body.home .auth-success, .auth-success {
+  text-align: center !important;
+  padding: 24px 12px !important;
+}
+
+body.home .success-icon-wrap, .success-icon-wrap {
+  width: 60px !important;
+  height: 60px !important;
+  border-radius: 18px !important;
+  margin: 0 auto 16px !important;
+  display: flex !align-items: center !important;
+  justify-content: center !important;
+  background: rgba(34, 197, 94, 0.12) !important;
+  border: 1.5px solid rgba(34, 197, 94, 0.3) !important;
+  color: #16A34A !important;
+  font-size: 26px !important;
+}
+
+body.home .auth-success h3, .auth-success h3 {
+  color: #0F172A !important;
+  font-size: 20px !important;
+  font-weight: 800 !important;
+  margin-bottom: 6px !important;
+}
+
+body.home .auth-success p, .auth-success p {
+  color: #475569 !important;
+  font-size: 13.5px !important;
+  line-height: 1.6 !important;
+}
+
+
+/* ---- Input Fields & Phone Prefix Colors Matching Page Palette ---- */
+body.home .field-input, body.home .field-select, body.home .field-textarea,
+.field-input, .field-select, .field-textarea {
+  width: 100% !important;
+  box-sizing: border-box !important;
+  background: #F8FAFC !important;
+  border: 1.5px solid #CBD5E1 !important;
+  border-radius: 12px !important;
+  color: #0F172A !important;
+  padding: 12px 16px !important;
+  font-size: 14.5px !important;
+  min-height: 48px !important;
+  transition: all 0.2s ease !important;
+  font-family: inherit !important;
+}
+
+body.home .field-input:focus, body.home .field-select:focus, body.home .field-textarea:focus,
+.field-input:focus, .field-select:focus, .field-textarea:focus {
+  outline: none !important;
+  border-color: #2563EB !important;
+  background: #FFFFFF !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15) !important;
+}
+
+body.home .field-input::placeholder, body.home .field-textarea::placeholder,
+.field-input::placeholder, .field-textarea::placeholder {
+  color: #64748B !important;
+}
+
+body.home .field-select option, .field-select option, .filter-select option, select option {
+  background: #FFFFFF !important;
+  color: #000000 !important;
+}
+
+/* Phone / WhatsApp Input Field & Prefix */
+body.home .phone-input-wrap, .phone-input-wrap {
+  display: flex !important;
+  align-items: center !important;
+  background: #F8FAFC !important;
+  border: 1.5px solid #CBD5E1 !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  min-height: 48px !important;
+  transition: all 0.2s ease !important;
+}
+
+body.home .phone-input-wrap:focus-within, .phone-input-wrap:focus-within {
+  border-color: #2563EB !important;
+  background: #FFFFFF !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15) !important;
+}
+
+body.home .phone-prefix, .phone-prefix {
+  padding: 0 16px !important;
+  background: #F1F5F9 !important;
+  color: #0F172A !important;
+  border-right: 1.5px solid #CBD5E1 !important;
+  font-weight: 800 !important;
+  font-size: 14px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 100% !important;
+  min-height: 48px !important;
+  user-select: none !important;
+  flex-shrink: 0 !important;
+}
+
+body.home .phone-input-wrap .field-input, .phone-input-wrap .field-input {
+  border: none !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 12px 16px !important;
+  flex: 1 !important;
+  color: #0F172A !important;
+  font-size: 14.5px !important;
+  min-height: 48px !important;
+}
+
+/* ---- Sign In & Auth Modal Horizontal Expansion ---- */
+.auth-wrapper,
+body.home .auth-wrapper {
+  max-width: 730px !important;
+  width: 100% !important;
+}
+
+.auth-card,
+body.home .auth-card {
+  padding: 26px 32px !important;
+  border-radius: 20px !important;
+}
+
+#si_email,
+#siStepEmail .field-input,
+#panelSignin .field-input,
+body.home #si_email,
+body.home #panelSignin .field-input {
+  width: 100% !important;
+  min-height: 48px !important;
+  height: 48px !important;
+  padding: 12px 18px !important;
+  font-size: 15px !important;
+  font-weight: 500 !important;
+  border-radius: 12px !important;
+  background: #F8FAFC !important;
+  border: 1.5px solid #CBD5E1 !important;
+  color: #0F172A !important;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.04) !important;
+}
+
+#si_email:focus,
+#siStepEmail .field-input:focus,
+#panelSignin .field-input:focus,
+body.home #si_email:focus,
+body.home #panelSignin .field-input:focus {
+  border-color: #2563EB !important;
+  background: #FFFFFF !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15) !important;
+  outline: none !important;
+}
+
+#siStepEmail .field-label,
+#panelSignin .field-label,
+body.home #panelSignin .field-label {
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  color: #1E293B !important;
+  margin-bottom: 8px !important;
+  text-transform: none !important;
+  letter-spacing: 0 !important;
+}
+
+#siStepEmail,
+#panelSignin {
+  padding-top: 4px !important;
+}
+
+/* ---- Honeypot Field Absolute Invisible Protection ---- */
+.hp-field,
+input.hp-field,
+#su_company_website,
+#fp_company_website,
+#ra_company_website,
+#ad_company_website,
+body.home .hp-field {
+  display: none !important;
+  position: absolute !important;
+  left: -9999px !important;
+  top: -9999px !important;
+  width: 0 !important;
+  height: 0 !important;
+  min-height: 0 !important;
+  max-height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  border: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
+
+

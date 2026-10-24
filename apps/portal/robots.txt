@@ -1,0 +1,20 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /portal
+Disallow: /api/
+Disallow: /signin
+Disallow: /signup
+Disallow: /apply
+Disallow: /unsubscribe
+Disallow: /e/
+Disallow: /cron
+
+# Explicitly allow Google AdSense crawler
+User-agent: Mediapartners-Google
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+Sitemap: https://internship.dbert.online/sitemap.xml

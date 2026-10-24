@@ -1,8 +1,11 @@
-/* Styles specific to the /labs group. Phase 5: each class declares exactly what
-   the inline object it replaced declared. Written against the v2 tokens. */
+/* Labs — Option A Cyber-Industrial Foundry
+   Single-color background (#050811), arXiv-style preprint badges and cards. */
 
 .hubLede {
-  max-width: 700px;
+  max-width: 720px;
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1.65;
 }
 
 .hubGrid {
@@ -12,45 +15,130 @@
   margin-bottom: var(--space-8);
 }
 
-.ctaCard {
-  text-align: center;
+.cardItem {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
   padding: var(--space-6);
+  transition: border-color 0.2s ease, transform 0.2s ease;
 }
 
-/* The inline object set marginBottom and then a margin shorthand, so the
-   shorthand won; this is what actually rendered. */
+.cardItem:hover {
+  border-color: rgba(0, 229, 255, 0.4);
+  transform: translateY(-2px);
+}
+
+/* ── Preprint HUD ─────────────────────────── */
+.preprintSection {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: var(--space-6);
+  margin-bottom: var(--space-8);
+}
+
+.preprintHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+
+.preprintTag {
+  font-family: var(--font-m);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+
+.preprintDoi {
+  font-family: var(--font-m);
+  font-size: 0.72rem;
+  color: var(--faint);
+}
+
+.preprintList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.preprintEntry {
+  background: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  padding: var(--space-4);
+}
+
+.preprintEntryTitle {
+  font-family: var(--font-d);
+  font-size: 1.15rem;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.preprintMeta {
+  display: flex;
+  gap: 16px;
+  font-family: var(--font-m);
+  font-size: 0.74rem;
+  color: var(--faint);
+  margin-bottom: 8px;
+}
+
+.preprintAbstract {
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+/* ── CTA Card ─────────────────────────────── */
+
+.ctaCard {
+  text-align: center;
+  padding: var(--space-8);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+}
+
 .ctaCopy {
-  color: var(--text-secondary);
+  color: var(--muted);
   max-width: 580px;
   margin: 0 auto var(--space-4) auto;
+  line-height: 1.6;
 }
 
 .bulletList {
-  font-size: .9rem;
-  color: var(--text-secondary);
+  font-size: 0.9rem;
+  color: var(--muted);
   padding-left: var(--space-4);
   line-height: 1.6;
   margin-bottom: 16px;
 }
 
 .briefTag {
-  font-size: .75rem;
+  font-family: var(--font-m);
+  font-size: 0.74rem;
   color: var(--accent);
   text-transform: uppercase;
   font-weight: 600;
-  letter-spacing: .5px;
+  letter-spacing: 0.06em;
 }
 
 .briefTitle {
   font-family: var(--font-d);
   font-size: 1.4rem;
-  color: var(--text-primary);
+  color: var(--text);
   margin: 6px 0;
 }
 
 .briefAbstract {
-  font-size: .92rem;
-  color: var(--text-secondary);
+  font-size: 0.92rem;
+  color: var(--muted);
   line-height: 1.6;
   margin-bottom: 12px;
 }
@@ -60,6 +148,9 @@
   margin: 0 auto;
   text-align: center;
   padding: var(--space-6);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
 }
 
 .submitBtn {

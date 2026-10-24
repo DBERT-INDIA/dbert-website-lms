@@ -1,6 +1,5 @@
-/* Styles specific to the /ai-solutions group. Phase 5: each class declares
-   exactly what the inline object it replaced declared — nothing extra.
-   Written against the v2 tokens, not the v1 alias layer (5.7 deletes those). */
+/* AI Solutions — Option A Cyber-Industrial Foundry
+   Single-color background (#050811), VPC topology, and sovereign enterprise styling. */
 
 /* ── Hub: capability cards ────────────────── */
 
@@ -14,13 +13,22 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: var(--space-4);
+  padding: var(--space-5);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.capabilityCard:hover {
+  border-color: rgba(0, 229, 255, 0.4);
+  transform: translateY(-2px);
 }
 
 .capabilityTitle {
   font-family: var(--font-d);
   font-size: 1.3rem;
-  color: var(--text-primary);
+  color: var(--text);
   margin-bottom: 8px;
 }
 
@@ -35,15 +43,122 @@
 .productTitle {
   font-family: var(--font-d);
   font-size: 1.35rem;
-  color: var(--text-primary);
+  color: var(--text);
   margin-bottom: 8px;
 }
 
 .productDesc {
-  font-size: .88rem;
-  color: var(--text-secondary);
+  font-size: 0.88rem;
+  color: var(--muted);
   line-height: 1.6;
   margin-bottom: var(--space-3);
+}
+
+/* ── Sovereign VPC Topology & Security Block ─ */
+.vpcTopology {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: var(--space-6);
+  margin: var(--space-8) 0;
+}
+
+.vpcHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--line);
+}
+
+.vpcTag {
+  font-family: var(--font-m);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: var(--ok);
+  text-transform: uppercase;
+}
+
+.vpcFlow {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+}
+
+.vpcNode {
+  background: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  padding: var(--space-4);
+}
+
+.vpcNodeTitle {
+  font-family: var(--font-m);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.vpcNodeDesc {
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* ── Economics Comparison Deck ────────────── */
+.economicsDeck {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+  margin: var(--space-6) 0;
+}
+
+.econCard {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: var(--space-5);
+}
+
+.econCardCloud {
+  border-color: rgba(255, 180, 84, 0.35);
+}
+
+.econCardSovereign {
+  border-color: rgba(0, 229, 255, 0.4);
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.06);
+}
+
+.econTitle {
+  font-family: var(--font-d);
+  font-size: 1.25rem;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+.econFigure {
+  font-family: var(--font-d);
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.cloudFig { color: var(--signal); }
+.sovereignFig { color: var(--accent); }
+
+.econList {
+  list-style: none;
+  padding: 0;
+  margin-top: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.86rem;
+  color: var(--muted);
 }
 
 /* ── LLM training hub ─────────────────────── */
@@ -56,8 +171,8 @@
 }
 
 .trackDesc {
-  font-size: .9rem;
-  color: var(--text-secondary);
+  font-size: 0.9rem;
+  color: var(--muted);
   line-height: 1.6;
   margin-bottom: 16px;
 }
@@ -82,23 +197,21 @@
 }
 
 .codeCard {
-  background: var(--surface-card);
-  border: 1px solid var(--border-subtle);
+  background: var(--card);
+  border: 1px solid var(--line);
   border-radius: var(--r-md);
 }
 
 .code {
   color: var(--accent);
   font-family: var(--font-m);
-  font-size: .95rem;
+  font-size: 0.95rem;
   overflow-x: auto;
   margin: 0;
   padding: 12px;
   line-height: 1.5;
 }
 
-/* The single-line `ollama run` command is set larger and has no line-height,
-   since it never wraps. */
 .codeLg {
   color: var(--accent);
   font-family: var(--font-m);
@@ -108,24 +221,21 @@
   padding: 12px;
 }
 
-/* ── Integrations chip row (product detail pages) ─────
-   Referenced via s.techBlock/techHeading/techRow/techChip on every product
-   page but never defined — className resolved to "undefined" at runtime.
-   Added here rather than rewriting 5 call sites. */
+/* ── Integrations chip row ────────────────── */
 
 .techBlock {
   max-width: none;
   width: 100%;
   padding: 72px max(24px, calc((100% - var(--max)) / 2)) 80px;
-  border-bottom: 1px solid var(--border-subtle);
-  background: var(--surface-raised);
+  border-bottom: 1px solid var(--line);
+  background: var(--raise);
 }
 
 .techHeading {
   font-family: var(--font-d);
   text-align: left;
   font-size: clamp(1.4rem, 2.3vw, 1.8rem);
-  color: var(--text-primary);
+  color: var(--text);
   margin-bottom: var(--space-5);
 }
 
@@ -137,11 +247,18 @@
 }
 
 .techChip {
-  background: var(--surface-card);
-  border: 1px solid var(--border-subtle);
-  color: var(--text-secondary);
+  background: var(--card);
+  border: 1px solid var(--line);
+  color: var(--muted);
   font-family: var(--font-m);
-  font-size: .82rem;
+  font-size: 0.82rem;
   padding: 6px 14px;
   border-radius: var(--r-sm);
+}
+
+@media (max-width: 860px) {
+  .vpcFlow,
+  .economicsDeck {
+    grid-template-columns: 1fr;
+  }
 }

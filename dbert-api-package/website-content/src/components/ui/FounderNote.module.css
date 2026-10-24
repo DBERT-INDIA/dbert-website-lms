@@ -1,0 +1,88 @@
+.card {
+  max-width: 760px;
+  margin: 0 auto;
+  background: var(--surface-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--r-lg);
+  padding: 52px 56px;
+  position: relative;
+  transform: rotate(-.35deg);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, .8), 0 0 24px rgba(0, 242, 254, .06);
+}
+
+/* Tape across the top edge. */
+.card::before {
+  content: '';
+  position: absolute;
+  top: -13px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-1.5deg);
+  width: 112px;
+  height: 26px;
+  background: rgba(255, 180, 84, .14);
+  border-left: 1px dashed rgba(255, 180, 84, .4);
+  border-right: 1px dashed rgba(255, 180, 84, .4);
+}
+
+.card :global(.doclabel) {
+  justify-content: center;
+}
+
+.card h2 {
+  font-family: var(--font-d);
+  font-size: 1.8rem;
+  text-align: center;
+  margin-bottom: 26px;
+  color: var(--text-primary);
+}
+
+.body p {
+  font-family: var(--font-tech);
+  font-size: 1.05rem;
+  line-height: 1.85;
+  margin-bottom: 18px;
+  color: var(--text-secondary);
+}
+
+.body p:last-of-type {
+  margin-bottom: 28px;
+}
+
+.body em {
+  color: var(--accent);
+  font-style: italic;
+  font-weight: 600;
+}
+
+.sign {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 14px;
+  border-top: 1px solid var(--border-subtle);
+  padding-top: 24px;
+}
+
+.sig {
+  font-family: var(--font-tech);
+  font-style: italic;
+  font-weight: 700;
+  font-size: 1.6rem;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.attribution {
+  font-family: var(--font-m);
+  font-size: .72rem;
+  color: var(--text-muted);
+  text-align: right;
+  line-height: 1.7;
+}
+
+@media (max-width: 860px) {
+  .card {
+    padding: 38px 28px;
+  }
+}

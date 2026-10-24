@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { CheckCircle2, ArrowLeft, ArrowRight, UploadCloud, ShieldCheck, MailCheck } from 'lucide-react';
 import s from './cohort.module.css';
+import { trackEvent } from '@/lib/analytics';
 
 export const DOMAINS = [
   {
@@ -219,6 +220,11 @@ export default function AivaraCohortForm() {
       }
 
       setSubmittedId(data.id);
+      trackEvent('generate_lead', {
+        form_name: 'aivara_cohort_apply',
+        domain: formData.domain,
+        graduation_year: formData.graduationYear,
+      });
       try {
         sessionStorage.removeItem('aivara_cohort_draft');
         sessionStorage.removeItem('aivara_cohort_step');

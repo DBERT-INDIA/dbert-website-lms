@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import styles from './MultiStepForm.module.css';
 import { Calendar } from 'lucide-react';
 import f from './forms.module.css';
+import { trackEvent } from '@/lib/analytics';
 
 export default function ConsultationForm() {
   const [formData, setFormData] = useState({
@@ -40,14 +41,11 @@ export default function ConsultationForm() {
 
       if (res.ok) {
         setSuccess(true);
-        try {
-          const w = window as any;
-          if (w.gtag) {
-            w.gtag('event', 'consultation_form_submit', {
-              service_type: formData.serviceType
-            });
-          }
-        } catch (err) {}
+        trackEvent('generate_lead', {
+          form_name: 'consultation_form',
+          service_type: formData.serviceType,
+          company_size: formData.companySize
+        });
       } else {
         const data = await res.json();
         setErrorMsg(data.error || 'Something went wrong. Please try again.');

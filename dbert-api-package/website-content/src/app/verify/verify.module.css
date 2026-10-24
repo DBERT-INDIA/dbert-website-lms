@@ -1,0 +1,96 @@
+/* Verify — Option A Cyber-Industrial Foundry
+   Single-color background (#050811), cryptographic credential validator styling. */
+
+.shell {
+  max-width: 540px;
+  margin: 0 auto;
+}
+
+.form {
+  margin-bottom: var(--space-4);
+  padding: var(--space-6);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: var(--space-4);
+}
+
+.fieldGroup label {
+  font-family: var(--font-m);
+  font-size: 0.76rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+}
+
+.fieldGroup input {
+  width: 100%;
+  background-color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  color: var(--text);
+  padding: 12px 14px;
+  font-family: var(--font-m);
+  font-size: 0.9rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.fieldGroup input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(0, 229, 255, 0.15);
+}
+
+.submit {
+  width: 100%;
+}
+
+.errorAlert {
+  background-color: rgba(255, 77, 77, 0.1);
+  border: 1px solid var(--err);
+  color: var(--err);
+  padding: var(--space-3);
+  border-radius: var(--r-sm);
+  font-family: var(--font-m);
+  font-size: 0.8rem;
+  margin-bottom: var(--space-4);
+  text-align: center;
+}
+
+.validCard {
+  border: 1px solid var(--ok);
+  background: var(--card);
+  border-radius: var(--r-md);
+  padding: var(--space-6);
+  box-shadow: 0 0 24px rgba(0, 230, 153, 0.1);
+}
+
+.validTitle {
+  font-family: var(--font-d);
+  color: var(--ok);
+  margin-bottom: var(--space-2);
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+.issuer {
+  font-family: var(--font-m);
+  font-size: 0.76rem;
+  color: var(--faint);
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+  margin-top: 6px;
+}

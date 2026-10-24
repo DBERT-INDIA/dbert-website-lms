@@ -1,0 +1,307 @@
+/* Startups — Option A Cyber-Industrial Foundry
+   Single-color background (#050811), high contrast, HUD-style comparisons. */
+
+.section {
+  margin-bottom: var(--space-12);
+}
+
+.sectionHead {
+  margin-bottom: var(--space-6);
+}
+
+.centerTop {
+  text-align: center;
+  margin-top: var(--space-6);
+}
+
+/* ── Service cards ────────────────────────── */
+
+.serviceGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--space-4);
+  margin-bottom: var(--space-12);
+}
+
+.serviceCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--space-5);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.serviceCard:hover {
+  border-color: rgba(0, 229, 255, 0.4);
+  transform: translateY(-2px);
+}
+
+/* ── Rejection Manifesto (Why We Say No) ──── */
+.sayNoSection {
+  background: var(--card);
+  border: 1px solid rgba(255, 180, 84, 0.3);
+  border-radius: var(--r-md);
+  padding: var(--space-6);
+  margin-bottom: var(--space-12);
+  position: relative;
+}
+
+.sayNoTag {
+  font-family: var(--font-m);
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: var(--signal);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.sayNoGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+}
+
+.sayNoItem {
+  background: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: var(--r-sm);
+  padding: var(--space-4);
+}
+
+.sayNoItem h4 {
+  font-family: var(--font-d);
+  font-size: 1.05rem;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.sayNoItem p {
+  font-size: 0.86rem;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+/* ── Incubation vs bootstrapping table ────── */
+
+.tableScroll {
+  overflow-x: auto;
+  margin-top: var(--space-6);
+}
+
+.compareTable {
+  width: 100%;
+  min-width: 600px;
+  border-collapse: collapse;
+  text-align: left;
+  background-color: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  overflow: hidden;
+}
+
+.compareTable thead tr {
+  background-color: var(--raise);
+  border-bottom: 1px solid var(--line);
+}
+
+.compareTable th {
+  padding: 16px;
+  font-family: var(--font-m);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.compareTable td {
+  padding: 16px;
+  color: var(--muted);
+  border-bottom: 1px solid var(--line);
+  font-size: 0.9rem;
+}
+
+.compareTable td:first-child {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.compareTable tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.colAccent {
+  color: var(--accent);
+}
+
+.colMuted {
+  color: var(--faint);
+}
+
+/* ── Product cards ────────────────────────── */
+
+.productGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--space-4);
+}
+
+.productCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: var(--space-5);
+  transition: all 0.2s ease;
+}
+
+.productCard:hover {
+  border-color: rgba(0, 229, 255, 0.35);
+  transform: translateY(-2px);
+}
+
+.productTitle {
+  font-family: var(--font-d);
+  color: var(--text);
+  font-size: 1.15rem;
+  margin-bottom: 8px;
+}
+
+.productDesc {
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.55;
+  margin-bottom: var(--space-3);
+}
+
+.productLink {
+  color: var(--accent);
+  font-family: var(--font-m);
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+}
+
+.btnPlainText {
+  color: var(--text);
+}
+
+/* ── Portfolio grid ───────────────────────── */
+
+.portfolioCard {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: var(--space-6);
+  transition: all 0.2s ease;
+}
+
+.portfolioCard:hover {
+  border-color: rgba(0, 229, 255, 0.35);
+}
+
+.portfolioTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-2);
+}
+
+.portfolioLink {
+  font-family: var(--font-m);
+  font-size: 0.82rem;
+  color: var(--accent);
+}
+
+.portfolioName {
+  font-family: var(--font-d);
+  font-size: 1.6rem;
+  color: var(--text);
+  margin: 8px 0;
+}
+
+.portfolioFacts {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: var(--space-2);
+}
+
+.factLabel {
+  font-family: var(--font-m);
+  font-size: 0.76rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.factBody {
+  font-size: 0.88rem;
+  color: var(--text);
+  line-height: 1.55;
+  margin-top: 2px;
+}
+
+.portfolioFoot {
+  margin-top: var(--space-4);
+}
+
+.metricBar {
+  background-color: rgba(0, 229, 255, 0.08);
+  border: 1px solid rgba(0, 229, 255, 0.2);
+  padding: 10px;
+  border-radius: var(--r-sm);
+  text-align: center;
+  margin-bottom: var(--space-3);
+}
+
+.metricText {
+  font-family: var(--font-m);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.btnBlock {
+  width: 100%;
+  text-align: center;
+  display: block;
+}
+
+/* ── Services index ───────────────────────── */
+
+.serviceIndexGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 18px;
+}
+
+/* ── Closing CTA ──────────────────────────── */
+
+.ctaCard {
+  text-align: center;
+  padding: var(--space-8);
+  background-color: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+}
+
+.ctaCopy {
+  color: var(--muted);
+  max-width: 580px;
+  margin: 0 auto var(--space-4) auto;
+  line-height: 1.6;
+}
+
+@media (max-width: 860px) {
+  .sayNoGrid {
+    grid-template-columns: 1fr;
+  }
+}

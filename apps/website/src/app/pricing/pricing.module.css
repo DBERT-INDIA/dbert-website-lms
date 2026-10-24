@@ -1,5 +1,5 @@
-/* Styles specific to /pricing. Phase 5: each class declares exactly what the
-   inline object it replaced declared. Written against the v2 tokens. */
+/* Pricing — Option A Cyber-Industrial Foundry
+   Single-color background (#050811), cyber cards, transparent pricing. */
 
 .tierGrid {
   display: grid;
@@ -12,58 +12,76 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  border: 1px solid var(--border-subtle);
-  padding: var(--space-4);
+  border: 1px solid var(--line);
+  background: var(--card);
+  border-radius: var(--r-md);
+  padding: var(--space-5);
+  transition: border-color 0.2s ease, transform 0.2s ease;
 }
 
-/* The middle tier is the recommended one and carries the accent border. */
+.tierCard:hover {
+  border-color: rgba(0, 229, 255, 0.4);
+  transform: translateY(-2px);
+}
+
 .tierCardFeatured {
   border-color: var(--accent);
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.08);
 }
 
 .tierAudience {
-  font-size: .8rem;
+  font-family: var(--font-m);
+  font-size: 0.74rem;
   color: var(--accent);
   font-weight: 600;
   text-transform: uppercase;
+  letter-spacing: 0.06em;
   display: block;
-  margin-bottom: 4px;
+  margin-bottom: 6px;
 }
 
 .tierTitle {
   font-family: var(--font-d);
   font-size: 1.4rem;
-  color: var(--text-primary);
+  color: var(--text);
   margin-bottom: var(--space-1);
 }
 
 .tierPrice {
+  font-family: var(--font-d);
   font-size: 2rem;
+  font-weight: 700;
   color: var(--accent);
   display: block;
   margin-bottom: 4px;
 }
 
 .tierDuration {
-  font-size: .82rem;
-  color: var(--text-secondary);
+  font-family: var(--font-m);
+  font-size: 0.78rem;
+  color: var(--faint);
   display: block;
   margin-bottom: var(--space-2);
 }
 
 .tierDesc {
-  font-size: .88rem;
-  color: var(--text-secondary);
+  font-size: 0.88rem;
+  color: var(--muted);
   line-height: 1.6;
 }
 
 .tierBtn {
   margin-top: var(--space-3);
+  width: 100%;
+  text-align: center;
 }
 
 .customCard {
   margin-bottom: var(--space-8);
-  border: 1px solid var(--border-subtle);
+  border: 1px solid var(--line);
+  background: var(--card);
+  border-radius: var(--r-md);
+  padding: var(--space-6);
 }
 
 .customTitle {
@@ -74,8 +92,8 @@
 }
 
 .customCopy {
-  font-size: .92rem;
-  color: var(--text-secondary);
+  font-size: 0.92rem;
+  color: var(--muted);
   line-height: 1.7;
   margin-bottom: 12px;
 }

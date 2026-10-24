@@ -1,14 +1,17 @@
-/* Styles specific to /verify. Phase 5: each class declares exactly what the
-   inline object it replaced declared. Written against the v2 tokens. */
+/* Verify — Option A Cyber-Industrial Foundry
+   Single-color background (#050811), cryptographic credential validator styling. */
 
 .shell {
-  max-width: 500px;
+  max-width: 540px;
   margin: 0 auto;
 }
 
 .form {
   margin-bottom: var(--space-4);
   padding: var(--space-6);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
 }
 
 .fieldGroup {
@@ -19,26 +22,30 @@
 }
 
 .fieldGroup label {
-  font-family: var(--font-b);
-  font-size: 0.85rem;
+  font-family: var(--font-m);
+  font-size: 0.76rem;
   font-weight: 600;
-  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
 }
 
 .fieldGroup input {
   width: 100%;
-  background-color: var(--surface-card);
-  border: 1px solid var(--border-subtle);
+  background-color: var(--ink);
+  border: 1px solid var(--line);
   border-radius: var(--r-sm);
-  color: var(--text-primary);
-  padding: 10px 14px;
+  color: var(--text);
+  padding: 12px 14px;
   font-family: var(--font-m);
   font-size: 0.9rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .fieldGroup input:focus {
   outline: none;
   border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(0, 229, 255, 0.15);
 }
 
 .submit {
@@ -46,19 +53,23 @@
 }
 
 .errorAlert {
-  background-color: rgba(239, 68, 68, 0.1);
+  background-color: rgba(255, 77, 77, 0.1);
   border: 1px solid var(--err);
   color: var(--err);
   padding: var(--space-3);
   border-radius: var(--r-sm);
-  font-size: 0.85rem;
+  font-family: var(--font-m);
+  font-size: 0.8rem;
   margin-bottom: var(--space-4);
   text-align: center;
 }
 
 .validCard {
   border: 1px solid var(--ok);
+  background: var(--card);
+  border-radius: var(--r-md);
   padding: var(--space-6);
+  box-shadow: 0 0 24px rgba(0, 230, 153, 0.1);
 }
 
 .validTitle {
@@ -71,14 +82,15 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  font-size: .9rem;
-  color: var(--text-primary);
+  font-size: 0.9rem;
+  color: var(--text);
 }
 
 .issuer {
-  font-size: .8rem;
-  color: var(--text-secondary);
-  border-top: 1px solid var(--border-subtle);
-  padding-top: 8px;
-  margin-top: 4px;
+  font-family: var(--font-m);
+  font-size: 0.76rem;
+  color: var(--faint);
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+  margin-top: 6px;
 }

@@ -23,6 +23,7 @@ import HandNote from '@/components/ui/HandNote';
 import HandDrawnArrow from '@/components/ui/HandDrawnArrow';
 import CountUp from '@/components/ui/CountUp';
 import Reveal from '@/components/ui/Reveal';
+import TrackedLink from '@/components/ui/TrackedLink';
 
 export const metadata: Metadata = {
   // `absolute` bypasses the "%s | DBERT" template in layout.tsx, which would
@@ -202,7 +203,7 @@ export default function HomePage() {
           <div>
             <div className={styles.badge}>
               <span className={styles.pulse} aria-hidden="true" />
-              studio status — 4 ventures in active build
+              studio status // 4 ventures in active build
             </div>
 
             <h1 className={styles.heroTitle}>
@@ -216,25 +217,50 @@ export default function HomePage() {
             </h1>
 
             <p className={styles.sub}>
-              DBERT incubates AI startups for equity, ships enterprise SaaS, and trains the
-              engineers who build both — one technical flywheel, run from Delhi.
+              DBERT incubates AI startups for equity, ships sovereign enterprise SaaS, and trains the
+              engineers who build both — one technical flywheel, run from Delhi NCR.
             </p>
 
             <div className={styles.ctas}>
-              <Link href="/startups/register" className="btn btn-primary">
+              <TrackedLink
+                href="/startups/register"
+                eventName="cta_click"
+                eventParams={{ location: 'homepage_hero', target: 'apply_incubation' }}
+                className="btn btn-primary"
+              >
                 <span>Apply for incubation</span>
                 <span className="arr" aria-hidden="true">
                   →
                 </span>
-              </Link>
-              <Link href="/learners" className="btn btn-outline">
+              </TrackedLink>
+              <TrackedLink
+                href="/learners"
+                eventName="cta_click"
+                eventParams={{ location: 'homepage_hero', target: 'explore_learners' }}
+                className="btn btn-outline"
+              >
                 Explore learner programs
-              </Link>
+              </TrackedLink>
+            </div>
+
+            <div className={styles.heroTelemetry}>
+              <span className={styles.heroTelemetryItem}>
+                <span className={styles.heroTelemetryDot} />
+                Delhi NCR Studio
+              </span>
+              <span className={styles.heroTelemetryItem}>
+                <span className={styles.heroTelemetryDot} />
+                214 cups chai this sprint
+              </span>
+              <span className={styles.heroTelemetryItem}>
+                <span className={styles.heroTelemetryDot} />
+                100% IP ownership retained
+              </span>
             </div>
           </div>
 
           <StudioConsole
-            title="dbert-studio · live feed"
+            title="dbert-studio · live telemetry"
             lines={feed}
             footLeft="uptime 99.98%"
             footRight="● connected"
@@ -248,18 +274,22 @@ export default function HomePage() {
         <div className="wrap">
           <div className={`${styles.statBar} stagger-grid`}>
             <Reveal className={styles.statItem}>
+              <span className={styles.statHud}>[SYS_METRIC_01]</span>
               <CountUp as="span" end={4} className={styles.statNum} />
               <span className={styles.statLabel}>ventures incubated</span>
             </Reveal>
             <Reveal className={styles.statItem}>
+              <span className={styles.statHud}>[SYS_METRIC_02]</span>
               <CountUp as="span" end={5} className={styles.statNum} />
               <span className={styles.statLabel}>SaaS products live</span>
             </Reveal>
             <Reveal className={styles.statItem}>
+              <span className={styles.statHud}>[SYS_METRIC_03]</span>
               <CountUp as="span" end={120} suffix="+" className={styles.statNum} />
               <span className={styles.statLabel}>fellows trained</span>
             </Reveal>
             <Reveal className={styles.statItem}>
+              <span className={styles.statHud}>[SYS_METRIC_04]</span>
               <CountUp as="span" end={6} prefix="~" suffix=" mo" className={styles.statNum} />
               <span className={styles.statLabel}>faster to market*</span>
             </Reveal>
@@ -507,12 +537,17 @@ export default function HomePage() {
           real engineer.
         </Reveal>
         <Reveal as="div" className="relative inline-block mt-4 mx-auto">
-          <Link href="/startups/register" className="btn btn-primary btn-lg relative z-10">
+          <TrackedLink
+            href="/startups/register"
+            eventName="cta_click"
+            eventParams={{ location: 'homepage_bottom_cta', target: 'apply_incubation' }}
+            className="btn btn-primary btn-lg relative z-10"
+          >
             Apply for incubation{' '}
             <span className="arr" aria-hidden="true">
               →
             </span>
-          </Link>
+          </TrackedLink>
           <div className="absolute -right-12 -top-10 z-20 pointer-events-none transform rotate-12 hidden md:block">
             <HandDrawnArrow color="var(--signal)" width={55} height={55} className="transform rotate-90" />
           </div>

@@ -1,5 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
+import StudioConsole, { type FeedLine } from '@/components/ui/StudioConsole';
+import FactTicker from '@/components/ui/FactTicker';
+import AudienceDoors, { type Door } from '@/components/ui/AudienceDoors';
 import HandNote from '@/components/ui/HandNote';
 import { pageMetadata } from '@/lib/seo';
 import styles from './about.module.css';
@@ -29,32 +32,148 @@ const pillars = [
   },
 ];
 
+const studioTelemetryFeed: FeedLine[] = [
+  {
+    time: '09:30:10',
+    tag: 'chai',
+    message: 'morning chai ritual completed',
+    detail: '· 214 cups consumed this sprint',
+  },
+  {
+    time: '09:35:44',
+    tag: 'commit',
+    message: 'studio monorepo merged 14 pull requests across 4 ventures',
+    detail: '· 0 regression',
+  },
+  {
+    time: '09:40:02',
+    tag: 'review',
+    message: 'systems architecture audit with 2 pre-seed founder teams',
+    detail: '· terms aligned',
+  },
+  {
+    time: '09:44:18',
+    tag: 'build',
+    message: 'custom vLLM inference engine optimized for Indian languages',
+    detail: '· Hindi & Tamil ready',
+  },
+  {
+    time: '09:48:02',
+    tag: 'verify',
+    message: '1,204 cryptographic certificate IDs verified on /verify',
+    detail: '· 100% authenticity SLA',
+  },
+];
+
+const studioFacts = [
+  'est. Delhi NCR, India',
+  'chai consumed this sprint: 214 cups',
+  'every application gets a human reply',
+  'fellows write real production code, not todo apps',
+  'founders keep 100% of their codebase',
+  'current stack: Next.js · Postgres · PyTorch · stubbornness',
+  'registered MSME Government of India recognized entity',
+];
+
+const aboutDoors: Door[] = [
+  {
+    kind: 'founder',
+    who: 'Pillar 01 · Venture Studio',
+    title: 'Incubate Startups',
+    description: 'We partner with technical founders, write the core code, and take equity risk together.',
+    ctaLabel: 'See Incubation Model',
+    href: '/startups',
+  },
+  {
+    kind: 'enterprise',
+    who: 'Pillar 02 · Sovereign AI',
+    title: 'Enterprise SaaS',
+    description: 'Battle-tested software tools born out of our own internal operational scale challenges.',
+    ctaLabel: 'Browse Products',
+    href: '/ai-solutions',
+  },
+  {
+    kind: 'learner',
+    who: 'Pillar 03 · Engineering Ladder',
+    title: 'Train Engineers',
+    description: 'A 4-stage progression turning curious students into verified production builders.',
+    ctaLabel: 'Explore Ladder',
+    href: '/learners',
+  },
+];
+
 export default function AboutPage() {
   return (
-    <div className="container pad-block">
-      <div className="mb-lg">
-        <div className="doclabel">
-          § 05 — INSTITUTIONAL ARCHITECTURE <span className="rev">rev: 2026.2</span>
+    <>
+      {/* ══════════ SECTION 1: HERO (2-COLUMN GRID) ══════════ */}
+      <section className="section-subpage-hero">
+        <div className="wrap subpage-hero-grid">
+          <div>
+            <div className="doclabel">
+              § 01 — INSTITUTIONAL ARCHITECTURE <span className="rev">rev: 2026.2</span>
+            </div>
+            <h1 className="relative inline-block">
+              Applied AI Incubation &amp; Research
+              <HandNote className="absolute -right-8 -top-6 text-lg hidden md:block" tone="blue">
+                registered MSME ✎
+              </HandNote>
+            </h1>
+            <p className="intro-copy">
+              Digital Blinc Education Research And Technology (DBERT) — Engineering live systems, incubating venture cohorts, and training production software engineers from Delhi NCR.
+            </p>
+            <div className="stack-h gap-3 mt-6 flex-wrap">
+              <Link href="/about/team" className="btn btn-primary">
+                Meet Technical Leadership →
+              </Link>
+              <Link href="/about/credentials" className="btn btn-outline">
+                Audit MSME Credentials
+              </Link>
+            </div>
+          </div>
+
+          <div>
+            <StudioConsole
+              title="dbert-studio · delhi ncr operations telemetry"
+              lines={studioTelemetryFeed}
+              footLeft="delhi studio · sector 62"
+              footRight="● studio active"
+              note={
+                <HandNote tone="amber">
+                  the venture studio that writes the code ✎
+                </HandNote>
+              }
+            />
+          </div>
         </div>
-        <div className="stack-h justify-start align-baseline gap-3 flex-wrap mb-2">
-          <h1>Applied AI Incubation &amp; Research</h1>
-          <HandNote tone="blue">
-            registered MSME · studio collective ✎
-          </HandNote>
-        </div>
-        <p className="page-intro">
-          Digital Blinc Education Research And Technology (DBERT) — Engineering live systems, incubating venture cohorts, and training production software engineers.
-        </p>
+      </section>
+
+      {/* ══════════ SECTION 2: FULL-BLEED AMBIENT FACT TICKER ══════════ */}
+      <div className="section-ticker-ribbon">
+        <FactTicker facts={studioFacts} />
       </div>
 
-      <div className="measure-lg">
-        {/* Origin & Operational Thesis */}
-        <section className="section-breath border-t border-line">
-          <div className="doclabel mb-2">§ 01 — THE DBERT MODEL</div>
-          <h2>Bridging Research to Production Code</h2>
-          <p className="body-copy mb-4">
-            DBERT (parent entity: Digital Blinc Education Research And Technology, registered MSME) operates as an engineering-driven AI venture studio and talent incubator. We are headquartered in NCR (Ghaziabad), India, and operate as a fully remote, cloud-distributed technical collective.
-          </p>
+      {/* ══════════ SECTION 3: THE 3 CORE PILLARS GATEWAY ══════════ */}
+      <section className="subpage-section">
+        <div className="wrap">
+          <div className="section-head-sub">
+            <div className="doclabel">§ 02 — THE DBERT TECHNICAL FLYWHEEL</div>
+            <h2>Three Integrated Foundry Pillars</h2>
+            <p>One unified technical engine powering startups, enterprise SaaS, and engineering careers.</p>
+          </div>
+          <AudienceDoors doors={aboutDoors} />
+        </div>
+      </section>
+
+      {/* ══════════ SECTION 4: THE DBERT MODEL (BAND) ══════════ */}
+      <section className="subpage-section band">
+        <div className="wrap measure-lg">
+          <div className="section-head-sub">
+            <div className="doclabel">§ 03 — THE DBERT MODEL</div>
+            <h2>Bridging Research to Production Code</h2>
+            <p>
+              DBERT (parent entity: Digital Blinc Education Research And Technology, registered MSME) operates as an engineering-driven AI venture studio and talent incubator. We are headquartered in NCR (Ghaziabad), India, and operate as a fully remote, cloud-distributed technical collective.
+            </p>
+          </div>
           <p className="body-copy mb-6">
             Our founding thesis addresses a critical industry failure: traditional education teaches academic theory separated from production realities, while early-stage startups bleed seed capital paying dev agencies for prototypes that crash under load. At DBERT, our engineering squads write live production code for portfolio startups, publish open-weights research, and mentor apprentice developers directly on live pull requests.
           </p>
@@ -71,12 +190,17 @@ export default function AboutPage() {
               <Link href="/verify" className="accent-link text-sm font-medium">Verify Certificate ID &rarr;</Link>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Milestone Timeline */}
-        <section className="section-breath border-t border-line">
-          <div className="doclabel mb-2">§ 02 — STUDIO EVOLUTION</div>
-          <h2>Our Execution Timeline</h2>
+      {/* ══════════ SECTION 5: STUDIO EVOLUTION (BAND-ALT) ══════════ */}
+      <section className="subpage-section band-alt">
+        <div className="wrap measure-lg">
+          <div className="section-head-sub">
+            <div className="doclabel">§ 04 — STUDIO EVOLUTION</div>
+            <h2>Our Execution Timeline</h2>
+            <p>Key developmental milestones from inception to institutional scale.</p>
+          </div>
           <div className="bento-grid-3 stagger-grid my-6">
             <div className="card card-lift">
               <span className="tag-chip mb-2">Phase 1</span>
@@ -94,12 +218,17 @@ export default function AboutPage() {
               <p className="text-xs text-muted">Scaled the Applied AI Fellowship to over 1,500 candidates across India, matching vetted talent to live engineering repositories.</p>
             </div>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* The 4 Operational Pillars */}
-        <section className="section-breath border-t border-line">
-          <div className="doclabel mb-2">§ 03 — OPERATIONAL PILLARS</div>
-          <h2>Four Interconnected Pillars</h2>
+      {/* ══════════ SECTION 6: OPERATIONAL PILLARS ══════════ */}
+      <section className="subpage-section">
+        <div className="wrap measure-lg">
+          <div className="section-head-sub">
+            <div className="doclabel">§ 05 — OPERATIONAL PILLARS</div>
+            <h2>Four Interconnected Pillars</h2>
+            <p>Architectural divisions ensuring sustainable execution across our studio flywheel.</p>
+          </div>
           <div className="bento-grid-2 stagger-grid my-6">
             {pillars.map((pillar) => (
               <div key={pillar.label} className="card card-lift flex flex-col justify-between">
@@ -115,9 +244,9 @@ export default function AboutPage() {
               </div>
             ))}
           </div>
-        </section>
-      </div>
-    </div>
+        </div>
+      </section>
+    </>
   );
 }
 

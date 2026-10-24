@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import FAQAccordion from '@/components/ui/FAQAccordion';
 import { pageMetadata } from '@/lib/seo';
+import RegionalOpportunityBento, { OpportunityItem } from '@/components/ui/RegionalOpportunityBento';
 import s from '../../learners.module.css';
 import { Laptop, Rocket, Workflow, CheckCircle, ShieldCheck } from 'lucide-react';
 
@@ -261,10 +262,76 @@ export default function FullStackCoursePage() {
         </div>
       </div>
 
+      {/* Live Regional Opportunities */}
+      <RegionalOpportunityBento
+        sectionNumber="§ 08"
+        title="Full Stack Developer Internships in Mumbai & Major Hubs"
+        description="Connect directly to verified startup production sprints across Mumbai, Bengaluru, Delhi NCR, Pune, and remote roles sourced via the DBERT Career Portal."
+        domainName="Full Stack AI"
+        hubHref="https://internship.dbert.online/internships/full-stack-development"
+        jobsHref="https://internship.dbert.online/jobs/full-stack-development"
+        opportunities={[
+          {
+            title: 'Full Stack Booking System Development Intern',
+            roleDescription: 'Architect booking workflows, payment gateway webhooks, and responsive reservation dashboards in Next.js and Node.js.',
+            cityTag: 'Mumbai',
+            location: 'Mumbai · Hybrid / Remote',
+            stipend: '₹8,000 – ₹15,000 / mo',
+            href: 'https://internship.dbert.online/internships/booking-system-development-intern-mumbai-remote-50',
+            tags: ['React', 'Next.js', 'PostgreSQL', 'Express'],
+          },
+          {
+            title: 'SaaS Feature Development Engineer Intern',
+            roleDescription: 'Develop multi-tenant dashboard features, RBAC authorization matrices, and real-time state telemetry in Next.js.',
+            cityTag: 'Bangalore',
+            location: 'Bengaluru · Hybrid',
+            stipend: '₹10,000 – ₹18,000 / mo',
+            href: 'https://internship.dbert.online/internships/saas-feature-development-intern-bangalore-remote-46',
+            tags: ['TypeScript', 'Node.js', 'Prisma', 'Tailwind'],
+          },
+          {
+            title: 'Authentication & Cloud Security Intern',
+            roleDescription: 'Implement OAuth2 flows, JWT rotation, session management, and CSRF protection mechanisms for high-concurrency APIs.',
+            cityTag: 'Delhi NCR',
+            location: 'Delhi NCR · Remote',
+            stipend: '₹7,000 – ₹14,000 / mo',
+            href: 'https://internship.dbert.online/internships/authentication-security-intern-delhi-ncr-remote-47',
+            tags: ['OAuth2', 'JWT', 'Node.js', 'PostgreSQL'],
+          },
+          {
+            title: 'Progressive Web App Architecture Intern',
+            roleDescription: 'Construct offline-first ServiceWorker caching layers and mobile-responsive dashboards for field analytics.',
+            cityTag: 'Pune',
+            location: 'Pune · Hybrid',
+            stipend: '₹8,000 – ₹15,000 / mo',
+            href: 'https://internship.dbert.online/internships/progressive-web-app-intern-pune-remote-49',
+            tags: ['PWA', 'React', 'Workbox', 'IndexedDB'],
+          },
+          {
+            title: 'React Frontend Development Remote Intern',
+            roleDescription: 'Build design-system compliant UI components, data visualization charts, and performant state pipelines.',
+            cityTag: 'Remote',
+            location: 'Virtual · Anywhere India',
+            stipend: '₹6,000 – ₹12,000 / mo',
+            href: 'https://internship.dbert.online/internships/react-frontend-development-intern-remote-37',
+            tags: ['React 19', 'Next.js', 'CSS Modules'],
+          },
+          {
+            title: 'Internal Tools & Admin Portal Engineer',
+            roleDescription: 'Build high-efficiency internal admin consoles, data filtering tables, and reporting dashboards.',
+            cityTag: 'Hyderabad',
+            location: 'Hyderabad · Remote',
+            stipend: '₹8,000 – ₹16,000 / mo',
+            href: 'https://internship.dbert.online/internships/internal-tools-development-intern-hyderabad-remote-48',
+            tags: ['Next.js', 'REST APIs', 'Supabase'],
+          },
+        ]}
+      />
+
       {/* CTA Block */}
       <div className="container pb-block">
         <div className="bento-card callout-plain p-8 border border-line bg-card text-center">
-          <div className="doclabel mb-1">§ 08 — INITIALIZE CAREER ACCELERATION</div>
+          <div className="doclabel mb-1">§ 09 — INITIALIZE CAREER ACCELERATION</div>
           <h2 className="card-title text-2xl font-bold text-white mb-2">Ship Full Stack AI Production Apps From Day One</h2>
           <p className="page-lede text-sm text-muted max-w-xl mx-auto mb-6">
             Ready to architect interactive Next.js consoles, configure high-throughput PostgreSQL vector indexes, and deploy real-time RAG applications to verified public endpoints? Enrol in DBERT Industrial Training today.

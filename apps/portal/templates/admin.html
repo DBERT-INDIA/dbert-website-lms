@@ -19,8 +19,9 @@
       <div class="nav-item" data-tab="mentors" data-act-click="switchTab" data-arg-click='["mentors"]'><i class="fas fa-user-tie"></i> Mentors</div>
       <div class="nav-item" data-tab="users" data-act-click="switchTab" data-arg-click='["users"]'><i class="fas fa-users"></i> Users</div>
       <div class="nav-item" data-tab="devices" data-act-click="switchTab" data-arg-click='["devices"]'><i class="fas fa-desktop"></i> Devices</div>
-      <div class="nav-item" data-tab="articles" data-act-click="switchTab" data-arg-click='["articles"]'><i class="fas fa-newspaper"></i> Articles</div>`n      <div class="nav-item" data-tab="spotlights" data-act-click="switchTab" data-arg-click='["spotlights"]'><i class="fas fa-bullseye"></i> Spotlights</div>`n      <div class="nav-item" data-tab="security" data-act-click="switchTab" data-arg-click='["security"]'><i class="fas fa-shield-halved"></i> Security</div>
-      <div class="nav-item" data-tab="articles" data-act-click="switchTab" data-arg-click='["articles"]'><i class="fas fa-newspaper"></i> Articles</div>`n      <div class="nav-item" data-tab="spotlights" data-act-click="switchTab" data-arg-click='["spotlights"]'><i class="fas fa-bullseye"></i> Spotlights</div>
+      <div class="nav-item" data-tab="articles" data-act-click="switchTab" data-arg-click='["articles"]'><i class="fas fa-newspaper"></i> Articles</div>
+      <div class="nav-item" data-tab="spotlights" data-act-click="switchTab" data-arg-click='["spotlights"]'><i class="fas fa-bullseye"></i> Spotlights</div>
+      <div class="nav-item" data-tab="security" data-act-click="switchTab" data-arg-click='["security"]'><i class="fas fa-shield-halved"></i> Security</div>
       <div class="nav-item" data-tab="addapp" data-act-click="switchTab" data-arg-click='["addapp"]'><i class="fas fa-plus-circle"></i> Add Application</div>
       <div class="nav-item" data-tab="upload" data-act-click="switchTab" data-arg-click='["upload"]'><i class="fas fa-upload"></i> CSV Import</div>
       <!-- Track 2 §8: link the separate admin pages (§1 companies, Track 1 §6 ledger) — real anchors, not tabs. -->
@@ -30,6 +31,7 @@
       <a class="nav-item" href="/admin/course-payments" style="text-decoration:none;"><i class="fas fa-indian-rupee-sign"></i> Course Payments</a>
       <a class="nav-item" href="/admin/cohorts" style="text-decoration:none;"><i class="fas fa-users-rectangle"></i> Cohorts</a>
       <a class="nav-item" href="/admin/ledger" style="text-decoration:none;"><i class="fas fa-coins"></i> Coin Ledger</a>
+      <a class="nav-item" href="/admin/sourcing-dashboard" style="text-decoration:none; background:#1a73e815; color:#1a73e8;"><i class="fas fa-chart-pie"></i> Sourcing Analytics</a>
     </nav>
     <div class="sidebar-footer">
       <button class="btn-logout-sb" data-act-click="doLogout"><i class="fas fa-sign-out-alt"></i> Sign Out</button>
@@ -330,30 +332,54 @@
     </div>
 
     <!-- ARTICLE REVIEW MODAL -->
-    <div id="articleModal" class="modal-overlay hidden">
-      <div class="modal" style="max-width:800px;">
+    <div id="articleModal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="arTitle">
+      <div class="modal-box" style="max-width:850px; width:95%;">
         <div class="modal-header">
-          <h2 id="arTitle">Review Article</h2>
-          <button class="btn-close" onclick="closeModal('articleModal')">&times;</button>
+          <div>
+            <h2 id="arTitle" style="margin:0; font-size:18px;">Review &amp; Edit Article</h2>
+            <div id="arMeta" style="font-size:12px; color:var(--tx-muted); margin-top:4px;"></div>
+          </div>
+          <button class="modal-close" data-act-click="closeModal" data-arg-click='["articleModal"]'><i class="fas fa-times"></i></button>
         </div>
-        <div class="modal-body" style="display:flex; gap:20px; flex-direction:column; max-height:70vh; overflow-y:auto;">
-          <div style="background:var(--bg-surface); padding:16px; border:1px solid var(--border); border-radius:6px;">
-            <div style="font-size:12px; color:var(--tx-muted); margin-bottom:12px;">Markdown Content:</div>
-            <pre id="arContent" style="white-space:pre-wrap; font-family:monospace; font-size:13px; color:#fff; margin:0;"></pre>
+        <div class="modal-body" style="display:flex; gap:16px; flex-direction:column; max-height:75vh; overflow-y:auto; padding:20px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; background:var(--bg-surface); border:1px solid var(--border); padding:10px 14px; border-radius:6px; font-size:13px;">
+            <div>Intern: <strong id="arInternName" style="color:var(--gold);">-</strong> <span id="arInternEmail" style="color:var(--tx-muted); margin-left:6px;"></span></div>
+            <div>Status: <span id="arStatusBadge" class="badge">-</span></div>
+          </div>
+          <div style="display:grid; grid-template-columns: 2fr 1fr; gap:14px;">
+            <div class="form-group">
+              <label class="field-label" style="font-weight:600; margin-bottom:6px; display:block;">Article Title</label>
+              <input type="text" id="arEditTitle" class="field-input" placeholder="Title..." style="width:100%; font-weight:600; font-size:14px;"/>
+            </div>
+            <div class="form-group">
+              <label class="field-label" style="font-weight:600; margin-bottom:6px; display:block;">Domain</label>
+              <input type="text" id="arEditDomain" class="field-input" placeholder="Domain (e.g. General, Python)..." style="width:100%;"/>
+            </div>
           </div>
           <div class="form-group">
-            <label class="field-label">Mentor Feedback</label>
-            <textarea id="arFeedback" class="field-input" rows="4" placeholder="Explain what needs to be fixed..."></textarea>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+              <label class="field-label" style="font-weight:600; margin:0;">Article Markdown Content</label>
+              <span style="font-size:11px; color:var(--tx-muted);"><i class="fas fa-edit"></i> Editable markdown</span>
+            </div>
+            <textarea id="arEditContent" class="field-input" rows="14" style="width:100%; white-space:pre-wrap; font-family:monospace; font-size:13px; color:#fff; resize:vertical; line-height:1.6;" placeholder="Article markdown content..."></textarea>
+          </div>
+          <div class="form-group">
+            <label class="field-label" style="font-weight:600; margin-bottom:6px; display:block;">Mentor Feedback / Revision Notes</label>
+            <textarea id="arFeedback" class="field-input" rows="3" style="width:100%;" placeholder="Provide feedback or revision instructions..."></textarea>
           </div>
           <div id="arPublishBox" class="form-group hidden" style="border-top:1px solid var(--border); padding-top:16px;">
-            <label class="field-label">Publish (Admin Only)</label>
-            <input type="url" id="arPubUrl" class="field-input" placeholder="https://dbert.online/blog/your-article"/>
-            <button class="btn-primary" style="margin-top:12px;" onclick="publishArticle()">Set Live</button>
+            <label class="field-label" style="font-weight:600; margin-bottom:6px; display:block;">Publish to Live Blog (Admin Only)</label>
+            <div style="display:flex; gap:10px;">
+              <input type="url" id="arPubUrl" class="field-input" placeholder="https://dbert.online/blog/your-article" style="flex:1;"/>
+              <button class="btn-primary" data-act-click="publishArticle"><i class="fas fa-globe"></i> Set Live</button>
+            </div>
           </div>
         </div>
-        <div class="modal-footer" style="display:flex; gap:10px; justify-content:flex-end;">
-          <button class="btn-primary ghost" onclick="reviewArticle('NEEDS_REVISION')"><i class="fas fa-undo"></i> Request Changes</button>
-          <button class="btn-primary" onclick="reviewArticle('APPROVED')"><i class="fas fa-check"></i> Approve Draft</button>
+        <div class="modal-footer" style="display:flex; gap:10px; justify-content:flex-end; padding:16px 20px; border-top:1px solid var(--border); background:var(--bg-surface);">
+          <button class="btn-sm ghost" data-act-click="closeModal" data-arg-click='["articleModal"]'>Cancel</button>
+          <button class="btn-sm ghost" data-act-click="saveArticleEdits" style="border:1px solid var(--border);" title="Save title, domain and content changes"><i class="fas fa-save"></i> Save Edits</button>
+          <button class="btn-sm red" data-act-click="reviewArticle" data-arg-click='["NEEDS_REVISION"]' title="Request changes from intern"><i class="fas fa-undo"></i> Request Revision</button>
+          <button class="btn-sm gold" data-act-click="reviewArticle" data-arg-click='["APPROVED"]' title="Approve article"><i class="fas fa-check"></i> Approve Article</button>
         </div>
       </div>
     </div>
@@ -362,13 +388,53 @@
     <div class="section-panel" id="panel-spotlights">
       <div class="filter-bar" style="justify-content: space-between;">
         <h3 style="color:#fff;">Ecosystem Spotlights</h3>
-        <button class="btn-sm gold" onclick="openAddSpotlightModal()"><i class="fas fa-plus"></i> Add Slide</button>
+        <button class="btn-sm gold" data-act-click="openAddSpotlightModal"><i class="fas fa-plus"></i> Add Slide</button>
       </div>
       <div class="table-wrap">
         <table>
           <thead><tr><th>ID</th><th>Brand</th><th>Title</th><th>URL</th><th>Status</th><th>Actions</th></tr></thead>
           <tbody id="spotlightsBody"></tbody>
         </table>
+      </div>
+    </div>
+
+    <!-- SPOTLIGHT SLIDE MODAL -->
+    <div class="modal-overlay" id="spotlightModal" role="dialog" aria-modal="true" aria-labelledby="spModalTitle">
+      <div class="modal-box" style="max-width:540px;">
+        <div class="modal-header">
+          <div>
+            <h2 id="spModalTitle" style="margin:0; font-size:18px;">Add Ecosystem Slide</h2>
+            <p id="spModalSub" style="margin:4px 0 0; font-size:12px; color:var(--tx-muted);">Configure carousel spotlight slide</p>
+          </div>
+          <button class="modal-close" data-act-click="closeModal" data-arg-click='["spotlightModal"]'><i class="fas fa-times"></i></button>
+        </div>
+        <div class="modal-body" style="padding:20px; display:flex; flex-direction:column; gap:14px;">
+          <input type="hidden" id="spId" value=""/>
+          <div class="form-group">
+            <label class="field-label" for="spTitle" style="font-weight:600; margin-bottom:6px; display:block;">Slide Title *</label>
+            <input type="text" id="spTitle" class="field-input" placeholder="e.g. AivaraTech 2026 Open Source Tracker" required/>
+          </div>
+          <div class="form-group">
+            <label class="field-label" for="spBrand" style="font-weight:600; margin-bottom:6px; display:block;">Target Brand</label>
+            <input type="text" id="spBrand" class="field-input" placeholder="e.g. AivaraTech, Alkame, DBERT"/>
+          </div>
+          <div class="form-group">
+            <label class="field-label" for="spUrl" style="font-weight:600; margin-bottom:6px; display:block;">Target URL *</label>
+            <input type="url" id="spUrl" class="field-input" placeholder="https://aivaratech.info" required/>
+          </div>
+          <div class="form-group">
+            <label class="field-label" for="spDesc" style="font-weight:600; margin-bottom:6px; display:block;">Short Description</label>
+            <textarea id="spDesc" class="field-input" rows="3" placeholder="Brief summary for this spotlight slide..."></textarea>
+          </div>
+          <div class="form-group" style="display:flex; align-items:center; gap:10px; margin-top:4px;">
+            <input type="checkbox" id="spActive" checked style="width:18px; height:18px; accent-color:var(--gold); cursor:pointer;"/>
+            <label for="spActive" style="font-size:13px; font-weight:600; cursor:pointer; margin:0;">Active (Visible on ecosystem carousel)</label>
+          </div>
+        </div>
+        <div class="modal-footer" style="display:flex; gap:10px; justify-content:flex-end; padding:16px 20px; border-top:1px solid var(--border); background:var(--bg-surface);">
+          <button class="btn-sm ghost" data-act-click="closeModal" data-arg-click='["spotlightModal"]'>Cancel</button>
+          <button class="btn-sm gold" data-act-click="saveSpotlight"><i class="fas fa-save"></i> Save Slide</button>
+        </div>
       </div>
     </div>
 
@@ -604,11 +670,16 @@
   function showToast(msg, type='gold'){
     const el = document.getElementById('_toast'); if(!el) return;
     el.textContent = msg;
+    el.style.display = 'block';
     el.style.background = type==='red'?'rgba(30,10,10,.95)':type==='green'?'rgba(10,25,15,.95)':'rgba(15,20,30,.95)';
     el.style.borderColor = type==='red'?'rgba(255,107,107,.3)':type==='green'?'rgba(76,175,80,.3)':'rgba(226,185,111,.25)';
     el.style.transform = 'translateX(0)'; el.style.opacity = '1';
     if(_tt) clearTimeout(_tt);
-    _tt = setTimeout(()=>{ el.style.transform='translateX(80px)'; el.style.opacity='0'; }, 3600);
+    _tt = setTimeout(()=>{ 
+      el.style.transform='translateX(80px)'; 
+      el.style.opacity='0'; 
+      setTimeout(()=>{ if(el) el.style.display='none'; }, 400); 
+    }, 3600);
   }
 
   function statusBadge(s){
@@ -691,10 +762,8 @@
     users:        {title:'Users', sub:'All registered users', stats:false},
     devices:      {title:'Devices', sub:'Visitor device profiles', stats:false},
     articles:     {title:'Articles Queue', sub:'Review intern technical writing', stats:false},
-      spotlights:   {title:'Spotlights', sub:'Ecosystem carousel slides', stats:false},
-      security:     {title:'Security', sub:'Recent blocked / abusive requests', stats:false},
-      articles:     {title:'Articles Queue', sub:'Review intern technical writing', stats:false},
-      spotlights:   {title:'Spotlights', sub:'Ecosystem carousel slides', stats:false},
+    spotlights:   {title:'Spotlights', sub:'Ecosystem carousel slides', stats:false},
+    security:     {title:'Security', sub:'Recent blocked / abusive requests', stats:false},
     addapp:       {title:'Add Application', sub:'Manually add an application', stats:false},
     upload:       {title:'CSV Import / Export', sub:'Bulk import and data export', stats:false},
   };
@@ -706,10 +775,8 @@
     users: ()=>loadUsers(),
     devices: ()=>loadDevices(),
     articles: ()=>loadArticles(),
-      spotlights: ()=>loadSpotlights(),
-      security: ()=>loadSecurity(),
-      articles: ()=>loadArticles(),
-      spotlights: ()=>loadSpotlights(),
+    spotlights: ()=>loadSpotlights(),
+    security: ()=>loadSecurity(),
     addapp: ()=>{}, upload: ()=>{},
   };
 
@@ -1104,17 +1171,32 @@
     _allArticles = data.articles || [];
     const b = document.getElementById('articlesBody');
     if (b) {
-      b.innerHTML = _allArticles.map(a => `<tr>
-        <td>${a.id}</td>
-        <td>${escHtml(a.intern_name)}<br><small style="color:var(--tx-muted);">${escHtml(a.intern_email)}</small></td>
-        <td><span class="badge badge-blue">${escHtml(a.domain)}</span></td>
-        <td><strong>${escHtml(a.title)}</strong></td>
-        <td><span class="badge">${escHtml(a.status)}</span></td>
-        <td style="font-size:12px;color:var(--tx-muted);">${escHtml((a.updated_at||'').split(' ')[0])}</td>
-        <td>
-          <button class="btn-sm ghost" onclick="openArticleReview(${a.id})" title="Review"><i class="fas fa-edit"></i></button>
-        </td>
-      </tr>`).join('') || '<tr><td colspan="7">No articles in queue.</td></tr>';
+      b.innerHTML = _allArticles.map(a => {
+        const badgeCls = a.status === 'APPROVED' ? 'badge-green' : (a.status === 'PUBLISHED' ? 'badge-blue' : (a.status === 'NEEDS_REVISION' ? 'badge-red' : 'badge-amber'));
+        return `<tr>
+          <td>${a.id}</td>
+          <td>${escHtml(a.intern_name)}<br><small style="color:var(--tx-muted);">${escHtml(a.intern_email)}</small></td>
+          <td><span class="badge badge-blue">${escHtml(a.domain || 'General')}</span></td>
+          <td><strong>${escHtml(a.title)}</strong></td>
+          <td><span class="badge ${badgeCls}">${escHtml(a.status)}</span></td>
+          <td style="font-size:12px;color:var(--tx-muted);">${escHtml((a.updated_at||'').split(' ')[0])}</td>
+          <td style="white-space:nowrap;">
+            <button class="btn-sm ghost" ${actAttr('click', 'openArticleReview', [a.id])} title="Review &amp; Edit" style="margin-right:6px; padding:4px 8px; font-size:12px;">
+              <i class="fas fa-edit"></i> Edit / Review
+            </button>
+            ${a.status !== 'APPROVED' && a.status !== 'PUBLISHED' ? `
+              <button class="btn-sm gold" ${actAttr('click', 'quickApproveArticle', [a.id])} title="Approve Immediately" style="padding:4px 8px; font-size:12px;">
+                <i class="fas fa-check"></i> Approve
+              </button>
+            ` : `
+              <span style="font-size:12px; color:var(--gold); font-weight:600;"><i class="fas fa-check-circle"></i> Approved</span>
+              <a href="${escHtml(a.published_url || '/articles/' + a.id)}" target="_blank" rel="noopener noreferrer" class="btn-sm ghost" style="margin-left:6px; padding:4px 8px; font-size:12px; color:var(--brand); text-decoration:none;" title="View Live Article">
+                <i class="fas fa-external-link-alt"></i> View
+              </a>
+            `}
+          </td>
+        </tr>`;
+      }).join('') || '<tr><td colspan="7">No articles in queue.</td></tr>';
     }
   }
 
@@ -1122,8 +1204,21 @@
     _currentArticleId = id;
     const a = _allArticles.find(x => x.id === id);
     if(!a) return;
-    document.getElementById('arTitle').textContent = 'Review: ' + a.title;
-    document.getElementById('arContent').textContent = a.content_markdown;
+    document.getElementById('arTitle').textContent = 'Review & Edit: ' + (a.title || ('Article #' + a.id));
+    const internNameEl = document.getElementById('arInternName');
+    const internEmailEl = document.getElementById('arInternEmail');
+    const statusBadgeEl = document.getElementById('arStatusBadge');
+    if (internNameEl) internNameEl.textContent = a.intern_name || 'N/A';
+    if (internEmailEl) internEmailEl.textContent = a.intern_email ? `(${a.intern_email})` : '';
+    if (statusBadgeEl) {
+      const badgeCls = a.status === 'APPROVED' ? 'badge-green' : (a.status === 'PUBLISHED' ? 'badge-blue' : (a.status === 'NEEDS_REVISION' ? 'badge-red' : 'badge-amber'));
+      statusBadgeEl.className = 'badge ' + badgeCls;
+      statusBadgeEl.textContent = a.status || 'DRAFT';
+    }
+    
+    document.getElementById('arEditTitle').value = a.title || '';
+    document.getElementById('arEditDomain').value = a.domain || '';
+    document.getElementById('arEditContent').value = a.content_markdown || '';
     document.getElementById('arFeedback').value = a.mentor_feedback || '';
     
     const pBox = document.getElementById('arPublishBox');
@@ -1134,15 +1229,67 @@
       pBox.classList.add('hidden');
     }
     
-    document.getElementById('articleModal').classList.remove('hidden');
+    openModal('articleModal');
+  }
+
+  async function quickApproveArticle(id) {
+    if(!confirm('Approve this article immediately?')) return;
+    const data = await apiFetch('/admin/articles/review', 'POST', {id: id, status: 'APPROVED'});
+    if(data && (data.status==='success' || data.status==='APPROVED' || data.article_status==='APPROVED')) {
+      showToast('Article approved successfully!','green');
+      loadArticles();
+    } else {
+      showToast(data?.message || 'Failed to approve', 'red');
+    }
+  }
+
+  async function saveArticleEdits() {
+    if(!_currentArticleId) return;
+    const title = (document.getElementById('arEditTitle').value || '').trim();
+    const domain = (document.getElementById('arEditDomain').value || '').trim();
+    const content_markdown = document.getElementById('arEditContent').value;
+    const feedback = (document.getElementById('arFeedback').value || '').trim();
+    if(!title) return showToast('Article title is required.','red');
+
+    const data = await apiFetch('/admin/articles/save', 'POST', {
+      id: _currentArticleId,
+      title: title,
+      domain: domain,
+      content_markdown: content_markdown,
+      feedback: feedback
+    });
+    if(data && data.status==='success') {
+      showToast('Article edits saved!','green');
+      closeModal('articleModal');
+      loadArticles();
+    } else {
+      showToast(data?.message || 'Error saving edits', 'red');
+    }
   }
 
   async function reviewArticle(status) {
     if(!_currentArticleId) return;
-    const feedback = document.getElementById('arFeedback').value;
-    const data = await apiFetch('/admin/articles/review', 'POST', {id: _currentArticleId, status, feedback});
-    if(data && data.status==='success') { showToast('Status updated.','green'); closeModal('articleModal'); loadArticles(); }
-    else showToast(data?.message || 'Error', 'red');
+    const title = (document.getElementById('arEditTitle').value || '').trim();
+    const domain = (document.getElementById('arEditDomain').value || '').trim();
+    const content_markdown = document.getElementById('arEditContent').value;
+    const feedback = (document.getElementById('arFeedback').value || '').trim();
+    if(!title) return showToast('Article title is required.','red');
+
+    const data = await apiFetch('/admin/articles/review', 'POST', {
+      id: _currentArticleId,
+      status: status,
+      feedback: feedback,
+      title: title,
+      domain: domain,
+      content_markdown: content_markdown
+    });
+    if(data && (data.status==='success' || data.status===status || data.article_status===status)) {
+      showToast(status === 'APPROVED' ? 'Article approved successfully!' : 'Revision requested.', 'green');
+      closeModal('articleModal');
+      loadArticles();
+    } else {
+      showToast(data?.message || 'Error updating article', 'red');
+    }
   }
 
   async function publishArticle() {
@@ -1154,42 +1301,106 @@
     else showToast(data?.message || 'Error', 'red');
   }
 
+  let _allSpotlights = [];
+
   async function loadSpotlights(){
     const data = await apiFetch('/admin/spotlights');
     if(!data || data.status!=='success') return;
+    _allSpotlights = data.spotlights || [];
     const b = document.getElementById('spotlightsBody');
     if (b) {
-      b.innerHTML = (data.spotlights||[]).map(s => `<tr>
-        <td>${s.id}</td>
-        <td><span class="badge badge-blue">${escHtml(s.target_brand||'')}</span></td>
-        <td>${escHtml(s.title)}</td>
-        <td><a href="${escHtml(s.url)}" target="_blank" style="color:var(--gold);">${escHtml(s.url)}</a></td>
+      b.innerHTML = _allSpotlights.map(s => `<tr>
+        <td style="color:var(--tx-muted);font-size:12px;">${s.id}</td>
+        <td><span class="badge badge-blue">${escHtml(s.target_brand||'General')}</span></td>
+        <td><strong>${escHtml(s.title)}</strong>${s.description ? `<br><small style="color:var(--tx-muted);">${escHtml(s.description)}</small>` : ''}</td>
+        <td><a href="${escHtml(s.url)}" target="_blank" rel="noopener noreferrer" style="color:var(--gold);font-size:12px;"><i class="fas fa-external-link-alt" style="font-size:10px;margin-right:4px;"></i>${escHtml(s.url)}</a></td>
         <td>${s.is_active ? '<span class="badge badge-green">Active</span>' : '<span class="badge badge-muted">Inactive</span>'}</td>
-        <td>
-          <button class="btn-sm ghost" onclick="deleteSpotlight(${s.id})" title="Delete"><i class="fas fa-trash"></i></button>
+        <td style="white-space:nowrap;">
+          <button class="btn-sm ghost" ${actAttr('click', 'openEditSpotlightModal', [s.id])} title="Edit Slide" style="margin-right:6px;padding:4px 8px;font-size:12px;">
+            <i class="fas fa-edit"></i> Edit
+          </button>
+          <button class="btn-sm red" ${actAttr('click', 'deleteSpotlight', [s.id])} title="Delete Slide" style="padding:4px 8px;font-size:12px;">
+            <i class="fas fa-trash"></i> Delete
+          </button>
         </td>
-      </tr>`).join('') || '<tr><td colspan="6">No spotlights found.</td></tr>';
+      </tr>`).join('') || '<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--tx-muted);">No spotlights found. Click <strong>Add Slide</strong> above to create one.</td></tr>';
+    }
+  }
+
+  function openAddSpotlightModal() {
+    document.getElementById('spModalTitle').textContent = 'Add Ecosystem Slide';
+    document.getElementById('spModalSub').textContent = 'Configure carousel spotlight slide';
+    document.getElementById('spId').value = '';
+    document.getElementById('spTitle').value = '';
+    document.getElementById('spBrand').value = '';
+    document.getElementById('spUrl').value = '';
+    document.getElementById('spDesc').value = '';
+    document.getElementById('spActive').checked = true;
+    openModal('spotlightModal');
+  }
+
+  function openEditSpotlightModal(id) {
+    const s = _allSpotlights.find(x => x.id === id);
+    if (!s) return;
+    document.getElementById('spModalTitle').textContent = 'Edit Ecosystem Slide #' + id;
+    document.getElementById('spModalSub').textContent = 'Update slide details and display preferences';
+    document.getElementById('spId').value = s.id;
+    document.getElementById('spTitle').value = s.title || '';
+    document.getElementById('spBrand').value = s.target_brand || '';
+    document.getElementById('spUrl').value = s.url || '';
+    document.getElementById('spDesc').value = s.description || '';
+    document.getElementById('spActive').checked = Boolean(s.is_active);
+    openModal('spotlightModal');
+  }
+
+  async function saveSpotlight() {
+    const id = document.getElementById('spId').value;
+    const title = (document.getElementById('spTitle').value || '').trim();
+    const target_brand = (document.getElementById('spBrand').value || '').trim();
+    const url = (document.getElementById('spUrl').value || '').trim();
+    const description = (document.getElementById('spDesc').value || '').trim();
+    const is_active = document.getElementById('spActive').checked ? 1 : 0;
+
+    if (!title) return showToast('Please enter a slide title.', 'red');
+    if (!url) return showToast('Please enter a target URL.', 'red');
+
+    const endpoint = id ? '/admin/spotlights/edit' : '/admin/spotlights/add';
+    const payload = id
+      ? { id: parseInt(id, 10), title, url, target_brand, description, is_active }
+      : { title, url, target_brand, description, is_active };
+
+    const data = await apiFetch(endpoint, 'POST', payload);
+    if (data && data.status === 'success') {
+      showToast(id ? 'Slide updated successfully!' : 'Slide added successfully!', 'green');
+      closeModal('spotlightModal');
+      loadSpotlights();
+    } else {
+      showToast(data?.message || 'Failed to save slide.', 'red');
     }
   }
 
   async function deleteSpotlight(id) {
-    if(!confirm('Delete this spotlight slide?')) return;
-    const data = await apiFetch('/admin/spotlights/delete', 'POST', {id});
-    if(data && data.status==='success') { showToast('Deleted.','green'); loadSpotlights(); }
-    else showToast(data?.message || 'Error', 'red');
+    if (!confirm('Are you sure you want to delete this spotlight slide?')) return;
+    const data = await apiFetch('/admin/spotlights/delete', 'POST', { id });
+    if (data && data.status === 'success') {
+      showToast('Slide deleted successfully.', 'green');
+      loadSpotlights();
+    } else {
+      showToast(data?.message || 'Failed to delete slide.', 'red');
+    }
   }
 
-  function openAddSpotlightModal() {
-     const title = prompt("Enter slide title (e.g. 'AivaraTech 2026 Open Source Tracker'):");
-     if (!title) return;
-     const url = prompt("Enter target URL (e.g. 'https://aivaratech.info'):");
-     if (!url) return;
-     const brand = prompt("Enter target brand (e.g. 'AivaraTech', 'Alkame'):");
-     apiFetch('/admin/spotlights/add', 'POST', {title, url, target_brand: brand, is_active: true}).then(d => {
-        if (d && d.status === 'success') { showToast('Added spotlight!', 'green'); loadSpotlights(); }
-        else showToast(d?.message || 'Error adding spotlight', 'red');
-     });
-  }
+  window.loadArticles = loadArticles;
+  window.openArticleReview = openArticleReview;
+  window.quickApproveArticle = quickApproveArticle;
+  window.saveArticleEdits = saveArticleEdits;
+  window.reviewArticle = reviewArticle;
+  window.publishArticle = publishArticle;
+  window.loadSpotlights = loadSpotlights;
+  window.openAddSpotlightModal = openAddSpotlightModal;
+  window.openEditSpotlightModal = openEditSpotlightModal;
+  window.saveSpotlight = saveSpotlight;
+  window.deleteSpotlight = deleteSpotlight;
 
 
   async function loadSecurity(){

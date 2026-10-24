@@ -18,7 +18,7 @@
                 {% if has_gemini_key %}
                 ⚡ BYOK Active
                 {% else %}
-                🔑 Connect Gemini (Free)
+                🔑 Add Gemini API Key
                 {% endif %}
             </span>
             <a href="/courses/{{ course.id }}" class="back-link" style="white-space:nowrap">
@@ -191,6 +191,22 @@
                     if (quizBtn) {
                         quizBtn.href = `/courses/${courseId}/quiz/${data.subtopic.day_number || 1}`;
                     }
+
+                    if (typeof data.has_gemini_key !== 'undefined') {
+                        const badge = document.getElementById('geminiBadge');
+                        if (badge) {
+                            if (data.has_gemini_key) {
+                                badge.className = 'badge b-green';
+                                badge.textContent = `⚡ BYOK Active (${data.available_models_count || 'Active'} Models)`;
+                                const banner = document.getElementById('geminiBanner');
+                                if (banner) banner.remove();
+                            } else {
+                                badge.className = 'badge b-amber';
+                                badge.textContent = '🔑 Add Gemini API Key';
+                            }
+                        }
+                    }
+
                     document.getElementById('subtopicTitle').textContent = data.subtopic.title;
                     document.getElementById('subtopicBrief').textContent = data.subtopic.brief;
 
@@ -308,7 +324,8 @@
                     const btn = document.createElement('button');
                     btn.style = 'display:inline-block;margin-top:8px;padding:6px 12px;background:var(--accent);color:#000;border:none;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;';
                     btn.textContent = '🔑 Connect / Update Gemini Key';
-                    btn.onclick = openGeminiModal;
+                    btn.setAttribute('data-act-click', 'openGeminiModal');
+                    btn.addEventListener('click', openGeminiModal);
                     aiDiv.appendChild(document.createElement('br'));
                     aiDiv.appendChild(btn);
                 }
@@ -350,10 +367,28 @@
                                     const btn = document.createElement('button');
                                     btn.style = 'display:inline-block;margin-top:8px;padding:6px 12px;background:var(--accent);color:#000;border:none;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;';
                                     btn.textContent = '🔑 Connect / Update Gemini Key';
-                                    btn.onclick = openGeminiModal;
+                                    btn.setAttribute('data-act-click', 'openGeminiModal');
+                                    btn.addEventListener('click', openGeminiModal);
                                     aiDiv.appendChild(document.createElement('br'));
                                     aiDiv.appendChild(btn);
                                 }
+                            }
+                            if (parsed.action === 'ADVANCE') {
+                                const nextId = parsed.next_subtopic_id;
+                                const sysDiv = document.createElement('div');
+                                sysDiv.className = 'chat-bubble assistant';
+                                sysDiv.style = 'background: rgba(34, 197, 94, 0.1); border: 1px solid rgba(34, 197, 94, 0.4); color: #15803d; font-weight: 700; margin-top: 12px;';
+                                
+                                if (nextId) {
+                                    sysDiv.textContent = '🎉 Lesson Mastered! Moving you to the next chapter...';
+                                    setTimeout(() => {
+                                        loadSubtopic(currentCourseId, nextId, null);
+                                    }, 2500);
+                                } else {
+                                    sysDiv.textContent = '🎉 All lessons for today mastered! Please click the "Take day quiz" button to complete your learning for the day.';
+                                }
+                                history.appendChild(sysDiv);
+                                history.scrollTop = history.scrollHeight;
                             }
                         } catch (e) {
                             // ignore parse error on keepalive lines

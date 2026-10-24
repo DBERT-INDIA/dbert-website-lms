@@ -48,7 +48,7 @@ function findRoutes(dir, base = '') {
   return out;
 }
 const routes = findRoutes('src/app').filter(
-  (r) => !r.includes('[') && r !== '/'
+  (r) => !r.includes('[') && r !== '/' && !r.includes('/_') && !r.startsWith('/_')
 );
 
 const failures = [];
@@ -82,7 +82,7 @@ for (const r of routes) {
   if (!configured.has(r)) failures.push(`${r}: routed page has no SEO entry`);
 }
 for (const e of entries) {
-  if (!routes.includes(e.route)) failures.push(`${e.route}: entry has no page`);
+  if (!e.noindex && !routes.includes(e.route)) failures.push(`${e.route}: entry has no page`);
 }
 
 console.log(`checked ${entries.length} entries against ${routes.length} routed pages`);

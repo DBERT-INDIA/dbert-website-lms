@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="en-IN">
+<head>
+  {% set page_title_full = "Free Masterclass: Crack Remote Data Analyst Internships (India 2026) — DBERT" %}
+  {% set page_desc = "Join our 1-Hour Free Masterclass on Monday at 8:00 PM IST. Learn how to land ₹15k–₹30k/mo remote Data Analyst internships in India, even with a non-tech degree." %}
+  {% set page_robots = "index,follow" %}
+  {% include "_head.html" %}
+
+  <style>
+    /* Masterclass Specific Modern Design Enhancements */
+    :root {
+      --mc-primary: #2563EB;
+      --mc-dark: #0F172A;
+      --mc-surface: #FFFFFF;
+      --mc-accent: #F59E0B;
+      --mc-green: #10B981;
+      --mc-purple: #7C3AED;
+      --mc-discord: #5865F2;
+      --mc-whatsapp: #25D366;
+    }
+
+    .mc-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .mc-hero {
+      padding: 60px 0 40px;
+      position: relative;
+    }
+
+    .mc-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #EFF6FF;
+      color: #1D4ED8;
+      border: 1px solid #BFDBFE;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .mc-title {
+      font-size: clamp(28px, 4.5vw, 52px);
+      font-weight: 800;
+      line-height: 1.15;
+      color: var(--mc-dark);
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+    }
+
+    .mc-title-gradient {
+      background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .mc-subtitle {
+      font-size: clamp(16px, 1.8vw, 19px);
+      line-height: 1.6;
+      color: #475569;
+      margin-bottom: 30px;
+      max-width: 680px;
+    }
+
+    /* Countdown Widget */
+    .countdown-box {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08);
+      border-radius: 16px;
+      padding: 18px 24px;
+      display: inline-flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 35px;
+    }
+
+    .cd-item {
+      text-align: center;
+      min-width: 55px;
+    }
+
+    .cd-number {
+      font-size: 26px;
+      font-weight: 800;
+      color: #0F172A;
+      font-family: var(--f-mono, monospace);
+      line-height: 1;
+    }
+
+    .cd-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #64748B;
+      text-transform: uppercase;
+      margin-top: 4px;
+      letter-spacing: 0.05em;
+    }
+
+    .cd-sep {
+      font-size: 20px;
+      font-weight: 700;
+      color: #CBD5E1;
+      line-height: 1;
+    }
+
+    /* Registration Card */
+    .mc-reg-card {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.12);
+      border-radius: 20px;
+      padding: 32px;
+      position: relative;
+    }
+
+    .mc-reg-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #2563EB, #7C3AED, #F59E0B);
+      border-radius: 20px 20px 0 0;
+    }
+
+    .mc-input-group {
+      margin-bottom: 16px;
+    }
+
+    .mc-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #334155;
+      margin-bottom: 6px;
+    }
+
+    .mc-input {
+      width: 100%;
+      padding: 12px 14px;
+      font-size: 14px;
+      border: 1px solid #CBD5E1;
+      border-radius: 10px;
+      background: #F8FAFC;
+      color: #0F172A;
+      transition: all 0.2s ease;
+    }
+
+    .mc-input:focus {
+      background: #FFFFFF;
+      border-color: #2563EB;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+      outline: none;
+    }
+
+    .mc-btn-primary {
+      width: 100%;
+      background: #2563EB;
+      color: #FFFFFF;
+      font-weight: 700;
+      font-size: 16px;
+      padding: 14px 20px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+    }
+
+    .mc-btn-primary:hover {
+      background: #1D4ED8;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.45);
+    }
+
+    /* Live Database Section */
+    .mc-stat-strip {
+      background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+      color: #FFFFFF;
+      border-radius: 20px;
+      padding: 30px;
+      margin: 40px 0;
+    }
+
+    .mc-job-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 16px;
+      transition: all 0.2s ease;
+    }
+
+    .mc-job-card:hover {
+      background: rgba(255, 255, 255, 0.09);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    /* Social Community Buttons */
+    .btn-whatsapp {
+      background: #25D366;
+      color: #FFFFFF;
+      font-weight: 700;
+      padding: 14px 20px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+      width: 100%;
+    }
+
+    .btn-whatsapp:hover {
+      background: #20BD5A;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(37, 211, 102, 0.45);
+      color: #FFFFFF;
+    }
+
+    .btn-discord {
+      background: #5865F2;
+      color: #FFFFFF;
+      font-weight: 700;
+      padding: 14px 20px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(88, 101, 242, 0.3);
+      width: 100%;
+    }
+
+    .btn-discord:hover {
+      background: #4752C4;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(88, 101, 242, 0.45);
+      color: #FFFFFF;
+    }
+
+    /* Modal Styles */
+    .mc-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(8px);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .mc-modal-card {
+      background: #FFFFFF;
+      border-radius: 24px;
+      max-width: 520px;
+      width: 100%;
+      padding: 36px 30px;
+      text-align: center;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+      position: relative;
+      animation: modalPop 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes modalPop {
+      0% { transform: scale(0.92); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    /* Feature Grid */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+    @media (min-width: 900px) {
+      .grid-2 { grid-template-columns: 1.15fr 0.85fr; }
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    @media (min-width: 768px) {
+      .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+    @media (min-width: 768px) {
+      .grid-4 { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 1024px) {
+      .grid-4 { grid-template-columns: repeat(4, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Sticky Announcement Bar -->
+  <header style="background:#0F172A; color:#E2E8F0; padding:10px 0; font-size:13px; text-align:center; font-weight:600; border-bottom:1px solid #1E293B;">
+    <div class="mc-container">
+      <span style="display:inline-flex; align-items:center; gap:8px;">
+        <span style="display:inline-block; width:8px; height:8px; background:#10B981; border-radius:50%; animation:pulse 2s infinite;"></span>
+        <strong>LIVE MASTERCLASS:</strong> Monday at 8:00 PM IST • Direct Access on Discord & WhatsApp • 100% Free
+      </span>
+    </div>
+  </header>
+
+  <!-- Navbar -->
+  <nav style="background:#FFFFFF; border-bottom:1px solid #E2E8F0; padding:16px 0; position:sticky; top:0; z-index:100;">
+    <div class="mc-container" style="display:flex; align-items:center; justify-content:space-between;">
+      <a href="/" style="display:inline-flex; align-items:center; gap:10px; font-weight:800; font-size:20px; color:#0F172A;">
+        <div style="width:36px; height:36px; background:#2563EB; color:#FFF; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px;">
+          <i class="fa-solid fa-chart-simple"></i>
+        </div>
+        <span>DBERT <span style="color:#2563EB; font-weight:600; font-size:14px;">ACADEMY</span></span>
+      </a>
+      <div style="display:flex; align-items:center; gap:15px;">
+        <a href="#agenda" style="color:#475569; font-size:14px; font-weight:600;" class="hide-mobile">Agenda</a>
+        <a href="#database" style="color:#475569; font-size:14px; font-weight:600;" class="hide-mobile">400+ Remote Jobs</a>
+        <a href="#register" style="background:#0F172A; color:#FFF; padding:10px 18px; border-radius:10px; font-size:14px; font-weight:700;">
+          Reserve Free Seat
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Hero Section -->
+  <section class="mc-hero" id="register">
+    <div class="mc-container">
+      <div class="grid-2">
+        
+        <!-- Left: Copy & Value Proposition -->
+        <div>
+          <div class="mc-badge">
+            <i class="fa-solid fa-fire text-amber-500"></i> Free 1-Hour Masterclass • 8:00 PM IST
+          </div>
+          
+          <h1 class="mc-title">
+            Land a <span style="color:#2563EB;">₹15K–₹30K/Month</span> Remote Data Analyst Internship.
+            <br>
+            <span class="mc-title-gradient">Even With Zero Coding or a Non-Tech Degree.</span>
+          </h1>
+
+          <p class="mc-subtitle">
+            Over <strong>{{ total_remote }} verified remote Data Analyst internships</strong> are actively hiring in India right now on <code>internship.dbert.online</code>. Learn why 90% of applicants get rejected in 6 seconds, the only 4 skills companies actually test, and how to rewrite your resume for instant callbacks.
+          </p>
+
+          <!-- Dynamic Live Countdown -->
+          <div class="countdown-box">
+            <div class="cd-item">
+              <div class="cd-number" id="cd-days">00</div>
+              <div class="cd-label">Days</div>
+            </div>
+            <div class="cd-sep">:</div>
+            <div class="cd-item">
+              <div class="cd-number" id="cd-hours">00</div>
+              <div class="cd-label">Hours</div>
+            </div>
+            <div class="cd-sep">:</div>
+            <div class="cd-item">
+              <div class="cd-number" id="cd-mins">00</div>
+              <div class="cd-label">Mins</div>
+            </div>
+            <div class="cd-sep">:</div>
+            <div class="cd-item">
+              <div class="cd-number" id="cd-secs">00</div>
+              <div class="cd-label">Secs</div>
+            </div>
+          </div>
+
+          <!-- Highlight Bullets -->
+          <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:25px;">
+            <div style="display:flex; align-items:center; gap:10px; font-size:15px; color:#1E293B; font-weight:600;">
+              <i class="fa-solid fa-circle-check" style="color:#10B981; font-size:18px;"></i>
+              <span><strong>Real-Time Database Reveal:</strong> Inside the 415+ remote Indian data analyst openings</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:10px; font-size:15px; color:#1E293B; font-weight:600;">
+              <i class="fa-solid fa-circle-check" style="color:#10B981; font-size:18px;"></i>
+              <span><strong>The Non-Tech Superpower:</strong> How B.Com, BBA, BA & non-CS grads win with domain insights</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:10px; font-size:15px; color:#10B981; font-size:18px;">
+              <i class="fa-solid fa-circle-check" style="color:#10B981; font-size:18px;"></i>
+              <span style="color:#1E293B;"><strong>Live Resume Teardown:</strong> Transforming an unhirable resume to an ATS winner in 10 minutes</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:10px; font-size:15px; color:#1E293B; font-weight:600;">
+              <i class="fa-solid fa-circle-check" style="color:#10B981; font-size:18px;"></i>
+              <span><strong>Free ₹4,999 Bonus Kit:</strong> ATS Resume Template + Top 50 SQL Q&As + 5 Project Blueprints</span>
+            </div>
+          </div>
+
+          <!-- Social Proof -->
+          <div style="display:flex; align-items:center; gap:12px; padding-top:10px; border-top:1px solid #E2E8F0;">
+            <div style="display:flex; margin-left:8px;">
+              <span style="width:32px; height:32px; border-radius:50%; background:#2563EB; color:#FFF; display:inline-flex; align-items:center; justify-content:center; font-size:12px; border:2px solid #FFF; margin-left:-8px;"><i class="fa-solid fa-user"></i></span>
+              <span style="width:32px; height:32px; border-radius:50%; background:#7C3AED; color:#FFF; display:inline-flex; align-items:center; justify-content:center; font-size:12px; border:2px solid #FFF; margin-left:-8px;"><i class="fa-solid fa-user"></i></span>
+              <span style="width:32px; height:32px; border-radius:50%; background:#059669; color:#FFF; display:inline-flex; align-items:center; justify-content:center; font-size:12px; border:2px solid #FFF; margin-left:-8px;"><i class="fa-solid fa-user"></i></span>
+            </div>
+            <div style="font-size:13px; color:#64748B; font-weight:600;">
+              <strong style="color:#0F172A;">{{ social_proof_count }}+ students & interns</strong> registered for Monday's session
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Registration Form Box -->
+        <div>
+          <div class="mc-reg-card">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+              <div>
+                <span style="background:#FEF3C7; color:#D97706; padding:4px 10px; border-radius:6px; font-size:12px; font-weight:700;">
+                  <i class="fa-solid fa-ticket"></i> 100% FREE PASS
+                </span>
+              </div>
+              <div style="font-size:13px; color:#64748B; font-weight:600;">
+                <i class="fa-regular fa-clock"></i> 60 Minutes
+              </div>
+            </div>
+
+            <h3 style="font-size:22px; font-weight:800; color:#0F172A; margin-bottom:6px;">Reserve Your Masterclass Seat</h3>
+            <p style="font-size:13px; color:#64748B; margin-bottom:20px;">
+              Direct Stage Access on Discord + VIP Reminders & Bonus PDF Kit on WhatsApp.
+            </p>
+
+            <form id="masterclass-form" novalidate>
+              <div class="mc-input-group">
+                <label class="mc-label" for="reg-name">Your Full Name *</label>
+                <input class="mc-input" type="text" id="reg-name" name="name" placeholder="e.g. Priya Sharma" required>
+              </div>
+
+              <div class="mc-input-group">
+                <label class="mc-label" for="reg-email">Email Address *</label>
+                <input class="mc-input" type="email" id="reg-email" name="email" placeholder="priya@gmail.com" required>
+              </div>
+
+              <div class="mc-input-group">
+                <label class="mc-label" for="reg-whatsapp">WhatsApp Number * (For Instant Link & PDF)</label>
+                <input class="mc-input" type="tel" id="reg-whatsapp" name="whatsapp" placeholder="e.g. 9876543210" required>
+              </div>
+
+              <div class="mc-input-group">
+                <label class="mc-label" for="reg-background">Your Academic Background / Degree</label>
+                <select class="mc-input" id="reg-background" name="background">
+                  <option value="Commerce / B.Com / M.Com">Commerce / B.Com / M.Com</option>
+                  <option value="BBA / MBA / Management">BBA / MBA / Management</option>
+                  <option value="Arts / Humanities / Economics">Arts / Humanities / Economics</option>
+                  <option value="B.Tech / BCA / MCA (Tech)">B.Tech / BCA / MCA (Tech)</option>
+                  <option value="Mechanical / Civil / Electrical (Core Engg)">Mechanical / Civil / Electrical (Core Engg)</option>
+                  <option value="Working Professional / Other">Working Professional / Other</option>
+                </select>
+              </div>
+
+              <div class="mc-input-group">
+                <label class="mc-label" for="reg-status">Current Status</label>
+                <select class="mc-input" id="reg-status" name="current_status">
+                  <option value="College Student (1st to 3rd Year)">College Student (1st to 3rd Year)</option>
+                  <option value="Final Year Student">Final Year Student</option>
+                  <option value="Recent Graduate / Fresher">Recent Graduate / Fresher</option>
+                  <option value="Looking to Career Switch">Looking to Career Switch</option>
+                </select>
+              </div>
+
+              <div id="form-error" style="display:none; color:#DC2626; background:#FEE2E2; padding:10px 14px; border-radius:8px; font-size:13px; font-weight:600; margin-bottom:15px;"></div>
+
+              <button type="submit" id="submit-btn" class="mc-btn-primary">
+                <span>Join Free Masterclass (Monday 8 PM)</span>
+                <i class="fa-solid fa-arrow-right"></i>
+              </button>
+
+              <p style="text-align:center; font-size:12px; color:#94A3B8; margin-top:14px;">
+                🔒 Zero spam. We only send event reminders & bonus learning kits.
+              </p>
+            </form>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Live Database Proof Section -->
+  <section id="database" style="padding:60px 0; background:#F8FAFC;">
+    <div class="mc-container">
+      
+      <div class="mc-stat-strip">
+        <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:20px; margin-bottom:30px;">
+          <div>
+            <div style="display:inline-flex; align-items:center; gap:8px; background:rgba(37,99,235,0.2); color:#60A5FA; padding:4px 12px; border-radius:999px; font-size:12px; font-weight:700;">
+              <i class="fa-solid fa-database"></i> LIVE RECRUITMENT INTELLIGENCE
+            </div>
+            <h2 style="font-size:32px; font-weight:800; color:#FFF; margin-top:10px;">
+              {{ total_remote }}+ Remote Data Analyst Internships Live Now
+            </h2>
+            <p style="color:#94A3B8; font-size:15px; max-width:650px; margin-top:6px;">
+              Extracted from verified hiring pipelines across India (Unstop, Internshala, LinkedIn, and DBERT direct partners).
+            </p>
+          </div>
+
+          <div style="text-align:right;">
+            <div style="font-size:36px; font-weight:800; color:#38BDF8; font-family:var(--f-mono);">
+              ₹10K – ₹30K
+            </div>
+            <div style="font-size:13px; color:#94A3B8; font-weight:600;">Monthly Remote Stipend Range</div>
+          </div>
+        </div>
+
+        <!-- Visual Charts & Stipend Breakdown -->
+        <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); border-radius:16px; padding:24px; margin-bottom:28px;">
+          <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; margin-bottom:16px; gap:10px;">
+            <h3 style="font-size:18px; font-weight:700; color:#FFFFFF;">
+              <i class="fa-solid fa-chart-column" style="color:#38BDF8; margin-right:8px;"></i> Verified Remote Stipend Distribution (India Market)
+            </h3>
+            <span style="font-size:12px; color:#94A3B8; font-family:var(--f-mono);">Sample: 415+ Live Postings</span>
+          </div>
+
+          <div style="display:flex; flex-direction:column; gap:12px;">
+            <div>
+              <div style="display:flex; justify-content:space-between; font-size:12.5px; margin-bottom:4px; color:#E2E8F0;">
+                <span><strong>₹20,000 – ₹30,000 / month</strong> (High-Growth Tech Startups)</span>
+                <span style="color:#4ADE80; font-weight:700; font-family:var(--f-mono);">14% (58 openings)</span>
+              </div>
+              <div style="width:100%; height:10px; background:rgba(255,255,255,0.1); border-radius:999px; overflow:hidden;">
+                <div style="width:14%; height:100%; background:#10B981; border-radius:999px;"></div>
+              </div>
+            </div>
+
+            <div>
+              <div style="display:flex; justify-content:space-between; font-size:12.5px; margin-bottom:4px; color:#E2E8F0;">
+                <span><strong>₹10,000 – ₹20,000 / month</strong> (Mid-Market Companies &amp; Product Agencies)</span>
+                <span style="color:#38BDF8; font-weight:700; font-family:var(--f-mono);">38% (157 openings)</span>
+              </div>
+              <div style="width:100%; height:10px; background:rgba(255,255,255,0.1); border-radius:999px; overflow:hidden;">
+                <div style="width:38%; height:100%; background:#2563EB; border-radius:999px;"></div>
+              </div>
+            </div>
+
+            <div>
+              <div style="display:flex; justify-content:space-between; font-size:12.5px; margin-bottom:4px; color:#E2E8F0;">
+                <span><strong>₹5,000 – ₹10,000 / month</strong> (Early-Stage Startups &amp; SMBs)</span>
+                <span style="color:#FBBF24; font-weight:700; font-family:var(--f-mono);">28% (116 openings)</span>
+              </div>
+              <div style="width:100%; height:10px; background:rgba(255,255,255,0.1); border-radius:999px; overflow:hidden;">
+                <div style="width:28%; height:100%; background:#F59E0B; border-radius:999px;"></div>
+              </div>
+            </div>
+
+            <div>
+              <div style="display:flex; justify-content:space-between; font-size:12.5px; margin-bottom:4px; color:#E2E8F0;">
+                <span><strong>Performance-Linked / Entry Placements</strong></span>
+                <span style="color:#94A3B8; font-weight:700; font-family:var(--f-mono);">20% (84 openings)</span>
+              </div>
+              <div style="width:100%; height:10px; background:rgba(255,255,255,0.1); border-radius:999px; overflow:hidden;">
+                <div style="width:20%; height:100%; background:#64748B; border-radius:999px;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sample Live Job Cards -->
+        <div class="grid-4">
+          {% for job in sample_jobs %}
+          <div class="mc-job-card">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;">
+              <span style="font-size:11px; font-weight:700; color:#38BDF8; background:rgba(56,189,248,0.15); padding:3px 8px; border-radius:6px;">
+                <i class="fa-solid fa-house-laptop"></i> Remote
+              </span>
+              <span style="font-size:12px; font-weight:700; color:#4ADE80;">
+                {{ job.Stipend or "Stipend Disclosed" }}
+              </span>
+            </div>
+            <h4 style="font-size:15px; font-weight:700; color:#FFF; margin-bottom:4px; line-height:1.3;">
+              {{ job.Role }}
+            </h4>
+            <div style="font-size:13px; color:#94A3B8; font-weight:500; margin-bottom:10px;">
+              {{ job.Company }}
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; font-size:11px; color:#64748B; border-top:1px solid rgba(255,255,255,0.1); padding-top:8px;">
+              <span>Source: {{ job.Source }}</span>
+              <span style="color:#38BDF8; font-weight:600;">Open &amp; Hiring</span>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+
+        <div style="text-align:center; margin-top:25px;">
+          <p style="font-size:14px; color:#CBD5E1;">
+            💡 <em>In this Masterclass, we will walk you through how to prepare for and apply to every single one of these roles.</em>
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- The 6-Second Screen: Why 90% Get Rejected -->
+  <section style="padding:60px 0; background:#FFFFFF;">
+    <div class="mc-container">
+      <div style="text-align:center; max-width:700px; margin:0 auto 50px;">
+        <span style="background:#FEE2E2; color:#DC2626; font-size:12px; font-weight:700; padding:4px 12px; border-radius:999px;">
+          THE BRUTAL RECRUITER REALITY
+        </span>
+        <h2 style="font-size:36px; font-weight:800; color:#0F172A; margin-top:12px;">
+          Why 90% of Data Resumes Get Rejected in 6 Seconds
+        </h2>
+        <p style="color:#64748B; font-size:16px; margin-top:8px;">
+          Applying to 100+ internships without a reply is not bad luck. It's because your resume triggers these 3 automatic rejection filters:
+        </p>
+      </div>
+
+      <div class="grid-3">
+        <div style="background:#FFF5F5; border:1px solid #FED7D7; border-radius:16px; padding:28px;">
+          <div style="width:44px; height:44px; background:#FEE2E2; color:#DC2626; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:20px; margin-bottom:16px;">
+            <i class="fa-solid fa-skull"></i>
+          </div>
+          <h3 style="font-size:18px; font-weight:800; color:#991B1B; margin-bottom:8px;">1. The "Toy Dataset" Curse</h3>
+          <p style="font-size:14px; color:#7F1D1D; line-height:1.6;">
+            Listing tutorial projects like <em>Titanic Survival</em>, <em>Iris Flower</em>, or <em>Boston Housing</em> signals that you only copied a tutorial and have zero real-world business thinking.
+          </p>
+        </div>
+
+        <div style="background:#FFF5F5; border:1px solid #FED7D7; border-radius:16px; padding:28px;">
+          <div style="width:44px; height:44px; background:#FEE2E2; color:#DC2626; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:20px; margin-bottom:16px;">
+            <i class="fa-solid fa-ghost"></i>
+          </div>
+          <h3 style="font-size:18px; font-weight:800; color:#991B1B; margin-bottom:8px;">2. Zero Clickable Proof</h3>
+          <p style="font-size:14px; color:#7F1D1D; line-height:1.6;">
+            A list of course completion certificates without an interactive <strong>Power BI web link</strong> or a clean <strong>GitHub repo</strong> tells recruiters you cannot build tangible business assets.
+          </p>
+        </div>
+
+        <div style="background:#FFF5F5; border:1px solid #FED7D7; border-radius:16px; padding:28px;">
+          <div style="width:44px; height:44px; background:#FEE2E2; color:#DC2626; border-radius:12px; display:flex; align-items:center; justify-content:center; font-size:20px; margin-bottom:16px;">
+            <i class="fa-solid fa-ban"></i>
+          </div>
+          <h3 style="font-size:18px; font-weight:800; color:#991B1B; margin-bottom:8px;">3. Fluffy, Non-Metric Bullets</h3>
+          <p style="font-size:14px; color:#7F1D1D; line-height:1.6;">
+            Writing <em>"Responsible for Excel reports"</em> gets skipped instantly. Recruiters scan for quantifiable impact: <em>"Automated weekly reporting across 50K rows, saving 12 hours weekly."</em>
+          </p>
+        </div>
+      </div>
+
+      <!-- Interactive ATS Resume Roast Simulator Box -->
+      <div style="margin-top:40px; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:20px; padding:28px; box-shadow:0 4px 20px rgba(0,0,0,0.04);">
+        <div style="display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:16px; margin-bottom:20px; border-bottom:1px solid #E2E8F0; padding-bottom:16px;">
+          <div>
+            <span style="background:#EFF6FF; color:#2563EB; font-size:11px; font-weight:800; padding:4px 10px; border-radius:999px; text-transform:uppercase;">
+              Interactive ATS Simulator
+            </span>
+            <h3 style="font-size:20px; font-weight:800; color:#0F172A; margin-top:6px;">
+              See What Recruiters See in 6 Seconds
+            </h3>
+          </div>
+          <div style="display:flex; background:#FFFFFF; border:1px solid #CBD5E1; padding:4px; border-radius:12px; gap:6px;">
+            <button type="button" id="toggle-bad-res" style="background:#EF4444; color:#FFF; padding:6px 14px; border-radius:8px; font-size:12px; font-weight:700; cursor:pointer;">
+              ❌ 32% ATS (Auto-Rejected)
+            </button>
+            <button type="button" id="toggle-good-res" style="background:transparent; color:#64748B; padding:6px 14px; border-radius:8px; font-size:12px; font-weight:700; cursor:pointer;">
+              ✅ 94% ATS (Shortlisted)
+            </button>
+          </div>
+        </div>
+
+        <div id="ats-display-card" style="background:#FEF2F2; border:1px solid #FCA5A5; border-radius:14px; padding:20px; margin-bottom:20px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
+            <div style="display:flex; align-items:center; gap:12px;">
+              <span id="ats-score-badge" style="background:#DC2626; color:#FFF; font-size:18px; font-weight:800; font-family:var(--f-mono); padding:6px 12px; border-radius:10px;">32%</span>
+              <div>
+                <strong id="ats-headline" style="color:#991B1B; font-size:14px; text-transform:uppercase; display:block;">STATUS: AUTOMATIC ATS REJECTION (&lt; 6 SECONDS)</strong>
+                <span id="ats-subhead" style="font-size:12.5px; color:#7F1D1D;">Scrambled 2-column layout, missing quantifiable metrics, and YouTube tutorial datasets.</span>
+              </div>
+            </div>
+            <span id="ats-rate-tag" style="background:rgba(255,255,255,0.6); font-size:11px; font-weight:700; color:#991B1B; padding:4px 8px; border-radius:6px; font-family:var(--f-mono);">Rejection Rate: 91.4%</span>
+          </div>
+
+          <div class="grid-2" style="gap:16px;">
+            <div style="background:#FFFFFF; border:1px solid rgba(0,0,0,0.06); border-radius:10px; padding:14px;">
+              <div style="font-size:11px; font-weight:800; text-transform:uppercase; color:#64748B; margin-bottom:4px;">Dataset &amp; Project Selection</div>
+              <div id="ats-col1" style="font-size:13px; color:#1E293B;">
+                ❌ <strong>Titanic Survival / Iris Flowers:</strong> Instant giveaway of an entry-level copy-paste tutorial with zero commercial relevance.
+              </div>
+            </div>
+            <div style="background:#FFFFFF; border:1px solid rgba(0,0,0,0.06); border-radius:10px; padding:14px;">
+              <div style="font-size:11px; font-weight:800; text-transform:uppercase; color:#64748B; margin-bottom:4px;">Bullet Formulation (STAR Formula)</div>
+              <div id="ats-col2" style="font-size:13px; color:#1E293B;">
+                ❌ <strong>"Worked on Excel files and helped team":</strong> Zero numbers, zero business impact, zero context on data volume.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="recruiter-quote" style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:12px; padding:16px; font-size:13px; color:#475569; font-style:italic;">
+          💬 <strong>Hiring Manager reaction:</strong> "I have 500 applicants for this remote internship. If I don't see a live link or quantifiable outcome in 6 seconds, I skip to the next candidate."
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The Non-Tech Advantage & 4 Core Skills -->
+  <section style="padding:60px 0; background:#F8FAFC;">
+    <div class="mc-container">
+      <div style="text-align:center; max-width:750px; margin:0 auto 50px;">
+        <span style="background:#DBEAFE; color:#1D4ED8; font-size:12px; font-weight:700; padding:4px 12px; border-radius:999px;">
+          THE NON-TECH BLUEPRINT
+        </span>
+        <h2 style="font-size:36px; font-weight:800; color:#0F172A; margin-top:12px;">
+          Why Non-Tech Students Beat Coders in Data Analytics
+        </h2>
+        <p style="color:#64748B; font-size:16px; margin-top:8px;">
+          Companies hire Data Analysts to solve <strong>business questions</strong>, not to write complex software code. If you understand commerce, marketing, operations, or economics, you already have 60% of the job!
+        </p>
+      </div>
+
+      <div class="grid-4">
+        <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:16px; padding:24px;">
+          <div style="width:40px; height:40px; background:#EFF6FF; color:#2563EB; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px; margin-bottom:14px;">
+            <i class="fa-solid fa-table-cells"></i>
+          </div>
+          <h3 style="font-size:17px; font-weight:700; color:#0F172A; margin-bottom:6px;">1. Excel & Power Query</h3>
+          <p style="font-size:13px; color:#64748B; line-height:1.5;">
+            Master XLOOKUP, Pivot Tables, and automated cleanup. 90% of business reporting starts in spreadsheets.
+          </p>
+        </div>
+
+        <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:16px; padding:24px;">
+          <div style="width:40px; height:40px; background:#EFF6FF; color:#2563EB; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px; margin-bottom:14px;">
+            <i class="fa-solid fa-database"></i>
+          </div>
+          <h3 style="font-size:17px; font-weight:700; color:#0F172A; margin-bottom:6px;">2. Business SQL</h3>
+          <p style="font-size:13px; color:#64748B; line-height:1.5;">
+            The non-negotiable interview filter: Multi-table JOINs, GROUP BY aggregations, and CTEs.
+          </p>
+        </div>
+
+        <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:16px; padding:24px;">
+          <div style="width:40px; height:40px; background:#EFF6FF; color:#2563EB; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px; margin-bottom:14px;">
+            <i class="fa-solid fa-chart-pie"></i>
+          </div>
+          <h3 style="font-size:17px; font-weight:700; color:#0F172A; margin-bottom:6px;">3. Power BI Dashboards</h3>
+          <p style="font-size:13px; color:#64748B; line-height:1.5;">
+            Visualizing executive KPIs, revenue trends, customer churn, and interactive slicers for leadership.
+          </p>
+        </div>
+
+        <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:16px; padding:24px;">
+          <div style="width:40px; height:40px; background:#EFF6FF; color:#2563EB; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:18px; margin-bottom:14px;">
+            <i class="fa-solid fa-comments"></i>
+          </div>
+          <h3 style="font-size:17px; font-weight:700; color:#0F172A; margin-bottom:6px;">4. Storytelling &amp; Acumen</h3>
+          <p style="font-size:13px; color:#64748B; line-height:1.5;">
+            Answering the critical question: <em>"So what?"</em> Translating raw numbers into actionable revenue advice.
+          </p>
+        </div>
+      </div>
+
+      <!-- Interactive Degree Selector & 30-Day Pipeline -->
+      <div style="margin-top:40px; background:#FFFFFF; border:1px solid #E2E8F0; border-radius:20px; padding:28px; box-shadow:0 4px 20px rgba(0,0,0,0.03);">
+        <div style="margin-bottom:16px;">
+          <span style="font-size:11px; font-weight:800; text-transform:uppercase; color:#2563EB; background:#EFF6FF; padding:4px 10px; border-radius:999px;">
+            Interactive Degree Mapping
+          </span>
+          <h3 style="font-size:20px; font-weight:800; color:#0F172A; margin-top:6px;">
+            Choose Your Degree: See Your Unfair Advantage &amp; Project Blueprint
+          </h3>
+        </div>
+
+        <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px;">
+          <button type="button" id="deg-btn-commerce" style="background:#2563EB; color:#FFF; border:none; padding:8px 14px; border-radius:10px; font-size:12px; font-weight:700; cursor:pointer;">
+            📊 Commerce / B.Com
+          </button>
+          <button type="button" id="deg-btn-bba" style="background:#F1F5F9; color:#475569; border:none; padding:8px 14px; border-radius:10px; font-size:12px; font-weight:700; cursor:pointer;">
+            📈 BBA / Marketing
+          </button>
+          <button type="button" id="deg-btn-engg" style="background:#F1F5F9; color:#475569; border:none; padding:8px 14px; border-radius:10px; font-size:12px; font-weight:700; cursor:pointer;">
+            📦 Core Engineering (Mech/Civil)
+          </button>
+          <button type="button" id="deg-btn-arts" style="background:#F1F5F9; color:#475569; border:none; padding:8px 14px; border-radius:10px; font-size:12px; font-weight:700; cursor:pointer;">
+            🔍 Arts / Economics
+          </button>
+        </div>
+
+        <div id="deg-card" style="background:#EFF6FF; border:1px solid #BFDBFE; border-radius:14px; padding:18px; margin-bottom:24px;">
+          <h4 id="deg-title" style="font-size:15px; font-weight:800; color:#1D4ED8; margin-bottom:4px;">
+            Commerce &amp; Financial Domain Superpower
+          </h4>
+          <p id="deg-desc" style="font-size:13.5px; color:#1E3A8A; line-height:1.5;">
+            You understand financial margins, P&amp;L balances, and transaction cycles. When you write SQL queries, you immediately grasp cash flow bottlenecks and financial churn faster than pure coders.
+          </p>
+          <div id="deg-proj" style="margin-top:8px; font-size:12.5px; font-weight:700; color:#2563EB;">
+            🎯 Recommended Project: FinTech Consumer Loan Default Risk &amp; E-Commerce Gross Margin Diagnostics.
+          </div>
+        </div>
+
+        <!-- 5-Step Visual Timeline -->
+        <h4 style="font-size:14px; font-weight:800; color:#0F172A; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:12px;">
+          The 30-Day Transition Pipeline
+        </h4>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); gap:10px;">
+          <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:12px;">
+            <span style="display:inline-block; width:22px; height:22px; border-radius:50%; background:#2563EB; color:#FFF; font-size:11px; font-weight:800; text-align:center; line-height:22px;">1</span>
+            <div style="font-size:12px; font-weight:700; color:#0F172A; margin-top:4px;">Excel / Power Query</div>
+            <div style="font-size:10px; color:#2563EB; font-weight:700;">Days 1 – 4</div>
+          </div>
+          <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:12px;">
+            <span style="display:inline-block; width:22px; height:22px; border-radius:50%; background:#2563EB; color:#FFF; font-size:11px; font-weight:800; text-align:center; line-height:22px;">2</span>
+            <div style="font-size:12px; font-weight:700; color:#0F172A; margin-top:4px;">Relational SQL</div>
+            <div style="font-size:10px; color:#2563EB; font-weight:700;">Days 5 – 11</div>
+          </div>
+          <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:12px;">
+            <span style="display:inline-block; width:22px; height:22px; border-radius:50%; background:#2563EB; color:#FFF; font-size:11px; font-weight:800; text-align:center; line-height:22px;">3</span>
+            <div style="font-size:12px; font-weight:700; color:#0F172A; margin-top:4px;">Power BI Dashboards</div>
+            <div style="font-size:10px; color:#2563EB; font-weight:700;">Days 12 – 18</div>
+          </div>
+          <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:12px;">
+            <span style="display:inline-block; width:22px; height:22px; border-radius:50%; background:#2563EB; color:#FFF; font-size:11px; font-weight:800; text-align:center; line-height:22px;">4</span>
+            <div style="font-size:12px; font-weight:700; color:#0F172A; margin-top:4px;">3 Live Projects</div>
+            <div style="font-size:10px; color:#2563EB; font-weight:700;">Days 19 – 25</div>
+          </div>
+          <div style="background:#DCFCE7; border:1px solid #86EFAC; border-radius:10px; padding:12px;">
+            <span style="display:inline-block; width:22px; height:22px; border-radius:50%; background:#16A34A; color:#FFF; font-size:11px; font-weight:800; text-align:center; line-height:22px;">✓</span>
+            <div style="font-size:12px; font-weight:700; color:#14532D; margin-top:4px;">Remote Placement</div>
+            <div style="font-size:10px; color:#16A34A; font-weight:700;">Day 26+</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Masterclass 60-Minute Detailed Agenda -->
+  <section id="agenda" style="padding:60px 0; background:#FFFFFF;">
+    <div class="mc-container">
+      <div style="text-align:center; max-width:700px; margin:0 auto 50px;">
+        <span style="background:#FEF3C7; color:#D97706; font-size:12px; font-weight:700; padding:4px 12px; border-radius:999px;">
+          SESSION ROADMAP
+        </span>
+        <h2 style="font-size:36px; font-weight:800; color:#0F172A; margin-top:12px;">
+          What We Will Cover in 60 Action-Packed Minutes
+        </h2>
+        <p style="color:#64748B; font-size:16px; margin-top:8px;">
+          Zero fluff. Pure actionable tactics, live screen sharing, and real teardowns.
+        </p>
+      </div>
+
+      <div style="max-width:850px; margin:0 auto; display:flex; flex-direction:column; gap:16px;">
+        
+        <div style="display:flex; gap:20px; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:16px; padding:20px; align-items:flex-start;">
+          <div style="background:#2563EB; color:#FFF; font-weight:800; font-size:13px; padding:8px 12px; border-radius:10px; min-width:85px; text-align:center; font-family:var(--f-mono);">
+            08:00 PM
+          </div>
+          <div>
+            <h4 style="font-size:17px; font-weight:700; color:#0F172A; margin-bottom:4px;">Part 1: The Remote Hiring Landscape & Live Database Walkthrough</h4>
+            <p style="font-size:14px; color:#64748B; line-height:1.5;">
+              Screen sharing live remote Data Analyst openings on <code>internship.dbert.online</code>, stipends, hiring trends, and what Indian startups look for today.
+            </p>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:20px; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:16px; padding:20px; align-items:flex-start;">
+          <div style="background:#2563EB; color:#FFF; font-weight:800; font-size:13px; padding:8px 12px; border-radius:10px; min-width:85px; text-align:center; font-family:var(--f-mono);">
+            08:15 PM
+          </div>
+          <div>
+            <h4 style="font-size:17px; font-weight:700; color:#0F172A; margin-bottom:4px;">Part 2: Inside the ATS Machine & The 6-Second Teardown</h4>
+            <p style="font-size:14px; color:#64748B; line-height:1.5;">
+              Why 90% of resumes get rejected without a human viewing them. The exact formatting rules, action verb formulas, and keyword optimization tricks to pass ATS filters.
+            </p>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:20px; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:16px; padding:20px; align-items:flex-start;">
+          <div style="background:#2563EB; color:#FFF; font-weight:800; font-size:13px; padding:8px 12px; border-radius:10px; min-width:85px; text-align:center; font-family:var(--f-mono);">
+            08:30 PM
+          </div>
+          <div>
+            <h4 style="font-size:17px; font-weight:700; color:#0F172A; margin-bottom:4px;">Part 3: The Non-Tech Transition Roadmap & 3 Proof Projects</h4>
+            <p style="font-size:14px; color:#64748B; line-height:1.5;">
+              How students from commerce, arts, BBA, and non-CS degrees can turn their background into an asset. The 3 essential projects that prove business readiness.
+            </p>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:20px; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:16px; padding:20px; align-items:flex-start;">
+          <div style="background:#2563EB; color:#FFF; font-weight:800; font-size:13px; padding:8px 12px; border-radius:10px; min-width:85px; text-align:center; font-family:var(--f-mono);">
+            08:45 PM
+          </div>
+          <div>
+            <h4 style="font-size:17px; font-weight:700; color:#0F172A; margin-bottom:4px;">Part 4: Live Resume Roast & Real-Time Query Demo</h4>
+            <p style="font-size:14px; color:#64748B; line-height:1.5;">
+              Live before-and-after rewrite of a real student resume. Plus a 5-minute live SQL demonstration solving a real customer churn problem.
+            </p>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:20px; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:16px; padding:20px; align-items:flex-start;">
+          <div style="background:#10B981; color:#FFF; font-weight:800; font-size:13px; padding:8px 12px; border-radius:10px; min-width:85px; text-align:center; font-family:var(--f-mono);">
+            08:55 PM
+          </div>
+          <div>
+            <h4 style="font-size:17px; font-weight:700; color:#0F172A; margin-bottom:4px;">Part 5: Live Q&A + Free Bonus Toolkit Release</h4>
+            <p style="font-size:14px; color:#64748B; line-height:1.5;">
+              Addressing attendee questions directly, revealing the 7-day fast track sprint, and dropping the free download link for the ₹4,999 Bonus Toolkit.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Attendee Bonus Kit Showcase -->
+  <section style="padding:60px 0; background:#0F172A; color:#FFFFFF;">
+    <div class="mc-container">
+      <div style="text-align:center; max-width:700px; margin:0 auto 50px;">
+        <span style="background:rgba(245,158,11,0.2); color:#FBBF24; font-size:12px; font-weight:700; padding:4px 12px; border-radius:999px;">
+          FREE FOR ALL ATTENDEES
+        </span>
+        <h2 style="font-size:36px; font-weight:800; color:#FFF; margin-top:12px;">
+          The ₹4,999 Data Analyst Fast-Track Toolkit
+        </h2>
+        <p style="color:#94A3B8; font-size:16px; margin-top:8px;">
+          Every attendee who joins the live masterclass receives immediate free access to these 4 job-winning assets:
+        </p>
+      </div>
+
+      <div class="grid-4">
+        <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:16px; padding:24px; text-align:center;">
+          <div style="font-size:32px; color:#38BDF8; margin-bottom:12px;"><i class="fa-solid fa-file-lines"></i></div>
+          <h4 style="font-size:16px; font-weight:700; color:#FFF; margin-bottom:8px;">ATS Resume Template</h4>
+          <p style="font-size:13px; color:#94A3B8; line-height:1.5;">
+            Single-column, pre-formatted Markdown/Word template tailored for freshers & non-tech applicants.
+          </p>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:16px; padding:24px; text-align:center;">
+          <div style="font-size:32px; color:#4ADE80; margin-bottom:12px;"><i class="fa-solid fa-code"></i></div>
+          <h4 style="font-size:16px; font-weight:700; color:#FFF; margin-bottom:8px;">Top 50 SQL Questions</h4>
+          <p style="font-size:13px; color:#94A3B8; line-height:1.5;">
+            The exact 50 queries frequently asked in technical screening rounds across Indian analytics startups.
+          </p>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:16px; padding:24px; text-align:center;">
+          <div style="font-size:32px; color:#FBBF24; margin-bottom:12px;"><i class="fa-solid fa-diagram-project"></i></div>
+          <h4 style="font-size:16px; font-weight:700; color:#FFF; margin-bottom:8px;">5 Project Blueprints</h4>
+          <p style="font-size:13px; color:#94A3B8; line-height:1.5;">
+            End-to-end architectures for E-Commerce, FinTech, EdTech, Supply Chain & HR data projects.
+          </p>
+        </div>
+
+        <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:16px; padding:24px; text-align:center;">
+          <div style="font-size:32px; color:#C084FC; margin-bottom:12px;"><i class="fa-solid fa-list-check"></i></div>
+          <h4 style="font-size:16px; font-weight:700; color:#FFF; margin-bottom:8px;">100+ Jobs Directory</h4>
+          <p style="font-size:13px; color:#94A3B8; line-height:1.5;">
+            A verified spreadsheet of 100+ active remote Data Analyst openings in India with direct apply links.
+          </p>
+        </div>
+      </div>
+
+      <div style="text-align:center; margin-top:40px;">
+        <a href="#register" style="background:#2563EB; color:#FFF; padding:14px 28px; border-radius:12px; font-weight:700; font-size:16px; display:inline-flex; align-items:center; gap:10px;">
+          <span>Register Now & Claim Bonus Kit on Monday</span>
+          <i class="fa-solid fa-arrow-up"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section style="padding:60px 0; background:#FFFFFF;">
+    <div class="mc-container" style="max-width:800px;">
+      <div style="text-align:center; margin-bottom:40px;">
+        <h2 style="font-size:32px; font-weight:800; color:#0F172A;">Frequently Asked Questions</h2>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:16px;">
+        <div style="border:1px solid #E2E8F0; border-radius:12px; padding:20px;">
+          <h4 style="font-size:16px; font-weight:700; color:#0F172A; margin-bottom:6px;">
+            Can I attend if I have never written code before?
+          </h4>
+          <p style="font-size:14px; color:#64748B; line-height:1.5;">
+            Yes, absolutely! Data Analytics starts with business logic, Excel, and SQL. You do not need to be a software developer or have a Computer Science degree to land a Data Analyst internship.
+          </p>
+        </div>
+
+        <div style="border:1px solid #E2E8F0; border-radius:12px; padding:20px;">
+          <h4 style="font-size:16px; font-weight:700; color:#0F172A; margin-bottom:6px;">
+            Is this Masterclass genuinely free?
+          </h4>
+          <p style="font-size:14px; color:#64748B; line-height:1.5;">
+            Yes. The entire 60-minute session and all takeaway materials (Resume Template, SQL Q&As, Project Blueprints) are 100% free of cost.
+          </p>
+        </div>
+
+        <div style="border:1px solid #E2E8F0; border-radius:12px; padding:20px;">
+          <h4 style="font-size:16px; font-weight:700; color:#0F172A; margin-bottom:6px;">
+            Where will the Masterclass be conducted?
+          </h4>
+          <p style="font-size:14px; color:#64748B; line-height:1.5;">
+            The live session runs on the official <strong>Discord Live Stage</strong>, with instant direct link drops and updates delivered directly inside our <strong>VIP WhatsApp Group</strong>.
+          </p>
+        </div>
+
+        <div style="border:1px solid #E2E8F0; border-radius:12px; padding:20px;">
+          <h4 style="font-size:16px; font-weight:700; color:#0F172A; margin-bottom:6px;">
+            Will there be a recording available?
+          </h4>
+          <p style="font-size:14px; color:#64748B; line-height:1.5;">
+            Because of the live interactive resume teardowns and live Q&A, we strongly recommend attending live. A recording and bonus kit link will only be shared with members inside the WhatsApp Group.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer style="background:#0F172A; color:#94A3B8; padding:30px 0; border-top:1px solid #1E293B; font-size:13px; text-align:center;">
+    <div class="mc-container">
+      <p>© 2026 DBERT (Digital Blinc Education Research and Technology). All rights reserved.</p>
+      <p style="margin-top:6px;">
+        <a href="/terms" style="color:#64748B; text-decoration:underline;">Terms</a> • 
+        <a href="/privacy" style="color:#64748B; text-decoration:underline;">Privacy Policy</a> • 
+        <a href="/internships" style="color:#64748B; text-decoration:underline;">Internship Portal</a>
+      </p>
+    </div>
+  </footer>
+
+  <!-- Post-Registration Success Modal -->
+  <div id="success-modal" class="mc-modal-overlay">
+    <div class="mc-modal-card">
+      <div style="width:64px; height:64px; background:#DCFCE7; color:#16A34A; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:30px; margin:0 auto 16px;">
+        <i class="fa-solid fa-circle-check"></i>
+      </div>
+      
+      <h3 style="font-size:24px; font-weight:800; color:#0F172A; margin-bottom:8px;">
+        You're In, <span id="modal-attendee-name">Friend</span>! 🎉
+      </h3>
+      
+      <p style="font-size:14px; color:#64748B; line-height:1.5; margin-bottom:24px;">
+        Your seat for Monday at 8:00 PM IST is confirmed. To ensure you don't miss the live stage link or the ₹4,999 Bonus Kit, <strong>complete the 2 steps below right now:</strong>
+      </p>
+
+      <div style="display:flex; flex-direction:column; gap:14px; margin-bottom:20px;">
+        <!-- Step 1: WhatsApp -->
+        <a id="modal-wa-link" href="{{ whatsapp_url }}" target="_blank" rel="noopener" class="btn-whatsapp">
+          <i class="fa-brands fa-whatsapp" style="font-size:20px;"></i>
+          <span>1. Join Official WhatsApp Group (Required)</span>
+        </a>
+
+        <!-- Step 2: Discord -->
+        <a id="modal-dc-link" href="{{ discord_url }}" target="_blank" rel="noopener" class="btn-discord">
+          <i class="fa-brands fa-discord" style="font-size:20px;"></i>
+          <span>2. Join Discord Community & Live Stage</span>
+        </a>
+      </div>
+
+      <p style="font-size:12px; color:#94A3B8;">
+        Link drops and live reminders will be posted in the WhatsApp group 1 hour before we start.
+      </p>
+
+      <button id="modal-close-btn" style="position:absolute; top:16px; right:16px; font-size:18px; color:#94A3B8; background:none; border:none; cursor:pointer;">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Countdown & AJAX Registration Script -->
+  <script nonce="{{ csp_nonce() }}">
+    // 1. Dynamic Countdown Timer to Next Monday 8 PM IST
+    (function initCountdown() {
+      var eventTimeStr = "{{ event_iso }}";
+      var targetDate = new Date(eventTimeStr).getTime();
+
+      function updateClock() {
+        var now = new Date().getTime();
+        var distance = targetDate - now;
+
+        if (distance <= 0) {
+          document.getElementById('cd-days').textContent = '00';
+          document.getElementById('cd-hours').textContent = '00';
+          document.getElementById('cd-mins').textContent = '00';
+          document.getElementById('cd-secs').textContent = '00';
+          return;
+        }
+
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById('cd-days').textContent = days < 10 ? '0' + days : days;
+        document.getElementById('cd-hours').textContent = hours < 10 ? '0' + hours : hours;
+        document.getElementById('cd-mins').textContent = minutes < 10 ? '0' + minutes : minutes;
+        document.getElementById('cd-secs').textContent = seconds < 10 ? '0' + seconds : seconds;
+      }
+
+      updateClock();
+      setInterval(updateClock, 1000);
+    })();
+
+    // 2. AJAX Registration Handler
+    (function initForm() {
+      var form = document.getElementById('masterclass-form');
+      var errorDiv = document.getElementById('form-error');
+      var submitBtn = document.getElementById('submit-btn');
+      var modal = document.getElementById('success-modal');
+      var modalName = document.getElementById('modal-attendee-name');
+      var modalWa = document.getElementById('modal-wa-link');
+      var modalDc = document.getElementById('modal-dc-link');
+      var modalClose = document.getElementById('modal-close-btn');
+
+      if (!form) return;
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        errorDiv.style.display = 'none';
+
+        var name = (document.getElementById('reg-name').value || '').trim();
+        var email = (document.getElementById('reg-email').value || '').trim();
+        var whatsapp = (document.getElementById('reg-whatsapp').value || '').trim();
+        var background = (document.getElementById('reg-background').value || '').trim();
+        var currentStatus = (document.getElementById('reg-status').value || '').trim();
+
+        if (!name || name.length < 2) {
+          showError('Please enter your full name.');
+          return;
+        }
+        if (!email || email.indexOf('@') === -1 || email.indexOf('.') === -1) {
+          showError('Please enter a valid email address.');
+          return;
+        }
+        var digits = whatsapp.replace(/\D/g, '');
+        if (digits.length < 10) {
+          showError('Please provide a valid 10-digit WhatsApp number.');
+          return;
+        }
+
+        // Disable button during submission
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span>Reserving Your Seat...</span> <i class="fa-solid fa-spinner fa-spin"></i>';
+
+        fetch('/api/masterclass/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            name: name,
+            email: email,
+            whatsapp: digits,
+            background: background,
+            current_status: currentStatus,
+            source: 'landing_page'
+          })
+        })
+        .then(function (res) {
+          return res.json().then(function (data) {
+            return { ok: res.ok, data: data };
+          });
+        })
+        .then(function (result) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<span>Join Free Masterclass (Monday 8 PM)</span> <i class="fa-solid fa-arrow-right"></i>';
+
+          if (!result.ok) {
+            showError(result.data.message || 'Registration failed. Please try again.');
+            return;
+          }
+
+          // Show Success Modal
+          modalName.textContent = result.data.attendee_name || name;
+          if (result.data.whatsapp_url) {
+            modalWa.href = result.data.whatsapp_url;
+          }
+          if (result.data.discord_url) {
+            modalDc.href = result.data.discord_url;
+          }
+          modal.style.display = 'flex';
+          form.reset();
+        })
+        .catch(function (err) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = '<span>Join Free Masterclass (Monday 8 PM)</span> <i class="fa-solid fa-arrow-right"></i>';
+          showError('Network error. Please check your connection and try again.');
+        });
+      });
+
+      function showError(msg) {
+        errorDiv.textContent = msg;
+        errorDiv.style.display = 'block';
+      }
+
+      if (modalClose) {
+        modalClose.addEventListener('click', function () {
+          modal.style.display = 'none';
+        });
+      }
+      modal.addEventListener('click', function (e) {
+        if (e.target === modal) {
+          modal.style.display = 'none';
+        }
+      });
+    })();
+
+    // 3. Interactive ATS Resume Roast Simulator Handler
+    (function initAtsSimulator() {
+      var btnBad = document.getElementById('toggle-bad-res');
+      var btnGood = document.getElementById('toggle-good-res');
+      var card = document.getElementById('ats-display-card');
+      var badge = document.getElementById('ats-score-badge');
+      var headline = document.getElementById('ats-headline');
+      var subhead = document.getElementById('ats-subhead');
+      var rateTag = document.getElementById('ats-rate-tag');
+      var col1 = document.getElementById('ats-col1');
+      var col2 = document.getElementById('ats-col2');
+      var quote = document.getElementById('recruiter-quote');
+
+      if (!btnBad || !btnGood) return;
+
+      btnBad.addEventListener('click', function () {
+        btnBad.style.background = '#EF4444';
+        btnBad.style.color = '#FFF';
+        btnGood.style.background = 'transparent';
+        btnGood.style.color = '#64748B';
+
+        card.style.background = '#FEF2F2';
+        card.style.borderColor = '#FCA5A5';
+        badge.style.background = '#DC2626';
+        badge.textContent = '32%';
+        headline.style.color = '#991B1B';
+        headline.textContent = 'STATUS: AUTOMATIC ATS REJECTION (< 6 SECONDS)';
+        subhead.style.color = '#7F1D1D';
+        subhead.textContent = 'Scrambled 2-column layout, missing quantifiable metrics, and YouTube tutorial datasets.';
+        rateTag.style.color = '#991B1B';
+        rateTag.textContent = 'Rejection Rate: 91.4%';
+
+        col1.innerHTML = '❌ <strong>Titanic Survival / Iris Flowers:</strong> Instant giveaway of an entry-level copy-paste tutorial with zero commercial relevance.';
+        col2.innerHTML = '❌ <strong>"Worked on Excel files and helped team":</strong> Zero numbers, zero business impact, zero context on data volume.';
+        quote.innerHTML = '💬 <strong>Hiring Manager reaction:</strong> "I have 500 applicants for this remote internship. If I don\'t see a live link or quantifiable outcome in 6 seconds, I skip to the next candidate."';
+      });
+
+      btnGood.addEventListener('click', function () {
+        btnGood.style.background = '#10B981';
+        btnGood.style.color = '#FFF';
+        btnBad.style.background = 'transparent';
+        btnBad.style.color = '#64748B';
+
+        card.style.background = '#F0FDF4';
+        card.style.borderColor = '#86EFAC';
+        badge.style.background = '#16A34A';
+        badge.textContent = '94%';
+        headline.style.color = '#14532D';
+        headline.textContent = 'STATUS: PRIORITY INTERVIEW SHORTLIST (> 65% CALLBACK)';
+        subhead.style.color = '#166534';
+        subhead.textContent = 'Single-column clean ATS compliance, commercial case studies, and quantifiable STAR business metrics.';
+        rateTag.style.color = '#14532D';
+        rateTag.textContent = 'Callback Rate: 68.2%';
+
+        col1.innerHTML = '✅ <strong>E-Commerce Churn (120k rows) + FinTech Risk:</strong> Solves real business questions: retention cohorts and revenue leakage.';
+        col2.innerHTML = '✅ <strong>"Engineered SQL CTEs across 50K+ rows":</strong> Cut reporting latency by 40% and automated weekly workflows.';
+        quote.innerHTML = '💬 <strong>Hiring Manager reaction:</strong> "This candidate understands our business. In one click, I can play with their live dashboard, and their SQL queries prove they can automate our weekly reporting. Let\'s schedule an interview!"';
+      });
+    })();
+
+    // 4. Interactive Degree Selector Handler
+    (function initDegreeSelector() {
+      var degrees = {
+        commerce: {
+          title: "Commerce & Financial Domain Superpower",
+          desc: "You understand financial margins, P&L balances, and transaction cycles. When you write SQL queries, you immediately grasp cash flow bottlenecks and financial churn faster than pure coders.",
+          project: "🎯 Recommended Project: FinTech Consumer Loan Default Risk & E-Commerce Gross Margin Diagnostics."
+        },
+        bba: {
+          title: "BBA & Marketing Domain Superpower",
+          desc: "You understand customer acquisition costs (CAC), customer lifetime value (LTV), advertising conversion funnels, and brand retention. You can immediately build dashboards explaining why marketing ad spend bleeds cash.",
+          project: "🎯 Recommended Project: E-Commerce RFM Customer Retention & Meta/Google Ad ROI Dashboard."
+        },
+        engg: {
+          title: "Core Engineering & Operations Superpower",
+          desc: "Mechanical, Civil, and Electrical students understand system workflows, delivery throughput, and pipeline bottlenecks. You excel at operational and supply chain analytics where timing and SLAs are everything.",
+          project: "🎯 Recommended Project: Quick-Commerce Hyperlocal Delivery Operations & Dark-Store SLA Bottleneck Optimizer."
+        },
+        arts: {
+          title: "Arts, Economics & Humanities Superpower",
+          desc: "Economics and Arts students possess superior qualitative questioning and consumer behavioral instincts. You excel at survey analytics, user sentiment analysis, and answering the 'Why' behind data trends.",
+          project: "🎯 Recommended Project: EdTech Learner Persistence Funnel & Consumer Pricing Sensitivity Analysis."
+        }
+      };
+
+      var keys = ['commerce', 'bba', 'engg', 'arts'];
+      keys.forEach(function (k) {
+        var btn = document.getElementById('deg-btn-' + k);
+        if (!btn) return;
+        btn.addEventListener('click', function () {
+          keys.forEach(function (otherKey) {
+            var otherBtn = document.getElementById('deg-btn-' + otherKey);
+            if (otherBtn) {
+              otherBtn.style.background = '#F1F5F9';
+              otherBtn.style.color = '#475569';
+            }
+          });
+          btn.style.background = '#2563EB';
+          btn.style.color = '#FFF';
+
+          var info = degrees[k];
+          document.getElementById('deg-title').textContent = info.title;
+          document.getElementById('deg-desc').textContent = info.desc;
+          document.getElementById('deg-proj').textContent = info.project;
+        });
+      });
+    })();
+  </script>
+
+</body>
+</html>

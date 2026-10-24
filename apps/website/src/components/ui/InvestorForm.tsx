@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import f from './forms.module.css';
+import { trackEvent } from '@/lib/analytics';
 
 export default function InvestorForm() {
   const [formData, setFormData] = useState({
@@ -43,6 +44,10 @@ export default function InvestorForm() {
 
       if (res.ok) {
         setSuccess(true);
+        trackEvent('generate_lead', {
+          form_name: 'investor_form',
+          firm: formData.firm
+        });
       } else {
         const data = await res.json();
         setErrorMsg(data.error || 'Something went wrong. Please try again.');

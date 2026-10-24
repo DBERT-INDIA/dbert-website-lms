@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { CircleCheck } from 'lucide-react';
 import f from './forms.module.css';
 import styles from './MultiStepForm.module.css'; // Reuse existing form styles
+import { trackEvent } from '@/lib/analytics';
 
 export default function ContactForm({ sourcePage = '/about/contact' }: { sourcePage?: string }) {
   const [formData, setFormData] = useState({
@@ -38,15 +39,10 @@ export default function ContactForm({ sourcePage = '/about/contact' }: { sourceP
 
       if (res.ok) {
         setSuccess(true);
-        // Trigger GA4 event if tracking helper is available
-        try {
-          const w = window as any;
-          if (w.gtag) {
-            w.gtag('event', 'contact_form_submit', {
-              source_page: formData.sourcePage
-            });
-          }
-        } catch (err) {}
+        trackEvent('contact_form_submit', {
+          source_page: formData.sourcePage,
+          subject: formData.subject
+        });
       } else {
         const data = await res.json();
         setErrorMsg(data.error || 'Something went wrong. Please try again.');

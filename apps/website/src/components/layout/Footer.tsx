@@ -1,50 +1,80 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
 import styles from './Footer.module.css';
+import { trackEvent } from '@/lib/analytics';
 
-const columns = [
+interface FooterLink {
+  label: string;
+  href: string;
+  external?: boolean;
+}
+
+interface FooterColumn {
+  label: string;
+  links: FooterLink[];
+}
+
+const columns: FooterColumn[] = [
   {
-    label: 'Startups',
+    label: 'Startups & Equity',
     links: [
-      { label: 'Incubation Program', href: '/startups' },
+      { label: 'AI Venture Incubation', href: '/startups' },
       { label: 'Services Directory', href: '/startups/services' },
-      { label: 'Equity Model & Terms', href: '/startups/services/equity' },
-      { label: 'Standard Term Sheets', href: '/startups/services/equity/term-sheets' },
-      { label: 'Startup Portfolio', href: '/startups/portfolio' },
-      { label: 'Register Startup', href: '/startups/register' },
+      { label: 'Services Against Equity', href: '/startups/services/equity' },
+      { label: 'FAST Agreement & Term Sheets', href: '/startups/services/equity/term-sheets' },
+      { label: 'Technical Co-Founder', href: '/startups/services/technical' },
+      { label: 'Pre-Seed Grants & Compute', href: '/startups/services/funding' },
+      { label: 'Portfolio Startups', href: '/startups/portfolio' },
     ],
   },
   {
     label: 'Enterprise AI',
     links: [
-      { label: 'Solutions Overview', href: '/ai-solutions' },
-      { label: 'Products Catalog', href: '/ai-solutions/products' },
+      { label: 'Enterprise Solutions Overview', href: '/ai-solutions' },
+      { label: 'Products Directory', href: '/ai-solutions/products' },
       { label: 'DBERT Chat (VPC LLM)', href: '/ai-solutions/products/dbert-chat' },
-      { label: 'Document AI Engine', href: '/ai-solutions/products/document-ai' },
+      { label: 'Document AI OCR Pipeline', href: '/ai-solutions/products/document-ai' },
       { label: 'Certificate Verification API', href: '/ai-solutions/products/certificate-verification-api' },
-      { label: 'Custom Training Pipeline', href: '/ai-solutions/llm-training/pipeline' },
+      { label: 'AI Hiring Suite & ATS', href: '/ai-solutions/products/hiring-automation-suite' },
+      { label: 'Intern Management Software', href: '/ai-solutions/products/intern-management-system' },
     ],
   },
   {
-    label: 'Learners',
+    label: 'AI Academy',
     links: [
-      { label: 'DBERT Launchpad', href: 'https://internship.dbert.online/launchpad', external: true },
-      { label: 'DBERT Accelerate', href: 'https://internship.dbert.online/accelerate', external: true },
-      { label: 'The AI Fellowship', href: '/learners/fellowship' },
-      { label: 'Engineering Courses', href: '/learners/courses' },
-      { label: 'Job Board & Placement', href: 'https://internship.dbert.online/jobs', external: true },
-      { label: 'Verify Certificate', href: '/verify' },
+      { label: 'AI Career Roadmap', href: '/learners' },
+      { label: 'Full Stack AI Development', href: '/learners/courses/full-stack-development' },
+      { label: 'Data Analytics & Power BI', href: '/learners/courses/data-analytics' },
+      { label: 'Python Automation & Scraping', href: '/learners/courses/python-automation' },
+      { label: 'AI Agent Development', href: '/learners/courses/ai-agent-development' },
+      { label: 'Paid AI Fellowship Track', href: '/learners/fellowship' },
+      { label: 'All Engineering Tracks', href: '/learners/courses' },
     ],
   },
   {
     label: 'Labs & Trust',
     links: [
-      { label: 'DBERT Research Labs', href: '/labs' },
+      { label: 'DBERT Applied Labs', href: '/labs' },
       { label: 'Technical Preprints', href: '/labs/publications' },
-      { label: 'Audited Credentials', href: '/about/credentials' },
-      { label: 'Open Source Repos', href: '/labs/opensource' },
-      { label: 'Practitioners & Team', href: '/about/team' },
-      { label: 'Commercial Pricing', href: '/pricing' },
+      { label: 'Open Source Repositories', href: '/labs/opensource' },
+      { label: 'Verify Credential ID', href: '/verify' },
+      { label: 'MSME Statutory Audit', href: '/about/credentials' },
+      { label: 'Engineering Team', href: '/about/team' },
+      { label: 'Commercial Retainers', href: '/pricing' },
+    ],
+  },
+  {
+    label: 'Live Opportunities',
+    links: [
+      { label: 'Full Stack Internships Mumbai', href: 'https://internship.dbert.online/internships/booking-system-development-intern-mumbai-remote-50', external: true },
+      { label: 'Data Analyst Bangalore', href: 'https://internship.dbert.online/internships/operations-data-analyst-intern-bangalore-remote-28', external: true },
+      { label: 'AI Agent Roles Delhi NCR', href: 'https://internship.dbert.online/internships/agentic-search-systems-intern-delhi-ncr-remote-11', external: true },
+      { label: 'Python Automation Pune', href: 'https://internship.dbert.online/internships/social-media-automation-intern-pune-remote-67', external: true },
+      { label: 'Virtual Remote Sprints', href: 'https://internship.dbert.online/internships/virtual-remote-internships', external: true },
+      { label: 'Paid Internships With Stipend', href: 'https://internship.dbert.online/internships/paid-internships', external: true },
+      { label: 'Job Board & Placement Hub', href: 'https://internship.dbert.online/jobs', external: true },
     ],
   },
 ];
@@ -66,10 +96,24 @@ export default function Footer() {
               equity-based startup incubation, enterprise sovereign products, and production engineering fellowship under one roof.
             </p>
 
+            <div style={{ marginTop: '14px', marginBottom: '8px' }}>
+              <span className="stamp-seal">MSME REGISTERED · NCR-HQ</span>
+            </div>
+
             <address className={styles.contact}>
-              <a href="mailto:contactus@dbert.online">contactus@dbert.online</a>
-              <a href="tel:+918958006294">+91 89580 06294</a>
-              <span className={styles.addressLine}>Delhi, India · Sovereign AI Studio</span>
+              <a
+                href="mailto:contactus@dbert.online"
+                onClick={() => trackEvent('contact_email_click')}
+              >
+                contactus@dbert.online
+              </a>
+              <a
+                href="tel:+918958006294"
+                onClick={() => trackEvent('contact_phone_click')}
+              >
+                +91 89580 06294
+              </a>
+              <span className={styles.addressLine}>Delhi NCR, India · Sovereign AI Studio</span>
             </address>
 
             <div className={styles.social}>
@@ -77,6 +121,7 @@ export default function Footer() {
                 href="https://www.linkedin.com/company/dbert"
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackEvent('social_click', { platform: 'linkedin' })}
               >
                 LinkedIn
               </a>
@@ -84,10 +129,16 @@ export default function Footer() {
                 href="https://www.youtube.com/@dbert-india"
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackEvent('social_click', { platform: 'youtube' })}
               >
                 YouTube
               </a>
-              <a href="https://github.com/DBERT-INDIA" target="_blank" rel="noopener noreferrer">
+              <a
+                href="https://github.com/DBERT-INDIA"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => trackEvent('social_click', { platform: 'github' })}
+              >
                 GitHub
               </a>
             </div>
@@ -105,12 +156,17 @@ export default function Footer() {
                         target="_blank"
                         rel="noopener noreferrer"
                         className={styles.footerLink}
+                        onClick={() => trackEvent('footer_link_click', { label: link.label, href: link.href, external: true })}
                       >
                         <span>{link.label}</span>
                         <span className={styles.externalMark} aria-hidden="true">↗</span>
                       </a>
                     ) : (
-                      <Link href={link.href} className={styles.footerLink}>
+                      <Link
+                        href={link.href}
+                        className={styles.footerLink}
+                        onClick={() => trackEvent('footer_link_click', { label: link.label, href: link.href, external: false })}
+                      >
                         {link.label}
                       </Link>
                     )}
@@ -119,6 +175,30 @@ export default function Footer() {
               </ul>
             </div>
           ))}
+        </div>
+
+        {/* ═══ REGIONAL SEO KEYWORD MESH BAR ═══ */}
+        <div className={styles.seoMeshBar}>
+          <div className={styles.seoMeshTitle}>POPULAR SEARCH TOPICS &amp; REGIONAL DIRECTORY</div>
+          <div className={styles.seoMeshLinks}>
+            <a href="https://internship.dbert.online/internships/full-stack-development" target="_blank" rel="noopener noreferrer">Full Stack Internships Mumbai &amp; Bangalore</a>
+            <span className={styles.dot}>·</span>
+            <a href="https://internship.dbert.online/internships/data-analyst-internship-work-from-home" target="_blank" rel="noopener noreferrer">Data Analyst Work From Home</a>
+            <span className={styles.dot}>·</span>
+            <a href="https://internship.dbert.online/internships/ai-automation-internship" target="_blank" rel="noopener noreferrer">AI Automation Internships Bangalore</a>
+            <span className={styles.dot}>·</span>
+            <a href="https://internship.dbert.online/jobs/full-stack-development" target="_blank" rel="noopener noreferrer">Full Stack AI Developer Jobs</a>
+            <span className={styles.dot}>·</span>
+            <Link href="/startups">AI Startup Incubator Delhi NCR</Link>
+            <span className={styles.dot}>·</span>
+            <Link href="/hire/pre-vetted-engineers">Hire Vetted AI Engineers India</Link>
+            <span className={styles.dot}>·</span>
+            <Link href="/ai-solutions/llm-training/private-hosting">Private Enterprise GPU LLM Hosting</Link>
+            <span className={styles.dot}>·</span>
+            <Link href="/learners/courses/python-automation">Python Automation Training India</Link>
+            <span className={styles.dot}>·</span>
+            <Link href="/about">MSME Registered DeepTech Foundry</Link>
+          </div>
         </div>
 
         <div className={styles.base}>

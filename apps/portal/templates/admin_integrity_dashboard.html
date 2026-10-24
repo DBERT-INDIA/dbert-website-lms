@@ -167,8 +167,8 @@
             {{ anomalies.expired_live_listings.count }} Anomalies
           </span>
           {% if anomalies.expired_live_listings.count > 0 %}
-            <button onclick="triggerHeal('expire_stale_listings', true)" class="btn-sm btn-outline">Dry Run Expire</button>
-            <button onclick="triggerHeal('expire_stale_listings', false)" class="btn-sm btn-danger">Execute Expire</button>
+            <button data-act-click="triggerHeal" data-arg-click='["expire_stale_listings", true]' class="btn-sm btn-outline">Dry Run Expire</button>
+            <button data-act-click="triggerHeal" data-arg-click='["expire_stale_listings", false]' class="btn-sm btn-danger">Execute Expire</button>
           {% endif %}
         </div>
       </h2>
@@ -209,8 +209,8 @@
             {{ anomalies.failed_critical_jobs.count }} Anomalies
           </span>
           {% if anomalies.failed_critical_jobs.count > 0 %}
-            <button onclick="triggerHeal('archive_dead_letters', true)" class="btn-sm btn-outline">Dry Run Archive</button>
-            <button onclick="triggerHeal('archive_dead_letters', false)" class="btn-sm btn-danger">Archive Failed</button>
+            <button data-act-click="triggerHeal" data-arg-click='["archive_dead_letters", true]' class="btn-sm btn-outline">Dry Run Archive</button>
+            <button data-act-click="triggerHeal" data-arg-click='["archive_dead_letters", false]' class="btn-sm btn-danger">Archive Failed</button>
           {% endif %}
         </div>
       </h2>
@@ -326,6 +326,7 @@
         alert(`Request failed: ${err}`);
       }
     }
+    window.triggerHeal = triggerHeal;
   </script>
 </body>
 </html>

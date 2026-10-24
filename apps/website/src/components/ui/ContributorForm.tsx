@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { CircleCheck } from 'lucide-react';
 import f from './forms.module.css';
 import styles from './MultiStepForm.module.css'; // Reuse existing form styles
+import { trackEvent } from '@/lib/analytics';
 
 const DOMAIN_OPTIONS = [
   'AI Agent Development',
@@ -50,6 +51,9 @@ export default function ContributorForm() {
 
       if (res.ok) {
         setSuccess(true);
+        trackEvent('contributor_submit', {
+          domain: formData.domain,
+        });
       } else {
         const data = await res.json();
         setErrorMsg(data.error || 'Something went wrong. Please try again.');

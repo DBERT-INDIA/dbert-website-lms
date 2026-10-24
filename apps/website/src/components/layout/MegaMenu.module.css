@@ -6,10 +6,10 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(6, 9, 15, .82);
+  background: rgba(5, 8, 17, .94);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--line);
+  border-bottom: 1px solid var(--border-subtle);
 }
 
 .navContainer {
@@ -38,23 +38,38 @@
 }
 
 .logoMark {
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   border-radius: 8px;
-  background: linear-gradient(135deg, var(--accent), #8FB2FF);
+  background: var(--accent);
   display: grid;
   place-items: center;
-  color: #05070C;
-  font-size: .85rem;
-  font-family: var(--font-m);
-  font-weight: 700;
+  color: #050811;
+  font-size: .95rem;
+  font-family: var(--font-d);
+  font-weight: 800;
   flex-shrink: 0;
+  box-shadow: 0 0 16px rgba(0, 242, 254, 0.35);
 }
 
 .brandContainer {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+}
+
+.statusChip {
+  font-family: var(--font-m);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  color: var(--ok);
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 6px;
+  display: inline-flex;
+  align-items: center;
 }
 
 .livePulse {
@@ -79,6 +94,7 @@
 
 .navTrigger,
 .navLink {
+  font-family: var(--font-tech);
   font-size: .88rem;
   font-weight: 500;
   color: var(--text-muted);
@@ -86,8 +102,7 @@
   border-radius: 8px;
   transition: all .2s;
   background: none;
-  border: none;
-  font-family: inherit;
+  border: 1px solid transparent;
   display: inline-flex;
   align-items: center;
   gap: 5px;
@@ -98,13 +113,15 @@
 .navLink:hover,
 .navTriggerOpen {
   color: var(--text-primary);
-  background: rgba(148, 163, 196, .08);
+  background: rgba(0, 242, 254, 0.06);
+  border-color: rgba(0, 242, 254, 0.15);
 }
 
 .activeLink {
-  color: var(--text-primary) !important;
+  color: var(--accent) !important;
   font-weight: 600;
-  background: rgba(91, 140, 255, 0.08) !important;
+  background: rgba(0, 242, 254, 0.10) !important;
+  border: 1px solid rgba(0, 242, 254, 0.28) !important;
 }
 
 .caret {
@@ -149,12 +166,12 @@
   position: absolute;
   top: 100%;
   margin-top: 10px;
-  background: rgba(11, 16, 26, .98);
+  background: rgba(9, 14, 26, .98);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid var(--border-strong);
+  border: 1px solid var(--border-subtle);
   border-radius: var(--r-md);
-  box-shadow: 0 24px 48px rgba(0, 0, 0, .7);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, .8), 0 0 24px rgba(0, 242, 254, 0.06);
   z-index: 101;
 }
 
@@ -232,7 +249,7 @@
 }
 
 .featuredCta:hover {
-  color: #8FB2FF;
+  color: #7CF6FF;
   transform: translateX(3px);
 }
 
@@ -252,7 +269,7 @@
   font-size: .68rem;
   letter-spacing: .13em;
   text-transform: uppercase;
-  color: var(--text-faint);
+  color: var(--accent);
   margin-bottom: 10px;
   padding-bottom: 6px;
   border-bottom: 1px solid var(--border-subtle);
@@ -266,6 +283,7 @@
 }
 
 .navItemLink {
+  font-family: var(--font-tech);
   font-size: .88rem;
   color: var(--text-muted);
   display: flex;
@@ -279,7 +297,7 @@
 
 .navItemLink:hover {
   color: var(--text-primary);
-  background: rgba(148, 163, 196, .08);
+  background: rgba(0, 242, 254, 0.08);
 }
 
 .highlightLink {
@@ -302,7 +320,7 @@
 .hamb {
   display: none;
   background: none;
-  border: 1px solid var(--border-strong);
+  border: 1px solid var(--border-subtle);
   border-radius: 8px;
   width: 42px;
   height: 42px;

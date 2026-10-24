@@ -1,0 +1,52 @@
+# ==============================================================================
+# DBERT Portal — Apache CGI Configuration for cPanel
+# ==============================================================================
+# Ensure cgi-bin/dbert.cgi has permissions 0755 (chmod 755 in FileZilla / cPanel)
+# ==============================================================================
+
+DirectoryIndex cgi-bin/dbert.cgi index.html index.php
+Options +ExecCGI -Indexes
+AddHandler cgi-script .cgi
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # 1. Pass HTTP Authorization header to Python (required for JWT & Bearer auth)
+  RewriteCond %{HTTP:Authorization} ^(.*)
+  RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
+
+  # 2. Security Wall: Block direct web access to sensitive databases, env, source code
+  <FilesMatch "^(\.env|\.git|.*\.db|.*\.sqlite|.*\.sqlite3|.*\.py|.*\.log|requirements.*\.txt)$">
+    Require all denied
+  </FilesMatch>
+
+  RewriteRule ^(services|templates|tests|scratch|\.git)/ - [F,L]
+
+  # 3. Serve physical static files directly via Apache (CSS, JS, images, fonts)
+  # NOTE: Do NOT use -d here, otherwise the root folder '/' returns 403 Forbidden!
+  RewriteCond %{REQUEST_FILENAME} -f
+  RewriteRule ^ - [L]
+
+  # 4. Prevent rewrite loops on cgi-bin
+  RewriteRule ^cgi-bin/ - [L]
+
+  # 5. Dispatch all portal, catalogue, and dynamic routes to dbert.cgi
+  RewriteRule ^(.*)$ cgi-bin/dbert.cgi/$1 [L,QSA]
+</IfModule>
+
+# Browser Caching for Production Static Assets
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css "access plus 1 month"
+  ExpiresByType application/javascript "access plus 1 month"
+  ExpiresByType image/png "access plus 1 month"
+  ExpiresByType image/jpeg "access plus 1 month"
+  ExpiresByType image/svg+xml "access plus 1 month"
+  ExpiresByType image/x-icon "access plus 1 year"
+</IfModule>
+
+# Disable compression buffering for real-time SSE streaming
+<IfModule mod_deflate.c>
+  SetEnvIfNoCase Request_URI "^/courses/.*/chat$" no-gzip dont-vary
+</IfModule>

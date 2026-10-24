@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import FAQAccordion from '@/components/ui/FAQAccordion';
 import { pageMetadata } from '@/lib/seo';
+import RegionalOpportunityBento from '@/components/ui/RegionalOpportunityBento';
 import s from '../../learners.module.css';
 import { ChartColumn, Database, TrendingUp, CheckCircle, ShieldCheck, GitBranch, ExternalLink } from 'lucide-react';
 
@@ -332,10 +333,76 @@ export default function DataAnalyticsCoursePage() {
         </div>
       </div>
 
+      {/* Live Regional Opportunities */}
+      <RegionalOpportunityBento
+        sectionNumber="§ 08"
+        title="Data Analyst Internships in Mumbai & Leading Metros"
+        description="Explore active corporate reporting, business intelligence, and SQL analytics sprints across Mumbai, Bengaluru, Delhi NCR, Pune, and remote teams."
+        domainName="Data Analytics"
+        hubHref="https://internship.dbert.online/internships/data-analyst"
+        jobsHref="https://internship.dbert.online/jobs/data-analyst"
+        opportunities={[
+          {
+            title: 'Survey Research & Consumer Data Analyst Intern',
+            roleDescription: 'Clean multi-variable respondent datasets, generate statistical correlation matrices, and build executive summary reports.',
+            cityTag: 'Mumbai',
+            location: 'Mumbai · Hybrid / Remote',
+            stipend: '₹7,000 – ₹14,000 / mo',
+            href: 'https://internship.dbert.online/internships/survey-research-data-intern-mumbai-remote-32',
+            tags: ['Python', 'Pandas', 'Excel', 'Statistics'],
+          },
+          {
+            title: 'Operations Data Analyst Sprint Intern',
+            roleDescription: 'Track supply metrics, operational throughput, and cost-variance indicators with automated SQL views.',
+            cityTag: 'Bangalore',
+            location: 'Bengaluru · Hybrid',
+            stipend: '₹9,000 – ₹16,000 / mo',
+            href: 'https://internship.dbert.online/internships/operations-data-analyst-intern-bangalore-remote-28',
+            tags: ['PostgreSQL', 'Power BI', 'SQL', 'NumPy'],
+          },
+          {
+            title: 'Customer Insights & Cohort Retention Analyst',
+            roleDescription: 'Segment user cohorts, calculate churn velocities, and present retention heatmaps to product leads.',
+            cityTag: 'Delhi NCR',
+            location: 'Delhi NCR · Remote',
+            stipend: '₹8,000 – ₹15,000 / mo',
+            href: 'https://internship.dbert.online/internships/customer-insights-analyst-delhi-ncr-remote-29',
+            tags: ['Cohort Analysis', 'SQL', 'Seaborn', 'Python'],
+          },
+          {
+            title: 'Data Cleaning & Enterprise ETL Intern',
+            roleDescription: 'Construct robust data sanitization scripts, handle missing fields, and stage sanitized rows into analytical warehouses.',
+            cityTag: 'Hyderabad',
+            location: 'Hyderabad · Remote',
+            stipend: '₹7,500 – ₹13,000 / mo',
+            href: 'https://internship.dbert.online/internships/data-cleaning-etl-intern-hyderabad-remote-30',
+            tags: ['ETL', 'Pandas', 'PostgreSQL', 'Airflow'],
+          },
+          {
+            title: 'Excel Reporting Automation & BI Intern',
+            roleDescription: 'Automate weekly operational dashboards, migrate legacy spreadsheet macros to reproducible Python pipelines.',
+            cityTag: 'Pune',
+            location: 'Pune · Hybrid',
+            stipend: '₹7,000 – ₹12,000 / mo',
+            href: 'https://internship.dbert.online/internships/excel-reporting-automation-intern-pune-remote-31',
+            tags: ['Excel Macros', 'OpenPyXL', 'Power BI', 'Python'],
+          },
+          {
+            title: 'Power BI Executive Dashboard Developer Remote',
+            roleDescription: 'Design cross-filtering interactive telemetry views, DAX calculations, and KPI cards for corporate stakeholders.',
+            cityTag: 'Remote',
+            location: 'Virtual · Anywhere India',
+            stipend: '₹8,000 – ₹16,000 / mo',
+            href: 'https://internship.dbert.online/internships/power-bi-dashboard-intern-remote-21',
+            tags: ['Power BI', 'DAX', 'Data Modeling', 'SQL'],
+          },
+        ]}
+      />
+
       {/* CTA Block */}
       <div className="container pb-block">
         <div className="bento-card callout-plain p-8 border border-line bg-card text-center">
-          <div className="doclabel mb-1">§ 08 — INITIALIZE CAREER ACCELERATION</div>
+          <div className="doclabel mb-1">§ 09 — INITIALIZE CAREER ACCELERATION</div>
           <h2 className="card-title text-2xl font-bold text-white mb-2">Transform Corporate Data Into Your Career Advantage</h2>
           <p className="page-lede text-sm text-muted max-w-xl mx-auto mb-6">
             Ready to write optimized SQL queries, programmatically normalise enterprise datasets with Pandas, and construct interactive executive BI dashboards directly for your verified portfolio? Apply for DBERT Industrial Training today.

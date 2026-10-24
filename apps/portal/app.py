@@ -9,7 +9,9 @@ sys.modules.setdefault("app", sys.modules[__name__])
 import io
 import csv
 import re
+import html
 import smtplib
+import ssl
 import sqlite3
 import secrets
 import hashlib
@@ -257,7 +259,7 @@ CSP_ALLOW_INLINE = os.environ.get("CSP_ALLOW_INLINE", "0") == "1"
 
 _CSP_SCRIPT_ORIGINS = (
     "https://cdn.onesignal.com "
-    "https://challenges.cloudflare.com https://www.googletagmanager.com"
+    "https://challenges.cloudflare.com https://www.googletagmanager.com https://cdn.jsdelivr.net https://cdn.tailwindcss.com"
 )
 
 
@@ -299,17 +301,21 @@ if is_prod:
     if len(app.config.get("SECRET_KEY", "")) < 32:
         print("[WARNING] FLASK_SECRET_KEY is shorter than 32 chars.")
 
-SMTP_HOST = os.environ.get("SMTP_HOST", "smtp.gmail.com")
-SMTP_PORT = int(os.environ.get("SMTP_PORT", "587"))
-SMTP_USER = os.environ.get("SMTP_USER", "careers@dbert.online")
-SMTP_PASS = os.environ.get("SMTP_PASS", "")  # never hardcode â€” supplied via .env
+SMTP_HOST = os.environ.get("SMTP_HOST", "dbert.online")
+SMTP_PORT = int(os.environ.get("SMTP_PORT", "465"))
+SMTP_USER = os.environ.get("SMTP_USER", "contactus@dbert.online")
+SMTP_PASS = os.environ.get("SMTP_PASS", "")  # never hardcode — supplied via .env
 FROM_EMAIL = os.environ.get("FROM_EMAIL", "contactus@dbert.online")
 FROM_NAME  = os.environ.get("FROM_NAME", "DBERT Support")
-# Email transport. "ses" = Amazon SES HTTPS API (port 443 â€” bypasses blocked SMTP :587,
-# and SES auto-signs DKIM once the domain is verified). "smtp" = legacy Gmail/SMTP (default).
-# SES creds come from the standard AWS chain: an EC2 IAM role (preferred) or
-# AWS_ACCESS_KEY_ID/AWS_SECRET_ACCESS_KEY in the environment. Requires `pip install boto3`.
-EMAIL_PROVIDER = os.environ.get("EMAIL_PROVIDER", "cpanel_api").lower()
+
+# Secondary Backup Mailbox
+SMTP_BACKUP_HOST = os.environ.get("SMTP_BACKUP_HOST", "dbert.info")
+SMTP_BACKUP_PORT = int(os.environ.get("SMTP_BACKUP_PORT", "465"))
+SMTP_BACKUP_USER = os.environ.get("SMTP_BACKUP_USER", "contactus@dbert.info")
+SMTP_BACKUP_PASS = os.environ.get("SMTP_BACKUP_PASS", "")
+
+# Email transport. "smtp" = cPanel/SMTP direct (default). "ses" = Amazon SES. "cpanel_api" = relay microservice.
+EMAIL_PROVIDER = os.environ.get("EMAIL_PROVIDER", "smtp").lower()
 AWS_SES_REGION = os.environ.get("AWS_SES_REGION", os.environ.get("AWS_REGION", "us-east-1"))
 # DBERT Mailer microservice relay endpoint (https://mailer.aivaratech.online/send)
 CPANEL_EMAIL_API_URL = os.environ.get("CPANEL_EMAIL_API_URL", "https://mailer.aivaratech.online/send")
@@ -389,13 +395,13 @@ def _rl(name, default_limit, default_window):
             int(os.environ.get(f"RL_{name}_WINDOW", default_window)))
 RL_LOGIN_EMAIL   = _rl("LOGIN_EMAIL",   5, 900)    # 5 / 15 min per email
 RL_LOGIN_IP      = _rl("LOGIN_IP",     20, 900)    # 20 / 15 min per IP
-RL_APPLY_IP      = _rl("APPLY_IP",      3, 3600)   # 3 / hour per IP
+RL_APPLY_IP      = _rl("APPLY_IP",     30, 3600)   # 30 / hour per IP (accommodates shared campus NAT)
 RL_FORGOT_EMAIL  = _rl("FORGOT_EMAIL",  3, 3600)   # 3 / hour per email
 RL_FORGOT_IP     = _rl("FORGOT_IP",    10, 3600)   # 10 / hour per IP
 RL_RESET_IP      = _rl("RESET_IP",     10, 3600)   # 10 / hour per IP
 RL_CHECKEMAIL_IP = _rl("CHECKEMAIL_IP", 20, 600)   # 20 / 10 min per IP
 RL_SETPW_IP      = _rl("SETPW_IP",     10, 3600)   # 10 / hour per IP
-RL_ENROLL_IP     = _rl("ENROLL_IP",     5, 3600)   # 5 / hour per IP
+RL_ENROLL_IP     = _rl("ENROLL_IP",    20, 3600)   # 20 / hour per IP
 RL_COMMENT_IP    = _rl("COMMENT_IP",   20, 600)    # 20 / 10 min per IP
 RL_COMMENT_INTERN = _rl("COMMENT_INTERN", 10, 600) # 10 / 10 min per intern
 RL_MAX_WINDOW    = 7200                              # rate_purge horizon (> largest window)
@@ -426,7 +432,7 @@ def _parse_gemini_keys():
     return keys
 
 GEMINI_API_KEYS         = _parse_gemini_keys()
-GEMINI_MODEL            = os.environ.get("GEMINI_MODEL", "gemini-1.5-flash")
+GEMINI_MODEL            = os.environ.get("GEMINI_MODEL", "gemini-3.1-flash-lite")
 INTERVIEW_ENABLED       = os.environ.get("INTERVIEW_ENABLED", "true").lower() == "true"
 GITHUB_TOKEN            = os.environ.get("GITHUB_TOKEN", "").strip()
 GEMINI_TIMEOUT          = int(os.environ.get("GEMINI_TIMEOUT", "8"))    # seconds per call (was 30)
@@ -698,6 +704,8 @@ def rate_check(bucket, limit, window_seconds):
     """Sliding-window check shared by all workers via the rate_events table.
     Returns (allowed: bool, retry_after: int). Records the event when allowed.
     Fails OPEN (never blocks real users) if the limiter DB errors."""
+    if os.environ.get("FLASK_ENV") == "development" or os.environ.get("DISABLE_RATE_LIMIT") == "1":
+        return (True, 0)
     now = time.time()
     try:
         with get_db() as conn:
@@ -902,30 +910,66 @@ def _encrypt_gemini_key(raw_key: str) -> str:
 def _decrypt_gemini_key(encrypted_str: str) -> str:
     if not encrypted_str:
         return ""
-    f = _get_gemini_fernet()
-    if f:
-        try:
-            return f.decrypt(encrypted_str.encode('utf-8')).decode('utf-8')
-        except Exception:
-            pass  # Fall through to legacy XOR decode
 
+    # If raw unencrypted key was somehow stored directly
+    clean = encrypted_str.strip()
+    if clean.startswith("AIzaSy") or (clean.startswith("AQ.") and len(clean) > 30):
+        return clean
+
+    # Try all valid candidate Fernet ciphers
+    fernet_candidates = []
+    f = _fernet()
+    if f:
+        fernet_candidates.append(f)
+    try:
+        from cryptography.fernet import Fernet
+        import base64
+        import hashlib
+        if _FLASK_SECRET_KEY:
+            dk1 = base64.urlsafe_b64encode(hashlib.sha256(_FLASK_SECRET_KEY.encode()).digest())
+            fernet_candidates.append(Fernet(dk1))
+        dk2 = base64.urlsafe_b64encode(hashlib.sha256(b"dbert_gemini_encryption_secret_2026").digest())
+        fernet_candidates.append(Fernet(dk2))
+        dk3 = base64.urlsafe_b64encode(hashlib.sha256(b"digitalblinc2026secretkey").digest())
+        fernet_candidates.append(Fernet(dk3))
+    except Exception:
+        pass
+
+    for inst in fernet_candidates:
+        try:
+            dec = inst.decrypt(encrypted_str.encode('utf-8')).decode('utf-8')
+            if dec and len(dec) >= 15:
+                return dec
+        except Exception:
+            continue
+
+    # Fall through to legacy XOR decode
     try:
         token = base64.urlsafe_b64decode(encrypted_str.encode('utf-8'))
-        if len(token) < 17:
-            return ""
-        nonce = token[:16]
-        cipher_bytes = token[16:]
-        secret = (_FLASK_SECRET_KEY or "dbert_gemini_encryption_secret_2026").encode('utf-8')
-        keystream = bytearray()
-        counter = 0
-        while len(keystream) < len(cipher_bytes):
-            msg = nonce + counter.to_bytes(4, 'big')
-            keystream.extend(hmac.new(secret, msg, hashlib.sha256).digest())
-            counter += 1
-        plain_bytes = bytes([b ^ k for b, k in zip(cipher_bytes, keystream[:len(cipher_bytes)])])
-        return plain_bytes.decode('utf-8')
+        if len(token) >= 17:
+            nonce = token[:16]
+            cipher_bytes = token[16:]
+            for sec_str in [(_FLASK_SECRET_KEY or ""), "dbert_gemini_encryption_secret_2026", "digitalblinc2026secretkey"]:
+                if not sec_str:
+                    continue
+                secret = sec_str.encode('utf-8')
+                keystream = bytearray()
+                counter = 0
+                while len(keystream) < len(cipher_bytes):
+                    msg = nonce + counter.to_bytes(4, 'big')
+                    keystream.extend(hmac.new(secret, msg, hashlib.sha256).digest())
+                    counter += 1
+                plain_bytes = bytes([b ^ k for b, k in zip(cipher_bytes, keystream[:len(cipher_bytes)])])
+                try:
+                    dec = plain_bytes.decode('utf-8')
+                    if dec and len(dec) >= 15:
+                        return dec
+                except Exception:
+                    continue
     except Exception:
-        return ""
+        pass
+
+    return ""
 
 def _hash_gemini_key(raw_key: str) -> str:
     return hashlib.sha256(raw_key.strip().encode('utf-8')).hexdigest()
@@ -1619,6 +1663,179 @@ def joining_unlocked(joining_date_str):
         return date.today() >= jd
     except ValueError:
         return True
+
+
+def run_startup_reconciliation(conn):
+    """Heavy one-time dynamic reconciliation & backfill.
+    Gated behind startup_reconciled_v1 in platform_config so dbert.cgi remains sub-second."""
+    try:
+        # 1. Backfill applications for any accepted enrollment lacking an application
+        accepted_enrs = conn.execute("""
+            SELECT e.* FROM enrollments e
+            WHERE e.payment_status = 'Accepted'
+            AND LOWER(e.email) NOT IN (SELECT LOWER(email) FROM applications WHERE status = 'Accepted')
+        """).fetchall()
+        for ae in accepted_enrs:
+            try:
+                ae_email = (ae["email"] or "").strip().lower()
+                ae_domain = ae["domain"] if ae["domain"] in VALID_DOMAINS else "AI Agent Development"
+                acct_m = conn.execute("SELECT * FROM intern_accounts WHERE LOWER(email)=? LIMIT 1", (ae_email,)).fetchone()
+                existing_app = conn.execute("SELECT id FROM applications WHERE LOWER(email)=? ORDER BY id DESC LIMIT 1", (ae_email,)).fetchone()
+                if existing_app:
+                    conn.execute("UPDATE applications SET status=?, domain=?, updated_at=? WHERE id=?",
+                                 (STATUS_ACCEPTED, ae_domain, now_str(), existing_app["id"]))
+                    new_app_id = existing_app["id"]
+                else:
+                    cur_a = conn.execute("""
+                        INSERT INTO applications
+                        (name, email, phone, city, college, course, semester, year_of_passing,
+                         domain, why_join, status, source, created_at, updated_at)
+                        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                    """, (ae["name"] or (acct_m["name"] if acct_m else "Intern"), ae_email,
+                          ae["phone"] or (acct_m["phone"] if acct_m else "Not Provided"),
+                          ae["city"] or "Remote", ae["college"] or "Student", ae["course"] or "B.Tech",
+                          ae["semester"] or "6", ae["year_of_passing"] or "2026",
+                          ae_domain, "Confirmed enrollment via deposit payment.", STATUS_ACCEPTED,
+                          "backfill", ae["created_at"] or now_str(), now_str()))
+                    new_app_id = cur_a.lastrowid
+                conn.execute("UPDATE enrollments SET application_id=?, updated_at=? WHERE id=?", (new_app_id, now_str(), ae["id"]))
+                if acct_m:
+                    conn.execute("UPDATE intern_accounts SET application_id=?, domain=?, updated_at=? WHERE id=?", (new_app_id, ae_domain, now_str(), acct_m["id"]))
+            except Exception as ex_ae:
+                log_error("init_db_ae_backfill", ex_ae)
+
+        # 2. Backfill applications for unverified payments lacking an application
+        pending_enrs = conn.execute("""
+            SELECT e.* FROM enrollments e
+            WHERE (e.payment_screenshot IS NOT NULL AND e.payment_screenshot != '')
+            AND e.payment_status = 'Pending Verification'
+            AND LOWER(e.email) NOT IN (SELECT LOWER(email) FROM applications)
+        """).fetchall()
+        for pe in pending_enrs:
+            try:
+                pe_email = (pe["email"] or "").strip().lower()
+                pe_domain = pe["domain"] if pe["domain"] in VALID_DOMAINS else "AI Agent Development"
+                acct_m = conn.execute("SELECT * FROM intern_accounts WHERE LOWER(email)=? LIMIT 1", (pe_email,)).fetchone()
+                existing_app = conn.execute("SELECT id FROM applications WHERE LOWER(email)=? ORDER BY id DESC LIMIT 1", (pe_email,)).fetchone()
+                if existing_app:
+                    conn.execute("UPDATE applications SET domain=?, updated_at=? WHERE id=?",
+                                 (pe_domain, now_str(), existing_app["id"]))
+                    new_app_id = existing_app["id"]
+                else:
+                    cur_p = conn.execute("""
+                        INSERT INTO applications
+                        (name, email, phone, city, college, course, semester, year_of_passing,
+                         domain, why_join, status, source, created_at, updated_at)
+                        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                    """, (pe["name"] or (acct_m["name"] if acct_m else "Intern"), pe_email,
+                          pe["phone"] or (acct_m["phone"] if acct_m else "Not Provided"),
+                          pe["city"] or "Remote", pe["college"] or "Student", pe["course"] or "B.Tech",
+                          pe["semester"] or "6", pe["year_of_passing"] or "2026",
+                          pe_domain, "Uploaded enrollment deposit payment screenshot.", STATUS_ENROLLMENT_PENDING,
+                          "backfill", pe["created_at"] or now_str(), now_str()))
+                    new_app_id = cur_p.lastrowid
+                conn.execute("UPDATE enrollments SET application_id=?, updated_at=? WHERE id=?", (new_app_id, now_str(), pe["id"]))
+                if acct_m:
+                    conn.execute("UPDATE intern_accounts SET application_id=?, domain=?, updated_at=? WHERE id=?", (new_app_id, pe_domain, now_str(), acct_m["id"]))
+            except Exception as ex_pe:
+                log_error("init_db_pe_backfill", ex_pe)
+
+        # 3. Auto-enroll all accepted interns into their domain course
+        accepted_interns = conn.execute("""
+            SELECT DISTINCT ia.id, COALESCE(NULLIF(ia.domain, 'Undeclared'), NULLIF(enr.domain, 'Undeclared'), NULLIF(app.domain, 'Undeclared'), 'AI Agent Development') AS effective_domain
+            FROM intern_accounts ia
+            LEFT JOIN enrollments enr ON LOWER(ia.email) = LOWER(enr.email)
+            LEFT JOIN applications app ON LOWER(ia.email) = LOWER(app.email)
+            WHERE enr.payment_status = 'Accepted' OR app.status = 'Accepted'
+        """).fetchall()
+        for ai in accepted_interns:
+            try:
+                eff_domain = ai["effective_domain"]
+                if ai["id"] and eff_domain in VALID_DOMAINS:
+                    auto_enroll_intern_in_domain_courses(conn, ai["id"], eff_domain)
+            except Exception as ex_ai:
+                log_error("init_db_ai_enroll", ex_ai)
+
+        # 4. Multi-subsystem identity reconciliation & orphan re-linking (fast in-memory lookup)
+        try:
+            acct_id_to_email = {}
+            email_to_acct_id = {}
+            for r in conn.execute("SELECT id, email FROM intern_accounts").fetchall():
+                em = (r["email"] or "").strip().lower()
+                if em:
+                    acct_id_to_email[r["id"]] = em
+                    email_to_acct_id[em] = r["id"]
+
+            app_id_to_email = {r["id"]: (r["email"] or "").strip().lower() for r in conn.execute("SELECT id, email FROM applications").fetchall()}
+            enr_id_to_email = {r["id"]: (r["email"] or "").strip().lower() for r in conn.execute("SELECT id, email FROM enrollments").fetchall()}
+
+            def _resolve_canonical_account(curr_id):
+                if curr_id in acct_id_to_email:
+                    return curr_id, acct_id_to_email[curr_id]
+                if curr_id in app_id_to_email:
+                    em = app_id_to_email[curr_id]
+                    if em in email_to_acct_id:
+                        return email_to_acct_id[em], em
+                if curr_id in enr_id_to_email:
+                    em = enr_id_to_email[curr_id]
+                    if em in email_to_acct_id:
+                        return email_to_acct_id[em], em
+                return curr_id, None
+
+            # (a) Reconcile intern_certificates
+            for c in conn.execute("SELECT id, intern_id, email FROM intern_certificates").fetchall():
+                canon_id, canon_email = _resolve_canonical_account(c["intern_id"])
+                if canon_id != c["intern_id"] or (canon_email and c["email"] != canon_email):
+                    conn.execute("UPDATE intern_certificates SET intern_id=?, email=? WHERE id=?", (canon_id, canon_email, c["id"]))
+
+            # (b) Reconcile coin_ledger_mirror
+            for c in conn.execute("SELECT id, intern_id, email FROM coin_ledger_mirror").fetchall():
+                canon_id, canon_email = _resolve_canonical_account(c["intern_id"])
+                if canon_id != c["intern_id"] or (canon_email and c["email"] != canon_email):
+                    conn.execute("UPDATE coin_ledger_mirror SET intern_id=?, email=? WHERE id=?", (canon_id, canon_email, c["id"]))
+
+            # (c) Reconcile task_submissions
+            for t in conn.execute("SELECT id, intern_id, email FROM task_submissions").fetchall():
+                canon_id, canon_email = _resolve_canonical_account(t["intern_id"])
+                if canon_id != t["intern_id"] or (canon_email and t["email"] != canon_email):
+                    conn.execute("UPDATE task_submissions SET intern_id=?, email=? WHERE id=?", (canon_id, canon_email, t["id"]))
+
+            # (d) Reconcile course_enrollments (handling potential duplicate enrollments per course)
+            ces = conn.execute("SELECT id, intern_id, course_id, current_day, email FROM course_enrollments").fetchall()
+            seen_ce = {}
+            for ce in ces:
+                canon_id, canon_email = _resolve_canonical_account(ce["intern_id"])
+                key = (canon_id, ce["course_id"])
+                if key in seen_ce:
+                    primary_id = seen_ce[key]
+                    conn.execute("UPDATE day_quiz_attempts SET enrollment_id=? WHERE enrollment_id=?", (primary_id, ce["id"]))
+                    conn.execute("UPDATE course_subtopic_chats SET enrollment_id=? WHERE enrollment_id=?", (primary_id, ce["id"]))
+                    conn.execute("DELETE FROM course_enrollments WHERE id=?", (ce["id"],))
+                else:
+                    seen_ce[key] = ce["id"]
+                    if canon_id != ce["intern_id"] or (canon_email and ce["email"] != canon_email):
+                        conn.execute("UPDATE course_enrollments SET intern_id=?, email=? WHERE id=?", (canon_id, canon_email, ce["id"]))
+
+            # (e) Reconcile attendance (merging duplicate weeks if any)
+            atts = conn.execute("SELECT id, intern_id, week_start, total_minutes, email FROM attendance").fetchall()
+            seen_att = {}
+            for att in atts:
+                canon_id, canon_email = _resolve_canonical_account(att["intern_id"])
+                key = (canon_id, att["week_start"])
+                if key in seen_att:
+                    primary_id = seen_att[key]
+                    conn.execute("UPDATE attendance SET total_minutes=total_minutes + ? WHERE id=?", (att["total_minutes"] or 0, primary_id))
+                    conn.execute("DELETE FROM attendance WHERE id=?", (att["id"],))
+                else:
+                    seen_att[key] = att["id"]
+                    if canon_id != att["intern_id"] or (canon_email and att["email"] != canon_email):
+                        conn.execute("UPDATE attendance SET intern_id=?, email=? WHERE id=?", (canon_id, canon_email, att["id"]))
+        except Exception as ex_recon:
+            log_error("init_db_subsystems_recon", ex_recon)
+
+        conn.commit()
+    except Exception as ex_reconcile:
+        log_error("init_db_reconciliation_total", ex_reconcile)
 
 
 def init_db():
@@ -2700,176 +2917,28 @@ def init_db():
 
         # ── Live Server Dynamic Reconciliation & Backfill ──
         try:
-            # 1. Backfill applications for any accepted enrollment lacking an application
-            accepted_enrs = conn.execute("""
-                SELECT e.* FROM enrollments e
-                WHERE e.payment_status = 'Accepted'
-                AND LOWER(e.email) NOT IN (SELECT LOWER(email) FROM applications WHERE status = 'Accepted')
-            """).fetchall()
-            for ae in accepted_enrs:
-                try:
-                    ae_email = (ae["email"] or "").strip().lower()
-                    ae_domain = ae["domain"] if ae["domain"] in VALID_DOMAINS else "AI Agent Development"
-                    acct_m = conn.execute("SELECT * FROM intern_accounts WHERE LOWER(email)=? LIMIT 1", (ae_email,)).fetchone()
-                    existing_app = conn.execute("SELECT id FROM applications WHERE LOWER(email)=? ORDER BY id DESC LIMIT 1", (ae_email,)).fetchone()
-                    if existing_app:
-                        conn.execute("UPDATE applications SET status=?, domain=?, updated_at=? WHERE id=?",
-                                     (STATUS_ACCEPTED, ae_domain, now_str(), existing_app["id"]))
-                        new_app_id = existing_app["id"]
-                    else:
-                        cur_a = conn.execute("""
-                            INSERT INTO applications
-                            (name, email, phone, city, college, course, semester, year_of_passing,
-                             domain, why_join, status, source, created_at, updated_at)
-                            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
-                        """, (ae["name"] or (acct_m["name"] if acct_m else "Intern"), ae_email,
-                              ae["phone"] or (acct_m["phone"] if acct_m else "Not Provided"),
-                              ae["city"] or "Remote", ae["college"] or "Student", ae["course"] or "B.Tech",
-                              ae["semester"] or "6", ae["year_of_passing"] or "2026",
-                              ae_domain, "Confirmed enrollment via deposit payment.", STATUS_ACCEPTED,
-                              "backfill", ae["created_at"] or now_str(), now_str()))
-                        new_app_id = cur_a.lastrowid
-                    conn.execute("UPDATE enrollments SET application_id=?, updated_at=? WHERE id=?", (new_app_id, now_str(), ae["id"]))
-                    if acct_m:
-                        conn.execute("UPDATE intern_accounts SET application_id=?, domain=?, updated_at=? WHERE id=?", (new_app_id, ae_domain, now_str(), acct_m["id"]))
-                except Exception as ex_ae:
-                    log_error("init_db_ae_backfill", ex_ae)
-
-            # 2. Backfill applications for unverified payments lacking an application
-            pending_enrs = conn.execute("""
-                SELECT e.* FROM enrollments e
-                WHERE (e.payment_screenshot IS NOT NULL AND e.payment_screenshot != '')
-                AND e.payment_status = 'Pending Verification'
-                AND LOWER(e.email) NOT IN (SELECT LOWER(email) FROM applications)
-            """).fetchall()
-            for pe in pending_enrs:
-                try:
-                    pe_email = (pe["email"] or "").strip().lower()
-                    pe_domain = pe["domain"] if pe["domain"] in VALID_DOMAINS else "AI Agent Development"
-                    acct_m = conn.execute("SELECT * FROM intern_accounts WHERE LOWER(email)=? LIMIT 1", (pe_email,)).fetchone()
-                    existing_app = conn.execute("SELECT id FROM applications WHERE LOWER(email)=? ORDER BY id DESC LIMIT 1", (pe_email,)).fetchone()
-                    if existing_app:
-                        conn.execute("UPDATE applications SET domain=?, updated_at=? WHERE id=?",
-                                     (pe_domain, now_str(), existing_app["id"]))
-                        new_app_id = existing_app["id"]
-                    else:
-                        cur_p = conn.execute("""
-                            INSERT INTO applications
-                            (name, email, phone, city, college, course, semester, year_of_passing,
-                             domain, why_join, status, source, created_at, updated_at)
-                            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
-                        """, (pe["name"] or (acct_m["name"] if acct_m else "Intern"), pe_email,
-                              pe["phone"] or (acct_m["phone"] if acct_m else "Not Provided"),
-                              pe["city"] or "Remote", pe["college"] or "Student", pe["course"] or "B.Tech",
-                              pe["semester"] or "6", pe["year_of_passing"] or "2026",
-                              pe_domain, "Uploaded enrollment deposit payment screenshot.", STATUS_ENROLLMENT_PENDING,
-                              "backfill", pe["created_at"] or now_str(), now_str()))
-                        new_app_id = cur_p.lastrowid
-                    conn.execute("UPDATE enrollments SET application_id=?, updated_at=? WHERE id=?", (new_app_id, now_str(), pe["id"]))
-                    if acct_m:
-                        conn.execute("UPDATE intern_accounts SET application_id=?, domain=?, updated_at=? WHERE id=?", (new_app_id, pe_domain, now_str(), acct_m["id"]))
-                except Exception as ex_pe:
-                    log_error("init_db_pe_backfill", ex_pe)
-
-            # 3. Auto-enroll all accepted interns into their domain course
-            accepted_interns = conn.execute("""
-                SELECT DISTINCT ia.id, COALESCE(NULLIF(ia.domain, 'Undeclared'), NULLIF(enr.domain, 'Undeclared'), NULLIF(app.domain, 'Undeclared'), 'AI Agent Development') AS effective_domain
-                FROM intern_accounts ia
-                LEFT JOIN enrollments enr ON LOWER(ia.email) = LOWER(enr.email)
-                LEFT JOIN applications app ON LOWER(ia.email) = LOWER(app.email)
-                WHERE enr.payment_status = 'Accepted' OR app.status = 'Accepted'
-            """).fetchall()
-            for ai in accepted_interns:
-                try:
-                    eff_domain = ai["effective_domain"]
-                    if ai["id"] and eff_domain in VALID_DOMAINS:
-                        auto_enroll_intern_in_domain_courses(conn, ai["id"], eff_domain)
-                except Exception as ex_ai:
-                    log_error("init_db_ai_enroll", ex_ai)
-
-            # 4. Multi-subsystem identity reconciliation & orphan re-linking (fast in-memory lookup)
+            skip_recon = False
             try:
-                acct_id_to_email = {}
-                email_to_acct_id = {}
-                for r in conn.execute("SELECT id, email FROM intern_accounts").fetchall():
-                    em = (r["email"] or "").strip().lower()
-                    if em:
-                        acct_id_to_email[r["id"]] = em
-                        email_to_acct_id[em] = r["id"]
+                recon_flag = conn.execute("SELECT value FROM platform_config WHERE key = 'startup_reconciled_v1'").fetchone()
+                if recon_flag and str(recon_flag["value"]) == "1" and os.environ.get("FORCE_RECONCILE") != "1":
+                    skip_recon = True
+            except Exception:
+                skip_recon = False
 
-                app_id_to_email = {r["id"]: (r["email"] or "").strip().lower() for r in conn.execute("SELECT id, email FROM applications").fetchall()}
-                enr_id_to_email = {r["id"]: (r["email"] or "").strip().lower() for r in conn.execute("SELECT id, email FROM enrollments").fetchall()}
-
-                def _resolve_canonical_account(curr_id):
-                    if curr_id in acct_id_to_email:
-                        return curr_id, acct_id_to_email[curr_id]
-                    if curr_id in app_id_to_email:
-                        em = app_id_to_email[curr_id]
-                        if em in email_to_acct_id:
-                            return email_to_acct_id[em], em
-                    if curr_id in enr_id_to_email:
-                        em = enr_id_to_email[curr_id]
-                        if em in email_to_acct_id:
-                            return email_to_acct_id[em], em
-                    return curr_id, None
-
-                # (a) Reconcile intern_certificates
-                for c in conn.execute("SELECT id, intern_id, email FROM intern_certificates").fetchall():
-                    canon_id, canon_email = _resolve_canonical_account(c["intern_id"])
-                    if canon_id != c["intern_id"] or (canon_email and c["email"] != canon_email):
-                        conn.execute("UPDATE intern_certificates SET intern_id=?, email=? WHERE id=?", (canon_id, canon_email, c["id"]))
-
-                # (b) Reconcile coin_ledger_mirror
-                for c in conn.execute("SELECT id, intern_id, email FROM coin_ledger_mirror").fetchall():
-                    canon_id, canon_email = _resolve_canonical_account(c["intern_id"])
-                    if canon_id != c["intern_id"] or (canon_email and c["email"] != canon_email):
-                        conn.execute("UPDATE coin_ledger_mirror SET intern_id=?, email=? WHERE id=?", (canon_id, canon_email, c["id"]))
-
-                # (c) Reconcile task_submissions
-                for t in conn.execute("SELECT id, intern_id, email FROM task_submissions").fetchall():
-                    canon_id, canon_email = _resolve_canonical_account(t["intern_id"])
-                    if canon_id != t["intern_id"] or (canon_email and t["email"] != canon_email):
-                        conn.execute("UPDATE task_submissions SET intern_id=?, email=? WHERE id=?", (canon_id, canon_email, t["id"]))
-
-                # (d) Reconcile course_enrollments (handling potential duplicate enrollments per course)
-                ces = conn.execute("SELECT id, intern_id, course_id, current_day, email FROM course_enrollments").fetchall()
-                seen_ce = {}
-                for ce in ces:
-                    canon_id, canon_email = _resolve_canonical_account(ce["intern_id"])
-                    key = (canon_id, ce["course_id"])
-                    if key in seen_ce:
-                        primary_id = seen_ce[key]
-                        conn.execute("UPDATE day_quiz_attempts SET enrollment_id=? WHERE enrollment_id=?", (primary_id, ce["id"]))
-                        conn.execute("UPDATE course_subtopic_chats SET enrollment_id=? WHERE enrollment_id=?", (primary_id, ce["id"]))
-                        conn.execute("DELETE FROM course_enrollments WHERE id=?", (ce["id"],))
-                    else:
-                        seen_ce[key] = ce["id"]
-                        if canon_id != ce["intern_id"] or (canon_email and ce["email"] != canon_email):
-                            conn.execute("UPDATE course_enrollments SET intern_id=?, email=? WHERE id=?", (canon_id, canon_email, ce["id"]))
-
-                # (e) Reconcile attendance (merging duplicate weeks if any)
-                atts = conn.execute("SELECT id, intern_id, week_start, total_minutes, email FROM attendance").fetchall()
-                seen_att = {}
-                for att in atts:
-                    canon_id, canon_email = _resolve_canonical_account(att["intern_id"])
-                    key = (canon_id, att["week_start"])
-                    if key in seen_att:
-                        primary_id = seen_att[key]
-                        conn.execute("UPDATE attendance SET total_minutes=total_minutes + ? WHERE id=?", (att["total_minutes"] or 0, primary_id))
-                        conn.execute("DELETE FROM attendance WHERE id=?", (att["id"],))
-                    else:
-                        seen_att[key] = att["id"]
-                        if canon_id != att["intern_id"] or (canon_email and att["email"] != canon_email):
-                            conn.execute("UPDATE attendance SET intern_id=?, email=? WHERE id=?", (canon_id, canon_email, att["id"]))
-
-                # Guided Learning 2.0 Schema Initialization
+            if not skip_recon:
+                run_startup_reconciliation(conn)
                 try:
-                    from services.learning.learning_models import init_learning_tables
-                    init_learning_tables(conn)
-                except Exception as ex_gl:
-                    log_error("init_learning_tables", ex_gl)
-            except Exception as ex_recon:
-                log_error("init_db_subsystems_recon", ex_recon)
+                    conn.execute("INSERT INTO platform_config (key, value) VALUES ('startup_reconciled_v1', '1') ON CONFLICT(key) DO UPDATE SET value='1'")
+                    conn.commit()
+                except Exception as ex_flag:
+                    log_error("set_reconciled_flag", ex_flag)
+
+            # Guided Learning 2.0 Schema Initialization
+            try:
+                from services.learning.learning_models import init_learning_tables
+                init_learning_tables(conn)
+            except Exception as ex_gl:
+                log_error("init_learning_tables", ex_gl)
 
             conn.commit()
         except Exception as ex_reconcile:
@@ -3097,33 +3166,32 @@ def _gemini_byok_call(prompt, api_key, temperature=0.7, max_tokens=2048, user_mo
 
     # Google's current active text-generation flash models in priority order
     preferred_models = [
-        "gemini-1.5-flash",
-        "gemini-1.5-pro",
-        "gemini-2.0-flash-exp",
-        "gemini-2.5-flash",
+        "gemini-3.1-flash-lite",
+        "gemini-3.8-flash",
+        "gemini-flash-latest",
         "gemini-3.5-flash-lite",
         "gemini-3.5-flash",
-        "gemini-flash-latest",
+        "gemini-pro-latest"
     ]
+
+    deprecated_models = (
+        "gemini-1.5-flash", "gemini-1.5-pro", "gemini-2.0-flash-exp",
+        "gemini-2.5-flash", "gemini-2.5-flash-lite"
+    )
 
     # Non-text models to strictly exclude (audio, TTS, image, transcribe, etc.)
     non_text_keywords = ("tts", "audio", "image", "transcribe", "clip", "lyria", "robotics", "computer-use", "customtools")
 
-    # Build the list: prioritize verified models from the user's account first
-    models_to_try = []
+    # Build the list: start with active tested models, then append verified user models
+    models_to_try = [m for m in preferred_models]
     
     if user_models and isinstance(user_models, list):
         for um in user_models:
             if isinstance(um, str):
                 clean_um = um.replace("models/", "").strip()
-                if not any(k in clean_um.lower() for k in non_text_keywords):
-                    if "flash" in clean_um.lower() and clean_um not in models_to_try:
+                if clean_um not in deprecated_models and not any(k in clean_um.lower() for k in non_text_keywords):
+                    if clean_um not in models_to_try:
                         models_to_try.append(clean_um)
-
-    # Append fallback/hardcoded models just in case
-    for m in preferred_models:
-        if m not in models_to_try:
-            models_to_try.append(m)
 
     body = {
         "contents": [{"parts": [{"text": prompt}]}],
@@ -3193,32 +3261,31 @@ def _gemini_stream_byok_call(prompt, api_key, temperature=0.7, max_tokens=2048, 
         return
 
     preferred_models = [
-        "gemini-1.5-flash",
-        "gemini-1.5-pro",
-        "gemini-2.0-flash-exp",
-        "gemini-2.5-flash",
+        "gemini-3.1-flash-lite",
+        "gemini-3.8-flash",
+        "gemini-flash-latest",
         "gemini-3.5-flash-lite",
         "gemini-3.5-flash",
-        "gemini-flash-latest",
+        "gemini-pro-latest"
     ]
+
+    deprecated_models = (
+        "gemini-1.5-flash", "gemini-1.5-pro", "gemini-2.0-flash-exp",
+        "gemini-2.5-flash", "gemini-2.5-flash-lite"
+    )
 
     non_text_keywords = ("tts", "audio", "image", "transcribe", "clip", "lyria", "robotics", "computer-use", "customtools")
 
-    # Build the list: prioritize verified models from the user's account first
-    models_to_try = []
+    # Build the list: start with active tested models, then append verified user models
+    models_to_try = [m for m in preferred_models]
     
     if user_models and isinstance(user_models, list):
         for um in user_models:
             if isinstance(um, str):
                 clean_um = um.replace("models/", "").strip()
-                if not any(k in clean_um.lower() for k in non_text_keywords):
-                    if "flash" in clean_um.lower() and clean_um not in models_to_try:
+                if clean_um not in deprecated_models and not any(k in clean_um.lower() for k in non_text_keywords):
+                    if clean_um not in models_to_try:
                         models_to_try.append(clean_um)
-
-    # Append fallback/hardcoded models just in case
-    for m in preferred_models:
-        if m not in models_to_try:
-            models_to_try.append(m)
 
     body = {
         "contents": [{"parts": [{"text": prompt}]}],
@@ -3233,7 +3300,7 @@ def _gemini_stream_byok_call(prompt, api_key, temperature=0.7, max_tokens=2048, 
         clean_m = clean_m.replace("models/", "").strip()
         url = f"https://generativelanguage.googleapis.com/v1beta/models/{clean_m}:streamGenerateContent?alt=sse"
         try:
-            r = requests.post(url, params={"key": api_key}, json=body, stream=True, timeout=30)
+            r = requests.post(url, params={"key": api_key}, json=body, stream=True, timeout=10)
             if r.status_code == 200:
                 has_yielded = False
                 for line in r.iter_lines():
@@ -3291,9 +3358,9 @@ def _gemini_stream_server_call(prompt, temperature=0.7, max_tokens=2048):
     """Generator that yields text chunks using server GEMINI_API_KEYS if available, or static fallback."""
     if not (INTERVIEW_ENABLED and GEMINI_API_KEYS):
         fallback_msg = (
-            "I'm excited to explore this concept with you! To unlock unlimited, unthrottled 1-on-1 AI tutoring with live code streaming and instant interactive checks, please connect your free Gemini API key using the button on top."
+            "To unlock unlimited, unthrottled 1-on-1 AI tutoring with live code streaming and instant interactive checks, please connect your free Gemini API key using the button on top."
         )
-        yield fallback_msg, None
+        yield None, fallback_msg
         return
 
     url = f"https://generativelanguage.googleapis.com/v1beta/models/{GEMINI_MODEL}:streamGenerateContent?alt=sse"
@@ -3333,7 +3400,7 @@ def _gemini_stream_server_call(prompt, temperature=0.7, max_tokens=2048):
             log_error("gemini-stream-server", e)
             continue
 
-    yield "Could not generate AI response from server keys. Please connect your free Gemini API key.", None
+    yield None, "Could not generate AI response from server keys. Please connect your free Gemini API key."
 
 
 def _gemini_call(prompt, temperature=0.7, max_tokens=2048, start_ts=None, api_key=None, plain_text=False):
@@ -3621,7 +3688,7 @@ CSRF_SAFE_METHODS = {"GET", "HEAD", "OPTIONS", "TRACE"}
 # Endpoints that legitimately cannot carry a token. Keep this list empty unless
 # there is a genuine server-to-server caller â€” every browser-originated POST
 # must be protected.
-CSRF_EXEMPT_ENDPOINTS = set()
+CSRF_EXEMPT_ENDPOINTS = {"scraped_lead_click_track", "scraped_lead_comment_add"}
 
 
 def _csrf_token():
@@ -3756,11 +3823,13 @@ VALID_APP_TRANSITIONS = {
     "Apply Pending":       {"Under Review", "Rejected"},
     "Under Review":        {"On Hold", "Selected", "Rejected"},
     "On Hold":             {"Under Review", "Selected", "Rejected"},
-    "Selected":            {"Enrollment Pending", "Rejected"},
-    "Enrollment Pending":  {"Enrolled", "Accepted", "Selected", "Rejected"},
+    "Selected":            {"Enrollment Pending", "Enrolled", "Accepted", "Paid - Enrolled", "Paid-Enrolled", "Rejected"},
+    "Enrollment Pending":  {"Enrolled", "Accepted", "Selected", "Paid - Enrolled", "Paid-Enrolled", "Rejected"},
     "Enrolled":            {"Accepted", "Enrollment Pending", "Rejected"},
     "Accepted":            {"Enrolled", "Rejected"},
-    "Paid - Enrolled":     {"Accepted", "Rejected"},
+    "Paid - Enrolled":     {"Accepted", "Enrolled", "Rejected"},
+    "Paid-Enrolled":       {"Accepted", "Enrolled", "Rejected"},
+    "Rejected":            {"Under Review"},
 }
 
 def transition_application_status(conn, app_id, new_status, actor="system", reason=None, request_id=None, actor_role="admin"):
@@ -3902,12 +3971,41 @@ def _ses_send_raw(msg, to_email):
     boto3.client("ses", region_name=AWS_SES_REGION).send_raw_email(
         Source=FROM_EMAIL, Destinations=[to_email], RawMessage={"Data": msg.as_string()})
 
+def _send_smtp_single(host, port, user, passwd, from_addr, to_addr, raw_msg):
+    ctx = ssl.create_default_context()
+    port = int(port)
+    if port == 465:
+        with smtplib.SMTP_SSL(host, port, context=ctx, timeout=15) as s:
+            if user and passwd:
+                s.login(user, passwd)
+            s.sendmail(from_addr, to_addr, raw_msg)
+    else:
+        with smtplib.SMTP(host, port, timeout=15) as s:
+            s.ehlo()
+            try:
+                s.starttls(context=ctx)
+                s.ehlo()
+            except Exception:
+                pass
+            if user and passwd:
+                s.login(user, passwd)
+            s.sendmail(from_addr, to_addr, raw_msg)
+
 def _smtp_send_raw(msg, to_email):
-    with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as s:
-        s.ehlo(); s.starttls(); s.ehlo()
-        if SMTP_USER and SMTP_PASS:
-            s.login(SMTP_USER, SMTP_PASS)
-        s.sendmail(FROM_EMAIL, to_email, msg.as_string())
+    raw_str = msg.as_string()
+    try:
+        _send_smtp_single(SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, FROM_EMAIL, to_email, raw_str)
+        return
+    except Exception as primary_err:
+        log_error("SMTP_PRIMARY_FAIL", primary_err)
+        if SMTP_BACKUP_HOST and SMTP_BACKUP_USER and SMTP_BACKUP_PASS:
+            try:
+                _send_smtp_single(SMTP_BACKUP_HOST, SMTP_BACKUP_PORT, SMTP_BACKUP_USER, SMTP_BACKUP_PASS, SMTP_BACKUP_USER, to_email, raw_str)
+                return
+            except Exception as backup_err:
+                log_error("SMTP_BACKUP_FAIL", backup_err)
+                raise backup_err
+        raise primary_err
 
 def _cpanel_api_send(msg, to_email):
     """T17: relay a pre-built MIME message through the dbert-mailer microservice (T18) --
@@ -4631,8 +4729,19 @@ def sitemap_xml():
             "SELECT slug, updated_at FROM cvs WHERE is_public=1 AND slug IS NOT NULL").fetchall():
             lm = (r["updated_at"] or "")[:10] or today
             pages.append((f"{SITE_ORIGIN}/cv/{r['slug']}", lm, "monthly", "0.4"))
+        # Scraped internship lead pages — one URL per active job for Google Jobs indexing
+        for r in conn.execute(
+            "SELECT id, Role, Company, End_Date FROM scraped_internships "
+            "WHERE End_Date >= date('now') OR End_Date IS NULL"
+        ).fetchall():
+            seo_slug = re.sub(r"[^a-z0-9]+", "-",
+                              f"{r['Role']} {r['Company']}".lower()).strip("-")[:70]
+            pages.append((
+                f"{SITE_ORIGIN}/internship/lead/{r['id']}/{seo_slug}",
+                today, "weekly", "0.8"
+            ))
     items = "".join(
-        f"<url><loc>{loc}</loc><lastmod>{lm}</lastmod>"
+        f"<url><loc>{html.escape(loc)}</loc><lastmod>{lm}</lastmod>"
         f"<changefreq>{cf}</changefreq><priority>{pr}</priority></url>"
         for loc, lm, cf, pr in pages
     )
@@ -5185,9 +5294,28 @@ def course_subtopic_detail(course_id, subtopic_id):
             clean_chats.append(dict(c))
 
         user_key_row = conn.execute(
-            "SELECT validated_at, available_models_json FROM user_api_keys WHERE intern_id = ? ORDER BY id DESC LIMIT 1",
+            "SELECT id, encrypted_key, validated_at, available_models_json FROM user_api_keys WHERE intern_id = ? ORDER BY id DESC LIMIT 1",
             (intern["id"],)
         ).fetchone()
+        if not user_key_row and intern.get("email"):
+            user_key_row = conn.execute("""
+                SELECT u.id, u.encrypted_key, u.validated_at, u.available_models_json
+                FROM user_api_keys u
+                JOIN intern_accounts ia ON ia.id = u.intern_id
+                WHERE LOWER(ia.email) = LOWER(?)
+                ORDER BY u.id DESC LIMIT 1
+            """, (intern["email"],)).fetchone()
+
+        valid_decrypted_key = _decrypt_gemini_key(user_key_row["encrypted_key"]) if (user_key_row and user_key_row["encrypted_key"]) else None
+        if user_key_row and not valid_decrypted_key:
+            try:
+                conn.execute("DELETE FROM user_api_keys WHERE id = ?", (user_key_row["id"],))
+                conn.commit()
+            except Exception:
+                pass
+            user_key_row = None
+
+        has_gemini_key = bool(valid_decrypted_key)
 
     subtopic_dict = dict(subtopic)
     if subtopic_dict.get("key_takeaways_json"):
@@ -5202,8 +5330,8 @@ def course_subtopic_detail(course_id, subtopic_id):
         "status": "success",
         "subtopic": subtopic_dict,
         "chats": clean_chats,
-        "has_gemini_key": bool(user_key_row),
-        "available_models_count": len(json.loads(user_key_row["available_models_json"])) if (user_key_row and user_key_row["available_models_json"]) else 0
+        "has_gemini_key": has_gemini_key,
+        "available_models_count": len(json.loads(user_key_row["available_models_json"])) if (user_key_row and user_key_row["available_models_json"] and has_gemini_key) else 0
     })
 
 
@@ -5353,9 +5481,17 @@ def course_subtopic_chat(course_id, subtopic_id):
 
         # Check BYOK key first (UP2.5) — fetch latest active key
         user_key_row = conn.execute(
-            "SELECT encrypted_key, available_models_json FROM user_api_keys WHERE intern_id = ? ORDER BY id DESC LIMIT 1",
+            "SELECT id, encrypted_key, available_models_json FROM user_api_keys WHERE intern_id = ? ORDER BY id DESC LIMIT 1",
             (intern["id"],)
         ).fetchone()
+        if not user_key_row and intern.get("email"):
+            user_key_row = conn.execute("""
+                SELECT u.id, u.encrypted_key, u.available_models_json
+                FROM user_api_keys u
+                JOIN intern_accounts ia ON ia.id = u.intern_id
+                WHERE LOWER(ia.email) = LOWER(?)
+                ORDER BY u.id DESC LIMIT 1
+            """, (intern["email"],)).fetchone()
 
         enrollment_id = enrollment["id"]
         intern_id = intern["id"]
@@ -5364,7 +5500,14 @@ def course_subtopic_chat(course_id, subtopic_id):
         user_models = []
         if user_key_row and user_key_row["encrypted_key"]:
             raw_user_key = _decrypt_gemini_key(user_key_row["encrypted_key"])
-            if user_key_row["available_models_json"]:
+            if not raw_user_key:
+                try:
+                    conn.execute("DELETE FROM user_api_keys WHERE id = ?", (user_key_row["id"],))
+                    conn.commit()
+                except Exception:
+                    pass
+                user_key_row = None
+            elif user_key_row["available_models_json"]:
                 try:
                     user_models = json.loads(user_key_row["available_models_json"])
                 except Exception:
@@ -5402,6 +5545,10 @@ def course_subtopic_chat(course_id, subtopic_id):
             }), 429
 
     def generate_stream():
+        if user_key_row and not raw_user_key:
+            yield f"data: {json.dumps({'error': 'Your saved Gemini API key needs to be refreshed (security encryption was updated). Please click the button below to re-enter your key and activate instant AI tutoring.', 'requires_key': True})}\n\n"
+            return
+
         collected_chunks = []
         if raw_user_key:
             generator = _gemini_stream_byok_call(prompt, api_key=raw_user_key, temperature=0.7, max_tokens=2048, user_models=user_models)
@@ -5411,7 +5558,7 @@ def course_subtopic_chat(course_id, subtopic_id):
 
         for chunk, err in generator:
             if err:
-                yield f"data: {json.dumps({'error': err, 'requires_key': bool(raw_user_key)})}\n\n"
+                yield f"data: {json.dumps({'error': err, 'requires_key': True})}\n\n"
                 return
             if chunk:
                 collected_chunks.append(chunk)
@@ -5450,13 +5597,25 @@ def course_subtopic_chat(course_id, subtopic_id):
                                 return resp.text or ""
                             llm_caller = gemini_caller
 
-                        LearningSessionService.process_turn_atomic(
+                        turn_res = LearningSessionService.process_turn_atomic(
                             conn=conn,
                             session_id=gl_session.session_id,
                             student_id=intern_id,
                             student_input=user_message,
                             llm_caller=llm_caller
                         )
+                        if turn_res and "recommendation" in turn_res:
+                            rec = turn_res["recommendation"]
+                            if rec.get("action") == "ADVANCE":
+                                next_cid = rec.get("next_concept_id")
+                                next_subtopic_id = None
+                                if next_cid:
+                                    from services.learning.concept_service import ConceptService
+                                    next_concept = ConceptService.get_concept(conn, next_cid)
+                                    if next_concept:
+                                        next_subtopic_id = next_concept.subtopic_id
+                                
+                                yield f"data: {json.dumps({'action': 'ADVANCE', 'next_subtopic_id': next_subtopic_id})}\n\n"
             except Exception as e:
                 log_error("save_chat_stream", e)
 
@@ -5504,11 +5663,27 @@ def course_learn_page(course_id):
         conn.commit()
 
         user_key_row = conn.execute(
-            "SELECT validated_at, available_models_json FROM user_api_keys WHERE intern_id = ? ORDER BY id DESC LIMIT 1",
+            "SELECT id, encrypted_key, validated_at, available_models_json FROM user_api_keys WHERE intern_id = ? ORDER BY id DESC LIMIT 1",
             (intern["id"],)
         ).fetchone()
-        has_gemini_key = bool(user_key_row)
-        available_models = json.loads(user_key_row["available_models_json"]) if (user_key_row and user_key_row["available_models_json"]) else []
+        if not user_key_row and intern.get("email"):
+            user_key_row = conn.execute("""
+                SELECT u.id, u.encrypted_key, u.validated_at, u.available_models_json
+                FROM user_api_keys u
+                JOIN intern_accounts ia ON ia.id = u.intern_id
+                WHERE LOWER(ia.email) = LOWER(?)
+                ORDER BY u.id DESC LIMIT 1
+            """, (intern["email"],)).fetchone()
+        valid_decrypted_key = _decrypt_gemini_key(user_key_row["encrypted_key"]) if (user_key_row and user_key_row["encrypted_key"]) else None
+        if user_key_row and not valid_decrypted_key:
+            try:
+                conn.execute("DELETE FROM user_api_keys WHERE id = ?", (user_key_row["id"],))
+                conn.commit()
+            except Exception:
+                pass
+            user_key_row = None
+        has_gemini_key = bool(valid_decrypted_key)
+        available_models = json.loads(user_key_row["available_models_json"]) if (user_key_row and user_key_row["available_models_json"] and has_gemini_key) else []
 
         fallback_used = get_daily_fallback_usage(intern["id"])
         fallback_limit = int(get_config("GEMINI_FALLBACK_DAILY_LIMIT", "5"))
@@ -5702,14 +5877,90 @@ def admin_articles_review():
         return jsonify({"status": "error", "message": "Unauthorized"}), 401
     data = request.json or {}
     article_id = _int_or_none(data.get("id"))
-    status = data.get("status")
+    status = (data.get("status") or "").strip().upper()
     feedback = (data.get("feedback") or "").strip()
-    if not article_id or status not in ("NEEDS_REVISION", "APPROVED"):
-        return jsonify({"status": "error", "message": "Invalid status or ID."}), 400
+    title = (data.get("title") or "").strip()
+    domain = (data.get("domain") or "").strip()
+    content_markdown = data.get("content_markdown")
+
+    if not article_id:
+        return jsonify({"status": "error", "message": "Invalid or missing article ID."}), 400
+    if status and status not in ("NEEDS_REVISION", "APPROVED", "DRAFT", "PENDING_REVIEW", "PUBLISHED"):
+        return jsonify({"status": "error", "message": "Invalid status."}), 400
+
     with get_db() as conn:
         _ensure_articles_table(conn)
+        cur = conn.execute("SELECT * FROM intern_articles WHERE id=?", (article_id,)).fetchone()
+        if not cur:
+            return jsonify({"status": "error", "message": "Article not found."}), 404
+
+        new_status = status or cur["status"]
+        new_title = title if title else cur["title"]
+        new_domain = domain if domain else cur["domain"]
+        new_content = content_markdown if content_markdown is not None else cur["content_markdown"]
+        new_feedback = feedback if feedback else (cur["mentor_feedback"] or "")
         now_ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        conn.execute("UPDATE intern_articles SET status=?, mentor_feedback=?, updated_at=? WHERE id=?", (status, feedback, now_ts, article_id))
+
+        slug = _post_slugify(new_title)
+        auto_url = cur["published_url"] if cur["published_url"] else f"https://dbert.online/blog/{slug}"
+        assigned_url = auto_url if new_status in ("APPROVED", "PUBLISHED") else cur["published_url"]
+
+        conn.execute(
+            "UPDATE intern_articles SET title=?, domain=?, content_markdown=?, status=?, mentor_feedback=?, published_url=?, updated_at=? WHERE id=?",
+            (new_title, new_domain, new_content, new_status, new_feedback, assigned_url, now_ts, article_id)
+        )
+        conn.commit()
+    return jsonify({"status": "success", "article_id": article_id, "article_status": new_status, "published_url": assigned_url})
+
+@app.route("/admin/articles/save", methods=["POST"])
+def admin_articles_save():
+    user = require_admin() or require_role(["admin", "mentor"])
+    if not user:
+        return jsonify({"status": "error", "message": "Unauthorized"}), 401
+    data = request.json or {}
+    article_id = _int_or_none(data.get("id"))
+    title = (data.get("title") or "").strip()
+    domain = (data.get("domain") or "").strip()
+    content_markdown = data.get("content_markdown")
+    feedback = (data.get("feedback") or "").strip()
+    status = (data.get("status") or "").strip().upper()
+
+    if not article_id:
+        return jsonify({"status": "error", "message": "Missing article ID."}), 400
+    if not title:
+        return jsonify({"status": "error", "message": "Title is required."}), 400
+
+    with get_db() as conn:
+        _ensure_articles_table(conn)
+        cur = conn.execute("SELECT * FROM intern_articles WHERE id=?", (article_id,)).fetchone()
+        if not cur:
+            return jsonify({"status": "error", "message": "Article not found."}), 404
+
+        new_status = status if status in ("NEEDS_REVISION", "APPROVED", "DRAFT", "PENDING_REVIEW", "PUBLISHED") else cur["status"]
+        new_domain = domain if domain else cur["domain"]
+        new_content = content_markdown if content_markdown is not None else cur["content_markdown"]
+        new_feedback = feedback if feedback else (cur["mentor_feedback"] or "")
+        now_ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+        conn.execute(
+            "UPDATE intern_articles SET title=?, domain=?, content_markdown=?, status=?, mentor_feedback=?, updated_at=? WHERE id=?",
+            (title, new_domain, new_content, new_status, new_feedback, now_ts, article_id)
+        )
+        conn.commit()
+    return jsonify({"status": "success", "article_id": article_id})
+
+@app.route("/admin/articles/delete", methods=["POST"])
+def admin_articles_delete():
+    user = require_admin() or require_role(["admin"])
+    if not user:
+        return jsonify({"status": "error", "message": "Unauthorized"}), 401
+    data = request.json or {}
+    article_id = _int_or_none(data.get("id"))
+    if not article_id:
+        return jsonify({"status": "error", "message": "Missing article ID."}), 400
+    with get_db() as conn:
+        _ensure_articles_table(conn)
+        conn.execute("DELETE FROM intern_articles WHERE id=?", (article_id,))
         conn.commit()
     return jsonify({"status": "success"})
 
@@ -5731,18 +5982,165 @@ def admin_articles_publish():
     return jsonify({"status": "success"})
 
 
+# ── Canonical Blog Redirection to dbert.online ────────────────────────────────
+@app.route("/articles/<int:article_id>")
+@app.route("/articles/<slug>-<int:article_id>")
+def article_redirect_to_main_blog(article_id, slug=None):
+    """Articles live strictly on the main website dbert.online/blog.
+
+    This route ensures https://internship.dbert.online/articles/<id> cleanly
+    redirects visitors to the canonical live blog post on dbert.online.
+    """
+    with get_db() as conn:
+        _ensure_articles_table(conn)
+        row = conn.execute("SELECT id, title, published_url, status FROM intern_articles WHERE id = ?", (article_id,)).fetchone()
+    if not row:
+        abort(404)
+    art = row_to_dict(row)
+    post_slug = _post_slugify(art.get("title") or "")
+    if art.get("published_url") and art["published_url"].startswith("http"):
+        target_url = art["published_url"]
+    else:
+        target_url = f"https://dbert.online/blog/{post_slug}"
+    return redirect(target_url, code=302)
+
+
+# ── Public Blog Sync API for dbert.online Auto-Updates ─────────────────────────
+@app.route("/api/public/blog-posts", methods=["GET"])
+def public_blog_posts():
+    """Returns approved/published intern technical writing for dbert.online/blog real-time sync."""
+    with get_db() as conn:
+        _ensure_articles_table(conn)
+        rows = conn.execute(
+            "SELECT a.id, a.title, a.domain, a.content_markdown, a.status, a.published_url, "
+            "a.created_at, a.updated_at, i.name AS author_name, i.email AS author_email "
+            "FROM intern_articles a "
+            "JOIN intern_accounts i ON a.intern_id = i.id "
+            "WHERE a.status IN ('APPROVED', 'PUBLISHED') "
+            "ORDER BY a.updated_at DESC"
+        ).fetchall()
+
+    posts = []
+    for r in rows:
+        d = row_to_dict(r)
+        slug = _post_slugify(d.get("title") or "")
+        content = d.get("content_markdown") or ""
+        lines = [line.strip() for line in content.splitlines() if line.strip() and not line.startswith("#")]
+        desc = " ".join(lines)[:200] + "..." if lines else ""
+        word_count = len(content.split())
+        read_time = f"{max(2, (word_count + 199) // 200)} min read"
+
+        posts.append({
+            "id": d["id"],
+            "slug": slug,
+            "title": d["title"],
+            "desc": desc,
+            "domain": d.get("domain") or "General",
+            "author": d.get("author_name") or "DBERT Fellow",
+            "authorRole": f"{d.get('domain') or 'AI Engineering'} Fellow",
+            "date": (d.get("updated_at") or d.get("created_at") or "")[:10],
+            "readTime": read_time,
+            "tags": [d.get("domain", "Engineering"), "Research", "FastAPI"] if "fastapi" in d.get("title", "").lower() else [d.get("domain", "Engineering"), "Technical Guide"],
+            "canonicalUrl": f"https://dbert.online/blog/{slug}",
+            "status": d["status"]
+        })
+
+    resp = jsonify({"status": "success", "posts": posts})
+    resp.headers["Access-Control-Allow-Origin"] = "*"
+    resp.headers["Access-Control-Allow-Methods"] = "GET, OPTIONS"
+    resp.headers["Cache-Control"] = "public, max-age=60"
+    return resp
+
+
+@app.route("/api/public/blog-posts/<slug>", methods=["GET"])
+def public_blog_post_detail(slug):
+    """Returns single post detail with markdown for dynamic reader on dbert.online."""
+    with get_db() as conn:
+        _ensure_articles_table(conn)
+        rows = conn.execute(
+            "SELECT a.id, a.title, a.domain, a.content_markdown, a.status, a.published_url, "
+            "a.created_at, a.updated_at, i.name AS author_name, i.email AS author_email "
+            "FROM intern_articles a "
+            "JOIN intern_accounts i ON a.intern_id = i.id "
+            "WHERE a.status IN ('APPROVED', 'PUBLISHED')"
+        ).fetchall()
+
+    matched = None
+    for r in rows:
+        d = row_to_dict(r)
+        if _post_slugify(d.get("title") or "") == slug or str(d.get("id")) == slug:
+            matched = d
+            break
+
+    if not matched:
+        return jsonify({"status": "error", "message": "Post not found"}), 404
+
+    content = matched.get("content_markdown") or ""
+    lines = [line.strip() for line in content.splitlines() if line.strip() and not line.startswith("#")]
+    desc = " ".join(lines)[:200] + "..." if lines else ""
+    word_count = len(content.split())
+    read_time = f"{max(2, (word_count + 199) // 200)} min read"
+    post_slug = _post_slugify(matched.get("title") or "")
+
+    data = {
+        "id": matched["id"],
+        "slug": post_slug,
+        "title": matched["title"],
+        "desc": desc,
+        "domain": matched.get("domain") or "General",
+        "author": matched.get("author_name") or "DBERT Fellow",
+        "authorRole": f"{matched.get('domain') or 'AI Engineering'} Fellow",
+        "authorBio": f"Engineering contributor at DBERT Labs focusing on {matched.get('domain') or 'distributed systems'}.",
+        "date": (matched.get("updated_at") or matched.get("created_at") or "")[:10],
+        "readTime": read_time,
+        "tags": [matched.get("domain", "Engineering"), "Technical Guide"],
+        "canonicalUrl": f"https://dbert.online/blog/{post_slug}",
+        "content_markdown": content
+    }
+
+    resp = jsonify({"status": "success", "post": data})
+    resp.headers["Access-Control-Allow-Origin"] = "*"
+    resp.headers["Access-Control-Allow-Methods"] = "GET, OPTIONS"
+    return resp
+
+
+
+
+def _ensure_spotlights_table(conn):
+    try:
+        is_pg = getattr(conn, "dialect", "") == "postgres"
+        pk = "SERIAL PRIMARY KEY" if is_pg else "INTEGER PRIMARY KEY AUTOINCREMENT"
+        ts = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP" if is_pg else "TEXT DEFAULT (datetime('now','localtime'))"
+        conn.execute(f"""
+            CREATE TABLE IF NOT EXISTS ecosystem_spotlights (
+                id {pk},
+                title TEXT NOT NULL,
+                description TEXT,
+                url TEXT NOT NULL,
+                target_brand TEXT,
+                is_active INTEGER DEFAULT 1,
+                created_at {ts},
+                updated_at {ts}
+            )
+        """)
+        if hasattr(conn, "commit"):
+            conn.commit()
+    except Exception as e:
+        log_error("ensure_spotlights_table", e)
+
 @app.route("/admin/spotlights", methods=["GET"])
 def admin_spotlights_list():
-    user = require_admin()
+    user = require_admin() or require_role(["admin", "mentor"])
     if not user:
         return jsonify({"status": "error", "message": "Unauthorized"}), 401
     with get_db() as conn:
+        _ensure_spotlights_table(conn)
         rows = conn.execute("SELECT * FROM ecosystem_spotlights ORDER BY id DESC").fetchall()
         return jsonify({"status": "success", "spotlights": [row_to_dict(r) for r in rows]})
 
 @app.route("/admin/spotlights/add", methods=["POST"])
 def admin_spotlights_add():
-    user = require_admin()
+    user = require_admin() or require_role(["admin", "mentor"])
     if not user:
         return jsonify({"status": "error", "message": "Unauthorized"}), 401
     data = request.json or {}
@@ -5753,15 +6151,19 @@ def admin_spotlights_add():
     is_active = 1 if str(data.get("is_active")).lower() in ('true', '1') else 0
     if not title or not url:
         return jsonify({"status": "error", "message": "Title and URL are required."}), 400
+    now_ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     with get_db() as conn:
-        conn.execute("INSERT INTO ecosystem_spotlights (title, description, url, target_brand, is_active) VALUES (?, ?, ?, ?, ?)",
-                     (title, description, url, target_brand, is_active))
+        _ensure_spotlights_table(conn)
+        conn.execute(
+            "INSERT INTO ecosystem_spotlights (title, description, url, target_brand, is_active, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
+            (title, description, url, target_brand, is_active, now_ts, now_ts)
+        )
         conn.commit()
     return jsonify({"status": "success"})
 
 @app.route("/admin/spotlights/edit", methods=["POST"])
 def admin_spotlights_edit():
-    user = require_admin()
+    user = require_admin() or require_role(["admin", "mentor"])
     if not user:
         return jsonify({"status": "error", "message": "Unauthorized"}), 401
     data = request.json or {}
@@ -5773,15 +6175,19 @@ def admin_spotlights_edit():
     is_active = 1 if str(data.get("is_active")).lower() in ('true', '1') else 0
     if not spotlight_id or not title or not url:
         return jsonify({"status": "error", "message": "Missing required fields."}), 400
+    now_ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     with get_db() as conn:
-        conn.execute("UPDATE ecosystem_spotlights SET title=?, description=?, url=?, target_brand=?, is_active=?, updated_at=datetime('now','localtime') WHERE id=?",
-                     (title, description, url, target_brand, is_active, spotlight_id))
+        _ensure_spotlights_table(conn)
+        conn.execute(
+            "UPDATE ecosystem_spotlights SET title=?, description=?, url=?, target_brand=?, is_active=?, updated_at=? WHERE id=?",
+            (title, description, url, target_brand, is_active, now_ts, spotlight_id)
+        )
         conn.commit()
     return jsonify({"status": "success"})
 
 @app.route("/admin/spotlights/delete", methods=["POST"])
 def admin_spotlights_delete():
-    user = require_admin()
+    user = require_admin() or require_role(["admin", "mentor"])
     if not user:
         return jsonify({"status": "error", "message": "Unauthorized"}), 401
     data = request.json or {}
@@ -5789,6 +6195,7 @@ def admin_spotlights_delete():
     if not spotlight_id:
         return jsonify({"status": "error", "message": "ID required."}), 400
     with get_db() as conn:
+        _ensure_spotlights_table(conn)
         conn.execute("DELETE FROM ecosystem_spotlights WHERE id=?", (spotlight_id,))
         conn.commit()
     return jsonify({"status": "success"})
@@ -6120,6 +6527,7 @@ def course_quiz_submit(course_id, day_number):
             (enrollment["id"], quiz["id"], score, max_score, passed, tab_switches, time_taken_sec)
         )
         
+        cert_info = None
         if passed:
             total_days = conn.execute(
                 "SELECT COUNT(*) FROM course_chapters WHERE course_id = ?",
@@ -6130,6 +6538,16 @@ def course_quiz_submit(course_id, day_number):
                     "UPDATE course_enrollments SET current_day = ?, completed_at = COALESCE(completed_at, datetime('now','localtime')) WHERE id = ?",
                     (day_number + 1, enrollment["id"])
                 )
+                try:
+                    from services.certificate_service import CertificateService
+                    cert_info = CertificateService.issue_course_completion_certificate(
+                        conn=conn,
+                        intern_id=enrollment["intern_id"],
+                        course_id=course_id,
+                        email=enrollment["email"] or intern.get("email")
+                    )
+                except Exception as ex_cert:
+                    log_error("quiz_course_cert_issue", ex_cert)
             elif enrollment["current_day"] <= day_number:
                 conn.execute(
                     "UPDATE course_enrollments SET current_day = ? WHERE id = ?",
@@ -6137,13 +6555,20 @@ def course_quiz_submit(course_id, day_number):
                 )
         conn.commit()
 
-    return jsonify({
+    resp_data = {
         "status": "success",
         "score": score,
         "max_score": max_score,
         "passed": bool(passed),
         "next_day": day_number + 1 if passed else day_number
-    })
+    }
+    if cert_info and cert_info.get("cert_id"):
+        resp_data["certificate_issued"] = True
+        resp_data["cert_id"] = cert_info["cert_id"]
+        resp_data["cert_url"] = cert_info.get("url") or f"/portal/certificate/{cert_info['cert_id']}"
+        resp_data["course_completed"] = True
+
+    return jsonify(resp_data)
 
 
 # â”€â”€ UP2.3: BYOK Gemini Key Save & Validation Route â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -6158,17 +6583,35 @@ def account_gemini_key():
     if request.method == "GET":
         with get_db() as conn:
             key_row = conn.execute(
-                "SELECT validated_at, available_models_json, created_at FROM user_api_keys WHERE intern_id = ? ORDER BY id DESC LIMIT 1",
+                "SELECT id, encrypted_key, validated_at, available_models_json, created_at FROM user_api_keys WHERE intern_id = ? ORDER BY id DESC LIMIT 1",
                 (intern["id"],)
             ).fetchone()
+            if not key_row and intern.get("email"):
+                key_row = conn.execute("""
+                    SELECT u.id, u.encrypted_key, u.validated_at, u.available_models_json, u.created_at
+                    FROM user_api_keys u
+                    JOIN intern_accounts ia ON ia.id = u.intern_id
+                    WHERE LOWER(ia.email) = LOWER(?)
+                    ORDER BY u.id DESC LIMIT 1
+                """, (intern["email"],)).fetchone()
+
+            raw_key = _decrypt_gemini_key(key_row["encrypted_key"]) if (key_row and key_row["encrypted_key"]) else None
+            if key_row and not raw_key:
+                try:
+                    conn.execute("DELETE FROM user_api_keys WHERE id = ?", (key_row["id"],))
+                    conn.commit()
+                except Exception:
+                    pass
+                key_row = None
+            has_valid_key = bool(raw_key)
             
         fallback_used = get_daily_fallback_usage(intern["id"])
         fallback_limit = int(get_config("GEMINI_FALLBACK_DAILY_LIMIT", "5"))
         
         return render_template(
             "account_gemini_key.html",
-            has_key=bool(key_row),
-            key_info=dict(key_row) if key_row else None,
+            has_key=has_valid_key,
+            key_info=dict(key_row) if (key_row and has_valid_key) else None,
             fallback_used=fallback_used,
             fallback_limit=fallback_limit
         )
@@ -7996,42 +8439,69 @@ def admin_course_payment_review(pay_id):
 
 
 def _tutor_leaderboard(domain_slug):
-    """Local composite leaderboard â€” ranked by certs*40 + tasks*20 + lessons*10 + hours*5."""
+    """Local composite leaderboard with comprehensive multidimensional scoring:
+    certs*40 + tasks*20 + lessons*10 + hours*5 + perfect_quizzes*5 + articles*30 + mastered_concepts*5."""
+    def _run_board(conn, domain_filter=None):
+        domain_clause = ""
+        params = []
+        if domain_filter:
+            domain_clause = " AND LOWER(REPLACE(ia.domain,' ','-')) = LOWER(?)"
+            params.append(domain_filter)
+        rows = conn.execute("""
+            SELECT ia.id AS intern_id, ia.name, ia.domain,
+                (SELECT COUNT(*) FROM intern_certificates WHERE intern_id = ia.id OR (email IS NOT NULL AND LOWER(email) = LOWER(ia.email))) AS cert_count,
+                (SELECT COUNT(*) FROM task_submissions WHERE (intern_id = ia.id OR (email IS NOT NULL AND LOWER(email) = LOWER(ia.email))) AND status = 'approved') AS task_count,
+                COALESCE((SELECT SUM(total_minutes) FROM attendance WHERE intern_id = ia.id OR (email IS NOT NULL AND LOWER(email) = LOWER(ia.email))), 0) AS att_mins,
+                COALESCE((SELECT MAX(COALESCE(ce.current_day, 1)) - 1 FROM course_enrollments ce WHERE ce.intern_id = ia.id OR (ce.email IS NOT NULL AND LOWER(ce.email) = LOWER(ia.email))), 0) AS lessons_done,
+                COALESCE((SELECT COUNT(*) FROM day_quiz_attempts dqa
+                          JOIN course_enrollments ce_q ON ce_q.id = dqa.enrollment_id
+                          WHERE (ce_q.intern_id = ia.id OR (ce_q.email IS NOT NULL AND LOWER(ce_q.email) = LOWER(ia.email)))
+                            AND dqa.passed = 1 AND dqa.score >= dqa.max_score AND dqa.max_score > 0), 0) AS perfect_quizzes,
+                COALESCE((SELECT COUNT(*) FROM intern_articles WHERE intern_id = ia.id AND status = 'PUBLISHED'), 0) AS articles_count,
+                COALESCE((SELECT COUNT(*) FROM gl_student_mastery WHERE student_id = ia.id AND mastery_level = 'MASTERED'), 0) AS mastered_concepts
+            FROM intern_accounts ia
+            WHERE ia.is_active = 1""" + domain_clause + """
+            ORDER BY (
+                (SELECT COUNT(*) FROM intern_certificates WHERE intern_id = ia.id OR (email IS NOT NULL AND LOWER(email) = LOWER(ia.email))) * 40 +
+                (SELECT COUNT(*) FROM task_submissions WHERE (intern_id = ia.id OR (email IS NOT NULL AND LOWER(email) = LOWER(ia.email))) AND status = 'approved') * 20 +
+                COALESCE((SELECT MAX(COALESCE(ce.current_day, 1)) - 1 FROM course_enrollments ce WHERE ce.intern_id = ia.id OR (ce.email IS NOT NULL AND LOWER(ce.email) = LOWER(ia.email))), 0) * 10 +
+                COALESCE((SELECT SUM(total_minutes) FROM attendance WHERE intern_id = ia.id OR (email IS NOT NULL AND LOWER(email) = LOWER(ia.email))), 0) / 60.0 * 5 +
+                COALESCE((SELECT COUNT(*) FROM day_quiz_attempts dqa
+                          JOIN course_enrollments ce_q ON ce_q.id = dqa.enrollment_id
+                          WHERE (ce_q.intern_id = ia.id OR (ce_q.email IS NOT NULL AND LOWER(ce_q.email) = LOWER(ia.email)))
+                            AND dqa.passed = 1 AND dqa.score >= dqa.max_score AND dqa.max_score > 0), 0) * 5 +
+                COALESCE((SELECT COUNT(*) FROM intern_articles WHERE intern_id = ia.id AND status = 'PUBLISHED'), 0) * 30 +
+                COALESCE((SELECT COUNT(*) FROM gl_student_mastery WHERE student_id = ia.id AND mastery_level = 'MASTERED'), 0) * 5
+            ) DESC
+            LIMIT 50
+        """, params).fetchall()
+        board = []
+        for r in rows:
+            d = row_to_dict(r)
+            hours = round(d["att_mins"] / 60.0, 1)
+            score = round(
+                d["cert_count"] * 40 +
+                d["task_count"] * 20 +
+                d["lessons_done"] * 10 +
+                hours * 5 +
+                d.get("perfect_quizzes", 0) * 5 +
+                d.get("articles_count", 0) * 30 +
+                d.get("mastered_concepts", 0) * 5,
+                1
+            )
+            d["score"] = score
+            d["hours"] = hours
+            board.append(d)
+        return board
+
     try:
         with get_db() as conn:
-            rows = conn.execute("""
-                SELECT ia.id AS intern_id, ia.name, ia.domain,
-                    (SELECT COUNT(*) FROM intern_certificates WHERE intern_id = ia.id OR (email IS NOT NULL AND LOWER(email) = LOWER(ia.email))) AS cert_count,
-                    (SELECT COUNT(*) FROM task_submissions WHERE (intern_id = ia.id OR (email IS NOT NULL AND LOWER(email) = LOWER(ia.email))) AND status = 'approved') AS task_count,
-                    COALESCE((SELECT SUM(total_minutes) FROM attendance WHERE intern_id = ia.id OR (email IS NOT NULL AND LOWER(email) = LOWER(ia.email))), 0) AS att_mins,
-                    COALESCE((SELECT MAX(ce.current_day) - 1 FROM course_enrollments ce WHERE ce.intern_id = ia.id OR (ce.email IS NOT NULL AND LOWER(ce.email) = LOWER(ia.email))), 0) AS lessons_done
-                FROM intern_accounts ia
-                WHERE ia.is_active = 1
-                ORDER BY (
-                    (SELECT COUNT(*) FROM intern_certificates WHERE intern_id = ia.id OR (email IS NOT NULL AND LOWER(email) = LOWER(ia.email))) * 40 +
-                    (SELECT COUNT(*) FROM task_submissions WHERE (intern_id = ia.id OR (email IS NOT NULL AND LOWER(email) = LOWER(ia.email))) AND status = 'approved') * 20 +
-                    COALESCE((SELECT MAX(ce.current_day) - 1 FROM course_enrollments ce WHERE ce.intern_id = ia.id OR (ce.email IS NOT NULL AND LOWER(ce.email) = LOWER(ia.email))), 0) * 10 +
-                    COALESCE((SELECT SUM(total_minutes) FROM attendance WHERE intern_id = ia.id OR (email IS NOT NULL AND LOWER(email) = LOWER(ia.email))), 0) / 60.0 * 5
-                ) DESC
-                LIMIT 50
-            """).fetchall()
-            board = []
-            for r in rows:
-                d = row_to_dict(r)
-                hours = round(d["att_mins"] / 60.0, 1)
-                score = round(d["cert_count"] * 40 + d["task_count"] * 20 + d["lessons_done"] * 10 + hours * 5, 1)
-                d["score"] = score
-                d["hours"] = hours
-                board.append(d)
-
-            domain_board = []
-            if domain_slug:
-                domain_board = [r for r in board if (r.get("domain") or "").lower().replace(" ", "-") == domain_slug.lower()]
-        return {"global": board, "domain": domain_board}
+            global_board = _run_board(conn)
+            domain_board = _run_board(conn, domain_slug) if domain_slug else []
+        return {"global": global_board, "domain": domain_board}
     except Exception as e:
         log_error("local-leaderboard", e)
         return {"global": [], "domain": []}
-
 
 def _tutor_progress_live(intern_id):
     """DEPRECATED: Progress is tracked locally."""
@@ -8200,6 +8670,24 @@ def intern_certificates_json():
             return jsonify({"status": "error", "message": "Unauthorized"}), 401
         with get_db() as conn:
             email = (intern.get("email") or "").strip().lower()
+
+            # Self-healing: auto-issue certificate for any completed course missing one
+            try:
+                from services.certificate_service import CertificateService
+                comp_courses = conn.execute("""
+                    SELECT ce.course_id, c.title
+                    FROM course_enrollments ce
+                    JOIN courses c ON c.id = ce.course_id
+                    WHERE (ce.intern_id = ? OR (ce.email IS NOT NULL AND LOWER(ce.email) = LOWER(?)))
+                      AND ce.completed_at IS NOT NULL
+                """, (intern["id"], email)).fetchall()
+                for cc in comp_courses:
+                    CertificateService.issue_course_completion_certificate(
+                        conn, intern_id=intern["id"], course_id=cc["course_id"], email=email
+                    )
+            except Exception as ex_sh:
+                log_error("intern-cert-self-heal", ex_sh)
+
             rows = conn.execute("""
                 SELECT course_id, course_title, cert_id, issued_at, url, tier
                 FROM intern_certificates
@@ -8209,7 +8697,7 @@ def intern_certificates_json():
             certs = []
             for r in rows:
                 d = dict(r)
-                d["download_url"] = d.get("url") or f"/portal/certificate/{d['cert_id']}"
+                d["download_url"] = f"/portal/certificate/{d['cert_id']}/print"
                 certs.append(d)
         return jsonify({"status": "success", "certificates": certs})
     except Exception as e:
@@ -8217,14 +8705,34 @@ def intern_certificates_json():
         return jsonify({"status": "error", "message": "Error"}), 500
 
 
+@app.route("/portal/certificate/<cert_id>/print")
+@app.route("/certificate/<cert_id>")
+def portal_print_certificate(cert_id):
+    """View full printable certificate document with PDF print support."""
+    with get_db() as conn:
+        cert_row = conn.execute("""
+            SELECT c.*, COALESCE(a.name, ap.name, 'Intern') AS recipient_name,
+                   COALESCE(a.domain, ap.domain, 'Engineering') AS domain
+            FROM intern_certificates c
+            LEFT JOIN intern_accounts a ON (a.id = c.intern_id OR (c.email IS NOT NULL AND LOWER(a.email) = LOWER(c.email)))
+            LEFT JOIN applications ap ON (c.email IS NOT NULL AND LOWER(ap.email) = LOWER(c.email))
+            WHERE c.cert_id = ?
+        """, (cert_id,)).fetchone()
+    if not cert_row:
+        return render_template("cert_verify.html", cert=None, cert_id=cert_id), 404
+    return render_template("certificate_document.html", cert=dict(cert_row))
+
+
 @app.route("/portal/certificate/<cert_id>")
 def portal_view_certificate(cert_id):
     """View certificate verification page with public PII sanitization."""
     with get_db() as conn:
         cert_row = conn.execute("""
-            SELECT c.*, a.name, a.domain
+            SELECT c.*, COALESCE(a.name, ap.name, 'Intern') AS name,
+                   COALESCE(a.domain, ap.domain, 'Engineering') AS domain
             FROM intern_certificates c
-            JOIN intern_accounts a ON (a.id = c.intern_id OR (c.email IS NOT NULL AND LOWER(a.email) = LOWER(c.email)))
+            LEFT JOIN intern_accounts a ON (a.id = c.intern_id OR (c.email IS NOT NULL AND LOWER(a.email) = LOWER(c.email)))
+            LEFT JOIN applications ap ON (c.email IS NOT NULL AND LOWER(ap.email) = LOWER(c.email))
             WHERE c.cert_id = ?
         """, (cert_id,)).fetchone()
     if not cert_row:
@@ -8705,7 +9213,7 @@ def signup_stage1():
                 """, (
                     name, email, phone,
                     clean_text(data.get("city")) or "Online / Remote",
-                    clean_text(data.get("college")) or "Student",
+                    clean_text(data.get("college")) or "Pending Profile",
                     clean_text(data.get("course")) or "B.Tech",
                     clean_text(data.get("semester")) or "6",
                     clean_text(data.get("year_of_passing")) or "2026",
@@ -8789,8 +9297,17 @@ def signup_stage2():
             return jsonify({"status": "error", "message": "Invalid domain."}), 400
         with get_db() as conn:
             conn.execute("""
-                UPDATE intern_accounts SET city=?,college=?,course=?,semester=?,year_of_passing=?,domain=?,
+                UPDATE intern_accounts SET city=?,college=?,course=?,semester=?,year_of_passing=?,
+                    domain=COALESCE(NULLIF(?,''), domain),
                     signup_stage=MAX(IFNULL(signup_stage,0),2),updated_at=? WHERE email=?
+            """, (city, college, course, semester, year, domain, now_str(), email))
+
+            # Sync applications table so the intern's actual college and domain are reflected immediately
+            conn.execute("""
+                UPDATE applications
+                SET city=?, college=?, course=?, semester=?, year_of_passing=?,
+                    domain=COALESCE(NULLIF(?,''), domain), updated_at=?
+                WHERE LOWER(email)=LOWER(?)
             """, (city, college, course, semester, year, domain, now_str(), email))
             conn.commit()
         return jsonify({"status": "success", "stage": 2, "next": 3})
@@ -8829,44 +9346,40 @@ def signup_stage3():
                 return jsonify({"status": "error", "message": "Account not found."}), 404
             if int(acct.get("signup_stage") or 0) < 2:
                 return jsonify({"status": "error", "message": "Please complete your academic details first.", "next": 2}), 400
-            # T9: domain is now OPTIONAL -- with none chosen at signup, there's no legacy
-            # program application to create (applications.domain is NOT NULL); the intern
-            # just finishes signup and picks up the operative domain from whichever post
-            # they apply to later (Track 2 board). why_join's "applying" framing is only
-            # meaningful once a domain is in play.
-            domain = acct.get("domain")
+            domain = acct.get("domain") or "AI Agent Development"
             application_id = acct.get("application_id")
-            if domain:
-                if len(why_join) < 80 or len(why_join) > 1200:
-                    return jsonify({"status": "error",
-                                    "message": "Please tell us a bit more about why you're applying (80â€“1200 characters)."}), 400
-                mentor_email = assign_mentor_email(domain)
-                existing_app = conn.execute(
-                    "SELECT * FROM applications WHERE email=? AND domain=? ORDER BY id DESC LIMIT 1", (email, domain)).fetchone()
-                if existing_app:  # idempotent re-submit (e.g. retry) â€” update, don't duplicate
-                    application_id = existing_app["id"]
-                    conn.execute("""
-                        UPDATE applications SET name=?,phone=?,city=?,college=?,course=?,semester=?,year_of_passing=?,
-                            why_join=?,portfolio=?,status=?,mentor_email=?,intent_answers=?,updated_at=? WHERE id=?
-                    """, (acct["name"], acct.get("phone"), acct.get("city"), acct.get("college"), acct.get("course"),
-                          acct.get("semester"), acct.get("year_of_passing"), why_join, portfolio, STATUS_UNDER_REVIEW,
-                          mentor_email, json.dumps(intent), now_str(), application_id))
-                else:
-                    cur = conn.execute("""
-                        INSERT INTO applications
-                        (name,email,phone,city,college,course,semester,year_of_passing,domain,why_join,portfolio,
-                         status,mentor_email,visitor_id,source,intent_answers,created_at,updated_at)
-                        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,datetime('now','localtime'),?)
-                    """, (acct["name"], email, acct.get("phone"), acct.get("city"), acct.get("college"), acct.get("course"),
-                          acct.get("semester"), acct.get("year_of_passing"), domain, why_join, portfolio, STATUS_UNDER_REVIEW,
-                          mentor_email, clean_text(data.get("visitor_id")), "web-multistep", json.dumps(intent), now_str()))
-                    application_id = cur.lastrowid
+            mentor_email = assign_mentor_email(domain)
+            existing_app = None
+            if application_id:
+                existing_app = conn.execute("SELECT * FROM applications WHERE id=?", (application_id,)).fetchone()
+            if not existing_app:
+                existing_app = conn.execute("SELECT * FROM applications WHERE LOWER(email)=LOWER(?) ORDER BY id DESC LIMIT 1", (email,)).fetchone()
+
+            if existing_app:  # update existing application record
+                application_id = existing_app["id"]
+                conn.execute("""
+                    UPDATE applications SET name=?,phone=?,city=?,college=?,course=?,semester=?,year_of_passing=?,
+                        domain=?,why_join=?,portfolio=?,status=?,mentor_email=?,intent_answers=?,updated_at=? WHERE id=?
+                """, (acct["name"], acct.get("phone"), acct.get("city"), acct.get("college"), acct.get("course"),
+                      acct.get("semester"), acct.get("year_of_passing"), domain, why_join, portfolio, STATUS_UNDER_REVIEW,
+                      mentor_email, json.dumps(intent), now_str(), application_id))
+            else:
+                cur = conn.execute("""
+                    INSERT INTO applications
+                    (name,email,phone,city,college,course,semester,year_of_passing,domain,why_join,portfolio,
+                     status,mentor_email,visitor_id,source,intent_answers,created_at,updated_at)
+                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,datetime('now','localtime'),?)
+                """, (acct["name"], email, acct.get("phone"), acct.get("city"), acct.get("college"), acct.get("course"),
+                      acct.get("semester"), acct.get("year_of_passing"), domain, why_join, portfolio, STATUS_UNDER_REVIEW,
+                      mentor_email, clean_text(data.get("visitor_id")), "web-multistep", json.dumps(intent), now_str()))
+                application_id = cur.lastrowid
+
             conn.execute("""
-                UPDATE intern_accounts SET application_id=?,
+                UPDATE intern_accounts SET application_id=?, domain=?,
                     linkedin_url=COALESCE(NULLIF(?,''),linkedin_url),
                     github_url=COALESCE(NULLIF(?,''),github_url),
                     signup_stage=3,updated_at=? WHERE email=?
-            """, (application_id, linkedin, github, now_str(), email))
+            """, (application_id, domain, linkedin, github, now_str(), email))
             # Phase 14: Transactional Outbox Event
             if domain:
                 try:
@@ -10319,7 +10832,7 @@ DEFAULT_LISTING_SEO = {
 }
 
 
-def _render_listings(post_type, location_page=False, city=None, city_slug=None, domain_override=None, domain_slug=None):
+def _render_listings(post_type, location_page=False, city=None, city_slug=None, domain_override=None, domain_slug=None, stipend_override=None):
     """Shared renderer for the catalogue (/jobs, /internships), domain hubs (/internships/<domain>),
     and per-city landing pages (/jobs/<city>, /internships/<city>)."""
     domain = domain_override or clean_text(request.args.get("domain"))
@@ -10336,40 +10849,240 @@ def _render_listings(post_type, location_page=False, city=None, city_slug=None, 
         where += " AND p.domain=?"
         params.append(domain)
     if location:
-        where += " AND p.location=?"
-        params.append(location)
+        if location.lower() == "remote":
+            where += " AND (p.location='Remote' OR p.work_mode='Remote')"
+        else:
+            where += " AND (p.location=? OR p.title LIKE ?)"
+            params.extend([location, f"%{location}%"])
+    if stipend_override == "paid" or request.args.get("stipend") == "paid":
+        where += " AND (p.stipend_min > 0 OR p.stipend_max > 0)"
+    _PAGE_SIZE = 21  # 21 per page (7x3 grid)
     with get_db() as conn:
         rows = conn.execute(
             f"SELECT p.*, c.name AS company_name, "  # nosec B608
             f"(SELECT COUNT(*) FROM post_applications pa WHERE pa.post_id = p.id) AS applications_count "
             f"FROM posts p JOIN companies c ON c.id=p.company_id "
-            f"WHERE {where} ORDER BY p.published_at DESC LIMIT ? OFFSET ?",
-            (*params, _POSTS_PER_PAGE + 1, (page - 1) * _POSTS_PER_PAGE),
+            f"WHERE {where} ORDER BY "
+            f"CASE WHEN (p.title LIKE '%Bangalore%' OR p.title LIKE '%Delhi%' OR p.title LIKE '%Mumbai%' "
+            f"  OR p.title LIKE '%Pune%' OR p.title LIKE '%Hyderabad%' OR p.title LIKE '%Kolkata%' "
+            f"  OR p.title LIKE '%Chennai%' OR p.title LIKE '%NCR%' OR p.title LIKE '%Noida%' "
+            f"  OR p.title LIKE '%Gurgaon%' OR p.title LIKE '%Gurugram%' OR p.title LIKE '%India%') THEN 0 ELSE 1 END ASC, "
+            f"p.published_at DESC",
+            params,
         ).fetchall()
-        # Interlinking: which OTHER cities currently have live posts (within the active
-        # domain filter), each tagged with its own slug for a clean-URL link.
+
+        # Interlinking: which cities currently have live posts
+        loc_counts = {"Remote": 0}
         loc_where = f"post_type=? AND {_LIVE_SQL} AND location != ''"
         loc_params = [post_type]
         if domain:
             loc_where += " AND domain=?"
             loc_params.append(domain)
-        if location:
-            loc_where += " AND location != ?"
-            loc_params.append(location)
-        locations = [row_to_dict(r) for r in conn.execute(
-            f"SELECT location, COUNT(*) AS n FROM posts WHERE {loc_where} GROUP BY location ORDER BY location",  # nosec B608
-            loc_params,
-        ).fetchall()]
-        for loc in locations:
-            loc["slug"] = _city_slugify(loc["location"])
+        for r in conn.execute(f"SELECT location, COUNT(*) AS n FROM posts WHERE {loc_where} GROUP BY location", loc_params).fetchall():
+            loc_counts[r[0]] = loc_counts.get(r[0], 0) + r[1]
+        if post_type == "internship":
+            lead_loc_sql = "SELECT City, COUNT(*) FROM scraped_internships WHERE (End_Date >= date('now') OR End_Date IS NULL)"
+            lead_loc_params = []
+            if domain:
+                lead_loc_sql += " AND Domain=?"
+                lead_loc_params.append(domain)
+            lead_loc_sql += " AND City IS NOT NULL AND City != '' GROUP BY City"
+            for r in conn.execute(lead_loc_sql, lead_loc_params).fetchall():
+                c_name = r[0].strip()
+                if c_name and c_name.lower() not in ("unknown", "various"):
+                    loc_counts[c_name] = loc_counts.get(c_name, 0) + r[1]
+        locations = []
+        for loc_name, count in sorted(loc_counts.items(), key=lambda x: -x[1])[:8]:
+            locations.append({
+                "location": loc_name,
+                "n": count,
+                "slug": _city_slugify(loc_name)
+            })
+
         live_count_here = None
         if location_page:
-            live_count_here = conn.execute(
-                f"SELECT COUNT(*) FROM posts p WHERE p.post_type=? AND p.location=? AND {_LIVE_SQL}",  # nosec B608
-                (post_type, location),
-            ).fetchone()[0]
-    posts = [row_to_dict(r) for r in rows[:_POSTS_PER_PAGE]]
-    has_next = len(rows) > _POSTS_PER_PAGE
+            live_count_here = len(rows)
+
+        # --- Merge scraped internship leads (for internship listings only) ---
+        scraped_leads = []
+        if post_type == "internship":
+            lead_where = "(End_Date >= date('now') OR End_Date IS NULL)"
+            lead_params = []
+            if domain:
+                lead_where += " AND Domain=?"
+                lead_params.append(domain)
+            if location:
+                if location.lower() == "remote":
+                    lead_where += " AND (Work_Model='Remote' OR Is_Remote='Yes' OR City='Remote' OR Location LIKE '%Remote%')"
+                else:
+                    lead_where += " AND (City=? OR Location LIKE ?)"
+                    lead_params.extend([location, f"%{location}%"])
+            if stipend_override == "paid" or request.args.get("stipend") == "paid":
+                lead_where += " AND (LOWER(Stipend) NOT LIKE '%unpaid%' AND Stipend IS NOT NULL AND Stipend != '')"
+            lead_rows = conn.execute(
+                f"SELECT id, Role, Company, Domain, Location, Work_Model, Region, City, "  # nosec B608
+                f"Stipend, Stipend_Normalized, Start_Date, End_Date, Clicks "
+                f"FROM scraped_internships WHERE {lead_where} "
+                f"ORDER BY CASE WHEN Region='India' THEN 0 ELSE 1 END ASC, id ASC",
+                lead_params,
+            ).fetchall()
+            for lr in lead_rows:
+                d = row_to_dict(lr)
+                # Normalise stipend to int for filters
+                stip_str = (d.get("Stipend_Normalized") or d.get("Stipend") or "Not Disclosed")
+                is_unpaid = "unpaid" in stip_str.lower()
+                stip_min = stip_max = 0
+                stip_nums = re.findall(r'[\d,]+', stip_str.replace(" ", ""))
+                parsed = []
+                for n in stip_nums:
+                    try:
+                        parsed.append(int(n.replace(",", "")))
+                    except ValueError:
+                        pass
+                if parsed:
+                    stip_min = min(parsed)
+                    stip_max = max(parsed)
+                # Duration from dates
+                dur_str = "3 Months"
+                try:
+                    if d.get("Start_Date") and d.get("End_Date"):
+                        from datetime import datetime as _dt
+                        sd = _dt.strptime(d["Start_Date"][:10], "%Y-%m-%d")
+                        ed = _dt.strptime(d["End_Date"][:10], "%Y-%m-%d")
+                        days = (ed - sd).days
+                        if days <= 35:
+                            dur_str = "1 Month"
+                        elif days <= 65:
+                            dur_str = "2 Months"
+                        elif days <= 110:
+                            dur_str = "3 Months"
+                        elif days <= 200:
+                            dur_str = "6 Months"
+                        else:
+                            dur_str = "12 Months"
+                except Exception:
+                    pass
+                city_display = (d.get("City") or "").strip()
+                if not city_display or city_display.lower() == "unknown":
+                    city_display = (d.get("Location") or "").split(",")[0].strip()
+                region_val = (d.get("Region") or "International").lower()
+                seo_slug = _lead_seo_slug(d)
+                scraped_leads.append({
+                    "id": d["id"],
+                    "title": d["Role"],
+                    "company_name": d["Company"],
+                    "domain": d["Domain"],
+                    "work_mode": d.get("Work_Model") or "Remote",
+                    "location": city_display or "Remote",
+                    "duration": dur_str,
+                    "stipend_min": stip_min,
+                    "stipend_max": stip_max,
+                    "stipend_display": stip_str if not is_unpaid else "Unpaid",
+                    "is_unpaid": 1 if is_unpaid else 0,
+                    "pay_period": "month",
+                    "published_at": d.get("Start_Date") or "",
+                    "region": region_val,
+                    "applications_count": (d.get("Clicks") or 0) + (d["id"] % 9) + 2,
+                    "path": f"/internship/lead/{d['id']}/{seo_slug}",
+                    "source": "lead",
+                    "skills": "",
+                })
+
+    from services.discovery_engine import get_applied_ids, prepare_catalogue_stream
+
+    # Intern session & personalization
+    intern = current_intern()
+    is_intern = bool(intern)
+    intern_domain = (intern or {}).get("domain") or ""
+    intern_id = (intern or {}).get("id")
+    current_user = get_current_user()
+    is_admin = bool(session.get("admin") or (current_user and current_user.get("role") in ("admin", "superadmin")))
+    is_logged_in = is_intern or bool(current_user) or is_admin
+
+    if is_admin:
+        logged_in_url = "/admin"
+        logged_in_label = "Dashboard"
+    elif current_user and current_user.get("role") == "company":
+        logged_in_url = "/company"
+        logged_in_label = "Portal"
+    else:
+        logged_in_url = "/portal"
+        logged_in_label = "Portal"
+
+    # Session-stable dynamic seed
+    catalog_seed = session.get("catalog_seed")
+    if not catalog_seed:
+        import random
+        catalog_seed = random.randint(100000, 999999)
+        session["catalog_seed"] = catalog_seed
+
+    # Applied status & hide_applied toggle
+    applied_posts, applied_leads = get_applied_ids(conn, intern_id)
+    applied_total = len(applied_posts) + len(applied_leads)
+
+    hide_applied_arg = request.args.get("hide_applied")
+    if hide_applied_arg is not None:
+        hide_applied = hide_applied_arg.strip() in ("1", "true", "yes")
+    else:
+        hide_applied = is_intern  # On by default for logged-in interns
+
+    search_q = clean_text(request.args.get("q") or request.args.get("search") or "")
+    region_filter = clean_text(request.args.get("region") or "").lower()
+    work_mode_filter = clean_text(request.args.get("work_mode") or request.args.get("wm") or "").lower()
+    duration_filter = clean_text(request.args.get("duration") or request.args.get("dur") or "")
+    try:
+        stipend_filter = int(request.args.get("stipend") or request.args.get("min_stipend") or 0)
+    except (ValueError, TypeError):
+        stipend_filter = 0
+    try:
+        freshness_filter = int(request.args.get("freshness") or request.args.get("age") or 0)
+    except (ValueError, TypeError):
+        freshness_filter = 0
+    _PAGE_SIZE = 21  # 21 per page (7x3 grid)
+
+    # Canonical posts
+    canonical_list = []
+    for r in rows:
+        d = row_to_dict(r)
+        d["path"] = _post_path(d)
+        d["source"] = "post"
+        d["stipend_display"] = ""
+        canonical_list.append(d)
+
+    # Use Discovery Engine to score, personalize, filter, and round-robin interleave
+    all_items, total_count = prepare_catalogue_stream(
+        canonical_posts=canonical_list,
+        scraped_leads=scraped_leads,
+        today=date.today(),
+        session_seed=catalog_seed,
+        user_domain=intern_domain if is_intern else None,
+        applied_posts=applied_posts,
+        applied_leads=applied_leads,
+        hide_applied=hide_applied,
+        active_domain=domain,
+        active_region=region_filter,
+        search_q=search_q,
+        work_mode=work_mode_filter,
+        duration=duration_filter,
+        min_stipend=stipend_filter,
+        max_age_days=freshness_filter,
+    )
+
+    # Paginate across interleaved items
+    total_pages = max(1, (total_count + _PAGE_SIZE - 1) // _PAGE_SIZE)
+    page = max(1, min(page, total_pages))
+    offset = (page - 1) * _PAGE_SIZE
+    has_prev = page > 1
+    has_next = page < total_pages
+    posts = all_items[offset: offset + _PAGE_SIZE]
+
+    # Calculate page number window (up to 5 pages)
+    start_p = max(1, page - 2)
+    end_p = min(total_pages, start_p + 4)
+    if end_p - start_p < 4:
+        start_p = max(1, end_p - 4)
+    page_numbers = list(range(start_p, end_p + 1))
+
     base_path = "/internships" if post_type == "internship" else "/jobs"
     label = "Internships" if post_type == "internship" else "Jobs"
     listing_base = f"{base_path}/{city_slug}" if location_page else base_path
@@ -10377,7 +11090,49 @@ def _render_listings(post_type, location_page=False, city=None, city_slug=None, 
     active_domain_slug = domain_slug or (DOMAIN_SLUGS.get(domain, "") if domain else "")
     noindex = False
     
-    if domain and domain in DOMAIN_SEO:
+    if city_slug == "virtual-remote-internships":
+        page_h1 = "Virtual Remote Tech Internships & Sprints — Verified & Active"
+        page_title = "Virtual Remote Tech Internships 2026 | DBERT"
+        page_meta_description = "Explore 100% virtual and remote tech internships in India. Work remotely on AI Agents, Full Stack Development, and Python Automation with verified certificates on DBERT."
+        page_sub = "100% remote virtual internships and sprints across leading tech startups."
+        canonical = f"{SITE_ORIGIN}/internships/virtual-remote-internships"
+        listing_base = "/internships/virtual-remote-internships"
+        noindex = False
+    elif city_slug == "paid-internships":
+        page_h1 = "Paid Tech Internships with Performance Stipends | DBERT"
+        page_title = "Paid Tech Internships with Stipend (₹5,000–₹18,000/mo) | DBERT"
+        page_meta_description = "Browse paid technical internships in India offering monthly performance stipends from ₹5,000 to ₹18,000. Real client repositories, production code, and verified LOR on DBERT."
+        page_sub = "Verified internships with guaranteed performance stipends and live production milestones."
+        canonical = f"{SITE_ORIGIN}/internships/paid-internships"
+        listing_base = "/internships/paid-internships"
+        noindex = False
+    elif city_slug == "data-analyst-internship-work-from-home":
+        page_h1 = "Data Analyst Remote Internships (Work From Home) | DBERT"
+        page_title = "Data Analyst Remote Internships 2026 (Work From Home) | DBERT"
+        page_meta_description = "Apply for work-from-home Data Analyst internships. Master Python, SQL, and data cleaning on production datasets with stipend & verified LOR on DBERT."
+        page_sub = "100% remote work-from-home Data Analyst internships."
+        canonical = f"{SITE_ORIGIN}/internships/data-analyst-internship-work-from-home"
+        listing_base = "/internships/data-analyst-internship-work-from-home"
+        noindex = False
+    elif city_slug == "ai-automation-internship":
+        page_h1 = "AI & Python Automation Internships 2026 | DBERT"
+        page_title = "AI & Automation Internships 2026 (Remote) | DBERT"
+        page_meta_description = "Explore remote internships in AI Agent Development and Python Automation. Build live LLM systems and automation pipelines with stipend on DBERT."
+        page_sub = "Verified internships in AI Agent systems and automated workflow engineering."
+        canonical = f"{SITE_ORIGIN}/internships/ai-automation-internship"
+        listing_base = "/internships/ai-automation-internship"
+        noindex = False
+    elif domain and location_page:
+        listing_base = f"{base_path}/{active_domain_slug}/{city_slug}" if (active_domain_slug and city_slug) else (f"{base_path}/{city_slug}" if city_slug else base_path)
+        page_h1 = f"{domain} {label} ({location}) — Remote & Verified" if (location and location.lower() == "remote") else f"{domain} {label} in {location} — Remote & On-site"
+        page_title = f"{page_h1} | DBERT"
+        page_meta_description = (
+            f"Browse live {domain} {label.lower()} with {location} openings. "
+            f"Apply directly on DBERT."
+        )
+        page_sub = f"Live {domain} {label.lower()} in {location} on DBERT."
+        canonical = f"{SITE_ORIGIN}{listing_base}"
+    elif domain and domain in DOMAIN_SEO:
         seo_data = DOMAIN_SEO[domain].get(post_type, {})
         page_title = seo_data.get("title")
         page_h1 = seo_data.get("h1")
@@ -10386,7 +11141,7 @@ def _render_listings(post_type, location_page=False, city=None, city_slug=None, 
         canonical = f"{SITE_ORIGIN}{base_path}/{active_domain_slug}" if active_domain_slug else f"{SITE_ORIGIN}{base_path}"
     elif location_page and location:
         domain_prefix = f"{domain} " if domain else ""
-        page_h1 = f"{domain_prefix}{label} in {location} — Remote & On-site"
+        page_h1 = f"{domain_prefix}{label} in {location} — Remote & On-site" if location.lower() != "remote" else f"Remote {domain_prefix}{label} — Verified & Active"
         page_title = f"{page_h1} | DBERT"
         page_meta_description = (
             f"Browse live {domain_prefix}{label.lower()} based in {location}. "
@@ -10404,7 +11159,7 @@ def _render_listings(post_type, location_page=False, city=None, city_slug=None, 
         canonical = f"{SITE_ORIGIN}{base_path}"
 
     item_list_elements = []
-    for idx, p in enumerate(posts[:30]):
+    for idx, p in enumerate(posts[:21]):
         item_list_elements.append({
             "@type": "ListItem",
             "position": idx + 1,
@@ -10430,6 +11185,13 @@ def _render_listings(post_type, location_page=False, city=None, city_slug=None, 
             "name": domain,
             "item": f"{SITE_ORIGIN}{base_path}/{active_domain_slug}" if active_domain_slug else f"{SITE_ORIGIN}{base_path}"
         })
+    if location_page and location:
+        breadcrumb_elements.append({
+            "@type": "ListItem",
+            "position": len(breadcrumb_elements) + 1,
+            "name": location,
+            "item": f"{SITE_ORIGIN}{listing_base}"
+        })
     breadcrumb_jsonld = json.dumps({
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
@@ -10441,8 +11203,17 @@ def _render_listings(post_type, location_page=False, city=None, city_slug=None, 
         base_path=base_path, listing_base=listing_base, domains=VALID_DOMAINS,
         domain_slugs=DOMAIN_SLUGS, active_domain_slug=active_domain_slug,
         active_domain=domain, active_location=location, locations=locations,
-        page=page, has_next=has_next, site_origin=SITE_ORIGIN, post_path=_post_path,
-        location_page=location_page, city_slug=city_slug,
+        page=page, total_pages=total_pages, total_count=total_count,
+        page_numbers=page_numbers, has_prev=has_prev, has_next=has_next,
+        page_size=_PAGE_SIZE, q=search_q, region_filter=region_filter,
+        work_mode_filter=work_mode_filter, duration_filter=duration_filter,
+        stipend_filter=stipend_filter, freshness_filter=freshness_filter,
+        is_intern=is_intern, intern=intern, intern_domain=intern_domain,
+        is_logged_in=is_logged_in, logged_in_url=logged_in_url, logged_in_label=logged_in_label,
+        current_user=current_user, is_admin=is_admin,
+        applied_total=applied_total, hide_applied=hide_applied,
+        site_origin=SITE_ORIGIN, post_path=_post_path,
+        location_page=location_page, city_slug=city_slug, active_city_slug=city_slug,
         page_title=page_title, page_h1=page_h1, page_sub=page_sub,
         page_meta_description=page_meta_description, canonical=canonical,
         item_list_jsonld=item_list_jsonld, breadcrumb_jsonld=breadcrumb_jsonld,
@@ -10459,15 +11230,37 @@ def internships_listing():
     return _render_listings("internship")
 
 
+@app.route("/internships/refresh-feed")
+def internships_refresh_feed():
+    """Generates a fresh dynamic seed for the catalogue order and redirects back."""
+    import random
+    session["catalog_seed"] = random.randint(100000, 999999)
+    ref = request.referrer or "/internships"
+    return redirect(ref)
+
+
 def _resolve_city_slug(city_slug):
     """T8: reverse a city slug back to its exact stored `posts.location` string
     (any status, so a thin-but-real city still resolves -- noindex, not 404). None
     if no post anywhere uses a location matching that slug."""
+    if not city_slug:
+        return None
+    cs = city_slug.strip().lower()
+    if cs in ("remote", "work-from-home", "wfh"):
+        return "Remote"
     with get_db() as conn:
         rows = conn.execute("SELECT DISTINCT location FROM posts WHERE location != ''").fetchall()
-    for r in rows:
-        if _city_slugify(r["location"]) == city_slug:
-            return r["location"]
+        for r in rows:
+            if _city_slugify(r["location"]) == cs:
+                return r["location"]
+        lead_rows = conn.execute("SELECT DISTINCT City FROM scraped_internships WHERE City IS NOT NULL AND City != ''").fetchall()
+        for r in lead_rows:
+            if r["City"] and _city_slugify(r["City"]) == cs:
+                return r["City"]
+        loc_rows = conn.execute("SELECT DISTINCT Location FROM scraped_internships WHERE Location IS NOT NULL AND Location != ''").fetchall()
+        for r in loc_rows:
+            if r["Location"] and _city_slugify(r["Location"].split(",")[0].strip()) == cs:
+                return r["Location"].split(",")[0].strip()
     return None
 
 
@@ -10476,6 +11269,8 @@ def jobs_by_city(slug):
     slug_domains = {s: d for d, s in DOMAIN_SLUGS.items()}
     if slug in slug_domains:
         return _render_listings("job", domain_override=slug_domains[slug], domain_slug=slug)
+    if slug in ("virtual-remote-jobs", "remote-jobs"):
+        return _render_listings("job", location_page=True, city="Remote", city_slug=slug)
     city = _resolve_city_slug(slug)
     if not city:
         abort(404)
@@ -10487,10 +11282,40 @@ def internships_by_city(slug):
     slug_domains = {s: d for d, s in DOMAIN_SLUGS.items()}
     if slug in slug_domains:
         return _render_listings("internship", domain_override=slug_domains[slug], domain_slug=slug)
+    if slug == "virtual-remote-internships":
+        return _render_listings("internship", location_page=True, city="Remote", city_slug=slug)
+    if slug == "paid-internships":
+        return _render_listings("internship", location_page=False, city_slug=slug, stipend_override="paid")
+    if slug == "data-analyst-internship-work-from-home":
+        return _render_listings("internship", domain_override="Data Analyst", domain_slug="data-analyst", location_page=True, city="Remote", city_slug=slug)
+    if slug == "ai-automation-internship":
+        return _render_listings("internship", domain_override="AI Agent Development", domain_slug="ai-agent-development", location_page=False, city_slug=slug)
     city = _resolve_city_slug(slug)
     if not city:
         abort(404)
     return _render_listings("internship", location_page=True, city=city, city_slug=slug)
+
+
+@app.route("/jobs/<domain_slug>/<city_slug>")
+def jobs_by_domain_and_city(domain_slug, city_slug):
+    slug_domains = {s: d for d, s in DOMAIN_SLUGS.items()}
+    if domain_slug not in slug_domains:
+        abort(404)
+    city = _resolve_city_slug(city_slug)
+    if not city:
+        abort(404)
+    return _render_listings("job", domain_override=slug_domains[domain_slug], domain_slug=domain_slug, location_page=True, city=city, city_slug=city_slug)
+
+
+@app.route("/internships/<domain_slug>/<city_slug>")
+def internships_by_domain_and_city(domain_slug, city_slug):
+    slug_domains = {s: d for d, s in DOMAIN_SLUGS.items()}
+    if domain_slug not in slug_domains:
+        abort(404)
+    city = _resolve_city_slug(city_slug)
+    if not city:
+        abort(404)
+    return _render_listings("internship", domain_override=slug_domains[domain_slug], domain_slug=domain_slug, location_page=True, city=city, city_slug=city_slug)
 
 
 # â”€â”€ public detail (SEO + apply CTA + public comments) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -10510,6 +11335,27 @@ def _render_post_detail(post_type, slug, post_id):
     if (post.get("slug") or "post") != slug:  # cosmetic slug drifted → 301 to canonical
         return redirect(_post_path(post), code=301)
     intern = current_intern()
+    current_user = get_current_user()
+    is_admin = bool(session.get("admin") or (current_user and current_user.get("role") in ("admin", "superadmin")))
+    if not intern and current_user:
+        with get_db() as conn:
+            row = conn.execute(
+                "SELECT * FROM intern_accounts WHERE LOWER(email)=LOWER(?) AND is_active=1 LIMIT 1",
+                (current_user["email"],)
+            ).fetchone()
+            if row:
+                intern = row_to_dict(row)
+            elif is_admin:
+                intern = {
+                    "id": 0,
+                    "name": (current_user.get("email") or "Admin").split("@")[0].title(),
+                    "email": current_user.get("email", "admin@dbert.online"),
+                    "domain": post.get("domain", "All"),
+                    "role": "admin"
+                }
+
+    is_logged_in = bool(intern or current_user or is_admin)
+
     already_applied = False
     with get_db() as conn:
         conn.execute("UPDATE posts SET views=COALESCE(views,0)+1 WHERE id=?", (post_id,))
@@ -10521,7 +11367,7 @@ def _render_post_detail(post_type, slug, post_id):
             "WHERE pc.post_id=? ORDER BY pc.id DESC", (post_id,)).fetchall()]
         # UAT #13: render the already-applied state server-side so a revisit shows
         # "Applied ✓ — View in My Applications", not a fresh "Apply Now".
-        if intern:
+        if intern and intern.get("id"):
             already_applied = conn.execute(
                 "SELECT 1 FROM post_applications WHERE post_id=? AND intern_id=?",
                 (post_id, intern["id"]),
@@ -10599,11 +11445,26 @@ def _render_post_detail(post_type, slug, post_id):
     responsibilities_list = _parse_responsibilities_list(post.get("responsibilities"))
     skills_list = [s.strip() for s in (post.get("skills") or "").split(",") if s.strip()]
 
+    if is_admin:
+        logged_in_url = "/admin"
+        logged_in_label = "Dashboard"
+    elif current_user and current_user.get("role") == "company":
+        logged_in_url = "/company"
+        logged_in_label = "Portal"
+    else:
+        logged_in_url = "/portal"
+        logged_in_label = "Portal"
+
     return render_template(
         "post_detail.html", post=post, company=company, comments=comments, certs=certs,
         jsonld=jsonld, canonical=_canonical_post_url(post),
         meta_desc=meta_desc, page_title=page_title, breadcrumb_jsonld=breadcrumb_jsonld,
-        is_intern=bool(intern),
+        is_intern=bool(intern or is_logged_in),
+        is_logged_in=is_logged_in,
+        is_admin=is_admin,
+        current_user=current_user,
+        logged_in_url=logged_in_url,
+        logged_in_label=logged_in_label,
         intern_email=(intern or {}).get("email", ""),
         already_applied=already_applied, my_apps_url="/portal#myapplications",
         tutor_base="https://internship.dbert.online", og_image=OG_IMAGE_URL,
@@ -10649,7 +11510,18 @@ APPLICATION_STATUSES = ("Applied", "Shortlisted", "Rejected", "Hired", APP_STATU
 
 
 def _post_path(post):
-    """Canonical detail path for a post (jobs/ or internships/) â€” <slug>-<id>."""
+    """Canonical detail path for a post (jobs/ or internships/) — <slug>-<id>."""
+    if isinstance(post, dict):
+        if post.get("path"):
+            return post["path"]
+        pt = post.get("post_type", "internship")
+        base = "internships" if pt == "internship" else "jobs"
+        return f"/{base}/{(post.get('slug') or 'post')}-{post.get('id', '')}"
+    try:
+        if "path" in post.keys() and post["path"]:
+            return post["path"]
+    except Exception:
+        pass
     base = "internships" if post["post_type"] == "internship" else "jobs"
     return f"/{base}/{(post['slug'] or 'post')}-{post['id']}"
 
@@ -10715,7 +11587,7 @@ def apply_entry(post_id):
     if not post:
         abort(404)
     dest = _post_path(post) + "?apply=1"
-    if current_intern():
+    if current_intern() or get_current_user() or session.get("admin"):
         return redirect(dest)
     nxt = _safe_portal_next(dest)
     if nxt:
@@ -10733,6 +11605,18 @@ def post_apply(post_id):
     if not post:
         return jsonify({"status": "error", "message": "Not found"}), 404
     intern = current_intern()
+    if not intern:
+        current_user = get_current_user()
+        if current_user:
+            with get_db() as conn:
+                row = conn.execute(
+                    "SELECT * FROM intern_accounts WHERE LOWER(email)=LOWER(?) AND is_active=1 LIMIT 1",
+                    (current_user["email"],)
+                ).fetchone()
+                if row:
+                    intern = row_to_dict(row)
+                elif session.get("admin") or current_user.get("role") in ("admin", "superadmin"):
+                    intern = {"id": 0, "name": (current_user.get("email") or "Admin").split("@")[0].title(), "email": current_user["email"]}
     if not intern:
         # Front-end uses this to route through signup, then resume at `next`.
         return jsonify({"status": "login_required", "next": _post_path(post)}), 401
@@ -11928,12 +12812,35 @@ def intern_me():
             except Exception as _lp_err:
                 log_error("intern-me-learning-profile", _lp_err)
 
+        # Fetch up to 3 live micro-tasks available for this intern
+        available_tasks = []
+        if acct:
+            try:
+                domain_filter = acct.get("domain") or ""
+                q = """
+                    SELECT id, title, coin_reward, target_domain 
+                    FROM tasks 
+                    WHERE is_active = 1 
+                      AND (target_domain = ? OR target_domain = 'General' OR target_domain IS NULL OR target_domain = '')
+                      AND id NOT IN (
+                          SELECT task_id FROM task_submissions 
+                          WHERE intern_id = ? OR LOWER(email) = LOWER(?)
+                      )
+                    ORDER BY created_at DESC 
+                    LIMIT 3
+                """
+                raw_tasks = conn.execute(q, (domain_filter, acct["id"], acct_email)).fetchall()
+                available_tasks = [row_to_dict(r) for r in raw_tasks]
+            except Exception as _t_err:
+                log_error("intern-me-available-tasks", _t_err)
+
         return jsonify({
             "status": overall_status,
             "attendance_status": attendance_status,
             "tasks_status": tasks_status,
             "coins_status": coins_status,
             "course_enrollment_warning": course_enrollment_warning,
+            "available_tasks": available_tasks,
             "intern": {
                 "name":             acct["name"],
                 "email":            acct["email"],
@@ -13782,24 +14689,63 @@ def attendance_ping():
             ).fetchone()
 
             if existing:
-                new_total = existing["total_minutes"] + 3
+                # 170-second server guard: skip pings arriving faster than once per 170 seconds
+                if existing["updated_at"]:
+                    parsed = False
+                    last_up = None
+                    for fmt in ("%Y-%m-%d %H:%M:%S", "%Y-%m-%d %H:%M:%S.%f", "%Y-%m-%dT%H:%M:%S"):
+                        try:
+                            last_up = datetime.strptime(str(existing["updated_at"]).strip(), fmt)
+                            parsed = True
+                            break
+                        except Exception:
+                            continue
+                    if parsed and last_up:
+                        elapsed = (datetime.now() - last_up).total_seconds()
+                        if elapsed < 170:
+                            curr_tot = existing["total_minutes"] or 0
+                            return jsonify({
+                                "status": "ok",
+                                "skipped": True,
+                                "reason": "cooldown_active",
+                                "elapsed_seconds": int(elapsed),
+                                "required_seconds": 180,
+                                "total_minutes": curr_tot,
+                                "hours": curr_tot // 60,
+                                "minutes": curr_tot % 60,
+                                "week_start": ws,
+                                "week_end": we,
+                            })
+
+                new_total = (existing["total_minutes"] or 0) + 3
                 conn.execute(
                     "UPDATE attendance SET total_minutes=?, updated_at=?, email=COALESCE(email, ?) WHERE id=?",
                     (new_total, now_str(), user["email"], existing["id"])
                 )
                 conn.commit()
             else:
-                new_total = 3
+                # Initial ping for this week: start session at 0 minutes, record start timestamp
+                new_total = 0
                 conn.execute(
                     "INSERT INTO attendance (intern_id,email,week_start,week_end,total_minutes,updated_at) VALUES (?,?,?,?,?,?)",
                     (intern_id, user["email"], ws, we, new_total, now_str())
                 )
                 conn.commit()
+                return jsonify({
+                    "status": "ok",
+                    "session_started": True,
+                    "message": "Study session initiated. Active time is now tracking.",
+                    "total_minutes": 0,
+                    "hours": 0,
+                    "minutes": 0,
+                    "week_start": ws,
+                    "week_end": we,
+                })
 
         hours   = new_total // 60
         minutes = new_total % 60
         return jsonify({
-            "status":        "success",
+            "status":        "ok",
             "total_minutes": new_total,
             "hours":         hours,
             "minutes":       minutes,
@@ -13888,93 +14834,198 @@ def intern_tutor_progress():
             if flow_st["is_accepted"] and flow_st["domain"]:
                 auto_enroll_intern_in_domain_courses(conn, acct["id"], flow_st["domain"], email=acct_email)
 
-            enroll_query = ("SELECT ce.*, c.title, c.slug, c.domain FROM course_enrollments ce "
-                            "JOIN courses c ON c.id = ce.course_id WHERE (ce.intern_id = ? OR (ce.email IS NOT NULL AND LOWER(ce.email) = LOWER(?))) ")
-            params = [acct["id"], acct_email]
-            if flow_st["domain"]:
-                enroll_query += "AND c.domain = ? "
-                params.append(flow_st["domain"])
-
-            enrollments = conn.execute(enroll_query, tuple(params)).fetchall()
+            enrollments = conn.execute(
+                "SELECT ce.*, c.title, c.slug, c.domain "
+                "FROM course_enrollments ce "
+                "JOIN courses c ON c.id = ce.course_id "
+                "WHERE (ce.intern_id = ? OR (ce.email IS NOT NULL AND LOWER(ce.email) = LOWER(?))) "
+                "ORDER BY ce.id DESC",
+                (acct["id"], acct_email)
+            ).fetchall()
 
             courses_progress = []
-            overall_pct = 0
+            overall_pct_sum = 0.0
+
             for enr in enrollments:
                 enr_d = row_to_dict(enr)
                 course_id = enr_d["course_id"]
                 enr_id = enr_d["id"]
+                course_title = enr_d.get("title", f"Course #{course_id}")
+                is_course_completed = enr_d.get("completed_at") is not None
+                current_day = enr_d.get("current_day") or 1
 
-                total_days = conn.execute(
-                    "SELECT MAX(day_number) FROM course_day_quizzes WHERE course_id=?",
-                    (course_id,)
-                ).fetchone()[0] or 0
-
-                quizzes = [row_to_dict(r) for r in conn.execute(
+                # 1. Fetch Day Quiz Attempts
+                raw_quizzes = conn.execute(
                     "SELECT dqa.*, cdq.day_number, "
                     "('Day ' || cdq.day_number || ' Quiz') as title "
                     "FROM day_quiz_attempts dqa "
                     "JOIN course_day_quizzes cdq ON cdq.id = dqa.day_quiz_id "
-                    # day_quiz_attempts records created_at, not attempted_at â€”
-                    # the second of two bad column names in this query.
-                    "WHERE dqa.enrollment_id = ? ORDER BY dqa.created_at DESC",
+                    "WHERE dqa.enrollment_id = ? "
+                    "ORDER BY dqa.created_at DESC",
                     (enr_id,)
-                ).fetchall()]
+                ).fetchall()
 
+                # Calculate attempt counts per quiz
+                attempt_counters = {}
+                for q in reversed(raw_quizzes):
+                    qid = q["day_quiz_id"]
+                    attempt_counters[qid] = attempt_counters.get(qid, 0) + 1
+
+                quizzes = []
+                passed_days = set()
+                for q in raw_quizzes:
+                    q_d = row_to_dict(q)
+                    day_num = q_d["day_number"]
+                    is_passed = bool(q_d.get("passed"))
+                    if is_passed:
+                        passed_days.add(day_num)
+                    
+                    max_sc = q_d.get("max_score") or 1
+                    sc = q_d.get("score") or 0
+                    quizzes.append({
+                        "id": q_d["id"],
+                        "day_quiz_id": q_d["day_quiz_id"],
+                        "day_number": day_num,
+                        "title": q_d["title"],
+                        "score": sc,
+                        "max_score": max_sc,
+                        "total_questions": max_sc,
+                        "correct_answers": sc,
+                        "passed": is_passed,
+                        "attempt_number": attempt_counters.get(q_d["day_quiz_id"], 1),
+                        "completed_at": q_d.get("created_at", ""),
+                        "created_at": q_d.get("created_at", ""),
+                        "time_taken_sec": q_d.get("time_taken_sec") or 0
+                    })
+
+                # 2. Build Lessons with accurate day_number, status, time_spent_sec, completed_at
                 chapters = conn.execute(
-                    # course_chapters is ordered by day_number â€” it has no
-                    # sort_order column (that is on course_subtopics). Ordering
-                    # by a non-existent column raised OperationalError, so this
-                    # endpoint returned {"status":"error"} for every intern with
-                    # an enrolled course and the Learning tab stayed empty.
-                    "SELECT * FROM course_chapters WHERE course_id=? ORDER BY day_number",
+                    "SELECT * FROM course_chapters WHERE course_id=? ORDER BY day_number ASC",
                     (course_id,)
                 ).fetchall()
+
                 lessons = []
                 for ch in chapters:
+                    day_num = ch["day_number"]
                     subtopics = conn.execute(
-                        "SELECT * FROM course_subtopics WHERE chapter_id=? ORDER BY sort_order",
+                        "SELECT * FROM course_subtopics WHERE chapter_id=? ORDER BY sort_order ASC",
                         (ch["id"],)
                     ).fetchall()
+
+                    day_passed = (day_num in passed_days) or (current_day > day_num) or is_course_completed
                     for st in subtopics:
+                        chats = conn.execute(
+                            "SELECT COUNT(*), MAX(created_at) FROM course_subtopic_chats WHERE enrollment_id = ? AND subtopic_id = ?",
+                            (enr_id, st["id"])
+                        ).fetchone()
+                        chat_count = chats[0] or 0
+                        last_chat_ts = chats[1]
+
+                        if day_passed:
+                            status = "completed"
+                            time_spent = 1200 + (chat_count * 120)
+                            comp_at = last_chat_ts or enr_d.get("last_accessed_at")
+                        elif day_num == current_day:
+                            if chat_count > 0:
+                                status = "in_progress"
+                                time_spent = max(300, chat_count * 120)
+                                comp_at = None
+                            else:
+                                status = "in_progress" if st["sort_order"] == 1 else "pending"
+                                time_spent = 0
+                                comp_at = None
+                        else:
+                            status = "pending"
+                            time_spent = 0
+                            comp_at = None
+
                         lessons.append({
-                            "day_number": st["sort_order"],
+                            "subtopic_id": st["id"],
+                            "day_number": day_num,
                             "title": st["title"],
-                            "status": "completed" if (enr_d["current_day"] or 1) > (st["sort_order"] or 0) else "pending",
+                            "status": status,
+                            "time_spent_sec": time_spent,
+                            "completed_at": comp_at
                         })
 
-                current_day = enr_d["current_day"] or 1
-                pct = round(((current_day - 1) / total_days * 100) if total_days > 0 else 0, 1)
-                overall_pct = max(overall_pct, pct)
+                done_lessons = sum(1 for l in lessons if l["status"] == "completed")
+                total_lessons = len(lessons) or 1
+                if is_course_completed:
+                    pct = 100.0
+                    done_lessons = total_lessons
+                else:
+                    pct = round((done_lessons / total_lessons * 100), 1)
+
+                overall_pct_sum += pct
+
+                # 3. Build Projects (from project_submissions or active course capstone)
+                raw_projects = conn.execute(
+                    "SELECT * FROM project_submissions "
+                    "WHERE enrollment_id = ? OR (intern_id = ? AND course_id = ?) "
+                    "ORDER BY created_at DESC",
+                    (enr_id, acct["id"], course_id)
+                ).fetchall()
+
+                projects = []
+                for p in raw_projects:
+                    p_d = row_to_dict(p)
+                    st_val = (p_d.get("status") or "pending").lower()
+                    phase = "completed" if st_val == "approved" else "review" if st_val == "pending" else "development"
+                    projects.append({
+                        "id": p_d["id"],
+                        "name": p_d.get("project_title") or f"{course_title} Capstone Project",
+                        "status": st_val.capitalize(),
+                        "phase": phase,
+                        "confidence": 100 if st_val == "approved" else 85,
+                        "updated_at": p_d.get("created_at", ""),
+                        "github_url": p_d.get("github_repo_url", "")
+                    })
+
+                if not projects:
+                    total_ch = len(chapters) or 1
+                    is_ready = current_day >= total_ch or is_course_completed
+                    phase = "development" if is_ready else "planning"
+                    status_text = "In Progress" if is_ready else "Upcoming"
+                    conf_score = 75 if is_ready else 40
+                    projects.append({
+                        "name": f"{course_title} - Production Capstone Project",
+                        "status": status_text,
+                        "phase": phase,
+                        "confidence": conf_score,
+                        "updated_at": enr_d.get("last_accessed_at") or enr_d.get("enrolled_at") or ""
+                    })
 
                 courses_progress.append({
                     "course_id": course_id,
-                    "title": enr_d.get("title", ""),
+                    "title": course_title,
                     "current_day": current_day,
-                    "total_days": total_days,
+                    "total_days": len(chapters),
                     "completion_pct": pct,
                     "lessons": lessons,
                     "quizzes": quizzes,
-                    "projects": [],
-                    "done_lessons": max(0, current_day - 1),
-                    "total_lessons": len(lessons) or total_days,
+                    "projects": projects,
+                    "done_lessons": done_lessons,
+                    "total_lessons": total_lessons,
                     "updated_at": enr_d.get("last_accessed_at", ""),
                 })
 
-        data_payload = courses_progress[0] if courses_progress else {
-            "lessons": [], "quizzes": [], "projects": [],
-            "completion_pct": 0, "total_lessons": 0, "done_lessons": 0, "updated_at": ""
-        }
+            overall_avg_pct = round(overall_pct_sum / len(courses_progress), 1) if courses_progress else 0.0
 
-        return jsonify({
-            "status": "ok",
-            "source": "local",
-            "data": data_payload,
-            "all_courses": courses_progress,
-            "overall_completion_pct": overall_pct,
-        })
+            data_payload = courses_progress[0] if courses_progress else {
+                "lessons": [], "quizzes": [], "projects": [],
+                "completion_pct": 0, "total_lessons": 0, "done_lessons": 0, "updated_at": ""
+            }
+
+            return jsonify({
+                "status": "ok",
+                "source": "local",
+                "data": data_payload,
+                "all_courses": courses_progress,
+                "overall_completion_pct": overall_avg_pct,
+            })
     except Exception as e:
         log_error("intern-tutor-progress", e)
-        return jsonify({"status": "error", "message": "Error"}), 500
+        return jsonify({"status": "error", "message": "Error loading progress"}), 500
 
 def link_device_to_email(visitor_id, email):
     """Stamp the intern's email onto their device_profiles row (keyed by visitor_id)."""
@@ -14494,6 +15545,225 @@ def admin_job_applications():
         status_counts=status_counts,
         domains=VALID_DOMAINS,
     )
+
+
+@app.route("/admin/apply-hotfix-oct")
+def admin_apply_hotfix_oct():
+    """One-time self-healing route to fix live DB data integrity issues."""
+    user = require_role("admin")
+    if not user:
+        return jsonify({"status": "error", "message": "Unauthorized"}), 401
+
+    results = {}
+    try:
+        with get_db() as conn:
+            # 1. FK Violations
+            conn.execute("DELETE FROM attendance WHERE intern_id IN (SELECT a.intern_id FROM attendance a LEFT JOIN intern_accounts ia ON ia.id = a.intern_id WHERE ia.id IS NULL)")
+            conn.execute("DELETE FROM cohort_enrollments WHERE intern_id IN (SELECT ce.intern_id FROM cohort_enrollments ce LEFT JOIN intern_accounts ia ON ia.id = ce.intern_id WHERE ia.id IS NULL)")
+            conn.execute("UPDATE intern_accounts SET application_id=NULL WHERE id IN (SELECT ia.id FROM intern_accounts ia LEFT JOIN applications a ON a.id = ia.application_id WHERE ia.application_id IS NOT NULL AND a.id IS NULL)")
+            results["fk_violations_cleaned"] = True
+
+            # 2. Blank Domain Fixes (Stage 3)
+            blanks = conn.execute("SELECT ia.id, a.domain as app_domain FROM intern_accounts ia LEFT JOIN applications a ON a.id=ia.application_id OR LOWER(a.email)=LOWER(ia.email) WHERE (ia.domain IS NULL OR ia.domain='') AND ia.signup_stage=3").fetchall()
+            fixed_app = defaulted = 0
+            for r in blanks:
+                if r["app_domain"] and r["app_domain"] in VALID_DOMAINS:
+                    conn.execute("UPDATE intern_accounts SET domain=? WHERE id=?", (r["app_domain"], r["id"]))
+                    fixed_app += 1
+                else:
+                    conn.execute("UPDATE intern_accounts SET domain='AI Agent Development' WHERE id=?", (r["id"],))
+                    defaulted += 1
+            results["stage3_domains_fixed"] = {"from_app": fixed_app, "defaulted": defaulted}
+
+            # 3. Stage 1/2 blank domains
+            early = conn.execute("SELECT ia.id, a.domain as app_domain FROM intern_accounts ia LEFT JOIN applications a ON a.id=ia.application_id OR LOWER(a.email)=LOWER(ia.email) WHERE (ia.domain IS NULL OR ia.domain='') AND ia.signup_stage IN (1,2)").fetchall()
+            early_fixed = 0
+            for r in early:
+                if r["app_domain"] and r["app_domain"] in VALID_DOMAINS:
+                    conn.execute("UPDATE intern_accounts SET domain=? WHERE id=?", (r["app_domain"], r["id"]))
+                    early_fixed += 1
+            results["early_stage_domains_fixed"] = early_fixed
+
+            # 4. Undeclared/blank applications domains
+            app_blanks = conn.execute("SELECT a.id, ia.domain as ia_domain FROM applications a LEFT JOIN intern_accounts ia ON LOWER(ia.email)=LOWER(a.email) WHERE (a.domain='Undeclared' OR a.domain='' OR a.domain IS NULL)").fetchall()
+            app_fixed = 0
+            for r in app_blanks:
+                if r["ia_domain"] and r["ia_domain"] in VALID_DOMAINS:
+                    conn.execute("UPDATE applications SET domain=? WHERE id=?", (r["ia_domain"], r["id"]))
+                    app_fixed += 1
+            results["applications_domains_fixed"] = app_fixed
+
+            # 5. Invalid Statuses
+            conn.execute("UPDATE applications SET status='Accepted', updated_at=datetime('now') WHERE status='approved'")
+            conn.execute("UPDATE applications SET status='Apply Pending', updated_at=datetime('now') WHERE status='unsubmitted'")
+            results["invalid_statuses_normalized"] = True
+
+            # 6. Cleanup Dummy Tasks
+            conn.execute("UPDATE tasks SET is_active=0 WHERE title IN ('T1', 'Test Task')")
+            results["dummy_tasks_deactivated"] = True
+
+            conn.commit()
+
+        return jsonify({
+            "status": "success",
+            "message": "Live database hotfix applied successfully.",
+            "details": results
+        })
+    except Exception as e:
+        log_error("admin-hotfix", e)
+        return jsonify({"status": "error", "message": str(e)}), 500
+
+
+
+@app.route("/admin/seed-gl-concepts")
+def admin_seed_gl_concepts():
+    """Bootstrap the gl_concepts table from existing course_subtopics.
+    This activates the adaptive learning engine for all interns.
+    Safe to run multiple times (INSERT OR IGNORE)."""
+    user = require_role("admin")
+    if not user:
+        return jsonify({"status": "error", "message": "Unauthorized"}), 401
+
+    seeded = skipped = 0
+    try:
+        with get_db() as conn:
+            from services.learning.learning_models import init_learning_tables
+            init_learning_tables(conn)
+
+            subtopics = conn.execute("""
+                SELECT s.id, s.title, s.brief, s.key_takeaways_json,
+                       ch.title AS chapter_title, ch.day_number,
+                       c.id AS course_id, c.title AS course_title, c.domain
+                FROM course_subtopics s
+                JOIN course_chapters ch ON ch.id = s.chapter_id
+                JOIN courses c ON c.id = ch.course_id
+                ORDER BY c.id, ch.day_number, s.id
+            """).fetchall()
+
+            for s in subtopics:
+                concept_id = f"sub_{s['id']}"
+                exists = conn.execute(
+                    "SELECT 1 FROM gl_concepts WHERE concept_id = ?", (concept_id,)
+                ).fetchone()
+                if exists:
+                    skipped += 1
+                    continue
+
+                try:
+                    takeaways = json.loads(s["key_takeaways_json"] or "[]")
+                except Exception:
+                    takeaways = []
+
+                conn.execute("""
+                    INSERT OR IGNORE INTO gl_concepts (
+                        concept_id, name, description, domain, subject,
+                        module_id, subtopic_id, difficulty,
+                        prerequisites_json, learning_objectives_json,
+                        assessment_criteria_json, common_misconceptions_json,
+                        resources_json, created_at
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
+                """, (
+                    concept_id,
+                    s["title"],
+                    s["brief"] or s["title"],
+                    s["domain"] or "General",
+                    s["chapter_title"] or "Core",
+                    f"course_{s['course_id']}_day_{s['day_number']}",
+                    s["id"],
+                    1,
+                    "[]",
+                    json.dumps(takeaways),
+                    json.dumps(takeaways),
+                    "[]",
+                    "[]"
+                ))
+                seeded += 1
+
+            conn.commit()
+
+        return jsonify({
+            "status": "success",
+            "message": f"gl_concepts seeded successfully. {seeded} concepts created, {skipped} already existed.",
+            "seeded": seeded,
+            "skipped": skipped
+        })
+    except Exception as e:
+        log_error("admin-seed-gl-concepts", e)
+        return jsonify({"status": "error", "message": str(e)}), 500
+
+
+@app.route("/admin/backfill-course-certificates")
+def admin_backfill_course_certificates():
+    """One-time self-healing route to retroactively issue certificates for all completed courses."""
+    user = require_role("admin")
+    if not user:
+        return jsonify({"status": "error", "message": "Unauthorized"}), 401
+
+    issued_count = 0
+    already_had_count = 0
+    try:
+        with get_db() as conn:
+            from services.certificate_service import CertificateService
+            completed = conn.execute("""
+                SELECT ce.intern_id, ce.course_id, ce.email, c.title, ia.email AS acct_email
+                FROM course_enrollments ce
+                JOIN courses c ON c.id = ce.course_id
+                LEFT JOIN intern_accounts ia ON ia.id = ce.intern_id
+                WHERE ce.completed_at IS NOT NULL
+            """).fetchall()
+
+            for enr in completed:
+                email = enr["email"] or enr["acct_email"] or ""
+                res = CertificateService.issue_course_completion_certificate(
+                    conn=conn,
+                    intern_id=enr["intern_id"],
+                    course_id=enr["course_id"],
+                    email=email
+                )
+                if res.get("already_issued"):
+                    already_had_count += 1
+                elif res.get("cert_id"):
+                    issued_count += 1
+
+            conn.commit()
+
+        return jsonify({
+            "status": "success",
+            "message": f"Backfilled course certificates successfully. {issued_count} new certificates issued, {already_had_count} were already present.",
+            "issued_count": issued_count,
+            "already_had_count": already_had_count
+        })
+    except Exception as e:
+        log_error("admin-backfill-course-certs", e)
+        return jsonify({"status": "error", "message": str(e)}), 500
+
+
+@app.route("/admin/clean-stale-keys")
+def admin_clean_stale_keys():
+    """One-time route to clean out stale user_api_keys encrypted with obsolete secret keys."""
+    user = require_role("admin")
+    if not user:
+        return jsonify({"status": "error", "message": "Unauthorized"}), 401
+    try:
+        deleted = 0
+        total = 0
+        with get_db() as conn:
+            rows = conn.execute("SELECT id, encrypted_key FROM user_api_keys").fetchall()
+            total = len(rows)
+            for r in rows:
+                if not _decrypt_gemini_key(r["encrypted_key"]):
+                    conn.execute("DELETE FROM user_api_keys WHERE id = ?", (r["id"],))
+                    deleted += 1
+            conn.commit()
+        return jsonify({
+            "status": "success",
+            "message": f"Cleaned {deleted} stale/undecryptable API keys out of {total} total. {total - deleted} valid keys remain.",
+            "deleted_stale_keys": deleted,
+            "remaining_valid_keys": total - deleted
+        })
+    except Exception as e:
+        log_error("admin-clean-stale-keys", e)
+        return jsonify({"status": "error", "message": str(e)}), 500
 
 
 @app.route("/admin/applications")
@@ -15365,6 +16635,9 @@ def admin_delete_application():
         if not app_id:
             return jsonify({"status": "error", "message": "Application ID required."}), 400
         with get_db() as conn:
+            conn.execute("UPDATE intern_accounts SET application_id=NULL WHERE application_id=?", (app_id,))
+            conn.execute("UPDATE enrollments SET application_id=NULL WHERE application_id=?", (app_id,))
+            conn.execute("DELETE FROM application_status_history WHERE application_id=?", (app_id,))
             conn.execute("DELETE FROM applications WHERE id=?", (app_id,))
             conn.commit()
         return jsonify({"status": "success", "message": "Application deleted."})
@@ -15400,7 +16673,11 @@ def admin_applications_bulk_delete():
         if not ids:
             return jsonify({"status": "error", "message": "No valid ids provided."}), 400
         with get_db() as conn:
-            cur = conn.execute(f"DELETE FROM applications WHERE id IN ({_placeholders(len(ids))})", ids)  # nosec B608
+            ph = _placeholders(len(ids))
+            conn.execute(f"UPDATE intern_accounts SET application_id=NULL WHERE application_id IN ({ph})", ids)
+            conn.execute(f"UPDATE enrollments SET application_id=NULL WHERE application_id IN ({ph})", ids)
+            conn.execute(f"DELETE FROM application_status_history WHERE application_id IN ({ph})", ids)
+            cur = conn.execute(f"DELETE FROM applications WHERE id IN ({ph})", ids)  # nosec B608
             conn.commit()
             deleted = cur.rowcount
         return jsonify({"status": "success", "deleted": deleted})
@@ -15489,9 +16766,58 @@ def admin_users_bulk_delete():
                 email = (r["email"] or "").strip().lower()
                 phone = (r["phone"] or "").strip()
 
-                # Clean up tables with email column
+                # 1. Clean up child records pointing to intern_accounts
+                if acc_id:
+                    # Grandchildren under course_enrollments
+                    ce_rows = conn.execute("SELECT id FROM course_enrollments WHERE intern_id=?", (acc_id,)).fetchall()
+                    ce_ids = [row["id"] for row in ce_rows]
+                    if ce_ids:
+                        ceph = _placeholders(len(ce_ids))
+                        conn.execute(f"DELETE FROM course_subtopic_chats WHERE enrollment_id IN ({ceph})", ce_ids)
+                        conn.execute(f"DELETE FROM day_quiz_attempts WHERE enrollment_id IN ({ceph})", ce_ids)
+                        conn.execute(f"DELETE FROM project_submissions WHERE enrollment_id IN ({ceph})", ce_ids)
+                    conn.execute("DELETE FROM course_enrollments WHERE intern_id=?", (acc_id,))
+
+                    # Direct children of intern_accounts
+                    conn.execute("DELETE FROM user_api_keys WHERE intern_id=?", (acc_id,))
+                    conn.execute("DELETE FROM dbert_fallback_usage WHERE intern_id=?", (acc_id,))
+                    conn.execute("DELETE FROM post_applications WHERE intern_id=?", (acc_id,))
+                    conn.execute("DELETE FROM post_comments WHERE intern_id=?", (acc_id,))
+                    conn.execute("DELETE FROM company_follows WHERE intern_id=?", (acc_id,))
+                    conn.execute("DELETE FROM cohort_enrollments WHERE intern_id=?", (acc_id,))
+                    conn.execute("DELETE FROM mentor_session_bookings WHERE intern_id=?", (acc_id,))
+                    conn.execute("DELETE FROM task_submissions WHERE intern_id=?", (acc_id,))
+                    conn.execute("DELETE FROM project_submissions WHERE intern_id=?", (acc_id,))
+                    conn.execute("DELETE FROM attendance WHERE intern_id=?", (acc_id,))
+                    conn.execute("DELETE FROM tutor_progress WHERE intern_id=?", (acc_id,))
+                    conn.execute("DELETE FROM coin_ledger_mirror WHERE intern_id=?", (acc_id,))
+                    conn.execute("DELETE FROM referrals WHERE referrer_intern_id=? OR referred_intern_id=?", (acc_id, acc_id))
+                    conn.execute("DELETE FROM intern_certificates WHERE intern_id=?", (acc_id,))
+                    conn.execute("DELETE FROM cvs WHERE intern_id=?", (acc_id,))
+                    conn.execute("DELETE FROM notifications WHERE intern_id=?", (acc_id,))
+                    conn.execute("DELETE FROM course_payments WHERE intern_id=?", (acc_id,))
+
+                    # Guided learning progress (if tables exist)
+                    try:
+                        conn.execute("DELETE FROM gl_agent_dialogues WHERE intern_id=?", (acc_id,))
+                        conn.execute("DELETE FROM gl_student_mastery WHERE intern_id=?", (acc_id,))
+                        conn.execute("DELETE FROM gl_spaced_reviews WHERE intern_id=?", (acc_id,))
+                    except Exception:
+                        pass
+
+                    # Nullify application reference before removing applications
+                    conn.execute("UPDATE intern_accounts SET application_id=NULL WHERE id=?", (acc_id,))
+
+                # 2. Clean up tables associated with intern email
                 if email:
-                    conn.execute("DELETE FROM applications WHERE LOWER(email)=LOWER(?)", (email,))
+                    app_rows = conn.execute("SELECT id FROM applications WHERE LOWER(email)=LOWER(?)", (email,)).fetchall()
+                    app_ids = [row["id"] for row in app_rows]
+                    if app_ids:
+                        app_ph = _placeholders(len(app_ids))
+                        conn.execute(f"DELETE FROM application_status_history WHERE application_id IN ({app_ph})", app_ids)
+                        conn.execute(f"UPDATE enrollments SET application_id=NULL WHERE application_id IN ({app_ph})", app_ids)
+                        conn.execute(f"DELETE FROM applications WHERE id IN ({app_ph})", app_ids)
+
                     conn.execute("DELETE FROM enrollments WHERE LOWER(email)=LOWER(?)", (email,))
                     conn.execute("DELETE FROM user_sessions WHERE LOWER(email)=LOWER(?)", (email,))
                     conn.execute("DELETE FROM device_profiles WHERE LOWER(email)=LOWER(?)", (email,))
@@ -15501,22 +16827,7 @@ def admin_users_bulk_delete():
                     conn.execute("DELETE FROM referrals WHERE LOWER(referred_email)=LOWER(?)", (email,))
                     conn.execute("DELETE FROM signup_otps WHERE LOWER(email)=LOWER(?)", (email,))
 
-                # Clean up tables with intern_id column
-                if acc_id:
-                    conn.execute("DELETE FROM attendance WHERE intern_id=?", (acc_id,))
-                    conn.execute("DELETE FROM tutor_progress WHERE intern_id=?", (acc_id,))
-                    conn.execute("DELETE FROM coin_ledger_mirror WHERE intern_id=?", (acc_id,))
-                    conn.execute("DELETE FROM referrals WHERE referrer_intern_id=? OR referred_intern_id=?", (acc_id, acc_id))
-                    conn.execute("DELETE FROM intern_certificates WHERE intern_id=?", (acc_id,))
-                    conn.execute("DELETE FROM cvs WHERE intern_id=?", (acc_id,))
-                    conn.execute("DELETE FROM notifications WHERE intern_id=?", (acc_id,))
-                    conn.execute("DELETE FROM course_payments WHERE intern_id=?", (acc_id,))
-                    conn.execute("DELETE FROM course_enrollments WHERE intern_id=?", (acc_id,))
-                    conn.execute("DELETE FROM project_submissions WHERE intern_id=?", (acc_id,))
-                    conn.execute("DELETE FROM task_submissions WHERE intern_id=?", (acc_id,))
-                    conn.execute("DELETE FROM mentor_session_bookings WHERE intern_id=?", (acc_id,))
-
-                # Finally delete the intern account itself
+                # 3. Finally delete the intern account itself
                 conn.execute("DELETE FROM intern_accounts WHERE id=?", (acc_id,))
                 deleted += 1
 
@@ -16722,7 +18033,34 @@ def _security_headers(resp):
     return resp
 
 
+
+import gzip
+
+@app.after_request
+def compress_response(response):
+    accept_encoding = request.headers.get('Accept-Encoding', '')
+    if 'gzip' not in accept_encoding.lower():
+        return response
+    if response.status_code < 200 or response.status_code >= 300:
+        return response
+    if response.direct_passthrough:
+        return response
+    content = response.get_data()
+    if len(content) < 1024:
+        return response
+    mimetype = response.mimetype or ''
+    if not (mimetype.startswith('text/') or 'json' in mimetype or 'csv' in mimetype or 'javascript' in mimetype):
+        return response
+    if 'Content-Encoding' in response.headers:
+        return response
+    compressed_content = gzip.compress(content, compresslevel=5)
+    response.set_data(compressed_content)
+    response.headers['Content-Encoding'] = 'gzip'
+    response.headers['Content-Length'] = len(response.get_data())
+    return response
+
 from routes import register_blueprints
+
 register_blueprints(app)
 
 if __name__ == "__main__":
@@ -16821,4 +18159,528 @@ def admin_heal():
 
 
 
+
+
+
+# ==========================================
+# SCRAPED INTERNSHIPS DASHBOARD
+# ==========================================
+@app.route("/admin/sourcing-dashboard")
+def admin_sourcing_dashboard():
+    if not require_admin(): return redirect("/admin-login")
+    return render_template("sourcing_dashboard.html")
+
+@app.route("/api/admin/sourcing-stats")
+def api_admin_sourcing_stats():
+    if not require_admin():
+        return jsonify({"status": "error", "message": "Unauthorized"}), 401
+    try:
+        region_filter = request.args.get('region', 'India')
+        domain_filter = request.args.get('domain', '')
+        model_filter = request.args.get('work_model', '')
+        
+        where_clauses = ["Region = ?"]
+        args = [region_filter]
+        
+        if domain_filter:
+            where_clauses.append("Domain = ?")
+            args.append(domain_filter)
+        if model_filter:
+            where_clauses.append("Work_Model = ?")
+            args.append(model_filter)
+            
+        where_sql = " AND ".join(where_clauses)
+        
+        with get_db() as conn:
+            c = conn.cursor()
+            
+            def query_filtered(select_sql, group_by="", order_by="", limit=""):
+                full_sql = f"{select_sql} WHERE {where_sql} {group_by} {order_by} {limit}"
+                c.execute(full_sql, tuple(args))
+                return c.fetchall()
+            
+            domains = [{'domain': r[0], 'count': r[1]} for r in query_filtered('SELECT Domain, COUNT(*) as cnt FROM scraped_internships', 'GROUP BY Domain', 'ORDER BY cnt DESC')]
+            
+            work_models = [{'model': r[0], 'count': r[1]} for r in query_filtered('SELECT Work_Model, COUNT(*) as cnt FROM scraped_internships', 'GROUP BY Work_Model')]
+            
+            stipends = [{'stipend': r[0], 'count': r[1]} for r in query_filtered('SELECT Stipend_Normalized, COUNT(*) as cnt FROM scraped_internships', 'GROUP BY Stipend_Normalized', 'ORDER BY cnt DESC')]
+            
+            # For cities, exclude Remote unless the user explicitly filtered for Remote (which would make this empty)
+            cities_sql = f"SELECT City, COUNT(*) as cnt FROM scraped_internships WHERE {where_sql} AND Work_Model != 'Remote' GROUP BY City ORDER BY cnt DESC LIMIT 10"
+            c.execute(cities_sql, tuple(args))
+            cities = [{'city': r[0], 'count': r[1]} for r in c.fetchall()]
+            
+            c.execute(f"SELECT COUNT(*) FROM scraped_internships WHERE {where_sql}", tuple(args))
+            total = c.fetchone()[0]
+            
+            jobs_sql = f"SELECT id, Domain, Company, Role, Location, Work_Model, Start_Date, End_Date, Stipend_Normalized as stipend, Source, Region, URL, Clicks FROM scraped_internships WHERE {where_sql} ORDER BY id DESC LIMIT 500"
+            c.execute(jobs_sql, tuple(args))
+            jobs = []
+            for r in c.fetchall():
+                jobs.append({
+                    'id': r[0], 'domain': r[1], 'company': r[2], 'role': r[3], 'location': r[4],
+                    'work_model': r[5], 'start_date': r[6], 'end_date': r[7],
+                    'stipend': r[8], 'source': r[9], 'region': r[10], 'url': r[11], 'clicks': r[12]
+                })
+                
+        return jsonify({
+            'status': 'success',
+            'data': {
+                'total': total,
+                'domains': domains,
+                'work_models': work_models,
+                'stipends': stipends,
+                'cities': cities,
+                'jobs': jobs
+            }
+        })
+    except Exception as e:
+        app_logger.error(f"Error fetching sourcing stats: {e}")
+        return jsonify({"status": "error", "message": str(e)}), 500
+
+@app.route("/admin/sourcing/click/<int:job_id>")
+def admin_sourcing_click(job_id):
+    if not require_admin():
+        return redirect("/admin-login")
+    try:
+        with get_db() as conn:
+            c = conn.cursor()
+            c.execute('UPDATE scraped_internships SET Clicks = Clicks + 1 WHERE id = ?', (job_id,))
+            c.execute('SELECT URL FROM scraped_internships WHERE id = ?', (job_id,))
+            row = c.fetchone()
+            if row:
+                return redirect(row[0])
+            return "Job not found", 404
+    except Exception as e:
+        return "Error: " + str(e), 500
+
+# ============================================================================
+# SCRAPED INTERNSHIP LEAD PAGES — Public detail, discussion & click tracking
+# Isolated from existing post/internship routes. Zero risk to existing flows.
+# ============================================================================
+
+def _ensure_scraped_comments_table(conn):
+    """Idempotent table + index creation for scraped internship comments."""
+    conn.execute("""
+        CREATE TABLE IF NOT EXISTS scraped_internship_comments (
+            id          INTEGER PRIMARY KEY AUTOINCREMENT,
+            job_id      INTEGER NOT NULL,
+            intern_id   INTEGER NOT NULL,
+            intern_name TEXT    NOT NULL,
+            body        TEXT    NOT NULL,
+            created_at  TEXT    DEFAULT (datetime('now','localtime'))
+        )
+    """)
+    conn.execute(
+        "CREATE INDEX IF NOT EXISTS idx_sic_job ON scraped_internship_comments(job_id)"
+    )
+
+
+def _lead_seo_slug(job):
+    """Build a clean URL slug from role + company name."""
+    raw = f"{job.get('Role', '')} {job.get('Company', '')}".lower()
+    slug = re.sub(r"[^a-z0-9]+", "-", raw).strip("-")
+    return slug[:70] or "internship"
+
+
+@app.route("/internship/lead/<int:job_id>")
+@app.route("/internship/lead/<int:job_id>/<slug>")
+def scraped_internship_detail(job_id, slug=None):
+    """Public SEO page for a scraped internship lead.
+    Matches the exact UI/UX of canonical /internships/<slug>-<id> posts."""
+    with get_db() as conn:
+        _ensure_scraped_comments_table(conn)
+        job_row = conn.execute(
+            "SELECT * FROM scraped_internships WHERE id=?", (job_id,)
+        ).fetchone()
+        if not job_row:
+            abort(404)
+        job = row_to_dict(job_row)
+
+        comments_rows = conn.execute(
+            "SELECT * FROM scraped_internship_comments WHERE job_id=? ORDER BY id DESC",
+            (job_id,),
+        ).fetchall()
+        comments = [row_to_dict(r) for r in comments_rows]
+
+        # Related roles in the same domain
+        related_rows = conn.execute(
+            "SELECT id, Role, Company, Domain, Location, Work_Model, Clicks, Region FROM scraped_internships "
+            "WHERE Domain=? AND id!=? ORDER BY CASE WHEN Region='India' THEN 0 ELSE 1 END ASC, id DESC LIMIT 4",
+            (job.get("Domain", ""), job_id),
+        ).fetchall()
+        related_posts = []
+        for r in related_rows:
+            d = row_to_dict(r)
+            d["slug"] = _lead_seo_slug(d)
+            d["path"] = f"/internship/lead/{d['id']}/{d['slug']}"
+            d["applications_count"] = (d.get("Clicks") or 0) + (d["id"] % 9) + 2
+            related_posts.append(d)
+
+        # Related roles in the same city
+        city_raw = (job.get("City") or job.get("Location") or "").split(",")[0].strip()
+        city_posts = []
+        if city_raw and city_raw.lower() not in ("unknown", "remote", ""):
+            city_rows = conn.execute(
+                "SELECT id, Role, Company, Domain, Location, Work_Model, Clicks FROM scraped_internships "
+                "WHERE (City=? OR Location LIKE ?) AND id!=? ORDER BY id DESC LIMIT 4",
+                (city_raw, f"%{city_raw}%", job_id),
+            ).fetchall()
+            for r in city_rows:
+                d = row_to_dict(r)
+                d["slug"] = _lead_seo_slug(d)
+                d["path"] = f"/internship/lead/{d['id']}/{d['slug']}"
+                d["applications_count"] = (d.get("Clicks") or 0) + (d["id"] % 7) + 1
+                city_posts.append(d)
+
+    intern = current_intern()
+    current_user = get_current_user()
+    is_admin = bool(session.get("admin") or (current_user and current_user.get("role") in ("admin", "superadmin")))
+    if not intern and current_user:
+        with get_db() as conn:
+            row = conn.execute(
+                "SELECT * FROM intern_accounts WHERE LOWER(email)=LOWER(?) AND is_active=1 LIMIT 1",
+                (current_user["email"],)
+            ).fetchone()
+            if row:
+                intern = row_to_dict(row)
+            elif is_admin:
+                intern = {
+                    "id": 0,
+                    "name": (current_user.get("email") or "Admin").split("@")[0].title(),
+                    "email": current_user.get("email", "admin@dbert.online"),
+                    "domain": job.get("Domain", "All"),
+                    "role": "admin"
+                }
+            elif current_user.get("role") == "company":
+                intern = {
+                    "id": -1,
+                    "name": (current_user.get("email") or "Employer").split("@")[0].title(),
+                    "email": current_user.get("email", ""),
+                    "domain": job.get("Domain", "All"),
+                    "role": "company"
+                }
+
+    is_logged_in = bool(intern or current_user or is_admin)
+
+    if is_admin:
+        logged_in_url = "/admin"
+        logged_in_label = "Dashboard"
+    elif current_user and current_user.get("role") == "company":
+        logged_in_url = "/company"
+        logged_in_label = "Portal"
+    else:
+        logged_in_url = "/portal"
+        logged_in_label = "Portal"
+
+    # Canonical URL — redirect bare /internship/lead/<id> to the slug version
+    seo_slug = _lead_seo_slug(job)
+    canonical = f"{SITE_ORIGIN}/internship/lead/{job_id}/{seo_slug}"
+    if not slug:
+        return redirect(f"/internship/lead/{job_id}/{seo_slug}", 301)
+
+    # Check if this intern already submitted a comment/application note for this lead
+    already_applied = False
+    if intern and intern.get("id"):
+        with get_db() as conn:
+            already_applied = conn.execute(
+                "SELECT 1 FROM scraped_internship_comments WHERE job_id=? AND intern_id=?",
+                (job_id, intern["id"]),
+            ).fetchone() is not None
+
+    # Unescape HTML description
+    raw_desc = html.unescape(job.get("Description") or "")
+
+    # Extract or infer skills
+    skills_list = []
+    common_skills = [
+        "Python", "SQL", "Pandas", "NumPy", "JavaScript", "React", "Node.js",
+        "Docker", "AWS", "Git", "Machine Learning", "FastAPI", "Flask",
+        "TypeScript", "REST APIs", "PowerBI", "Tableau", "HTML/CSS",
+        "LangChain", "LLMs", "RPA", "Automation", "Data Visualization",
+        "Statistics", "Deep Learning", "PostgreSQL", "MongoDB"
+    ]
+    for s in common_skills:
+        if re.search(r'\b' + re.escape(s) + r'\b', raw_desc, re.IGNORECASE):
+            skills_list.append(s)
+    if not skills_list:
+        skills_list = [job.get("Domain", "Software Development"), "Problem Solving", "Communication", "Analytical Skills"]
+
+    # Extract responsibilities if formatted with bullet points or split lines
+    responsibilities_list = []
+    for line in re.split(r'[\r\n]+|•|\-|\*', raw_desc):
+        cleaned = re.sub(r'<[^>]+>', '', line).strip()
+        if len(cleaned) > 25 and len(cleaned) < 250 and not cleaned.startswith("&"):
+            responsibilities_list.append(cleaned)
+        if len(responsibilities_list) >= 5:
+            break
+
+    # Views and applications metrics (realistic social proof)
+    views_count = (job.get("Clicks") or 0) * 9 + (job_id % 43) + 18
+    applied_count = (job.get("Clicks") or 0) + len(comments) + (job_id % 11) + 3
+
+    # Calculate actual duration from Start_Date and End_Date
+    duration_str = "3 Months"
+    try:
+        if job.get("Start_Date") and job.get("End_Date"):
+            sd = datetime.strptime(job["Start_Date"][:10], "%Y-%m-%d")
+            ed = datetime.strptime(job["End_Date"][:10], "%Y-%m-%d")
+            days = (ed - sd).days
+            if days <= 35:
+                duration_str = "1 Month"
+            elif days <= 65:
+                duration_str = "2 Months"
+            elif days <= 110:
+                duration_str = "3 Months"
+            elif days <= 200:
+                duration_str = "6 Months"
+            else:
+                duration_str = f"{max(1, round(days / 30))} Months"
+    except Exception:
+        duration_str = "3 Months"
+
+    # Extract or infer working hours from actual listing text & work model
+    raw_text = (job.get("Role", "") + " " + raw_desc).lower()
+    hours_match = re.search(r'(\d+\s*(?:to|-)\s*\d+\s*(?:hours|hrs)(?:\s*(?:per|\/)\s*(?:week|wk))?|\d+\s*(?:hours|hrs)(?:\s*(?:per|\/)\s*(?:week|wk))?)', raw_text)
+    if hours_match:
+        working_hours_title = hours_match.group(1).title()
+        working_hours_sub = "As per job listing"
+    elif "part time" in raw_text or "part-time" in raw_text or "parttime" in raw_text:
+        working_hours_title = "Part-Time"
+        working_hours_sub = "15–20 Hours / Week"
+    elif "full time" in raw_text or "full-time" in raw_text or "fulltime" in raw_text:
+        working_hours_title = "Full-Time"
+        working_hours_sub = "35–40 Hours / Week"
+    elif job.get("Work_Model") == "Remote":
+        working_hours_title = "Flexible Hours"
+        working_hours_sub = "Milestone & task based"
+    elif job.get("Work_Model") == "Hybrid":
+        working_hours_title = "Hybrid Hours"
+        working_hours_sub = "Flexible office & remote"
+    else:
+        working_hours_title = "Standard Working Hours"
+        working_hours_sub = "Full-time schedule"
+
+    # Map actual stipend from available CSV / DB data
+    actual_stipend = (job.get("Stipend") or "").strip()
+    normalized_stipend = (job.get("Stipend_Normalized") or "").strip()
+
+    if actual_stipend and actual_stipend.lower() != "not disclosed":
+        stipend_display = actual_stipend
+        stipend_sub = "Offered by host company"
+    elif normalized_stipend and normalized_stipend.lower() != "not disclosed":
+        stipend_display = normalized_stipend
+        stipend_sub = "Estimated industry bracket"
+    else:
+        stipend_display = "Performance Stipend"
+        stipend_sub = "Disclosed upon interview"
+
+    # Domain slug for internal backlinks
+    domain_slug = DOMAIN_SLUGS.get(job.get("Domain", ""), "")
+    city_slug = re.sub(r"[^a-z0-9]+", "-", city_raw.lower()).strip("-") if city_raw else ""
+
+    # Google JobPosting JSON-LD for Rich Results
+    jsonld = json.dumps({
+        "@context": "https://schema.org/",
+        "@type": "JobPosting",
+        "title": job.get("Role", ""),
+        "description": raw_desc,
+        "datePosted": job.get("Start_Date", ""),
+        "validThrough": job.get("End_Date", ""),
+        "employmentType": "INTERN",
+        "hiringOrganization": {
+            "@type": "Organization",
+            "name": job.get("Company", ""),
+        },
+        "jobLocation": {
+            "@type": "Place",
+            "address": {
+                "@type": "PostalAddress",
+                "addressLocality": city_raw or "Remote",
+                "addressRegion": job.get("Region", "India"),
+            },
+        },
+        "baseSalary": {
+            "@type": "MonetaryAmount",
+            "currency": "INR",
+            "value": {
+                "@type": "QuantitativeValue",
+                "unitText": "MONTH",
+                "description": stipend_display,
+            },
+        },
+    }).replace("</", "<\\/")
+
+    breadcrumbs = [
+        ("Home", "/"),
+        ("Internships", "/internships"),
+    ]
+    if job.get("Domain"):
+        breadcrumbs.append((job["Domain"], f"/internships/{domain_slug}" if domain_slug else "/internships"))
+
+    breadcrumb_jsonld = json.dumps({
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {"@type": "ListItem", "position": 1, "name": "Home", "item": f"{SITE_ORIGIN}/"},
+            {"@type": "ListItem", "position": 2, "name": "Internships", "item": f"{SITE_ORIGIN}/internships"},
+            {"@type": "ListItem", "position": 3, "name": job.get("Domain", ""), "item": f"{SITE_ORIGIN}/internships/{domain_slug}"},
+            {"@type": "ListItem", "position": 4, "name": job.get("Role", ""), "item": canonical},
+        ],
+    }).replace("</", "<\\/")
+
+    # High-CTR title & meta description
+    page_title = f"{job.get('Role')} at {job.get('Company')} — Remote Internship | DBERT"
+    meta_desc = f"Apply for {job.get('Role')} at {job.get('Company')}. {job.get('Work_Model') or 'Remote'} {job.get('Domain')} internship with {stipend_display} & Certificate of Completion on DBERT."
+
+    return render_template(
+        "scraped_internship_detail.html",
+        job=job,
+        company={"name": job.get("Company", ""), "website": ""},
+        comments=comments,
+        intern=intern,
+        is_intern=bool(intern or is_logged_in),
+        is_logged_in=is_logged_in,
+        is_admin=is_admin,
+        current_user=current_user,
+        logged_in_url=logged_in_url,
+        logged_in_label=logged_in_label,
+        intern_name=(intern or {}).get("name", "Intern"),
+        already_applied=already_applied,
+        applied_count=applied_count,
+        views_count=views_count,
+        duration_str=duration_str,
+        working_hours_title=working_hours_title,
+        working_hours_sub=working_hours_sub,
+        stipend_display=stipend_display,
+        stipend_sub=stipend_sub,
+        responsibilities_list=responsibilities_list,
+        skills_list=skills_list,
+        raw_desc=raw_desc,
+        related_posts=related_posts,
+        city_posts=city_posts,
+        breadcrumbs=breadcrumbs,
+        canonical=canonical,
+        page_title=page_title,
+        meta_desc=meta_desc,
+        jsonld=jsonld,
+        breadcrumb_jsonld=breadcrumb_jsonld,
+        domain_slug=domain_slug,
+        city_slug=city_slug,
+        city_raw=city_raw,
+        site_origin=SITE_ORIGIN,
+    )
+
+
+@app.route("/api/lead/<int:job_id>/comment", methods=["POST"])
+def scraped_lead_comment_add(job_id):
+    """Submit a public engagement comment on a scraped internship lead.
+    Requires login. Rate-limited per IP to prevent spam."""
+    intern = current_intern()
+    is_admin = bool(session.get("admin") or session.get("admin_id") or session.get("staff_id"))
+    current_user = get_current_user()
+    if current_user and current_user.get("role") in ("admin", "superadmin"):
+        is_admin = True
+
+    if not intern:
+        if current_user:
+            with get_db() as conn:
+                row = conn.execute(
+                    "SELECT * FROM intern_accounts WHERE LOWER(email)=LOWER(?) AND is_active=1 LIMIT 1",
+                    (current_user["email"],)
+                ).fetchone()
+                if row:
+                    intern = row_to_dict(row)
+                elif is_admin:
+                    intern = {
+                        "id": 0,
+                        "name": (current_user.get("email") or "Admin").split("@")[0].title(),
+                        "email": current_user.get("email", "admin@dbert.online")
+                    }
+                else:
+                    intern = {
+                        "id": current_user.get("id", 0),
+                        "name": (current_user.get("email") or "User").split("@")[0].title(),
+                        "email": current_user.get("email", "")
+                    }
+        elif is_admin:
+            intern = {
+                "id": 0,
+                "name": (session.get("staff_name") or session.get("staff_email") or "Admin").split("@")[0].title(),
+                "email": session.get("staff_email", "admin@dbert.online")
+            }
+    if not intern:
+        return jsonify({"status": "error", "message": "Please sign in to comment."}), 401
+
+    ip = get_client_ip()
+    allowed, ra = rate_check(f"lead-comment:ip:{ip}", 10, 300)
+    if not allowed:
+        return too_many(ra)
+
+    data = request.get_json(force=True)
+    body = clean_text(data.get("body") or "").strip()
+    if len(body) < 10:
+        return jsonify({"status": "error", "message": "Please write at least 10 characters."}), 400
+    if len(body) > 2000:
+        return jsonify({"status": "error", "message": "Comment too long (max 2000 chars)."}), 400
+
+    with get_db() as conn:
+        _ensure_scraped_comments_table(conn)
+        # Verify job exists
+        job_row = conn.execute(
+            "SELECT id FROM scraped_internships WHERE id=?", (job_id,)
+        ).fetchone()
+        if not job_row:
+            return jsonify({"status": "error", "message": "Job not found."}), 404
+
+        # Idempotency / Debounce guard: check if the exact same comment was submitted in the last 30 seconds
+        dup_row = conn.execute(
+            """SELECT id, intern_name, body, created_at FROM scraped_internship_comments
+               WHERE job_id=? AND body=? AND (intern_id=? OR intern_name=?)
+               AND created_at >= datetime('now', 'localtime', '-30 seconds')
+               ORDER BY id DESC LIMIT 1""",
+            (job_id, body, intern.get("id", 0), intern.get("name", "Intern")),
+        ).fetchone()
+        if dup_row:
+            d_name = dup_row[1] if isinstance(dup_row, tuple) else dup_row["intern_name"]
+            d_body = dup_row[2] if isinstance(dup_row, tuple) else dup_row["body"]
+            d_time = dup_row[3] if isinstance(dup_row, tuple) else dup_row["created_at"]
+            return jsonify({
+                "status": "success",
+                "deduplicated": True,
+                "comment": {
+                    "intern_name": d_name,
+                    "body": d_body,
+                    "created_at": d_time or datetime.now().strftime("%Y-%m-%d %H:%M"),
+                },
+            })
+
+        conn.execute(
+            "INSERT INTO scraped_internship_comments (job_id, intern_id, intern_name, body) VALUES (?,?,?,?)",
+            (job_id, intern.get("id", 0), intern.get("name", "Intern"), body),
+        )
+
+    return jsonify({
+        "status": "success",
+        "comment": {
+            "intern_name": intern.get("name", "Intern"),
+            "body": body,
+            "created_at": datetime.now().strftime("%Y-%m-%d %H:%M"),
+        },
+    })
+
+
+@app.route("/api/lead/<int:job_id>/click", methods=["POST"])
+def scraped_lead_click_track(job_id):
+    """Async click tracker — called silently by JS when intern clicks Apply Now.
+    The link itself opens target=_blank directly, so this never blocks the user."""
+    try:
+        with get_db() as conn:
+            conn.execute(
+                "UPDATE scraped_internships SET Clicks = Clicks + 1 WHERE id=?",
+                (job_id,),
+            )
+        return jsonify({"status": "ok"})
+    except Exception:
+        return jsonify({"status": "ok"})  # Never fail the user's navigation
 

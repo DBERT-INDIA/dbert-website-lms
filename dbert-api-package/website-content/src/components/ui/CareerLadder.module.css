@@ -1,0 +1,187 @@
+/* Horizontal ladder: an amber rail across the top with rungs hanging from it.
+   Replaces the v1 vertical stack. */
+.ladder {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  position: relative;
+  padding-top: 78px;
+}
+
+.ladder::before {
+  content: '';
+  position: absolute;
+  top: 27px;
+  left: calc(12.5% - 10px);
+  right: calc(12.5% - 10px);
+  height: 2px;
+  background: linear-gradient(90deg, rgba(255, 180, 84, .15), var(--signal) 30%, var(--signal) 70%, rgba(255, 180, 84, .15));
+}
+
+.rung {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.node {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--ink);
+  border: 1px solid rgba(255, 180, 84, .45);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-m);
+  font-size: .78rem;
+  color: var(--signal);
+  z-index: 1;
+  position: absolute;
+  top: -78px;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: all .3s var(--ease);
+}
+
+.rung:hover .node {
+  border-color: var(--signal);
+  box-shadow: 0 0 24px rgba(255, 180, 84, .3);
+}
+
+/* Connector dropping from the rail to the card. */
+.rung::after {
+  content: '';
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  width: 1px;
+  height: 24px;
+  background: rgba(255, 180, 84, .35);
+}
+
+.body {
+  flex-grow: 1;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: 24px 22px;
+  transition: all .3s var(--ease);
+  display: flex;
+  flex-direction: column;
+}
+
+.rung:hover .body {
+  border-color: rgba(255, 180, 84, .3);
+  transform: translateY(-4px);
+}
+
+.top {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.body h3 {
+  font-size: 1.06rem;
+}
+
+.phase {
+  font-family: var(--font-m);
+  font-size: .66rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--signal);
+}
+
+.featuredTag {
+  background: rgba(255, 180, 84, .13);
+  color: var(--signal);
+  border-radius: 5px;
+  padding: 2px 9px;
+  font-family: var(--font-m);
+  font-size: .64rem;
+  width: fit-content;
+}
+
+.desc {
+  font-size: .88rem;
+  flex-grow: 1;
+}
+
+.price {
+  font-family: var(--font-m);
+  font-size: .78rem;
+  color: var(--text);
+  margin-top: 10px;
+}
+
+.out {
+  font-size: .82rem;
+  color: var(--text);
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.out svg {
+  width: 15px;
+  height: 15px;
+  color: var(--ok);
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+.cta {
+  margin-top: 16px;
+  width: 100%;
+}
+
+@media (max-width: 1020px) {
+  .ladder {
+    grid-template-columns: 1fr 1fr;
+    gap: 44px 18px;
+  }
+
+  .ladder::before,
+  .rung::after {
+    display: none;
+  }
+}
+
+@media (max-width: 1020px) and (min-width: 621px) {
+  .ladder {
+    padding-top: 0;
+  }
+
+  .node {
+    position: static;
+    transform: none;
+    margin-bottom: 14px;
+  }
+}
+
+@media (max-width: 620px) {
+  .ladder {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding-top: 0;
+  }
+
+  .rung {
+    flex-direction: row;
+    gap: 16px;
+  }
+
+  .node {
+    position: static;
+    transform: none;
+    width: 44px;
+    height: 44px;
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+}

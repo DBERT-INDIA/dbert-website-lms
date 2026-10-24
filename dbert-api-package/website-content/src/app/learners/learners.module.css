@@ -1,0 +1,180 @@
+/* Learners — Option A Cyber-Industrial Foundry
+   Solid single-color background (#050811), clean cyber borders, PR terminal container */
+
+/* ── Hub: domain cards ────────────────────── */
+
+.domainGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-4);
+  margin-bottom: var(--space-8);
+}
+
+.badgeRow {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: var(--space-2);
+}
+
+.badge {
+  font-family: var(--font-m);
+  font-size: 0.7rem;
+  color: var(--accent);
+  background: rgba(0, 229, 255, 0.08);
+  border: 1px solid rgba(0, 229, 255, 0.25);
+  padding: 3px 10px;
+  border-radius: var(--r-sm);
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+.domainTitle {
+  font-family: var(--font-d);
+  font-size: 1.25rem;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.domainDesc {
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.55;
+  margin-bottom: var(--space-2);
+}
+
+.salary {
+  font-family: var(--font-m);
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 0.82rem;
+  margin-bottom: var(--space-2);
+}
+
+.pathLink {
+  font-family: var(--font-m);
+  color: var(--text);
+  font-size: 0.84rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.pathLink:hover {
+  color: var(--accent);
+}
+
+/* ── Terminal Section ─────────────────────── */
+.terminalSection {
+  margin: var(--space-10) 0;
+}
+
+/* ── Hub: next-step cards ─────────────────── */
+
+.nextGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--space-4);
+}
+
+.nextCard {
+  text-align: center;
+  padding: var(--space-6);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+}
+
+.nextDesc {
+  font-size: 0.88rem;
+  color: var(--muted);
+  margin-bottom: var(--space-4);
+  line-height: 1.6;
+}
+
+/* ── Jobs board ───────────────────────────── */
+
+.jobList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.jobCard {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  padding: var(--space-5);
+}
+
+.jobTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.companyTag {
+  font-family: var(--font-m);
+  font-size: 0.72rem;
+  color: var(--accent);
+  border: 1px solid rgba(0, 229, 255, 0.25);
+  background: rgba(0, 229, 255, 0.06);
+  padding: 3px 8px;
+  border-radius: var(--r-sm);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.jobSalary {
+  font-family: var(--font-m);
+  font-size: 0.85rem;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.jobTitle {
+  font-family: var(--font-d);
+  font-size: 1.45rem;
+  color: var(--text);
+  margin: 6px 0;
+}
+
+.jobDesc {
+  font-size: 0.92rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.reqBlock {
+  margin: 8px 0;
+  border-top: 1px solid var(--line);
+  padding-top: 8px;
+}
+
+.reqLabel {
+  font-family: var(--font-m);
+  font-size: 0.78rem;
+  color: var(--text);
+  font-weight: 600;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.reqBody {
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.jobFoot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+}

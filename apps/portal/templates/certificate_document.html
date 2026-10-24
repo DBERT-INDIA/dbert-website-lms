@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+{% set page_title = "Official Certificate — " ~ (cert.recipient_name or cert.name or "Intern") %}
+{% set page_robots = "noindex, nofollow" %}
+{% include "_head.html" %}
+<style>
+  @media print {
+    .public-topbar, .cert-actions, .no-print { display: none !important; }
+    body { background: #0c1222 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; margin: 0 !important; padding: 0 !important; }
+    .doc-wrap { max-width: 100% !important; margin: 0 !important; padding: 10px !important; }
+    .cert { box-shadow: none !important; page-break-inside: avoid; }
+    @page { size: landscape; margin: 0.6cm; }
+  }
+  .cert-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin: 16px 0 24px;
+  }
+  .btn-print {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    color: #000;
+    font-weight: 700;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+    transition: transform 0.15s ease;
+  }
+  .btn-print:hover {
+    transform: translateY(-1px);
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  }
+  .btn-verify-link {
+    background: rgba(255, 255, 255, 0.08);
+    color: #e2e8f0;
+    font-weight: 600;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-size: 14px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-verify-link:hover {
+    background: rgba(255, 255, 255, 0.14);
+    color: #fff;
+  }
+</style>
+</head>
+<body class="cert-page">
+
+<div class="public-topbar">
+  <div class="public-topbar-inner">
+    <a class="back-link" href="/portal" aria-label="Back to portal">
+      <i class="fa-solid fa-arrow-left"></i> Back to portal
+    </a>
+    <b style="font-family:var(--f-display);font-size:14px;color:var(--tx-head)">DBERT Verified Credential</b>
+  </div>
+</div>
+
+<div class="doc-wrap" id="certWrap">
+  <div class="cert-actions no-print">
+    <button type="button" class="btn-print" onclick="window.print()">
+      <i class="fa-solid fa-print"></i> Print / Save as PDF
+    </button>
+    <a href="/portal/certificate/{{ cert.cert_id }}" class="btn-verify-link" target="_blank" rel="noopener">
+      <i class="fa-solid fa-shield-check"></i> Verification Page
+    </a>
+  </div>
+
+  <div class="cert">
+    <div class="inner">
+      <div class="head">
+        <div class="cert-badge">
+          <div class="disc"><i class="fas fa-graduation-cap"></i></div>
+          <div class="wm">DBERT<small>INTERNSHIP PROGRAMME</small></div>
+        </div>
+        <div class="htitle">
+          <div class="t1">CERTIFICATE OF</div>
+          <div class="t2">COMPLETION</div>
+        </div>
+      </div>
+
+      <div class="divider"><span class="rule"></span><span class="gem"></span><span class="rule"></span></div>
+
+      <div class="body">
+        {% set rec_name = cert.recipient_name or cert.name or 'Intern' %}
+        {% set d = (cert.domain or 'Engineering').replace('_',' ').title() %}
+        <div class="lead">This certificate is proudly awarded to</div>
+        <div class="recipient">{{ rec_name }}</div>
+        <div class="lead">on successful completion of the comprehensive curriculum in</div>
+        <div class="prog">{{ cert.course_title }}</div>
+        <div class="meta" style="margin-top:14px; color:var(--tx-muted); font-size:13.5px;">
+          Track: <strong style="color:var(--tx-head);">{{ d }}</strong> &nbsp;|&nbsp; 
+          Credential Level: <strong style="color:var(--gold);">DBERT Verified Graduate</strong>
+        </div>
+      </div>
+
+      <div class="ribbon">
+        <span>Curriculum Mastered 100%</span>·
+        <span>Continuous Assessment Passed</span>·
+        <span>Practical Labs Completed</span>
+      </div>
+
+      <div class="foot-row">
+        <div class="sig">
+          <img src="/static/signature.png" alt="" data-act-error="$hide">
+          <div class="line">
+            <div class="nm">Sarita Bansal</div>
+            <div class="role">Program Head</div>
+          </div>
+        </div>
+        <div class="idblock">
+          Recipient: <strong>{{ rec_name }}</strong><br>
+          <small>Issued: {{ (cert.issued_at or '')[:10] }}</small>
+        </div>
+        <div class="qr">
+          <div class="ph">
+            <i class="fas fa-qrcode fa-2x"></i>
+          </div>
+          <small>Verify: /portal/certificate/{{ cert.cert_id }}</small>
+        </div>
+      </div>
+
+      <div class="cert-foot">
+        Certificate ID: <b class="t-mono">{{ cert.cert_id }}</b> &nbsp;·&nbsp; Udyam Registration: UDYAM-UP-29-0214455
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
