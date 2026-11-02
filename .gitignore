@@ -24,6 +24,8 @@ apps/website/.env
 apps/website/cpanel-build/.env
 dbert-api-package/.env
 *credentials*
+!**/credentials/
+!**/credentials/**
 *secret*
 *.csv
 !.env.example
@@ -75,6 +77,7 @@ build/
 dist/
 out/
 cpanel-build/
+cpanel_public_html/
 *.tsbuildinfo
 .DS_Store
 Thumbs.db
