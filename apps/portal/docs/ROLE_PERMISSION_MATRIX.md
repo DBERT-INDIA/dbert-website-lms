@@ -1,4 +1,4 @@
-# DBERT Internship Portal — Role Permission & Authorization Matrix
+# DBERT LMS — Role Permission & Authorization Matrix
 
 **Document Date:** 2026-09-25  
 **Specification:** Phase 11 — Authorization & Anti-IDOR Enforcement  

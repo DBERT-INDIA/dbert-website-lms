@@ -45,7 +45,7 @@ export default function InternManagementPage() {
         provider: {
           '@type': 'Organization',
           name: 'DBERT Labs Industrial Training & Venture Studio',
-          url: 'https://dbert.online'
+          url: 'https://dbert.in'
         },
         offers: {
           '@type': 'Offer',
@@ -53,7 +53,7 @@ export default function InternManagementPage() {
           price: '30000',
           priceCurrency: 'INR',
           description: 'Monthly SaaS licensing starting tier for technical universities and corporate internship programs',
-          url: 'https://dbert.online/ai-solutions/products/intern-management-system'
+          url: 'https://dbert.in/ai-solutions/products/intern-management-system'
         }
       },
       {

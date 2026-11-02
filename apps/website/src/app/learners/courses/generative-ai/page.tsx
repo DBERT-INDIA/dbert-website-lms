@@ -23,7 +23,7 @@ export default function GenerativeAICoursePage() {
     },
     {
       question: 'How is my final course credential verified by employers?',
-      answer: 'Every credential issued by DBERT Labs contains a cryptographically signed UUID that HR managers and tech recruiters can verify in real-time at dbert.online/verify.'
+      answer: 'Every credential issued by DBERT Labs contains a cryptographically signed UUID that HR managers and tech recruiters can verify in real-time at dbert.in/verify.'
     },
     {
       question: 'How does this connect to the DBERT Fellowship or Startup referrals?',
@@ -41,7 +41,7 @@ export default function GenerativeAICoursePage() {
         provider: {
           '@type': 'Organization',
           name: 'DBERT Labs Industrial Training & Venture Studio',
-          url: 'https://dbert.online'
+          url: 'https://dbert.in'
         },
         courseCode: 'DBERT-ENG-GENAI-2026',
         courseMode: 'Blended (Cohort Sprints & Production Lab Work)',
@@ -53,7 +53,7 @@ export default function GenerativeAICoursePage() {
           priceCurrency: 'INR',
           availability: 'https://schema.org/InStock',
           validFrom: '2026-01-01',
-          url: 'https://dbert.online/learners/courses/generative-ai'
+          url: 'https://dbert.in/learners/courses/generative-ai'
         }
       },
       {

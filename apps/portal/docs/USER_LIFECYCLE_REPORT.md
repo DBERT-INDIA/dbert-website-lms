@@ -1,4 +1,4 @@
-# DBERT Internship Portal — User Lifecycle Classification Report (MIG-001)
+# DBERT LMS — User Lifecycle Classification Report (MIG-001)
 
 **Generated Date:** 2026-09-23 16:27:23  
 **Total Active User Accounts:** 2,230  

@@ -42,7 +42,7 @@ export default function CustomLLMLandingPage() {
         provider: {
           '@type': 'Organization',
           name: 'DBERT Labs Industrial Training & Venture Studio',
-          url: 'https://dbert.online'
+          url: 'https://dbert.in'
         },
         offers: {
           '@type': 'Offer',

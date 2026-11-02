@@ -1,4 +1,4 @@
-﻿# DBERT Internship Portal - Architecture & Trust Boundaries
+﻿# DBERT LMS - Architecture & Trust Boundaries
 
 ## 1. Authentication Model (Phase 1 Baseline)
 

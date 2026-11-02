@@ -1,4 +1,4 @@
-# DBERT Internship Portal — Active User Data Preservation Plan (MIG-002)
+# DBERT LMS — Active User Data Preservation Plan (MIG-002)
 
 **Document Date:** 2026-09-23  
 **Total User Accounts:** 2,230  

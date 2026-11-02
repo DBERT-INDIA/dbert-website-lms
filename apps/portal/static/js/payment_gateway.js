@@ -99,7 +99,7 @@
             key: orderData.key_id,
             amount: orderData.amount,
             currency: orderData.currency || "INR",
-            name: "DBERT Internship Portal",
+            name: "DBERT LMS",
             description: productType === "paid_program" ? "Fast-Track Program Fee" : "Internship Security Deposit",
             image: "/static/img/hero_student.jpg",
             order_id: orderData.order_id,

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 scripts/audit_security.py - Automated Security & Vulnerability Auditor
-DBERT Internship Portal - Phase 20 Security Regression
+DBERT LMS - Phase 20 Security Regression
 
 Executes:
 1. Static code analysis using Bandit (AST security linter against app.py and services/).

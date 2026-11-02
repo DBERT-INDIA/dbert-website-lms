@@ -3,7 +3,7 @@
 import { usePathname } from 'next/navigation';
 import { seoConfig } from '@/data/seo.config';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.online';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.in';
 
 /** Fallback label for a path segment with no SEO entry (e.g. blog slugs). */
 function labelFromSegment(segment: string): string {

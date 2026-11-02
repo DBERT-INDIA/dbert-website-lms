@@ -1245,3 +1245,83 @@ CREATE INDEX idx_user_keys_intern ON user_api_keys(intern_id);
 
 -- Index: idx_withdrawals_intern
 CREATE INDEX idx_withdrawals_intern ON ambassador_withdrawals(intern_id, status);
+
+-- ----------------------------------------------------------------------------
+-- SOURCING & SCRAPED LEADS ENGINE
+-- ----------------------------------------------------------------------------
+
+-- Table: scraped_internships
+CREATE TABLE IF NOT EXISTS scraped_internships (
+    id SERIAL PRIMARY KEY,
+    "Domain" TEXT,
+    "Company" TEXT,
+    "Role" TEXT,
+    "Location" TEXT,
+    "Is_Remote" TEXT,
+    "Start_Date" TEXT,
+    "End_Date" TEXT,
+    "Stipend" TEXT,
+    "URL" TEXT,
+    "Description" TEXT,
+    "Source" TEXT,
+    "Region" TEXT,
+    "Stipend_Normalized" TEXT,
+    "Work_Model" TEXT,
+    "City" TEXT,
+    "Clicks" INTEGER DEFAULT 0
+);
+
+CREATE INDEX IF NOT EXISTS idx_scraped_domain ON scraped_internships("Domain");
+CREATE INDEX IF NOT EXISTS idx_scraped_city ON scraped_internships("City");
+CREATE INDEX IF NOT EXISTS idx_scraped_work_model ON scraped_internships("Work_Model");
+CREATE INDEX IF NOT EXISTS idx_scraped_url ON scraped_internships("URL");
+
+-- Table: scraped_internship_comments
+CREATE TABLE IF NOT EXISTS scraped_internship_comments (
+    id SERIAL PRIMARY KEY,
+    job_id INTEGER NOT NULL,
+    intern_id INTEGER NOT NULL,
+    intern_name TEXT NOT NULL,
+    body TEXT NOT NULL,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_sic_job ON scraped_internship_comments(job_id);
+
+-- Table: scraped_jobs
+CREATE TABLE IF NOT EXISTS scraped_jobs (
+    id SERIAL PRIMARY KEY,
+    "Domain" TEXT,
+    "Company" TEXT,
+    "Role" TEXT,
+    "Location" TEXT,
+    "Is_Remote" TEXT,
+    "Start_Date" TEXT,
+    "End_Date" TEXT,
+    "Stipend" TEXT,
+    "URL" TEXT,
+    "Description" TEXT,
+    "Source" TEXT,
+    "Region" TEXT,
+    "Stipend_Normalized" TEXT,
+    "Work_Model" TEXT,
+    "City" TEXT,
+    "Clicks" INTEGER DEFAULT 0
+);
+
+CREATE INDEX IF NOT EXISTS idx_scraped_jobs_domain ON scraped_jobs("Domain");
+CREATE INDEX IF NOT EXISTS idx_scraped_jobs_city ON scraped_jobs("City");
+CREATE INDEX IF NOT EXISTS idx_scraped_jobs_work_model ON scraped_jobs("Work_Model");
+CREATE INDEX IF NOT EXISTS idx_scraped_jobs_url ON scraped_jobs("URL");
+
+-- Table: scraped_job_comments
+CREATE TABLE IF NOT EXISTS scraped_job_comments (
+    id SERIAL PRIMARY KEY,
+    job_id INTEGER NOT NULL,
+    intern_id INTEGER NOT NULL,
+    intern_name TEXT NOT NULL,
+    body TEXT NOT NULL,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_sjc_job ON scraped_job_comments(job_id);

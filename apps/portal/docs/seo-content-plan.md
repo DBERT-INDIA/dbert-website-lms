@@ -158,7 +158,7 @@ Sections: what it does (plain language) → born-from story → how it works (ar
 |---|---|---|---|
 | launchpad | AI course for beginners India | `AI & Python Course for Beginners — Launchpad | DBERT` | Course schema; syllabus week-by-week; "no prior coding" messaging |
 | accelerate | AI engineering bootcamp India | `AI Engineering Program — RAG, Agents, Deployment | DBERT` | Course schema; project gallery is the differentiator |
-| fellowship | paid AI internship India | `Paid AI Fellowship — Work on Real Client Systems | DBERT` | **Highest-volume keyword on the whole site.** 1,200w: stipend range, selection criteria, squad structure, verified-letter sample, alumni outcomes. Links to internship.dbert.online with proper anchor. |
+| fellowship | paid AI internship India | `Paid AI Fellowship — Work on Real Client Systems | DBERT` | **Highest-volume keyword on the whole site.** 1,200w: stipend range, selection criteria, squad structure, verified-letter sample, alumni outcomes. Links to lms.dbert.in with proper anchor. |
 | interview-prep | AI engineer interview preparation | `AI Engineer Interview Prep — Mock Interviews | DBERT` | 700w + free question-bank teaser (magnet) |
 | jobs | AI jobs India freshers | `AI Jobs & Placement for Verified Builders | DBERT` | Placement stats table; alumni company logos (real only) |
 
@@ -234,4 +234,4 @@ Cadence: 2/month minimum. Each magnet page (term-sheets, private-hosting, interv
 3. Which team members can be named with photos/credentials (E-E-A-T pages need real people).
 4. Confirm testimonials: which are real and quotable with permission? Fabricated ones must not ship.
 5. Course fees/EMI figures for Course schema `offers`.
-6. Is internship.dbert.online staying a separate subdomain? (Affects whether fellowship content lives here or there — recommendation: overview + SEO content on main domain, application flow on subdomain.)
+6. Is lms.dbert.in staying a separate subdomain? (Affects whether fellowship content lives here or there — recommendation: overview + SEO content on main domain, application flow on subdomain.)

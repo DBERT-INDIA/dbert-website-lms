@@ -48,7 +48,7 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.online'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.in'),
   title: {
     default: 'DBERT — AI Incubation Platform for Startups & Learners',
     template: '%s | DBERT'
@@ -100,8 +100,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           "@type": "Organization",
           "name": "Digital Blinc Education Research And Technology",
           "alternateName": "DBERT",
-          "url": process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.online',
-          "logo": `${process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.online'}/logo.svg`,
+          "url": process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.in',
+          "logo": `${process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.in'}/logo.svg`,
           // TODO-CONFIRM: founder's full legal name for the `founder` property.
           "founder": {
             "@type": "Person",
@@ -121,7 +121,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             "@type": "ContactPoint",
             "telephone": "+918958006294",
             "contactType": "customer service",
-            "email": "contactus@dbert.online",
+            "email": "contactus@dbert.in",
             "availableLanguage": ["English", "Hindi"]
           }
         }) }} />

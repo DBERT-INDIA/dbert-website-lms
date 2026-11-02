@@ -83,7 +83,7 @@ export function getCohortEmailTemplate(params: SendCohortEmailParams): EmailTemp
             </div>
             <p>Dear <strong>${name}</strong>,</p>
             <p>Congratulations! Following our evaluation of your submission, you have been <strong>Approved for Admission with Certification</strong> in the <strong>${cohortName}</strong> (${domain} track).</p>
-            <p>This dual track pairs active cohort sprint participation with structured milestone evaluation and an accredited DBERT experience credential independently verifiable at <code>dbert.online/verify</code>.</p>
+            <p>This dual track pairs active cohort sprint participation with structured milestone evaluation and an accredited DBERT experience credential independently verifiable at <code>dbert.in/verify</code>.</p>
             ${notes}
             <div style="background: #faf5ff; border: 1px solid #e9d5ff; border-radius: 6px; padding: 16px; margin: 24px 0;">
               <h3 style="margin-top: 0; font-size: 15px; color: #6b21a8;">Track Highlights:</h3>
@@ -97,7 +97,7 @@ export function getCohortEmailTemplate(params: SendCohortEmailParams): EmailTemp
             <p style="margin-top: 32px; font-size: 13px; color: #71717a;">Warm regards,<br/><strong>Aivara Technologies Cohort Operations</strong><br/>DBERT Labs</p>
           </div>
         `,
-        bodyText: `Dear ${name},\n\nCongratulations! You have been Approved for Admission with Certification in the ${cohortName} (${domain} track).\n\nThis track includes hands-on sprints alongside verified engineering certification checkable on dbert.online/verify.${notesText}\n\nOur coordinators will reach out shortly with onboarding details.\n\nWarm regards,\nAivara Technologies Cohort Operations`
+        bodyText: `Dear ${name},\n\nCongratulations! You have been Approved for Admission with Certification in the ${cohortName} (${domain} track).\n\nThis track includes hands-on sprints alongside verified engineering certification checkable on dbert.in/verify.${notesText}\n\nOur coordinators will reach out shortly with onboarding details.\n\nWarm regards,\nAivara Technologies Cohort Operations`
       };
 
     case 'rejected':

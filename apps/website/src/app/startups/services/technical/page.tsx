@@ -49,7 +49,7 @@ export default function TechnicalServicePage() {
         provider: {
           '@type': 'Organization',
           name: 'DBERT Labs Industrial Training & Venture Studio',
-          url: 'https://dbert.online'
+          url: 'https://dbert.in'
         },
         offers: {
           '@type': 'Offer',
@@ -57,7 +57,7 @@ export default function TechnicalServicePage() {
           price: '45000',
           priceCurrency: 'INR',
           description: 'Monthly dedicated engineering co-development retainer or 2-6% equity incubation agreement',
-          url: 'https://dbert.online/startups/services/technical'
+          url: 'https://dbert.in/startups/services/technical'
         }
       },
       {

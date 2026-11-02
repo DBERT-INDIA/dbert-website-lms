@@ -730,7 +730,7 @@
 
       <!-- RIGHT MAIN: APPLICATIONS GRID & META -->
       <section class="listings-main">
-        <div class="listings-top-meta">
+        <div class="listings-top-meta" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:18px;">
           <div id="t2ResultCount" class="results-count-text">
             {% if total_count and total_count > 0 %}
               Showing <strong>{{ (page - 1) * page_size + 1 }}–{{ [page * page_size, total_count]|min }}</strong> of <strong>{{ total_count }}</strong> {{ label|lower }} (Page {{ page }} of {{ total_pages }})
@@ -738,6 +738,20 @@
               0 {{ label|lower }} found
             {% endif %}
           </div>
+          {% if is_intern %}
+          <div class="feed-mode-tabs" style="display:inline-flex; background:#F1F5F9; padding:3px; border-radius:10px; border:1px solid #CBD5E1;">
+            <a href="?tab=recommended{% if active_domain %}&domain={{ active_domain|urlencode }}{% endif %}{% if region_filter %}&region={{ region_filter|urlencode }}{% endif %}" 
+               class="feed-tab-btn {{ 'active' if active_tab == 'recommended' else '' }}"
+               style="padding:6px 14px; border-radius:8px; font-size:13px; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:6px; {{ 'background:#FFFFFF; color:#0F172A; box-shadow:0 1px 3px rgba(0,0,0,0.1);' if active_tab == 'recommended' else 'color:#64748B;' }}">
+              <i class="fas fa-fire" style="color:#EF4444;"></i> Recommended for You
+            </a>
+            <a href="?tab=all{% if active_domain %}&domain={{ active_domain|urlencode }}{% endif %}{% if region_filter %}&region={{ region_filter|urlencode }}{% endif %}" 
+               class="feed-tab-btn {{ 'active' if active_tab == 'all' else '' }}"
+               style="padding:6px 14px; border-radius:8px; font-size:13px; font-weight:700; text-decoration:none; display:inline-flex; align-items:center; gap:6px; {{ 'background:#FFFFFF; color:#0F172A; box-shadow:0 1px 3px rgba(0,0,0,0.1);' if active_tab == 'all' else 'color:#64748B;' }}">
+              <i class="fas fa-globe" style="color:#2563EB;"></i> All Opportunities
+            </a>
+          </div>
+          {% endif %}
         </div>
 
         <div class="catalog-grid" id="t2Grid">
@@ -756,8 +770,18 @@
               <h2>{{ p.title }}</h2>
               <div class="co"><i class="fas fa-building"></i> {{ p.company_name }}</div>
               <div class="meta">
+                {% if p.match_score %}
+                  <span class="pill match-pill match-{{ p.badge_color }}" 
+                        onclick="event.preventDefault(); event.stopPropagation(); openMatchModal('{{ p.id }}', '{{ p.title|e }}', '{{ p.company_name|e }}', '{{ p.domain|e }}', {{ p.match_score }}, '{{ p.match_tier|e }}', '{{ p.badge_color|e }}', {{ (p.matched_skills or [])|tojson|e }}, {{ (p.missing_skills or [])|tojson|e }}, '{{ p.lms_nudge|e }}', {{ p.next_quiz_day or 1 }});"
+                        style="cursor:pointer; font-weight:800; border:1px solid rgba(0,0,0,0.06); {% if p.badge_color == 'emerald' %}background:#ECFDF5; color:#065F46; border-color:#A7F3D0;{% elif p.badge_color == 'cyan' %}background:#ECFEFF; color:#155E75; border-color:#A5F3FC;{% else %}background:#F8FAFC; color:#334155; border-color:#E2E8F0;{% endif %}">
+                    {% if p.badge_color == 'emerald' %}⭐
+                    {% elif p.badge_color == 'cyan' %}🎯
+                    {% else %}⚡{% endif %}
+                    {{ p.match_score }}% {{ p.match_tier }}
+                  </span>
+                {% endif %}
                 <span class="pill">{{ p.domain }}</span>
-                {% if p.is_for_you %}<span class="pill foryou"><i class="fas fa-star"></i> For You</span>{% endif %}
+                {% if p.is_for_you and not p.match_score %}<span class="pill foryou"><i class="fas fa-star"></i> For You</span>{% endif %}
                 {% if p.is_new %}<span class="pill new"><i class="fas fa-sparkles"></i> New</span>{% endif %}
                 {% if p.is_closing_soon %}<span class="pill urgent"><i class="fas fa-clock"></i> Closing soon</span>{% endif %}
                 {% if p.is_applied %}<span class="pill applied"><i class="fas fa-check-circle"></i> Applied</span>{% endif %}
@@ -768,6 +792,11 @@
                 {% elif p.stipend_display %}<span class="pill pay">{{ p.stipend_display }}</span>
                 {% elif p.stipend_min or p.stipend_max %}<span class="pill pay">₹{{ p.stipend_min or p.stipend_max }}{% if p.stipend_min and p.stipend_max %}–{{ p.stipend_max }}{% endif %}{% if p.pay_period %}/{{ p.pay_period }}{% endif %}</span>{% endif %}
               </div>
+              {% if is_intern and p.missing_skills and p.lms_nudge %}
+              <div class="fit-insight-row" style="margin-top:8px; font-size:11.5px; background:rgba(37,99,235,0.05); padding:6px 10px; border-radius:6px; border-left:3px solid #2563EB; color:#1E293B; line-height:1.4;">
+                <span style="font-weight:700; color:#2563EB;"><i class="fas fa-graduation-cap"></i> LMS Skill Tip:</span> {{ p.lms_nudge }}
+              </div>
+              {% endif %}
               <div class="apply-row" style="display:flex; justify-content:space-between; align-items:center; width:100%; margin-top:8px;">
                 <span style="font-size:12px; color:var(--tx-muted); font-weight:600; display:inline-flex; align-items:center; gap:5px;">
                   <i class="fas fa-users" style="color:#C89945;"></i> {{ p.applications_count or 0 }} application{{ 's' if (p.applications_count or 0) != 1 else '' }} received
@@ -832,7 +861,95 @@
           </div>
         </nav>
         {% endif %}
+
+        <!-- SEO Dynamic Silo Matrix & Cross-Linking -->
+        <section class="seo-silo-matrix" style="margin-top:40px; padding:28px 24px; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:14px;">
+          <h3 style="font-size:16px; font-weight:800; color:#0F172A; margin:0 0 16px 0; font-family:var(--f-display, 'Plus Jakarta Sans', sans-serif);">
+            Explore {{ label }} by Tech Track &amp; Hub Cities
+          </h3>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:20px;">
+            <div>
+              <span style="font-size:12px; font-weight:800; text-transform:uppercase; color:#64748B; letter-spacing:0.04em; display:block; margin-bottom:8px;">Specialized Tracks</span>
+              <ul style="list-style:none; padding:0; margin:0; font-size:13px; line-height:1.9;">
+                <li><a href="{{ base_path }}/ai-agent-development" style="color:#2563EB; text-decoration:none;">AI Agent Development {{ label }}</a></li>
+                <li><a href="{{ base_path }}/full-stack-development" style="color:#2563EB; text-decoration:none;">Full Stack Development {{ label }}</a></li>
+                <li><a href="{{ base_path }}/data-analyst" style="color:#2563EB; text-decoration:none;">Data Analyst {{ label }}</a></li>
+                <li><a href="{{ base_path }}/python-automation" style="color:#2563EB; text-decoration:none;">Python Automation {{ label }}</a></li>
+              </ul>
+            </div>
+            <div>
+              <span style="font-size:12px; font-weight:800; text-transform:uppercase; color:#64748B; letter-spacing:0.04em; display:block; margin-bottom:8px;">Top Tech Hubs</span>
+              <ul style="list-style:none; padding:0; margin:0; font-size:13px; line-height:1.9;">
+                <li><a href="{{ base_path }}/bangalore" style="color:#2563EB; text-decoration:none;">{{ label }} in Bangalore (Bengaluru)</a></li>
+                <li><a href="{{ base_path }}/pune" style="color:#2563EB; text-decoration:none;">{{ label }} in Pune</a></li>
+                <li><a href="{{ base_path }}/hyderabad" style="color:#2563EB; text-decoration:none;">{{ label }} in Hyderabad</a></li>
+                <li><a href="{{ base_path }}/delhi" style="color:#2563EB; text-decoration:none;">{{ label }} in Delhi NCR / Noida</a></li>
+              </ul>
+            </div>
+            <div>
+              <span style="font-size:12px; font-weight:800; text-transform:uppercase; color:#64748B; letter-spacing:0.04em; display:block; margin-bottom:8px;">High-Intent Searches</span>
+              <ul style="list-style:none; padding:0; margin:0; font-size:13px; line-height:1.9;">
+                <li><a href="{{ base_path }}/work-from-home/ai-agent-development" style="color:#2563EB; text-decoration:none;">Remote AI Agent {{ label }}</a></li>
+                <li><a href="{{ base_path }}/work-from-home/data-analyst" style="color:#2563EB; text-decoration:none;">Work From Home Data Analyst</a></li>
+                <li><a href="{{ base_path }}/paid/ai-agent-development" style="color:#2563EB; text-decoration:none;">Paid AI {{ label }} with Stipend</a></li>
+                <li><a href="{{ base_path }}/paid/full-stack-development" style="color:#2563EB; text-decoration:none;">Paid Full Stack {{ label }}</a></li>
+              </ul>
+            </div>
+          </div>
+        </section>
       </section>
+    </div>
+
+    <!-- Interactive Skill Gap & Match Insights Modal -->
+    <div id="matchInsightsModal" class="match-modal-backdrop" style="display:none; position:fixed; inset:0; z-index:99999; background:rgba(15,23,42,0.65); backdrop-filter:blur(3px); align-items:center; justify-content:center; padding:16px;">
+      <div class="match-modal-card" style="background:#FFFFFF; border-radius:16px; max-width:520px; width:100%; box-shadow:0 20px 45px rgba(0,0,0,0.25); overflow:hidden; border:1px solid #E2E8F0; animation:modalPop 0.2s ease-out;">
+        <div style="background:#0F172A; color:#FFFFFF; padding:18px 22px; display:flex; justify-content:space-between; align-items:center;">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <span style="font-size:20px;">🎯</span>
+            <div>
+              <h3 id="modalTitle" style="margin:0; font-size:16px; font-weight:800; color:#FFFFFF; line-height:1.2;">Fit Breakdown</h3>
+              <span id="modalCompany" style="font-size:12px; color:#94A3B8; font-weight:600;">DBERT Match Intelligence</span>
+            </div>
+          </div>
+          <button type="button" onclick="closeMatchModal()" style="background:transparent; border:none; color:#94A3B8; font-size:22px; cursor:pointer; padding:4px 8px; line-height:1;">&times;</button>
+        </div>
+        <div style="padding:22px;">
+          <div style="display:flex; align-items:center; justify-content:space-between; padding-bottom:14px; margin-bottom:16px; border-bottom:1px solid #F1F5F9;">
+            <div>
+              <span style="font-size:12px; font-weight:700; color:#64748B; text-transform:uppercase; letter-spacing:0.04em;">Overall Match</span>
+              <div id="modalScoreDisplay" style="font-size:26px; font-weight:900; color:#0F172A;">92% <span style="font-size:14px; font-weight:700; color:#059669;">Top Fit</span></div>
+            </div>
+            <div style="text-align:right;">
+              <span style="font-size:12px; font-weight:700; color:#64748B; text-transform:uppercase; letter-spacing:0.04em;">Target Domain</span>
+              <div id="modalTrackDisplay" style="font-size:14px; font-weight:700; color:#2563EB;">AI Agent Development</div>
+            </div>
+          </div>
+
+          <div style="margin-bottom:16px;">
+            <span style="font-size:12px; font-weight:800; color:#0F172A; display:block; margin-bottom:6px;">✅ Matched Technical Competencies</span>
+            <div id="modalMatchedSkills" style="display:flex; flex-wrap:wrap; gap:6px;"></div>
+          </div>
+
+          <div style="margin-bottom:18px;">
+            <span style="font-size:12px; font-weight:800; color:#0F172A; display:block; margin-bottom:6px;">💡 Missing / Recommended Skills</span>
+            <div id="modalMissingSkills" style="display:flex; flex-wrap:wrap; gap:6px;"></div>
+          </div>
+
+          <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:14px; margin-bottom:20px;">
+            <span style="font-size:12.5px; font-weight:800; color:#2563EB; display:flex; align-items:center; gap:6px; margin-bottom:4px;">
+              <i class="fas fa-rocket"></i> Recommended LMS Action:
+            </span>
+            <p id="modalNudgeText" style="margin:0; font-size:13px; color:#334155; line-height:1.45;"></p>
+          </div>
+
+          <div style="display:flex; gap:10px;">
+            <a id="modalLmsBtn" href="/intern/tutor" style="flex:1; text-align:center; background:#2563EB; color:#FFFFFF; font-weight:700; padding:11px 16px; border-radius:10px; text-decoration:none; font-size:13.5px; box-shadow:0 2px 8px rgba(37,99,235,0.25);">
+              <i class="fas fa-graduation-cap"></i> Complete LMS Quiz to Boost Fit
+            </a>
+            <button type="button" onclick="closeMatchModal()" style="background:#F1F5F9; border:none; color:#475569; font-weight:700; padding:11px 16px; border-radius:10px; cursor:pointer; font-size:13.5px;">Close</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <script nonce="{{ csp_nonce() }}">
@@ -924,6 +1041,59 @@
             if (labelSpan) labelSpan.textContent = isOpen ? 'Hide Filters' : 'Filters & Search';
           });
         }
+
+        window.openMatchModal = function(id, title, company, domain, score, tier, color, matched, missing, nudge, day) {
+          document.getElementById('modalTitle').textContent = title;
+          document.getElementById('modalCompany').textContent = company + ' • ' + domain;
+          const scoreEl = document.getElementById('modalScoreDisplay');
+          const tierColor = color === 'emerald' ? '#059669' : (color === 'cyan' ? '#0891B2' : '#D97706');
+          scoreEl.innerHTML = score + '% <span style="font-size:14px; font-weight:700; color:' + tierColor + ';">' + tier + '</span>';
+          document.getElementById('modalTrackDisplay').textContent = domain;
+          
+          const mBox = document.getElementById('modalMatchedSkills');
+          mBox.innerHTML = '';
+          if (matched && matched.length) {
+            matched.forEach(function(s) {
+              const tag = document.createElement('span');
+              tag.style.cssText = 'background:#ECFDF5; color:#065F46; border:1px solid #A7F3D0; font-size:11.5px; font-weight:700; padding:3px 9px; border-radius:6px;';
+              tag.textContent = '✓ ' + s;
+              mBox.appendChild(tag);
+            });
+          } else {
+            mBox.innerHTML = '<span style="font-size:12px; color:#94A3B8;">Baseline track requirements apply</span>';
+          }
+
+          const missBox = document.getElementById('modalMissingSkills');
+          missBox.innerHTML = '';
+          if (missing && missing.length) {
+            missing.forEach(function(s) {
+              const tag = document.createElement('span');
+              tag.style.cssText = 'background:#FFFBEB; color:#92400E; border:1px solid #FDE68A; font-size:11.5px; font-weight:700; padding:3px 9px; border-radius:6px;';
+              tag.textContent = '+ ' + s;
+              missBox.appendChild(tag);
+            });
+          } else {
+            missBox.innerHTML = '<span style="font-size:12px; color:#059669; font-weight:700;">Zero skill gaps detected! Ready to apply.</span>';
+          }
+
+          document.getElementById('modalNudgeText').textContent = nudge;
+          const lmsBtn = document.getElementById('modalLmsBtn');
+          if (lmsBtn) {
+            lmsBtn.href = '/intern/tutor';
+          }
+
+          const modal = document.getElementById('matchInsightsModal');
+          if (modal) {
+            modal.style.display = 'flex';
+          }
+        };
+
+        window.closeMatchModal = function() {
+          const modal = document.getElementById('matchInsightsModal');
+          if (modal) {
+            modal.style.display = 'none';
+          }
+        };
 
         // Client-side fallback: check auth cookie to ensure Portal button displays even with cached HTML
         try {

@@ -24,7 +24,7 @@ export default function PythonAutomationCoursePage() {
     },
     {
       question: 'How does DBERT verify my automation engineering credentials for potential corporate recruiters?',
-      answer: 'Upon passing our technical code review milestones, your completion certificate is entered directly into our global institutional validation database. Employers can inspect your credential authenticity directly by inputting your unique serial code at dbert.online/verify.'
+      answer: 'Upon passing our technical code review milestones, your completion certificate is entered directly into our global institutional validation database. Employers can inspect your credential authenticity directly by inputting your unique serial code at dbert.in/verify.'
     },
     {
       question: 'What types of roles and compensation ranges do graduates of this track target in India?',
@@ -42,7 +42,7 @@ export default function PythonAutomationCoursePage() {
         provider: {
           '@type': 'Organization',
           name: 'DBERT Labs Industrial Training & Venture Studio',
-          url: 'https://dbert.online'
+          url: 'https://dbert.in'
         },
         courseCode: 'DBERT-ENG-PYAUT-2026',
         courseMode: 'Blended (Synchronous Cohort & Remote Production Lab Sprints)',
@@ -54,7 +54,7 @@ export default function PythonAutomationCoursePage() {
           priceCurrency: 'INR',
           availability: 'https://schema.org/InStock',
           validFrom: '2026-01-01',
-          url: 'https://dbert.online/learners/courses/python-automation'
+          url: 'https://dbert.in/learners/courses/python-automation'
         }
       },
       {
@@ -268,8 +268,8 @@ export default function PythonAutomationCoursePage() {
         title="Python Automation Internships in Mumbai & Tech Corridors"
         description="Connect directly to real-world test automation, data harvesting, and workflow orchestration sprints across Mumbai, Bengaluru, Delhi NCR, and Pune."
         domainName="Python Automation"
-        hubHref="https://internship.dbert.online/internships/python-automation"
-        jobsHref="https://internship.dbert.online/jobs/python-automation"
+        hubHref="https://lms.dbert.in/internships/python-automation"
+        jobsHref="https://lms.dbert.in/jobs/python-automation"
         opportunities={[
           {
             title: 'QA & Test Automation Engineering Intern',
@@ -277,7 +277,7 @@ export default function PythonAutomationCoursePage() {
             cityTag: 'Mumbai',
             location: 'Mumbai · Hybrid / Remote',
             stipend: '₹7,500 – ₹14,000 / mo',
-            href: 'https://internship.dbert.online/internships/qa-automation-intern-mumbai-remote-68',
+            href: 'https://lms.dbert.in/internships/qa-automation-intern-mumbai-remote-68',
             tags: ['Selenium', 'PyTest', 'Python', 'CI/CD'],
           },
           {
@@ -286,7 +286,7 @@ export default function PythonAutomationCoursePage() {
             cityTag: 'Bangalore',
             location: 'Bengaluru · Hybrid',
             stipend: '₹8,500 – ₹16,000 / mo',
-            href: 'https://internship.dbert.online/internships/lead-generation-automation-intern-bangalore-remote-64',
+            href: 'https://lms.dbert.in/internships/lead-generation-automation-intern-bangalore-remote-64',
             tags: ['Playwright', 'BeautifulSoup', 'Redis', 'Python'],
           },
           {
@@ -295,7 +295,7 @@ export default function PythonAutomationCoursePage() {
             cityTag: 'Delhi NCR',
             location: 'Delhi NCR · Remote',
             stipend: '₹8,000 – ₹15,000 / mo',
-            href: 'https://internship.dbert.online/internships/price-monitoring-automation-intern-delhi-ncr-remote-65',
+            href: 'https://lms.dbert.in/internships/price-monitoring-automation-intern-delhi-ncr-remote-65',
             tags: ['Scrapy', 'Proxies', 'Webhooks', 'Docker'],
           },
           {
@@ -304,7 +304,7 @@ export default function PythonAutomationCoursePage() {
             cityTag: 'Hyderabad',
             location: 'Hyderabad · Remote',
             stipend: '₹7,000 – ₹13,000 / mo',
-            href: 'https://internship.dbert.online/internships/document-processing-automation-intern-hyderabad-remote-66',
+            href: 'https://lms.dbert.in/internships/document-processing-automation-intern-hyderabad-remote-66',
             tags: ['pdfplumber', 'Regex', 'PostgreSQL', 'Python'],
           },
           {
@@ -313,7 +313,7 @@ export default function PythonAutomationCoursePage() {
             cityTag: 'Pune',
             location: 'Pune · Hybrid',
             stipend: '₹7,500 – ₹13,500 / mo',
-            href: 'https://internship.dbert.online/internships/social-media-automation-intern-pune-remote-67',
+            href: 'https://lms.dbert.in/internships/social-media-automation-intern-pune-remote-67',
             tags: ['REST APIs', 'Celery', 'Redis', 'Python'],
           },
           {
@@ -322,7 +322,7 @@ export default function PythonAutomationCoursePage() {
             cityTag: 'Remote',
             location: 'Virtual · Anywhere India',
             stipend: '₹8,000 – ₹15,000 / mo',
-            href: 'https://internship.dbert.online/internships/web-scraping-intern-remote-55',
+            href: 'https://lms.dbert.in/internships/web-scraping-intern-remote-55',
             tags: ['Playwright', 'Scrapy', 'Celery', 'PostgreSQL'],
           },
         ]}

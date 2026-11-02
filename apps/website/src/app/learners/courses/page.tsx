@@ -19,48 +19,48 @@ const jsonLd = {
           position: 1,
           name: 'AI Agent Development',
           description: 'Orchestration frameworks, tool use, LangGraph, CrewAI and deployment.',
-          url: 'https://dbert.online/learners/courses/ai-agent-development',
-          provider: { '@type': 'Organization', name: 'DBERT', url: 'https://dbert.online' },
+          url: 'https://dbert.in/learners/courses/ai-agent-development',
+          provider: { '@type': 'Organization', name: 'DBERT', url: 'https://dbert.in' },
         },
         {
           '@type': 'Course',
           position: 2,
           name: 'Generative AI Systems',
           description: 'Multi-provider LLMs, intelligent context pruning, live web research engines and streaming UIs.',
-          url: 'https://dbert.online/learners/courses/generative-ai',
-          provider: { '@type': 'Organization', name: 'DBERT', url: 'https://dbert.online' },
+          url: 'https://dbert.in/learners/courses/generative-ai',
+          provider: { '@type': 'Organization', name: 'DBERT', url: 'https://dbert.in' },
         },
         {
           '@type': 'Course',
           position: 3,
           name: 'Machine Learning & Fine-Tuning',
           description: 'Data preprocessing, feature engineering, and fine-tuning open-weights LLMs with LoRA/QLoRA.',
-          url: 'https://dbert.online/learners/courses/machine-learning',
-          provider: { '@type': 'Organization', name: 'DBERT', url: 'https://dbert.online' },
+          url: 'https://dbert.in/learners/courses/machine-learning',
+          provider: { '@type': 'Organization', name: 'DBERT', url: 'https://dbert.in' },
         },
         {
           '@type': 'Course',
           position: 4,
           name: 'Python System Automation',
           description: 'Scraping, scheduling, APIs and data pipelines taught through production automation.',
-          url: 'https://dbert.online/learners/courses/python-automation',
-          provider: { '@type': 'Organization', name: 'DBERT', url: 'https://dbert.online' },
+          url: 'https://dbert.in/learners/courses/python-automation',
+          provider: { '@type': 'Organization', name: 'DBERT', url: 'https://dbert.in' },
         },
         {
           '@type': 'Course',
           position: 5,
           name: 'Full Stack AI Development',
           description: 'React, Next.js, Node.js, vector databases and streaming models deployed to production.',
-          url: 'https://dbert.online/learners/courses/full-stack-development',
-          provider: { '@type': 'Organization', name: 'DBERT', url: 'https://dbert.online' },
+          url: 'https://dbert.in/learners/courses/full-stack-development',
+          provider: { '@type': 'Organization', name: 'DBERT', url: 'https://dbert.in' },
         },
         {
           '@type': 'Course',
           position: 6,
           name: 'Data Analytics & Automated BI',
           description: 'SQL, Python, Pandas and automated dashboards worked through on real corporate datasets.',
-          url: 'https://dbert.online/learners/courses/data-analytics',
-          provider: { '@type': 'Organization', name: 'DBERT', url: 'https://dbert.online' },
+          url: 'https://dbert.in/learners/courses/data-analytics',
+          provider: { '@type': 'Organization', name: 'DBERT', url: 'https://dbert.in' },
         },
       ],
     },
@@ -194,7 +194,7 @@ export default function CoursesHubPage() {
               </p>
             </div>
             <a
-              href="https://internship.dbert.online/"
+              href="https://lms.dbert.in/"
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn-primary text-xs shrink-0"
@@ -205,7 +205,7 @@ export default function CoursesHubPage() {
 
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 pt-4 border-t border-line">
             <a
-              href="https://internship.dbert.online/internships/full-stack-development"
+              href="https://lms.dbert.in/internships/full-stack-development"
               target="_blank"
               rel="noopener noreferrer"
               className="p-3 bg-[var(--surface-base)] border border-line rounded hover:border-accent transition-colors block text-left"
@@ -214,7 +214,7 @@ export default function CoursesHubPage() {
               <div className="text-[11px] text-muted">Mumbai, Bengaluru, Remote Sprints</div>
             </a>
             <a
-              href="https://internship.dbert.online/internships/data-analyst"
+              href="https://lms.dbert.in/internships/data-analyst"
               target="_blank"
               rel="noopener noreferrer"
               className="p-3 bg-[var(--surface-base)] border border-line rounded hover:border-accent transition-colors block text-left"
@@ -223,7 +223,7 @@ export default function CoursesHubPage() {
               <div className="text-[11px] text-muted">SQL, Power BI, Corporate Reporting</div>
             </a>
             <a
-              href="https://internship.dbert.online/internships/python-automation"
+              href="https://lms.dbert.in/internships/python-automation"
               target="_blank"
               rel="noopener noreferrer"
               className="p-3 bg-[var(--surface-base)] border border-line rounded hover:border-accent transition-colors block text-left"
@@ -232,7 +232,7 @@ export default function CoursesHubPage() {
               <div className="text-[11px] text-muted">Scraping, QA Testing, Orchestration</div>
             </a>
             <a
-              href="https://internship.dbert.online/internships/ai-agent-development"
+              href="https://lms.dbert.in/internships/ai-agent-development"
               target="_blank"
               rel="noopener noreferrer"
               className="p-3 bg-[var(--surface-base)] border border-line rounded hover:border-accent transition-colors block text-left"

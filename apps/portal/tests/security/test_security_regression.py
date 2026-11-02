@@ -1,6 +1,6 @@
 """
 Phase 20: Security Regression & Vulnerability Audit Test Suite
-DBERT Internship Portal
+DBERT LMS
 
 Covers:
 1. TestCSRFDefenseEnforcement:

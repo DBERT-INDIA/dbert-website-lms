@@ -46,13 +46,13 @@ def dispatch_event(event_type: str, payload: Dict[str, Any]) -> bool:
             send_enrollment_confirmation_email(name, email, domain, joining_date=None)
             
         elif event_type == "payment.accepted":
-            notify_course_payment_verified(name, email, domain, is_portal_course=True, link_url="https://internship.dbert.online/portal")
+            notify_course_payment_verified(name, email, domain, is_portal_course=True, link_url="https://lms.dbert.in/portal")
             
         elif event_type == "payment.rejected":
             send_paid_payment_rejected_email(name, email, domain)
             
         elif event_type == "certificate.issued":
-            cert_url = f"https://internship.dbert.online/cert/{payload.get('certificate_id', '')}"
+            cert_url = f"https://lms.dbert.in/cert/{payload.get('certificate_id', '')}"
             notify_cert_issued(name, email, payload.get("title", domain), cert_url)
             
         elif event_type == "task.reviewed":

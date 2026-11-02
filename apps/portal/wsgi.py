@@ -1,5 +1,5 @@
 """
-WSGI entrypoint for DBERT Internship Portal
+WSGI entrypoint for DBERT LMS
 Used by production WSGI servers:
 - Gunicorn (Linux): gunicorn -w 4 -b 127.0.0.1:5000 wsgi:app
 - Waitress (Windows): waitress-serve --listen=127.0.0.1:5000 wsgi:app

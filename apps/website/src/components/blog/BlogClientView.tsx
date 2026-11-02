@@ -20,7 +20,7 @@ export default function BlogClientView({ initialArticles }: BlogClientViewProps)
     let isMounted = true;
     async function syncDynamicArticles() {
       try {
-        const res = await fetch('https://internship.dbert.online/api/public/blog-posts', {
+        const res = await fetch('https://lms.dbert.in/api/public/blog-posts', {
           headers: { 'Accept': 'application/json' },
         });
         if (!res.ok) return;

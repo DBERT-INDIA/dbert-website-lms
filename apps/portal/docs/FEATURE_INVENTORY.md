@@ -1,4 +1,4 @@
-# DBERT Internship Portal — Feature Inventory (INV-002)
+# DBERT LMS — Feature Inventory (INV-002)
 
 **Document Date:** 2026-09-23  
 **Status Key:**

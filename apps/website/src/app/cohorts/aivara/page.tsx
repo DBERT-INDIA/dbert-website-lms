@@ -141,7 +141,7 @@ export default function AivaraCohortLandingPage() {
               </p>
               <ul>
                 <li><strong>Production Pull Requests:</strong> Push real branches, write automated tests, and receive line-by-line feedback from senior engineers.</li>
-                <li><strong>Independent Credential Verification:</strong> Earn an accredited experience letter with a unique SHA-256 validation ID checkable on <code>dbert.online/verify</code>.</li>
+                <li><strong>Independent Credential Verification:</strong> Earn an accredited experience letter with a unique SHA-256 validation ID checkable on <code>dbert.in/verify</code>.</li>
                 <li><strong>Pre-Placement Opportunity (PPO):</strong> Exceptional interns are shortlisted for full-time engineering and mentor positions at Aivara Technologies and partner startups.</li>
               </ul>
             </div>

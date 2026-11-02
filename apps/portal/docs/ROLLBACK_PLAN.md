@@ -1,4 +1,4 @@
-# DBERT Internship Portal — Comprehensive Rollback Plan (SAFE-004)
+# DBERT LMS — Comprehensive Rollback Plan (SAFE-004)
 
 **Document Date:** 2026-09-23  
 **Status:** Mandatory Production Operational Standard  

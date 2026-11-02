@@ -1,4 +1,4 @@
-# DBERT Internship Portal — Dependency Map
+# DBERT LMS — Dependency Map
 
 **Document Date:** 2026-09-23  
 

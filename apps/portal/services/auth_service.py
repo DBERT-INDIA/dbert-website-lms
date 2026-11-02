@@ -186,12 +186,12 @@ class AuthService:
             return {
                 "id": session.get("admin_id"),
                 "role": session.get("role") or "admin",
-                "email": session.get("staff_email", "admin@dbert.online")
+                "email": session.get("staff_email", "admin@dbert.in")
             }
         if session.get("role") in ("admin", "superadmin"):
             return {
                 "id": session.get("admin_id", 1),
                 "role": session.get("role"),
-                "email": session.get("staff_email", "admin@dbert.online")
+                "email": session.get("staff_email", "admin@dbert.in")
             }
         return None

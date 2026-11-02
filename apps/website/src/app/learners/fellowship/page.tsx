@@ -46,7 +46,7 @@ const faqs = [
   {
     question: 'Do you guarantee placement at the end?',
     answer:
-      'No, and you should be sceptical of any programme in India that does. What we actually provide is a verifiable record: an experience letter signed by the engineers who reviewed your code, a certificate ID anyone can check at dbert.online/verify, and commits on a real client repository. Partner startups review fellow performance logs when they hire, so the pipeline is real, but a referral is not an offer and we will not describe it as one.',
+      'No, and you should be sceptical of any programme in India that does. What we actually provide is a verifiable record: an experience letter signed by the engineers who reviewed your code, a certificate ID anyone can check at dbert.in/verify, and commits on a real client repository. Partner startups review fellow performance logs when they hire, so the pipeline is real, but a referral is not an offer and we will not describe it as one.',
   },
   {
     question: 'What kind of work do fellows actually do?',
@@ -66,12 +66,12 @@ const faqs = [
   {
     question: 'How is the experience letter different from a normal internship certificate?',
     answer:
-      'Two ways. It names the engineer who reviewed your work and the system you contributed to, rather than certifying attendance; and it carries a certificate ID that a recruiter can verify independently at dbert.online/verify without contacting us. A letter nobody can check is worth roughly what it costs to print.',
+      'Two ways. It names the engineer who reviewed your work and the system you contributed to, rather than certifying attendance; and it carries a certificate ID that a recruiter can verify independently at dbert.in/verify without contacting us. A letter nobody can check is worth roughly what it costs to print.',
   },
   {
     question: 'Where do I apply?',
     answer:
-      'Applications run through the DBERT internship platform at internship.dbert.online. The application asks for your code — a repository, a deployed project, or your screening submission — rather than a CV of coursework, because that is what the selection is actually based on.',
+      'Applications run through the DBERT internship platform at lms.dbert.in. The application asks for your code — a repository, a deployed project, or your screening submission — rather than a CV of coursework, because that is what the selection is actually based on.',
   },
 ];
 
@@ -86,9 +86,9 @@ const jsonLd = {
         '@type': 'Organization',
         name: 'Digital Blinc Education Research And Technology',
         alternateName: 'DBERT',
-        url: 'https://dbert.online',
+        url: 'https://dbert.in',
       },
-      url: 'https://dbert.online/learners/fellowship',
+      url: 'https://dbert.in/learners/fellowship',
       hasCourseInstance: {
         '@type': 'CourseInstance',
         courseMode: 'online',
@@ -100,7 +100,7 @@ const jsonLd = {
         price: '1599',
         priceCurrency: 'INR',
         availability: 'https://schema.org/InStock',
-        url: 'https://internship.dbert.online/',
+        url: 'https://lms.dbert.in/',
       },
     },
     {
@@ -390,7 +390,7 @@ export default function FellowshipProgramPage() {
             screening challenge. Bring code, not a CV.
           </p>
           <a
-            href="https://internship.dbert.online/"
+            href="https://lms.dbert.in/program"
             target="_blank"
             rel="noopener noreferrer"
             className="btn btn-primary btn-lg"

@@ -1,4 +1,4 @@
-# DBERT Internship Portal — Comprehensive Database Inventory (INV-003)
+# DBERT LMS — Comprehensive Database Inventory (INV-003)
 
 **Database:** `internship_live.db` (SQLite 3)  
 **Total Tables:** 57  

@@ -20,7 +20,7 @@ export default function DataAnalyticsCoursePage() {
     },
     {
       question: 'Can prospective employers independently authenticate my completed data analytics certification?',
-      answer: 'Yes. Upon submitting validated database queries and dashboard repositories to our review faculty, your completed certificate is inscribed into our public verification portal at dbert.online/verify, enabling instant cryptographic HR checks.'
+      answer: 'Yes. Upon submitting validated database queries and dashboard repositories to our review faculty, your completed certificate is inscribed into our public verification portal at dbert.in/verify, enabling instant cryptographic HR checks.'
     },
     {
       question: 'How are technical data analysis projects integrated into real-world GitHub portfolios?',
@@ -42,7 +42,7 @@ export default function DataAnalyticsCoursePage() {
         provider: {
           '@type': 'Organization',
           name: 'DBERT Labs Industrial Training & Venture Studio',
-          url: 'https://dbert.online'
+          url: 'https://dbert.in'
         },
         courseCode: 'DBERT-ENG-DATA-2026',
         courseMode: 'Blended (Synchronous Cohort & Remote Production Lab Sprints)',
@@ -54,7 +54,7 @@ export default function DataAnalyticsCoursePage() {
           priceCurrency: 'INR',
           availability: 'https://schema.org/InStock',
           validFrom: '2026-01-01',
-          url: 'https://dbert.online/learners/courses/data-analytics'
+          url: 'https://dbert.in/learners/courses/data-analytics'
         }
       },
       {
@@ -339,8 +339,8 @@ export default function DataAnalyticsCoursePage() {
         title="Data Analyst Internships in Mumbai & Leading Metros"
         description="Explore active corporate reporting, business intelligence, and SQL analytics sprints across Mumbai, Bengaluru, Delhi NCR, Pune, and remote teams."
         domainName="Data Analytics"
-        hubHref="https://internship.dbert.online/internships/data-analyst"
-        jobsHref="https://internship.dbert.online/jobs/data-analyst"
+        hubHref="https://lms.dbert.in/internships/data-analyst"
+        jobsHref="https://lms.dbert.in/jobs/data-analyst"
         opportunities={[
           {
             title: 'Survey Research & Consumer Data Analyst Intern',
@@ -348,7 +348,7 @@ export default function DataAnalyticsCoursePage() {
             cityTag: 'Mumbai',
             location: 'Mumbai · Hybrid / Remote',
             stipend: '₹7,000 – ₹14,000 / mo',
-            href: 'https://internship.dbert.online/internships/survey-research-data-intern-mumbai-remote-32',
+            href: 'https://lms.dbert.in/internships/survey-research-data-intern-mumbai-remote-32',
             tags: ['Python', 'Pandas', 'Excel', 'Statistics'],
           },
           {
@@ -357,7 +357,7 @@ export default function DataAnalyticsCoursePage() {
             cityTag: 'Bangalore',
             location: 'Bengaluru · Hybrid',
             stipend: '₹9,000 – ₹16,000 / mo',
-            href: 'https://internship.dbert.online/internships/operations-data-analyst-intern-bangalore-remote-28',
+            href: 'https://lms.dbert.in/internships/operations-data-analyst-intern-bangalore-remote-28',
             tags: ['PostgreSQL', 'Power BI', 'SQL', 'NumPy'],
           },
           {
@@ -366,7 +366,7 @@ export default function DataAnalyticsCoursePage() {
             cityTag: 'Delhi NCR',
             location: 'Delhi NCR · Remote',
             stipend: '₹8,000 – ₹15,000 / mo',
-            href: 'https://internship.dbert.online/internships/customer-insights-analyst-delhi-ncr-remote-29',
+            href: 'https://lms.dbert.in/internships/customer-insights-analyst-delhi-ncr-remote-29',
             tags: ['Cohort Analysis', 'SQL', 'Seaborn', 'Python'],
           },
           {
@@ -375,7 +375,7 @@ export default function DataAnalyticsCoursePage() {
             cityTag: 'Hyderabad',
             location: 'Hyderabad · Remote',
             stipend: '₹7,500 – ₹13,000 / mo',
-            href: 'https://internship.dbert.online/internships/data-cleaning-etl-intern-hyderabad-remote-30',
+            href: 'https://lms.dbert.in/internships/data-cleaning-etl-intern-hyderabad-remote-30',
             tags: ['ETL', 'Pandas', 'PostgreSQL', 'Airflow'],
           },
           {
@@ -384,7 +384,7 @@ export default function DataAnalyticsCoursePage() {
             cityTag: 'Pune',
             location: 'Pune · Hybrid',
             stipend: '₹7,000 – ₹12,000 / mo',
-            href: 'https://internship.dbert.online/internships/excel-reporting-automation-intern-pune-remote-31',
+            href: 'https://lms.dbert.in/internships/excel-reporting-automation-intern-pune-remote-31',
             tags: ['Excel Macros', 'OpenPyXL', 'Power BI', 'Python'],
           },
           {
@@ -393,7 +393,7 @@ export default function DataAnalyticsCoursePage() {
             cityTag: 'Remote',
             location: 'Virtual · Anywhere India',
             stipend: '₹8,000 – ₹16,000 / mo',
-            href: 'https://internship.dbert.online/internships/power-bi-dashboard-intern-remote-21',
+            href: 'https://lms.dbert.in/internships/power-bi-dashboard-intern-remote-21',
             tags: ['Power BI', 'DAX', 'Data Modeling', 'SQL'],
           },
         ]}

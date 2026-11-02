@@ -1,6 +1,6 @@
 /**
  * DBERT Global Multi-Page Attendance Tracker
- * Accrues active study and learning time across ALL pages on https://internship.dbert.online/
+ * Accrues active study and learning time across ALL pages on https://lms.dbert.in/
  * (e.g. Guided Learning, /courses, /courses/<id>/learn, /tasks, /portal, etc.)
  *
  * KEY FEATURES:

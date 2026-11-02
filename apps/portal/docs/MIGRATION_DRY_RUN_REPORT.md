@@ -1,4 +1,4 @@
-# DBERT Internship Portal — Migration Dry-Run Audit Report (MIG-003)
+# DBERT LMS — Migration Dry-Run Audit Report (MIG-003)
 
 **Execution Date:** 2026-09-23 17:56:47  
 **Migration Name:** `expand_payment_gateway_columns_PAY-010`  

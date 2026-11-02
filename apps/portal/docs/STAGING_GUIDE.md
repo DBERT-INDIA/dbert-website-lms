@@ -1,7 +1,7 @@
-# DBERT Internship Portal — Staging Environment Guide (SAFE-003)
+# DBERT LMS — Staging Environment Guide (SAFE-003)
 
 **Document Date:** 2026-09-23  
-**Target Host:** `staging-internship.dbert.online`  
+**Target Host:** `staging-lms.dbert.in`  
 **Purpose:** Pre-production validation, schema migration dry runs, and regression testing under identical infrastructure conditions without risking production data or real users.
 
 ---
@@ -12,7 +12,7 @@ In compliance with Section 1 and Section 9 (SAFE-003) of `DBERT_PORTAL_NEXT_PHAS
 
 ```text
        PRODUCTION                                 STAGING
-  internship.dbert.online              staging-internship.dbert.online
+  lms.dbert.in              staging-lms.dbert.in
             │                                         │
      internship.db                             internship_staging.db
             │                                         │

@@ -76,13 +76,13 @@ export default function SaaSProductsCatalogPage() {
         '@type': 'CollectionPage',
         name: 'DBERT Commercial AI Products Suite & SaaS Systems',
         description: 'Deploy battle-tested, sovereign artificial intelligence software product platforms engineered for secure on-premise enterprise integration and local open-weights serving.',
-        url: 'https://dbert.online/ai-solutions/products',
+        url: 'https://dbert.in/ai-solutions/products',
         mainEntity: {
           '@type': 'ItemList',
           itemListElement: products.map((p, index) => ({
             '@type': 'ListItem',
             position: index + 1,
-            url: `https://dbert.online/ai-solutions/products/${p.slug}`,
+            url: `https://dbert.in/ai-solutions/products/${p.slug}`,
             name: p.title,
             description: p.desc
           }))

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  {% set page_title_full = page.title ~ " | DBERT Internship Portal" %}
+  {% set page_title_full = page.title ~ " | DBERT LMS" %}
   {% set page_desc = page.meta_desc %}
   {% set page_canonical = SITE_ORIGIN ~ "/internships/" ~ page_slug %}
   {% include "_head.html" %}
@@ -19,7 +19,7 @@
         "hiringOrganization": {
           "@type": "Organization",
           name: "DBERT Labs",
-          sameAs: "https://dbert.online"
+          sameAs: "https://dbert.in"
         }
       },
       {
@@ -30,7 +30,7 @@
             "name": "How do I apply for the {{ page.keyword }}?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Applications run through internship.dbert.online. Select your track, verify your email, and submit your code repository or screening test."
+              "text": "Applications run through lms.dbert.in. Select your track, verify your email, and submit your code repository or screening test."
             }
           },
           {
@@ -130,7 +130,7 @@
 
     <!-- Footer -->
     <footer class="border-t border-gray-800 py-8 bg-gray-950 text-center text-sm text-gray-500">
-      &copy; 2026 DBERT Labs. All rights reserved. | <a href="https://dbert.online" class="underline text-gray-400">dbert.online</a>
+      &copy; 2026 DBERT Labs. All rights reserved. | <a href="https://dbert.in" class="underline text-gray-400">dbert.in</a>
     </footer>
   </div>
 </body>

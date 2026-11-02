@@ -1,4 +1,4 @@
-# DBERT Internship Portal — External Services Inventory (INV-004)
+# DBERT LMS — External Services Inventory (INV-004)
 
 **Document Date:** 2026-09-23  
 **Scope:** Third-party integrations, external APIs, egress dependencies, and infrastructure fallbacks.

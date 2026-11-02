@@ -211,7 +211,7 @@ class ReleaseVerifier:
         lines = [
             "# Gate 19 Release Readiness Report",
             "",
-            f"**Project**: DBERT Internship Portal (`Internshipportal4`)  ",
+            f"**Project**: DBERT LMS (`Internshipportal4`)  ",
             f"**Execution Timestamp**: {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S UTC')}  ",
             f"**Target Remote**: `origin/main` (`https://github.com/ainabhinavsharma/Internshipportal4.git`)  ",
             f"**Overall Status**: **{overall_status}**  ",

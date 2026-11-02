@@ -52,7 +52,7 @@ export default function RefundPage() {
             <span className="doclabel text-xs mb-1">§ 04 — CANDIDATE SUPPORT</span>
             <h2 className="card-title my-2">4. Questions &amp; Support</h2>
             <p className="body-copy">
-              If you have any questions regarding enrollment details, transaction records, or credential issuance, our support staff is available at <a href="mailto:contactus@dbert.online" className="accent-link">contactus@dbert.online</a>.
+              If you have any questions regarding enrollment details, transaction records, or credential issuance, our support staff is available at <a href="mailto:contactus@dbert.in" className="accent-link">contactus@dbert.in</a>.
             </p>
           </div>
         </div>

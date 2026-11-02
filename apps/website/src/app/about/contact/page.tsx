@@ -34,7 +34,7 @@ export default function ContactPage() {
         <div className="stack">
           <div className="card card-lift">
             <h2 className={styles.cardTitleNudge}>Email</h2>
-            <p><a href="mailto:contactus@dbert.online" className={styles.accentLink}>contactus@dbert.online</a></p>
+            <p><a href="mailto:contactus@dbert.in" className={styles.accentLink}>contactus@dbert.in</a></p>
             <p className={styles.contactNote}>Submit incubation inquiries, learner program questions, or enterprise collaboration proposals.</p>
           </div>
 

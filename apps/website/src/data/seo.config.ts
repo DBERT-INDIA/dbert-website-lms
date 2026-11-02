@@ -28,6 +28,12 @@ export type SeoEntry = {
 
 export const seoConfig: Record<string, SeoEntry> = {
   // ── Core ────────────────────────────────────────────────────────────────
+    '/blog/reader': {
+    keyword: '',
+    title: 'Technical Publication',
+    description: '',
+    noindex: true,
+  },
   '/pricing': {
     keyword: 'DBERT pricing',
     title: 'Pricing — Programs, Products & Incubation Terms',

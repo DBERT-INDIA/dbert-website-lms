@@ -150,7 +150,7 @@ export default function ProgramDetailTemplate({
         "provider": {
           "@type": "Organization",
           "name": "DBERT",
-          "sameAs": "https://dbert.online"
+          "sameAs": "https://dbert.in"
         },
         "offers": {
           "@type": "Offer",

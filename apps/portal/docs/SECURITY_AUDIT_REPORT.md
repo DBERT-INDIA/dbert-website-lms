@@ -1,4 +1,4 @@
-# DBERT Internship Portal - Security Audit & Vulnerability Report
+# DBERT LMS - Security Audit & Vulnerability Report
 **Document ID**: `SEC-AUDIT-2026-PHASE20`  
 **Execution Date**: September 25, 2026  
 **Auditor**: Antigravity Local AI Agent (Session 13 / Phase 20)  

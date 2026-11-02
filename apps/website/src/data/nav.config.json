@@ -118,8 +118,8 @@
         {
           "title": "External Portal",
           "links": [
-            { "label": "Job Board", "href": "https://internship.dbert.online/jobs", "external": true },
-            { "label": "Apply for Fellowship", "href": "https://internship.dbert.online/apply", "external": true, "highlight": true }
+            { "label": "Job Board", "href": "https://lms.dbert.in/jobs", "external": true },
+            { "label": "Apply for Fellowship", "href": "https://lms.dbert.in/program", "external": true, "highlight": true }
           ]
         }
       ]
@@ -143,7 +143,7 @@
   ],
   "cta": {
     "label": "Apply for Fellowship",
-    "href": "https://internship.dbert.online/",
+    "href": "https://lms.dbert.in/program",
     "external": true
   }
 }

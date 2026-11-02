@@ -4,11 +4,11 @@ import { seoConfig } from '@/data/seo.config';
 import { getBlogSlugs } from '@/lib/blog';
 
 /**
- * High-authority dynamic sitemap generator for dbert.online
+ * High-authority dynamic sitemap generator for dbert.in
  * Categorizes priorities and change frequencies across hubs, courses, products, and articles.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.online';
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.in';
   const lastModified = new Date();
 
   const getPriority = (route: string): number => {

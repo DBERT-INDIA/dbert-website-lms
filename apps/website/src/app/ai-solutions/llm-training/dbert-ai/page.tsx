@@ -49,7 +49,7 @@ export default function DBERTAIModelPage() {
         author: {
           '@type': 'Organization',
           name: 'DBERT Labs Industrial Training & Venture Studio',
-          url: 'https://dbert.online'
+          url: 'https://dbert.in'
         }
       },
       {

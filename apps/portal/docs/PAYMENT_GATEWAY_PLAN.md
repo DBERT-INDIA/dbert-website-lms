@@ -1,4 +1,4 @@
-# DBERT Internship Portal — Razorpay Payment Gateway & Dynamic Fallback Architecture (PAY-004 to PAY-010)
+# DBERT LMS — Razorpay Payment Gateway & Dynamic Fallback Architecture (PAY-004 to PAY-010)
 
 **Document Date:** 2026-09-23  
 **Status:** Core Architectural Specification  
@@ -8,7 +8,7 @@
 
 ## 1. Executive Summary & Dynamic Flow
 
-The DBERT Internship Portal collects deposits and fees across multiple touchpoints:
+The DBERT LMS collects deposits and fees across multiple touchpoints:
 1. **Internship Free Track Security Deposit** (₹499)
 2. **Onboarding Data Completion Wizard** (Step 3: Deposit Verification)
 3. **Post-Hire Job Offer Guarantee Deposit** (₹499)
@@ -170,7 +170,7 @@ async function initiateRazorpayPayment(productType, metadata = {}) {
         key: orderData.key_id,
         amount: orderData.amount,
         currency: orderData.currency,
-        name: "DBERT Internship Portal",
+        name: "DBERT LMS",
         description: orderData.description || "Program Payment",
         image: "/static/img/hero_student.jpg",
         order_id: orderData.order_id,

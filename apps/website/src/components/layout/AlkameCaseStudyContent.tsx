@@ -371,7 +371,7 @@ export default function AlkameCaseStudyContent() {
             not simulated coursework. Apply through the internship platform to get matched to a live project.
           </p>
           <div className={s.ctaRow}>
-            <a href="https://internship.dbert.online" target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-lg">Apply on internship.dbert.online</a>
+            <a href="https://lms.dbert.in" target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-lg">Apply on lms.dbert.in</a>
             <a href="/startups/register" className="btn btn-outline btn-lg">Get Similar Support for Your Startup</a>
           </div>
         </div>

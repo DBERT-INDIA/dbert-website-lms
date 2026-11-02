@@ -46,6 +46,39 @@ class ProgrammingError(DatabaseError, sqlite3.ProgrammingError):
 # 2. ROW WRAPPER (DROP-IN PARITY WITH sqlite3.Row & DICT MAPPING)
 # ==============================================================================
 
+class CaseInsensitiveDict(dict):
+    """Dictionary supporting case-insensitive key lookups across SQLite and PostgreSQL."""
+    def __init__(self, *a, **kw):
+        super().__init__(*a, **kw)
+        self._lower_map = {k.lower(): k for k in self.keys() if isinstance(k, str)}
+
+    def __setitem__(self, key, value):
+        super().__setitem__(key, value)
+        if isinstance(key, str):
+            self._lower_map[key.lower()] = key
+
+    def __getitem__(self, key):
+        if super().__contains__(key):
+            return super().__getitem__(key)
+        if isinstance(key, str) and key.lower() in self._lower_map:
+            return super().__getitem__(self._lower_map[key.lower()])
+        return super().__getitem__(key)
+
+    def get(self, key, default=None):
+        if super().__contains__(key):
+            return super().get(key, default)
+        if isinstance(key, str) and key.lower() in self._lower_map:
+            return super().get(self._lower_map[key.lower()], default)
+        return default
+
+    def __contains__(self, key):
+        if super().__contains__(key):
+            return True
+        if isinstance(key, str) and key.lower() in self._lower_map:
+            return True
+        return False
+
+
 class RowWrapper:
     """Portable row result wrapper providing identical semantics across SQLite and PostgreSQL.
     
@@ -85,8 +118,8 @@ class RowWrapper:
         return default
 
     def to_dict(self) -> Dict[str, Any]:
-        """Convert row to a standard Python dictionary."""
-        return dict(zip(self._columns, self._values))
+        """Convert row to a case-insensitive dictionary."""
+        return CaseInsensitiveDict(zip(self._columns, self._values))
 
     def __getitem__(self, item: Union[int, str]) -> Any:
         if isinstance(item, int):
@@ -175,13 +208,13 @@ def translate_sql(sql: str, target_dialect: str = "postgres", auto_returning: bo
     )
     translated = re.sub(
         r"date\s*\(\s*['\"]now['\"]\s*,\s*['\"]localtime['\"]\s*\)",
-        "CURRENT_DATE",
+        "to_char(CURRENT_DATE, 'YYYY-MM-DD')",
         translated,
         flags=re.IGNORECASE,
     )
     translated = re.sub(
         r"date\s*\(\s*['\"]now['\"]\s*\)",
-        "CURRENT_DATE",
+        "to_char(CURRENT_DATE, 'YYYY-MM-DD')",
         translated,
         flags=re.IGNORECASE,
     )
@@ -215,6 +248,10 @@ def _convert_qmark_to_format(sql: str) -> str:
             i += 1
             while i < n:
                 curr = sql[i]
+                if curr == "%":
+                    result.append("%%")
+                    i += 1
+                    continue
                 result.append(curr)
                 if curr == "'":
                     if i + 1 < n and sql[i + 1] == "'":
@@ -252,6 +289,12 @@ def _convert_qmark_to_format(sql: str) -> str:
                 i += 1
             continue
 
+        # Literal % outside quotes (e.g. modulo operator % or string literal)
+        if ch == "%":
+            result.append("%%")
+            i += 1
+            continue
+
         # Unquoted question mark placeholder
         if ch == "?":
             result.append("%s")
@@ -278,6 +321,10 @@ def _convert_format_to_qmark(sql: str) -> str:
             i += 1
             while i < n:
                 curr = sql[i]
+                if curr == "%":
+                    result.append("%%")
+                    i += 1
+                    continue
                 result.append(curr)
                 if curr == "'":
                     if i + 1 < n and sql[i + 1] == "'":

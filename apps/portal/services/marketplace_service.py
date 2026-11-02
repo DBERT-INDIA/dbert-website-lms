@@ -79,7 +79,7 @@ class MarketplaceService:
         return [dict(r) for r in rows]
 
     @staticmethod
-    def generate_google_jobs_json_ld(post: Dict[str, Any], base_url: str = "https://dbert.online") -> Dict[str, Any]:
+    def generate_google_jobs_json_ld(post: Dict[str, Any], base_url: str = "https://dbert.in") -> Dict[str, Any]:
         """Formats job posting according to Google-for-Jobs schema.org specs."""
         return {
             "@context": "https://schema.org/",

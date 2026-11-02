@@ -1,2230 +1,2230 @@
 [/index] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 4515, in index
+  File "/home1/a179017f/lms.dbert.in/app.py", line 4515, in index
     job_openings=live_openings_total(),
-  File "/home1/a179017f/internship.dbert.online/app.py", line 9980, in live_openings_total
+  File "/home1/a179017f/lms.dbert.in/app.py", line 9980, in live_openings_total
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [/index] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 4515, in index
+  File "/home1/a179017f/lms.dbert.in/app.py", line 4515, in index
     job_openings=live_openings_total(),
-  File "/home1/a179017f/internship.dbert.online/app.py", line 9980, in live_openings_total
+  File "/home1/a179017f/lms.dbert.in/app.py", line 9980, in live_openings_total
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [500] Error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 1511, in wsgi_app
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 1511, in wsgi_app
     response = self.full_dispatch_request()
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 919, in full_dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 919, in full_dispatch_request
     rv = self.handle_user_exception(e)
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 917, in full_dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 917, in full_dispatch_request
     rv = self.dispatch_request()
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 902, in dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 902, in dispatch_request
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-  File "/home1/a179017f/internship.dbert.online/app.py", line 10478, in jobs_by_city
+  File "/home1/a179017f/lms.dbert.in/app.py", line 10478, in jobs_by_city
     return _render_listings("job", domain_override=slug_domains[slug], domain_slug=slug)
-  File "/home1/a179017f/internship.dbert.online/app.py", line 10341, in _render_listings
+  File "/home1/a179017f/lms.dbert.in/app.py", line 10341, in _render_listings
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [/index] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 4515, in index
+  File "/home1/a179017f/lms.dbert.in/app.py", line 4515, in index
     job_openings=live_openings_total(),
-  File "/home1/a179017f/internship.dbert.online/app.py", line 9980, in live_openings_total
+  File "/home1/a179017f/lms.dbert.in/app.py", line 9980, in live_openings_total
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [/index] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 4515, in index
+  File "/home1/a179017f/lms.dbert.in/app.py", line 4515, in index
     job_openings=live_openings_total(),
-  File "/home1/a179017f/internship.dbert.online/app.py", line 9980, in live_openings_total
+  File "/home1/a179017f/lms.dbert.in/app.py", line 9980, in live_openings_total
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [/index] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 4515, in index
+  File "/home1/a179017f/lms.dbert.in/app.py", line 4515, in index
     job_openings=live_openings_total(),
-  File "/home1/a179017f/internship.dbert.online/app.py", line 9980, in live_openings_total
+  File "/home1/a179017f/lms.dbert.in/app.py", line 9980, in live_openings_total
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [/index] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 4515, in index
+  File "/home1/a179017f/lms.dbert.in/app.py", line 4515, in index
     job_openings=live_openings_total(),
-  File "/home1/a179017f/internship.dbert.online/app.py", line 9980, in live_openings_total
+  File "/home1/a179017f/lms.dbert.in/app.py", line 9980, in live_openings_total
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [/index] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 4515, in index
+  File "/home1/a179017f/lms.dbert.in/app.py", line 4515, in index
     job_openings=live_openings_total(),
-  File "/home1/a179017f/internship.dbert.online/app.py", line 9980, in live_openings_total
+  File "/home1/a179017f/lms.dbert.in/app.py", line 9980, in live_openings_total
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [500] Error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 1511, in wsgi_app
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 1511, in wsgi_app
     response = self.full_dispatch_request()
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 919, in full_dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 919, in full_dispatch_request
     rv = self.handle_user_exception(e)
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 917, in full_dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 917, in full_dispatch_request
     rv = self.dispatch_request()
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 902, in dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 902, in dispatch_request
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-  File "/home1/a179017f/internship.dbert.online/app.py", line 4739, in portal_page
+  File "/home1/a179017f/lms.dbert.in/app.py", line 4739, in portal_page
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [500] Error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 1511, in wsgi_app
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 1511, in wsgi_app
     response = self.full_dispatch_request()
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 919, in full_dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 919, in full_dispatch_request
     rv = self.handle_user_exception(e)
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 917, in full_dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 917, in full_dispatch_request
     rv = self.dispatch_request()
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 902, in dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 902, in dispatch_request
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-  File "/home1/a179017f/internship.dbert.online/app.py", line 4739, in portal_page
+  File "/home1/a179017f/lms.dbert.in/app.py", line 4739, in portal_page
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [/index] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 4515, in index
+  File "/home1/a179017f/lms.dbert.in/app.py", line 4515, in index
     job_openings=live_openings_total(),
-  File "/home1/a179017f/internship.dbert.online/app.py", line 9980, in live_openings_total
+  File "/home1/a179017f/lms.dbert.in/app.py", line 9980, in live_openings_total
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [/index] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 4515, in index
+  File "/home1/a179017f/lms.dbert.in/app.py", line 4515, in index
     job_openings=live_openings_total(),
-  File "/home1/a179017f/internship.dbert.online/app.py", line 9980, in live_openings_total
+  File "/home1/a179017f/lms.dbert.in/app.py", line 9980, in live_openings_total
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [/index] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 4515, in index
+  File "/home1/a179017f/lms.dbert.in/app.py", line 4515, in index
     job_openings=live_openings_total(),
-  File "/home1/a179017f/internship.dbert.online/app.py", line 9980, in live_openings_total
+  File "/home1/a179017f/lms.dbert.in/app.py", line 9980, in live_openings_total
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [500] Error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 1511, in wsgi_app
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 1511, in wsgi_app
     response = self.full_dispatch_request()
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 919, in full_dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 919, in full_dispatch_request
     rv = self.handle_user_exception(e)
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 917, in full_dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 917, in full_dispatch_request
     rv = self.dispatch_request()
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 902, in dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 902, in dispatch_request
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-  File "/home1/a179017f/internship.dbert.online/app.py", line 4739, in portal_page
+  File "/home1/a179017f/lms.dbert.in/app.py", line 4739, in portal_page
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [500] Error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 1511, in wsgi_app
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 1511, in wsgi_app
     response = self.full_dispatch_request()
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 919, in full_dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 919, in full_dispatch_request
     rv = self.handle_user_exception(e)
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 917, in full_dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 917, in full_dispatch_request
     rv = self.dispatch_request()
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 902, in dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 902, in dispatch_request
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-  File "/home1/a179017f/internship.dbert.online/app.py", line 10454, in jobs_listing
+  File "/home1/a179017f/lms.dbert.in/app.py", line 10454, in jobs_listing
     return _render_listings("job")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 10341, in _render_listings
+  File "/home1/a179017f/lms.dbert.in/app.py", line 10341, in _render_listings
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [500] Error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 1511, in wsgi_app
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 1511, in wsgi_app
     response = self.full_dispatch_request()
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 919, in full_dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 919, in full_dispatch_request
     rv = self.handle_user_exception(e)
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 917, in full_dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 917, in full_dispatch_request
     rv = self.dispatch_request()
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 902, in dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 902, in dispatch_request
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-  File "/home1/a179017f/internship.dbert.online/app.py", line 4739, in portal_page
+  File "/home1/a179017f/lms.dbert.in/app.py", line 4739, in portal_page
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [/index] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 4515, in index
+  File "/home1/a179017f/lms.dbert.in/app.py", line 4515, in index
     job_openings=live_openings_total(),
-  File "/home1/a179017f/internship.dbert.online/app.py", line 9980, in live_openings_total
+  File "/home1/a179017f/lms.dbert.in/app.py", line 9980, in live_openings_total
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [500] Error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 1511, in wsgi_app
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 1511, in wsgi_app
     response = self.full_dispatch_request()
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 919, in full_dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 919, in full_dispatch_request
     rv = self.handle_user_exception(e)
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 917, in full_dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 917, in full_dispatch_request
     rv = self.dispatch_request()
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 902, in dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 902, in dispatch_request
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-  File "/home1/a179017f/internship.dbert.online/app.py", line 10622, in internship_detail
+  File "/home1/a179017f/lms.dbert.in/app.py", line 10622, in internship_detail
     return _render_post_detail("internship", slug, post_id)
-  File "/home1/a179017f/internship.dbert.online/app.py", line 10498, in _render_post_detail
+  File "/home1/a179017f/lms.dbert.in/app.py", line 10498, in _render_post_detail
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [500] Error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 1511, in wsgi_app
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 1511, in wsgi_app
     response = self.full_dispatch_request()
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 919, in full_dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 919, in full_dispatch_request
     rv = self.handle_user_exception(e)
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 917, in full_dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 917, in full_dispatch_request
     rv = self.dispatch_request()
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 902, in dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 902, in dispatch_request
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-  File "/home1/a179017f/internship.dbert.online/app.py", line 4739, in portal_page
+  File "/home1/a179017f/lms.dbert.in/app.py", line 4739, in portal_page
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [500] Error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 1511, in wsgi_app
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 1511, in wsgi_app
     response = self.full_dispatch_request()
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 919, in full_dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 919, in full_dispatch_request
     rv = self.handle_user_exception(e)
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 917, in full_dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 917, in full_dispatch_request
     rv = self.dispatch_request()
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 902, in dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 902, in dispatch_request
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-  File "/home1/a179017f/internship.dbert.online/app.py", line 4739, in portal_page
+  File "/home1/a179017f/lms.dbert.in/app.py", line 4739, in portal_page
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [500] Error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 1511, in wsgi_app
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 1511, in wsgi_app
     response = self.full_dispatch_request()
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 919, in full_dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 919, in full_dispatch_request
     rv = self.handle_user_exception(e)
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 917, in full_dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 917, in full_dispatch_request
     rv = self.dispatch_request()
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 902, in dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 902, in dispatch_request
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-  File "/home1/a179017f/internship.dbert.online/app.py", line 10454, in jobs_listing
+  File "/home1/a179017f/lms.dbert.in/app.py", line 10454, in jobs_listing
     return _render_listings("job")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 10341, in _render_listings
+  File "/home1/a179017f/lms.dbert.in/app.py", line 10341, in _render_listings
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [/index] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 4515, in index
+  File "/home1/a179017f/lms.dbert.in/app.py", line 4515, in index
     job_openings=live_openings_total(),
-  File "/home1/a179017f/internship.dbert.online/app.py", line 9980, in live_openings_total
+  File "/home1/a179017f/lms.dbert.in/app.py", line 9980, in live_openings_total
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [/index] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 4515, in index
+  File "/home1/a179017f/lms.dbert.in/app.py", line 4515, in index
     job_openings=live_openings_total(),
-  File "/home1/a179017f/internship.dbert.online/app.py", line 9980, in live_openings_total
+  File "/home1/a179017f/lms.dbert.in/app.py", line 9980, in live_openings_total
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [/index] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 4515, in index
+  File "/home1/a179017f/lms.dbert.in/app.py", line 4515, in index
     job_openings=live_openings_total(),
-  File "/home1/a179017f/internship.dbert.online/app.py", line 9980, in live_openings_total
+  File "/home1/a179017f/lms.dbert.in/app.py", line 9980, in live_openings_total
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [500] Error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 1511, in wsgi_app
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 1511, in wsgi_app
     response = self.full_dispatch_request()
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 919, in full_dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 919, in full_dispatch_request
     rv = self.handle_user_exception(e)
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 917, in full_dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 917, in full_dispatch_request
     rv = self.dispatch_request()
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 902, in dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 902, in dispatch_request
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-  File "/home1/a179017f/internship.dbert.online/app.py", line 4739, in portal_page
+  File "/home1/a179017f/lms.dbert.in/app.py", line 4739, in portal_page
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [500] Error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 1511, in wsgi_app
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 1511, in wsgi_app
     response = self.full_dispatch_request()
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 919, in full_dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 919, in full_dispatch_request
     rv = self.handle_user_exception(e)
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 917, in full_dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 917, in full_dispatch_request
     rv = self.dispatch_request()
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 902, in dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 902, in dispatch_request
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-  File "/home1/a179017f/internship.dbert.online/app.py", line 4739, in portal_page
+  File "/home1/a179017f/lms.dbert.in/app.py", line 4739, in portal_page
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [500] Error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 1511, in wsgi_app
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 1511, in wsgi_app
     response = self.full_dispatch_request()
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 919, in full_dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 919, in full_dispatch_request
     rv = self.handle_user_exception(e)
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 917, in full_dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 917, in full_dispatch_request
     rv = self.dispatch_request()
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 902, in dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 902, in dispatch_request
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-  File "/home1/a179017f/internship.dbert.online/app.py", line 4739, in portal_page
+  File "/home1/a179017f/lms.dbert.in/app.py", line 4739, in portal_page
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [500] Error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 1511, in wsgi_app
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 1511, in wsgi_app
     response = self.full_dispatch_request()
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 919, in full_dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 919, in full_dispatch_request
     rv = self.handle_user_exception(e)
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 917, in full_dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 917, in full_dispatch_request
     rv = self.dispatch_request()
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 902, in dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 902, in dispatch_request
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-  File "/home1/a179017f/internship.dbert.online/app.py", line 4739, in portal_page
+  File "/home1/a179017f/lms.dbert.in/app.py", line 4739, in portal_page
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [500] Error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 1511, in wsgi_app
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 1511, in wsgi_app
     response = self.full_dispatch_request()
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 919, in full_dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 919, in full_dispatch_request
     rv = self.handle_user_exception(e)
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 917, in full_dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 917, in full_dispatch_request
     rv = self.dispatch_request()
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 902, in dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 902, in dispatch_request
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-  File "/home1/a179017f/internship.dbert.online/app.py", line 10454, in jobs_listing
+  File "/home1/a179017f/lms.dbert.in/app.py", line 10454, in jobs_listing
     return _render_listings("job")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 10341, in _render_listings
+  File "/home1/a179017f/lms.dbert.in/app.py", line 10341, in _render_listings
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [500] Error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 1511, in wsgi_app
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 1511, in wsgi_app
     response = self.full_dispatch_request()
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 919, in full_dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 919, in full_dispatch_request
     rv = self.handle_user_exception(e)
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 917, in full_dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 917, in full_dispatch_request
     rv = self.dispatch_request()
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 902, in dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 902, in dispatch_request
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-  File "/home1/a179017f/internship.dbert.online/app.py", line 10454, in jobs_listing
+  File "/home1/a179017f/lms.dbert.in/app.py", line 10454, in jobs_listing
     return _render_listings("job")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 10341, in _render_listings
+  File "/home1/a179017f/lms.dbert.in/app.py", line 10341, in _render_listings
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [/index] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 4515, in index
+  File "/home1/a179017f/lms.dbert.in/app.py", line 4515, in index
     job_openings=live_openings_total(),
-  File "/home1/a179017f/internship.dbert.online/app.py", line 9980, in live_openings_total
+  File "/home1/a179017f/lms.dbert.in/app.py", line 9980, in live_openings_total
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [500] Error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 1511, in wsgi_app
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 1511, in wsgi_app
     response = self.full_dispatch_request()
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 919, in full_dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 919, in full_dispatch_request
     rv = self.handle_user_exception(e)
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 917, in full_dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 917, in full_dispatch_request
     rv = self.dispatch_request()
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 902, in dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 902, in dispatch_request
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-  File "/home1/a179017f/internship.dbert.online/app.py", line 4739, in portal_page
+  File "/home1/a179017f/lms.dbert.in/app.py", line 4739, in portal_page
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [500] Error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 1511, in wsgi_app
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 1511, in wsgi_app
     response = self.full_dispatch_request()
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 919, in full_dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 919, in full_dispatch_request
     rv = self.handle_user_exception(e)
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 917, in full_dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 917, in full_dispatch_request
     rv = self.dispatch_request()
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 902, in dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 902, in dispatch_request
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-  File "/home1/a179017f/internship.dbert.online/app.py", line 4739, in portal_page
+  File "/home1/a179017f/lms.dbert.in/app.py", line 4739, in portal_page
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [500] Error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 1511, in wsgi_app
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 1511, in wsgi_app
     response = self.full_dispatch_request()
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 919, in full_dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 919, in full_dispatch_request
     rv = self.handle_user_exception(e)
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 917, in full_dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 917, in full_dispatch_request
     rv = self.dispatch_request()
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 902, in dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 902, in dispatch_request
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-  File "/home1/a179017f/internship.dbert.online/app.py", line 10454, in jobs_listing
+  File "/home1/a179017f/lms.dbert.in/app.py", line 10454, in jobs_listing
     return _render_listings("job")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 10341, in _render_listings
+  File "/home1/a179017f/lms.dbert.in/app.py", line 10341, in _render_listings
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [/index] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 4515, in index
+  File "/home1/a179017f/lms.dbert.in/app.py", line 4515, in index
     job_openings=live_openings_total(),
-  File "/home1/a179017f/internship.dbert.online/app.py", line 9980, in live_openings_total
+  File "/home1/a179017f/lms.dbert.in/app.py", line 9980, in live_openings_total
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [500] Error: 500 Internal Server Error: The server encountered an internal error and was unable to complete your request. Either the server is overloaded or there is an error in the application.
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 1511, in wsgi_app
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 1511, in wsgi_app
     response = self.full_dispatch_request()
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 919, in full_dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 919, in full_dispatch_request
     rv = self.handle_user_exception(e)
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 917, in full_dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 917, in full_dispatch_request
     rv = self.dispatch_request()
-  File "/home1/a179017f/internship.dbert.online/vendor/flask/app.py", line 902, in dispatch_request
+  File "/home1/a179017f/lms.dbert.in/vendor/flask/app.py", line 902, in dispatch_request
     return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
-  File "/home1/a179017f/internship.dbert.online/app.py", line 4739, in portal_page
+  File "/home1/a179017f/lms.dbert.in/app.py", line 4739, in portal_page
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [/index] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 4515, in index
+  File "/home1/a179017f/lms.dbert.in/app.py", line 4515, in index
     job_openings=live_openings_total(),
-  File "/home1/a179017f/internship.dbert.online/app.py", line 9980, in live_openings_total
+  File "/home1/a179017f/lms.dbert.in/app.py", line 9980, in live_openings_total
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [/index] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 4515, in index
+  File "/home1/a179017f/lms.dbert.in/app.py", line 4515, in index
     job_openings=live_openings_total(),
-  File "/home1/a179017f/internship.dbert.online/app.py", line 9980, in live_openings_total
+  File "/home1/a179017f/lms.dbert.in/app.py", line 9980, in live_openings_total
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [/index] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 4515, in index
+  File "/home1/a179017f/lms.dbert.in/app.py", line 4515, in index
     job_openings=live_openings_total(),
-  File "/home1/a179017f/internship.dbert.online/app.py", line 9980, in live_openings_total
+  File "/home1/a179017f/lms.dbert.in/app.py", line 9980, in live_openings_total
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [/index] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 4515, in index
+  File "/home1/a179017f/lms.dbert.in/app.py", line 4515, in index
     job_openings=live_openings_total(),
-  File "/home1/a179017f/internship.dbert.online/app.py", line 9980, in live_openings_total
+  File "/home1/a179017f/lms.dbert.in/app.py", line 9980, in live_openings_total
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [/index] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 4515, in index
+  File "/home1/a179017f/lms.dbert.in/app.py", line 4515, in index
     job_openings=live_openings_total(),
-  File "/home1/a179017f/internship.dbert.online/app.py", line 9980, in live_openings_total
+  File "/home1/a179017f/lms.dbert.in/app.py", line 9980, in live_openings_total
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [/index] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 4515, in index
+  File "/home1/a179017f/lms.dbert.in/app.py", line 4515, in index
     job_openings=live_openings_total(),
-  File "/home1/a179017f/internship.dbert.online/app.py", line 9980, in live_openings_total
+  File "/home1/a179017f/lms.dbert.in/app.py", line 9980, in live_openings_total
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 
 [attendance-ping] Error: No module named 'psycopg2'
 Traceback (most recent call last):
-  File "/home1/a179017f/internship.dbert.online/app.py", line 13729, in attendance_ping
+  File "/home1/a179017f/lms.dbert.in/app.py", line 13729, in attendance_ping
     user = require_role("intern")
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3698, in require_role
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3698, in require_role
     user = get_current_user()
-  File "/home1/a179017f/internship.dbert.online/app.py", line 3564, in get_current_user
+  File "/home1/a179017f/lms.dbert.in/app.py", line 3564, in get_current_user
     with get_db() as conn:
-  File "/home1/a179017f/internship.dbert.online/app.py", line 835, in get_db
+  File "/home1/a179017f/lms.dbert.in/app.py", line 835, in get_db
     return get_db_adapter(timeout=15.0)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 846, in get_db_adapter
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 846, in get_db_adapter
     return PostgreSQLAdapter(db_target)
-  File "/home1/a179017f/internship.dbert.online/services/database/adapter.py", line 597, in __init__
+  File "/home1/a179017f/lms.dbert.in/services/database/adapter.py", line 597, in __init__
     import psycopg2
 ModuleNotFoundError: No module named 'psycopg2'
 

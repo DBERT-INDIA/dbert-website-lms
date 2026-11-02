@@ -61,7 +61,7 @@ def intern_my_applications():
                                       and attempts_used < INTERVIEW_MAX_ATTEMPTS and cooling_passed),
                 }
                 out.append(d)
-        return jsonify({"status": "success", "applications": out, "tutor_base": "https://internship.dbert.online"})
+        return jsonify({"status": "success", "applications": out, "tutor_base": "https://lms.dbert.in"})
     except Exception as e:
         log_error("intern-my-applications", e)
         return jsonify({"status": "error", "message": "Error"}), 500

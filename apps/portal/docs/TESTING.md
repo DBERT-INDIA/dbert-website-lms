@@ -1,4 +1,4 @@
-﻿# DBERT Internship Portal - Test Documentation
+﻿# DBERT LMS - Test Documentation
 
 ## Overview
 

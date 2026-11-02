@@ -68,13 +68,13 @@ const columns: FooterColumn[] = [
   {
     label: 'Live Opportunities',
     links: [
-      { label: 'Full Stack Internships Mumbai', href: 'https://internship.dbert.online/internships/booking-system-development-intern-mumbai-remote-50', external: true },
-      { label: 'Data Analyst Bangalore', href: 'https://internship.dbert.online/internships/operations-data-analyst-intern-bangalore-remote-28', external: true },
-      { label: 'AI Agent Roles Delhi NCR', href: 'https://internship.dbert.online/internships/agentic-search-systems-intern-delhi-ncr-remote-11', external: true },
-      { label: 'Python Automation Pune', href: 'https://internship.dbert.online/internships/social-media-automation-intern-pune-remote-67', external: true },
-      { label: 'Virtual Remote Sprints', href: 'https://internship.dbert.online/internships/virtual-remote-internships', external: true },
-      { label: 'Paid Internships With Stipend', href: 'https://internship.dbert.online/internships/paid-internships', external: true },
-      { label: 'Job Board & Placement Hub', href: 'https://internship.dbert.online/jobs', external: true },
+      { label: 'Full Stack Internships Mumbai', href: 'https://lms.dbert.in/internships/booking-system-development-intern-mumbai-remote-50', external: true },
+      { label: 'Data Analyst Bangalore', href: 'https://lms.dbert.in/internships/operations-data-analyst-intern-bangalore-remote-28', external: true },
+      { label: 'AI Agent Roles Delhi NCR', href: 'https://lms.dbert.in/internships/agentic-search-systems-intern-delhi-ncr-remote-11', external: true },
+      { label: 'Python Automation Pune', href: 'https://lms.dbert.in/internships/social-media-automation-intern-pune-remote-67', external: true },
+      { label: 'Virtual Remote Sprints', href: 'https://lms.dbert.in/internships/virtual-remote-internships', external: true },
+      { label: 'Paid Internships With Stipend', href: 'https://lms.dbert.in/internships/paid-internships', external: true },
+      { label: 'Job Board & Placement Hub', href: 'https://lms.dbert.in/jobs', external: true },
     ],
   },
 ];
@@ -102,10 +102,10 @@ export default function Footer() {
 
             <address className={styles.contact}>
               <a
-                href="mailto:contactus@dbert.online"
+                href="mailto:contactus@dbert.in"
                 onClick={() => trackEvent('contact_email_click')}
               >
-                contactus@dbert.online
+                contactus@dbert.in
               </a>
               <a
                 href="tel:+918958006294"
@@ -181,13 +181,13 @@ export default function Footer() {
         <div className={styles.seoMeshBar}>
           <div className={styles.seoMeshTitle}>POPULAR SEARCH TOPICS &amp; REGIONAL DIRECTORY</div>
           <div className={styles.seoMeshLinks}>
-            <a href="https://internship.dbert.online/internships/full-stack-development" target="_blank" rel="noopener noreferrer">Full Stack Internships Mumbai &amp; Bangalore</a>
+            <a href="https://lms.dbert.in/internships/full-stack-development" target="_blank" rel="noopener noreferrer">Full Stack Internships Mumbai &amp; Bangalore</a>
             <span className={styles.dot}>·</span>
-            <a href="https://internship.dbert.online/internships/data-analyst-internship-work-from-home" target="_blank" rel="noopener noreferrer">Data Analyst Work From Home</a>
+            <a href="https://lms.dbert.in/internships/data-analyst-internship-work-from-home" target="_blank" rel="noopener noreferrer">Data Analyst Work From Home</a>
             <span className={styles.dot}>·</span>
-            <a href="https://internship.dbert.online/internships/ai-automation-internship" target="_blank" rel="noopener noreferrer">AI Automation Internships Bangalore</a>
+            <a href="https://lms.dbert.in/internships/ai-automation-internship" target="_blank" rel="noopener noreferrer">AI Automation Internships Bangalore</a>
             <span className={styles.dot}>·</span>
-            <a href="https://internship.dbert.online/jobs/full-stack-development" target="_blank" rel="noopener noreferrer">Full Stack AI Developer Jobs</a>
+            <a href="https://lms.dbert.in/jobs/full-stack-development" target="_blank" rel="noopener noreferrer">Full Stack AI Developer Jobs</a>
             <span className={styles.dot}>·</span>
             <Link href="/startups">AI Startup Incubator Delhi NCR</Link>
             <span className={styles.dot}>·</span>
@@ -202,7 +202,7 @@ export default function Footer() {
         </div>
 
         <div className={styles.base}>
-          <span>© {new Date().getFullYear()} DBERT · dbert.online · All rights reserved</span>
+          <span>© {new Date().getFullYear()} DBERT · dbert.in · All rights reserved</span>
           <span className={styles.made}>
             handmade in Delhi <b>·</b> fueled by chai ☕
           </span>

@@ -1,6 +1,6 @@
 """
 Phase 21: Observability, Telemetry & Logging Test Suite
-DBERT Internship Portal
+DBERT LMS
 
 Covers:
 1. TestRequestIDTracing:

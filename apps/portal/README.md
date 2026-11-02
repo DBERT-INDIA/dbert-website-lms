@@ -1,4 +1,4 @@
-# DBERT Internship Portal
+# DBERT LMS
 
 A comprehensive, monolithic Flask-based application designed to manage the end-to-end lifecycle of the DBERT Internship Program. This platform seamlessly connects interns, mentors, and companies while providing staff with robust administrative tools.
 

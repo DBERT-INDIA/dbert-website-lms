@@ -20,7 +20,7 @@ export default function AIAgentCoursePage() {
     },
     {
       question: 'Can I independently verify my final training certificate with potential Indian startup employers?',
-      answer: 'Yes. Every issued engineering credential contains a unique cryptographic validation UUID that HR managers and technical team leads can verify instantly by accessing our open institutional portal at dbert.online/verify.'
+      answer: 'Yes. Every issued engineering credential contains a unique cryptographic validation UUID that HR managers and technical team leads can verify instantly by accessing our open institutional portal at dbert.in/verify.'
     },
     {
       question: 'How are technical capstone sprint projects evaluated and integrated into developer Git portfolios?',
@@ -42,7 +42,7 @@ export default function AIAgentCoursePage() {
         provider: {
           '@type': 'Organization',
           name: 'DBERT Labs Industrial Training & Venture Studio',
-          url: 'https://dbert.online'
+          url: 'https://dbert.in'
         },
         courseCode: 'DBERT-ENG-AGNT-2026',
         courseMode: 'Blended (Synchronous Cohort & Remote Production Lab Sprints)',
@@ -54,7 +54,7 @@ export default function AIAgentCoursePage() {
           priceCurrency: 'INR',
           availability: 'https://schema.org/InStock',
           validFrom: '2026-01-01',
-          url: 'https://dbert.online/learners/courses/ai-agent-development'
+          url: 'https://dbert.in/learners/courses/ai-agent-development'
         }
       },
       {
@@ -268,8 +268,8 @@ export default function AIAgentCoursePage() {
         title="AI Agent & Autonomous Workflow Internships in India"
         description="Direct entry into active startup development squads building tool-calling agents, multi-agent swarms, and RAG pipelines across Mumbai, Bengaluru, Delhi NCR, and remote environments."
         domainName="AI Agent Development"
-        hubHref="https://internship.dbert.online/internships/ai-agent-development"
-        jobsHref="https://internship.dbert.online/jobs/ai-agent-development"
+        hubHref="https://lms.dbert.in/internships/ai-agent-development"
+        jobsHref="https://lms.dbert.in/jobs/ai-agent-development"
         opportunities={[
           {
             title: 'AI Sales Assistant & Lead Qualifier Bot Intern',
@@ -277,7 +277,7 @@ export default function AIAgentCoursePage() {
             cityTag: 'Mumbai',
             location: 'Mumbai · Hybrid / Remote',
             stipend: '₹9,000 – ₹16,000 / mo',
-            href: 'https://internship.dbert.online/internships/ai-sales-assistant-bot-intern-mumbai-remote-14',
+            href: 'https://lms.dbert.in/internships/ai-sales-assistant-bot-intern-mumbai-remote-14',
             tags: ['LangChain', 'Function Calling', 'FastAPI', 'Python'],
           },
           {
@@ -286,7 +286,7 @@ export default function AIAgentCoursePage() {
             cityTag: 'Bangalore',
             location: 'Bengaluru · Hybrid',
             stipend: '₹10,000 – ₹18,000 / mo',
-            href: 'https://internship.dbert.online/internships/ai-workflow-automation-intern-bangalore-remote-10',
+            href: 'https://lms.dbert.in/internships/ai-workflow-automation-intern-bangalore-remote-10',
             tags: ['LangGraph', 'CrewAI', 'Redis', 'Python'],
           },
           {
@@ -295,7 +295,7 @@ export default function AIAgentCoursePage() {
             cityTag: 'Delhi NCR',
             location: 'Delhi NCR · Remote',
             stipend: '₹9,500 – ₹17,000 / mo',
-            href: 'https://internship.dbert.online/internships/agentic-search-systems-intern-delhi-ncr-remote-11',
+            href: 'https://lms.dbert.in/internships/agentic-search-systems-intern-delhi-ncr-remote-11',
             tags: ['RAG', 'pgvector', 'Qdrant', 'FastAPI'],
           },
           {
@@ -304,7 +304,7 @@ export default function AIAgentCoursePage() {
             cityTag: 'Hyderabad',
             location: 'Hyderabad · Remote',
             stipend: '₹9,000 – ₹16,000 / mo',
-            href: 'https://internship.dbert.online/internships/ai-coding-assistant-intern-hyderabad-remote-12',
+            href: 'https://lms.dbert.in/internships/ai-coding-assistant-intern-hyderabad-remote-12',
             tags: ['Tree-sitter', 'Python', 'GitHub Actions', 'vLLM'],
           },
           {
@@ -313,7 +313,7 @@ export default function AIAgentCoursePage() {
             cityTag: 'Pune',
             location: 'Pune · Hybrid',
             stipend: '₹8,500 – ₹15,000 / mo',
-            href: 'https://internship.dbert.online/internships/knowledge-base-rag-agent-intern-pune-remote-13',
+            href: 'https://lms.dbert.in/internships/knowledge-base-rag-agent-intern-pune-remote-13',
             tags: ['ChromaDB', 'LlamaIndex', 'Python', 'Docker'],
           },
           {
@@ -322,7 +322,7 @@ export default function AIAgentCoursePage() {
             cityTag: 'Remote',
             location: 'Virtual · Anywhere India',
             stipend: '₹10,000 – ₹18,000 / mo',
-            href: 'https://internship.dbert.online/internships/rag-pipeline-engineering-intern-remote-1',
+            href: 'https://lms.dbert.in/internships/rag-pipeline-engineering-intern-remote-1',
             tags: ['RAG', 'Ollama', 'FastAPI', 'LangGraph'],
           },
         ]}

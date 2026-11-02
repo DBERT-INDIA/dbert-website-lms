@@ -48,7 +48,7 @@ SMTP_HOST=cdunhncajun5.zevm.mail-manager-smtp.amazonaws.com
 SMTP_PORT=587
 SMTP_USER=inp-mxpxb2byjeyfd6qiyoathjup
 SMTP_PASS=S5Y^j8pWcdegAqytI,m8E2+[R+q*|7m.
-FROM_EMAIL=contactus@dbert.online
+FROM_EMAIL=contactus@dbert.in
 FROM_NAME=DBERT Support
 
 # ==========================================

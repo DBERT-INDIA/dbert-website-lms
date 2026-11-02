@@ -286,7 +286,7 @@ export default function AivaraCohortForm() {
         </p>
         <div className="stack-h justify-center gap-4 flex-wrap">
           <a
-            href="https://internship.dbert.online/apply?cohort=aivara"
+            href="https://lms.dbert.in/apply?cohort=aivara"
             target="_blank"
             rel="noopener noreferrer"
             className="btn btn-primary btn-lg font-semibold"

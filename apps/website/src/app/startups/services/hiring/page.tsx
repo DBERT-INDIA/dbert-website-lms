@@ -50,7 +50,7 @@ export default function HiringServicePage() {
         provider: {
           '@type': 'Organization',
           name: 'DBERT Labs Industrial Training & Venture Studio',
-          url: 'https://dbert.online'
+          url: 'https://dbert.in'
         },
         offers: {
           '@type': 'Offer',
@@ -58,7 +58,7 @@ export default function HiringServicePage() {
           price: '0',
           priceCurrency: 'INR',
           description: '0% sourcing commission fees for incubated startups utilizing our vetted developer directory',
-          url: 'https://dbert.online/startups/services/hiring'
+          url: 'https://dbert.in/startups/services/hiring'
         }
       },
       {

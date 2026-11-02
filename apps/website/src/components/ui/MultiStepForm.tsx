@@ -157,7 +157,7 @@ export default function StartupRegisterForm() {
             </div>
             <div className={styles.fieldGroup}>
               <label>Email Address *</label>
-              <input type="email" name="email" required value={formData.email} onChange={handleInputChange} placeholder="you@dbert.online" />
+              <input type="email" name="email" required value={formData.email} onChange={handleInputChange} placeholder="you@dbert.in" />
             </div>
             <div className={styles.fieldGroup}>
               <label>Phone / WhatsApp * (10 digits)</label>

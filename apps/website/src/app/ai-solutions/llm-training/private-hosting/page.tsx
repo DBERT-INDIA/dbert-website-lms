@@ -40,14 +40,14 @@ export default function PrivateHostingPage() {
         provider: {
           '@type': 'Organization',
           name: 'DBERT (Digital Blinc Education Research And Technology)',
-          url: 'https://dbert.online'
+          url: 'https://dbert.in'
         },
         areaServed: {
           '@type': 'Country',
           name: 'India'
         },
         serviceType: 'Sovereign Cloud AI Infrastructure & On-Premises LLM Hosting',
-        url: 'https://dbert.online/ai-solutions/llm-training/private-hosting'
+        url: 'https://dbert.in/ai-solutions/llm-training/private-hosting'
       },
       {
         '@type': 'FAQPage',

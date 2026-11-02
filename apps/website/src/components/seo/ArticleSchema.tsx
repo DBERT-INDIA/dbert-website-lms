@@ -9,7 +9,7 @@ interface ArticleSchemaProps {
   slug: string;
 }
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.online';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.in';
 
 /**
  * Server component injecting Google Rich Results compliant Article JSON-LD structured schema.

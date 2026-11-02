@@ -42,7 +42,7 @@ export default function PricingPage() {
         '@type': 'WebPage',
         name: 'DBERT Labs Transparent Pricing & Venture Commercials',
         description: 'Comprehensive pricing structures for industrial software upskilling programs, startup equity incubation tracks, micro-grants, and enterprise AI engineering sprints.',
-        url: 'https://dbert.online/pricing'
+        url: 'https://dbert.in/pricing'
       },
       {
         '@type': 'OfferCatalog',

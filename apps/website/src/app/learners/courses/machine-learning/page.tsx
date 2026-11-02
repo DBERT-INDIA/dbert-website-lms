@@ -27,7 +27,7 @@ export default function MachineLearningCoursePage() {
     },
     {
       question: 'How do employers verify my ML credentials?',
-      answer: 'Graduates receive a cryptographically verified credential serial number that recruiters can audit instantly at dbert.online/verify, coupled with verifiable Git commits.'
+      answer: 'Graduates receive a cryptographically verified credential serial number that recruiters can audit instantly at dbert.in/verify, coupled with verifiable Git commits.'
     }
   ];
 
@@ -41,7 +41,7 @@ export default function MachineLearningCoursePage() {
         provider: {
           '@type': 'Organization',
           name: 'DBERT Labs Industrial Training & Venture Studio',
-          url: 'https://dbert.online'
+          url: 'https://dbert.in'
         },
         courseCode: 'DBERT-ENG-MLFT-2026',
         courseMode: 'Blended (Cohort Sprints & GPU Lab Work)',
@@ -53,7 +53,7 @@ export default function MachineLearningCoursePage() {
           priceCurrency: 'INR',
           availability: 'https://schema.org/InStock',
           validFrom: '2026-01-01',
-          url: 'https://dbert.online/learners/courses/machine-learning'
+          url: 'https://dbert.in/learners/courses/machine-learning'
         }
       },
       {

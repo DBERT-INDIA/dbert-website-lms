@@ -90,6 +90,8 @@ app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 31536000  # 1 year static asset cachin
 app.config["SESSION_COOKIE_NAME"] = "dbert_flask"
 app.config["SESSION_COOKIE_HTTPONLY"] = True
 app.config["SESSION_COOKIE_SAMESITE"] = "Lax"
+if os.environ.get("SESSION_COOKIE_DOMAIN"):
+    app.config["SESSION_COOKIE_DOMAIN"] = os.environ.get("SESSION_COOKIE_DOMAIN")
 
 def format_inr(value):
     try:
@@ -282,7 +284,7 @@ def csp_policy_for(nonce):
         f"{style_src}; "
         "font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; "
         "img-src 'self' data: https:; "
-        "connect-src 'self' https://onesignal.com https://*.onesignal.com https://api.onesignal.com https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com; "
+        "connect-src 'self' https://dbert.in https://lms.dbert.in https://onesignal.com https://*.onesignal.com https://api.onesignal.com https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com; "
         "frame-src https://challenges.cloudflare.com; "
         "worker-src 'self' https://cdn.onesignal.com; "
         "base-uri 'self'; form-action 'self'; frame-ancestors 'none'; "
@@ -297,15 +299,18 @@ CSP_REPORT_ONLY = CSP_POLICY  # kept: referenced elsewhere / by ops tooling
 os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
 
 # P2-6: Production configuration validation
-if is_prod:
+if is_prod or os.environ.get("FLASK_ENV") == "production":
     if len(app.config.get("SECRET_KEY", "")) < 32:
-        print("[WARNING] FLASK_SECRET_KEY is shorter than 32 chars.")
+        if os.environ.get("FLASK_ENV") == "production":
+            raise RuntimeError("FLASK_SECRET_KEY must be at least 32 characters in production.")
+        else:
+            print("[WARNING] FLASK_SECRET_KEY is shorter than 32 chars.")
 
-SMTP_HOST = os.environ.get("SMTP_HOST", "dbert.online")
+SMTP_HOST = os.environ.get("SMTP_HOST", "dbert.in")
 SMTP_PORT = int(os.environ.get("SMTP_PORT", "465"))
-SMTP_USER = os.environ.get("SMTP_USER", "contactus@dbert.online")
+SMTP_USER = os.environ.get("SMTP_USER", "contactus@dbert.in")
 SMTP_PASS = os.environ.get("SMTP_PASS", "")  # never hardcode — supplied via .env
-FROM_EMAIL = os.environ.get("FROM_EMAIL", "contactus@dbert.online")
+FROM_EMAIL = os.environ.get("FROM_EMAIL", "contactus@dbert.in")
 FROM_NAME  = os.environ.get("FROM_NAME", "DBERT Support")
 
 # Secondary Backup Mailbox
@@ -341,7 +346,7 @@ ADMIN_PASSWORD   = os.environ.get("ADMIN_PASSWORD", "dbert_admin_2026")
 
 # Production guard: refuse to boot with shipped default credentials/secret when not in debug.
 # (Mirrors the TUTOR_SSO_SECRET guard above. Prevents an accidental insecure deploy.)
-if os.environ.get("FLASK_DEBUG", "false").lower() != "true":
+if os.environ.get("FLASK_ENV") == "production" or os.environ.get("FLASK_DEBUG", "false").lower() != "true":
     _insecure = []
     if app.secret_key == "digitalblinc2026secretkey": _insecure.append("FLASK_SECRET_KEY")
     if ADMIN_PASSWORD == "dbert_admin_2026":           _insecure.append("ADMIN_PASSWORD")
@@ -378,7 +383,7 @@ GA4_ID = os.environ.get("GA4_ID", "G-GZ17KZ7MDW")
 # unset means those two events simply do not send.
 GA4_API_SECRET = os.environ.get("GA4_API_SECRET", "")
 # Canonical public origin for SEO tags (canonical/OG/sitemap).
-SITE_ORIGIN = os.environ.get("SITE_ORIGIN", "https://internship.dbert.online")
+SITE_ORIGIN = os.environ.get("SITE_ORIGIN", "https://lms.dbert.in")
 # Spec Â§7 â€” AdSense publisher id for /ads.txt. Format: pub- + 16 digits.
 # Overridable per-environment so staging never claims production's inventory.
 ADSENSE_PUB_ID = os.environ.get("ADSENSE_PUB_ID", "pub-1320532532258767")
@@ -564,9 +569,10 @@ SENSITIVE_DB_FIELDS = frozenset({"password_hash", "salt", "token_hash", "secret_
 def row_to_dict(row, exclude_sensitive=True):
     if row is None:
         return None
+    from services.database.adapter import CaseInsensitiveDict
     if exclude_sensitive:
-        return {k: row[k] for k in row.keys() if k not in SENSITIVE_DB_FIELDS}
-    return {k: row[k] for k in row.keys()}
+        return CaseInsensitiveDict({k: row[k] for k in row.keys() if k not in SENSITIVE_DB_FIELDS})
+    return CaseInsensitiveDict({k: row[k] for k in row.keys()})
 
 
 
@@ -704,7 +710,7 @@ def rate_check(bucket, limit, window_seconds):
     """Sliding-window check shared by all workers via the rate_events table.
     Returns (allowed: bool, retry_after: int). Records the event when allowed.
     Fails OPEN (never blocks real users) if the limiter DB errors."""
-    if os.environ.get("FLASK_ENV") == "development" or os.environ.get("DISABLE_RATE_LIMIT") == "1":
+    if os.environ.get("DISABLE_RATE_LIMIT") == "1":
         return (True, 0)
     now = time.time()
     try:
@@ -2687,7 +2693,7 @@ def init_db():
             conn.execute("INSERT INTO platform_config (key, value) VALUES (?, ?) ON CONFLICT DO NOTHING", (k, v))
         conn.commit()
         # Seed UP3.1 default staff account from admin credentials
-        staff_email = f"{ADMIN_USERNAME}@dbert.online"
+        staff_email = f"{ADMIN_USERNAME}@dbert.in"
         existing_staff = conn.execute("SELECT id FROM staff_accounts WHERE email = ?", (staff_email,)).fetchone()
         if not existing_staff:
             pwd_hash = generate_password_hash(ADMIN_PASSWORD)
@@ -3688,7 +3694,7 @@ CSRF_SAFE_METHODS = {"GET", "HEAD", "OPTIONS", "TRACE"}
 # Endpoints that legitimately cannot carry a token. Keep this list empty unless
 # there is a genuine server-to-server caller â€” every browser-originated POST
 # must be protected.
-CSRF_EXEMPT_ENDPOINTS = {"scraped_lead_click_track", "scraped_lead_comment_add"}
+CSRF_EXEMPT_ENDPOINTS = {"scraped_lead_click_track"}
 
 
 def _csrf_token():
@@ -3789,13 +3795,13 @@ def require_admin():
         return {
             "id": session.get("admin_id"),
             "role": session.get("role") or "admin",
-            "email": session.get("staff_email", "admin@dbert.online")
+            "email": session.get("staff_email", "admin@dbert.in")
         }
     if session.get("role") in ("admin", "superadmin"):
         return {
             "id": session.get("admin_id", 1),
             "role": session.get("role"),
-            "email": session.get("staff_email", "admin@dbert.online")
+            "email": session.get("staff_email", "admin@dbert.in")
         }
     return None
 
@@ -3885,7 +3891,7 @@ def assign_mentor_email(domain):
         return rows[0]["email"]
     
     log_info("mentor_assignment", f"No active mentors found for {domain}. Falling back to default.")
-    return "contactus@dbert.online"
+    return "contactus@dbert.in"
 
 
 # â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
@@ -3896,7 +3902,7 @@ def assign_mentor_email(domain):
 # Applied centrally in send_email_async so EVERY email gains: a plain-text part,
 # proper headers (Reply-To/Date/Message-ID/List-Unsubscribe), a CAN-SPAM footer with
 # a working unsubscribe link, an open-tracking pixel, and UTM-tagged site links.
-EMAIL_SITE = "https://internship.dbert.online"
+EMAIL_SITE = "https://lms.dbert.in"
 
 def _email_sig(purpose, value):
     return hmac.new(app.secret_key.encode(), f"{purpose}:{value.lower()}".encode(), hashlib.sha256).hexdigest()[:32]
@@ -3908,7 +3914,7 @@ def _email_pixel_url(to_email):
     return f"{EMAIL_SITE}/e/o.gif?e={quote(to_email)}&t={_email_sig('open', to_email)}"
 
 def _email_add_utm(html, campaign):
-    """Append UTM params to internship.dbert.online links that don't already carry them."""
+    """Append UTM params to lms.dbert.in links that don't already carry them."""
     def _repl(m):
         url = m.group(1)
         if "utm_" in url:
@@ -3935,7 +3941,7 @@ def _email_footer(to_email):
         "<div style='max-width:580px;margin:0 auto 26px;padding:0 20px;text-align:center;'>"
         "<p style='color:#5a6577;font-size:11px;line-height:1.8;margin:14px 0 0;'>"
         "DBERT &middot; MSME Registered &middot; India<br/>"
-        "You're receiving this because you signed up at internship.dbert.online.<br/>"
+        "You're receiving this because you signed up at lms.dbert.in.<br/>"
         f"<a href='{_email_unsub_url(to_email)}' style='color:#7a8699;text-decoration:underline;'>Unsubscribe</a>"
         " &middot; <a href='" + EMAIL_SITE + "/privacy' style='color:#7a8699;text-decoration:underline;'>Privacy</a>"
         "</p></div>"
@@ -4131,7 +4137,7 @@ def _persist_notification_for_email(to_email, title, message, url):
         log_error("persist-notification", e)
 
 
-def send_push_notification(to_email, title, message, url="https://internship.dbert.online"):
+def send_push_notification(to_email, title, message, url="https://lms.dbert.in"):
     """
     Fire-and-forget OneSignal push notification (v2 API).
     Uses external_id alias = intern email (set by frontend on login).
@@ -4248,7 +4254,7 @@ def send_application_received_email(name, to_email, domain):
             "<li>Track your status anytime in your portal</li></ul>")
     )
     html = _email_shell("Application Received", f"Hi {first}, we've got your application!", body,
-                        cta_text="Open your portal", cta_url="https://internship.dbert.online/portal",
+                        cta_text="Open your portal", cta_url="https://lms.dbert.in/portal",
                         preheader=f"Your application for {domain} is under review.")
     send_email_async(to_email, subject, html, name, campaign="application_received")
     send_push_notification(
@@ -4293,7 +4299,7 @@ def send_status_update_email(name, to_email, domain, status, note="", joining_da
             "<strong style='color:#E2B96F;'>Paid Program</strong> gives you 15 days of training, a 45-day production role, and a "
             "<strong style='color:#FFFFFF;'>guaranteed placement opportunity</strong> with our hiring partners on completion + certification â€” no waiting to be shortlisted.</p>"
             "<table role='presentation' cellpadding='0' cellspacing='0' border='0'><tr><td bgcolor='#E2B96F' style='border-radius:999px;'>"
-            "<a href='https://internship.dbert.online/program' style='display:inline-block;padding:11px 26px;"
+            "<a href='https://lms.dbert.in/program' style='display:inline-block;padding:11px 26px;"
             "color:#0B0F17;text-decoration:none;font-weight:800;font-size:13px;border-radius:999px;'>Explore the Paid Program</a>"
             "</td></tr></table></div>"
         )
@@ -4306,7 +4312,7 @@ def send_status_update_email(name, to_email, domain, status, note="", joining_da
         f"<p style='margin:0;'>{body}</p>{batch_info}{note_block}{fasttrack_block}"
     )
     html = _email_shell(status, f"Hi {first},", body_html,
-                        cta_text="Open Portal", cta_url="https://internship.dbert.online/portal",
+                        cta_text="Open Portal", cta_url="https://lms.dbert.in/portal",
                         preheader=title)
     send_email_async(to_email, subject, html, name, campaign="status_update")
     push_title, push_body = _PUSH_STATUS_MSGS.get(status, ("ðŸ“Œ Application Update", f"Your status has changed to: {status}. Check your portal."))
@@ -4333,7 +4339,7 @@ def notify_post_application_received(name, to_email, post_title, company_name):
         "reviews your application.</p>"
     )
     html = _email_shell("Applied", f"Hi {first},", body_html,
-                        cta_text="View in My Applications", cta_url="https://internship.dbert.online/portal",
+                        cta_text="View in My Applications", cta_url="https://lms.dbert.in/portal",
                         preheader=f"Application received for {post_title}")
     send_email_async(to_email, f"DBERT â€” Application received for {post_title}", html, name,
                      campaign="post_application_received")
@@ -4346,7 +4352,7 @@ def notify_post_comment_reply(name, to_email, post_title, post_path):
     (T4 thread) -- they're 'in the thread' because they applied. ``post_path`` is the
     relative /internships|/jobs path; absolute URLs are built here (push/email convention)."""
     first = (name or "Candidate").split()[0]
-    post_url = f"https://internship.dbert.online{post_path}"
+    post_url = f"https://lms.dbert.in{post_path}"
     body_html = (
         f"<p style='margin:0 0 14px;'>There's a new comment on "
         f"<strong style='color:#FFFFFF;'>{post_title}</strong>, a post you applied to.</p>"
@@ -4390,7 +4396,7 @@ def notify_post_status_change(name, to_email, post_title, company_name, new_stat
     }
     body_html = f"<p style='margin:0;color:#c9d3dd;'>{body_map.get(new_status, f'Status: {new_status}.')}</p>"
     html = _email_shell(new_status, f"Hi {first},", body_html,
-                        cta_text="View in My Applications", cta_url="https://internship.dbert.online/portal",
+                        cta_text="View in My Applications", cta_url="https://lms.dbert.in/portal",
                         preheader=heading_map.get(new_status, new_status))
     send_email_async(to_email, f"DBERT â€” {heading_map.get(new_status, new_status)}", html, name,
                      campaign="post_status_change")
@@ -4419,7 +4425,7 @@ def notify_course_payment_verified(name, to_email, course_title, is_portal_cours
         )
         push_body = f"Your payment for {course_title} is verified â€” the course is now unlocked."
     html = _email_shell("Payment verified", f"Hi {first},", body_html,
-                        cta_text="Open Portal", cta_url="https://internship.dbert.online/portal",
+                        cta_text="Open Portal", cta_url="https://lms.dbert.in/portal",
                         preheader=f"Payment verified for {course_title}")
     send_email_async(to_email, f"DBERT â€” Payment verified for {course_title}", html, name,
                      campaign="course_payment_verified")
@@ -4466,7 +4472,7 @@ def send_post_selection_email(name, to_email, post_title, company_name, needed_c
     first = (name or "Candidate").split()[0]
     if needed_certs:
         items = "".join(
-            f"<li style='margin:0 0 6px;'><a href='https://internship.dbert.online/courses/{c.get('course_id')}' "
+            f"<li style='margin:0 0 6px;'><a href='https://lms.dbert.in/courses/{c.get('course_id')}' "
             f"style='color:#E2B96F;font-weight:700;'>{(c.get('title') or 'Certification')}</a></li>"
             for c in needed_certs
         )
@@ -4490,7 +4496,7 @@ def send_post_selection_email(name, to_email, post_title, company_name, needed_c
     )
     html = _email_shell("Selected", f"Hi {first},", body_html,
                         cta_text="View in My Applications",
-                        cta_url="https://internship.dbert.online/portal",
+                        cta_url="https://lms.dbert.in/portal",
                         preheader=f"Selected for {post_title} â€” certifications needed")
     send_email_async(to_email, subject, html, name, campaign="post_selection")
     cert_count = len(needed_certs or [])
@@ -4523,7 +4529,7 @@ def send_post_hire_deposit_status_email(name, to_email, post_title, new_status):
         )
         preheader = f"Deposit payment needs to be re-uploaded for {post_title}"
     html = _email_shell("Deposit Update", f"Hi {first},", body_html,
-                        cta_text="Open your portal", cta_url="https://internship.dbert.online/portal",
+                        cta_text="Open your portal", cta_url="https://lms.dbert.in/portal",
                         preheader=preheader)
     send_email_async(to_email, subject, html, name, campaign="post_hire_deposit_status")
     push_body = (f"Your â‚¹499 deposit for {post_title} is confirmed." if new_status == "verified"
@@ -4545,7 +4551,7 @@ def send_enrollment_confirmation_email(name, to_email, domain, joining_date):
             "<li>Your offer letter is shared once approved</li></ul>")
     )
     html = _email_shell("Enrollment Received", f"Hi {first}, enrollment received!", body,
-                        cta_text="Open your portal", cta_url="https://internship.dbert.online/portal",
+                        cta_text="Open your portal", cta_url="https://lms.dbert.in/portal",
                         preheader=f"We've received your enrollment for {domain} and payment proof.")
     send_email_async(to_email, subject, html, name, campaign="enrollment_received")
     send_push_notification(
@@ -4559,7 +4565,7 @@ def send_enrollment_reminder(name, to_email, domain):
     """Reminder nudge for Selected-but-not-yet-enrolled candidates (sent by the daily cron)."""
     first = (name or "Candidate").split()[0]
     subject = "Your DBERT seat is waiting â€” complete enrollment"
-    portal = "https://internship.dbert.online/portal"
+    portal = "https://lms.dbert.in/portal"
     body = (
         f"<p style='margin:0 0 4px;'>You've been <strong style='color:#E2B96F;'>Selected</strong> for "
         f"<strong style='color:#E2B96F;'>{domain}</strong>, but your enrollment isn't complete yet. "
@@ -4568,7 +4574,7 @@ def send_enrollment_reminder(name, to_email, domain):
             "<p style='margin:0;color:#aebacb;font-size:13px;line-height:1.8;'>Log in, pick your joining Monday, "
             "and upload your payment proof to lock in your seat.</p>")
         + "<p style='margin:18px 0 0;color:#8a9ab5;font-size:12.5px;line-height:1.7;'>Prefer a faster path? "
-          "Our <a href='https://internship.dbert.online/program' style='color:#E2B96F;font-weight:700;'>Paid Program</a> "
+          "Our <a href='https://lms.dbert.in/program' style='color:#E2B96F;font-weight:700;'>Paid Program</a> "
           "includes training, a production role, and a guaranteed placement opportunity with our hiring partners "
           "on completion + certification.</p>"
     )
@@ -4588,7 +4594,7 @@ def send_paid_payment_rejected_email(name, to_email, domain):
     """Phase 12 / F4 â€” paid-program payment could not be verified; ask to re-upload (NOT the â‚¹499 flow)."""
     first = (name or "Candidate").split()[0]
     subject = "Action needed â€” re-upload your Paid Program payment"
-    prog = "https://internship.dbert.online/program"
+    prog = "https://lms.dbert.in/program"
     body = (
         f"<p style='margin:0 0 12px;'>We couldn't verify your payment for the <strong style='color:#E2B96F;'>Paid Program</strong> "
         f"({domain}). This is usually just a blurry or partial screenshot â€” <strong style='color:#FFFFFF;'>your seat is still held</strong>.</p>"
@@ -4710,6 +4716,15 @@ def sitemap_xml():
     for _d, _slug in DOMAIN_SLUGS.items():
         pages.append((f"{SITE_ORIGIN}/internships/{_slug}", today, "daily", "0.85"))
         pages.append((f"{SITE_ORIGIN}/jobs/{_slug}", today, "daily", "0.85"))
+        pages.append((f"{SITE_ORIGIN}/internships/work-from-home/{_slug}", today, "daily", "0.9"))
+        pages.append((f"{SITE_ORIGIN}/jobs/work-from-home/{_slug}", today, "daily", "0.9"))
+        pages.append((f"{SITE_ORIGIN}/internships/paid/{_slug}", today, "daily", "0.9"))
+        pages.append((f"{SITE_ORIGIN}/jobs/paid/{_slug}", today, "daily", "0.9"))
+
+        # Programmatic tech hub combinations
+        for _hub in ["bangalore", "pune", "hyderabad", "delhi", "mumbai", "chennai", "remote"]:
+            pages.append((f"{SITE_ORIGIN}/internships/{_slug}/{_hub}", today, "daily", "0.85"))
+            pages.append((f"{SITE_ORIGIN}/jobs/{_slug}/{_hub}", today, "daily", "0.85"))
     # Track 2 Â§7: live posts (published & non-expired auto-drop) + public CVs.
     with get_db() as conn:
         for r in conn.execute(
@@ -4740,6 +4755,20 @@ def sitemap_xml():
                 f"{SITE_ORIGIN}/internship/lead/{r['id']}/{seo_slug}",
                 today, "weekly", "0.8"
             ))
+        # Scraped job lead pages — full-time positions for Google Jobs indexing
+        try:
+            for r in conn.execute(
+                "SELECT id, Role, Company, End_Date FROM scraped_jobs "
+                "WHERE End_Date >= date('now') OR End_Date IS NULL"
+            ).fetchall():
+                seo_slug = re.sub(r"[^a-z0-9]+", "-",
+                                  f"{r['Role']} {r['Company']}".lower()).strip("-")[:70]
+                pages.append((
+                    f"{SITE_ORIGIN}/job/lead/{r['id']}/{seo_slug}",
+                    today, "weekly", "0.8"
+                ))
+        except Exception:
+            pass
     items = "".join(
         f"<url><loc>{html.escape(loc)}</loc><lastmod>{lm}</lastmod>"
         f"<changefreq>{cf}</changefreq><priority>{pr}</priority></url>"
@@ -4938,6 +4967,13 @@ def admin_login():
         if not allowed:
             log_abuse(ip, "/admin/login", f"login:admin:ip:{ip}", "rate_limit", username)
             return too_many(ra)
+
+        locked, _ = login_locked(username)
+        if locked:
+            log_abuse(ip, "/admin/login", _login_fail_bucket(username), "login_lockout", username)
+            if request.is_json or request.headers.get("X-Requested-With") == "XMLHttpRequest":
+                return jsonify({"status": "error", "message": "Too many failed attempts. Account temporarily locked."}), 429
+            return render_template("admin_login.html", error="Too many failed attempts. Account temporarily locked."), 429
             
         # Check 1: staff_accounts database table
         staff = None
@@ -4955,7 +4991,7 @@ def admin_login():
             staff_name = staff["name"]
             staff_email = staff["email"]
             
-        if not auth_valid and ADMIN_PASSWORD and username in (ADMIN_USERNAME.lower(), "admin@dbert.online", "admin", "dbert_admin") and hmac.compare_digest(password, ADMIN_PASSWORD):
+        if not auth_valid and ADMIN_PASSWORD and username in (ADMIN_USERNAME.lower(), "admin@dbert.in", "admin", "dbert_admin") and hmac.compare_digest(password, ADMIN_PASSWORD):
             auth_valid = True
             staff_id = staff["id"] if staff else 1
             staff_name = staff["name"] if staff else "Admin Staff"
@@ -5902,7 +5938,7 @@ def admin_articles_review():
         now_ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         slug = _post_slugify(new_title)
-        auto_url = cur["published_url"] if cur["published_url"] else f"https://dbert.online/blog/{slug}"
+        auto_url = cur["published_url"] if cur["published_url"] else f"https://dbert.in/blog/{slug}"
         assigned_url = auto_url if new_status in ("APPROVED", "PUBLISHED") else cur["published_url"]
 
         conn.execute(
@@ -5982,14 +6018,14 @@ def admin_articles_publish():
     return jsonify({"status": "success"})
 
 
-# ── Canonical Blog Redirection to dbert.online ────────────────────────────────
+# ── Canonical Blog Redirection to dbert.in ────────────────────────────────
 @app.route("/articles/<int:article_id>")
 @app.route("/articles/<slug>-<int:article_id>")
 def article_redirect_to_main_blog(article_id, slug=None):
-    """Articles live strictly on the main website dbert.online/blog.
+    """Articles live strictly on the main website dbert.in/blog.
 
-    This route ensures https://internship.dbert.online/articles/<id> cleanly
-    redirects visitors to the canonical live blog post on dbert.online.
+    This route ensures https://lms.dbert.in/articles/<id> cleanly
+    redirects visitors to the canonical live blog post on dbert.in.
     """
     with get_db() as conn:
         _ensure_articles_table(conn)
@@ -6001,14 +6037,14 @@ def article_redirect_to_main_blog(article_id, slug=None):
     if art.get("published_url") and art["published_url"].startswith("http"):
         target_url = art["published_url"]
     else:
-        target_url = f"https://dbert.online/blog/{post_slug}"
+        target_url = f"https://dbert.in/blog/{post_slug}"
     return redirect(target_url, code=302)
 
 
-# ── Public Blog Sync API for dbert.online Auto-Updates ─────────────────────────
+# ── Public Blog Sync API for dbert.in Auto-Updates ─────────────────────────
 @app.route("/api/public/blog-posts", methods=["GET"])
 def public_blog_posts():
-    """Returns approved/published intern technical writing for dbert.online/blog real-time sync."""
+    """Returns approved/published intern technical writing for dbert.in/blog real-time sync."""
     with get_db() as conn:
         _ensure_articles_table(conn)
         rows = conn.execute(
@@ -6041,7 +6077,7 @@ def public_blog_posts():
             "date": (d.get("updated_at") or d.get("created_at") or "")[:10],
             "readTime": read_time,
             "tags": [d.get("domain", "Engineering"), "Research", "FastAPI"] if "fastapi" in d.get("title", "").lower() else [d.get("domain", "Engineering"), "Technical Guide"],
-            "canonicalUrl": f"https://dbert.online/blog/{slug}",
+            "canonicalUrl": f"https://dbert.in/blog/{slug}",
             "status": d["status"]
         })
 
@@ -6054,7 +6090,7 @@ def public_blog_posts():
 
 @app.route("/api/public/blog-posts/<slug>", methods=["GET"])
 def public_blog_post_detail(slug):
-    """Returns single post detail with markdown for dynamic reader on dbert.online."""
+    """Returns single post detail with markdown for dynamic reader on dbert.in."""
     with get_db() as conn:
         _ensure_articles_table(conn)
         rows = conn.execute(
@@ -6094,7 +6130,7 @@ def public_blog_post_detail(slug):
         "date": (matched.get("updated_at") or matched.get("created_at") or "")[:10],
         "readTime": read_time,
         "tags": [matched.get("domain", "Engineering"), "Technical Guide"],
-        "canonicalUrl": f"https://dbert.online/blog/{post_slug}",
+        "canonicalUrl": f"https://dbert.in/blog/{post_slug}",
         "content_markdown": content
     }
 
@@ -8144,9 +8180,7 @@ def auth_send_otp():
         "status": "success",
         "message": f"Verification code sent to {email}. Valid for 10 minutes."
     }
-    import os
-    if os.environ.get("FLASK_DEBUG", "false").lower() == "true":
-        resp["dev_otp_hint"] = otp
+    # dev_otp_hint strictly removed for security (Finding R5-03)
         
     return jsonify(resp)
 
@@ -8369,7 +8403,6 @@ def admin_course_payments():
                            payments=pagination["items"], pagination=pagination, active=sf)
 
 
-@app.route("/admin/course-payments/<int:pay_id>/review", methods=["POST"])
 def _signal_tutor_course_unlock(intern_id, course_id):
     """
     Simulated webhook to signal an external tutor system that a course payment was verified.
@@ -8378,6 +8411,7 @@ def _signal_tutor_course_unlock(intern_id, course_id):
     log_info("tutor_unlock", f"Simulated unlock for intern {intern_id} course {course_id}")
     return True
 
+@app.route("/admin/course-payments/<int:pay_id>/review", methods=["POST"])
 def admin_course_payment_review(pay_id):
     if not require_admin():
         return jsonify({"status": "error", "message": "Unauthorized"}), 401
@@ -8417,7 +8451,7 @@ def admin_course_payment_review(pay_id):
             conn.commit()
         # T10: notify_course_payment_verified's push call persists the dashboard
         # notification (#26) itself -- no separate add_notification() here (would dupe).
-        link_url = ("https://internship.dbert.online/portal" if is_portal_course
+        link_url = ("https://lms.dbert.in/portal" if is_portal_course
                     else f"/courses/{pay['course_id']}")
         try:
             notify_course_payment_verified(pay["intern_name"], pay["intern_email"],
@@ -8432,7 +8466,7 @@ def admin_course_payment_review(pay_id):
         try:
             notify_course_payment_rejected(
                 pay["intern_name"], pay["intern_email"], pay["course_title"],
-                f"https://internship.dbert.online/courses/{pay['course_id']}/pay")
+                f"https://lms.dbert.in/courses/{pay['course_id']}/pay")
         except Exception as e:
             log_error("course-payment-notify", e)
     return jsonify({"status": "success"})
@@ -8742,6 +8776,62 @@ def portal_view_certificate(cert_id):
     return render_template("cert_verify.html", cert=cert_data, cert_id=cert_id)
 
 
+@app.route("/cert/verify")
+@app.route("/verify")
+def cert_verify_page():
+    """Public certificate verification page."""
+    cert_id = clean_text(request.args.get("id") or request.args.get("certId") or "")
+    if cert_id:
+        return redirect(f"/portal/certificate/{cert_id}")
+    return render_template("cert_verify.html", cert=None, cert_id="")
+
+
+@app.route("/api/verify")
+def api_verify_certificate():
+    """Public JSON API to verify certificate authenticity."""
+    cert_id = clean_text(request.args.get("certId") or request.args.get("id") or "")
+    if not cert_id:
+        return jsonify({"verified": False, "error": "Missing certId parameter"}), 400
+
+    with get_db() as conn:
+        row = conn.execute("""
+            SELECT c.*, COALESCE(a.name, ap.name, 'Intern') AS recipient_name,
+                   COALESCE(a.domain, ap.domain, 'Engineering') AS domain
+            FROM intern_certificates c
+            LEFT JOIN intern_accounts a ON (a.id = c.intern_id OR (c.email IS NOT NULL AND LOWER(a.email) = LOWER(c.email)))
+            LEFT JOIN applications ap ON (c.email IS NOT NULL AND LOWER(ap.email) = LOWER(c.email))
+            WHERE LOWER(c.cert_id) = LOWER(?)
+        """, (cert_id,)).fetchone()
+
+    if not row:
+        return jsonify({"verified": False, "error": "Certificate not found"}), 404
+
+    d = row_to_dict(row)
+    return jsonify({
+        "verified": True,
+        "certId": d["cert_id"],
+        "holderName": d["recipient_name"],
+        "programName": d.get("course_title") or "DBERT Fellowship",
+        "domain": d.get("domain") or "Engineering",
+        "issueDate": (d.get("issued_at") or "")[:10],
+    })
+
+
+@app.route("/intern/tutor")
+def intern_tutor_redirect():
+    """Redirect /intern/tutor to the active course learning room or /courses catalog."""
+    intern = current_intern()
+    if intern:
+        with get_db() as conn:
+            enr = conn.execute(
+                "SELECT course_id FROM course_enrollments WHERE intern_id=? ORDER BY id DESC LIMIT 1",
+                (intern["id"],)
+            ).fetchone()
+            if enr and enr["course_id"]:
+                return redirect(f"/courses/{enr['course_id']}/learn")
+    return redirect("/courses")
+
+
 @app.route("/admin/ledger")
 def admin_ledger():
     """All mirrored coin events + certificates (Track 1 §6). Read-only, filterable
@@ -8822,13 +8912,16 @@ def apply_token():
         return jsonify({"status": "error", "message": "Error"}), 500
 
 
-@app.route("/apply", methods=["POST"])
+@app.route("/apply", methods=["GET", "POST", "HEAD"])
 def apply():
     """
     Unified signup+apply: creates intern_account and submits application
     in one step. Status goes directly to Under Review.
     Also handles re-apply for rejected interns (new record inserted).
+    GET/HEAD requests gracefully redirect to the public program overview.
     """
+    if request.method in ("GET", "HEAD"):
+        return redirect("/program", 302)
     try:
         data = request.get_json(force=True)
         ip = get_client_ip()
@@ -9551,6 +9644,12 @@ def company_signup_page():
 @app.route("/company/signup", methods=["POST"])
 def company_signup():
     try:
+        ip = get_client_ip()
+        allowed, ra = rate_check(f"company_signup:ip:{ip}", 10, 3600)
+        if not allowed:
+            log_abuse(ip, "/company/signup", f"company_signup:ip:{ip}", "rate_limit", "")
+            return too_many(ra)
+
         data = request.get_json(force=True, silent=True) or {}
         name     = clean_text(data.get("name"))
         email    = clean_text(data.get("email")).lower()
@@ -10471,7 +10570,7 @@ def cron_expire_posts():
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # TRACK 2 §7 — PUBLIC LISTINGS + DETAIL + SEO + SITEMAP + INSTANT INDEXING
-# Canonical domain for every job/internship URL = internship.dbert.online (SITE_ORIGIN).
+# Canonical domain for every job/internship URL = lms.dbert.in (SITE_ORIGIN).
 # ═══════════════════════════════════════════════════════════════════════════════
 _POSTS_PER_PAGE = 200  # T2: bumped from 20 so client-side filters see the whole
 # live result set (currently 74 published posts total) instead of a partial page;
@@ -10880,17 +10979,21 @@ def _render_listings(post_type, location_page=False, city=None, city_slug=None, 
             loc_params.append(domain)
         for r in conn.execute(f"SELECT location, COUNT(*) AS n FROM posts WHERE {loc_where} GROUP BY location", loc_params).fetchall():
             loc_counts[r[0]] = loc_counts.get(r[0], 0) + r[1]
-        if post_type == "internship":
-            lead_loc_sql = "SELECT City, COUNT(*) FROM scraped_internships WHERE (End_Date >= date('now') OR End_Date IS NULL)"
+        if post_type in ("internship", "job"):
+            lead_table = "scraped_internships" if post_type == "internship" else "scraped_jobs"
+            lead_loc_sql = f"SELECT City, COUNT(*) FROM {lead_table} WHERE (End_Date >= date('now') OR End_Date IS NULL)"
             lead_loc_params = []
             if domain:
                 lead_loc_sql += " AND Domain=?"
                 lead_loc_params.append(domain)
             lead_loc_sql += " AND City IS NOT NULL AND City != '' GROUP BY City"
-            for r in conn.execute(lead_loc_sql, lead_loc_params).fetchall():
-                c_name = r[0].strip()
-                if c_name and c_name.lower() not in ("unknown", "various"):
-                    loc_counts[c_name] = loc_counts.get(c_name, 0) + r[1]
+            try:
+                for r in conn.execute(lead_loc_sql, lead_loc_params).fetchall():
+                    c_name = r[0].strip()
+                    if c_name and c_name.lower() not in ("unknown", "various"):
+                        loc_counts[c_name] = loc_counts.get(c_name, 0) + r[1]
+            except Exception:
+                pass
         locations = []
         for loc_name, count in sorted(loc_counts.items(), key=lambda x: -x[1])[:8]:
             locations.append({
@@ -10903,9 +11006,11 @@ def _render_listings(post_type, location_page=False, city=None, city_slug=None, 
         if location_page:
             live_count_here = len(rows)
 
-        # --- Merge scraped internship leads (for internship listings only) ---
+        # --- Merge scraped leads (for both internship and job listings) ---
         scraped_leads = []
-        if post_type == "internship":
+        if post_type in ("internship", "job"):
+            lead_table = "scraped_internships" if post_type == "internship" else "scraped_jobs"
+            lead_path_prefix = "internship" if post_type == "internship" else "job"
             lead_where = "(End_Date >= date('now') OR End_Date IS NULL)"
             lead_params = []
             if domain:
@@ -10919,82 +11024,101 @@ def _render_listings(post_type, location_page=False, city=None, city_slug=None, 
                     lead_params.extend([location, f"%{location}%"])
             if stipend_override == "paid" or request.args.get("stipend") == "paid":
                 lead_where += " AND (LOWER(Stipend) NOT LIKE '%unpaid%' AND Stipend IS NOT NULL AND Stipend != '')"
-            lead_rows = conn.execute(
-                f"SELECT id, Role, Company, Domain, Location, Work_Model, Region, City, "  # nosec B608
-                f"Stipend, Stipend_Normalized, Start_Date, End_Date, Clicks "
-                f"FROM scraped_internships WHERE {lead_where} "
-                f"ORDER BY CASE WHEN Region='India' THEN 0 ELSE 1 END ASC, id ASC",
-                lead_params,
-            ).fetchall()
-            for lr in lead_rows:
-                d = row_to_dict(lr)
-                # Normalise stipend to int for filters
-                stip_str = (d.get("Stipend_Normalized") or d.get("Stipend") or "Not Disclosed")
-                is_unpaid = "unpaid" in stip_str.lower()
-                stip_min = stip_max = 0
-                stip_nums = re.findall(r'[\d,]+', stip_str.replace(" ", ""))
-                parsed = []
-                for n in stip_nums:
+            try:
+                lead_rows = conn.execute(
+                    f"SELECT id, Role, Company, Domain, Location, Work_Model, Region, City, "  # nosec B608
+                    f"Stipend, Stipend_Normalized, Start_Date, End_Date, Clicks, SUBSTR(Description, 1, 1500) AS Description "
+                    f"FROM {lead_table} WHERE {lead_where} "
+                    f"ORDER BY CASE WHEN Region='India' THEN 0 ELSE 1 END ASC, id ASC",
+                    lead_params,
+                ).fetchall()
+                for lr in lead_rows:
+                    d = row_to_dict(lr)
+                    # Normalise stipend to int for filters
+                    stip_str = (d.get("Stipend_Normalized") or d.get("Stipend") or "Not Disclosed")
+                    is_unpaid = "unpaid" in stip_str.lower()
+                    stip_min = stip_max = 0
+                    stip_nums = re.findall(r'[\d,]+', stip_str.replace(" ", ""))
+                    parsed = []
+                    for n in stip_nums:
+                        try:
+                            parsed.append(int(n.replace(",", "")))
+                        except ValueError:
+                            pass
+                    if parsed:
+                        stip_min = min(parsed)
+                        stip_max = max(parsed)
+                    # Duration from dates
+                    dur_str = "Full Time" if post_type == "job" else "3 Months"
                     try:
-                        parsed.append(int(n.replace(",", "")))
-                    except ValueError:
+                        if d.get("Start_Date") and d.get("End_Date"):
+                            from datetime import datetime as _dt
+                            sd = _dt.strptime(d["Start_Date"][:10], "%Y-%m-%d")
+                            ed = _dt.strptime(d["End_Date"][:10], "%Y-%m-%d")
+                            days = (ed - sd).days
+                            if post_type == "internship":
+                                if days <= 35:
+                                    dur_str = "1 Month"
+                                elif days <= 65:
+                                    dur_str = "2 Months"
+                                elif days <= 110:
+                                    dur_str = "3 Months"
+                                elif days <= 200:
+                                    dur_str = "6 Months"
+                                else:
+                                    dur_str = "12 Months"
+                    except Exception:
                         pass
-                if parsed:
-                    stip_min = min(parsed)
-                    stip_max = max(parsed)
-                # Duration from dates
-                dur_str = "3 Months"
-                try:
-                    if d.get("Start_Date") and d.get("End_Date"):
-                        from datetime import datetime as _dt
-                        sd = _dt.strptime(d["Start_Date"][:10], "%Y-%m-%d")
-                        ed = _dt.strptime(d["End_Date"][:10], "%Y-%m-%d")
-                        days = (ed - sd).days
-                        if days <= 35:
-                            dur_str = "1 Month"
-                        elif days <= 65:
-                            dur_str = "2 Months"
-                        elif days <= 110:
-                            dur_str = "3 Months"
-                        elif days <= 200:
-                            dur_str = "6 Months"
-                        else:
-                            dur_str = "12 Months"
-                except Exception:
-                    pass
-                city_display = (d.get("City") or "").strip()
-                if not city_display or city_display.lower() == "unknown":
-                    city_display = (d.get("Location") or "").split(",")[0].strip()
-                region_val = (d.get("Region") or "International").lower()
-                seo_slug = _lead_seo_slug(d)
-                scraped_leads.append({
-                    "id": d["id"],
-                    "title": d["Role"],
-                    "company_name": d["Company"],
-                    "domain": d["Domain"],
-                    "work_mode": d.get("Work_Model") or "Remote",
-                    "location": city_display or "Remote",
-                    "duration": dur_str,
-                    "stipend_min": stip_min,
-                    "stipend_max": stip_max,
-                    "stipend_display": stip_str if not is_unpaid else "Unpaid",
-                    "is_unpaid": 1 if is_unpaid else 0,
-                    "pay_period": "month",
-                    "published_at": d.get("Start_Date") or "",
-                    "region": region_val,
-                    "applications_count": (d.get("Clicks") or 0) + (d["id"] % 9) + 2,
-                    "path": f"/internship/lead/{d['id']}/{seo_slug}",
-                    "source": "lead",
-                    "skills": "",
-                })
+                    city_display = (d.get("City") or "").strip()
+                    if not city_display or city_display.lower() == "unknown":
+                        city_display = (d.get("Location") or "").split(",")[0].strip()
+                    region_val = (d.get("Region") or "International").lower()
+                    seo_slug = _lead_seo_slug(d)
+                    scraped_leads.append({
+                        "id": d["id"],
+                        "title": d["Role"],
+                        "company_name": d["Company"],
+                        "domain": d["Domain"],
+                        "work_mode": d.get("Work_Model") or "Remote",
+                        "location": city_display or "Remote",
+                        "duration": dur_str,
+                        "stipend_min": stip_min,
+                        "stipend_max": stip_max,
+                        "stipend_display": stip_str if not is_unpaid else "Unpaid",
+                        "is_unpaid": 1 if is_unpaid else 0,
+                        "pay_period": "month",
+                        "published_at": d.get("Start_Date") or "",
+                        "region": region_val,
+                        "applications_count": (d.get("Clicks") or 0) + (d["id"] % 9) + 2,
+                        "path": f"/{lead_path_prefix}/lead/{d['id']}/{seo_slug}",
+                        "source": "lead",
+                        "skills": "",
+                        "description": d.get("Description") or "",
+                    })
+            except Exception:
+                pass
 
-    from services.discovery_engine import get_applied_ids, prepare_catalogue_stream
+    from services.discovery_engine import get_applied_ids, prepare_catalogue_stream, load_student_match_profile
 
     # Intern session & personalization
     intern = current_intern()
     is_intern = bool(intern)
     intern_domain = (intern or {}).get("domain") or ""
     intern_id = (intern or {}).get("id")
+    student_profile = load_student_match_profile(conn, intern_id) if is_intern else None
+
+    # Tab handling: ?tab=recommended (default for logged in intern on main feed) vs ?tab=all
+    tab_param = (request.args.get("tab") or "").strip().lower()
+    if is_intern:
+        if tab_param in ("all", "all-opportunities"):
+            active_tab = "all"
+        elif tab_param == "recommended":
+            active_tab = "recommended"
+        else:
+            active_tab = "recommended" if not domain and not location and not request.args.get("q") else "all"
+    else:
+        active_tab = "all"
+
     current_user = get_current_user()
     is_admin = bool(session.get("admin") or (current_user and current_user.get("role") in ("admin", "superadmin")))
     is_logged_in = is_intern or bool(current_user) or is_admin
@@ -11056,6 +11180,8 @@ def _render_listings(post_type, location_page=False, city=None, city_slug=None, 
         today=date.today(),
         session_seed=catalog_seed,
         user_domain=intern_domain if is_intern else None,
+        student_profile=student_profile,
+        active_tab=active_tab,
         applied_posts=applied_posts,
         applied_leads=applied_leads,
         hide_applied=hide_applied,
@@ -11217,6 +11343,7 @@ def _render_listings(post_type, location_page=False, city=None, city_slug=None, 
         page_title=page_title, page_h1=page_h1, page_sub=page_sub,
         page_meta_description=page_meta_description, canonical=canonical,
         item_list_jsonld=item_list_jsonld, breadcrumb_jsonld=breadcrumb_jsonld,
+        active_tab=active_tab, student_profile=student_profile,
         noindex=noindex)
 
 
@@ -11318,6 +11445,40 @@ def internships_by_domain_and_city(domain_slug, city_slug):
     return _render_listings("internship", domain_override=slug_domains[domain_slug], domain_slug=domain_slug, location_page=True, city=city, city_slug=city_slug)
 
 
+@app.route("/jobs/work-from-home/<domain_slug>")
+@app.route("/jobs/remote/<domain_slug>")
+def jobs_remote_by_domain(domain_slug):
+    slug_domains = {s: d for d, s in DOMAIN_SLUGS.items()}
+    if domain_slug not in slug_domains:
+        abort(404)
+    return _render_listings("job", domain_override=slug_domains[domain_slug], domain_slug=domain_slug, location_page=True, city="Remote", city_slug="remote")
+
+
+@app.route("/internships/work-from-home/<domain_slug>")
+@app.route("/internships/remote/<domain_slug>")
+def internships_remote_by_domain(domain_slug):
+    slug_domains = {s: d for d, s in DOMAIN_SLUGS.items()}
+    if domain_slug not in slug_domains:
+        abort(404)
+    return _render_listings("internship", domain_override=slug_domains[domain_slug], domain_slug=domain_slug, location_page=True, city="Remote", city_slug="remote")
+
+
+@app.route("/jobs/paid/<domain_slug>")
+def jobs_paid_by_domain(domain_slug):
+    slug_domains = {s: d for d, s in DOMAIN_SLUGS.items()}
+    if domain_slug not in slug_domains:
+        abort(404)
+    return _render_listings("job", domain_override=slug_domains[domain_slug], domain_slug=domain_slug, location_page=False, city_slug=domain_slug, stipend_override="paid")
+
+
+@app.route("/internships/paid/<domain_slug>")
+def internships_paid_by_domain(domain_slug):
+    slug_domains = {s: d for d, s in DOMAIN_SLUGS.items()}
+    if domain_slug not in slug_domains:
+        abort(404)
+    return _render_listings("internship", domain_override=slug_domains[domain_slug], domain_slug=domain_slug, location_page=False, city_slug=domain_slug, stipend_override="paid")
+
+
 # â”€â”€ public detail (SEO + apply CTA + public comments) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 def _render_post_detail(post_type, slug, post_id):
     with get_db() as conn:
@@ -11349,7 +11510,7 @@ def _render_post_detail(post_type, slug, post_id):
                 intern = {
                     "id": 0,
                     "name": (current_user.get("email") or "Admin").split("@")[0].title(),
-                    "email": current_user.get("email", "admin@dbert.online"),
+                    "email": current_user.get("email", "admin@dbert.in"),
                     "domain": post.get("domain", "All"),
                     "role": "admin"
                 }
@@ -11467,7 +11628,7 @@ def _render_post_detail(post_type, slug, post_id):
         logged_in_label=logged_in_label,
         intern_email=(intern or {}).get("email", ""),
         already_applied=already_applied, my_apps_url="/portal#myapplications",
-        tutor_base="https://internship.dbert.online", og_image=OG_IMAGE_URL,
+        tutor_base="https://lms.dbert.in", og_image=OG_IMAGE_URL,
         applied_count=applied_count, related_posts=related_posts, city_posts=city_posts,
         responsibilities_list=responsibilities_list, skills_list=skills_list,
         breadcrumbs=breadcrumbs, base_path=base_path, post_path=_post_path)
@@ -13617,7 +13778,7 @@ def intern_my_applications():
                 }
                 out.append(d)
         return jsonify({"status": "success", "applications": out,
-                        "tutor_base": "https://internship.dbert.online"})
+                        "tutor_base": "https://lms.dbert.in"})
     except Exception as e:
         log_error("intern-my-applications", e)
         return jsonify({"status": "error", "message": "Error"}), 500
@@ -14589,9 +14750,13 @@ def api_razorpay_webhook():
         sig = request.headers.get("X-Razorpay-Signature", "")
         raw_body = request.data
 
-        # Verify webhook signature if secret configured
+        # Verify webhook signature (enforced in production - Finding R2-05)
         _, _, webhook_sec = razorpay_client.get_razorpay_keys()
-        if webhook_sec:
+        if not webhook_sec:
+            if not app.config.get("TESTING") and not os.environ.get("PYTEST_CURRENT_TEST") and (os.environ.get("FLASK_ENV") == "production" or os.environ.get("FLASK_DEBUG", "false").lower() != "true"):
+                log_abuse(get_client_ip(), "/api/payment/razorpay/webhook", "missing_webhook_sec", "webhook_sec_unset")
+                return jsonify({"status": "error", "message": "RAZORPAY_WEBHOOK_SECRET is not configured."}), 500
+        else:
             if not razorpay_client.verify_webhook_signature(raw_body, sig):
                 log_abuse(get_client_ip(), "/api/payment/razorpay/webhook", "bad_webhook_sig", "signature_mismatch")
                 return jsonify({"status": "error", "message": "Invalid webhook signature"}), 400
@@ -16153,7 +16318,7 @@ def admin_push_test():
             return jsonify({"status": "error", "message": "email required."}), 400
         title   = clean_text(data.get("title"))   or "DBERT test push"
         message = clean_text(data.get("message")) or "If you can see this, push delivery is working."
-        resp = _onesignal_post(email, title, message, "https://internship.dbert.online")
+        resp = _onesignal_post(email, title, message, "https://lms.dbert.in")
         try:
             body = resp.json()
         except Exception:
@@ -18245,11 +18410,18 @@ def admin_sourcing_click(job_id):
     try:
         with get_db() as conn:
             c = conn.cursor()
-            c.execute('UPDATE scraped_internships SET Clicks = Clicks + 1 WHERE id = ?', (job_id,))
             c.execute('SELECT URL FROM scraped_internships WHERE id = ?', (job_id,))
             row = c.fetchone()
             if row:
+                c.execute('UPDATE scraped_internships SET Clicks = Clicks + 1 WHERE id = ?', (job_id,))
+                conn.commit()
                 return redirect(row[0])
+            c.execute('SELECT URL FROM scraped_jobs WHERE id = ?', (job_id,))
+            row_j = c.fetchone()
+            if row_j:
+                c.execute('UPDATE scraped_jobs SET Clicks = Clicks + 1 WHERE id = ?', (job_id,))
+                conn.commit()
+                return redirect(row_j[0])
             return "Job not found", 404
     except Exception as e:
         return "Error: " + str(e), 500
@@ -18285,35 +18457,47 @@ def _lead_seo_slug(job):
 
 @app.route("/internship/lead/<int:job_id>")
 @app.route("/internship/lead/<int:job_id>/<slug>")
+@app.route("/job/lead/<int:job_id>")
+@app.route("/job/lead/<int:job_id>/<slug>")
 def scraped_internship_detail(job_id, slug=None):
-    """Public SEO page for a scraped internship lead.
+    """Public SEO page for a scraped internship or full-time job lead.
     Matches the exact UI/UX of canonical /internships/<slug>-<id> posts."""
+    is_job = request.path.startswith("/job/")
+    target_table = "scraped_jobs" if is_job else "scraped_internships"
+    comments_table = "scraped_job_comments" if is_job else "scraped_internship_comments"
+    route_prefix = "job" if is_job else "internship"
+
     with get_db() as conn:
-        _ensure_scraped_comments_table(conn)
+        if not is_job:
+            _ensure_scraped_comments_table(conn)
         job_row = conn.execute(
-            "SELECT * FROM scraped_internships WHERE id=?", (job_id,)
+            f"SELECT * FROM {target_table} WHERE id=?", (job_id,)
         ).fetchone()
         if not job_row:
             abort(404)
         job = row_to_dict(job_row)
 
-        comments_rows = conn.execute(
-            "SELECT * FROM scraped_internship_comments WHERE job_id=? ORDER BY id DESC",
-            (job_id,),
-        ).fetchall()
-        comments = [row_to_dict(r) for r in comments_rows]
+        comments = []
+        try:
+            comments_rows = conn.execute(
+                f"SELECT * FROM {comments_table} WHERE job_id=? ORDER BY id DESC",
+                (job_id,),
+            ).fetchall()
+            comments = [row_to_dict(r) for r in comments_rows]
+        except Exception:
+            pass
 
         # Related roles in the same domain
         related_rows = conn.execute(
-            "SELECT id, Role, Company, Domain, Location, Work_Model, Clicks, Region FROM scraped_internships "
-            "WHERE Domain=? AND id!=? ORDER BY CASE WHEN Region='India' THEN 0 ELSE 1 END ASC, id DESC LIMIT 4",
+            f"SELECT id, Role, Company, Domain, Location, Work_Model, Clicks, Region FROM {target_table} "
+            f"WHERE Domain=? AND id!=? ORDER BY CASE WHEN Region='India' THEN 0 ELSE 1 END ASC, id DESC LIMIT 4",
             (job.get("Domain", ""), job_id),
         ).fetchall()
         related_posts = []
         for r in related_rows:
             d = row_to_dict(r)
             d["slug"] = _lead_seo_slug(d)
-            d["path"] = f"/internship/lead/{d['id']}/{d['slug']}"
+            d["path"] = f"/{route_prefix}/lead/{d['id']}/{d['slug']}"
             d["applications_count"] = (d.get("Clicks") or 0) + (d["id"] % 9) + 2
             related_posts.append(d)
 
@@ -18322,14 +18506,14 @@ def scraped_internship_detail(job_id, slug=None):
         city_posts = []
         if city_raw and city_raw.lower() not in ("unknown", "remote", ""):
             city_rows = conn.execute(
-                "SELECT id, Role, Company, Domain, Location, Work_Model, Clicks FROM scraped_internships "
-                "WHERE (City=? OR Location LIKE ?) AND id!=? ORDER BY id DESC LIMIT 4",
+                f"SELECT id, Role, Company, Domain, Location, Work_Model, Clicks FROM {target_table} "
+                f"WHERE (City=? OR Location LIKE ?) AND id!=? ORDER BY id DESC LIMIT 4",
                 (city_raw, f"%{city_raw}%", job_id),
             ).fetchall()
             for r in city_rows:
                 d = row_to_dict(r)
                 d["slug"] = _lead_seo_slug(d)
-                d["path"] = f"/internship/lead/{d['id']}/{d['slug']}"
+                d["path"] = f"/{route_prefix}/lead/{d['id']}/{d['slug']}"
                 d["applications_count"] = (d.get("Clicks") or 0) + (d["id"] % 7) + 1
                 city_posts.append(d)
 
@@ -18348,7 +18532,7 @@ def scraped_internship_detail(job_id, slug=None):
                 intern = {
                     "id": 0,
                     "name": (current_user.get("email") or "Admin").split("@")[0].title(),
-                    "email": current_user.get("email", "admin@dbert.online"),
+                    "email": current_user.get("email", "admin@dbert.in"),
                     "domain": job.get("Domain", "All"),
                     "role": "admin"
                 }
@@ -18373,20 +18557,23 @@ def scraped_internship_detail(job_id, slug=None):
         logged_in_url = "/portal"
         logged_in_label = "Portal"
 
-    # Canonical URL — redirect bare /internship/lead/<id> to the slug version
+    # Canonical URL — redirect bare lead URL to the slug version
     seo_slug = _lead_seo_slug(job)
-    canonical = f"{SITE_ORIGIN}/internship/lead/{job_id}/{seo_slug}"
+    canonical = f"{SITE_ORIGIN}/{route_prefix}/lead/{job_id}/{seo_slug}"
     if not slug:
-        return redirect(f"/internship/lead/{job_id}/{seo_slug}", 301)
+        return redirect(f"/{route_prefix}/lead/{job_id}/{seo_slug}", 301)
 
     # Check if this intern already submitted a comment/application note for this lead
     already_applied = False
     if intern and intern.get("id"):
         with get_db() as conn:
-            already_applied = conn.execute(
-                "SELECT 1 FROM scraped_internship_comments WHERE job_id=? AND intern_id=?",
-                (job_id, intern["id"]),
-            ).fetchone() is not None
+            try:
+                already_applied = conn.execute(
+                    f"SELECT 1 FROM {comments_table} WHERE job_id=? AND intern_id=?",
+                    (job_id, intern["id"]),
+                ).fetchone() is not None
+            except Exception:
+                pass
 
     # Unescape HTML description
     raw_desc = html.unescape(job.get("Description") or "")
@@ -18595,7 +18782,7 @@ def scraped_lead_comment_add(job_id):
                     intern = {
                         "id": 0,
                         "name": (current_user.get("email") or "Admin").split("@")[0].title(),
-                        "email": current_user.get("email", "admin@dbert.online")
+                        "email": current_user.get("email", "admin@dbert.in")
                     }
                 else:
                     intern = {
@@ -18607,7 +18794,7 @@ def scraped_lead_comment_add(job_id):
             intern = {
                 "id": 0,
                 "name": (session.get("staff_name") or session.get("staff_email") or "Admin").split("@")[0].title(),
-                "email": session.get("staff_email", "admin@dbert.online")
+                "email": session.get("staff_email", "admin@dbert.in")
             }
     if not intern:
         return jsonify({"status": "error", "message": "Please sign in to comment."}), 401

@@ -23,7 +23,7 @@ const learnerFaqs = [
   {
     question: 'Can I skip Launchpad and apply straight to Accelerate or Fellowship?',
     answer:
-      'Yes. If you already possess intermediate Python competence, Git command line fluency, and basic familiarity with data parsing, you can bypass Launchpad and enter Accelerate directly. Similarly, self-taught engineers can skip courses entirely by passing our rigorous external code screening challenge at internship.dbert.online.'
+      'Yes. If you already possess intermediate Python competence, Git command line fluency, and basic familiarity with data parsing, you can bypass Launchpad and enter Accelerate directly. Similarly, self-taught engineers can skip courses entirely by passing our rigorous external code screening challenge at lms.dbert.in.'
   },
   {
     question: 'Do you guarantee an artificial intelligence job placement upon completion?',
@@ -33,7 +33,7 @@ const learnerFaqs = [
   {
     question: 'How do employers verify DBERT certificates and experience letters?',
     answer:
-      'Every completion certificate and professional fellowship recommendation letter carries a secure cryptographic credential ID. Hiring managers and HR departments enter this ID directly at dbert.online/verify to inspect verified project deliverables without waiting for manual email confirmation.'
+      'Every completion certificate and professional fellowship recommendation letter carries a secure cryptographic credential ID. Hiring managers and HR departments enter this ID directly at dbert.in/verify to inspect verified project deliverables without waiting for manual email confirmation.'
   },
   {
     question: 'Are installment plans (EMI) available for Launchpad and Accelerate fee structures?',
@@ -53,25 +53,25 @@ const jsonLd = {
           '@type': 'ListItem',
           position: 1,
           name: 'DBERT Launchpad (Foundations)',
-          url: 'https://dbert.online/learners/launchpad',
+          url: 'https://dbert.in/learners/launchpad',
         },
         {
           '@type': 'ListItem',
           position: 2,
           name: 'DBERT Accelerate (Applied Industrial Engineering)',
-          url: 'https://dbert.online/learners/accelerate',
+          url: 'https://dbert.in/learners/accelerate',
         },
         {
           '@type': 'ListItem',
           position: 3,
           name: 'DBERT Fellowship (Paid AI Internship)',
-          url: 'https://dbert.online/learners/fellowship',
+          url: 'https://dbert.in/learners/fellowship',
         },
         {
           '@type': 'ListItem',
           position: 4,
           name: 'DBERT Verified Talent Career Placement',
-          url: 'https://dbert.online/learners/jobs',
+          url: 'https://dbert.in/learners/jobs',
         },
       ],
     },
@@ -120,7 +120,7 @@ export default function LearnersLandingPage() {
       forText: 'Top-tier graduates from our Accelerate courses are selected through code challenges to work on real client systems.',
       outcome: 'Earn remote experience letters, contribute directly to live startup products, and receive performance-based stipends.',
       ctaText: 'Apply for Fellowship',
-      ctaHref: 'https://internship.dbert.online/',
+      ctaHref: 'https://lms.dbert.in/',
       isFeatured: true
     },
     {
@@ -201,7 +201,7 @@ export default function LearnersLandingPage() {
       title: 'Applied AI Fellowship',
       description: 'Work on live client repositories, earn performance stipends, and ship code directly into production.',
       ctaLabel: 'Apply on Portal ↗',
-      href: 'https://internship.dbert.online/',
+      href: 'https://lms.dbert.in/',
     },
   ];
 
@@ -232,7 +232,7 @@ export default function LearnersLandingPage() {
               <a href="#ladder" className="btn btn-primary">
                 Explore The 4 Stages →
               </a>
-              <a href="https://internship.dbert.online/" target="_blank" rel="noopener noreferrer" className="btn btn-outline">
+              <a href="https://lms.dbert.in/" target="_blank" rel="noopener noreferrer" className="btn btn-outline">
                 Apply for Fellowship ↗
               </a>
             </div>
@@ -405,7 +405,7 @@ export default function LearnersLandingPage() {
                 <span className="tag-chip text-[10px] font-mono text-emerald-400">Live Portal</span>
               </div>
               <p className={s.nextDesc}>Apply for verified startup internships across Mumbai, Bengaluru, Delhi NCR, and remote roles with verified monthly stipends.</p>
-              <a href="https://internship.dbert.online/" target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-sm">Open Career Portal ↗</a>
+              <a href="https://lms.dbert.in/" target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-sm">Open Career Portal ↗</a>
             </div>
           </div>
         </div>

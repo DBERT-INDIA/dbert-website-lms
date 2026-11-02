@@ -1,4 +1,4 @@
-# DBERT Internship Portal — Database Safety & Backup Policy (SAFE-002)
+# DBERT LMS — Database Safety & Backup Policy (SAFE-002)
 
 **Document Date:** 2026-09-23  
 **Status:** Mandatory Production Operational Standard  
@@ -7,7 +7,7 @@
 
 ## 1. Executive Directive on Database Safety
 
-The DBERT Internship Portal operates a live production environment with thousands of registered candidates, hundreds of active enrollments, and critical academic records. 
+The DBERT LMS operates a live production environment with thousands of registered candidates, hundreds of active enrollments, and critical academic records. 
 
 > **Golden Rule**: A backup is considered non-existent until its restoration has been verified in an isolated environment with zero integrity errors.
 

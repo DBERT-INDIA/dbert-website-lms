@@ -17,4 +17,4 @@ Allow: /
 User-agent: Googlebot-Image
 Allow: /
 
-Sitemap: https://internship.dbert.online/sitemap.xml
+Sitemap: https://lms.dbert.in/sitemap.xml

@@ -45,7 +45,7 @@ export default function DBERTChatPage() {
         provider: {
           '@type': 'Organization',
           name: 'DBERT Labs Industrial Training & Venture Studio',
-          url: 'https://dbert.online'
+          url: 'https://dbert.in'
         },
         offers: {
           '@type': 'Offer',
@@ -53,7 +53,7 @@ export default function DBERTChatPage() {
           price: '45000',
           priceCurrency: 'INR',
           description: 'Monthly license starting fee for verified private cloud deployment with SLA',
-          url: 'https://dbert.online/ai-solutions/products/dbert-chat'
+          url: 'https://dbert.in/ai-solutions/products/dbert-chat'
         }
       },
       {
@@ -130,7 +130,7 @@ export default function DBERTChatPage() {
           </p>
           <div className={`bento-card ${s.codeCard}`}>
             <pre className={s.code}>
-{`curl -X POST "https://api.dbert.online/v1/chat" \\
+{`curl -X POST "https://api.dbert.in/v1/chat" \\
   -H "Authorization: Bearer YOUR_ENTERPRISE_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{

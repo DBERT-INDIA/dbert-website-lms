@@ -4,7 +4,7 @@
 {% set page_title_full %}{{ company.name }} — hiring on DBERT{% endset %}
 {% include "_head.html" %}
 <meta name="description" content="{{ (company.about or (company.name ~ ' — open roles and cohorts on DBERT.'))[:155] }}">
-  <link rel="canonical" href="https://internship.dbert.online/companies/{{ company.name|lower|replace(' ','-') }}-{{ company.id }}"/>
+  <link rel="canonical" href="https://lms.dbert.in/companies/{{ company.name|lower|replace(' ','-') }}-{{ company.id }}"/>
   <meta property="og:title" content="{{ company.name }} — hiring on DBERT">
   <meta property="og:type" content="profile">
 </head>

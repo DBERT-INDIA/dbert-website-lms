@@ -97,7 +97,7 @@ export default function JobBoardPage() {
               </div>
               <div className={s.jobFoot}>
                 <span className={s.jobType}>{job.type}</span>
-                <a href="https://internship.dbert.online/" target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-sm">Apply via Portal</a>
+                <a href="https://lms.dbert.in/" target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-sm">Apply via Portal</a>
               </div>
             </div>
           ))}
@@ -113,7 +113,7 @@ export default function JobBoardPage() {
             <p className="page-lede">
               Applications are reviewed and prioritized for DBERT Internship graduates. Pass technical evaluations to secure direct matching referrals.
             </p>
-            <a href="https://internship.dbert.online/" target="_blank" rel="noopener noreferrer" className="btn btn-outline btn-lg">Apply for Internship Track</a>
+            <a href="https://lms.dbert.in/" target="_blank" rel="noopener noreferrer" className="btn btn-outline btn-lg">Apply for Internship Track</a>
           </div>
         </div>
       </div>

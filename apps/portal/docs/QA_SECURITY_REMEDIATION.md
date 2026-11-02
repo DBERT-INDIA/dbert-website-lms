@@ -1,4 +1,4 @@
-﻿# DBERT Internship Portal - QA & Security Remediation Log
+﻿# DBERT LMS - QA & Security Remediation Log
 
 | Phase | Category | Code | Description | Status | Verification |
 |---|---|---|---|---|---|

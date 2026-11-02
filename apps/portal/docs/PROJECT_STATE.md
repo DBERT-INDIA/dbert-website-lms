@@ -1,4 +1,4 @@
-# DBERT Internship Portal — Project State
+# DBERT LMS — Project State
 
 **Last Updated:** 2026-09-23  
 **Status:** In Transition — Master Development Plan Execution  
