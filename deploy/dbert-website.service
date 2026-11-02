@@ -3,14 +3,16 @@ Description=DBERT Main Website Next.js Application
 After=network.target
 
 [Service]
-User=ec2-user
-Group=ec2-user
+User=ubuntu
+Group=ubuntu
 WorkingDirectory=/var/www/dbert-website-lms/apps/website
 Environment="NODE_ENV=production"
 Environment="PORT=3001"
+Environment="HOSTNAME=127.0.0.1"
+Environment="NEXT_PUBLIC_SITE_URL=https://dbert.in"
+Environment="NEXT_PUBLIC_LMS_URL=https://lms.dbert.in"
 
-# Next.js production execution
-ExecStart=/usr/bin/env npm run start
+ExecStart=/usr/bin/node .next/standalone/server.js
 
 Restart=always
 RestartSec=5
