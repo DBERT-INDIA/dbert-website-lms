@@ -52,6 +52,30 @@ export const seoConfig: Record<string, SeoEntry> = {
     description:
       'Verify a DBERT certificate in seconds. Enter the certificate ID to confirm its issue date, programme and holder, and spot forged credentials instantly.',
   },
+  '/verify/directory': {
+    keyword: 'DBERT candidate directory',
+    title: 'Alphabetical Credential Directory',
+    description:
+      'Search the DBERT candidate directory of verified engineering credentials and provisional candidates. Verify student records and authenticity instantly.',
+  },
+  '/enroll/1999': {
+    keyword: 'DBERT incubation enrollment',
+    title: 'Incubation Program Enrollment',
+    description:
+      'Complete your official DBERT incubation enrollment and remaining balance. Access instant UPI payments, QR code reconciliation, and secure your cohort seat.',
+  },
+  '/enroll': {
+    keyword: '',
+    title: 'DBERT Incubation Enrollment Redirect',
+    description: '',
+    noindex: true,
+  },
+  '/eroll': {
+    keyword: '',
+    title: 'DBERT Incubation Enrollment Redirect',
+    description: '',
+    noindex: true,
+  },
   '/privacy': {
     keyword: 'DBERT privacy policy',
     title: 'Privacy Policy',
