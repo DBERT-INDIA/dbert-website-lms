@@ -41,7 +41,7 @@ export default function AIConsultantPage() {
         provider: {
           '@type': 'Organization',
           name: 'DBERT Labs Industrial Training & Venture Studio',
-          url: 'https://dbert.online'
+          url: 'https://dbert.in'
         },
         description: 'End-to-end enterprise AI consulting services specializing in RAG architectures, custom LLM fine-tuning, and automated workflows.'
       },

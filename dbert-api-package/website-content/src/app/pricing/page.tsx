@@ -42,7 +42,7 @@ export default function PricingPage() {
         '@type': 'WebPage',
         name: 'DBERT Labs Transparent Pricing & Venture Commercials',
         description: 'Comprehensive pricing structures for industrial software upskilling programs, startup equity incubation tracks, micro-grants, and enterprise AI engineering sprints.',
-        url: 'https://dbert.online/pricing'
+        url: 'https://dbert.in/pricing'
       },
       {
         '@type': 'OfferCatalog',
@@ -72,10 +72,10 @@ export default function PricingPage() {
             '@type': 'Offer',
             itemOffered: {
               '@type': 'Course',
-              name: 'DBERT Fellowship (Paid)',
-              description: '3-Month immersive fellowship working directly on live client repositories under senior studio engineers.'
+              name: 'DBERT Paid Program (Guaranteed Placement)',
+              description: '2-Month immersive program with guaranteed internship placement working directly on live repositories.'
             },
-            price: '1599',
+            price: '1999',
             priceCurrency: 'INR'
           }
         ]

@@ -48,7 +48,7 @@ export default function FundingServicePage() {
         provider: {
           '@type': 'Organization',
           name: 'DBERT Labs Industrial Training & Venture Studio',
-          url: 'https://dbert.online'
+          url: 'https://dbert.in'
         },
         offers: {
           '@type': 'Offer',
@@ -56,7 +56,7 @@ export default function FundingServicePage() {
           price: '0',
           priceCurrency: 'INR',
           description: 'Non-dilutive micro-grants from ₹50,000 to ₹5,00,000 and zero fee capital referral assistance for incubated portfolio ventures',
-          url: 'https://dbert.online/startups/services/funding'
+          url: 'https://dbert.in/startups/services/funding'
         }
       },
       {

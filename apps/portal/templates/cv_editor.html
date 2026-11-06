@@ -160,6 +160,8 @@
     function saveThen(what){
       doSave().then(function(d){ if(d){ window.open(what==='pdf' ? '/cv/'+d.slug+'.pdf' : '/cv/'+d.slug, '_blank'); } });
     }
+    window.addEntry = addEntry;
+    window.saveThen = saveThen;
 </script>
 </body>
 </html>

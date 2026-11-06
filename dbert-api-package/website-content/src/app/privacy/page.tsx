@@ -28,7 +28,7 @@ export default function PrivacyPage() {
             <span className="doclabel text-xs mb-1">§ 01 — SCOPE &amp; IDENTITY</span>
             <h2 className="card-title my-2">Registered Entity Overview</h2>
             <p className="body-copy">
-              At DBERT (Digital Blinc Education Research And Technology, registered MSME entity UDYAM-UP-28-0105315), we prioritize data privacy and operational security across our website (<code>dbert.online</code>), learning platforms, and verification registries.
+              At DBERT (Digital Blinc Education Research And Technology, registered MSME entity UDYAM-UP-28-0105315), we prioritize data privacy and operational security across our website (<code>dbert.in</code>), learning platforms, and verification registries.
             </p>
           </div>
 
@@ -48,7 +48,7 @@ export default function PrivacyPage() {
             </p>
             <ul className="list-disc pl-5 space-y-2 text-sm text-zinc-300">
               <li>
-                <strong>Google AdSense &amp; DoubleClick Cookie:</strong> Google, as a third-party vendor, uses cookies to serve ads on <code>dbert.online</code>. Google&apos;s use of advertising cookies enables it and its partners to serve ads to users based on their visits to our site and/or other sites on the Internet.
+                <strong>Google AdSense &amp; DoubleClick Cookie:</strong> Google, as a third-party vendor, uses cookies to serve ads on <code>dbert.in</code>. Google&apos;s use of advertising cookies enables it and its partners to serve ads to users based on their visits to our site and/or other sites on the Internet.
               </li>
               <li>
                 <strong>User Opt-Out:</strong> Users may opt out of personalized advertising by visiting <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" className="text-accent underline">Google Ads Settings</a>. Alternatively, you may opt out of third-party vendor cookies for personalized advertising by visiting <a href="https://www.aboutads.info" target="_blank" rel="noopener noreferrer" className="text-accent underline">aboutads.info</a>.

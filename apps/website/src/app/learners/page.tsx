@@ -36,6 +36,11 @@ const learnerFaqs = [
       'Every completion certificate and professional fellowship recommendation letter carries a secure cryptographic credential ID. Hiring managers and HR departments enter this ID directly at dbert.in/verify to inspect verified project deliverables without waiting for manual email confirmation.'
   },
   {
+    question: 'Has DBERT migrated from dbert.online to dbert.in?',
+    answer:
+      'Yes. DBERT has transitioned its primary domain from dbert.online to dbert.in. Please note that dbert.online is not the active platform; all official courses, application portals, and fellowship sprints run through dbert.in and lms.dbert.in.'
+  },
+  {
     question: 'Are installment plans (EMI) available for Launchpad and Accelerate fee structures?',
     answer:
       'Yes. Both DBERT Launchpad (₹7,999) and DBERT Accelerate (₹4,999) support flexible monthly payment installments at checkout, allowing learners to spread program costs across their training iterations.'
@@ -116,7 +121,7 @@ export default function LearnersLandingPage() {
       num: '03',
       tag: 'Experience Track',
       title: 'DBERT Fellowship (Paid)',
-      price: '₹1,599 / 3 months',
+      price: '₹1,999 / 2 months',
       forText: 'Top-tier graduates from our Accelerate courses are selected through code challenges to work on real client systems.',
       outcome: 'Earn remote experience letters, contribute directly to live startup products, and receive performance-based stipends.',
       ctaText: 'Apply for Fellowship',
@@ -337,7 +342,7 @@ export default function LearnersLandingPage() {
                 <strong>Independently Verifiable Credentials:</strong> To eliminate credential fraud and guarantee recruiter trust, every accomplishment within the DBERT ecosystem is cryptographically recorded. Hiring managers can enter any certificate ID directly into our global <Link href="/verify">Certificate Verification Engine</Link> to audit explicit learning tracks, mentor signatures, and Git repository contributions without requiring third-party outreach.
               </p>
               <p>
-                <strong>Transparent Fee Structures &amp; EMI:</strong> We maintain complete fiscal clarity across our learning tracks. Launchpad tuition is fixed at ₹7,999; Accelerate at ₹4,999; and Fellowship onboarding at ₹1,599 (covering dedicated mentor review hours and certificate issuance). Flexible EMI installment structures remain accessible across all learning tiers.
+                <strong>Transparent Fee Structures &amp; EMI:</strong> We maintain complete fiscal clarity across our learning tracks. Launchpad tuition is fixed at ₹7,999; Accelerate at ₹4,999; and Fellowship onboarding at ₹1,999 (covering dedicated mentor review hours and certificate issuance). Flexible EMI installment structures remain accessible across all learning tiers.
               </p>
             </div>
           </div>

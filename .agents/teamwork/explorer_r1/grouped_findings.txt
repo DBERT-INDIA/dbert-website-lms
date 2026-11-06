@@ -1,0 +1,329 @@
+
+======================================================================
+ENV_FILES (5 items)
+======================================================================
+apps/portal/.env:27 -> SMTP_HOST=dbert.online
+apps/portal/.env:29 -> SMTP_USER=contactus@dbert.online
+apps/portal/.env:31 -> FROM_EMAIL=contactus@dbert.online
+apps/portal/.env.staging.example:34 -> SMTP_USER=staging@dbert.online
+apps/portal/.env.staging.example:36 -> FROM_EMAIL=staging@dbert.online
+
+======================================================================
+PORTAL_CODE (9 items)
+======================================================================
+apps/portal/app.py:304 -> SMTP_HOST = os.environ.get("SMTP_HOST", "dbert.online")
+apps/portal/app.py:2690 -> staff_email = f"{ADMIN_USERNAME}@dbert.online"
+apps/portal/app.py:6008 -> # ── Canonical Blog Redirection to dbert.online ────────────────────────────────
+apps/portal/app.py:6012 -> """Articles live strictly on the main website dbert.online/blog.
+apps/portal/app.py:6015 -> redirects visitors to the canonical live blog post on dbert.online.
+apps/portal/app.py:6031 -> # ── Public Blog Sync API for dbert.online Auto-Updates ─────────────────────────
+apps/portal/app.py:6034 -> """Returns approved/published intern technical writing for dbert.online/blog real-time sync."""
+apps/portal/app.py:6080 -> """Returns single post detail with markdown for dynamic reader on dbert.online."""
+apps/portal/cgi-bin/fix_env.cgi:51 -> FROM_EMAIL=contactus@dbert.online
+
+======================================================================
+PORTAL_CONFIG_DEPLOY (5 items)
+======================================================================
+apps/portal/deploy/nginx.conf:3 -> # Domain: https://internship.dbert.online/
+apps/portal/deploy/nginx.conf:9 -> server_name internship.dbert.online;
+apps/portal/deploy/nginx.conf:25 -> server_name internship.dbert.online;
+apps/portal/deploy/nginx.conf:28 -> ssl_certificate /etc/letsencrypt/live/internship.dbert.online/fullchain.pem;
+apps/portal/deploy/nginx.conf:29 -> ssl_certificate_key /etc/letsencrypt/live/internship.dbert.online/privkey.pem;
+
+======================================================================
+PORTAL_TEMPLATES (1 items)
+======================================================================
+apps/portal/templates/seo_landing.html:133 -> &copy; 2026 DBERT Labs. All rights reserved. | <a href="https://dbert.in" class="underline text-gray-400">dbert.online</
+
+======================================================================
+PORTAL_STATIC_SEO (1 items)
+======================================================================
+apps/portal/sitemap.xml:1 -> <?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://inte
+
+======================================================================
+DEPLOY_CONFIGS (16 items)
+======================================================================
+deploy/dbert-portal-nginx.conf:3 -> # Domain: https://internship.dbert.online/
+deploy/dbert-portal-nginx.conf:9 -> server_name internship.dbert.online;
+deploy/dbert-portal-nginx.conf:25 -> server_name internship.dbert.online;
+deploy/dbert-portal-nginx.conf:28 -> ssl_certificate /etc/letsencrypt/live/internship.dbert.online/fullchain.pem;
+deploy/dbert-portal-nginx.conf:29 -> ssl_certificate_key /etc/letsencrypt/live/internship.dbert.online/privkey.pem;
+deploy/dbert-unified-nginx.conf:11 -> server_name dbert.in www.dbert.in lms.dbert.in dbert.online www.dbert.online internship.dbert.online;
+deploy/dbert-unified-nginx.conf:24 -> # Redirect legacy dbert.online -> https://dbert.in
+deploy/dbert-unified-nginx.conf:28 -> server_name dbert.online www.dbert.online;
+deploy/dbert-unified-nginx.conf:36 -> # Redirect legacy internship.dbert.online -> https://lms.dbert.in
+deploy/dbert-unified-nginx.conf:40 -> server_name internship.dbert.online;
+deploy/dbert-website-nginx.conf:3 -> # Domain: https://dbert.online/
+deploy/dbert-website-nginx.conf:9 -> server_name dbert.online www.dbert.online;
+deploy/dbert-website-nginx.conf:25 -> server_name dbert.online www.dbert.online;
+deploy/dbert-website-nginx.conf:28 -> # The actual path might differ slightly on Amazon Linux, usually /etc/letsencrypt/live/dbert.online/fullchain.pem
+deploy/dbert-website-nginx.conf:29 -> ssl_certificate /etc/letsencrypt/live/dbert.online/fullchain.pem;
+deploy/dbert-website-nginx.conf:30 -> ssl_certificate_key /etc/letsencrypt/live/dbert.online/privkey.pem;
+
+======================================================================
+DEPLOY_DOCS (5 items)
+======================================================================
+deploy/FILEZILLA_DEPLOYMENT_GUIDE.md:19 -> - (Optional for 301 redirects): `dbert.online`, `internship.dbert.online` $\rightarrow$ A records to `YOUR_EC2_IP`
+deploy/FIRST_TIME_EC2_DEPLOYMENT.md:134 -> sudo cp /var/www/dbert-website-lms/deploy/nginx.conf /etc/nginx/sites-available/internship.dbert.online
+deploy/FIRST_TIME_EC2_DEPLOYMENT.md:135 -> sudo ln -sf /etc/nginx/sites-available/internship.dbert.online /etc/nginx/sites-enabled/
+deploy/FIRST_TIME_EC2_DEPLOYMENT.md:141 -> sudo certbot --nginx -d internship.dbert.online
+deploy/FIRST_TIME_EC2_DEPLOYMENT.md:156 -> 2. `https://internship.dbert.online/` loads with valid SSL.
+
+======================================================================
+WEBSITE_SOURCE_CONFIG (0 items)
+======================================================================
+
+======================================================================
+WEBSITE_STATIC_BUILD_CPANEL (159 items)
+======================================================================
+cpanel_public_html/.htaccess:12 -> # 1. 301 Permanent Redirect from legacy dbert.online -> dbert.in
+cpanel_public_html/404.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+cpanel_public_html/ads.txt:1 -> # Google AdSense Publisher Declaration for dbert.online
+cpanel_public_html/index.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+cpanel_public_html/404/index.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+cpanel_public_html/about/index.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+cpanel_public_html/about/careers/index.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+cpanel_public_html/about/contact/index.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+cpanel_public_html/about/credentials/index.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+cpanel_public_html/about/team/index.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+cpanel_public_html/ai-consultant/index.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+cpanel_public_html/ai-solutions/index.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+cpanel_public_html/ai-solutions/consultation/index.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+cpanel_public_html/ai-solutions/llm-training/index.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+cpanel_public_html/ai-solutions/llm-training/dbert-ai/index.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+cpanel_public_html/ai-solutions/llm-training/pipeline/index.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+cpanel_public_html/ai-solutions/llm-training/pipeline/index.html:11 -> }</pre></div></div><div class="PipelineInteractiveConsole-module__DZaIFW__stageBottomNav"><div class="text-xs text-muted
+cpanel_public_html/ai-solutions/llm-training/private-hosting/index.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+cpanel_public_html/ai-solutions/products/index.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+cpanel_public_html/ai-solutions/products/certificate-verification-api/index.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+cpanel_public_html/ai-solutions/products/certificate-verification-api/index.html:6 -> # { &quot;status&quot;: &quot;VERIFIED&quot;, &quot;candidate&quot;: &quot;Aditya Verma&quot;, &quot;track&quot;: &quot;
+cpanel_public_html/ai-solutions/products/dbert-chat/index.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+cpanel_public_html/ai-solutions/products/dbert-chat/index.html:10 -> }&#x27;</pre></div></div></div><div class="container pad-block"><div class="doclabel mb-2">§ 04 — CORE ARCHITECTURAL SPE
+cpanel_public_html/ai-solutions/products/document-ai/index.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+cpanel_public_html/ai-solutions/products/document-ai/index.html:13 -> }&#x27;</pre></div></div></div><div class="container pad-block"><div class="doclabel mb-2">§ 04 — CORE ARCHITECTURAL SPE
+cpanel_public_html/ai-solutions/products/hiring-automation-suite/index.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+cpanel_public_html/ai-solutions/products/intern-management-system/index.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+cpanel_public_html/blog/index.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+cpanel_public_html/blog/ai-agent-developer-salary-2026/index.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+cpanel_public_html/blog/ai-agent-developer-salary-2026/index.html:53 -> <p>Focus consistently on underlying fundamentals: memory constraints, embedding math, hardware evaluation metrics, and d
+cpanel_public_html/blog/ai-agent-frameworks-comparison/index.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+cpanel_public_html/blog/ai-agent-frameworks-comparison/index.html:119 -> <p>To master autonomous agent engineering, tool-calling state machines, and local runtime deployment, enroll in the <a h
+cpanel_public_html/blog/ai-agent-frameworks-comparison/index.txt:107 -> 3a:["$","p",null,{"children":["To master autonomous agent engineering, tool-calling state machines, and local runtime de
+cpanel_public_html/blog/ai-agent-frameworks-comparison/__next._full.txt:107 -> 3a:["$","p",null,{"children":["To master autonomous agent engineering, tool-calling state machines, and local runtime de
+cpanel_public_html/blog/ai-agent-frameworks-comparison/__next.blog/$d$slug/__PAGE__.txt:99 -> 20:["$","p",null,{"children":["To master autonomous agent engineering, tool-calling state machines, and local runtime de
+cpanel_public_html/blog/building-scalable-microservices-with-fastapi/index.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+cpanel_public_html/blog/building-scalable-microservices-with-fastapi/index.html:39 -> <p>FastAPI does not automatically make an application scalable on its own; true scalability depends on sound database de
+cpanel_public_html/blog/cloud-llm-vs-private-vpc-costs/index.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+cpanel_public_html/blog/cloud-llm-vs-private-vpc-costs/index.html:121 -> <p>For organizations evaluating private model hosting, explore the <a href="/ai-solutions">DBERT Sovereign AI Solutions<
+cpanel_public_html/blog/equity-for-services/index.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+cpanel_public_html/blog/equity-for-services/index.html:59 -> <p>Rather than functioning as detached consultants, our internal engineering teams deploy proprietary architectural fram
+cpanel_public_html/blog/fast-vs-safe-agreement-india/index.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+cpanel_public_html/blog/fast-vs-safe-agreement-india/index.html:115 -> <p>For early-stage founders seeking engineering architecture, autonomous AI MVP development, and pre-seed infrastructure
+cpanel_public_html/blog/non-tech-to-ai-career/index.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+cpanel_public_html/blog/non-tech-to-ai-career/index.html:60 -> <p>Once your portfolio contains two to three cleanly tested, deployed github systems demonstrating applied retrieval and
+cpanel_public_html/blog/paid-ai-internship-india-guide-2026/index.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+cpanel_public_html/blog/paid-ai-internship-india-guide-2026/index.html:60 -> <p>By shifting your candidate profile from a passive learner requiring supervision to an applied engineer capable of deb
+cpanel_public_html/blog/rag-pipeline-tutorial-from-scratch/index.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+cpanel_public_html/blog/rag-pipeline-tutorial-from-scratch/index.html:98 -> <p>By applying rigorous structural parsing, dual hybrid indexing, deterministic cross-encoder reranking, and hard citati
+cpanel_public_html/blog/reader/index.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+... and 109 more items in WEBSITE_STATIC_BUILD_CPANEL
+
+======================================================================
+WEBSITE_STATIC_BUILD_APPS (1465 items)
+======================================================================
+apps/website/404.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+apps/website/about.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+apps/website/about.txt:19 -> 0:{"P":null,"c":["","about"],"q":"","i":false,"f":[[["",{"children":["about",{"children":["__PAGE__",{},"$undefined","$u
+apps/website/about.txt:40 -> 21:[["$","title","0",{"children":"About DBERT — India’s AI Venture Studio | DBERT"}],["$","meta","1",{"name":"descriptio
+apps/website/ads.txt:1 -> # Google AdSense Publisher Declaration for dbert.online
+apps/website/ai-consultant.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+apps/website/ai-consultant.txt:19 -> d:T794,{"@context":"https://schema.org","@graph":[{"@type":"Service","name":"Enterprise AI Consulting & Custom LLM Archi
+apps/website/ai-consultant.txt:20 -> 0:{"P":null,"c":["","ai-consultant"],"q":"","i":false,"f":[[["",{"children":["ai-consultant",{"children":["__PAGE__",{},
+apps/website/ai-consultant.txt:43 -> 24:[["$","title","0",{"children":"Enterprise AI Strategy & Consultant Services | DBERT Labs | DBERT"}],["$","meta","1",{
+apps/website/ai-solutions.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+apps/website/ai-solutions.txt:19 -> d:Tcc8,{"@context":"https://schema.org","@graph":[{"@type":"Service","name":"DBERT Enterprise AI Solutions, SaaS & Custo
+apps/website/ai-solutions.txt:20 -> 0:{"P":null,"c":["","ai-solutions"],"q":"","i":false,"f":[[["",{"children":["ai-solutions",{"children":["__PAGE__",{},"$
+apps/website/ai-solutions.txt:48 -> 29:[["$","title","0",{"children":"Enterprise AI Solutions & Products — India | DBERT"}],["$","meta","1",{"name":"descrip
+apps/website/blog.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+apps/website/blog.txt:20 -> 0:{"P":null,"c":["","blog"],"q":"","i":false,"f":[[["",{"children":["blog",{"children":["__PAGE__",{},"$undefined","$und
+apps/website/blog.txt:38 -> 1e:[["$","title","0",{"children":"AI Engineering Blog — Notes From the Studio | DBERT"}],["$","meta","1",{"name":"descri
+apps/website/index.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+apps/website/index.txt:20 -> 0:{"P":null,"c":["",""],"q":"","i":false,"f":[[["",{"children":["__PAGE__",{},"$undefined","$undefined",4608]},"$undefin
+apps/website/index.txt:64 -> 38:[["$","title","0",{"children":"AI Venture Studio India — Incubation, SaaS & AI Careers | DBERT"}],["$","meta","1",{"n
+apps/website/labs.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+apps/website/labs.txt:20 -> 0:{"P":null,"c":["","labs"],"q":"","i":false,"f":[[["",{"children":["labs",{"children":["__PAGE__",{},"$undefined","$und
+apps/website/labs.txt:43 -> 23:[["$","title","0",{"children":"DBERT Labs — Applied AI Research | DBERT"}],["$","meta","1",{"name":"description","con
+apps/website/learners.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+apps/website/learners.txt:20 -> d:Tb4c,{"@context":"https://schema.org","@graph":[{"@type":"ItemList","name":"DBERT AI Career Progression Pathways","ite
+apps/website/learners.txt:21 -> 0:{"P":null,"c":["","learners"],"q":"","i":false,"f":[[["",{"children":["learners",{"children":["__PAGE__",{},"$undefine
+apps/website/learners.txt:29 -> f:["$","div",null,{"className":"mb-lg relative","children":[["$","div",null,{"className":"CareerLadder-module__4_DVYG__l
+apps/website/learners.txt:32 -> 27:T8e2,{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is the DBERT Fellow
+apps/website/learners.txt:33 -> 13:["$","div",null,{"className":"learners-module__L5q0tG__nextGrid","children":[["$","div",null,{"className":"card learn
+apps/website/learners.txt:55 -> 2f:[["$","title","0",{"children":"AI Career Programs — Zero to Hired | DBERT"}],["$","meta","1",{"name":"description","c
+apps/website/passenger_app.js:19 -> *   NEXT_PUBLIC_SITE_URL  https://dbert.online
+apps/website/pricing.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+apps/website/pricing.txt:19 -> d:Tfef,{"@context":"https://schema.org","@graph":[{"@type":"WebPage","name":"DBERT Labs Transparent Pricing & Venture Co
+apps/website/pricing.txt:20 -> 0:{"P":null,"c":["","pricing"],"q":"","i":false,"f":[[["",{"children":["pricing",{"children":["__PAGE__",{},"$undefined"
+apps/website/pricing.txt:49 -> 29:[["$","title","0",{"children":"Pricing — Programs, Products & Incubation Terms | DBERT"}],["$","meta","1",{"name":"de
+apps/website/privacy.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+apps/website/privacy.txt:19 -> 0:{"P":null,"c":["","privacy"],"q":"","i":false,"f":[[["",{"children":["privacy",{"children":["__PAGE__",{},"$undefined"
+apps/website/privacy.txt:27 -> 10:["$","div",null,{"className":"stack gap-6","children":[["$","div",null,{"className":"card card-lift","children":[["$"
+apps/website/privacy.txt:37 -> 1e:[["$","title","0",{"children":"Privacy Policy | DBERT"}],["$","meta","1",{"name":"description","content":"How DBERT c
+apps/website/refund.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+apps/website/refund.txt:19 -> 0:{"P":null,"c":["","refund"],"q":"","i":false,"f":[[["",{"children":["refund",{"children":["__PAGE__",{},"$undefined","
+apps/website/refund.txt:27 -> 10:["$","div",null,{"className":"stack gap-6","children":[["$","div",null,{"className":"card card-lift","children":[["$"
+apps/website/refund.txt:35 -> 1c:[["$","title","0",{"children":"Refund Policy | DBERT"}],["$","meta","1",{"name":"description","content":"When DBERT c
+apps/website/robots.txt:13 -> Sitemap: https://dbert.online/sitemap.xml
+apps/website/sitemap.xml:4 -> <loc>https://dbert.online</loc>
+apps/website/sitemap.xml:10 -> <loc>https://dbert.online/pricing</loc>
+apps/website/sitemap.xml:16 -> <loc>https://dbert.online/verify</loc>
+apps/website/sitemap.xml:22 -> <loc>https://dbert.online/privacy</loc>
+apps/website/sitemap.xml:28 -> <loc>https://dbert.online/terms</loc>
+apps/website/sitemap.xml:34 -> <loc>https://dbert.online/refund</loc>
+apps/website/sitemap.xml:40 -> <loc>https://dbert.online/startups</loc>
+... and 1415 more items in WEBSITE_STATIC_BUILD_APPS
+
+======================================================================
+DBERT_API_PACKAGE (197 items)
+======================================================================
+dbert-api-package/.env.example:45 -> SMTP_HOST=dbert.online
+dbert-api-package/.env.example:47 -> SMTP_USER=contactus@dbert.online
+dbert-api-package/.env.example:49 -> FROM_EMAIL=contactus@dbert.online
+dbert-api-package/.env.production.sample:18 -> CORS_ORIGINS=https://dbert.online,https://internship.dbert.online
+dbert-api-package/.env.production.sample:33 -> SMTP_HOST=dbert.online
+dbert-api-package/.env.production.sample:35 -> SMTP_USER=contactus@dbert.online
+dbert-api-package/.env.production.sample:37 -> FROM_EMAIL=contactus@dbert.online
+dbert-api-package/backend/api/v1/auth/router.py:152 -> token_data = {"sub": "admin", "email": f"{settings.ADMIN_USERNAME}@dbert.online", "role": "admin", "name": "DBERT Admini
+dbert-api-package/backend/api/v1/auth/router.py:160 -> user={"id": "admin", "email": f"{settings.ADMIN_USERNAME}@dbert.online", "name": "DBERT Administrator", "role": "admin"}
+dbert-api-package/backend/core/config.py:65 -> SMTP_HOST: str = os.environ.get("SMTP_HOST", "dbert.online")
+dbert-api-package/backend/core/config.py:67 -> SMTP_USER: str = os.environ.get("SMTP_USER", "contactus@dbert.online")
+dbert-api-package/backend/core/config.py:69 -> FROM_EMAIL: str = os.environ.get("FROM_EMAIL", "contactus@dbert.online")
+dbert-api-package/backend/core/config.py:107 -> SITE_ORIGIN: str = os.environ.get("SITE_ORIGIN", "https://internship.dbert.online")
+dbert-api-package/docs/env_vars.md:30 -> | `FROM_EMAIL` | `contactus@dbert.online` | NO | Environment configuration parameter |
+dbert-api-package/docs/env_vars.md:65 -> | `SITE_ORIGIN` | `https://internship.dbert.online` | NO | Environment configuration parameter |
+dbert-api-package/docs/env_vars.md:70 -> | `SMTP_HOST` | `dbert.online` | NO | Environment configuration parameter |
+dbert-api-package/docs/env_vars.md:73 -> | `SMTP_USER` | `contactus@dbert.online` | NO | Environment configuration parameter |
+dbert-api-package/docs/integrations.md:47 -> - **Primary Host**: `SMTP_HOST` (`dbert.online`), port 465 (SSL).
+dbert-api-package/website-content/public/.htaccess:15 -> # 1.1 Redirect /jobs and /internships to internship.dbert.online subdomain
+dbert-api-package/website-content/public/.htaccess:17 -> RewriteRule ^jobs/?$ https://internship.dbert.online/jobs [L,R=301]
+dbert-api-package/website-content/public/.htaccess:20 -> RewriteRule ^internships/?(.*)$ https://internship.dbert.online/internships/$1 [L,R=301]
+dbert-api-package/website-content/public/ads.txt:1 -> # Google AdSense Publisher Declaration for dbert.online
+dbert-api-package/website-content/src/app/layout.tsx:51 -> metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.online'),
+dbert-api-package/website-content/src/app/layout.tsx:103 -> "url": process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.online',
+dbert-api-package/website-content/src/app/layout.tsx:104 -> "logo": `${process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.online'}/logo.svg`,
+dbert-api-package/website-content/src/app/layout.tsx:124 -> "email": "contactus@dbert.online",
+dbert-api-package/website-content/src/app/robots.ts:5 -> const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.online';
+dbert-api-package/website-content/src/app/sitemap.ts:7 -> * High-authority dynamic sitemap generator for dbert.online
+dbert-api-package/website-content/src/app/sitemap.ts:11 -> const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.online';
+dbert-api-package/website-content/src/app/about/careers/page.tsx:52 -> <a href="mailto:contactus@dbert.online" className="btn btn-outline">Submit Your Portfolio</a>
+dbert-api-package/website-content/src/app/about/contact/page.tsx:37 -> <p><a href="mailto:contactus@dbert.online" className={styles.accentLink}>contactus@dbert.online</a></p>
+dbert-api-package/website-content/src/app/ai-consultant/page.tsx:44 -> url: 'https://dbert.online'
+dbert-api-package/website-content/src/app/ai-solutions/page.tsx:53 -> url: 'https://dbert.online'
+dbert-api-package/website-content/src/app/ai-solutions/page.tsx:60 -> url: 'https://dbert.online/ai-solutions'
+dbert-api-package/website-content/src/app/ai-solutions/consultation/page.tsx:52 -> url: 'https://dbert.online'
+dbert-api-package/website-content/src/app/ai-solutions/llm-training/page.tsx:45 -> url: 'https://dbert.online'
+dbert-api-package/website-content/src/app/ai-solutions/llm-training/dbert-ai/page.tsx:52 -> url: 'https://dbert.online'
+dbert-api-package/website-content/src/app/ai-solutions/llm-training/pipeline/page.tsx:55 -> url: 'https://dbert.online'
+dbert-api-package/website-content/src/app/ai-solutions/llm-training/private-hosting/page.tsx:43 -> url: 'https://dbert.online'
+dbert-api-package/website-content/src/app/ai-solutions/llm-training/private-hosting/page.tsx:50 -> url: 'https://dbert.online/ai-solutions/llm-training/private-hosting'
+dbert-api-package/website-content/src/app/ai-solutions/products/page.tsx:79 -> url: 'https://dbert.online/ai-solutions/products',
+dbert-api-package/website-content/src/app/ai-solutions/products/page.tsx:85 -> url: `https://dbert.online/ai-solutions/products/${p.slug}`,
+dbert-api-package/website-content/src/app/ai-solutions/products/certificate-verification-api/page.tsx:48 -> url: 'https://dbert.online'
+dbert-api-package/website-content/src/app/ai-solutions/products/certificate-verification-api/page.tsx:56 -> url: 'https://dbert.online/ai-solutions/products/certificate-verification-api'
+dbert-api-package/website-content/src/app/ai-solutions/products/certificate-verification-api/page.tsx:122 -> {`curl -X GET "https://api.dbert.online/v1/verify?certId=DBERT-ENG-2026-8894" \\
+dbert-api-package/website-content/src/app/ai-solutions/products/dbert-chat/page.tsx:48 -> url: 'https://dbert.online'
+dbert-api-package/website-content/src/app/ai-solutions/products/dbert-chat/page.tsx:56 -> url: 'https://dbert.online/ai-solutions/products/dbert-chat'
+dbert-api-package/website-content/src/app/ai-solutions/products/dbert-chat/page.tsx:133 -> {`curl -X POST "https://api.dbert.online/v1/chat" \\
+dbert-api-package/website-content/src/app/ai-solutions/products/document-ai/page.tsx:48 -> url: 'https://dbert.online'
+dbert-api-package/website-content/src/app/ai-solutions/products/document-ai/page.tsx:56 -> url: 'https://dbert.online/ai-solutions/products/document-ai'
+... and 147 more items in DBERT_API_PACKAGE
+
+======================================================================
+ROOT_SCRIPTS_DOCS (31 items)
+======================================================================
+DBERT_LMS_MASTER_DEVELOPMENT_HARDENING_PLAN.md:6 -> **Primary production portal:** `https://internship.dbert.online/`\
+DBERT_LMS_MASTER_DEVELOPMENT_HARDENING_PLAN.md:641 -> mailer.dbert.online
+DBERT_WEBSITE_UIUX_REDESIGN_PHASE_PLAN.md:3 -> - Production website: `https://dbert.online`
+DBERT_WEBSITE_UIUX_REDESIGN_PHASE_PLAN.md:45 -> - break `internship.dbert.online` links,
+DBERT_WEBSITE_UIUX_REDESIGN_PHASE_PLAN.md:1102 -> Current live site is `https://dbert.online`.
+ORIGINAL_REQUEST.md:5 -> Perform a thorough QA audit of the DBERT website (Next.js static export, served via Nginx on EC2 at `dbert.in`) and the 
+ORIGINAL_REQUEST.md:17 -> 1. `apps/portal/.env:27` — `SMTP_HOST=dbert.online` (blocker)
+ORIGINAL_REQUEST.md:18 -> 2. `apps/portal/.env:29` — `SMTP_USER=contactus@dbert.online` (blocker)
+ORIGINAL_REQUEST.md:19 -> 3. `apps/portal/.env:31` — `FROM_EMAIL=contactus@dbert.online` (blocker)
+ORIGINAL_REQUEST.md:20 -> 4. `apps/portal/app.py:304` — `SMTP_HOST` code default = `"dbert.online"` (blocker)
+ORIGINAL_REQUEST.md:21 -> 5. `apps/portal/app.py:2690` — `staff_email = f"{ADMIN_USERNAME}@dbert.online"` hardcode (blocker)
+ORIGINAL_REQUEST.md:23 -> 7. `cpanel_public_html/__next.__PAGE__.txt` — JSON-LD schema `@type: Organization` has `"url": "https://dbert.online"`, 
+ORIGINAL_REQUEST.md:24 -> 8. `apps/portal/templates/seo_landing.html:133` — anchor tag `href="https://dbert.in"` but link text reads `dbert.online
+ORIGINAL_REQUEST.md:30 -> ### R1. Domain Migration Completeness — `dbert.online` → `dbert.in`
+ORIGINAL_REQUEST.md:32 -> Scan every file in the repository (Python, HTML, JS, CSS, shell scripts, Nginx configs, `.env` samples, JSON, markdown d
+ORIGINAL_REQUEST.md:39 -> - All Nginx configs under `deploy/` — intentional `dbert.online → dbert.in` redirect rules are OK; any other reference i
+ORIGINAL_REQUEST.md:43 -> - Portal blog redirect routes — confirm they redirect to `dbert.in/blog`, not `dbert.online`
+ORIGINAL_REQUEST.md:69 -> 7. **JSON-LD structured data**: Any `Organization`, `WebSite`, `BreadcrumbList` schema markup must use `dbert.in` URLs (
+ORIGINAL_REQUEST.md:75 -> 1. **Nginx unified config** (`dbert-unified-nginx.conf`): All `server_name`, SSL cert paths, upstream `proxy_pass` URLs 
+ORIGINAL_REQUEST.md:96 -> - [ ] Complete list of all `dbert.online` references, each classified as Blocker/Warning/Info
+WEBSITE_ROUTE_INVENTORY.md:4 -> - **Production URL**: `https://dbert.online`
+WEBSITE_UIUX_PHASE_PLAN.md:4 -> - **Target Site**: `https://dbert.online` (Repository: `DBERT-INDIA/dbert-website-lms`, Scope: `apps/website/**`)
+WEBSITE_UIUX_PHASE_PLAN.md:140 -> - Align default site URL in `apps/website/src/app/layout.tsx` (`metadataBase`) and `apps/website/src/app/robots.ts` to `
+WEBSITE_UIUX_PHASE_PLAN.md:171 -> - Verify that all `internship.dbert.online` outbound link targets remain active, consistent, and correctly tagged with `
+WEBSITE_UIUX_PRODUCTION_PREFLIGHT.md:7 -> **Target Domain**: `https://dbert.online`
+WEBSITE_UIUX_PRODUCTION_PREFLIGHT.md:38 -> | `NEXT_PUBLIC_SITE_URL` | Global canonical | Defaults strictly to authoritative `https://dbert.online` in `layout.tsx`,
+WEBSITE_UIUX_PRODUCTION_PREFLIGHT.md:82 -> - **Outbound Internship Portal**: All links targeting `https://internship.dbert.online/` (fellowship applications, cohor
+WEBSITE_UIUX_PROGRESS.md:29 -> | **14** | SEO & Content Integrity Regression | **COMPLETED** | Done (`WEBSITE_UIUX_PHASE_PLAN.md`) | Approved | Done | 
+.agent/FINAL_RELEASE_GATE_REPORT.md:4 -> **Primary Production Portal:** `https://internship.dbert.online/`
+apps/website/.htaccess:12 -> # 1. 301 Permanent Redirect from legacy dbert.online -> dbert.in
+apps/website/public/.htaccess:12 -> # 1. 301 Permanent Redirect from legacy dbert.online -> dbert.in
+
+======================================================================
+SCRATCH_FILES (217 items)
+======================================================================
+scratch/find_dbert_online.py:13 -> if 'dbert.online' in content:
+scratch/find_dbert_online.py:16 -> print(f"Found {len(files_to_update)} files in apps/website/src with dbert.online:")
+scratch/migrate_domain_to_dbert_in.py:53 -> new_text = new_text.replace("contactus@dbert.online", "contactus@dbert.in")
+scratch/migrate_domain_to_dbert_in.py:54 -> new_text = new_text.replace("you@dbert.online", "you@dbert.in")
+scratch/migrate_domain_to_dbert_in.py:56 -> # Domain references (ensure we don't accidentally corrupt internship.dbert.online)
+scratch/migrate_domain_to_dbert_in.py:58 -> # First replace any https://dbert.online (not internship.dbert.online)
+scratch/migrate_domain_to_dbert_in.py:61 -> new_text = new_text.replace("dbert.online/verify", "dbert.in/verify")
+scratch/migrate_domain_to_dbert_in.py:62 -> new_text = new_text.replace("dbert.online · All rights reserved", "dbert.in · All rights reserved")
+scratch/migrate_domain_to_dbert_in.py:63 -> new_text = new_text.replace("https://api.dbert.online", "https://api.dbert.in")
+scratch/migrate_domain_to_dbert_in.py:64 -> new_text = new_text.replace("https://secure-storage.dbert.online", "https://secure-storage.dbert.in")
+scratch/migrate_portal_to_lms.py:21 -> new_text = new_text.replace("https://internship.dbert.online", "https://lms.dbert.in")
+scratch/migrate_portal_to_lms.py:22 -> new_text = new_text.replace("http://internship.dbert.online", "https://lms.dbert.in")
+scratch/migrate_portal_to_lms.py:23 -> new_text = new_text.replace("internship.dbert.online", "lms.dbert.in")
+scratch/migrate_portal_to_lms.py:24 -> new_text = new_text.replace("https://dbert.online", "https://dbert.in")
+scratch/migrate_portal_to_lms.py:25 -> new_text = new_text.replace("http://dbert.online", "https://dbert.in")
+scratch/migrate_portal_to_lms.py:26 -> new_text = new_text.replace("contactus@dbert.online", "contactus@dbert.in")
+scratch/migrate_portal_to_lms.py:27 -> new_text = new_text.replace("admin@dbert.online", "admin@dbert.in")
+scratch/migrate_portal_to_lms.py:28 -> new_text = new_text.replace("careers@dbert.online", "careers@dbert.in")
+scratch/update_website_lms_links.py:14 -> new_text = new_text.replace("https://internship.dbert.online", "https://lms.dbert.in")
+scratch/update_website_lms_links.py:15 -> new_text = new_text.replace("internship.dbert.online", "lms.dbert.in")
+scratch/zip_extract_test/dbert-api-package/.env.example:45 -> SMTP_HOST=dbert.online
+scratch/zip_extract_test/dbert-api-package/.env.example:47 -> SMTP_USER=contactus@dbert.online
+scratch/zip_extract_test/dbert-api-package/.env.example:49 -> FROM_EMAIL=contactus@dbert.online
+scratch/zip_extract_test/dbert-api-package/.env.production.sample:18 -> CORS_ORIGINS=https://dbert.online,https://internship.dbert.online
+scratch/zip_extract_test/dbert-api-package/.env.production.sample:33 -> SMTP_HOST=dbert.online
+scratch/zip_extract_test/dbert-api-package/.env.production.sample:35 -> SMTP_USER=contactus@dbert.online
+scratch/zip_extract_test/dbert-api-package/.env.production.sample:37 -> FROM_EMAIL=contactus@dbert.online
+scratch/zip_extract_test/dbert-api-package/backend/api/v1/auth/router.py:152 -> token_data = {"sub": "admin", "email": f"{settings.ADMIN_USERNAME}@dbert.online", "role": "admin", "name": "DBERT Admini
+scratch/zip_extract_test/dbert-api-package/backend/api/v1/auth/router.py:160 -> user={"id": "admin", "email": f"{settings.ADMIN_USERNAME}@dbert.online", "name": "DBERT Administrator", "role": "admin"}
+scratch/zip_extract_test/dbert-api-package/backend/core/config.py:65 -> SMTP_HOST: str = os.environ.get("SMTP_HOST", "dbert.online")
+scratch/zip_extract_test/dbert-api-package/backend/core/config.py:67 -> SMTP_USER: str = os.environ.get("SMTP_USER", "contactus@dbert.online")
+scratch/zip_extract_test/dbert-api-package/backend/core/config.py:69 -> FROM_EMAIL: str = os.environ.get("FROM_EMAIL", "contactus@dbert.online")
+scratch/zip_extract_test/dbert-api-package/backend/core/config.py:107 -> SITE_ORIGIN: str = os.environ.get("SITE_ORIGIN", "https://internship.dbert.online")
+scratch/zip_extract_test/dbert-api-package/docs/env_vars.md:30 -> | `FROM_EMAIL` | `contactus@dbert.online` | NO | Environment configuration parameter |
+scratch/zip_extract_test/dbert-api-package/docs/env_vars.md:65 -> | `SITE_ORIGIN` | `https://internship.dbert.online` | NO | Environment configuration parameter |
+scratch/zip_extract_test/dbert-api-package/docs/env_vars.md:70 -> | `SMTP_HOST` | `dbert.online` | NO | Environment configuration parameter |
+scratch/zip_extract_test/dbert-api-package/docs/env_vars.md:73 -> | `SMTP_USER` | `contactus@dbert.online` | NO | Environment configuration parameter |
+scratch/zip_extract_test/dbert-api-package/docs/integrations.md:47 -> - **Primary Host**: `SMTP_HOST` (`dbert.online`), port 465 (SSL).
+scratch/zip_extract_test/dbert-api-package/website-content/public/.htaccess:15 -> # 1.1 Redirect /jobs and /internships to internship.dbert.online subdomain
+scratch/zip_extract_test/dbert-api-package/website-content/public/.htaccess:17 -> RewriteRule ^jobs/?$ https://internship.dbert.online/jobs [L,R=301]
+scratch/zip_extract_test/dbert-api-package/website-content/public/.htaccess:20 -> RewriteRule ^internships/?(.*)$ https://internship.dbert.online/internships/$1 [L,R=301]
+scratch/zip_extract_test/dbert-api-package/website-content/public/ads.txt:1 -> # Google AdSense Publisher Declaration for dbert.online
+scratch/zip_extract_test/dbert-api-package/website-content/src/app/layout.tsx:51 -> metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.online'),
+scratch/zip_extract_test/dbert-api-package/website-content/src/app/layout.tsx:103 -> "url": process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.online',
+scratch/zip_extract_test/dbert-api-package/website-content/src/app/layout.tsx:104 -> "logo": `${process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.online'}/logo.svg`,
+scratch/zip_extract_test/dbert-api-package/website-content/src/app/layout.tsx:124 -> "email": "contactus@dbert.online",
+scratch/zip_extract_test/dbert-api-package/website-content/src/app/robots.ts:5 -> const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.online';
+scratch/zip_extract_test/dbert-api-package/website-content/src/app/sitemap.ts:7 -> * High-authority dynamic sitemap generator for dbert.online
+scratch/zip_extract_test/dbert-api-package/website-content/src/app/sitemap.ts:11 -> const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.online';
+scratch/zip_extract_test/dbert-api-package/website-content/src/app/about/careers/page.tsx:52 -> <a href="mailto:contactus@dbert.online" className="btn btn-outline">Submit Your Portfolio</a>
+... and 167 more items in SCRATCH_FILES

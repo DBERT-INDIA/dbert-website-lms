@@ -233,6 +233,28 @@
   color: var(--text-primary);
 }
 
+.domainNoticeBar {
+  padding-top: 14px;
+  margin-top: 14px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.08);
+  font-family: var(--font-m);
+  font-size: 0.72rem;
+  color: var(--text-faint);
+  text-align: center;
+  width: 100%;
+}
+
+.domainNoticeLink {
+  color: var(--text-faint);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.domainNoticeLink:hover {
+  color: var(--gold-light, #fbbf24);
+  text-decoration: underline;
+}
+
 @media (max-width: 1200px) {
   .grid {
     grid-template-columns: 1fr 1fr 1fr;

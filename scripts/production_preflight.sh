@@ -4,14 +4,15 @@
 # Exit code 0 = all clear; non-zero = do not start service.
 set -euo pipefail
 
-PORTAL_DIR="/var/www/dbert-website-lms/apps/portal"
+REPO_DIR="/var/www/dbert-website-lms"
+PORTAL_DIR="$REPO_DIR/apps/portal"
 ERRORS=0
 WARNINGS=0
 
 check() {
     local label="$1"; local result="$2"; local level="${3:-error}"
     if [ "$result" != "ok" ]; then
-        echo "[$( echo $level | tr a-z A-Z )] $label — $result"
+        echo "[$( echo "$level" | tr a-z A-Z )] $label - $result"
         [ "$level" = "error" ] && ERRORS=$((ERRORS+1)) || WARNINGS=$((WARNINGS+1))
     else
         echo "[OK]  $label"
@@ -23,7 +24,7 @@ echo "Date: $(date)"
 echo ""
 
 # Git state
-cd /var/www/dbert-website-lms
+cd "$REPO_DIR" 2>/dev/null || true
 SHA=$(git rev-parse HEAD 2>/dev/null || echo "unknown")
 BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "unknown")
 echo "Git SHA   : $SHA"
@@ -33,44 +34,49 @@ echo ""
 
 # Python
 PY=$(python3 --version 2>&1 || echo "missing")
-check "Python 3" "$(echo $PY | grep -q 'Python 3' && echo ok || echo "Not found: $PY")"
+check "Python 3" "$(echo "$PY" | grep -q 'Python 3' && echo ok || echo "Not found: $PY")"
 
 # venv
-check ".venv exists" "$([ -d $PORTAL_DIR/.venv ] && echo ok || echo 'Virtual env missing')"
+check ".venv exists" "$([ -d "$PORTAL_DIR/.venv" ] && echo ok || echo 'Virtual env missing')"
 
 # Gunicorn
-check "gunicorn installed" "$(source $PORTAL_DIR/.venv/bin/activate 2>/dev/null; which gunicorn > /dev/null 2>&1 && echo ok || echo 'not installed')"
+check "gunicorn installed" "$(source "$PORTAL_DIR/.venv/bin/activate" 2>/dev/null; which gunicorn > /dev/null 2>&1 && echo ok || echo 'not installed')"
 
 # psycopg2
-check "psycopg2 installed" "$(source $PORTAL_DIR/.venv/bin/activate 2>/dev/null; python3 -c 'import psycopg2' 2>/dev/null && echo ok || echo 'not installed')"
+check "psycopg2 installed" "$(source "$PORTAL_DIR/.venv/bin/activate" 2>/dev/null; python3 -c 'import psycopg2' 2>/dev/null && echo ok || echo 'not installed')"
 
 # .env
-check ".env exists" "$([ -f $PORTAL_DIR/.env ] && echo ok || echo 'Missing .env file')"
+check ".env exists" "$([ -f "$PORTAL_DIR/.env" ] && echo ok || echo 'Missing .env file')"
 
 if [ -f "$PORTAL_DIR/.env" ]; then
+    set -a
     source "$PORTAL_DIR/.env" 2>/dev/null || true
+    set +a
 
-    check "REQUIRE_POSTGRES=true" "$([ '${REQUIRE_POSTGRES:-}' = 'true' ] && echo ok || echo "REQUIRE_POSTGRES=${REQUIRE_POSTGRES:-unset}")"
-    check "DATABASE_URL is postgres" "$(echo '${DATABASE_URL:-}' | grep -qE '^postgres(ql)?://' && echo ok || echo 'DATABASE_URL missing or not postgres')"
-    check "POSTGRES_SCHEMA set" "$([ -n '${POSTGRES_SCHEMA:-}' ] && echo ok || echo 'POSTGRES_SCHEMA not set')"
-    check "FLASK_SECRET_KEY set" "$([ -n '${FLASK_SECRET_KEY:-}' ] && echo ok || echo 'FLASK_SECRET_KEY not set')"
-    check "FLASK_DEBUG=false" "$([ '${FLASK_DEBUG:-}' != 'true' ] && echo ok || echo 'FLASK_DEBUG is true in production!')"
+    check "REQUIRE_POSTGRES=true" "$([ "${REQUIRE_POSTGRES:-}" = "true" ] && echo ok || echo "REQUIRE_POSTGRES=${REQUIRE_POSTGRES:-unset}")"
+    check "DATABASE_URL is postgres" "$(echo "${DATABASE_URL:-}" | grep -qE '^postgres(ql)?://' && echo ok || echo 'DATABASE_URL missing or not postgres')"
+    check "POSTGRES_SCHEMA set" "$([ -n "${POSTGRES_SCHEMA:-}" ] && echo ok || echo 'POSTGRES_SCHEMA not set')"
+    check "FLASK_SECRET_KEY set" "$([ -n "${FLASK_SECRET_KEY:-}" ] && echo ok || echo 'FLASK_SECRET_KEY not set')"
+    check "FLASK_DEBUG=false" "$([ "${FLASK_DEBUG:-}" != "true" ] && echo ok || echo 'FLASK_DEBUG is true in production!')"
 
     # Check no hardcoded default key
-    if echo '${FLASK_SECRET_KEY:-}' | grep -qi 'digitalblinc\|default\|changeme'; then
+    if echo "${FLASK_SECRET_KEY:-}" | grep -qi 'digitalblinc\|default\|changeme'; then
         echo "[ERROR] FLASK_SECRET_KEY looks like a default value"
         ERRORS=$((ERRORS+1))
     fi
 fi
 
-# No SQLite file in runtime path
-check "No internship.db in portal dir" "$([ ! -f $PORTAL_DIR/internship.db ] && echo ok || echo 'internship.db exists — check REQUIRE_POSTGRES')"
+# No SQLite file in runtime path or repo root
+check "No internship.db in portal dir" "$([ ! -f "$PORTAL_DIR/internship.db" ] && echo ok || echo 'internship.db exists in portal dir - check REQUIRE_POSTGRES')"
+check "No internship.db in repo root" "$([ ! -f "$REPO_DIR/internship.db" ] && echo ok || echo 'internship.db exists in repo root - move/archive it')"
 
-# Systemd unit
-check "systemd unit exists" "$([ -f /etc/systemd/system/dbert-portal.service ] && echo ok || echo 'Service file not installed')"
+# Systemd units
+check "dbert-portal.service exists" "$([ -f /etc/systemd/system/dbert-portal.service ] && echo ok || echo 'Portal service file not installed')"
+check "dbert-website.service exists" "$([ -f /etc/systemd/system/dbert-website.service ] && echo ok || echo 'Website service file not installed')"
+check "dbert-api.service exists" "$([ -f /etc/systemd/system/dbert-api.service ] && echo ok || echo 'API service file not installed')"
 
 # Nginx
-check "nginx config installed" "$([ -f /etc/nginx/conf.d/dbert-portal.conf ] && echo ok || echo 'Nginx config not installed')"
+check "nginx config installed" "$([ -f /etc/nginx/sites-enabled/dbert-unified.conf ] || [ -f /etc/nginx/conf.d/dbert-unified.conf ] || [ -f /etc/nginx/conf.d/dbert-portal.conf ] && echo ok || echo 'Nginx config not installed')"
 check "nginx config valid" "$(sudo nginx -t 2>&1 | grep -q 'successful' && echo ok || echo 'nginx -t failed')"
 
 echo ""

@@ -78,7 +78,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={fontVariables}>
       <head>
-        {/* GA4 Telemetry (G-GZ17KZ7MDW) — loads seamlessly across static export */}
+        {/* GA4 Telemetry (G-MN7ME9X518) — loads seamlessly across static export */}
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}

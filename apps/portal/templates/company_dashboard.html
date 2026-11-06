@@ -192,6 +192,11 @@
           else { msg.className='msg err'; msg.textContent=d.message||'Error'; }
         }).catch(function(){ msg.className='msg err'; msg.textContent='Network error'; });
     });
+    window.showTab = showTab;
+    window.submitCourse = submitCourse;
+    window.togglePrice = togglePrice;
+    window.logout = logout;
+    window.quickDelete = quickDelete;
   </script>
 </body>
 </html>

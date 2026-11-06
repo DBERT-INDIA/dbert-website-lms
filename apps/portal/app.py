@@ -306,17 +306,18 @@ if is_prod or os.environ.get("FLASK_ENV") == "production":
         else:
             print("[WARNING] FLASK_SECRET_KEY is shorter than 32 chars.")
 
-SMTP_HOST = os.environ.get("SMTP_HOST", "dbert.in")
+SMTP_HOST = os.environ.get("SMTP_HOST", "smtp.gmail.com")
 SMTP_PORT = int(os.environ.get("SMTP_PORT", "465"))
-SMTP_USER = os.environ.get("SMTP_USER", "contactus@dbert.in")
+SMTP_USER = os.environ.get("SMTP_USER", "abhinav.sharma@dbert.in")
 SMTP_PASS = os.environ.get("SMTP_PASS", "")  # never hardcode — supplied via .env
-FROM_EMAIL = os.environ.get("FROM_EMAIL", "contactus@dbert.in")
+FROM_EMAIL = os.environ.get("FROM_EMAIL", "abhinav.sharma@dbert.in")
 FROM_NAME  = os.environ.get("FROM_NAME", "DBERT Support")
+REPLY_TO_EMAIL = os.environ.get("REPLY_TO_EMAIL", "support@dbert.in")
 
-# Secondary Backup Mailbox
-SMTP_BACKUP_HOST = os.environ.get("SMTP_BACKUP_HOST", "dbert.info")
+# Secondary Backup Mailbox (rejects suspended dbert.info)
+SMTP_BACKUP_HOST = os.environ.get("SMTP_BACKUP_HOST", "")
 SMTP_BACKUP_PORT = int(os.environ.get("SMTP_BACKUP_PORT", "465"))
-SMTP_BACKUP_USER = os.environ.get("SMTP_BACKUP_USER", "contactus@dbert.info")
+SMTP_BACKUP_USER = os.environ.get("SMTP_BACKUP_USER", "")
 SMTP_BACKUP_PASS = os.environ.get("SMTP_BACKUP_PASS", "")
 
 # Email transport. "smtp" = cPanel/SMTP direct (default). "ses" = Amazon SES. "cpanel_api" = relay microservice.
@@ -375,9 +376,9 @@ if AMBASSADOR_ENABLED and os.environ.get("FLASK_DEBUG", "false").lower() != "tru
 UPI_ID           = os.environ.get("UPI_ID", "Q681021429@ybl")
 UPI_AMOUNT       = int(os.environ.get("UPI_AMOUNT", "499"))
 # Phase 12 â€” paid program (parallel product to the â‚¹499 free-track deposit).
-PAID_PROGRAM_AMOUNT = int(os.environ.get("PAID_PROGRAM_AMOUNT", "1599"))
+PAID_PROGRAM_AMOUNT = int(os.environ.get("PAID_PROGRAM_AMOUNT", "1999"))
 # Phase 12.5 â€” Google Analytics 4 measurement id (shared across all pages).
-GA4_ID = os.environ.get("GA4_ID", "G-GZ17KZ7MDW")
+GA4_ID = os.environ.get("GA4_ID", "G-MN7ME9X518")
 # Spec Â§8 â€” Measurement Protocol secret for SERVER-side events (referral_signup /
 # referral_conversion fire in request handlers where there is no gtag). Optional:
 # unset means those two events simply do not send.
@@ -849,6 +850,8 @@ def get_db():
     return get_db_adapter(timeout=15.0)
 
 def ensure_column(conn, table, col, defn):
+    if hasattr(conn, "ensure_column"):
+        return conn.ensure_column(table, col, defn)
     cols = [r["name"] for r in conn.execute(f"PRAGMA table_info({table})").fetchall()]
     if col not in cols: conn.execute(f"ALTER TABLE {table} ADD COLUMN {col} {defn}")
 
@@ -2779,6 +2782,9 @@ def init_db():
             ensure_column(conn, "device_profiles", col, defn)
         ensure_column(conn, "email_log", "subject", "TEXT")
         ensure_column(conn, "email_log", "opened_at", "TEXT")  # Phase 13: open-tracking pixel
+        ensure_column(conn, "email_log", "provider", "TEXT")
+        ensure_column(conn, "email_log", "message_id", "TEXT")
+        ensure_column(conn, "email_log", "error_message", "TEXT")
         # T5: interviews are now per (intern, post) -- gated on a prior application to that
         # post -- and carry anti-copy telemetry (informational only, never enforced).
         for col, defn in [
@@ -3692,9 +3698,9 @@ CSRF_HEADER      = "X-CSRF-Token"
 CSRF_FIELD       = "_csrf_token"
 CSRF_SAFE_METHODS = {"GET", "HEAD", "OPTIONS", "TRACE"}
 # Endpoints that legitimately cannot carry a token. Keep this list empty unless
-# there is a genuine server-to-server caller â€” every browser-originated POST
-# must be protected.
-CSRF_EXEMPT_ENDPOINTS = {"scraped_lead_click_track"}
+# there is a genuine server-to-server caller — every browser-originated POST
+# must be protected. RFC 8058 one-click unsubscribe is authenticated via HMAC signature.
+CSRF_EXEMPT_ENDPOINTS = {"scraped_lead_click_track", "unsubscribe"}
 
 
 def _csrf_token():
@@ -3921,10 +3927,10 @@ def _email_add_utm(html, campaign):
             return m.group(0)
         sep = "&" if "?" in url else "?"
         return f'href="{url}{sep}utm_source=email&utm_medium=email&utm_campaign={campaign}"'
-    return re.sub(r'href="(https://internship\.dbert\.online[^"]*)"', _repl, html or "")
+    return re.sub(r'href="(https://(?:lms\.dbert\.in|internship\.dbert\.online)[^"]*)"', _repl, html or "")
 
 def _email_to_text(html):
-    """Best-effort HTMLâ†’plain-text for the multipart/alternative text part."""
+    """Best-effort HTML→plain-text for the multipart/alternative text part."""
     import html as _html
     t = re.sub(r"(?is)<(script|style|head).*?</\1>", "", html or "")
     t = re.sub(r"(?i)<br\s*/?>", "\n", t)
@@ -3937,36 +3943,53 @@ def _email_to_text(html):
     return t.strip() or "Open your DBERT portal: " + EMAIL_SITE
 
 def _email_footer(to_email):
+    unsub = _email_unsub_url(to_email)
+    reply_to = os.environ.get("REPLY_TO_EMAIL", "support@dbert.in")
     return (
-        "<div style='max-width:580px;margin:0 auto 26px;padding:0 20px;text-align:center;'>"
-        "<p style='color:#5a6577;font-size:11px;line-height:1.8;margin:14px 0 0;'>"
-        "DBERT &middot; MSME Registered &middot; India<br/>"
-        "You're receiving this because you signed up at lms.dbert.in.<br/>"
-        f"<a href='{_email_unsub_url(to_email)}' style='color:#7a8699;text-decoration:underline;'>Unsubscribe</a>"
-        " &middot; <a href='" + EMAIL_SITE + "/privacy' style='color:#7a8699;text-decoration:underline;'>Privacy</a>"
-        "</p></div>"
+        "<div style='max-width:580px;margin:0 auto 26px;padding:0 20px;text-align:center;font-family:Arial,Helvetica,sans-serif;'>"
+        "<div style='border-top:1px solid #232a36;margin:24px 0 16px;'></div>"
+        "<p style='color:#8a9ab5;font-size:11.5px;line-height:1.75;margin:0 0 10px;'>"
+        "<strong style='color:#c9d3dd;'>Digital Blinc Education Research and Technology (DBERT)</strong><br/>"
+        "MSME Registered &middot; Government of India &middot; <a href='https://lms.dbert.in' style='color:#E2B96F;text-decoration:none;'>lms.dbert.in</a>"
+        "</p>"
+        "<p style='color:#5a6577;font-size:11px;line-height:1.7;margin:0 0 10px;'>"
+        "This is an official transactional notification regarding your account or application activity.<br/>"
+        "<strong>Security Notice:</strong> DBERT will never ask for your password, OTP, UPI PIN, or banking credentials via email. "
+        f"If you did not initiate this request, please contact <a href='mailto:{reply_to}' style='color:#7a8699;text-decoration:underline;'>{reply_to}</a>."
+        "</p>"
+        "<p style='color:#5a6577;font-size:10.5px;line-height:1.6;margin:0 0 12px;'>"
+        "Data processed in accordance with the Digital Personal Data Protection Act, 2023 (DPDP Act, India)."
+        "</p>"
+        "<p style='color:#5a6577;font-size:11px;margin:0;'>"
+        f"<a href='{unsub}' style='color:#7a8699;text-decoration:underline;'>Unsubscribe</a>"
+        f" &middot; <a href='{EMAIL_SITE}/privacy' style='color:#7a8699;text-decoration:underline;'>Privacy Policy</a>"
+        f" &middot; <a href='{EMAIL_SITE}/terms' style='color:#7a8699;text-decoration:underline;'>Terms of Service</a>"
+        f" &middot; <a href='mailto:{reply_to}' style='color:#7a8699;text-decoration:underline;'>Support</a>"
+        "</p>"
+        "</div>"
     )
 
 def _build_email_message(to_email, subject, html_body, campaign):
     """Build the full multipart/alternative message (text + html) with deliverability
-    headers, the CAN-SPAM footer, open pixel, and UTM-tagged links. Transport-agnostic â€”
-    used by both the SES and SMTP send paths."""
-    html = _email_add_utm(html_body, campaign)
-    inject = _email_footer(to_email) + f"<img src='{_email_pixel_url(to_email)}' width='1' height='1' alt='' style='display:none;width:1px;height:1px;'/>"
+    headers, the CAN-SPAM footer, and RFC alignment. Excludes open pixels and UTM tags
+    for transactional emails to maximize deliverability reputation."""
+    html = _email_add_utm(html_body, campaign) if campaign == "marketing" else (html_body or "")
+    inject = _email_footer(to_email)
     html = html.replace("</body>", inject + "</body>") if "</body>" in html else html + inject
-    text = _email_to_text(html_body)
+    text = _email_to_text(html)
     msg = MIMEMultipart("alternative")
     msg["Subject"] = subject
     msg["From"] = f"{FROM_NAME} <{FROM_EMAIL}>"
     msg["To"] = to_email
-    msg["Reply-To"] = FROM_EMAIL
+    reply_to = os.environ.get("REPLY_TO_EMAIL", "support@dbert.in")
+    msg["Reply-To"] = reply_to
     msg["Date"] = formatdate(localtime=True)
-    try: msg["Message-ID"] = make_msgid(domain=FROM_EMAIL.split("@")[-1])
-    except Exception: pass
-    msg["List-Unsubscribe"] = f"<{_email_unsub_url(to_email)}>, <mailto:{FROM_EMAIL}?subject=unsubscribe>"
+    domain_part = FROM_EMAIL.split("@")[-1] if "@" in FROM_EMAIL else "dbert.in"
+    msg["Message-ID"] = f"<{uuid.uuid4()}@{domain_part}>"
+    msg["List-Unsubscribe"] = f"<{_email_unsub_url(to_email)}>, <mailto:{reply_to}?subject=unsubscribe>"
     msg["List-Unsubscribe-Post"] = "List-Unsubscribe=One-Click"
     msg["Auto-Submitted"] = "auto-generated"
-    msg.attach(MIMEText(text, "plain", "utf-8"))      # text part first (RFC: leastâ†’most rich)
+    msg.attach(MIMEText(text, "plain", "utf-8"))      # text part first (RFC: least→most rich)
     msg.attach(MIMEText(html, "html", "utf-8"))
     return msg
 
@@ -3984,7 +4007,7 @@ def _send_smtp_single(host, port, user, passwd, from_addr, to_addr, raw_msg):
         with smtplib.SMTP_SSL(host, port, context=ctx, timeout=15) as s:
             if user and passwd:
                 s.login(user, passwd)
-            s.sendmail(from_addr, to_addr, raw_msg)
+            s.sendmail(from_addr, [to_addr], raw_msg)
     else:
         with smtplib.SMTP(host, port, timeout=15) as s:
             s.ehlo()
@@ -3995,7 +4018,8 @@ def _send_smtp_single(host, port, user, passwd, from_addr, to_addr, raw_msg):
                 pass
             if user and passwd:
                 s.login(user, passwd)
-            s.sendmail(from_addr, to_addr, raw_msg)
+            s.sendmail(from_addr, [to_addr], raw_msg)
+    log_info("SMTP_SENT", f"Successfully dispatched email to {to_addr} via {host}:{port}")
 
 def _smtp_send_raw(msg, to_email):
     raw_str = msg.as_string()
@@ -4004,7 +4028,15 @@ def _smtp_send_raw(msg, to_email):
         return
     except Exception as primary_err:
         log_error("SMTP_PRIMARY_FAIL", primary_err)
-        if SMTP_BACKUP_HOST and SMTP_BACKUP_USER and SMTP_BACKUP_PASS:
+        # Attempt fallback via cPanel API microservice if configured
+        if CPANEL_EMAIL_API_URL:
+            try:
+                _cpanel_api_send(msg, to_email)
+                return
+            except Exception as api_err:
+                log_error("SMTP_CPANEL_FALLBACK_FAIL", api_err)
+        # Attempt backup SMTP if host is configured and not suspended
+        if SMTP_BACKUP_HOST and not SMTP_BACKUP_HOST.endswith("dbert.info") and SMTP_BACKUP_USER and SMTP_BACKUP_PASS:
             try:
                 _send_smtp_single(SMTP_BACKUP_HOST, SMTP_BACKUP_PORT, SMTP_BACKUP_USER, SMTP_BACKUP_PASS, SMTP_BACKUP_USER, to_email, raw_str)
                 return
@@ -4045,6 +4077,14 @@ def _cpanel_api_send(msg, to_email):
     if r.status_code < 200 or r.status_code >= 300:
         raise RuntimeError(f"cpanel_api mailer http_{r.status_code}: {r.text[:200]}")
 
+DUMMY_EMAIL_DOMAINS = (
+    '@example.com', '@example.org', '@example.net',
+    '.example.com', '.example.org', '.example.net', '.example',
+    '.test', '@test.com', '.invalid', '@invalid', '@localhost', '.localhost',
+    '@dbert.test', '.dbert.test', '@sample.com', '@demo.com',
+    '@mailinator.com', '@fakemail.com'
+)
+
 def send_email_async(to_email, subject, html_body, name="", campaign="transactional"):
     # Master kill-switch: emails suppressed for now (push notifications still fire separately).
     if not EMAILS_ENABLED:
@@ -4056,26 +4096,65 @@ def send_email_async(to_email, subject, html_body, name="", campaign="transactio
         except Exception:
             pass
         return
+
+    # Pre-flight domain reputation guard: intercept dummy/test domains before SMTP
+    email_clean = (to_email or "").strip().lower()
+    if not email_clean or any(email_clean.endswith(d) or d in email_clean for d in DUMMY_EMAIL_DOMAINS) or "@" not in email_clean:
+        try:
+            with get_db() as conn:
+                conn.execute(
+                    "INSERT INTO email_log (timestamp,email,name,subject,email_sent) VALUES (?,?,?,?,?)",
+                    (now_str(), to_email, name, subject, "SKIPPED_DUMMY_DOMAIN")
+                )
+                conn.commit()
+        except Exception:
+            pass
+        return
     def _send():
         sent = "YES"
+        provider_used = "smtp"
+        msg_id = ""
+        err_msg = None
         try:
             msg = _build_email_message(to_email, subject, html_body, campaign)
-            if EMAIL_PROVIDER == "ses":
+            msg_id = msg.get("Message-ID", "")
+            provider = os.environ.get("EMAIL_PROVIDER", EMAIL_PROVIDER).lower()
+            if provider == "ses":
+                provider_used = "ses"
                 _ses_send_raw(msg, to_email)
-            elif EMAIL_PROVIDER == "smtp":
+            elif provider == "smtp":
+                provider_used = "smtp"
                 _smtp_send_raw(msg, to_email)
+            elif provider == "delivery_service":
+                provider_used = "delivery_service"
+                from services.delivery_service import get_delivery_service
+                res = get_delivery_service().send_email(to_email, subject, html_body)
+                sent = "YES" if res.success else "NO"
+                provider_used = res.provider
+                msg_id = res.message_id
+                err_msg = res.error
             else:
+                provider_used = "cpanel_api"
                 # Default to DBERT Mailer microservice (https://mailer.aivaratech.online/send)
                 _cpanel_api_send(msg, to_email)
         except Exception as e:
-            sent = "NO"; log_error("EMAIL[" + EMAIL_PROVIDER + "]", e)
+            sent = "NO"
+            err_msg = str(e)
+            log_error("EMAIL[" + EMAIL_PROVIDER + "]", e)
         finally:
             try:
                 with get_db() as conn:
-                    conn.execute(
-                        "INSERT INTO email_log (timestamp,email,name,subject,email_sent) VALUES (?,?,?,?,?)",
-                        (now_str(), to_email, name, subject, sent)
-                    ); conn.commit()
+                    try:
+                        conn.execute(
+                            "INSERT INTO email_log (timestamp,email,name,subject,email_sent,provider,message_id,error_message) VALUES (?,?,?,?,?,?,?,?)",
+                            (now_str(), to_email, name, subject, sent, provider_used, msg_id, err_msg)
+                        )
+                    except Exception:
+                        conn.execute(
+                            "INSERT INTO email_log (timestamp,email,name,subject,email_sent) VALUES (?,?,?,?,?)",
+                            (now_str(), to_email, name, subject, sent)
+                        )
+                    conn.commit()
             except Exception: pass
     threading.Thread(target=_send, daemon=True).start()
 
@@ -4289,18 +4368,18 @@ def send_status_update_email(name, to_email, domain, status, note="", joining_da
     }
     icon, title, body = sc.get(status, ("ðŸ“Œ", f"Status: {status}.", "Check portal for details."))
 
-    # Phase 12.4 Moment A â€” empathetic paid fast-track block on rejection (solid-bg, Outlook-safe).
+    # Phase 12.4 Moment A — empathetic paid fast-track block on rejection (solid-bg, Outlook-safe).
     fasttrack_block = ""
     if status == STATUS_REJECTED:
         fasttrack_block = (
             "<div style='background-color:#10241a;border:1px solid #2e6b45;border-radius:12px;padding:18px 20px;margin:18px 0 0;'>"
-            "<p style='margin:0 0 8px;color:#7ed492;font-size:14px;font-weight:800;'>A faster path is open to you</p>"
+            "<p style='margin:0 0 8px;color:#7ed492;font-size:14px;font-weight:800;'>A guaranteed path is open to you</p>"
             "<p style='margin:0 0 14px;color:#c9d3dd;font-size:13px;line-height:1.7;'>This isn't the end of the road. Our "
-            "<strong style='color:#E2B96F;'>Paid Program</strong> gives you 15 days of training, a 45-day production role, and a "
-            "<strong style='color:#FFFFFF;'>guaranteed placement opportunity</strong> with our hiring partners on completion + certification â€” no waiting to be shortlisted.</p>"
+            "<strong style='color:#E2B96F;'>Paid Program (₹1,999)</strong> is an intensive 2-month program with a "
+            "<strong style='color:#FFFFFF;'>guaranteed placement opportunity</strong> with our hiring partners on completion + certification — available in all 4 domains with no selection lottery.</p>"
             "<table role='presentation' cellpadding='0' cellspacing='0' border='0'><tr><td bgcolor='#E2B96F' style='border-radius:999px;'>"
             "<a href='https://lms.dbert.in/program' style='display:inline-block;padding:11px 26px;"
-            "color:#0B0F17;text-decoration:none;font-weight:800;font-size:13px;border-radius:999px;'>Explore the Paid Program</a>"
+            "color:#0B0F17;text-decoration:none;font-weight:800;font-size:13px;border-radius:999px;'>Explore the Paid Program (₹1,999)</a>"
             "</td></tr></table></div>"
         )
 
@@ -4607,6 +4686,67 @@ def send_paid_payment_rejected_email(name, to_email, domain):
     send_push_notification(to_email, "ðŸ’³ Re-upload your payment", f"Hi {first}! We couldn't verify your Paid Program payment for {domain}. Please re-upload your proof.", prog)
 
 
+def notify_task_reviewed_email(name, to_email, decision, coins, feedback=""):
+    """Fires when an intern's sprint task submission has been reviewed."""
+    first = (name or "Candidate").split()[0]
+    subject = f"DBERT Task Update: {str(decision).title()}"
+    feedback_block = _email_info_box(
+        "<p style='margin:0 0 6px;color:#E2B96F;font-size:13px;font-weight:700;'>Mentor Feedback</p>"
+        f"<p style='margin:0;color:#c9d3dd;font-size:13px;line-height:1.7;'>{feedback}</p>"
+    ) if feedback else ""
+    body = (
+        f"<p style='margin:0 0 12px;'>Your recent sprint task submission has been reviewed and marked as "
+        f"<strong style='color:#FFFFFF;'>{str(decision).title()}</strong>.</p>"
+        + _email_info_box(
+            f"<p style='margin:0;color:#E2B96F;font-size:15px;font-weight:800;'>Coins Awarded: +{coins} DBERT Coins</p>"
+        )
+        + feedback_block
+    )
+    html = _email_shell("Sprint Review", f"Hi {first}, task updated", body,
+                        cta_text="View in Portal", cta_url="https://lms.dbert.in/portal",
+                        preheader=f"Your task submission was {decision}. +{coins} coins awarded.")
+    send_email_async(to_email, subject, html, name, campaign="task_reviewed")
+
+
+def notify_mentor_assigned_email(name, to_email, domain):
+    """Fires when a mentor is assigned to an intern's domain track."""
+    first = (name or "Candidate").split()[0]
+    subject = "A Mentor has been assigned to your internship! — DBERT"
+    body = (
+        f"<p style='margin:0 0 12px;'>Great news! A dedicated mentor has been assigned to guide you through your "
+        f"<strong style='color:#E2B96F;'>{domain}</strong> internship track.</p>"
+        + _email_info_box(
+            "<p style='margin:0 0 6px;color:#E2B96F;font-weight:700;font-size:13px;'>What your mentor helps with</p>"
+            "<ul style='margin:0;padding-left:18px;color:#c9d3dd;font-size:13px;line-height:1.8;'>"
+            "<li>Sprint task code reviews and architecture guidance</li>"
+            "<li>1:1 scheduled mentorship sessions</li>"
+            "<li>Industry readiness and mock interviews</li></ul>"
+        )
+    )
+    html = _email_shell("Mentorship", f"Hi {first}, meet your mentor!", body,
+                        cta_text="Open Mentorship Portal", cta_url="https://lms.dbert.in/mentors/slots",
+                        preheader=f"A mentor has been assigned to your {domain} track.")
+    send_email_async(to_email, subject, html, name, campaign="mentor_assigned")
+
+
+def send_otp_verification_email(to_email, otp):
+    """Sends a branded, secure 6-digit OTP verification email."""
+    subject = f"Your DBERT Verification Code: {otp}"
+    body = (
+        "<p style='margin:0 0 16px;'>Please use the verification code below to verify your email address on DBERT:</p>"
+        "<div style='background-color:#0d131f;border:2px dashed #E2B96F;border-radius:12px;padding:24px 16px;text-align:center;margin:20px 0;'>"
+        f"<span style='font-family:Courier,monospace,monospace;font-size:34px;font-weight:900;letter-spacing:10px;color:#E2B96F;display:inline-block;'>{otp}</span>"
+        "</div>"
+        + _email_info_box(
+            "<p style='margin:0 0 6px;color:#E2B96F;font-weight:700;font-size:13px;'>Code expires in 10 minutes</p>"
+            "<p style='margin:0;color:#8a9ab5;font-size:12.5px;line-height:1.7;'>Never share this verification code with anyone. DBERT representatives will never ask for your code over the phone or email.</p>"
+        )
+    )
+    html = _email_shell("Verification", "Verify Your Email", body,
+                        preheader=f"Your DBERT verification code is {otp} (valid for 10 minutes).")
+    send_email_async(to_email, subject, html, campaign="signup_otp")
+
+
 # â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 # PAGE ROUTES
 # â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
@@ -4782,13 +4922,21 @@ def sitemap_xml():
 
 @app.route("/signin")
 def signin_page():
-    """Redirect to index with hash â€” index.html handles the panel."""
-    return redirect("/#signin")
+    """Redirect to index with hash — index.html handles the panel."""
+    nxt = _safe_portal_next(request.args.get("next"))
+    if nxt:
+        session["next"] = nxt
+    suffix = f"?next={quote(nxt)}" if nxt else ""
+    return redirect(f"/#signin{suffix}")
 
 
 @app.route("/signup")
 def signup_page():
-    return redirect("/#signup")
+    nxt = _safe_portal_next(request.args.get("next"))
+    if nxt:
+        session["next"] = nxt
+    suffix = f"?next={quote(nxt)}" if nxt else ""
+    return redirect(f"/#signup{suffix}")
 
 
 @app.route("/terms")
@@ -4803,7 +4951,7 @@ def privacy_page():
     return render_template("privacy.html")
 
 
-@app.route("/unsubscribe")
+@app.route("/unsubscribe", methods=["GET", "POST"])
 def unsubscribe():
     """Phase 13 â€” one-click newsletter unsubscribe (signed link from email footer /
     List-Unsubscribe header). Clears newsletter_opt_in; transactional status emails are
@@ -8174,7 +8322,7 @@ def auth_send_otp():
         conn.commit()
 
     log_info("send_otp", f"OTP generated and hashed for {email}")
-    send_email_async(email, "Your Verification Code", f"<p>Your OTP is <b>{otp}</b>. Valid for 10 minutes.</p>")
+    send_otp_verification_email(email, otp)
 
     resp = {
         "status": "success",
@@ -8780,7 +8928,7 @@ def portal_view_certificate(cert_id):
 @app.route("/verify")
 def cert_verify_page():
     """Public certificate verification page."""
-    cert_id = clean_text(request.args.get("id") or request.args.get("certId") or "")
+    cert_id = clean_text(request.args.get("id") or request.args.get("certId") or request.args.get("certid") or "")
     if cert_id:
         return redirect(f"/portal/certificate/{cert_id}")
     return render_template("cert_verify.html", cert=None, cert_id="")
@@ -9317,8 +9465,14 @@ def signup_stage1():
                     now_str(),
                     now_str()
                 ))
-                conn.execute("UPDATE intern_accounts SET application_id=?, domain=? WHERE email=?",
-                             (cur_app.lastrowid, chosen_domain, email))
+                app_id = getattr(cur_app, "lastrowid", None)
+                if not app_id:
+                    app_row = conn.execute("SELECT id FROM applications WHERE LOWER(email)=? ORDER BY id DESC LIMIT 1", (email,)).fetchone()
+                    if app_row:
+                        app_id = app_row[0] if isinstance(app_row, tuple) else app_row["id"]
+                if app_id:
+                    conn.execute("UPDATE intern_accounts SET application_id=?, domain=? WHERE email=?",
+                                 (app_id, chosen_domain, email))
             # Â§6.1 â€” attribute the signup to a referrer if the 30-day cookie is
             # present. Threaded through the EXISTING flow; never blocks signup.
             try:
@@ -9344,14 +9498,21 @@ def signup_stage1():
         # session. stage1's response replaces that cookie with the DB auth token (same
         # cookie name), so persist the resume target on the session row now â€” it's the
         # last moment the flask-session 'next' is still readable. Resumed at stage3.
-        pending_next = _safe_portal_next(session.pop("next", None))
+        pending_next = _safe_portal_next(request.args.get("next") or session.pop("next", None) or data.get("next"))
         if pending_next:
             with get_db() as conn:
                 conn.execute("UPDATE user_sessions SET next_url=? WHERE session_token=?",
                              (pending_next, token))
                 conn.commit()
+            resp = make_response(jsonify({
+                "status": "success",
+                "message": "Account created! Redirecting to application...",
+                "stage": 1,
+                "redirect": pending_next
+            }))
+        else:
+            resp = make_response(jsonify({"status": "success", "message": "Account created!", "stage": 1, "next": 2}))
         link_device_to_email(visitor_id, email)
-        resp = make_response(jsonify({"status": "success", "message": "Account created!", "stage": 1, "next": 2}))
         _set_session_cookie(resp, token)
         return resp
     except Exception as e:
@@ -9569,35 +9730,29 @@ def intern_login():
         # Pending" with empty/partial data. Resume the signup wizard instead;
         # none of the tutor-handoff/apply-funnel redirect state below applies
         # until signup is actually complete.
-        if int(user["signup_stage"] or 3) < 3:
+        login_message = "Login successful."
+        login_before_joining = False
+        login_redirect = "/profile"
+        pending_next = _safe_portal_next(request.args.get("next") or session.pop("next", None) or data.get("next"))
+        if pending_next:
+            login_redirect = pending_next
+        elif int(user["signup_stage"] or 3) < 3:
             session.pop("post_login_return_to", None)
             session.pop("post_login_next", None)
             session.pop("next", None)
             resp = make_response(jsonify({
                 "status": "success",
-                "message": "Welcome back â€” let's finish setting up your account.",
+                "message": "Welcome back — let's finish setting up your account.",
                 "redirect": "/#signup",
             }))
             _set_session_cookie(resp, token)
             return resp
-
-        # Track 1 Â§3 â€” tutor handoff. If the intern arrived from the AI Tutor
-        # (return_to=tutor stashed at GET /login), mint an SSO token and bounce
-        # back when the 6 PM joining gate is open; otherwise keep them on the
-        # portal where the profile shows the "opens at 6 PM" tutor lock.
-        login_redirect = "/profile"
-        login_message = "Login successful."
-        login_before_joining = False
-        if session.pop("post_login_return_to", None) == "tutor":
-            tutor_next = session.pop("post_login_next", None) or "/tasks"
-            login_redirect = tutor_next
-        session.pop("post_login_next", None)  # never leak a stale target
-        # Track 2 Â§3 acquisition funnel: a logged-out Apply-Now stashed the post
-        # URL in session['next']; resume there (only when not doing a tutor
-        # handoff, i.e. still the default profile redirect). Relative-path only.
-        pending_next = _safe_portal_next(session.pop("next", None))
-        if pending_next and login_redirect == "/profile":
-            login_redirect = pending_next
+        else:
+            login_redirect = "/profile"
+            if session.pop("post_login_return_to", None) == "tutor":
+                tutor_next = session.pop("post_login_next", None) or "/tasks"
+                login_redirect = tutor_next
+            session.pop("post_login_next", None)  # never leak a stale target
         login_payload = {"status": "success", "message": login_message, "redirect": login_redirect}
         if login_before_joining:
             login_payload["before_joining"] = True
@@ -11025,6 +11180,16 @@ def _render_listings(post_type, location_page=False, city=None, city_slug=None, 
             if stipend_override == "paid" or request.args.get("stipend") == "paid":
                 lead_where += " AND (LOWER(Stipend) NOT LIKE '%unpaid%' AND Stipend IS NOT NULL AND Stipend != '')"
             try:
+                # Real pitch/comment counts from database (never contradict empty discussion)
+                comments_table = "scraped_internship_comments" if post_type == "internship" else "scraped_job_comments"
+                lead_comment_counts = {}
+                try:
+                    c_rows = conn.execute(f"SELECT job_id, COUNT(*) FROM {comments_table} GROUP BY job_id").fetchall()
+                    for cr in c_rows:
+                        lead_comment_counts[cr[0]] = cr[1]
+                except Exception:
+                    pass
+
                 lead_rows = conn.execute(
                     f"SELECT id, Role, Company, Domain, Location, Work_Model, Region, City, "  # nosec B608
                     f"Stipend, Stipend_Normalized, Start_Date, End_Date, Clicks, SUBSTR(Description, 1, 1500) AS Description "
@@ -11089,7 +11254,7 @@ def _render_listings(post_type, location_page=False, city=None, city_slug=None, 
                         "pay_period": "month",
                         "published_at": d.get("Start_Date") or "",
                         "region": region_val,
-                        "applications_count": (d.get("Clicks") or 0) + (d["id"] % 9) + 2,
+                        "applications_count": lead_comment_counts.get(d["id"], 0),
                         "path": f"/{lead_path_prefix}/lead/{d['id']}/{seo_slug}",
                         "source": "lead",
                         "skills": "",
@@ -18146,7 +18311,7 @@ def internal_server_error(e):
         tone="red", icon="fa-triangle-exclamation",
         what_happened="Unexpected server error",
         why="An internal error occurred while processing your request.",
-        action="Please refresh the page in a moment. If the issue persists, contact careers@dbert.info.")
+        action="Please refresh the page in a moment. If the issue persists, contact support@dbert.in.")
 
 
 @app.after_request
@@ -18431,20 +18596,21 @@ def admin_sourcing_click(job_id):
 # Isolated from existing post/internship routes. Zero risk to existing flows.
 # ============================================================================
 
-def _ensure_scraped_comments_table(conn):
-    """Idempotent table + index creation for scraped internship comments."""
-    conn.execute("""
-        CREATE TABLE IF NOT EXISTS scraped_internship_comments (
+def _ensure_scraped_comments_table(conn, table_name="scraped_internship_comments"):
+    """Idempotent table + index creation for scraped comments."""
+    safe_table = "scraped_job_comments" if table_name == "scraped_job_comments" else "scraped_internship_comments"
+    conn.execute(f"""
+        CREATE TABLE IF NOT EXISTS {safe_table} (
             id          INTEGER PRIMARY KEY AUTOINCREMENT,
             job_id      INTEGER NOT NULL,
             intern_id   INTEGER NOT NULL,
             intern_name TEXT    NOT NULL,
             body        TEXT    NOT NULL,
-            created_at  TEXT    DEFAULT (datetime('now','localtime'))
+            created_at  TEXT    DEFAULT CURRENT_TIMESTAMP
         )
     """)
     conn.execute(
-        "CREATE INDEX IF NOT EXISTS idx_sic_job ON scraped_internship_comments(job_id)"
+        f"CREATE INDEX IF NOT EXISTS idx_{safe_table}_job ON {safe_table}(job_id)"
     )
 
 
@@ -18468,8 +18634,7 @@ def scraped_internship_detail(job_id, slug=None):
     route_prefix = "job" if is_job else "internship"
 
     with get_db() as conn:
-        if not is_job:
-            _ensure_scraped_comments_table(conn)
+        _ensure_scraped_comments_table(conn, comments_table)
         job_row = conn.execute(
             f"SELECT * FROM {target_table} WHERE id=?", (job_id,)
         ).fetchone()
@@ -18498,7 +18663,11 @@ def scraped_internship_detail(job_id, slug=None):
             d = row_to_dict(r)
             d["slug"] = _lead_seo_slug(d)
             d["path"] = f"/{route_prefix}/lead/{d['id']}/{d['slug']}"
-            d["applications_count"] = (d.get("Clicks") or 0) + (d["id"] % 9) + 2
+            try:
+                cnt_row = conn.execute(f"SELECT COUNT(*) FROM {comments_table} WHERE job_id=?", (d["id"],)).fetchone()
+                d["applications_count"] = cnt_row[0] if cnt_row else 0
+            except Exception:
+                d["applications_count"] = 0
             related_posts.append(d)
 
         # Related roles in the same city
@@ -18514,7 +18683,11 @@ def scraped_internship_detail(job_id, slug=None):
                 d = row_to_dict(r)
                 d["slug"] = _lead_seo_slug(d)
                 d["path"] = f"/{route_prefix}/lead/{d['id']}/{d['slug']}"
-                d["applications_count"] = (d.get("Clicks") or 0) + (d["id"] % 7) + 1
+                try:
+                    cnt_row = conn.execute(f"SELECT COUNT(*) FROM {comments_table} WHERE job_id=?", (d["id"],)).fetchone()
+                    d["applications_count"] = cnt_row[0] if cnt_row else 0
+                except Exception:
+                    d["applications_count"] = 0
                 city_posts.append(d)
 
     intern = current_intern()
@@ -18602,9 +18775,9 @@ def scraped_internship_detail(job_id, slug=None):
         if len(responsibilities_list) >= 5:
             break
 
-    # Views and applications metrics (realistic social proof)
+    # Views and applications metrics (authentic social proof matching discussion)
     views_count = (job.get("Clicks") or 0) * 9 + (job_id % 43) + 18
-    applied_count = (job.get("Clicks") or 0) + len(comments) + (job_id % 11) + 3
+    applied_count = len(comments)
 
     # Calculate actual duration from Start_Date and End_Date
     duration_str = "3 Months"
@@ -18720,6 +18893,9 @@ def scraped_internship_detail(job_id, slug=None):
     page_title = f"{job.get('Role')} at {job.get('Company')} — Remote Internship | DBERT"
     meta_desc = f"Apply for {job.get('Role')} at {job.get('Company')}. {job.get('Work_Model') or 'Remote'} {job.get('Domain')} internship with {stipend_display} & Certificate of Completion on DBERT."
 
+    canonical_lead_slug = slug or _lead_seo_slug(job)
+    current_path_with_apply = f"/{route_prefix}/lead/{job['id']}/{canonical_lead_slug}?apply=1"
+
     return render_template(
         "scraped_internship_detail.html",
         job=job,
@@ -18728,6 +18904,7 @@ def scraped_internship_detail(job_id, slug=None):
         intern=intern,
         is_intern=bool(intern or is_logged_in),
         is_logged_in=is_logged_in,
+        current_path_with_apply=current_path_with_apply,
         is_admin=is_admin,
         current_user=current_user,
         logged_in_url=logged_in_url,
@@ -18761,14 +18938,14 @@ def scraped_internship_detail(job_id, slug=None):
 
 @app.route("/api/lead/<int:job_id>/comment", methods=["POST"])
 def scraped_lead_comment_add(job_id):
-    """Submit a public engagement comment on a scraped internship lead.
-    Requires login. Rate-limited per IP to prevent spam."""
+    """Submit a public engagement comment or candidate application pitch on a scraped lead."""
     intern = current_intern()
     is_admin = bool(session.get("admin") or session.get("admin_id") or session.get("staff_id"))
     current_user = get_current_user()
     if current_user and current_user.get("role") in ("admin", "superadmin"):
         is_admin = True
 
+    data = request.get_json(force=True) or {}
     if not intern:
         if current_user:
             with get_db() as conn:
@@ -18796,37 +18973,40 @@ def scraped_lead_comment_add(job_id):
                 "name": (session.get("staff_name") or session.get("staff_email") or "Admin").split("@")[0].title(),
                 "email": session.get("staff_email", "admin@dbert.in")
             }
-    if not intern:
-        return jsonify({"status": "error", "message": "Please sign in to comment."}), 401
+        else:
+            return jsonify({"status": "error", "message": "Please sign in or create an account to submit your application pitch."}), 401
 
     ip = get_client_ip()
     allowed, ra = rate_check(f"lead-comment:ip:{ip}", 10, 300)
     if not allowed:
         return too_many(ra)
 
-    data = request.get_json(force=True)
     body = clean_text(data.get("body") or "").strip()
     if len(body) < 10:
-        return jsonify({"status": "error", "message": "Please write at least 10 characters."}), 400
+        return jsonify({"status": "error", "message": "Please write at least 10 characters explaining your fit."}), 400
     if len(body) > 2000:
         return jsonify({"status": "error", "message": "Comment too long (max 2000 chars)."}), 400
 
     with get_db() as conn:
-        _ensure_scraped_comments_table(conn)
-        # Verify job exists
-        job_row = conn.execute(
-            "SELECT id FROM scraped_internships WHERE id=?", (job_id,)
-        ).fetchone()
+        comments_table = "scraped_internship_comments"
+        job_row = conn.execute("SELECT id FROM scraped_internships WHERE id=?", (job_id,)).fetchone()
         if not job_row:
-            return jsonify({"status": "error", "message": "Job not found."}), 404
+            job_row = conn.execute("SELECT id FROM scraped_jobs WHERE id=?", (job_id,)).fetchone()
+            if job_row:
+                comments_table = "scraped_job_comments"
+            else:
+                return jsonify({"status": "error", "message": "Job not found."}), 404
+
+        _ensure_scraped_comments_table(conn, comments_table)
 
         # Idempotency / Debounce guard: check if the exact same comment was submitted in the last 30 seconds
+        cutoff_dt = (datetime.now() - timedelta(seconds=30)).strftime("%Y-%m-%d %H:%M:%S")
         dup_row = conn.execute(
-            """SELECT id, intern_name, body, created_at FROM scraped_internship_comments
+            f"""SELECT id, intern_name, body, created_at FROM {comments_table}
                WHERE job_id=? AND body=? AND (intern_id=? OR intern_name=?)
-               AND created_at >= datetime('now', 'localtime', '-30 seconds')
+               AND created_at >= ?
                ORDER BY id DESC LIMIT 1""",
-            (job_id, body, intern.get("id", 0), intern.get("name", "Intern")),
+            (job_id, body, intern.get("id", 0), intern.get("name", "Intern"), cutoff_dt),
         ).fetchone()
         if dup_row:
             d_name = dup_row[1] if isinstance(dup_row, tuple) else dup_row["intern_name"]
@@ -18843,7 +19023,7 @@ def scraped_lead_comment_add(job_id):
             })
 
         conn.execute(
-            "INSERT INTO scraped_internship_comments (job_id, intern_id, intern_name, body) VALUES (?,?,?,?)",
+            f"INSERT INTO {comments_table} (job_id, intern_id, intern_name, body) VALUES (?,?,?,?)",
             (job_id, intern.get("id", 0), intern.get("name", "Intern"), body),
         )
 

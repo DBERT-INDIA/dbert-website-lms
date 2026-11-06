@@ -45,7 +45,7 @@ export default function HiringAutomationPage() {
         provider: {
           '@type': 'Organization',
           name: 'DBERT Labs Industrial Training & Venture Studio',
-          url: 'https://dbert.online'
+          url: 'https://dbert.in'
         },
         offers: {
           '@type': 'Offer',
@@ -53,7 +53,7 @@ export default function HiringAutomationPage() {
           price: '40000',
           priceCurrency: 'INR',
           description: 'Monthly SaaS licensing starting tier for technical staffing teams and venture HR squads',
-          url: 'https://dbert.online/ai-solutions/products/hiring-automation-suite'
+          url: 'https://dbert.in/ai-solutions/products/hiring-automation-suite'
         }
       },
       {

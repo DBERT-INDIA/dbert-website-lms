@@ -166,9 +166,9 @@ def run_migration():
         p_cur.execute(f'SELECT count(*) FROM "{SCHEMA}"."{table}"')
         pg_count_before = p_cur.fetchone()[0]
 
-        # If PG already has equal or more rows (e.g. applications, intern_accounts), check if we need to load or refresh
-        # For scraped_internships and scraped_jobs, PG has 0 rows, so they will be migrated!
-        if pg_count_before >= sqlite_count and sqlite_count > 0:
+        # Force refresh for tables that need re-population (e.g. case mapping fixes)
+        force_refresh_tables = ("scraped_internships", "scraped_jobs")
+        if table not in force_refresh_tables and pg_count_before >= sqlite_count and sqlite_count > 0:
             summary.append((table, sqlite_count, pg_count_before, "ALREADY_POPULATED"))
             print(f"  [✓] {table}: {pg_count_before} rows already in PostgreSQL (SQLite has {sqlite_count}). Keeping PG.")
             continue
@@ -187,21 +187,27 @@ def run_migration():
             "SELECT column_name FROM information_schema.columns WHERE table_schema=%s AND table_name=%s",
             (SCHEMA, table)
         )
-        p_cols = set(r[0] for r in p_cur.fetchall())
+        p_col_names_raw = [r[0] for r in p_cur.fetchall()]
+        p_cols = set(p_col_names_raw)
+        p_col_map = {c.lower(): c for c in p_col_names_raw}
 
-        target_cols = [c for c in s_cols if c in p_cols]
-        if not target_cols:
+        # Case-insensitive column matching
+        matched_cols = [(sc, p_col_map[sc.lower()]) for sc in s_cols if sc.lower() in p_col_map]
+        if not matched_cols:
             print(f"  [!] No matching columns for {table}")
             continue
 
-        col_str = ", ".join([f'"{c}"' for c in target_cols])
-        val_placeholders = ", ".join(["%s"] * len(target_cols))
+        s_col_names = [mc[0] for mc in matched_cols]
+        p_col_names = [mc[1] for mc in matched_cols]
+
+        col_str = ", ".join([f'"{c}"' for c in p_col_names])
+        val_placeholders = ", ".join(["%s"] * len(p_col_names))
         insert_query = f'INSERT INTO "{SCHEMA}"."{table}" ({col_str}) VALUES ({val_placeholders}) ON CONFLICT DO NOTHING;'
 
-        batch_values = [tuple(row[c] for c in target_cols) for row in rows]
+        batch_values = [tuple(row[c] for c in s_col_names) for row in rows]
 
-        # Truncate if PG had fewer rows or was empty
-        if pg_count_before == 0 or table in ("scraped_internships", "scraped_jobs", "attendance", "cvs", "course_chapters", "course_subtopics", "intern_articles"):
+        # Truncate if PG had fewer rows or was empty or explicitly refreshed
+        if pg_count_before == 0 or table in force_refresh_tables or table in ("attendance", "cvs", "course_chapters", "course_subtopics", "intern_articles"):
             try:
                 p_cur.execute(f'TRUNCATE TABLE "{SCHEMA}"."{table}" CASCADE;')
                 p_conn.commit()

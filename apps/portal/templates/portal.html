@@ -36,8 +36,8 @@
       <a class="nav-item" href="/tasks"><i class="fas fa-tasks"></i> Micro-Tasks</a>
       <a class="nav-item" href="/mentors/slots"><i class="fas fa-user-tie"></i> Book Mentor</a>
       <div class="nav-item" data-tab="editprofile" data-act-click="switchTab" data-arg-click='["editprofile"]'><i class="fas fa-user-pen"></i> Edit Profile</div>
-      <div class="nav-item" data-tab="password" data-act-click="switchTab" data-arg-click='["password"]'><i class="fas fa-key"></i> Change Password</div>
-      <div class="nav-item" data-tab="applyanother" data-act-click="switchTab" data-arg-click='["applyanother"]' id="navApplyAnother"><i class="fas fa-layer-group"></i> Apply to Another Domain</div>
+      <div class="nav-item" data-act-click="openPasswordModal"><i class="fas fa-key"></i> Change Password</div>
+      <div class="nav-item" data-act-click="openApplyDomainModal" id="navApplyAnother"><i class="fas fa-layer-group"></i> Apply to Another Domain</div>
       <div class="nav-item" data-tab="myapplications" data-act-click="switchTab" data-arg-click='["myapplications"]'><i class="fas fa-briefcase"></i> My Applications</div>
       <!-- T11: CV builder moved out of the homepage and into its own tab-strip entry. -->
       <a class="nav-item" href="/portal/cv"><i class="fas fa-file-lines"></i> My CV</a>
@@ -54,7 +54,7 @@
     </nav>
     <div class="sidebar-footer">
       <span class="intern-pill" id="internName">Loading...</span>
-      <button class="btn-logout-sb" data-act-click="doLogout"><i class="fas fa-sign-out-alt"></i> Logout</button>
+      <button class="btn-logout-sb" data-act-click="confirmLogout"><i class="fas fa-sign-out-alt"></i> Logout</button>
     </div>
   </aside>
   <div class="scrim" id="scrim" data-act-click="closeSidebar"></div>
@@ -669,44 +669,9 @@
         </div>
       </div>
 
-      <!-- ══════════════ CHANGE PASSWORD ══════════════ -->
-      <div class="panel" id="panel-password">
-        <div class="panel-head"><h1>Change Password</h1><p>Enter your current password and choose a new one (min 8 characters).</p></div>
-        <div class="glass-card" style="max-width:520px;">
-          <div class="form-grid">
-            <div class="form-group full"><label class="field-label" for="cp_current">Current Password</label><input type="password" id="cp_current" class="field-input" placeholder="Current password" autocomplete="current-password"/></div>
-            <div class="form-group full"><label class="field-label" for="cp_new">New Password</label><input type="password" id="cp_new" class="field-input" placeholder="At least 8 characters" autocomplete="new-password"/></div>
-            <div class="form-group full"><label class="field-label" for="cp_confirm">Confirm New Password</label><input type="password" id="cp_confirm" class="field-input" placeholder="Re-enter new password" autocomplete="new-password"/></div>
-          </div>
-          <div class="form-error" id="cpError" role="alert"><i class="fa fa-circle-exclamation"></i><span id="cpErrorText"></span></div>
-          <button class="btn-primary" id="cpBtn" data-act-click="changePassword" style="margin-top:14px;width:100%;justify-content:center;">
-            <span class="btn-lbl"><i class="fas fa-shield-halved"></i> &nbsp;Update Password</span><span class="btn-spinner"></span>
-          </button>
-        </div>
-      </div>
-
-      <!-- ══════════════ APPLY TO ANOTHER DOMAIN ══════════════ -->
-      <div class="panel" id="panel-applyanother">
-        <div class="panel-head"><h1>Apply to Another Domain</h1><p>You can apply to up to 3 domains in total. Your personal &amp; academic details are reused from your profile.</p></div>
-        <div class="glass-card" id="applyAnotherCard" style="max-width:560px;">
-          <div class="form-grid">
-            <div class="form-group full"><label class="field-label" for="ad_domain">Domain *</label><select id="ad_domain" class="field-select"><option value="">-- Select --</option></select></div>
-            <div class="form-group full"><label class="field-label" for="ad_why">Why this domain? * <span id="adWhyCount" style="float:right;font-size:11px;color:var(--amber);">0 / 80 min</span></label><textarea id="ad_why" class="field-textarea" rows="4" placeholder="Your motivation for this domain — min 80 characters" data-act-input="updateAdWhy"></textarea></div>
-            <div class="form-group full"><label class="field-label" for="ad_portfolio">Portfolio / GitHub (optional)</label><input type="url" id="ad_portfolio" class="field-input" placeholder="https://github.com/yourprofile"/></div>
-          </div>
-          <input type="text" name="company_website" id="ad_company_website" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true" aria-label="Leave this field blank"/>
-
-          <input type="hidden" id="ad_ts"/>
-          <div class="form-error" id="adError" role="alert"><i class="fa fa-circle-exclamation"></i><span id="adErrorText"></span></div>
-          <button class="btn-primary" id="adBtn" data-act-click="doApplyAnother" style="margin-top:14px;width:100%;justify-content:center;">
-            <span class="btn-lbl"><i class="fas fa-paper-plane"></i> &nbsp;Submit Application</span><span class="btn-spinner"></span>
-          </button>
-        </div>
-        <div class="glass-card hidden" id="applyAnotherFull" style="max-width:560px;text-align:center;color:var(--tx-muted);">
-          <div style="font-size:30px;margin-bottom:10px;">&#9989;</div>
-          <p>You've reached the maximum of 3 domain applications. Good luck!</p>
-        </div>
-      </div>
+      <!-- Compatibility stubs for password & applyanother panels (now accessed via modal dialogs) -->
+      <div class="panel" id="panel-password" style="display:none;" aria-hidden="true"></div>
+      <div class="panel" id="panel-applyanother" style="display:none;" aria-hidden="true"></div>
 
       <!-- ══════════════ MY APPLICATIONS (Track 2 §B / UAT #4) ══════════════ -->
       <div class="panel" id="panel-myapplications">
@@ -798,7 +763,7 @@
           <div class="pitch-li"><i class="fas fa-check-circle"></i><span>No waiting to be shortlisted &mdash; skip the selection queue entirely.</span></div>
           <div style="margin-top:18px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
             <a class="btn-primary" href="/program" data-act-click="dbertGA" data-arg-click='["paid_program_cta_click", {"source":"portal_paid_tab"}]' style="justify-content:center;"><i class="fas fa-rocket"></i> &nbsp;Explore &amp; Enrol in the Paid Program</a>
-            <span style="color:var(--tx-muted);font-size:13px;">One-time fee: <strong style="color:var(--gold);" id="paidAmt">&#8377;1599</strong></span>
+            <span style="color:var(--tx-muted);font-size:13px;">One-time fee: <strong style="color:var(--gold);" id="paidAmt">&#8377;1999</strong></span>
           </div>
         </div>
       </div>
@@ -946,11 +911,11 @@
           <p id="peFeedbackText" style="font-size:12.5px;color:var(--tx-head);margin:0;"></p>
         </div>
         <div style="margin-bottom:16px;">
-          <label style="display:block;font-size:13px;font-weight:700;color:var(--tx-head);margin-bottom:6px;">Article Title *</label>
+          <label for="peTitle" style="display:block;font-size:13px;font-weight:700;color:var(--tx-head);margin-bottom:6px;">Article Title *</label>
           <input type="text" id="peTitle" class="field-input" placeholder="e.g., Building Scalable Microservices with FastAPI" style="width:100%;background:rgba(255,255,255,0.06);color:var(--tx-head);border:1px solid var(--border);border-radius:6px;padding:10px 12px;font-size:14px;"/>
         </div>
         <div style="margin-bottom:16px;">
-          <label style="display:block;font-size:13px;font-weight:700;color:var(--tx-head);margin-bottom:6px;">Article Markdown Content *</label>
+          <label for="peMarkdown" style="display:block;font-size:13px;font-weight:700;color:var(--tx-head);margin-bottom:6px;">Article Markdown Content *</label>
           <textarea id="peMarkdown" rows="12" class="field-textarea" placeholder="Write your technical article using Markdown..." style="width:100%;background:rgba(255,255,255,0.06);color:var(--tx-head);border:1px solid var(--border);border-radius:6px;padding:12px;font-size:13.5px;font-family:monospace;line-height:1.6;resize:vertical;"></textarea>
         </div>
         <div id="peStatusMsg" style="font-size:13px;font-weight:600;min-height:20px;"></div>
@@ -959,6 +924,70 @@
         <button type="button" class="btn btn-ghost" data-act-click="closeModal" data-arg-click='["pubEditorModal"]'>Cancel</button>
         <button type="button" class="btn btn-ghost pe-save-btn" data-act-click="saveArticleDraft" data-arg-click='["draft"]' style="border:1px solid var(--border);"><i class="fas fa-save"></i> &nbsp;Save Draft</button>
         <button type="button" class="btn btn-primary pe-save-btn" data-act-click="saveArticleDraft" data-arg-click='["submit"]'><i class="fas fa-paper-plane"></i> &nbsp;Submit for Review</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ CHANGE PASSWORD MODAL ════ -->
+  <div id="passwordModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="cpModalTitle" data-act-click="closeModalOnBackdrop">
+    <div class="modal-box" style="max-width:520px;padding:26px 28px;position:relative;">
+      <button type="button" class="dbert-modal-close" data-act-click="closePasswordModal" aria-label="Close dialog" style="position:absolute;top:18px;right:18px;border:none;background:none;font-size:22px;color:var(--tx-muted);cursor:pointer;line-height:1;">&times;</button>
+      <div style="margin-bottom:18px;padding-right:24px;">
+        <h2 id="cpModalTitle" style="font-size:19px;font-weight:800;color:var(--tx-head);margin:0 0 4px;">Change Password</h2>
+        <p style="font-size:12.5px;color:var(--tx-muted);margin:0;">Enter your current password and choose a new one (min 8 characters).</p>
+      </div>
+      <div class="form-grid">
+        <div class="form-group full"><label class="field-label" for="cp_current">Current Password</label><input type="password" id="cp_current" class="field-input" placeholder="Current password" autocomplete="current-password"/></div>
+        <div class="form-group full"><label class="field-label" for="cp_new">New Password</label><input type="password" id="cp_new" class="field-input" placeholder="At least 8 characters" autocomplete="new-password"/></div>
+        <div class="form-group full"><label class="field-label" for="cp_confirm">Confirm New Password</label><input type="password" id="cp_confirm" class="field-input" placeholder="Re-enter new password" autocomplete="new-password"/></div>
+      </div>
+      <div class="form-error" id="cpError" role="alert"><i class="fa fa-circle-exclamation"></i><span id="cpErrorText"></span></div>
+      <button class="btn-primary" id="cpBtn" data-act-click="changePassword" style="margin-top:16px;width:100%;justify-content:center;">
+        <span class="btn-lbl"><i class="fas fa-shield-halved"></i> &nbsp;Update Password</span><span class="btn-spinner"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ════ APPLY TO ANOTHER DOMAIN MODAL ════ -->
+  <div id="applyDomainModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="adModalTitle" data-act-click="closeModalOnBackdrop">
+    <div class="modal-box" style="max-width:560px;padding:26px 28px;position:relative;">
+      <button type="button" class="dbert-modal-close" data-act-click="closeApplyDomainModal" aria-label="Close dialog" style="position:absolute;top:18px;right:18px;border:none;background:none;font-size:22px;color:var(--tx-muted);cursor:pointer;line-height:1;">&times;</button>
+      <div style="margin-bottom:18px;padding-right:24px;">
+        <h2 id="adModalTitle" style="font-size:19px;font-weight:800;color:var(--tx-head);margin:0 0 4px;">Apply to Another Domain</h2>
+        <p style="font-size:12.5px;color:var(--tx-muted);margin:0;">You can apply to up to 3 domains in total. Your personal &amp; academic details are reused from your profile.</p>
+      </div>
+      <div id="applyAnotherCard">
+        <div class="form-grid">
+          <div class="form-group full"><label class="field-label" for="ad_domain">Domain *</label><select id="ad_domain" class="field-select"><option value="">-- Select --</option></select></div>
+          <div class="form-group full"><label class="field-label" for="ad_why">Why this domain? * <span id="adWhyCount" style="float:right;font-size:11px;color:var(--amber);">0 / 80 min</span></label><textarea id="ad_why" class="field-textarea" rows="4" placeholder="Your motivation for this domain — min 80 characters" data-act-input="updateAdWhy"></textarea></div>
+          <div class="form-group full"><label class="field-label" for="ad_portfolio">Portfolio / GitHub (optional)</label><input type="url" id="ad_portfolio" class="field-input" placeholder="https://github.com/yourprofile"/></div>
+        </div>
+        <input type="text" name="company_website" id="ad_company_website" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true" aria-label="Leave this field blank"/>
+        <input type="hidden" id="ad_ts"/>
+        <div class="form-error" id="adError" role="alert"><i class="fa fa-circle-exclamation"></i><span id="adErrorText"></span></div>
+        <button class="btn-primary" id="adBtn" data-act-click="doApplyAnother" style="margin-top:16px;width:100%;justify-content:center;">
+          <span class="btn-lbl"><i class="fas fa-paper-plane"></i> &nbsp;Submit Application</span><span class="btn-spinner"></span>
+        </button>
+      </div>
+      <div class="hidden" id="applyAnotherFull" style="text-align:center;color:var(--tx-muted);padding:24px 0;">
+        <div style="font-size:32px;margin-bottom:10px;">&#9989;</div>
+        <p style="font-size:14px;color:var(--tx-body);margin:0;">You've reached the maximum of 3 domain applications. Good luck!</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ LOGOUT CONFIRMATION MODAL ════ -->
+  <div id="logoutConfirmModal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="logoutModalTitle" data-act-click="closeModalOnBackdrop">
+    <div class="modal-box" style="max-width:440px;padding:26px 28px;text-align:center;position:relative;">
+      <button type="button" class="dbert-modal-close" data-act-click="closeLogoutModal" aria-label="Close dialog" style="position:absolute;top:18px;right:18px;border:none;background:none;font-size:22px;color:var(--tx-muted);cursor:pointer;line-height:1;">&times;</button>
+      <div style="width:54px;height:54px;border-radius:50%;background:rgba(239,68,68,0.12);color:#ef4444;display:inline-flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:16px;">
+        <i class="fas fa-right-from-bracket"></i>
+      </div>
+      <h2 id="logoutModalTitle" style="font-size:18px;font-weight:800;color:var(--tx-head);margin:0 0 8px;">Sign Out Confirmation</h2>
+      <p style="font-size:13.5px;color:var(--tx-muted);margin:0 0 24px;line-height:1.5;">Are you sure you want to end your session and sign out of the LMS portal?</p>
+      <div style="display:flex;gap:12px;justify-content:center;">
+        <button type="button" class="btn btn-ghost" data-act-click="closeLogoutModal" style="padding:10px 20px;border:1px solid var(--border);border-radius:8px;font-weight:600;cursor:pointer;">Cancel</button>
+        <button type="button" class="btn btn-primary" data-act-click="doLogout" style="padding:10px 20px;background:#ef4444;border-color:#ef4444;border-radius:8px;color:#fff;font-weight:600;cursor:pointer;">Yes, Sign Out</button>
       </div>
     </div>
   </div>
@@ -1779,6 +1808,8 @@
   function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('scrim').classList.toggle('active');}
   function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('scrim').classList.remove('active');}
   function switchTab(name){
+    if(name==='password'){ openPasswordModal(); return; }
+    if(name==='applyanother'){ openApplyDomainModal(); return; }
     if(name==='publications') loadPublications();
     document.querySelectorAll('.nav-item').forEach(el=>el.classList.toggle('active',el.dataset.tab===name));
     document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
@@ -3474,7 +3505,7 @@
     try{
       const res=await fetch('/apply',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'include',body:JSON.stringify({name:_intern.name,email:_intern.email,phone:_intern.phone,city:_intern.city,college:_intern.college,course:_intern.course,semester:_intern.semester,year_of_passing:_intern.year_of_passing,domain,why_join:why,portfolio,is_reapply:false,company_website:document.getElementById('ad_company_website').value,_ts:document.getElementById('ad_ts').value})});
       const data=await res.json();
-      if(data.status==='success'){showToast('Application submitted for '+domain+'!','green');setTimeout(()=>window.location.reload(),1500);}
+      if(data.status==='success'){showToast('Application submitted for '+domain+'!','green');closeApplyDomainModal();setTimeout(()=>window.location.reload(),1500);}
       else{showAdError(data.message||'Submission failed.');btn.disabled=false;btn.classList.remove('loading');}
     }catch(e){showAdError('Network error. Please try again.');btn.disabled=false;btn.classList.remove('loading');}
   }
@@ -3509,7 +3540,7 @@
     try{
       const res=await fetch('/intern/change-password',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'include',body:JSON.stringify({current_password:current,new_password:next,confirm_password:confirm})});
       const data=await res.json();
-      if(data.status==='success'){['cp_current','cp_new','cp_confirm'].forEach(id=>document.getElementById(id).value='');showToast('Password changed successfully.','green');}
+      if(data.status==='success'){['cp_current','cp_new','cp_confirm'].forEach(id=>document.getElementById(id).value='');showToast('Password changed successfully.','green');closePasswordModal();}
       else{showCpError(data.message||'Could not change password.');}
     }catch(e){showCpError('Network error. Please try again.');}
     btn.disabled=false;btn.classList.remove('loading');
@@ -3866,6 +3897,146 @@
   }
 
   async function doLogout(){try{await fetch('/logout',{method:'POST',credentials:'include'});}catch(e){}window.location.href='/';}
+
+  /* ════ MODAL LOGIC & DIALOG HELPERS ════ */
+  let _lastActiveElement = null;
+
+  function openPasswordModal(){
+    _lastActiveElement = document.activeElement;
+    const el = document.getElementById('passwordModal');
+    if(!el) return;
+    el.classList.remove('hidden');
+    const inp = document.getElementById('cp_current');
+    if(inp) inp.focus();
+    closeSidebar();
+  }
+  function closePasswordModal(){
+    const el = document.getElementById('passwordModal');
+    if(!el) return;
+    el.classList.add('hidden');
+    if(_lastActiveElement && typeof _lastActiveElement.focus === 'function'){
+      _lastActiveElement.focus();
+    }
+  }
+
+  function openApplyDomainModal(){
+    _lastActiveElement = document.activeElement;
+    if(typeof populateApplyAnother === 'function') populateApplyAnother();
+    const el = document.getElementById('applyDomainModal');
+    if(!el) return;
+    el.classList.remove('hidden');
+    const sel = document.getElementById('ad_domain');
+    if(sel) sel.focus();
+    closeSidebar();
+  }
+  function closeApplyDomainModal(){
+    const el = document.getElementById('applyDomainModal');
+    if(!el) return;
+    el.classList.add('hidden');
+    if(_lastActiveElement && typeof _lastActiveElement.focus === 'function'){
+      _lastActiveElement.focus();
+    }
+  }
+
+  function confirmLogout(){
+    _lastActiveElement = document.activeElement;
+    const el = document.getElementById('logoutConfirmModal');
+    if(!el) return;
+    el.classList.remove('hidden');
+    const cancelBtn = el.querySelector('.btn-ghost');
+    if(cancelBtn) cancelBtn.focus();
+    closeSidebar();
+  }
+  function closeLogoutModal(){
+    const el = document.getElementById('logoutConfirmModal');
+    if(!el) return;
+    el.classList.add('hidden');
+    if(_lastActiveElement && typeof _lastActiveElement.focus === 'function'){
+      _lastActiveElement.focus();
+    }
+  }
+
+  function closeModalOnBackdrop(e){
+    if(e && e.target && e.target.classList.contains('modal-overlay')){
+      e.target.classList.add('hidden');
+      if(_lastActiveElement && typeof _lastActiveElement.focus === 'function'){
+        _lastActiveElement.focus();
+      }
+    }
+  }
+
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape'){
+      const pw = document.getElementById('passwordModal');
+      if(pw && !pw.classList.contains('hidden')) closePasswordModal();
+      const ad = document.getElementById('applyDomainModal');
+      if(ad && !ad.classList.contains('hidden')) closeApplyDomainModal();
+      const lg = document.getElementById('logoutConfirmModal');
+      if(lg && !lg.classList.contains('hidden')) closeLogoutModal();
+    }
+  });
+
+  function dbertGA(evt, data){
+    if(typeof window.gtag === 'function'){
+      try{ window.gtag('event', evt, data||{}); }catch(e){}
+    }
+  }
+
+  // Window exports for csp-actions.js delegated event handling
+  const _actionsToExport = {
+    openPasswordModal,
+    closePasswordModal,
+    openApplyDomainModal,
+    closeApplyDomainModal,
+    confirmLogout,
+    closeLogoutModal,
+    closeModalOnBackdrop,
+    closeModal,
+    toggleSidebar,
+    closeSidebar,
+    switchTab,
+    doLogout,
+    changePassword,
+    doApplyAnother,
+    updateAdWhy,
+    saveProfile,
+    doReapply,
+    updateRaWhy,
+    selectJoining,
+    submitEnrollment,
+    submitJobDeposit,
+    onJobDepositFileChange,
+    onMondaySelectChange,
+    onWizardFileChange,
+    triggerWizardFileInput,
+    wizardClose,
+    wizardDismiss,
+    wizardPrevStep,
+    wizardSelectCard,
+    wizardSubmitCurrentStep,
+    checkWizardStatus,
+    copyUPI,
+    copyUpiWizard,
+    dbertGA,
+    enrollCohort,
+    lbShow,
+    manualPingAttendance,
+    msgBackToInbox,
+    msgSend,
+    msgStartNew,
+    notifReadAll,
+    onFileChange,
+    openArticleEditor,
+    openMsgThread,
+    saveArticleDraft,
+    selectCourseLearning,
+    calNav
+  };
+  for(const [k, v] of Object.entries(_actionsToExport)){
+    if(typeof v === 'function'){
+      window[k] = v;
+    }
+  }
 
   document.addEventListener('DOMContentLoaded',loadPortal);
   </script>

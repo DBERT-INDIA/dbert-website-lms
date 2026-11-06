@@ -44,7 +44,29 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 {# ---- The single stylesheet ---- #}
-<link rel="stylesheet" href="/static/css/dbert-theme.css?v=20261001v2">
+<link rel="stylesheet" href="/static/css/dbert-theme.css?v=20261104v5">
+
+{# ---- Modal Initial State Style (CSP Nonce Enforced) ---- #}
+<style nonce="{{ csp_nonce() }}">
+  .dbert-modal-overlay,
+  .modal,
+  #forgotOverlay {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+  .dbert-modal-overlay.active,
+  .dbert-modal-overlay.open,
+  .modal.active,
+  .modal.open,
+  #forgotOverlay.active {
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+  }
+</style>
 
 {# ---- Modern UI Stack: Lenis Smooth Scroll + GSAP + React-Bits Interactions ---- #}
 <script src="/static/js/lenis.min.js"></script>

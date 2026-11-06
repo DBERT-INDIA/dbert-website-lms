@@ -149,7 +149,7 @@ async def admin_login(req: LoginRequest):
     if not (username_match and password_match):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid admin credentials")
 
-    token_data = {"sub": "admin", "email": f"{settings.ADMIN_USERNAME}@dbert.online", "role": "admin", "name": "DBERT Administrator"}
+    token_data = {"sub": "admin", "email": f"{settings.ADMIN_USERNAME}@dbert.in", "role": "admin", "name": "DBERT Administrator"}
     access_token = create_access_token(token_data)
     refresh_token = create_refresh_token(token_data)
 
@@ -157,7 +157,7 @@ async def admin_login(req: LoginRequest):
         access_token=access_token,
         refresh_token=refresh_token,
         expires_in=settings.ACCESS_TOKEN_TTL,
-        user={"id": "admin", "email": f"{settings.ADMIN_USERNAME}@dbert.online", "name": "DBERT Administrator", "role": "admin"}
+        user={"id": "admin", "email": f"{settings.ADMIN_USERNAME}@dbert.in", "name": "DBERT Administrator", "role": "admin"}
     )
 
 @router.post("/refresh", response_model=TokenResponse, summary="Rotate and Refresh JWT Tokens")

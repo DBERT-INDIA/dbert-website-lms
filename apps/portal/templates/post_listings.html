@@ -515,6 +515,164 @@
       border: 1px solid rgba(200,153,69,0.45) !important;
       font-weight: 700 !important;
     }
+
+    /* Enhanced SEO Silo Matrix & Cross-Linking Component */
+    .seo-silo-matrix {
+      margin-top: 48px;
+      padding: 32px 28px;
+      background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
+      border: 1.5px solid #E2E8F0;
+      border-radius: 20px;
+      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
+      box-sizing: border-box;
+    }
+    .silo-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 24px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid #E2E8F0;
+    }
+    .silo-icon-wrap {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+      color: #E2B96F;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+      flex-shrink: 0;
+    }
+    .silo-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: #0F172A;
+      margin: 0;
+      letter-spacing: -0.02em;
+      font-family: var(--f-display, 'Plus Jakarta Sans', sans-serif);
+      line-height: 1.25;
+    }
+    .silo-sub {
+      font-size: 13.5px;
+      color: #64748B;
+      margin: 3px 0 0 0;
+      line-height: 1.4;
+    }
+    .silo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    @media (max-width: 960px) {
+      .silo-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      .seo-silo-matrix {
+        padding: 22px 18px;
+      }
+    }
+    .silo-card {
+      background: #FFFFFF;
+      border: 1.5px solid #E2E8F0;
+      border-radius: 16px;
+      padding: 18px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
+      transition: all 0.2s ease;
+    }
+    .silo-card:hover {
+      border-color: #CBD5E1;
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+    }
+    .silo-card-hd {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #F1F5F9;
+      margin-bottom: 2px;
+    }
+    .silo-card-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12.5px;
+      font-weight: 800;
+      color: #0F172A;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .silo-card-title i {
+      color: #C89945;
+      font-size: 14px;
+    }
+    .silo-links {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .silo-link-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 9px 12px;
+      border-radius: 10px;
+      text-decoration: none;
+      background: #F8FAFC;
+      border: 1px solid #F1F5F9;
+      color: #1E293B;
+      font-size: 13.5px;
+      font-weight: 600;
+      transition: all 0.15s ease;
+    }
+    .silo-link-item:hover {
+      background: #EFF6FF;
+      border-color: #BFDBFE;
+      color: #1D4ED8;
+      transform: translateX(3px);
+    }
+    .silo-link-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+    .silo-link-text {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .silo-badge-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+    .silo-badge-track { background: #EEF2FF; color: #4F46E5; }
+    .silo-badge-city { background: #F0FDF4; color: #16A34A; }
+    .silo-badge-intent { background: #FEF3C7; color: #D97706; }
+    .silo-link-arrow {
+      font-size: 11px;
+      color: #94A3B8;
+      transition: transform 0.15s ease, color 0.15s ease;
+      flex-shrink: 0;
+      margin-left: 8px;
+    }
+    .silo-link-item:hover .silo-link-arrow {
+      color: #1D4ED8;
+      transform: translateX(2px);
+    }
   </style>
 </head>
 <body class="public">
@@ -603,8 +761,8 @@
             Enrolled Track: <strong style="color:#0F172A;">{{ intern_domain }}</strong>
           </div>
           {% endif %}
-          <label style="display:flex; align-items:center; gap:8px; font-size:12px; font-weight:600; color:#334155; cursor:pointer; margin:0;">
-            <input type="checkbox" id="toggleHideApplied" {% if hide_applied %}checked{% endif %} style="cursor:pointer; accent-color:var(--brand,#2563EB);">
+          <label for="toggleHideApplied" style="display:flex; align-items:center; gap:8px; font-size:12px; font-weight:600; color:#334155; cursor:pointer; margin:0;">
+            <input type="checkbox" id="toggleHideApplied" aria-label="Hide applied roles" {% if hide_applied %}checked{% endif %} style="cursor:pointer; accent-color:var(--brand,#2563EB);">
             <span>Hide applied roles</span>
             {% if applied_total %}<span class="badge" style="font-size:10px; background:#E2E8F0; padding:1px 6px; border-radius:10px; color:#475569;">{{ applied_total }}</span>{% endif %}
           </label>
@@ -799,7 +957,11 @@
               {% endif %}
               <div class="apply-row" style="display:flex; justify-content:space-between; align-items:center; width:100%; margin-top:8px;">
                 <span style="font-size:12px; color:var(--tx-muted); font-weight:600; display:inline-flex; align-items:center; gap:5px;">
-                  <i class="fas fa-users" style="color:#C89945;"></i> {{ p.applications_count or 0 }} application{{ 's' if (p.applications_count or 0) != 1 else '' }} received
+                  {% if p.applications_count and p.applications_count > 0 %}
+                    <i class="fas fa-users" style="color:#C89945;"></i> {{ p.applications_count }} application{{ 's' if p.applications_count != 1 else '' }} received
+                  {% else %}
+                    <i class="fas fa-sparkles" style="color:#10B981;"></i> Be first to apply
+                  {% endif %}
                 </span>
                 <span style="display:inline-flex; align-items:center; gap:5px; font-weight:700;">View &amp; apply <i class="fas fa-arrow-right"></i></span>
               </div>
@@ -862,38 +1024,128 @@
         </nav>
         {% endif %}
 
-        <!-- SEO Dynamic Silo Matrix & Cross-Linking -->
-        <section class="seo-silo-matrix" style="margin-top:40px; padding:28px 24px; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:14px;">
-          <h3 style="font-size:16px; font-weight:800; color:#0F172A; margin:0 0 16px 0; font-family:var(--f-display, 'Plus Jakarta Sans', sans-serif);">
-            Explore {{ label }} by Tech Track &amp; Hub Cities
-          </h3>
-          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:20px;">
-            <div>
-              <span style="font-size:12px; font-weight:800; text-transform:uppercase; color:#64748B; letter-spacing:0.04em; display:block; margin-bottom:8px;">Specialized Tracks</span>
-              <ul style="list-style:none; padding:0; margin:0; font-size:13px; line-height:1.9;">
-                <li><a href="{{ base_path }}/ai-agent-development" style="color:#2563EB; text-decoration:none;">AI Agent Development {{ label }}</a></li>
-                <li><a href="{{ base_path }}/full-stack-development" style="color:#2563EB; text-decoration:none;">Full Stack Development {{ label }}</a></li>
-                <li><a href="{{ base_path }}/data-analyst" style="color:#2563EB; text-decoration:none;">Data Analyst {{ label }}</a></li>
-                <li><a href="{{ base_path }}/python-automation" style="color:#2563EB; text-decoration:none;">Python Automation {{ label }}</a></li>
-              </ul>
+        <!-- SEO Dynamic Silo Matrix & Cross-Linking Component -->
+        <section class="seo-silo-matrix" aria-label="Explore internships by tech tracks and locations">
+          <div class="silo-header">
+            <div class="silo-icon-wrap">
+              <i class="fas fa-compass"></i>
             </div>
             <div>
-              <span style="font-size:12px; font-weight:800; text-transform:uppercase; color:#64748B; letter-spacing:0.04em; display:block; margin-bottom:8px;">Top Tech Hubs</span>
-              <ul style="list-style:none; padding:0; margin:0; font-size:13px; line-height:1.9;">
-                <li><a href="{{ base_path }}/bangalore" style="color:#2563EB; text-decoration:none;">{{ label }} in Bangalore (Bengaluru)</a></li>
-                <li><a href="{{ base_path }}/pune" style="color:#2563EB; text-decoration:none;">{{ label }} in Pune</a></li>
-                <li><a href="{{ base_path }}/hyderabad" style="color:#2563EB; text-decoration:none;">{{ label }} in Hyderabad</a></li>
-                <li><a href="{{ base_path }}/delhi" style="color:#2563EB; text-decoration:none;">{{ label }} in Delhi NCR / Noida</a></li>
-              </ul>
+              <h2 class="silo-title">Explore {{ label }} by Tech Track &amp; Hub Cities</h2>
+              <p class="silo-sub">Browse specialized engineering disciplines, top metropolitan tech centers, and high-stipend verified opportunities.</p>
             </div>
-            <div>
-              <span style="font-size:12px; font-weight:800; text-transform:uppercase; color:#64748B; letter-spacing:0.04em; display:block; margin-bottom:8px;">High-Intent Searches</span>
-              <ul style="list-style:none; padding:0; margin:0; font-size:13px; line-height:1.9;">
-                <li><a href="{{ base_path }}/work-from-home/ai-agent-development" style="color:#2563EB; text-decoration:none;">Remote AI Agent {{ label }}</a></li>
-                <li><a href="{{ base_path }}/work-from-home/data-analyst" style="color:#2563EB; text-decoration:none;">Work From Home Data Analyst</a></li>
-                <li><a href="{{ base_path }}/paid/ai-agent-development" style="color:#2563EB; text-decoration:none;">Paid AI {{ label }} with Stipend</a></li>
-                <li><a href="{{ base_path }}/paid/full-stack-development" style="color:#2563EB; text-decoration:none;">Paid Full Stack {{ label }}</a></li>
-              </ul>
+          </div>
+
+          <div class="silo-grid">
+            <!-- Specialized Tracks Card -->
+            <div class="silo-card">
+              <div class="silo-card-hd">
+                <span class="silo-card-title"><i class="fas fa-layer-group"></i> Specialized Tracks</span>
+              </div>
+              <nav class="silo-links" aria-label="Specialized Tracks">
+                <a href="{{ base_path }}/ai-agent-development" class="silo-link-item" title="AI Agent Development {{ label }}">
+                  <div class="silo-link-left">
+                    <span class="silo-badge-icon silo-badge-track"><i class="fas fa-robot"></i></span>
+                    <span class="silo-link-text">AI Agent Development</span>
+                  </div>
+                  <i class="fas fa-chevron-right silo-link-arrow"></i>
+                </a>
+                <a href="{{ base_path }}/full-stack-development" class="silo-link-item" title="Full Stack Development {{ label }}">
+                  <div class="silo-link-left">
+                    <span class="silo-badge-icon silo-badge-track"><i class="fas fa-code"></i></span>
+                    <span class="silo-link-text">Full Stack Development</span>
+                  </div>
+                  <i class="fas fa-chevron-right silo-link-arrow"></i>
+                </a>
+                <a href="{{ base_path }}/data-analyst" class="silo-link-item" title="Data Analyst {{ label }}">
+                  <div class="silo-link-left">
+                    <span class="silo-badge-icon silo-badge-track"><i class="fas fa-chart-pie"></i></span>
+                    <span class="silo-link-text">Data Analyst</span>
+                  </div>
+                  <i class="fas fa-chevron-right silo-link-arrow"></i>
+                </a>
+                <a href="{{ base_path }}/python-automation" class="silo-link-item" title="Python Automation {{ label }}">
+                  <div class="silo-link-left">
+                    <span class="silo-badge-icon silo-badge-track"><i class="fas fa-bolt"></i></span>
+                    <span class="silo-link-text">Python Automation</span>
+                  </div>
+                  <i class="fas fa-chevron-right silo-link-arrow"></i>
+                </a>
+              </nav>
+            </div>
+
+            <!-- Top Tech Hubs Card -->
+            <div class="silo-card">
+              <div class="silo-card-hd">
+                <span class="silo-card-title"><i class="fas fa-city"></i> Top Tech Hubs</span>
+              </div>
+              <nav class="silo-links" aria-label="Top Tech Hubs">
+                <a href="{{ base_path }}/bangalore" class="silo-link-item" title="{{ label }} in Bangalore (Bengaluru)">
+                  <div class="silo-link-left">
+                    <span class="silo-badge-icon silo-badge-city"><i class="fas fa-map-marker-alt"></i></span>
+                    <span class="silo-link-text">Bangalore (Bengaluru)</span>
+                  </div>
+                  <i class="fas fa-chevron-right silo-link-arrow"></i>
+                </a>
+                <a href="{{ base_path }}/pune" class="silo-link-item" title="{{ label }} in Pune">
+                  <div class="silo-link-left">
+                    <span class="silo-badge-icon silo-badge-city"><i class="fas fa-map-marker-alt"></i></span>
+                    <span class="silo-link-text">Pune</span>
+                  </div>
+                  <i class="fas fa-chevron-right silo-link-arrow"></i>
+                </a>
+                <a href="{{ base_path }}/hyderabad" class="silo-link-item" title="{{ label }} in Hyderabad">
+                  <div class="silo-link-left">
+                    <span class="silo-badge-icon silo-badge-city"><i class="fas fa-map-marker-alt"></i></span>
+                    <span class="silo-link-text">Hyderabad</span>
+                  </div>
+                  <i class="fas fa-chevron-right silo-link-arrow"></i>
+                </a>
+                <a href="{{ base_path }}/delhi" class="silo-link-item" title="{{ label }} in Delhi NCR / Noida">
+                  <div class="silo-link-left">
+                    <span class="silo-badge-icon silo-badge-city"><i class="fas fa-map-marker-alt"></i></span>
+                    <span class="silo-link-text">Delhi NCR / Noida</span>
+                  </div>
+                  <i class="fas fa-chevron-right silo-link-arrow"></i>
+                </a>
+              </nav>
+            </div>
+
+            <!-- High-Intent Curations Card -->
+            <div class="silo-card">
+              <div class="silo-card-hd">
+                <span class="silo-card-title"><i class="fas fa-sparkles"></i> High-Intent Searches</span>
+              </div>
+              <nav class="silo-links" aria-label="High-Intent Searches">
+                <a href="{{ base_path }}/work-from-home/ai-agent-development" class="silo-link-item" title="Remote AI Agent {{ label }}">
+                  <div class="silo-link-left">
+                    <span class="silo-badge-icon silo-badge-intent"><i class="fas fa-laptop-house"></i></span>
+                    <span class="silo-link-text">Remote AI Agent</span>
+                  </div>
+                  <i class="fas fa-chevron-right silo-link-arrow"></i>
+                </a>
+                <a href="{{ base_path }}/work-from-home/data-analyst" class="silo-link-item" title="Work From Home Data Analyst">
+                  <div class="silo-link-left">
+                    <span class="silo-badge-icon silo-badge-intent"><i class="fas fa-wifi"></i></span>
+                    <span class="silo-link-text">WFH Data Analyst</span>
+                  </div>
+                  <i class="fas fa-chevron-right silo-link-arrow"></i>
+                </a>
+                <a href="{{ base_path }}/paid/ai-agent-development" class="silo-link-item" title="Paid AI {{ label }} with Stipend">
+                  <div class="silo-link-left">
+                    <span class="silo-badge-icon silo-badge-intent"><i class="fas fa-coins"></i></span>
+                    <span class="silo-link-text">Paid AI with Stipend</span>
+                  </div>
+                  <i class="fas fa-chevron-right silo-link-arrow"></i>
+                </a>
+                <a href="{{ base_path }}/paid/full-stack-development" class="silo-link-item" title="Paid Full Stack {{ label }}">
+                  <div class="silo-link-left">
+                    <span class="silo-badge-icon silo-badge-intent"><i class="fas fa-hand-holding-dollar"></i></span>
+                    <span class="silo-link-text">Paid Full Stack</span>
+                  </div>
+                  <i class="fas fa-chevron-right silo-link-arrow"></i>
+                </a>
+              </nav>
             </div>
           </div>
         </section>
@@ -901,7 +1153,7 @@
     </div>
 
     <!-- Interactive Skill Gap & Match Insights Modal -->
-    <div id="matchInsightsModal" class="match-modal-backdrop" style="display:none; position:fixed; inset:0; z-index:99999; background:rgba(15,23,42,0.65); backdrop-filter:blur(3px); align-items:center; justify-content:center; padding:16px;">
+    <div id="matchInsightsModal" class="match-modal-backdrop" aria-hidden="true" tabindex="-1" role="dialog" style="display:none; position:fixed; inset:0; z-index:99999; background:rgba(15,23,42,0.65); backdrop-filter:blur(3px); align-items:center; justify-content:center; padding:16px;">
       <div class="match-modal-card" style="background:#FFFFFF; border-radius:16px; max-width:520px; width:100%; box-shadow:0 20px 45px rgba(0,0,0,0.25); overflow:hidden; border:1px solid #E2E8F0; animation:modalPop 0.2s ease-out;">
         <div style="background:#0F172A; color:#FFFFFF; padding:18px 22px; display:flex; justify-content:space-between; align-items:center;">
           <div style="display:flex; align-items:center; gap:10px;">
@@ -1085,6 +1337,7 @@
           const modal = document.getElementById('matchInsightsModal');
           if (modal) {
             modal.style.display = 'flex';
+            modal.setAttribute('aria-hidden', 'false');
           }
         };
 
@@ -1092,6 +1345,7 @@
           const modal = document.getElementById('matchInsightsModal');
           if (modal) {
             modal.style.display = 'none';
+            modal.setAttribute('aria-hidden', 'true');
           }
         };
 

@@ -45,7 +45,7 @@ export default function CertificateVerificationAPIPage() {
         provider: {
           '@type': 'Organization',
           name: 'DBERT Labs Industrial Training & Venture Studio',
-          url: 'https://dbert.online'
+          url: 'https://dbert.in'
         },
         offers: {
           '@type': 'Offer',
@@ -53,7 +53,7 @@ export default function CertificateVerificationAPIPage() {
           price: '25000',
           priceCurrency: 'INR',
           description: 'Monthly API access licensing starting tier for enterprise HR platforms and academic institutions',
-          url: 'https://dbert.online/ai-solutions/products/certificate-verification-api'
+          url: 'https://dbert.in/ai-solutions/products/certificate-verification-api'
         }
       },
       {
@@ -119,7 +119,7 @@ export default function CertificateVerificationAPIPage() {
           </p>
           <div className={`bento-card ${s.codeCard}`}>
             <pre className={s.code}>
-{`curl -X GET "https://api.dbert.online/v1/verify?certId=DBERT-ENG-2026-8894" \\
+{`curl -X GET "https://api.dbert.in/v1/verify?certId=DBERT-ENG-2026-8894" \\
   -H "Authorization: Bearer YOUR_ENTERPRISE_API_KEY" \\
   -H "Accept: application/json"
 

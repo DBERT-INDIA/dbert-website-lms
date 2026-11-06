@@ -1,0 +1,422 @@
+/* ==========================================================================
+   DBERT Alphabetical Credential Directory — CSS Module
+   ========================================================================== */
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 16px 64px;
+}
+
+/* Header & Trust Bar */
+.headerShell {
+  margin-bottom: 28px;
+}
+
+.breadcrumb {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: #8A9AB5;
+  text-decoration: none;
+  margin-bottom: 16px;
+  transition: color 0.15s ease;
+}
+
+.breadcrumb:hover {
+  color: #E2B96F;
+}
+
+.titleBlock {
+  background: #141A23;
+  border: 1px solid #1E2633;
+  border-radius: 12px;
+  padding: 24px 28px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.titleMain {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #F0F4F8;
+  letter-spacing: -0.02em;
+  margin: 0 0 6px 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.titleSubtitle {
+  font-size: 0.88rem;
+  color: #8A9AB5;
+  margin: 0;
+}
+
+.statsBar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.statBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.statVerified {
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: #34D399;
+}
+
+.statProvisional {
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  color: #FBBF24;
+}
+
+.statTotal {
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  color: #38BDF8;
+}
+
+/* Controls: Search and Filters */
+.controlsBlock {
+  background: #141A23;
+  border: 1px solid #1E2633;
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.searchWrap {
+  flex: 1;
+  min-width: 260px;
+  position: relative;
+}
+
+.searchInput {
+  width: 100%;
+  background: #0B0F17;
+  border: 1px solid #232A36;
+  border-radius: 8px;
+  padding: 11px 16px 11px 40px;
+  color: #F0F4F8;
+  font-size: 0.88rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.searchInput:focus {
+  border-color: #E2B96F;
+  box-shadow: 0 0 0 3px rgba(226, 185, 111, 0.15);
+}
+
+.searchIcon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #64748B;
+  pointer-events: none;
+}
+
+.selectDropdown {
+  background: #0B0F17;
+  border: 1px solid #232A36;
+  border-radius: 8px;
+  padding: 11px 16px;
+  color: #CBD5E1;
+  font-size: 0.86rem;
+  outline: none;
+  cursor: pointer;
+  min-width: 180px;
+  transition: border-color 0.2s ease;
+}
+
+.selectDropdown:focus {
+  border-color: #E2B96F;
+}
+
+/* Alphabet Bar */
+.alphabetShell {
+  margin-bottom: 24px;
+}
+
+.alphabetLabel {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #8A9AB5;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.alphabetScroll {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  scrollbar-width: thin;
+}
+
+.letterBtn {
+  min-width: 44px;
+  height: 40px;
+  padding: 0 8px;
+  border-radius: 6px;
+  border: 1px solid #232A36;
+  background: #141A23;
+  color: #CBD5E1;
+  font-size: 0.85rem;
+  font-weight: 700;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+
+.letterBtn:hover:not(:disabled) {
+  border-color: #E2B96F;
+  color: #F0F4F8;
+  background: #1C2330;
+}
+
+.letterBtnActive {
+  background: #E2B96F !important;
+  border-color: #E2B96F !important;
+  color: #0B0F17 !important;
+  box-shadow: 0 2px 8px rgba(226, 185, 111, 0.3);
+}
+
+.letterBtnDisabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  border-color: transparent;
+  background: rgba(20, 26, 35, 0.5);
+}
+
+.letterCount {
+  font-size: 0.65rem;
+  opacity: 0.8;
+  font-weight: 500;
+  margin-top: -2px;
+}
+
+/* Results Grid */
+.resultsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  font-size: 0.85rem;
+  color: #8A9AB5;
+}
+
+.candidatesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+/* Candidate Card */
+.candidateCard {
+  background: #141A23;
+  border: 1px solid #1E2633;
+  border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.candidateCard:hover {
+  transform: translateY(-2px);
+  border-color: rgba(226, 185, 111, 0.5);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+.cardTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.candidateName {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #F0F4F8;
+  margin: 0;
+  line-height: 1.35;
+}
+
+.candidateName a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.candidateName a:hover {
+  color: #E2B96F;
+}
+
+.cardStatusPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.pillVerified {
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(52, 211, 153, 0.4);
+  color: #34D399;
+}
+
+.pillProvisional {
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  color: #FBBF24;
+}
+
+.cardBody {
+  margin-bottom: 18px;
+}
+
+.certIdLine {
+  font-family: Menlo, Monaco, Consolas, monospace;
+  font-size: 0.78rem;
+  color: #38BDF8;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.infoRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  color: #94A3B8;
+  margin-bottom: 4px;
+}
+
+.infoLabel {
+  color: #64748B;
+  min-width: 60px;
+}
+
+.infoValue {
+  color: #CBD5E1;
+  font-weight: 500;
+}
+
+.cardFooter {
+  border-top: 1px solid #1E2633;
+  padding-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.btnVerifyLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #0B0F17;
+  border: 1px solid #232A36;
+  color: #E2B96F;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  width: 100%;
+  justify-content: center;
+}
+
+.btnVerifyLink:hover {
+  background: #E2B96F;
+  color: #0B0F17;
+  border-color: #E2B96F;
+}
+
+/* Empty State */
+.emptyState {
+  background: #141A23;
+  border: 1px dashed #232A36;
+  border-radius: 12px;
+  padding: 48px 24px;
+  text-align: center;
+  color: #8A9AB5;
+}
+
+.emptyTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #F0F4F8;
+  margin-bottom: 8px;
+}
+
+.resetBtn {
+  margin-top: 16px;
+  background: #E2B96F;
+  color: #0B0F17;
+  border: none;
+  font-weight: 700;
+  font-size: 0.82rem;
+  padding: 8px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+@media (max-width: 640px) {
+  .candidatesGrid {
+    grid-template-columns: 1fr;
+  }
+  .titleBlock {
+    padding: 18px 20px;
+  }
+  .controlsBlock {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

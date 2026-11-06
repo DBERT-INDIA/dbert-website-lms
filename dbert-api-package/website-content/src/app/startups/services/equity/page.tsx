@@ -48,7 +48,7 @@ export default function EquityServicePage() {
         provider: {
           '@type': 'Organization',
           name: 'DBERT Labs Industrial Training & Venture Studio',
-          url: 'https://dbert.online'
+          url: 'https://dbert.in'
         },
         offers: {
           '@type': 'Offer',
@@ -56,7 +56,7 @@ export default function EquityServicePage() {
           price: '0',
           priceCurrency: 'INR',
           description: 'Zero out-of-pocket development cash fees in exchange for agreed milestone-based 2% to 8% equity fraction',
-          url: 'https://dbert.online/startups/services/equity'
+          url: 'https://dbert.in/startups/services/equity'
         }
       },
       {

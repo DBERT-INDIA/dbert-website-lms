@@ -85,7 +85,7 @@ export default function HirePreVettedEngineersPage() {
         provider: {
           '@type': 'Organization',
           name: 'DBERT Labs Industrial Training & Venture Studio',
-          url: 'https://dbert.online'
+          url: 'https://dbert.in'
         },
         description: 'B2B technical hiring platform delivering pre-vetted AI, Full Stack, and Data engineers to startups and enterprises.'
       },

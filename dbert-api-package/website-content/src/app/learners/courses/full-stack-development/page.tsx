@@ -24,7 +24,7 @@ export default function FullStackCoursePage() {
     },
     {
       question: 'How does DBERT institutional certification validation operate for aspiring software developers?',
-      answer: 'Upon satisfactory completion of all repository pull requests and live technical interviews, your verified graduation credentials and project links are logged into our public authentication registry at dbert.online/verify, eliminating verification friction during enterprise hiring audits.'
+      answer: 'Upon satisfactory completion of all repository pull requests and live technical interviews, your verified graduation credentials and project links are logged into our public authentication registry at dbert.in/verify, eliminating verification friction during enterprise hiring audits.'
     },
     {
       question: 'What career compensation tiers do full-stack AI developers typically command in India?',
@@ -42,7 +42,7 @@ export default function FullStackCoursePage() {
         provider: {
           '@type': 'Organization',
           name: 'DBERT Labs Industrial Training & Venture Studio',
-          url: 'https://dbert.online'
+          url: 'https://dbert.in'
         },
         courseCode: 'DBERT-ENG-FSTCK-2026',
         courseMode: 'Blended (Synchronous Cohort & Remote Production Lab Sprints)',
@@ -54,7 +54,7 @@ export default function FullStackCoursePage() {
           priceCurrency: 'INR',
           availability: 'https://schema.org/InStock',
           validFrom: '2026-01-01',
-          url: 'https://dbert.online/learners/courses/full-stack-development'
+          url: 'https://dbert.in/learners/courses/full-stack-development'
         }
       },
       {
@@ -268,8 +268,8 @@ export default function FullStackCoursePage() {
         title="Full Stack Developer Internships in Mumbai & Major Hubs"
         description="Connect directly to verified startup production sprints across Mumbai, Bengaluru, Delhi NCR, Pune, and remote roles sourced via the DBERT Career Portal."
         domainName="Full Stack AI"
-        hubHref="https://internship.dbert.online/internships/full-stack-development"
-        jobsHref="https://internship.dbert.online/jobs/full-stack-development"
+        hubHref="https://lms.dbert.in/internships/full-stack-development"
+        jobsHref="https://lms.dbert.in/jobs/full-stack-development"
         opportunities={[
           {
             title: 'Full Stack Booking System Development Intern',
@@ -277,7 +277,7 @@ export default function FullStackCoursePage() {
             cityTag: 'Mumbai',
             location: 'Mumbai · Hybrid / Remote',
             stipend: '₹8,000 – ₹15,000 / mo',
-            href: 'https://internship.dbert.online/internships/booking-system-development-intern-mumbai-remote-50',
+            href: 'https://lms.dbert.in/internships/booking-system-development-intern-mumbai-remote-50',
             tags: ['React', 'Next.js', 'PostgreSQL', 'Express'],
           },
           {
@@ -286,7 +286,7 @@ export default function FullStackCoursePage() {
             cityTag: 'Bangalore',
             location: 'Bengaluru · Hybrid',
             stipend: '₹10,000 – ₹18,000 / mo',
-            href: 'https://internship.dbert.online/internships/saas-feature-development-intern-bangalore-remote-46',
+            href: 'https://lms.dbert.in/internships/saas-feature-development-intern-bangalore-remote-46',
             tags: ['TypeScript', 'Node.js', 'Prisma', 'Tailwind'],
           },
           {
@@ -295,7 +295,7 @@ export default function FullStackCoursePage() {
             cityTag: 'Delhi NCR',
             location: 'Delhi NCR · Remote',
             stipend: '₹7,000 – ₹14,000 / mo',
-            href: 'https://internship.dbert.online/internships/authentication-security-intern-delhi-ncr-remote-47',
+            href: 'https://lms.dbert.in/internships/authentication-security-intern-delhi-ncr-remote-47',
             tags: ['OAuth2', 'JWT', 'Node.js', 'PostgreSQL'],
           },
           {
@@ -304,7 +304,7 @@ export default function FullStackCoursePage() {
             cityTag: 'Pune',
             location: 'Pune · Hybrid',
             stipend: '₹8,000 – ₹15,000 / mo',
-            href: 'https://internship.dbert.online/internships/progressive-web-app-intern-pune-remote-49',
+            href: 'https://lms.dbert.in/internships/progressive-web-app-intern-pune-remote-49',
             tags: ['PWA', 'React', 'Workbox', 'IndexedDB'],
           },
           {
@@ -313,7 +313,7 @@ export default function FullStackCoursePage() {
             cityTag: 'Remote',
             location: 'Virtual · Anywhere India',
             stipend: '₹6,000 – ₹12,000 / mo',
-            href: 'https://internship.dbert.online/internships/react-frontend-development-intern-remote-37',
+            href: 'https://lms.dbert.in/internships/react-frontend-development-intern-remote-37',
             tags: ['React 19', 'Next.js', 'CSS Modules'],
           },
           {
@@ -322,7 +322,7 @@ export default function FullStackCoursePage() {
             cityTag: 'Hyderabad',
             location: 'Hyderabad · Remote',
             stipend: '₹8,000 – ₹16,000 / mo',
-            href: 'https://internship.dbert.online/internships/internal-tools-development-intern-hyderabad-remote-48',
+            href: 'https://lms.dbert.in/internships/internal-tools-development-intern-hyderabad-remote-48',
             tags: ['Next.js', 'REST APIs', 'Supabase'],
           },
         ]}

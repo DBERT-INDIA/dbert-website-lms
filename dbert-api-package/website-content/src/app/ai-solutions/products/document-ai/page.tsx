@@ -45,7 +45,7 @@ export default function DocumentAIPage() {
         provider: {
           '@type': 'Organization',
           name: 'DBERT Labs Industrial Training & Venture Studio',
-          url: 'https://dbert.online'
+          url: 'https://dbert.in'
         },
         offers: {
           '@type': 'Offer',
@@ -53,7 +53,7 @@ export default function DocumentAIPage() {
           price: '35000',
           priceCurrency: 'INR',
           description: 'Monthly license starting tier for automated document parsing & verification webhooks',
-          url: 'https://dbert.online/ai-solutions/products/document-ai'
+          url: 'https://dbert.in/ai-solutions/products/document-ai'
         }
       },
       {
@@ -119,11 +119,11 @@ export default function DocumentAIPage() {
           </p>
           <div className={`bento-card ${s.codeCard}`}>
             <pre className={s.code}>
-{`curl -X POST "https://api.dbert.online/v1/extract" \\
+{`curl -X POST "https://api.dbert.in/v1/extract" \\
   -H "Authorization: Bearer YOUR_ENTERPRISE_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
-    "document_url": "https://secure-storage.dbert.online/client_invoices/inv_9981.pdf",
+    "document_url": "https://secure-storage.dbert.in/client_invoices/inv_9981.pdf",
     "schema_definition": {
       "invoice_number": "string",
       "total_tax_inr": "number",

@@ -1,0 +1,92 @@
+[
+  {
+    "certId": "CERT-DBERT-2026-AIML-092",
+    "holderName": "N Deekshitha",
+    "email": "ndeekshitha07@gmail.com",
+    "domain": "Artificial Intelligence & Machine Learning",
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:12:23.004381",
+    "message_id": "<1a30daae-8426-49a5-93d5-3d45c2c2ee80@dbert.in>",
+    "error": null
+  },
+  {
+    "certId": "CERT-DBERT-2026-DA-117",
+    "holderName": "M Brahmani",
+    "email": "chinniprincess842@gmail.com",
+    "domain": "Data Analyst",
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:12:57.131474",
+    "message_id": "<24abf419-dd09-4dae-8b1e-e415e88149a2@dbert.in>",
+    "error": null
+  },
+  {
+    "certId": "CERT-DBERT-2026-FSD-070",
+    "holderName": "Ankit Saini",
+    "email": "ankitsaini9438@gmail.com",
+    "domain": "Full Stack Development",
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:13:30.669792",
+    "message_id": "<09ac39a1-39b8-4ebc-9d4e-f326949ff568@dbert.in>",
+    "error": null
+  },
+  {
+    "certId": "CERT-DBERT-2026-PA-023",
+    "holderName": "Lucky kumar",
+    "email": "luckygupta929490@gmail.com",
+    "domain": "Python Automation",
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:14:03.846061",
+    "message_id": "<6362ddd0-e542-4fb4-b021-3c2d7265481d@dbert.in>",
+    "error": null
+  },
+  {
+    "certId": "CERT-DBERT-2026-DA-124",
+    "holderName": "Rohit Ranjan Tiwari",
+    "email": "piyush2100a@gmail.com",
+    "domain": "Data Analyst",
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:14:40.442786",
+    "message_id": "<2b84c5a1-7cff-4e1f-a31f-98be954cd0a8@dbert.in>",
+    "error": null
+  },
+  {
+    "certId": "CERT-DBERT-2026-DA-077",
+    "holderName": "Shreyash Sambhaji Kamble",
+    "email": "shreyashk07004@gmail.com",
+    "domain": "Data Analyst",
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:15:14.010132",
+    "message_id": "<4edb7a02-7c2e-4148-894f-8a56ce6c96a0@dbert.in>",
+    "error": null
+  },
+  {
+    "certId": "CERT-DBERT-2026-DA-183",
+    "holderName": "Vasu Rakholiya",
+    "email": "vasurakholiya108@gmail.com",
+    "domain": "Data Analyst",
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:15:48.377515",
+    "message_id": "<986b6654-ffa2-4271-8e29-84ef6ab57cf3@dbert.in>",
+    "error": null
+  },
+  {
+    "certId": "CERT-DBERT-2026-DA-109",
+    "holderName": "Satya Patil",
+    "email": "patilsatya004@gmail.com",
+    "domain": "Data Analyst",
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:16:22.302663",
+    "message_id": "<eb93b747-fc8e-42b6-9148-c33a47aed829@dbert.in>",
+    "error": null
+  },
+  {
+    "certId": "CERT-DBERT-2026-DA-184",
+    "holderName": "Janhvi singh",
+    "email": "janhvichandel3@gmail.com",
+    "domain": "Data Analyst",
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:16:56.483770",
+    "message_id": "<e1524849-7d1d-4044-9efa-ffca9e4a8efe@dbert.in>",
+    "error": null
+  }
+]

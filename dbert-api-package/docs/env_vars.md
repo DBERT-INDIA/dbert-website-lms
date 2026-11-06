@@ -27,10 +27,10 @@
 | `FLASK_ENV` | `None` | NO | Environment configuration parameter |
 | `FLASK_SECRET_KEY` | `` | YES | Environment configuration parameter |
 | `FORCE_RECONCILE` | `None` | NO | Environment configuration parameter |
-| `FROM_EMAIL` | `contactus@dbert.online` | NO | Environment configuration parameter |
+| `FROM_EMAIL` | `contactus@dbert.in` | NO | Environment configuration parameter |
 | `FROM_NAME` | `DBERT Support` | NO | Environment configuration parameter |
 | `GA4_API_SECRET` | `` | NO | Environment configuration parameter |
-| `GA4_ID` | `G-GZ17KZ7MDW` | NO | Environment configuration parameter |
+| `GA4_ID` | `G-MN7ME9X518` | NO | Environment configuration parameter |
 | `GEMINI_API_KEY` | `` | NO | Environment configuration parameter |
 | `GEMINI_API_KEYS` | `` | NO | Environment configuration parameter |
 | `GEMINI_MODEL` | `gemini-3.1-flash-lite` | NO | Environment configuration parameter |
@@ -62,15 +62,15 @@
 | `REFRESH_TTL` | `str(60 * 24 * 3600` | NO | Environment configuration parameter |
 | `REQUIRE_POSTGRES` | `false` | NO | Environment configuration parameter |
 | `SESSION_DAYS` | `30` | NO | Environment configuration parameter |
-| `SITE_ORIGIN` | `https://internship.dbert.online` | NO | Environment configuration parameter |
+| `SITE_ORIGIN` | `https://lms.dbert.in` | NO | Environment configuration parameter |
 | `SMTP_BACKUP_HOST` | `dbert.info` | NO | Environment configuration parameter |
 | `SMTP_BACKUP_PASS` | `` | NO | Environment configuration parameter |
 | `SMTP_BACKUP_PORT` | `465` | NO | Environment configuration parameter |
 | `SMTP_BACKUP_USER` | `contactus@dbert.info` | NO | Environment configuration parameter |
-| `SMTP_HOST` | `dbert.online` | NO | Environment configuration parameter |
+| `SMTP_HOST` | `dbert.in` | NO | Environment configuration parameter |
 | `SMTP_PASS` | `` | NO | Environment configuration parameter |
 | `SMTP_PORT` | `465` | NO | Environment configuration parameter |
-| `SMTP_USER` | `contactus@dbert.online` | NO | Environment configuration parameter |
+| `SMTP_USER` | `contactus@dbert.in` | NO | Environment configuration parameter |
 | `TESTING` | `None` | NO | Environment configuration parameter |
 | `TURNSTILE_ENABLED` | `false` | NO | Environment configuration parameter |
 | `TURNSTILE_SECRET` | `` | NO | Environment configuration parameter |

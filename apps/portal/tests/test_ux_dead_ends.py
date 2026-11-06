@@ -49,7 +49,7 @@ class TestErrorPagesAndResolution:
         assert 'href="/"' in html
         assert 'href="/portal"' in html
         assert 'href="/jobs"' in html
-        assert "careers@dbert.info" in html
+        assert "support@dbert.in" in html
 
     def test_401_error_handler_answers_what_why_and_next(self, app_client):
         from app import unauthorized

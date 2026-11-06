@@ -21,7 +21,7 @@ from services.razorpay_client import (
 )
 
 UPI_AMOUNT = int(os.environ.get("UPI_AMOUNT", "1000"))
-PAID_PROGRAM_AMOUNT = int(os.environ.get("PAID_PROGRAM_AMOUNT", "1599"))
+PAID_PROGRAM_AMOUNT = int(os.environ.get("PAID_PROGRAM_AMOUNT", "1999"))
 
 
 class PaymentService:

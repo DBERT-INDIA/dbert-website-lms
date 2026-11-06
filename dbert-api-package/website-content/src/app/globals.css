@@ -32,6 +32,9 @@
   --raise: var(--surface-raised);
   --card: var(--surface-card);
   --card-hi: var(--surface-card-hover);
+  --bg: var(--surface-base);
+  --surface: var(--surface-card);
+  --fg: var(--text-primary);
 
   /* Lines & Borders — Razor Cyan */
   --border-subtle: rgba(0, 242, 254, 0.16);

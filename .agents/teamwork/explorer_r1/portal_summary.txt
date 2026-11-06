@@ -1,0 +1,21 @@
+ 1: apps\portal\.env:27 -> SMTP_HOST=dbert.online
+ 2: apps\portal\.env:29 -> SMTP_USER=contactus@dbert.online
+ 3: apps\portal\.env:31 -> FROM_EMAIL=contactus@dbert.online
+ 4: apps\portal\.env.staging.example:34 -> SMTP_USER=staging@dbert.online
+ 5: apps\portal\.env.staging.example:36 -> FROM_EMAIL=staging@dbert.online
+ 6: apps\portal\app.py:304 -> SMTP_HOST = os.environ.get("SMTP_HOST", "dbert.online")
+ 7: apps\portal\app.py:2690 -> staff_email = f"{ADMIN_USERNAME}@dbert.online"
+ 8: apps\portal\app.py:6008 -> # ── Canonical Blog Redirection to dbert.online ────────────────────────────────
+ 9: apps\portal\app.py:6012 -> """Articles live strictly on the main website dbert.online/blog.
+10: apps\portal\app.py:6015 -> redirects visitors to the canonical live blog post on dbert.online.
+11: apps\portal\app.py:6031 -> # ── Public Blog Sync API for dbert.online Auto-Updates ─────────────────────────
+12: apps\portal\app.py:6034 -> """Returns approved/published intern technical writing for dbert.online/blog real-time sync."""
+13: apps\portal\app.py:6080 -> """Returns single post detail with markdown for dynamic reader on dbert.online."""
+14: apps\portal\sitemap.xml:1 -> <?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://inte
+15: apps\portal\cgi-bin\fix_env.cgi:51 -> FROM_EMAIL=contactus@dbert.online
+16: apps\portal\deploy\nginx.conf:3 -> # Domain: https://internship.dbert.online/
+17: apps\portal\deploy\nginx.conf:9 -> server_name internship.dbert.online;
+18: apps\portal\deploy\nginx.conf:25 -> server_name internship.dbert.online;
+19: apps\portal\deploy\nginx.conf:28 -> ssl_certificate /etc/letsencrypt/live/internship.dbert.online/fullchain.pem;
+20: apps\portal\deploy\nginx.conf:29 -> ssl_certificate_key /etc/letsencrypt/live/internship.dbert.online/privkey.pem;
+21: apps\portal\templates\seo_landing.html:133 -> &copy; 2026 DBERT Labs. All rights reserved. | <a href="https://dbert.in" class="underline text-gray-400">dbert.online</

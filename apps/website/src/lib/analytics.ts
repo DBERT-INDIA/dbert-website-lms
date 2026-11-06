@@ -9,7 +9,7 @@ declare global {
 
 export type EventParams = Record<string, string | number | boolean | undefined>;
 
-export const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_ID || 'G-GZ17KZ7MDW';
+export const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_ID || 'G-MN7ME9X518';
 
 /**
  * Fires a custom Google Analytics 4 event.

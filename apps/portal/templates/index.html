@@ -30,9 +30,9 @@
       {"@type":["Organization","EducationalOrganization"],"@id":"{{ SITE_ORIGIN }}/#org","name":"DBERT",
        "legalName":"Digital Blinc Education Research and Technology",
        "alternateName":"Digital Blinc Education Research and Technology",
-       "url":"{{ SITE_ORIGIN }}/","email":"careers@dbert.info","areaServed":"IN"{% if LOGO_URL %},"logo":"{{ LOGO_URL }}","image":"{{ LOGO_URL }}"{% endif %},
+       "url":"{{ SITE_ORIGIN }}/","email":"support@dbert.in","areaServed":"IN"{% if LOGO_URL %},"logo":"{{ LOGO_URL }}","image":"{{ LOGO_URL }}"{% endif %},
        "address":{"@type":"PostalAddress","addressLocality":"Noida","addressRegion":"Uttar Pradesh","postalCode":"201301","addressCountry":"IN"},
-       "contactPoint":{"@type":"ContactPoint","email":"careers@dbert.info","contactType":"admissions","areaServed":"IN","availableLanguage":["en","hi"]}},
+       "contactPoint":{"@type":"ContactPoint","email":"support@dbert.in","contactType":"admissions","areaServed":"IN","availableLanguage":["en","hi"]}},
       {"@type":"WebSite","@id":"{{ SITE_ORIGIN }}/#website","url":"{{ SITE_ORIGIN }}/",
        "name":"DBERT Internship","publisher":{"@id":"{{ SITE_ORIGIN }}/#org"},"inLanguage":"en"},
       {"@type":"EducationalOccupationalProgram","name":"DBERT Internship 2026",
@@ -47,7 +47,7 @@
         {"@type":"Question","name":"How many hours per week are required?","acceptedAnswer":{"@type":"Answer","text":"A minimum of 10 hours per week, any time Sunday to Saturday. All tasks are async and fully remote."}},
         {"@type":"Question","name":"What documents do I get on completion?","acceptedAnswer":{"@type":"Answer","text":"An MSME-registered Completion Certificate, a Letter of Recommendation from your assigned mentor, and an Offer Letter issued after enrollment."}},
         {"@type":"Question","name":"Can I apply for multiple domains?","acceptedAnswer":{"@type":"Answer","text":"Yes. Each domain application is reviewed independently, but you will be enrolled in only one domain at a time."}},
-        {"@type":"Question","name":"Is my payment secure?","acceptedAnswer":{"@type":"Answer","text":"Yes. All payments are made via UPI directly, with no card or bank details stored. DBERT is MSME registered. Contact careers@dbert.info for any queries."}}
+        {"@type":"Question","name":"Is my payment secure?","acceptedAnswer":{"@type":"Answer","text":"Yes. All payments are made via UPI directly, with no card or bank details stored. DBERT is MSME registered. Contact support@dbert.in for any queries."}}
       ]}
     ]
   }
@@ -106,7 +106,7 @@
           <a href="#" data-act-click="showAuthOverlay" data-arg-click='["signup"]' data-prevent-click class="nav-cta">Sign Up</a>
         </span>
       </nav>
-      <button class="hamburger" type="button" data-act-click="toggleMenu" aria-label="Open menu"><i class="fas fa-bars"></i></button>
+      <button class="hamburger" id="hamburgerBtn" type="button" data-act-click="toggleMenu" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="navLinks"><i class="fas fa-bars"></i></button>
     </div>
   </header>
 
@@ -326,7 +326,7 @@
               <div class="faq-q-left"><i class="fas fa-shield-halved"></i><span>Is my payment secure?</span></div>
               <i class="fas fa-plus faq-icon"></i>
             </button>
-            <div class="faq-a"><p>Yes. All payments are processed via <strong>UPI</strong> directly &mdash; no card or bank details stored. MSME registered. Contact <strong>careers@dbert.info</strong> for queries.</p></div>
+            <div class="faq-a"><p>Yes. All payments are processed via <strong>UPI</strong> directly &mdash; no card or bank details stored. MSME registered. Contact <strong>support@dbert.in</strong> for queries.</p></div>
           </div>
         </div>
       </div>
@@ -500,7 +500,7 @@
               <div class="form-group"><label class="field-label" for="si_email">Email or Mobile Number</label><input type="text" id="si_email" class="field-input" placeholder="you@example.com or 10-digit mobile" autocomplete="username"/></div>
             </div>
             <button class="btn-auth-submit" id="siEmailBtn" data-act-click="doEmailCheck"><span class="btn-label"><i class="fas fa-arrow-right"></i> &nbsp;Continue to Sign In</span><span class="btn-spinner"></span></button>
-            <p style="text-align:center;margin-top:16px;font-size:12.5px;color:#475569;">No account yet? <a href="#" style="color:#2563EB;font-weight:700;" data-act-click="switchAuthTab" data-arg-click='["signup"]' data-prevent-click onclick="switchAuthTab('signup');return false;">Sign Up &amp; Apply &rarr;</a></p>
+            <p style="text-align:center;margin-top:16px;font-size:12.5px;color:#475569;">No account yet? <a href="#" style="color:#2563EB;font-weight:700;" data-act-click="switchAuthTab" data-arg-click='["signup"]' data-prevent-click onclick="switchAuthTab('signup');return false;">Sign Up &amp; Apply &rarr;</a> <span style="display:inline-block;margin:0 8px;color:#CBD5E1;">&bull;</span> <a href="#" style="color:#64748B;font-weight:600;text-decoration:none;" data-act-click="openForgotModal" data-prevent-click onclick="openForgotModal();return false;">Forgot password?</a></p>
           </div>
 
           <!-- Step 2a: Normal login (has_password) -->
@@ -544,26 +544,55 @@
   <div id="toastEl"></div>
   <canvas id="confettiCanvas" aria-hidden="true"></canvas>
 
-  <!-- FORGOT PASSWORD MODAL (MATCHING IMAGE 4) -->
-  <div id="forgotOverlay" style="position:fixed;inset:0;z-index:99999;background:rgba(9,12,20,0.82);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);display:none;align-items:center;justify-content:center;padding:16px;">
-    <div style="background:#0E111A;border:1px solid rgba(255,255,255,0.08);border-radius:20px;max-width:440px;width:100%;box-shadow:0 25px 60px rgba(0,0,0,0.7);padding:28px 26px;" role="dialog" aria-modal="true" aria-labelledby="forgotTitle">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-        <h3 id="forgotTitle" style="font-size:18px;font-weight:800;color:#FFFFFF;margin:0;">Reset your password</h3>
-        <button data-act-click="closeForgotModal" aria-label="Close" style="background:none;border:none;color:#8E9AA8;font-size:22px;cursor:pointer;line-height:1;">&times;</button>
-      </div>
-      <p style="font-size:13px;color:#8E9AA8;line-height:1.6;margin:0 0 18px;">Enter your account email and we'll send a reset link if an account exists. The link expires in 1 hour.</p>
+  <!-- FORGOT PASSWORD MODAL (Requirement R2 Popup Modal) -->
+  <div id="forgotOverlay" class="dbert-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="forgotTitle" aria-describedby="forgotDesc" style="display:none;">
+    <div class="dbert-modal-backdrop" data-act-click="closeForgotModal"></div>
+    <div class="dbert-modal-container">
+      <div class="dbert-modal-box">
+        <button type="button" class="dbert-modal-close" data-act-click="closeForgotModal" aria-label="Close password reset dialog">
+          <i class="fas fa-times" aria-hidden="true"></i>
+        </button>
 
-      <div class="auth-error" id="forgotError" role="alert" style="display:none;align-items:center;gap:8px;background:rgba(220,38,38,0.15);border:1px solid rgba(220,38,38,0.3);border-radius:10px;color:#F87171;font-size:13px;font-weight:600;padding:10px 14px;margin-bottom:14px;"><i class="fa fa-circle-exclamation"></i><span></span></div>
-      <div id="forgotSuccess" role="status" aria-live="polite" style="display:none;flex-direction:column;gap:10px;background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.3);color:#22C55E;border-radius:10px;font-size:13px;font-weight:600;padding:12px 16px;margin-bottom:14px;">
-        <div style="display:flex;align-items:center;gap:8px;"><i class="fa fa-circle-check"></i><span id="forgotSuccessText"></span></div>
-        <div id="forgotDirectLink" style="display:none;"></div>
-      </div>
+        <div class="dbert-modal-header">
+          <div class="dbert-modal-icon-badge">
+            <i class="fas fa-key" aria-hidden="true"></i>
+          </div>
+          <h3 id="forgotTitle" class="dbert-modal-title">Reset your password</h3>
+          <p id="forgotDesc" class="dbert-modal-desc">Enter your account email and we'll send a reset link if an account exists. The link expires in 1 hour.</p>
+        </div>
 
-      <div id="forgotFormArea">
-        <div class="form-group"><label class="field-label" for="fp_email" style="color:#FFFFFF;font-size:11px;font-weight:800;letter-spacing:0.6px;text-transform:uppercase;margin-bottom:6px;display:block;">Email</label><input type="email" id="fp_email" class="field-input" placeholder="you@example.com" autocomplete="email"/></div>
-        <input type="text" name="company_website" id="fp_company_website" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true" aria-label="Leave this field blank" style="display:none !important;position:absolute !important;left:-9999px !important;top:-9999px !important;width:0 !important;height:0 !important;opacity:0 !important;pointer-events:none !important;"/>
+        <div class="auth-error dbert-modal-alert" id="forgotError" role="alert" style="display:none;align-items:center;gap:8px;background:rgba(220,38,38,0.1);border:1px solid rgba(220,38,38,0.3);border-radius:10px;color:#DC2626;font-size:13px;font-weight:600;padding:10px 14px;margin-bottom:14px;">
+          <i class="fas fa-circle-exclamation" aria-hidden="true"></i>
+          <span></span>
+        </div>
 
-        <button class="btn-auth-submit" id="forgotBtn" data-act-click="submitForgot" style="margin-top:14px;"><span class="btn-label"><i class="fas fa-paper-plane"></i> &nbsp;Send Reset Link</span><span class="btn-spinner"></span></button>
+        <div id="forgotSuccess" role="status" aria-live="polite" style="display:none;flex-direction:column;gap:10px;background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);color:#16A34A;border-radius:10px;font-size:13px;font-weight:600;padding:12px 16px;margin-bottom:14px;">
+          <div style="display:flex;align-items:center;gap:8px;"><i class="fas fa-circle-check" aria-hidden="true"></i><span id="forgotSuccessText"></span></div>
+          <div id="forgotDirectLink" style="display:none;"></div>
+        </div>
+
+        <form id="forgotForm" onsubmit="event.preventDefault(); submitForgot();" novalidate>
+          <div id="forgotFormArea">
+            <div class="form-group" style="margin-bottom:14px;">
+              <label class="field-label" for="fp_email" style="display:block;margin-bottom:6px;font-size:11px;font-weight:800;letter-spacing:0.6px;text-transform:uppercase;color:var(--tx-head);">Account Email</label>
+              <div class="input-wrap" style="position:relative;display:flex;align-items:center;">
+                <i class="fas fa-envelope" aria-hidden="true" style="position:absolute;left:14px;color:#64748B;font-size:13px;pointer-events:none;"></i>
+                <input type="email" id="fp_email" class="field-input" placeholder="you@example.com" autocomplete="email" required style="padding-left:38px !important;width:100%;height:44px;border-radius:10px;" />
+              </div>
+            </div>
+
+            <!-- Bot Honeypot -->
+            <input type="text" name="company_website" id="fp_company_website" class="hp-field" tabindex="-1" autocomplete="off" aria-hidden="true" aria-label="Leave this field blank" style="display:none !important;" />
+
+            <div class="dbert-modal-actions">
+              <button type="button" class="btn-modal-cancel" data-act-click="closeForgotModal">Cancel</button>
+              <button type="button" class="btn-modal-submit" id="forgotBtn" data-act-click="submitForgot">
+                <span class="btn-label"><i class="fas fa-paper-plane" aria-hidden="true"></i> &nbsp;Send Reset Link</span>
+                <span class="btn-spinner" aria-hidden="true" style="display:none;"></span>
+              </button>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -575,8 +604,23 @@
   function setCookie(n,v,d){const e=new Date();e.setTime(e.getTime()+d*86400000);const sec=location.protocol==='https:'?';Secure':'';document.cookie=`${n}=${encodeURIComponent(v)};expires=${e.toUTCString()};path=/;SameSite=Lax${sec}`;}
   function getOrCreateVid(){let vid=getCookie('dbert_vid');if(!vid){vid='v_'+Math.random().toString(36).substr(2,9)+Date.now().toString(36);setCookie('dbert_vid',vid,90);}return vid;}
 
-  function toggleMenu(){document.getElementById('navLinks').classList.toggle('open');}
-  function closeMenu(){const n=document.getElementById('navLinks');if(n)n.classList.remove('open');}
+  function toggleMenu(){
+    const n = document.getElementById('navLinks');
+    const b = document.querySelector('.hamburger i');
+    const btn = document.getElementById('hamburgerBtn');
+    if (!n) return;
+    const isOpen = n.classList.toggle('open');
+    if (b) b.className = isOpen ? 'fas fa-times' : 'fas fa-bars';
+    if (btn) btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  }
+  function closeMenu(){
+    const n = document.getElementById('navLinks');
+    const b = document.querySelector('.hamburger i');
+    const btn = document.getElementById('hamburgerBtn');
+    if (n) n.classList.remove('open');
+    if (b) b.className = 'fas fa-bars';
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+  }
   function scrollToId(id){closeMenu();const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});}
   function toggleFAQ(btn){const item=btn.closest('.faq-item'),isOpen=item.classList.contains('open');document.querySelectorAll('.faq-item.open').forEach(i=>i.classList.remove('open'));if(!isOpen)item.classList.add('open');}
 
@@ -642,46 +686,93 @@
   window.hideAuthOverlay=hideAuthOverlay;
   window.togglePw=togglePw;
 
-  // ── FORGOT PASSWORD ──
-  function openForgotModal(){
-    const ov=document.getElementById('forgotOverlay');if(!ov)return;
-    const authOv=document.getElementById('authOverlay');if(authOv)authOv.classList.remove('active');
-    document.getElementById('forgotError').style.display='none';
-    document.getElementById('forgotSuccess').style.display='none';
-    document.getElementById('forgotFormArea').style.display='block';
-    setLoading('forgotBtn',false);
-    const emailInput=document.getElementById('fp_email');
-    emailInput.value=_siEmail||document.getElementById('si_email')?.value.trim()||'';
-    ov.style.display='flex';
-    setTimeout(()=>emailInput.focus(),80);
+  // ── FORGOT PASSWORD (POPUP MODAL WITH FOCUS TRAP & ACCESSIBILITY) ──
+  let _lastActiveTrigger = null;
+
+  function openForgotModal() {
+    _lastActiveTrigger = document.activeElement;
+    const modal = document.getElementById('forgotOverlay');
+    if (!modal) return;
+
+    const authOv = document.getElementById('authOverlay');
+    if (authOv && authOv.classList.contains('active')) {
+      authOv.classList.remove('active');
+      modal.dataset.returnToAuth = 'true';
+    }
+
+    document.getElementById('forgotError').style.display = 'none';
+    document.getElementById('forgotSuccess').style.display = 'none';
+    document.getElementById('forgotFormArea').style.display = 'block';
+    setLoading('forgotBtn', false);
+
+    const emailInput = document.getElementById('fp_email');
+    emailInput.value = _siEmail || document.getElementById('si_email')?.value.trim() || '';
+
+    modal.style.display = 'flex';
+    void modal.offsetWidth; // Force reflow
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+
+    setTimeout(() => emailInput.focus(), 80);
   }
-  function closeForgotModal(){
-    const ov=document.getElementById('forgotOverlay');if(ov)ov.style.display='none';
-    showAuthOverlay('signin');
-  }
-  function showForgotError(msg){const el=document.getElementById('forgotError');el.querySelector('span').textContent=msg;el.style.display='flex';}
-  async function submitForgot(){
-    document.getElementById('forgotError').style.display='none';
-    const email=document.getElementById('fp_email').value.trim().toLowerCase();
-    if(!email||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){showForgotError('Please enter a valid email address.');return;}
-    setLoading('forgotBtn',true);
-    try{
-      const res=await fetch('/forgot-password',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'include',body:JSON.stringify({email,company_website:document.getElementById('fp_company_website').value})});
-      const data=await res.json();
-      if(data.status==='success'){
-        document.getElementById('forgotFormArea').style.display='none';
-        document.getElementById('forgotSuccessText').textContent=data.message||'Password reset link has been sent to your email.';
-        const directEl=document.getElementById('forgotDirectLink');
-        if(data.reset_url && directEl){
-          directEl.style.display='block';
-          directEl.innerHTML=`<div style="background:rgba(212,154,55,0.12);border:1px solid rgba(212,154,55,0.3);border-radius:8px;padding:10px 12px;margin-top:6px;font-size:12px;"><span style="color:#D49A37;font-weight:800;">Password Reset Link:</span><br/><a href="${data.reset_url}" style="color:#FFFFFF;text-decoration:underline;word-break:break-all;font-weight:600;display:inline-block;margin-top:4px;">Open Password Reset Page &rarr;</a></div>`;
-        }
-        document.getElementById('forgotSuccess').style.display='flex';
-      }else{
-        showForgotError(data.message||'No account found with this email in our database. Please check your email or Sign Up.');
-        setLoading('forgotBtn',false);
+
+  function closeForgotModal() {
+    const modal = document.getElementById('forgotOverlay');
+    if (!modal) return;
+
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+
+    setTimeout(() => {
+      modal.style.display = 'none';
+      if (modal.dataset.returnToAuth === 'true') {
+        delete modal.dataset.returnToAuth;
+        showAuthOverlay('signin');
+      } else if (_lastActiveTrigger && typeof _lastActiveTrigger.focus === 'function') {
+        _lastActiveTrigger.focus();
       }
-    }catch(e){showForgotError('Network error. Please try again.');setLoading('forgotBtn',false);}
+    }, 220);
+  }
+
+  function showForgotError(msg) {
+    const el = document.getElementById('forgotError');
+    el.querySelector('span').textContent = msg;
+    el.style.display = 'flex';
+  }
+
+  async function submitForgot() {
+    document.getElementById('forgotError').style.display = 'none';
+    const email = document.getElementById('fp_email').value.trim().toLowerCase();
+    if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      showForgotError('Please enter a valid email address.');
+      return;
+    }
+    setLoading('forgotBtn', true);
+    try {
+      const res = await fetch('/forgot-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ email, company_website: document.getElementById('fp_company_website').value })
+      });
+      const data = await res.json();
+      if (data.status === 'success') {
+        document.getElementById('forgotFormArea').style.display = 'none';
+        document.getElementById('forgotSuccessText').textContent = data.message || 'Password reset link has been sent to your email.';
+        const directEl = document.getElementById('forgotDirectLink');
+        if (data.reset_url && directEl) {
+          directEl.style.display = 'block';
+          directEl.innerHTML = `<div style="background:rgba(37,99,235,0.12);border:1px solid rgba(37,99,235,0.3);border-radius:8px;padding:10px 12px;margin-top:8px;font-size:12px;"><span style="color:#2563EB;font-weight:800;">Password Reset Link:</span><br/><a href="${data.reset_url}" style="color:#0F172A;text-decoration:underline;word-break:break-all;font-weight:600;display:inline-block;margin-top:4px;">Open Password Reset Page &rarr;</a></div>`;
+        }
+        document.getElementById('forgotSuccess').style.display = 'flex';
+      } else {
+        showForgotError(data.message || 'No account found with this email in our database. Please check your email or Sign Up.');
+        setLoading('forgotBtn', false);
+      }
+    } catch (e) {
+      showForgotError('Network error. Please try again.');
+      setLoading('forgotBtn', false);
+    }
   }
 
   async function checkSignupEmailExists(){
@@ -735,9 +826,19 @@
     if(!terms){showAuthError('signupError','Please accept the Terms & Conditions and Privacy Policy to continue.');return;}
     setLoading('suBtn1',true);
     try{
-      const res=await fetch('/signup/stage1',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'include',body:JSON.stringify({name,email,phone,password,terms_accepted:true,newsletter_opt_in:newsletter,visitor_id:_visitorId,company_website:document.getElementById('su_company_website').value,_ts:document.getElementById('su_ts').value,/* §6.1 attribution: the 30-day ref cookie set on landing */ref:(window.dbertRefCode?window.dbertRefCode():'')})});
+      const nextDest = new URLSearchParams(window.location.search).get('next') || '';
+      const res=await fetch('/signup/stage1',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'include',body:JSON.stringify({name,email,phone,password,terms_accepted:true,newsletter_opt_in:newsletter,visitor_id:_visitorId,company_website:document.getElementById('su_company_website').value,_ts:document.getElementById('su_ts').value,next:nextDest,/* §6.1 attribution: the 30-day ref cookie set on landing */ref:(window.dbertRefCode?window.dbertRefCode():'')})});
       const data=await res.json(); setLoading('suBtn1',false);
-      if(data.status==='success'){dbertGA('signup_stage1',{});osLogin(email);suGoStep(2);}
+      if(data.status==='success'){
+        dbertGA('signup_stage1',{});
+        osLogin(email);
+        if(data.redirect){
+          showToast('Account created! Redirecting to application...','success');
+          setTimeout(()=>{window.location.href=data.redirect;},400);
+          return;
+        }
+        suGoStep(2);
+      }
       else if(res.status===409&&data.code==='account_exists'){
         const escEmail=escapeHtml(email);
         showAuthError('signupError','An account with this email ('+escEmail+') already exists in our database. <a href="#" style="color:#D49A37;text-decoration:underline;font-weight:700;margin-left:4px;" data-act-click="switchToSigninWithEmail" data-arg-click=\'["'+escEmail+'"]\' data-prevent-click onclick="switchToSigninWithEmail(\''+escEmail+'\');return false;">Sign In instead &rarr;</a>');
@@ -859,12 +960,13 @@
     const email=_siEmail||document.getElementById('si_email').value.trim().toLowerCase(),password=document.getElementById('si_password').value;
     if(!email||!password){showAuthError('signinError','Please enter email and password.');return;}
     setLoading('signinBtn',true);
-    try{const res=await fetch('/intern/login',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'include',body:JSON.stringify({email,password,visitor_id:_visitorId})});const data=await res.json();if(data.status==='success'){osLogin(email);showToast('Login successful! Redirecting...','success');setTimeout(()=>{window.location.href=data.redirect||'/profile';},800);}else{showAuthError('signinError',data.message||'Invalid credentials.');setLoading('signinBtn',false);document.getElementById('si_password').value='';}}catch(e){showAuthError('signinError','Network error. Please try again.');setLoading('signinBtn',false);}
+    const nextDest = new URLSearchParams(window.location.search).get('next') || '';
+    try{const res=await fetch('/intern/login',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'include',body:JSON.stringify({email,password,visitor_id:_visitorId,next:nextDest})});const data=await res.json();if(data.status==='success'){osLogin(email);showToast('Login successful! Redirecting...','success');setTimeout(()=>{window.location.href=data.redirect||'/profile';},800);}else{showAuthError('signinError',data.message||'Invalid credentials.');setLoading('signinBtn',false);document.getElementById('si_password').value='';}}catch(e){showAuthError('signinError','Network error. Please try again.');setLoading('signinBtn',false);}
   }
 
   function initVisitTracking(){let vc=parseInt(getCookie('dbert_vc')||'0')+1;setCookie('dbert_vc',vc,60);if(vc>1)setCookie('dbert_rv','1',60);setTimeout(async()=>{try{await fetch('/track-visit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({visitor_id:_visitorId,user_agent:navigator.userAgent,screen_res:screen.width+'x'+screen.height,timezone:Intl.DateTimeFormat().resolvedOptions().timeZone,language:navigator.language,device_type:window.innerWidth>768?'desktop':'mobile',referrer:document.referrer,is_return_visit:getCookie('dbert_rv')==='1',visit_count:vc,time_on_page:Math.floor((Date.now()-_pageLoadTime)/1000),path:window.location.pathname})});}catch(e){}},3000);}
 
-  function handleHash(){const h=window.location.hash;if(h==='#signup')showAuthOverlay('signup');else if(h==='#signin')showAuthOverlay('signin');}
+  function handleHash(){const h=window.location.hash.split('?')[0];if(h==='#signup')showAuthOverlay('signup');else if(h==='#signin')showAuthOverlay('signin');}
   window.addEventListener('hashchange',handleHash);
 
   // T1: the homepage is a discovery portal interns can browse while signed in, so a logged-in
@@ -873,6 +975,16 @@
     try{await fetch('/logout',{method:'POST',credentials:'include'});}catch(e){}
     window.location.href='/';
   }
+
+  function updateWhyCount(){
+    const el=document.getElementById('su_why');
+    const cnt=document.getElementById('whyCount');
+    if(!el||!cnt) return;
+    const len=el.value.length;
+    cnt.textContent=len+' / 80 min';
+    cnt.style.color=len>=80?'#16A34A':'#D97706';
+  }
+
   async function initNav(){
     try{
       const r=await fetch('/intern/me',{credentials:'include'});
@@ -884,6 +996,58 @@
       }
     }catch(e){}
   }
+
+  // Focus Trapping and Accessibility for Modals
+  document.addEventListener('keydown', e => {
+    const modal = document.getElementById('forgotOverlay');
+    if (!modal || !modal.classList.contains('active')) return;
+
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      closeForgotModal();
+      return;
+    }
+
+    if (e.key === 'Tab') {
+      const focusables = Array.from(modal.querySelectorAll(
+        'button:not([disabled]), input:not([disabled]):not([type="hidden"]), a[href], [tabindex]:not([tabindex="-1"])'
+      ));
+      if (focusables.length === 0) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+
+      if (e.shiftKey && document.activeElement === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && document.activeElement === last) {
+        e.preventDefault();
+        first.focus();
+      }
+    }
+  });
+
+  // CRITICAL: Expose all action handlers to window so csp-actions.js dispatches them
+  window.openForgotModal = openForgotModal;
+  window.closeForgotModal = closeForgotModal;
+  window.submitForgot = submitForgot;
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
+  document.addEventListener('click', e => {
+    const nav = document.getElementById('navLinks');
+    const btn = document.getElementById('hamburgerBtn');
+    if (nav && nav.classList.contains('open')) {
+      if (!nav.contains(e.target) && !btn?.contains(e.target)) closeMenu();
+    }
+  });
+  window.toggleMenu = toggleMenu;
+  window.closeMenu = closeMenu;
+  window.toggleFAQ = toggleFAQ;
+  window.scrollToId = scrollToId;
+  window.updateWhyCount = updateWhyCount;
+  window.resetSiFlow = resetSiFlow;
+  window.doEmailCheck = doEmailCheck;
+  window.doSetPassword = doSetPassword;
+  window.doSignin = doSignin;
+  window.doSignOut = doSignOut;
 
   document.addEventListener('DOMContentLoaded',()=>{
     initNav();

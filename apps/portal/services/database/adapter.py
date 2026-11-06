@@ -187,11 +187,19 @@ def translate_sql(sql: str, target_dialect: str = "postgres", auto_returning: bo
         return _convert_format_to_qmark(sql)
 
     # Dialect is PostgreSQL
+    # 0. Translate SQLite DDL AUTOINCREMENT to PostgreSQL SERIAL
+    translated = re.sub(
+        r"\bINTEGER\s+PRIMARY\s+KEY\s+AUTOINCREMENT\b",
+        "SERIAL PRIMARY KEY",
+        sql,
+        flags=re.IGNORECASE,
+    )
+
     # 1. Translate date/time functions
     translated = re.sub(
         r"datetime\s*\(\s*['\"]now['\"]\s*,\s*['\"]localtime['\"]\s*\)",
         "to_char(CURRENT_TIMESTAMP, 'YYYY-MM-DD HH24:MI:SS')",
-        sql,
+        translated,
         flags=re.IGNORECASE,
     )
     translated = re.sub(

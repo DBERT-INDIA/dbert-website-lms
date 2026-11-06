@@ -43,7 +43,7 @@ class Settings(BaseSettings):
     RAZORPAY_KEY_SECRET: str = os.environ.get("RAZORPAY_KEY_SECRET", "")
     UPI_ID: str = os.environ.get("UPI_ID", "Q681021429@ybl")
     UPI_AMOUNT: int = int(os.environ.get("UPI_AMOUNT", "499"))
-    PAID_PROGRAM_AMOUNT: int = int(os.environ.get("PAID_PROGRAM_AMOUNT", "1599"))
+    PAID_PROGRAM_AMOUNT: int = int(os.environ.get("PAID_PROGRAM_AMOUNT", "1999"))
     
     # Google Gemini AI
     GEMINI_API_KEY: str = os.environ.get("GEMINI_API_KEY", "")
@@ -62,11 +62,11 @@ class Settings(BaseSettings):
     
     # Email
     EMAIL_PROVIDER: str = os.environ.get("EMAIL_PROVIDER", "smtp")
-    SMTP_HOST: str = os.environ.get("SMTP_HOST", "dbert.online")
+    SMTP_HOST: str = os.environ.get("SMTP_HOST", "dbert.in")
     SMTP_PORT: int = int(os.environ.get("SMTP_PORT", "465"))
-    SMTP_USER: str = os.environ.get("SMTP_USER", "contactus@dbert.online")
+    SMTP_USER: str = os.environ.get("SMTP_USER", "contactus@dbert.in")
     SMTP_PASS: str = os.environ.get("SMTP_PASS", "")
-    FROM_EMAIL: str = os.environ.get("FROM_EMAIL", "contactus@dbert.online")
+    FROM_EMAIL: str = os.environ.get("FROM_EMAIL", "contactus@dbert.in")
     FROM_NAME: str = os.environ.get("FROM_NAME", "DBERT Support")
     SMTP_BACKUP_HOST: str = os.environ.get("SMTP_BACKUP_HOST", "dbert.info")
     SMTP_BACKUP_PORT: int = int(os.environ.get("SMTP_BACKUP_PORT", "465"))
@@ -102,9 +102,9 @@ class Settings(BaseSettings):
     RL_APPLY_IP_WINDOW: int = int(os.environ.get("RL_APPLY_IP_WINDOW", "3600"))
     
     # SEO & Analytics
-    GA4_ID: str = os.environ.get("GA4_ID", "G-GZ17KZ7MDW")
+    GA4_ID: str = os.environ.get("GA4_ID", "G-MN7ME9X518")
     GA4_API_SECRET: str = os.environ.get("GA4_API_SECRET", "")
-    SITE_ORIGIN: str = os.environ.get("SITE_ORIGIN", "https://internship.dbert.online")
+    SITE_ORIGIN: str = os.environ.get("SITE_ORIGIN", "https://lms.dbert.in")
     ADSENSE_PUB_ID: str = os.environ.get("ADSENSE_PUB_ID", "pub-1320532532258767")
     OG_IMAGE_URL: str = os.environ.get("OG_IMAGE_URL", "")
     LOGO_URL: str = os.environ.get("LOGO_URL", "")

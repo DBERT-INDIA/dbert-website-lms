@@ -15,6 +15,8 @@ def dispatch_event(event_type: str, payload: Dict[str, Any]) -> bool:
             notify_course_payment_verified,
             send_paid_payment_rejected_email,
             notify_cert_issued,
+            notify_task_reviewed_email,
+            notify_mentor_assigned_email,
             app_logger,
             send_email_async
         )
@@ -56,16 +58,13 @@ def dispatch_event(event_type: str, payload: Dict[str, Any]) -> bool:
             notify_cert_issued(name, email, payload.get("title", domain), cert_url)
             
         elif event_type == "task.reviewed":
-            decision = payload.get("decision", "reviewed")
+            decision = payload.get("decision") or payload.get("status") or "reviewed"
             coins = payload.get("coins_awarded", 0)
-            subject = f"DBERT Task Update: {decision.title()}"
-            body = f"<p>Your task submission was <b>{decision}</b>. You were awarded {coins} coins.</p>"
-            send_email_async(email, subject, body, name)
+            feedback = payload.get("feedback", "")
+            notify_task_reviewed_email(name, email, decision, coins, feedback)
             
         elif event_type == "mentor.assigned":
-            subject = "A Mentor has been assigned to your internship!"
-            body = f"<p>A mentor has been assigned for your {domain} track. Check your portal for details!</p>"
-            send_email_async(email, subject, body, name)
+            notify_mentor_assigned_email(name, email, domain)
             
         else:
             app_logger.info(f"No specific handler for event {event_type}, marking as processed.")

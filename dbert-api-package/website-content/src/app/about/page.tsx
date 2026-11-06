@@ -188,6 +188,7 @@ export default function AboutPage() {
               <Link href="/about/team" className="btn btn-outline btn-sm">Inspect Team &amp; Mentors</Link>
               <Link href="/about/credentials" className="btn btn-outline btn-sm">Audit MSME Credentials</Link>
               <Link href="/verify" className="accent-link text-sm font-medium">Verify Certificate ID &rarr;</Link>
+              <Link href="/dbert-online" className="accent-link text-sm font-medium">dbert.online Migration Notice &rarr;</Link>
             </div>
           </div>
         </div>

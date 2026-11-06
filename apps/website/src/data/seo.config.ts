@@ -28,6 +28,12 @@ export type SeoEntry = {
 
 export const seoConfig: Record<string, SeoEntry> = {
   // ── Core ────────────────────────────────────────────────────────────────
+  '/dbert-online': {
+    keyword: 'dbert.online',
+    title: 'DBERT.online is Now DBERT.in — Domain Migration',
+    description:
+      'Official notice: DBERT.online is now DBERT.in. Discover our verified venture incubation, LMS portal, AI careers, and certificate verification on dbert.in.',
+  },
     '/blog/reader': {
     keyword: '',
     title: 'Technical Publication',

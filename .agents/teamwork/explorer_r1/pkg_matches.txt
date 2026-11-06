@@ -1,0 +1,394 @@
+dbert-api-package\.env.example:45:SMTP_HOST=dbert.online
+dbert-api-package\.env.example:47:SMTP_USER=contactus@dbert.online
+dbert-api-package\.env.example:49:FROM_EMAIL=contactus@dbert.online
+dbert-api-package\.env.production.sample:18:CORS_ORIGINS=https://dbert.online,https://internship.dbert.online
+dbert-api-package\.env.production.sample:33:SMTP_HOST=dbert.online
+dbert-api-package\.env.production.sample:35:SMTP_USER=contactus@dbert.online
+dbert-api-package\.env.production.sample:37:FROM_EMAIL=contactus@dbert.online
+dbert-api-package\backend\api\v1\auth\router.py:152:token_data = {"sub": "admin", "email": f"{settings.ADMIN_USERNAME}@dbert.online", "role": "admin", "name": "DBERT Administrator"}
+dbert-api-package\backend\api\v1\auth\router.py:160:user={"id": "admin", "email": f"{settings.ADMIN_USERNAME}@dbert.online", "name": "DBERT Administrator", "role": "admin"}
+dbert-api-package\backend\core\config.py:65:SMTP_HOST: str = os.environ.get("SMTP_HOST", "dbert.online")
+dbert-api-package\backend\core\config.py:67:SMTP_USER: str = os.environ.get("SMTP_USER", "contactus@dbert.online")
+dbert-api-package\backend\core\config.py:69:FROM_EMAIL: str = os.environ.get("FROM_EMAIL", "contactus@dbert.online")
+dbert-api-package\backend\core\config.py:107:SITE_ORIGIN: str = os.environ.get("SITE_ORIGIN", "https://internship.dbert.online")
+dbert-api-package\docs\env_vars.md:30:| `FROM_EMAIL` | `contactus@dbert.online` | NO | Environment configuration parameter |
+dbert-api-package\docs\env_vars.md:65:| `SITE_ORIGIN` | `https://internship.dbert.online` | NO | Environment configuration parameter |
+dbert-api-package\docs\env_vars.md:70:| `SMTP_HOST` | `dbert.online` | NO | Environment configuration parameter |
+dbert-api-package\docs\env_vars.md:73:| `SMTP_USER` | `contactus@dbert.online` | NO | Environment configuration parameter |
+dbert-api-package\docs\integrations.md:47:- **Primary Host**: `SMTP_HOST` (`dbert.online`), port 465 (SSL).
+dbert-api-package\website-content\public\.htaccess:15:# 1.1 Redirect /jobs and /internships to internship.dbert.online subdomain
+dbert-api-package\website-content\public\.htaccess:17:RewriteRule ^jobs/?$ https://internship.dbert.online/jobs [L,R=301]
+dbert-api-package\website-content\public\.htaccess:20:RewriteRule ^internships/?(.*)$ https://internship.dbert.online/internships/$1 [L,R=301]
+dbert-api-package\website-content\public\ads.txt:1:# Google AdSense Publisher Declaration for dbert.online
+dbert-api-package\website-content\src\app\layout.tsx:51:metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.online'),
+dbert-api-package\website-content\src\app\layout.tsx:103:"url": process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.online',
+dbert-api-package\website-content\src\app\layout.tsx:104:"logo": `${process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.online'}/logo.svg`,
+dbert-api-package\website-content\src\app\layout.tsx:124:"email": "contactus@dbert.online",
+dbert-api-package\website-content\src\app\robots.ts:5:const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.online';
+dbert-api-package\website-content\src\app\sitemap.ts:7:* High-authority dynamic sitemap generator for dbert.online
+dbert-api-package\website-content\src\app\sitemap.ts:11:const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.online';
+dbert-api-package\website-content\src\app\about\careers\page.tsx:52:<a href="mailto:contactus@dbert.online" className="btn btn-outline">Submit Your Portfolio</a>
+dbert-api-package\website-content\src\app\about\contact\page.tsx:37:<p><a href="mailto:contactus@dbert.online" className={styles.accentLink}>contactus@dbert.online</a></p>
+dbert-api-package\website-content\src\app\ai-consultant\page.tsx:44:url: 'https://dbert.online'
+dbert-api-package\website-content\src\app\ai-solutions\page.tsx:53:url: 'https://dbert.online'
+dbert-api-package\website-content\src\app\ai-solutions\page.tsx:60:url: 'https://dbert.online/ai-solutions'
+dbert-api-package\website-content\src\app\ai-solutions\consultation\page.tsx:52:url: 'https://dbert.online'
+dbert-api-package\website-content\src\app\ai-solutions\llm-training\page.tsx:45:url: 'https://dbert.online'
+dbert-api-package\website-content\src\app\ai-solutions\llm-training\dbert-ai\page.tsx:52:url: 'https://dbert.online'
+dbert-api-package\website-content\src\app\ai-solutions\llm-training\pipeline\page.tsx:55:url: 'https://dbert.online'
+dbert-api-package\website-content\src\app\ai-solutions\llm-training\private-hosting\page.tsx:43:url: 'https://dbert.online'
+dbert-api-package\website-content\src\app\ai-solutions\llm-training\private-hosting\page.tsx:50:url: 'https://dbert.online/ai-solutions/llm-training/private-hosting'
+dbert-api-package\website-content\src\app\ai-solutions\products\page.tsx:79:url: 'https://dbert.online/ai-solutions/products',
+dbert-api-package\website-content\src\app\ai-solutions\products\page.tsx:85:url: `https://dbert.online/ai-solutions/products/${p.slug}`,
+dbert-api-package\website-content\src\app\ai-solutions\products\certificate-verification-api\page.tsx:48:url: 'https://dbert.online'
+dbert-api-package\website-content\src\app\ai-solutions\products\certificate-verification-api\page.tsx:56:url: 'https://dbert.online/ai-solutions/products/certificate-verification-api'
+dbert-api-package\website-content\src\app\ai-solutions\products\certificate-verification-api\page.tsx:122:{`curl -X GET "https://api.dbert.online/v1/verify?certId=DBERT-ENG-2026-8894" \\
+dbert-api-package\website-content\src\app\ai-solutions\products\dbert-chat\page.tsx:48:url: 'https://dbert.online'
+dbert-api-package\website-content\src\app\ai-solutions\products\dbert-chat\page.tsx:56:url: 'https://dbert.online/ai-solutions/products/dbert-chat'
+dbert-api-package\website-content\src\app\ai-solutions\products\dbert-chat\page.tsx:133:{`curl -X POST "https://api.dbert.online/v1/chat" \\
+dbert-api-package\website-content\src\app\ai-solutions\products\document-ai\page.tsx:48:url: 'https://dbert.online'
+dbert-api-package\website-content\src\app\ai-solutions\products\document-ai\page.tsx:56:url: 'https://dbert.online/ai-solutions/products/document-ai'
+dbert-api-package\website-content\src\app\ai-solutions\products\document-ai\page.tsx:122:{`curl -X POST "https://api.dbert.online/v1/extract" \\
+dbert-api-package\website-content\src\app\ai-solutions\products\document-ai\page.tsx:126:"document_url": "https://secure-storage.dbert.online/client_invoices/inv_9981.pdf",
+dbert-api-package\website-content\src\app\ai-solutions\products\hiring-automation-suite\page.tsx:48:url: 'https://dbert.online'
+dbert-api-package\website-content\src\app\ai-solutions\products\hiring-automation-suite\page.tsx:56:url: 'https://dbert.online/ai-solutions/products/hiring-automation-suite'
+dbert-api-package\website-content\src\app\ai-solutions\products\intern-management-system\page.tsx:48:url: 'https://dbert.online'
+dbert-api-package\website-content\src\app\ai-solutions\products\intern-management-system\page.tsx:56:url: 'https://dbert.online/ai-solutions/products/intern-management-system'
+dbert-api-package\website-content\src\app\cohorts\aivara\page.tsx:144:<li><strong>Independent Credential Verification:</strong> Earn an accredited experience letter with a unique SHA-256 validation ID checkable on <code>dbert.online/verify</code>.</li>
+dbert-api-package\website-content\src\app\hire\pre-vetted-engineers\page.tsx:88:url: 'https://dbert.online'
+dbert-api-package\website-content\src\app\learners\page.tsx:26:'Yes. If you already possess intermediate Python competence, Git command line fluency, and basic familiarity with data parsing, you can bypass Launchpad and enter Accelerate directly. Similarly, self-taught engineers can skip courses entirely by passing our rigorous external code screening challenge at internship.dbert.online.'
+dbert-api-package\website-content\src\app\learners\page.tsx:36:'Every completion certificate and professional fellowship recommendation letter carries a secure cryptographic credential ID. Hiring managers and HR departments enter this ID directly at dbert.online/verify to inspect verified project deliverables without waiting for manual email confirmation.'
+dbert-api-package\website-content\src\app\learners\page.tsx:56:url: 'https://dbert.online/learners/launchpad',
+dbert-api-package\website-content\src\app\learners\page.tsx:62:url: 'https://dbert.online/learners/accelerate',
+dbert-api-package\website-content\src\app\learners\page.tsx:68:url: 'https://dbert.online/learners/fellowship',
+dbert-api-package\website-content\src\app\learners\page.tsx:74:url: 'https://dbert.online/learners/jobs',
+dbert-api-package\website-content\src\app\learners\page.tsx:123:ctaHref: 'https://internship.dbert.online/',
+dbert-api-package\website-content\src\app\learners\page.tsx:204:href: 'https://internship.dbert.online/',
+dbert-api-package\website-content\src\app\learners\page.tsx:235:<a href="https://internship.dbert.online/" target="_blank" rel="noopener noreferrer" className="btn btn-outline">
+dbert-api-package\website-content\src\app\learners\page.tsx:408:<a href="https://internship.dbert.online/" target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-sm">Open Career Portal ↗</a>
+dbert-api-package\website-content\src\app\learners\courses\page.tsx:22:url: 'https://dbert.online/learners/courses/ai-agent-development',
+dbert-api-package\website-content\src\app\learners\courses\page.tsx:23:provider: { '@type': 'Organization', name: 'DBERT', url: 'https://dbert.online' },
+dbert-api-package\website-content\src\app\learners\courses\page.tsx:30:url: 'https://dbert.online/learners/courses/generative-ai',
+dbert-api-package\website-content\src\app\learners\courses\page.tsx:31:provider: { '@type': 'Organization', name: 'DBERT', url: 'https://dbert.online' },
+dbert-api-package\website-content\src\app\learners\courses\page.tsx:38:url: 'https://dbert.online/learners/courses/machine-learning',
+dbert-api-package\website-content\src\app\learners\courses\page.tsx:39:provider: { '@type': 'Organization', name: 'DBERT', url: 'https://dbert.online' },
+dbert-api-package\website-content\src\app\learners\courses\page.tsx:46:url: 'https://dbert.online/learners/courses/python-automation',
+dbert-api-package\website-content\src\app\learners\courses\page.tsx:47:provider: { '@type': 'Organization', name: 'DBERT', url: 'https://dbert.online' },
+dbert-api-package\website-content\src\app\learners\courses\page.tsx:54:url: 'https://dbert.online/learners/courses/full-stack-development',
+dbert-api-package\website-content\src\app\learners\courses\page.tsx:55:provider: { '@type': 'Organization', name: 'DBERT', url: 'https://dbert.online' },
+dbert-api-package\website-content\src\app\learners\courses\page.tsx:62:url: 'https://dbert.online/learners/courses/data-analytics',
+dbert-api-package\website-content\src\app\learners\courses\page.tsx:63:provider: { '@type': 'Organization', name: 'DBERT', url: 'https://dbert.online' },
+dbert-api-package\website-content\src\app\learners\courses\page.tsx:197:href="https://internship.dbert.online/"
+dbert-api-package\website-content\src\app\learners\courses\page.tsx:208:href="https://internship.dbert.online/internships/full-stack-development"
+dbert-api-package\website-content\src\app\learners\courses\page.tsx:217:href="https://internship.dbert.online/internships/data-analyst"
+dbert-api-package\website-content\src\app\learners\courses\page.tsx:226:href="https://internship.dbert.online/internships/python-automation"
+dbert-api-package\website-content\src\app\learners\courses\page.tsx:235:href="https://internship.dbert.online/internships/ai-agent-development"
+dbert-api-package\website-content\src\app\learners\courses\ai-agent-development\page.tsx:23:answer: 'Yes. Every issued engineering credential contains a unique cryptographic validation UUID that HR managers and technical team leads can verify instantly by accessing our open institutional portal at dbert.online/verify.'
+dbert-api-package\website-content\src\app\learners\courses\ai-agent-development\page.tsx:45:url: 'https://dbert.online'
+dbert-api-package\website-content\src\app\learners\courses\ai-agent-development\page.tsx:57:url: 'https://dbert.online/learners/courses/ai-agent-development'
+dbert-api-package\website-content\src\app\learners\courses\ai-agent-development\page.tsx:271:hubHref="https://internship.dbert.online/internships/ai-agent-development"
+dbert-api-package\website-content\src\app\learners\courses\ai-agent-development\page.tsx:272:jobsHref="https://internship.dbert.online/jobs/ai-agent-development"
+dbert-api-package\website-content\src\app\learners\courses\ai-agent-development\page.tsx:280:href: 'https://internship.dbert.online/internships/ai-sales-assistant-bot-intern-mumbai-remote-14',
+dbert-api-package\website-content\src\app\learners\courses\ai-agent-development\page.tsx:289:href: 'https://internship.dbert.online/internships/ai-workflow-automation-intern-bangalore-remote-10',
+dbert-api-package\website-content\src\app\learners\courses\ai-agent-development\page.tsx:298:href: 'https://internship.dbert.online/internships/agentic-search-systems-intern-delhi-ncr-remote-11',
+dbert-api-package\website-content\src\app\learners\courses\ai-agent-development\page.tsx:307:href: 'https://internship.dbert.online/internships/ai-coding-assistant-intern-hyderabad-remote-12',
+dbert-api-package\website-content\src\app\learners\courses\ai-agent-development\page.tsx:316:href: 'https://internship.dbert.online/internships/knowledge-base-rag-agent-intern-pune-remote-13',
+dbert-api-package\website-content\src\app\learners\courses\ai-agent-development\page.tsx:325:href: 'https://internship.dbert.online/internships/rag-pipeline-engineering-intern-remote-1',
+dbert-api-package\website-content\src\app\learners\courses\data-analytics\page.tsx:23:answer: 'Yes. Upon submitting validated database queries and dashboard repositories to our review faculty, your completed certificate is inscribed into our public verification portal at dbert.online/verify, enabling instant cryptographic HR checks.'
+dbert-api-package\website-content\src\app\learners\courses\data-analytics\page.tsx:45:url: 'https://dbert.online'
+dbert-api-package\website-content\src\app\learners\courses\data-analytics\page.tsx:57:url: 'https://dbert.online/learners/courses/data-analytics'
+dbert-api-package\website-content\src\app\learners\courses\data-analytics\page.tsx:342:hubHref="https://internship.dbert.online/internships/data-analyst"
+dbert-api-package\website-content\src\app\learners\courses\data-analytics\page.tsx:343:jobsHref="https://internship.dbert.online/jobs/data-analyst"
+dbert-api-package\website-content\src\app\learners\courses\data-analytics\page.tsx:351:href: 'https://internship.dbert.online/internships/survey-research-data-intern-mumbai-remote-32',
+dbert-api-package\website-content\src\app\learners\courses\data-analytics\page.tsx:360:href: 'https://internship.dbert.online/internships/operations-data-analyst-intern-bangalore-remote-28',
+dbert-api-package\website-content\src\app\learners\courses\data-analytics\page.tsx:369:href: 'https://internship.dbert.online/internships/customer-insights-analyst-delhi-ncr-remote-29',
+dbert-api-package\website-content\src\app\learners\courses\data-analytics\page.tsx:378:href: 'https://internship.dbert.online/internships/data-cleaning-etl-intern-hyderabad-remote-30',
+dbert-api-package\website-content\src\app\learners\courses\data-analytics\page.tsx:387:href: 'https://internship.dbert.online/internships/excel-reporting-automation-intern-pune-remote-31',
+dbert-api-package\website-content\src\app\learners\courses\data-analytics\page.tsx:396:href: 'https://internship.dbert.online/internships/power-bi-dashboard-intern-remote-21',
+dbert-api-package\website-content\src\app\learners\courses\full-stack-development\page.tsx:27:answer: 'Upon satisfactory completion of all repository pull requests and live technical interviews, your verified graduation credentials and project links are logged into our public authentication registry at dbert.online/verify, eliminating verification friction during enterprise hiring audits.'
+dbert-api-package\website-content\src\app\learners\courses\full-stack-development\page.tsx:45:url: 'https://dbert.online'
+dbert-api-package\website-content\src\app\learners\courses\full-stack-development\page.tsx:57:url: 'https://dbert.online/learners/courses/full-stack-development'
+dbert-api-package\website-content\src\app\learners\courses\full-stack-development\page.tsx:271:hubHref="https://internship.dbert.online/internships/full-stack-development"
+dbert-api-package\website-content\src\app\learners\courses\full-stack-development\page.tsx:272:jobsHref="https://internship.dbert.online/jobs/full-stack-development"
+dbert-api-package\website-content\src\app\learners\courses\full-stack-development\page.tsx:280:href: 'https://internship.dbert.online/internships/booking-system-development-intern-mumbai-remote-50',
+dbert-api-package\website-content\src\app\learners\courses\full-stack-development\page.tsx:289:href: 'https://internship.dbert.online/internships/saas-feature-development-intern-bangalore-remote-46',
+dbert-api-package\website-content\src\app\learners\courses\full-stack-development\page.tsx:298:href: 'https://internship.dbert.online/internships/authentication-security-intern-delhi-ncr-remote-47',
+dbert-api-package\website-content\src\app\learners\courses\full-stack-development\page.tsx:307:href: 'https://internship.dbert.online/internships/progressive-web-app-intern-pune-remote-49',
+dbert-api-package\website-content\src\app\learners\courses\full-stack-development\page.tsx:316:href: 'https://internship.dbert.online/internships/react-frontend-development-intern-remote-37',
+dbert-api-package\website-content\src\app\learners\courses\full-stack-development\page.tsx:325:href: 'https://internship.dbert.online/internships/internal-tools-development-intern-hyderabad-remote-48',
+dbert-api-package\website-content\src\app\learners\courses\generative-ai\page.tsx:26:answer: 'Every credential issued by DBERT Labs contains a cryptographically signed UUID that HR managers and tech recruiters can verify in real-time at dbert.online/verify.'
+dbert-api-package\website-content\src\app\learners\courses\generative-ai\page.tsx:44:url: 'https://dbert.online'
+dbert-api-package\website-content\src\app\learners\courses\generative-ai\page.tsx:56:url: 'https://dbert.online/learners/courses/generative-ai'
+dbert-api-package\website-content\src\app\learners\courses\machine-learning\page.tsx:30:answer: 'Graduates receive a cryptographically verified credential serial number that recruiters can audit instantly at dbert.online/verify, coupled with verifiable Git commits.'
+dbert-api-package\website-content\src\app\learners\courses\machine-learning\page.tsx:44:url: 'https://dbert.online'
+dbert-api-package\website-content\src\app\learners\courses\machine-learning\page.tsx:56:url: 'https://dbert.online/learners/courses/machine-learning'
+dbert-api-package\website-content\src\app\learners\courses\python-automation\page.tsx:27:answer: 'Upon passing our technical code review milestones, your completion certificate is entered directly into our global institutional validation database. Employers can inspect your credential authenticity directly by inputting your unique serial code at dbert.online/verify.'
+dbert-api-package\website-content\src\app\learners\courses\python-automation\page.tsx:45:url: 'https://dbert.online'
+dbert-api-package\website-content\src\app\learners\courses\python-automation\page.tsx:57:url: 'https://dbert.online/learners/courses/python-automation'
+dbert-api-package\website-content\src\app\learners\courses\python-automation\page.tsx:271:hubHref="https://internship.dbert.online/internships/python-automation"
+dbert-api-package\website-content\src\app\learners\courses\python-automation\page.tsx:272:jobsHref="https://internship.dbert.online/jobs/python-automation"
+dbert-api-package\website-content\src\app\learners\courses\python-automation\page.tsx:280:href: 'https://internship.dbert.online/internships/qa-automation-intern-mumbai-remote-68',
+dbert-api-package\website-content\src\app\learners\courses\python-automation\page.tsx:289:href: 'https://internship.dbert.online/internships/lead-generation-automation-intern-bangalore-remote-64',
+dbert-api-package\website-content\src\app\learners\courses\python-automation\page.tsx:298:href: 'https://internship.dbert.online/internships/price-monitoring-automation-intern-delhi-ncr-remote-65',
+dbert-api-package\website-content\src\app\learners\courses\python-automation\page.tsx:307:href: 'https://internship.dbert.online/internships/document-processing-automation-intern-hyderabad-remote-66',
+dbert-api-package\website-content\src\app\learners\courses\python-automation\page.tsx:316:href: 'https://internship.dbert.online/internships/social-media-automation-intern-pune-remote-67',
+dbert-api-package\website-content\src\app\learners\courses\python-automation\page.tsx:325:href: 'https://internship.dbert.online/internships/web-scraping-intern-remote-55',
+dbert-api-package\website-content\src\app\learners\fellowship\page.tsx:49:'No, and you should be sceptical of any programme in India that does. What we actually provide is a verifiable record: an experience letter signed by the engineers who reviewed your code, a certificate ID anyone can check at dbert.online/verify, and commits on a real client repository. Partner startups review fellow performance logs when they hire, so the pipeline is real, but a referral is not an offer and we will not describe it as one.',
+dbert-api-package\website-content\src\app\learners\fellowship\page.tsx:69:'Two ways. It names the engineer who reviewed your work and the system you contributed to, rather than certifying attendance; and it carries a certificate ID that a recruiter can verify independently at dbert.online/verify without contacting us. A letter nobody can check is worth roughly what it costs to print.',
+dbert-api-package\website-content\src\app\learners\fellowship\page.tsx:74:'Applications run through the DBERT internship platform at internship.dbert.online. The application asks for your code — a repository, a deployed project, or your screening submission — rather than a CV of coursework, because that is what the selection is actually based on.',
+dbert-api-package\website-content\src\app\learners\fellowship\page.tsx:89:url: 'https://dbert.online',
+dbert-api-package\website-content\src\app\learners\fellowship\page.tsx:91:url: 'https://dbert.online/learners/fellowship',
+dbert-api-package\website-content\src\app\learners\fellowship\page.tsx:103:url: 'https://internship.dbert.online/',
+dbert-api-package\website-content\src\app\learners\fellowship\page.tsx:393:href="https://internship.dbert.online/"
+dbert-api-package\website-content\src\app\learners\jobs\page.tsx:100:<a href="https://internship.dbert.online/" target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-sm">Apply via Portal</a>
+dbert-api-package\website-content\src\app\learners\jobs\page.tsx:116:<a href="https://internship.dbert.online/" target="_blank" rel="noopener noreferrer" className="btn btn-outline btn-lg">Apply for Internship Track</a>
+dbert-api-package\website-content\src\app\pricing\page.tsx:45:url: 'https://dbert.online/pricing'
+dbert-api-package\website-content\src\app\privacy\page.tsx:31:At DBERT (Digital Blinc Education Research And Technology, registered MSME entity UDYAM-UP-28-0105315), we prioritize data privacy and operational security across our website (<code>dbert.online</code>), learning platforms, and verification registries.
+dbert-api-package\website-content\src\app\privacy\page.tsx:51:<strong>Google AdSense &amp; DoubleClick Cookie:</strong> Google, as a third-party vendor, uses cookies to serve ads on <code>dbert.online</code>. Google&apos;s use of advertising cookies enables it and its partners to serve ads to users based on their visits to our site and/or other sites on the Internet.
+dbert-api-package\website-content\src\app\refund\page.tsx:55:If you have any questions regarding enrollment details, transaction records, or credential issuance, our support staff is available at <a href="mailto:contactus@dbert.online" className="accent-link">contactus@dbert.online</a>.
+dbert-api-package\website-content\src\app\startups\page.tsx:58:url: 'https://dbert.online'
+dbert-api-package\website-content\src\app\startups\page.tsx:65:url: 'https://dbert.online/startups'
+dbert-api-package\website-content\src\app\startups\investor-network\page.tsx:46:url: 'https://dbert.online'
+dbert-api-package\website-content\src\app\startups\services\page.tsx:96:url: 'https://dbert.online'
+dbert-api-package\website-content\src\app\startups\services\equity\page.tsx:51:url: 'https://dbert.online'
+dbert-api-package\website-content\src\app\startups\services\equity\page.tsx:59:url: 'https://dbert.online/startups/services/equity'
+dbert-api-package\website-content\src\app\startups\services\equity\term-sheets\page.tsx:47:url: 'https://dbert.online'
+dbert-api-package\website-content\src\app\startups\services\equity\term-sheets\page.tsx:54:url: 'https://dbert.online/startups/services/equity/term-sheets'
+dbert-api-package\website-content\src\app\startups\services\funding\page.tsx:51:url: 'https://dbert.online'
+dbert-api-package\website-content\src\app\startups\services\funding\page.tsx:59:url: 'https://dbert.online/startups/services/funding'
+dbert-api-package\website-content\src\app\startups\services\hiring\page.tsx:53:url: 'https://dbert.online'
+dbert-api-package\website-content\src\app\startups\services\hiring\page.tsx:61:url: 'https://dbert.online/startups/services/hiring'
+dbert-api-package\website-content\src\app\startups\services\infrastructure\page.tsx:51:url: 'https://dbert.online'
+dbert-api-package\website-content\src\app\startups\services\infrastructure\page.tsx:59:url: 'https://dbert.online/startups/services/infrastructure'
+dbert-api-package\website-content\src\app\startups\services\legal\page.tsx:51:url: 'https://dbert.online'
+dbert-api-package\website-content\src\app\startups\services\legal\page.tsx:59:url: 'https://dbert.online/startups/services/legal'
+dbert-api-package\website-content\src\app\startups\services\technical\page.tsx:52:url: 'https://dbert.online'
+dbert-api-package\website-content\src\app\startups\services\technical\page.tsx:60:url: 'https://dbert.online/startups/services/technical'
+dbert-api-package\website-content\src\components\blog\BlogClientView.tsx:23:const res = await fetch('https://internship.dbert.online/api/public/blog-posts', {
+dbert-api-package\website-content\src\components\blog\DynamicBlogReader.tsx:114:const res = await fetch(`https://internship.dbert.online/api/public/blog-posts/${slug}`);
+dbert-api-package\website-content\src\components\cohorts\AivaraCohortForm.tsx:289:href="https://internship.dbert.online/apply?cohort=aivara"
+dbert-api-package\website-content\src\components\layout\AlkameCaseStudyContent.tsx:374:<a href="https://internship.dbert.online" target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-lg">Apply on internship.dbert.online</a>
+dbert-api-package\website-content\src\components\layout\Footer.tsx:71:{ label: 'Full Stack Internships Mumbai', href: 'https://internship.dbert.online/internships/booking-system-development-intern-mumbai-remote-50', external: true },
+dbert-api-package\website-content\src\components\layout\Footer.tsx:72:{ label: 'Data Analyst Bangalore', href: 'https://internship.dbert.online/internships/operations-data-analyst-intern-bangalore-remote-28', external: true },
+dbert-api-package\website-content\src\components\layout\Footer.tsx:73:{ label: 'AI Agent Roles Delhi NCR', href: 'https://internship.dbert.online/internships/agentic-search-systems-intern-delhi-ncr-remote-11', external: true },
+dbert-api-package\website-content\src\components\layout\Footer.tsx:74:{ label: 'Python Automation Pune', href: 'https://internship.dbert.online/internships/social-media-automation-intern-pune-remote-67', external: true },
+dbert-api-package\website-content\src\components\layout\Footer.tsx:75:{ label: 'Virtual Remote Sprints', href: 'https://internship.dbert.online/internships/virtual-remote-internships', external: true },
+dbert-api-package\website-content\src\components\layout\Footer.tsx:76:{ label: 'Paid Internships With Stipend', href: 'https://internship.dbert.online/internships/paid-internships', external: true },
+dbert-api-package\website-content\src\components\layout\Footer.tsx:77:{ label: 'Job Board & Placement Hub', href: 'https://internship.dbert.online/jobs', external: true },
+dbert-api-package\website-content\src\components\layout\Footer.tsx:105:href="mailto:contactus@dbert.online"
+dbert-api-package\website-content\src\components\layout\Footer.tsx:108:contactus@dbert.online
+dbert-api-package\website-content\src\components\layout\Footer.tsx:184:<a href="https://internship.dbert.online/internships/full-stack-development" target="_blank" rel="noopener noreferrer">Full Stack Internships Mumbai &amp; Bangalore</a>
+dbert-api-package\website-content\src\components\layout\Footer.tsx:186:<a href="https://internship.dbert.online/internships/data-analyst-internship-work-from-home" target="_blank" rel="noopener noreferrer">Data Analyst Work From Home</a>
+dbert-api-package\website-content\src\components\layout\Footer.tsx:188:<a href="https://internship.dbert.online/internships/ai-automation-internship" target="_blank" rel="noopener noreferrer">AI Automation Internships Bangalore</a>
+dbert-api-package\website-content\src\components\layout\Footer.tsx:190:<a href="https://internship.dbert.online/jobs/full-stack-development" target="_blank" rel="noopener noreferrer">Full Stack AI Developer Jobs</a>
+dbert-api-package\website-content\src\components\layout\Footer.tsx:205:<span>© {new Date().getFullYear()} DBERT · dbert.online · All rights reserved</span>
+dbert-api-package\website-content\src\components\layout\ProgramDetailTemplate.tsx:153:"sameAs": "https://dbert.online"
+dbert-api-package\website-content\src\components\seo\ArticleSchema.tsx:12:const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.online';
+dbert-api-package\website-content\src\components\seo\Breadcrumbs.tsx:6:const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.online';
+dbert-api-package\website-content\src\components\ui\MultiStepForm.tsx:160:<input type="email" name="email" required value={formData.email} onChange={handleInputChange} placeholder="you@dbert.online" />
+dbert-api-package\website-content\src\components\ui\RegionalOpportunityBento.module.css:2:Bilateral keyword anchors linking dbert.online -> internship.dbert.online */
+dbert-api-package\website-content\src\content\blog\ai-agent-frameworks-comparison.mdx:143:To master autonomous agent engineering, tool-calling state machines, and local runtime deployment, enroll in the [DBERT AI Agent Development Course](/learners/courses/ai-agent-development) or explore active sprint placements via the [DBERT Career Discovery Portal](https://internship.dbert.online/internships/ai-agent-development).
+dbert-api-package\website-content\src\content\blog\building-scalable-microservices-with-fastapi.mdx:10:canonicalUrl: "https://dbert.online/blog/building-scalable-microservices-with-fastapi"
+dbert-api-package\website-content\src\data\nav.config.json:121:{ "label": "Job Board", "href": "https://internship.dbert.online/jobs", "external": true },
+dbert-api-package\website-content\src\data\nav.config.json:122:{ "label": "Apply for Fellowship", "href": "https://internship.dbert.online/apply", "external": true, "highlight": true }
+dbert-api-package\website-content\src\data\nav.config.json:146:"href": "https://internship.dbert.online/",
+dbert-api-package\website-content\src\lib\email.ts:86:<p>This dual track pairs active cohort sprint participation with structured milestone evaluation and an accredited DBERT experience credential independently verifiable at <code>dbert.online/verify</code>.</p>
+dbert-api-package\website-content\src\lib\email.ts:100:bodyText: `Dear ${name},\n\nCongratulations! You have been Approved for Admission with Certification in the ${cohortName} (${domain} track).\n\nThis track includes hands-on sprints alongside verified engineering certification checkable on dbert.online/verify.${notesText}\n\nOur coordinators will reach out shortly with onboarding details.\n\nWarm regards,\nAivara Technologies Cohort Operations`
+dbert-api-package\website-content\src\lib\seo.ts:4:const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.online';
+scratch\zip_extract_test\dbert-api-package\.env.example:45:SMTP_HOST=dbert.online
+scratch\zip_extract_test\dbert-api-package\.env.example:47:SMTP_USER=contactus@dbert.online
+scratch\zip_extract_test\dbert-api-package\.env.example:49:FROM_EMAIL=contactus@dbert.online
+scratch\zip_extract_test\dbert-api-package\.env.production.sample:18:CORS_ORIGINS=https://dbert.online,https://internship.dbert.online
+scratch\zip_extract_test\dbert-api-package\.env.production.sample:33:SMTP_HOST=dbert.online
+scratch\zip_extract_test\dbert-api-package\.env.production.sample:35:SMTP_USER=contactus@dbert.online
+scratch\zip_extract_test\dbert-api-package\.env.production.sample:37:FROM_EMAIL=contactus@dbert.online
+scratch\zip_extract_test\dbert-api-package\backend\api\v1\auth\router.py:152:token_data = {"sub": "admin", "email": f"{settings.ADMIN_USERNAME}@dbert.online", "role": "admin", "name": "DBERT Administrator"}
+scratch\zip_extract_test\dbert-api-package\backend\api\v1\auth\router.py:160:user={"id": "admin", "email": f"{settings.ADMIN_USERNAME}@dbert.online", "name": "DBERT Administrator", "role": "admin"}
+scratch\zip_extract_test\dbert-api-package\backend\core\config.py:65:SMTP_HOST: str = os.environ.get("SMTP_HOST", "dbert.online")
+scratch\zip_extract_test\dbert-api-package\backend\core\config.py:67:SMTP_USER: str = os.environ.get("SMTP_USER", "contactus@dbert.online")
+scratch\zip_extract_test\dbert-api-package\backend\core\config.py:69:FROM_EMAIL: str = os.environ.get("FROM_EMAIL", "contactus@dbert.online")
+scratch\zip_extract_test\dbert-api-package\backend\core\config.py:107:SITE_ORIGIN: str = os.environ.get("SITE_ORIGIN", "https://internship.dbert.online")
+scratch\zip_extract_test\dbert-api-package\docs\env_vars.md:30:| `FROM_EMAIL` | `contactus@dbert.online` | NO | Environment configuration parameter |
+scratch\zip_extract_test\dbert-api-package\docs\env_vars.md:65:| `SITE_ORIGIN` | `https://internship.dbert.online` | NO | Environment configuration parameter |
+scratch\zip_extract_test\dbert-api-package\docs\env_vars.md:70:| `SMTP_HOST` | `dbert.online` | NO | Environment configuration parameter |
+scratch\zip_extract_test\dbert-api-package\docs\env_vars.md:73:| `SMTP_USER` | `contactus@dbert.online` | NO | Environment configuration parameter |
+scratch\zip_extract_test\dbert-api-package\docs\integrations.md:47:- **Primary Host**: `SMTP_HOST` (`dbert.online`), port 465 (SSL).
+scratch\zip_extract_test\dbert-api-package\website-content\public\.htaccess:15:# 1.1 Redirect /jobs and /internships to internship.dbert.online subdomain
+scratch\zip_extract_test\dbert-api-package\website-content\public\.htaccess:17:RewriteRule ^jobs/?$ https://internship.dbert.online/jobs [L,R=301]
+scratch\zip_extract_test\dbert-api-package\website-content\public\.htaccess:20:RewriteRule ^internships/?(.*)$ https://internship.dbert.online/internships/$1 [L,R=301]
+scratch\zip_extract_test\dbert-api-package\website-content\public\ads.txt:1:# Google AdSense Publisher Declaration for dbert.online
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\layout.tsx:51:metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.online'),
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\layout.tsx:103:"url": process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.online',
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\layout.tsx:104:"logo": `${process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.online'}/logo.svg`,
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\layout.tsx:124:"email": "contactus@dbert.online",
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\robots.ts:5:const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.online';
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\sitemap.ts:7:* High-authority dynamic sitemap generator for dbert.online
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\sitemap.ts:11:const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.online';
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\about\careers\page.tsx:52:<a href="mailto:contactus@dbert.online" className="btn btn-outline">Submit Your Portfolio</a>
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\about\contact\page.tsx:37:<p><a href="mailto:contactus@dbert.online" className={styles.accentLink}>contactus@dbert.online</a></p>
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\ai-consultant\page.tsx:44:url: 'https://dbert.online'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\ai-solutions\page.tsx:53:url: 'https://dbert.online'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\ai-solutions\page.tsx:60:url: 'https://dbert.online/ai-solutions'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\ai-solutions\consultation\page.tsx:52:url: 'https://dbert.online'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\ai-solutions\llm-training\page.tsx:45:url: 'https://dbert.online'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\ai-solutions\llm-training\dbert-ai\page.tsx:52:url: 'https://dbert.online'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\ai-solutions\llm-training\pipeline\page.tsx:55:url: 'https://dbert.online'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\ai-solutions\llm-training\private-hosting\page.tsx:43:url: 'https://dbert.online'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\ai-solutions\llm-training\private-hosting\page.tsx:50:url: 'https://dbert.online/ai-solutions/llm-training/private-hosting'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\ai-solutions\products\page.tsx:79:url: 'https://dbert.online/ai-solutions/products',
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\ai-solutions\products\page.tsx:85:url: `https://dbert.online/ai-solutions/products/${p.slug}`,
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\ai-solutions\products\certificate-verification-api\page.tsx:48:url: 'https://dbert.online'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\ai-solutions\products\certificate-verification-api\page.tsx:56:url: 'https://dbert.online/ai-solutions/products/certificate-verification-api'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\ai-solutions\products\certificate-verification-api\page.tsx:122:{`curl -X GET "https://api.dbert.online/v1/verify?certId=DBERT-ENG-2026-8894" \\
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\ai-solutions\products\dbert-chat\page.tsx:48:url: 'https://dbert.online'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\ai-solutions\products\dbert-chat\page.tsx:56:url: 'https://dbert.online/ai-solutions/products/dbert-chat'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\ai-solutions\products\dbert-chat\page.tsx:133:{`curl -X POST "https://api.dbert.online/v1/chat" \\
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\ai-solutions\products\document-ai\page.tsx:48:url: 'https://dbert.online'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\ai-solutions\products\document-ai\page.tsx:56:url: 'https://dbert.online/ai-solutions/products/document-ai'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\ai-solutions\products\document-ai\page.tsx:122:{`curl -X POST "https://api.dbert.online/v1/extract" \\
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\ai-solutions\products\document-ai\page.tsx:126:"document_url": "https://secure-storage.dbert.online/client_invoices/inv_9981.pdf",
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\ai-solutions\products\hiring-automation-suite\page.tsx:48:url: 'https://dbert.online'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\ai-solutions\products\hiring-automation-suite\page.tsx:56:url: 'https://dbert.online/ai-solutions/products/hiring-automation-suite'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\ai-solutions\products\intern-management-system\page.tsx:48:url: 'https://dbert.online'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\ai-solutions\products\intern-management-system\page.tsx:56:url: 'https://dbert.online/ai-solutions/products/intern-management-system'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\cohorts\aivara\page.tsx:144:<li><strong>Independent Credential Verification:</strong> Earn an accredited experience letter with a unique SHA-256 validation ID checkable on <code>dbert.online/verify</code>.</li>
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\hire\pre-vetted-engineers\page.tsx:88:url: 'https://dbert.online'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\page.tsx:26:'Yes. If you already possess intermediate Python competence, Git command line fluency, and basic familiarity with data parsing, you can bypass Launchpad and enter Accelerate directly. Similarly, self-taught engineers can skip courses entirely by passing our rigorous external code screening challenge at internship.dbert.online.'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\page.tsx:36:'Every completion certificate and professional fellowship recommendation letter carries a secure cryptographic credential ID. Hiring managers and HR departments enter this ID directly at dbert.online/verify to inspect verified project deliverables without waiting for manual email confirmation.'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\page.tsx:56:url: 'https://dbert.online/learners/launchpad',
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\page.tsx:62:url: 'https://dbert.online/learners/accelerate',
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\page.tsx:68:url: 'https://dbert.online/learners/fellowship',
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\page.tsx:74:url: 'https://dbert.online/learners/jobs',
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\page.tsx:123:ctaHref: 'https://internship.dbert.online/',
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\page.tsx:204:href: 'https://internship.dbert.online/',
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\page.tsx:235:<a href="https://internship.dbert.online/" target="_blank" rel="noopener noreferrer" className="btn btn-outline">
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\page.tsx:408:<a href="https://internship.dbert.online/" target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-sm">Open Career Portal ↗</a>
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\page.tsx:22:url: 'https://dbert.online/learners/courses/ai-agent-development',
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\page.tsx:23:provider: { '@type': 'Organization', name: 'DBERT', url: 'https://dbert.online' },
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\page.tsx:30:url: 'https://dbert.online/learners/courses/generative-ai',
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\page.tsx:31:provider: { '@type': 'Organization', name: 'DBERT', url: 'https://dbert.online' },
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\page.tsx:38:url: 'https://dbert.online/learners/courses/machine-learning',
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\page.tsx:39:provider: { '@type': 'Organization', name: 'DBERT', url: 'https://dbert.online' },
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\page.tsx:46:url: 'https://dbert.online/learners/courses/python-automation',
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\page.tsx:47:provider: { '@type': 'Organization', name: 'DBERT', url: 'https://dbert.online' },
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\page.tsx:54:url: 'https://dbert.online/learners/courses/full-stack-development',
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\page.tsx:55:provider: { '@type': 'Organization', name: 'DBERT', url: 'https://dbert.online' },
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\page.tsx:62:url: 'https://dbert.online/learners/courses/data-analytics',
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\page.tsx:63:provider: { '@type': 'Organization', name: 'DBERT', url: 'https://dbert.online' },
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\page.tsx:197:href="https://internship.dbert.online/"
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\page.tsx:208:href="https://internship.dbert.online/internships/full-stack-development"
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\page.tsx:217:href="https://internship.dbert.online/internships/data-analyst"
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\page.tsx:226:href="https://internship.dbert.online/internships/python-automation"
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\page.tsx:235:href="https://internship.dbert.online/internships/ai-agent-development"
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\ai-agent-development\page.tsx:23:answer: 'Yes. Every issued engineering credential contains a unique cryptographic validation UUID that HR managers and technical team leads can verify instantly by accessing our open institutional portal at dbert.online/verify.'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\ai-agent-development\page.tsx:45:url: 'https://dbert.online'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\ai-agent-development\page.tsx:57:url: 'https://dbert.online/learners/courses/ai-agent-development'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\ai-agent-development\page.tsx:271:hubHref="https://internship.dbert.online/internships/ai-agent-development"
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\ai-agent-development\page.tsx:272:jobsHref="https://internship.dbert.online/jobs/ai-agent-development"
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\ai-agent-development\page.tsx:280:href: 'https://internship.dbert.online/internships/ai-sales-assistant-bot-intern-mumbai-remote-14',
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\ai-agent-development\page.tsx:289:href: 'https://internship.dbert.online/internships/ai-workflow-automation-intern-bangalore-remote-10',
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\ai-agent-development\page.tsx:298:href: 'https://internship.dbert.online/internships/agentic-search-systems-intern-delhi-ncr-remote-11',
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\ai-agent-development\page.tsx:307:href: 'https://internship.dbert.online/internships/ai-coding-assistant-intern-hyderabad-remote-12',
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\ai-agent-development\page.tsx:316:href: 'https://internship.dbert.online/internships/knowledge-base-rag-agent-intern-pune-remote-13',
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\ai-agent-development\page.tsx:325:href: 'https://internship.dbert.online/internships/rag-pipeline-engineering-intern-remote-1',
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\data-analytics\page.tsx:23:answer: 'Yes. Upon submitting validated database queries and dashboard repositories to our review faculty, your completed certificate is inscribed into our public verification portal at dbert.online/verify, enabling instant cryptographic HR checks.'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\data-analytics\page.tsx:45:url: 'https://dbert.online'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\data-analytics\page.tsx:57:url: 'https://dbert.online/learners/courses/data-analytics'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\data-analytics\page.tsx:342:hubHref="https://internship.dbert.online/internships/data-analyst"
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\data-analytics\page.tsx:343:jobsHref="https://internship.dbert.online/jobs/data-analyst"
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\data-analytics\page.tsx:351:href: 'https://internship.dbert.online/internships/survey-research-data-intern-mumbai-remote-32',
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\data-analytics\page.tsx:360:href: 'https://internship.dbert.online/internships/operations-data-analyst-intern-bangalore-remote-28',
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\data-analytics\page.tsx:369:href: 'https://internship.dbert.online/internships/customer-insights-analyst-delhi-ncr-remote-29',
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\data-analytics\page.tsx:378:href: 'https://internship.dbert.online/internships/data-cleaning-etl-intern-hyderabad-remote-30',
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\data-analytics\page.tsx:387:href: 'https://internship.dbert.online/internships/excel-reporting-automation-intern-pune-remote-31',
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\data-analytics\page.tsx:396:href: 'https://internship.dbert.online/internships/power-bi-dashboard-intern-remote-21',
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\full-stack-development\page.tsx:27:answer: 'Upon satisfactory completion of all repository pull requests and live technical interviews, your verified graduation credentials and project links are logged into our public authentication registry at dbert.online/verify, eliminating verification friction during enterprise hiring audits.'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\full-stack-development\page.tsx:45:url: 'https://dbert.online'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\full-stack-development\page.tsx:57:url: 'https://dbert.online/learners/courses/full-stack-development'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\full-stack-development\page.tsx:271:hubHref="https://internship.dbert.online/internships/full-stack-development"
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\full-stack-development\page.tsx:272:jobsHref="https://internship.dbert.online/jobs/full-stack-development"
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\full-stack-development\page.tsx:280:href: 'https://internship.dbert.online/internships/booking-system-development-intern-mumbai-remote-50',
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\full-stack-development\page.tsx:289:href: 'https://internship.dbert.online/internships/saas-feature-development-intern-bangalore-remote-46',
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\full-stack-development\page.tsx:298:href: 'https://internship.dbert.online/internships/authentication-security-intern-delhi-ncr-remote-47',
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\full-stack-development\page.tsx:307:href: 'https://internship.dbert.online/internships/progressive-web-app-intern-pune-remote-49',
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\full-stack-development\page.tsx:316:href: 'https://internship.dbert.online/internships/react-frontend-development-intern-remote-37',
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\full-stack-development\page.tsx:325:href: 'https://internship.dbert.online/internships/internal-tools-development-intern-hyderabad-remote-48',
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\generative-ai\page.tsx:26:answer: 'Every credential issued by DBERT Labs contains a cryptographically signed UUID that HR managers and tech recruiters can verify in real-time at dbert.online/verify.'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\generative-ai\page.tsx:44:url: 'https://dbert.online'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\generative-ai\page.tsx:56:url: 'https://dbert.online/learners/courses/generative-ai'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\machine-learning\page.tsx:30:answer: 'Graduates receive a cryptographically verified credential serial number that recruiters can audit instantly at dbert.online/verify, coupled with verifiable Git commits.'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\machine-learning\page.tsx:44:url: 'https://dbert.online'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\machine-learning\page.tsx:56:url: 'https://dbert.online/learners/courses/machine-learning'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\python-automation\page.tsx:27:answer: 'Upon passing our technical code review milestones, your completion certificate is entered directly into our global institutional validation database. Employers can inspect your credential authenticity directly by inputting your unique serial code at dbert.online/verify.'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\python-automation\page.tsx:45:url: 'https://dbert.online'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\python-automation\page.tsx:57:url: 'https://dbert.online/learners/courses/python-automation'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\python-automation\page.tsx:271:hubHref="https://internship.dbert.online/internships/python-automation"
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\python-automation\page.tsx:272:jobsHref="https://internship.dbert.online/jobs/python-automation"
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\python-automation\page.tsx:280:href: 'https://internship.dbert.online/internships/qa-automation-intern-mumbai-remote-68',
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\python-automation\page.tsx:289:href: 'https://internship.dbert.online/internships/lead-generation-automation-intern-bangalore-remote-64',
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\python-automation\page.tsx:298:href: 'https://internship.dbert.online/internships/price-monitoring-automation-intern-delhi-ncr-remote-65',
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\python-automation\page.tsx:307:href: 'https://internship.dbert.online/internships/document-processing-automation-intern-hyderabad-remote-66',
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\python-automation\page.tsx:316:href: 'https://internship.dbert.online/internships/social-media-automation-intern-pune-remote-67',
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\courses\python-automation\page.tsx:325:href: 'https://internship.dbert.online/internships/web-scraping-intern-remote-55',
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\fellowship\page.tsx:49:'No, and you should be sceptical of any programme in India that does. What we actually provide is a verifiable record: an experience letter signed by the engineers who reviewed your code, a certificate ID anyone can check at dbert.online/verify, and commits on a real client repository. Partner startups review fellow performance logs when they hire, so the pipeline is real, but a referral is not an offer and we will not describe it as one.',
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\fellowship\page.tsx:69:'Two ways. It names the engineer who reviewed your work and the system you contributed to, rather than certifying attendance; and it carries a certificate ID that a recruiter can verify independently at dbert.online/verify without contacting us. A letter nobody can check is worth roughly what it costs to print.',
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\fellowship\page.tsx:74:'Applications run through the DBERT internship platform at internship.dbert.online. The application asks for your code — a repository, a deployed project, or your screening submission — rather than a CV of coursework, because that is what the selection is actually based on.',
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\fellowship\page.tsx:89:url: 'https://dbert.online',
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\fellowship\page.tsx:91:url: 'https://dbert.online/learners/fellowship',
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\fellowship\page.tsx:103:url: 'https://internship.dbert.online/',
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\fellowship\page.tsx:393:href="https://internship.dbert.online/"
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\jobs\page.tsx:100:<a href="https://internship.dbert.online/" target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-sm">Apply via Portal</a>
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\learners\jobs\page.tsx:116:<a href="https://internship.dbert.online/" target="_blank" rel="noopener noreferrer" className="btn btn-outline btn-lg">Apply for Internship Track</a>
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\pricing\page.tsx:45:url: 'https://dbert.online/pricing'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\privacy\page.tsx:31:At DBERT (Digital Blinc Education Research And Technology, registered MSME entity UDYAM-UP-28-0105315), we prioritize data privacy and operational security across our website (<code>dbert.online</code>), learning platforms, and verification registries.
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\privacy\page.tsx:51:<strong>Google AdSense &amp; DoubleClick Cookie:</strong> Google, as a third-party vendor, uses cookies to serve ads on <code>dbert.online</code>. Google&apos;s use of advertising cookies enables it and its partners to serve ads to users based on their visits to our site and/or other sites on the Internet.
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\refund\page.tsx:55:If you have any questions regarding enrollment details, transaction records, or credential issuance, our support staff is available at <a href="mailto:contactus@dbert.online" className="accent-link">contactus@dbert.online</a>.
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\startups\page.tsx:58:url: 'https://dbert.online'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\startups\page.tsx:65:url: 'https://dbert.online/startups'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\startups\investor-network\page.tsx:46:url: 'https://dbert.online'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\startups\services\page.tsx:96:url: 'https://dbert.online'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\startups\services\equity\page.tsx:51:url: 'https://dbert.online'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\startups\services\equity\page.tsx:59:url: 'https://dbert.online/startups/services/equity'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\startups\services\equity\term-sheets\page.tsx:47:url: 'https://dbert.online'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\startups\services\equity\term-sheets\page.tsx:54:url: 'https://dbert.online/startups/services/equity/term-sheets'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\startups\services\funding\page.tsx:51:url: 'https://dbert.online'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\startups\services\funding\page.tsx:59:url: 'https://dbert.online/startups/services/funding'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\startups\services\hiring\page.tsx:53:url: 'https://dbert.online'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\startups\services\hiring\page.tsx:61:url: 'https://dbert.online/startups/services/hiring'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\startups\services\infrastructure\page.tsx:51:url: 'https://dbert.online'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\startups\services\infrastructure\page.tsx:59:url: 'https://dbert.online/startups/services/infrastructure'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\startups\services\legal\page.tsx:51:url: 'https://dbert.online'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\startups\services\legal\page.tsx:59:url: 'https://dbert.online/startups/services/legal'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\startups\services\technical\page.tsx:52:url: 'https://dbert.online'
+scratch\zip_extract_test\dbert-api-package\website-content\src\app\startups\services\technical\page.tsx:60:url: 'https://dbert.online/startups/services/technical'
+scratch\zip_extract_test\dbert-api-package\website-content\src\components\blog\BlogClientView.tsx:23:const res = await fetch('https://internship.dbert.online/api/public/blog-posts', {
+scratch\zip_extract_test\dbert-api-package\website-content\src\components\blog\DynamicBlogReader.tsx:114:const res = await fetch(`https://internship.dbert.online/api/public/blog-posts/${slug}`);
+scratch\zip_extract_test\dbert-api-package\website-content\src\components\cohorts\AivaraCohortForm.tsx:289:href="https://internship.dbert.online/apply?cohort=aivara"
+scratch\zip_extract_test\dbert-api-package\website-content\src\components\layout\AlkameCaseStudyContent.tsx:374:<a href="https://internship.dbert.online" target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-lg">Apply on internship.dbert.online</a>
+scratch\zip_extract_test\dbert-api-package\website-content\src\components\layout\Footer.tsx:71:{ label: 'Full Stack Internships Mumbai', href: 'https://internship.dbert.online/internships/booking-system-development-intern-mumbai-remote-50', external: true },
+scratch\zip_extract_test\dbert-api-package\website-content\src\components\layout\Footer.tsx:72:{ label: 'Data Analyst Bangalore', href: 'https://internship.dbert.online/internships/operations-data-analyst-intern-bangalore-remote-28', external: true },
+scratch\zip_extract_test\dbert-api-package\website-content\src\components\layout\Footer.tsx:73:{ label: 'AI Agent Roles Delhi NCR', href: 'https://internship.dbert.online/internships/agentic-search-systems-intern-delhi-ncr-remote-11', external: true },
+scratch\zip_extract_test\dbert-api-package\website-content\src\components\layout\Footer.tsx:74:{ label: 'Python Automation Pune', href: 'https://internship.dbert.online/internships/social-media-automation-intern-pune-remote-67', external: true },
+scratch\zip_extract_test\dbert-api-package\website-content\src\components\layout\Footer.tsx:75:{ label: 'Virtual Remote Sprints', href: 'https://internship.dbert.online/internships/virtual-remote-internships', external: true },
+scratch\zip_extract_test\dbert-api-package\website-content\src\components\layout\Footer.tsx:76:{ label: 'Paid Internships With Stipend', href: 'https://internship.dbert.online/internships/paid-internships', external: true },
+scratch\zip_extract_test\dbert-api-package\website-content\src\components\layout\Footer.tsx:77:{ label: 'Job Board & Placement Hub', href: 'https://internship.dbert.online/jobs', external: true },
+scratch\zip_extract_test\dbert-api-package\website-content\src\components\layout\Footer.tsx:105:href="mailto:contactus@dbert.online"
+scratch\zip_extract_test\dbert-api-package\website-content\src\components\layout\Footer.tsx:108:contactus@dbert.online
+scratch\zip_extract_test\dbert-api-package\website-content\src\components\layout\Footer.tsx:184:<a href="https://internship.dbert.online/internships/full-stack-development" target="_blank" rel="noopener noreferrer">Full Stack Internships Mumbai &amp; Bangalore</a>
+scratch\zip_extract_test\dbert-api-package\website-content\src\components\layout\Footer.tsx:186:<a href="https://internship.dbert.online/internships/data-analyst-internship-work-from-home" target="_blank" rel="noopener noreferrer">Data Analyst Work From Home</a>
+scratch\zip_extract_test\dbert-api-package\website-content\src\components\layout\Footer.tsx:188:<a href="https://internship.dbert.online/internships/ai-automation-internship" target="_blank" rel="noopener noreferrer">AI Automation Internships Bangalore</a>
+scratch\zip_extract_test\dbert-api-package\website-content\src\components\layout\Footer.tsx:190:<a href="https://internship.dbert.online/jobs/full-stack-development" target="_blank" rel="noopener noreferrer">Full Stack AI Developer Jobs</a>
+scratch\zip_extract_test\dbert-api-package\website-content\src\components\layout\Footer.tsx:205:<span>© {new Date().getFullYear()} DBERT · dbert.online · All rights reserved</span>
+scratch\zip_extract_test\dbert-api-package\website-content\src\components\layout\ProgramDetailTemplate.tsx:153:"sameAs": "https://dbert.online"
+scratch\zip_extract_test\dbert-api-package\website-content\src\components\seo\ArticleSchema.tsx:12:const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.online';
+scratch\zip_extract_test\dbert-api-package\website-content\src\components\seo\Breadcrumbs.tsx:6:const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.online';
+scratch\zip_extract_test\dbert-api-package\website-content\src\components\ui\MultiStepForm.tsx:160:<input type="email" name="email" required value={formData.email} onChange={handleInputChange} placeholder="you@dbert.online" />
+scratch\zip_extract_test\dbert-api-package\website-content\src\components\ui\RegionalOpportunityBento.module.css:2:Bilateral keyword anchors linking dbert.online -> internship.dbert.online */
+scratch\zip_extract_test\dbert-api-package\website-content\src\content\blog\ai-agent-frameworks-comparison.mdx:143:To master autonomous agent engineering, tool-calling state machines, and local runtime deployment, enroll in the [DBERT AI Agent Development Course](/learners/courses/ai-agent-development) or explore active sprint placements via the [DBERT Career Discovery Portal](https://internship.dbert.online/internships/ai-agent-development).
+scratch\zip_extract_test\dbert-api-package\website-content\src\content\blog\building-scalable-microservices-with-fastapi.mdx:10:canonicalUrl: "https://dbert.online/blog/building-scalable-microservices-with-fastapi"
+scratch\zip_extract_test\dbert-api-package\website-content\src\data\nav.config.json:121:{ "label": "Job Board", "href": "https://internship.dbert.online/jobs", "external": true },
+scratch\zip_extract_test\dbert-api-package\website-content\src\data\nav.config.json:122:{ "label": "Apply for Fellowship", "href": "https://internship.dbert.online/apply", "external": true, "highlight": true }
+scratch\zip_extract_test\dbert-api-package\website-content\src\data\nav.config.json:146:"href": "https://internship.dbert.online/",
+scratch\zip_extract_test\dbert-api-package\website-content\src\lib\email.ts:86:<p>This dual track pairs active cohort sprint participation with structured milestone evaluation and an accredited DBERT experience credential independently verifiable at <code>dbert.online/verify</code>.</p>
+scratch\zip_extract_test\dbert-api-package\website-content\src\lib\email.ts:100:bodyText: `Dear ${name},\n\nCongratulations! You have been Approved for Admission with Certification in the ${cohortName} (${domain} track).\n\nThis track includes hands-on sprints alongside verified engineering certification checkable on dbert.online/verify.${notesText}\n\nOur coordinators will reach out shortly with onboarding details.\n\nWarm regards,\nAivara Technologies Cohort Operations`
+scratch\zip_extract_test\dbert-api-package\website-content\src\lib\seo.ts:4:const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.online';

@@ -50,14 +50,14 @@ export default function AISolutionsLandingPage() {
         provider: {
           '@type': 'Organization',
           name: 'DBERT (Digital Blinc Education Research And Technology)',
-          url: 'https://dbert.online'
+          url: 'https://dbert.in'
         },
         areaServed: {
           '@type': 'Country',
           name: 'India'
         },
         serviceType: 'Enterprise Artificial Intelligence & Sovereign Cloud Deployment',
-        url: 'https://dbert.online/ai-solutions'
+        url: 'https://dbert.in/ai-solutions'
       },
       {
         '@type': 'FAQPage',

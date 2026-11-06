@@ -10,6 +10,9 @@
 *.shm
 apps/portal/*.db*
 apps/portal/cgi-bin/*.db*
+apps/portal/cgi-bin/*.cgi
+apps/portal/cgi-bin/*.py
+apps/portal/cgi-bin/
 dbert-api-package/databases/*.db*
 databases/*.db*
 
@@ -47,9 +50,20 @@ apps/portal/bin/
 
 # Large binary archives & test scratches
 scratch/
+outputs/
+scripts/sig_previews/
+scripts/sig_tests/
+scripts/test_stamps/
 *.zip
 *.tar.gz
 *.tgz
+*.pptx
+guaranteed_internship_program_*
+sample_certificate_*
+
+# WhatsApp Web Playwright Session Contexts
+.chrome_session*
+**/.chrome_session*
 
 # Uploaded candidate files & user submissions (Keep locally)
 apps/portal/uploads/*

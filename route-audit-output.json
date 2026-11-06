@@ -55,7 +55,7 @@
   },
   {
     "route": "/about",
-    "h1Text": "Applied AI Incubation &amp; Research",
+    "h1Text": "Applied AI Incubation &amp; Research\n              \n                registered MSME ✎",
     "cssModules": [
       "./about.module.css"
     ],
@@ -68,8 +68,8 @@
       "hasRedline": false
     },
     "buttonsCount": 0,
-    "linkBtnCount": 1,
-    "lines": 124
+    "linkBtnCount": 2,
+    "lines": 253
   },
   {
     "route": "/about/team",
@@ -88,6 +88,78 @@
     "buttonsCount": 0,
     "linkBtnCount": 1,
     "lines": 95
+  },
+  {
+    "route": "/admin/alkame-contributors",
+    "h1Text": "Alkame Contributors",
+    "cssModules": [
+      "../admin.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": false,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 1,
+    "linkBtnCount": 1,
+    "lines": 58
+  },
+  {
+    "route": "/admin/cohort-applications",
+    "h1Text": "Aivara Cohort Applications",
+    "cssModules": [
+      "../admin.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": false,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 1,
+    "linkBtnCount": 1,
+    "lines": 63
+  },
+  {
+    "route": "/admin/leads",
+    "h1Text": "DBERT Admin Dashboard",
+    "cssModules": [
+      "../admin.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": false,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 1,
+    "linkBtnCount": 2,
+    "lines": 74
+  },
+  {
+    "route": "/admin/login",
+    "h1Text": "DBERT Admin",
+    "cssModules": [
+      "../admin.module.css"
+    ],
+    "inlineStylesCount": 0,
+    "handcrafted": {
+      "hasHandNote": false,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 1,
+    "linkBtnCount": 1,
+    "lines": 77
   },
   {
     "route": "/ai-consultant",
@@ -193,7 +265,7 @@
   },
   {
     "route": "/ai-solutions",
-    "h1Text": "Production-Grade AI That Powers Sovereign Business Scale",
+    "h1Text": "Production-Grade AI That Powers Sovereign Business Scale\n              \n                zero third-party token leaks ✎",
     "cssModules": [
       "./ai-solutions.module.css"
     ],
@@ -206,8 +278,8 @@
       "hasRedline": false
     },
     "buttonsCount": 0,
-    "linkBtnCount": 2,
-    "lines": 205
+    "linkBtnCount": 4,
+    "lines": 399
   },
   {
     "route": "/ai-solutions/products/certificate-verification-api",
@@ -319,7 +391,7 @@
   },
   {
     "route": "/blog",
-    "h1Text": "AI Engineering Blog India",
+    "h1Text": "AI Engineering Blog India\n              \n                benchmarks ✍",
     "cssModules": [
       "./blog.module.css"
     ],
@@ -333,7 +405,23 @@
     },
     "buttonsCount": 0,
     "linkBtnCount": 0,
-    "lines": 37
+    "lines": 110
+  },
+  {
+    "route": "/blog/reader",
+    "h1Text": "",
+    "cssModules": [],
+    "inlineStylesCount": 1,
+    "handcrafted": {
+      "hasHandNote": false,
+      "hasHandArrow": false,
+      "hasMarker": false,
+      "hasProofMark": false,
+      "hasRedline": false
+    },
+    "buttonsCount": 0,
+    "linkBtnCount": 0,
+    "lines": 21
   },
   {
     "route": "/blog/[slug]",
@@ -351,7 +439,7 @@
     },
     "buttonsCount": 0,
     "linkBtnCount": 0,
-    "lines": 116
+    "lines": 114
   },
   {
     "route": "/cohorts/aivara",
@@ -373,7 +461,7 @@
   },
   {
     "route": "/hire/pre-vetted-engineers",
-    "h1Text": "Hire Pre-Vetted AI &amp; Software Engineers in 48 Hours",
+    "h1Text": "Hire Pre-Vetted AI &amp; Software Engineers in 48 Hours\n              \n                top 1% cohort fellows ✎",
     "cssModules": [
       "@/app/learners/learners.module.css"
     ],
@@ -387,7 +475,7 @@
     },
     "buttonsCount": 0,
     "linkBtnCount": 2,
-    "lines": 186
+    "lines": 250
   },
   {
     "route": "/labs/collaborate",
@@ -429,7 +517,7 @@
   },
   {
     "route": "/labs",
-    "h1Text": "Where Breakthrough Systems Begin",
+    "h1Text": "Where Breakthrough Systems Begin\n              \n                peer-audited preprints ✍",
     "cssModules": [
       "./labs.module.css"
     ],
@@ -442,8 +530,8 @@
       "hasRedline": false
     },
     "buttonsCount": 0,
-    "linkBtnCount": 1,
-    "lines": 79
+    "linkBtnCount": 2,
+    "lines": 271
   },
   {
     "route": "/labs/publications",
@@ -511,7 +599,7 @@
     },
     "buttonsCount": 0,
     "linkBtnCount": 2,
-    "lines": 282
+    "lines": 349
   },
   {
     "route": "/learners/courses/data-analytics",
@@ -529,7 +617,7 @@
     },
     "buttonsCount": 0,
     "linkBtnCount": 4,
-    "lines": 353
+    "lines": 420
   },
   {
     "route": "/learners/courses/full-stack-development",
@@ -547,7 +635,7 @@
     },
     "buttonsCount": 0,
     "linkBtnCount": 2,
-    "lines": 282
+    "lines": 349
   },
   {
     "route": "/learners/courses/generative-ai",
@@ -601,7 +689,7 @@
     },
     "buttonsCount": 0,
     "linkBtnCount": 1,
-    "lines": 193
+    "lines": 255
   },
   {
     "route": "/learners/courses/python-automation",
@@ -619,7 +707,7 @@
     },
     "buttonsCount": 0,
     "linkBtnCount": 2,
-    "lines": 282
+    "lines": 349
   },
   {
     "route": "/learners/fellowship",
@@ -693,7 +781,7 @@
   },
   {
     "route": "/learners",
-    "h1Text": "AI career programs built as a progressive engineering ladder\n          \n            Structured Path",
+    "h1Text": "AI career programs built as a progressive engineering ladder\n              \n                Structured Path",
     "cssModules": [
       "./learners.module.css"
     ],
@@ -706,8 +794,8 @@
       "hasRedline": false
     },
     "buttonsCount": 0,
-    "linkBtnCount": 2,
-    "lines": 254
+    "linkBtnCount": 4,
+    "lines": 417
   },
   {
     "route": "/",
@@ -724,12 +812,12 @@
       "hasRedline": false
     },
     "buttonsCount": 0,
-    "linkBtnCount": 2,
-    "lines": 530
+    "linkBtnCount": 3,
+    "lines": 565
   },
   {
     "route": "/pricing",
-    "h1Text": "Transparent, Outcome-Focused Model",
+    "h1Text": "Transparent, Outcome-Focused Model\n              \n                flat-rate · zero income share ✎",
     "cssModules": [
       "./pricing.module.css"
     ],
@@ -742,8 +830,8 @@
       "hasRedline": false
     },
     "buttonsCount": 0,
-    "linkBtnCount": 3,
-    "lines": 302
+    "linkBtnCount": 4,
+    "lines": 439
   },
   {
     "route": "/privacy",
@@ -759,7 +847,7 @@
     },
     "buttonsCount": 0,
     "linkBtnCount": 0,
-    "lines": 71
+    "lines": 90
   },
   {
     "route": "/refund",
@@ -797,7 +885,7 @@
   },
   {
     "route": "/startups",
-    "h1Text": "An AI Startup Incubator That Builds With You, For Equity\n            \n              Actual code!",
+    "h1Text": "An AI Startup Incubator That Builds With You, For Equity\n              \n                Actual code!",
     "cssModules": [
       "./startups.module.css"
     ],
@@ -810,8 +898,8 @@
       "hasRedline": false
     },
     "buttonsCount": 0,
-    "linkBtnCount": 5,
-    "lines": 295
+    "linkBtnCount": 6,
+    "lines": 477
   },
   {
     "route": "/startups/portfolio/alkame",
@@ -963,7 +1051,7 @@
   },
   {
     "route": "/startups/services/hiring",
-    "h1Text": "Assemble the AI Engineering Team That Ships\r\n          \r\n            Zero risk!",
+    "h1Text": "Assemble the AI Engineering Team That Ships\n          \n            Zero risk!",
     "cssModules": [],
     "inlineStylesCount": 0,
     "handcrafted": {
@@ -1077,7 +1165,7 @@
     },
     "buttonsCount": 1,
     "linkBtnCount": 1,
-    "lines": 135
+    "lines": 140
   },
   {
     "route": "/_admin/alkame-contributors",

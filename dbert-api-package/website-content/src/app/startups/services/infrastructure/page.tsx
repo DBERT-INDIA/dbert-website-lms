@@ -48,7 +48,7 @@ export default function InfrastructureServicePage() {
         provider: {
           '@type': 'Organization',
           name: 'DBERT Labs Industrial Training & Venture Studio',
-          url: 'https://dbert.online'
+          url: 'https://dbert.in'
         },
         offers: {
           '@type': 'Offer',
@@ -56,7 +56,7 @@ export default function InfrastructureServicePage() {
           price: '55000',
           priceCurrency: 'INR',
           description: 'Flat-fee VPC setup and GPU clustering suite or fully bundled within equity studio incubation',
-          url: 'https://dbert.online/startups/services/infrastructure'
+          url: 'https://dbert.in/startups/services/infrastructure'
         }
       },
       {

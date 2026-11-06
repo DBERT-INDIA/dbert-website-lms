@@ -44,14 +44,14 @@ export default function TermSheetsPage() {
         provider: {
           '@type': 'Organization',
           name: 'DBERT (Digital Blinc Education Research And Technology)',
-          url: 'https://dbert.online'
+          url: 'https://dbert.in'
         },
         areaServed: {
           '@type': 'Country',
           name: 'India'
         },
         serviceType: 'Startup Legal Agreements & Equity Venture Studio Co-Development',
-        url: 'https://dbert.online/startups/services/equity/term-sheets'
+        url: 'https://dbert.in/startups/services/equity/term-sheets'
       },
       {
         '@type': 'FAQPage',

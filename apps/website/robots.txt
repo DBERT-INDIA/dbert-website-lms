@@ -10,4 +10,4 @@ Allow: /
 User-Agent: Googlebot-Image
 Allow: /
 
-Sitemap: https://dbert.online/sitemap.xml
+Sitemap: https://dbert.in/sitemap.xml

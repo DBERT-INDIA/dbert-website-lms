@@ -56,7 +56,7 @@ const faqs = [
   {
     question: 'How long is the fellowship and how much does it cost?',
     answer:
-      'The programme runs three months and the fee is ₹1,599. The fee covers mentorship, code review, and the certification and letter issuance at the end; the stipend is separate and flows to you. Fees are reviewed each cohort, so treat the figure on this page as current rather than permanent.',
+      'The programme runs 2 months and the fee is ₹1,999 with guaranteed internship placement. The fee covers mentorship, code review, and the certification and letter issuance at the end; the stipend is separate and flows to you. Fees are reviewed each cohort, so treat the figure on this page as current rather than permanent.',
   },
   {
     question: 'Is this remote, and does it work alongside a degree or a job?',
@@ -97,7 +97,7 @@ const jsonLd = {
       offers: {
         '@type': 'Offer',
         category: 'Paid',
-        price: '1599',
+        price: '1999',
         priceCurrency: 'INR',
         availability: 'https://schema.org/InStock',
         url: 'https://lms.dbert.in/',
@@ -284,7 +284,7 @@ export default function FellowshipProgramPage() {
             you discover it in month two. To see how intermediate and advanced performance directly scales into full-time compensation across Indian technology hubs, inspect our analysis of <Link href="/blog/ai-agent-developer-salary-2026">2026 AI Developer Salaries in India</Link>.
           </p>
           <p>
-            The programme fee is <strong>₹1,599</strong> for the three months, covering mentorship,
+            The programme fee is <strong>₹1,999</strong> for the 2 months with guaranteed internship placement, covering mentorship,
             code review, and certificate and letter issuance. Fees are reviewed each cohort, so treat
             that as the current figure rather than a permanent one.
           </p>

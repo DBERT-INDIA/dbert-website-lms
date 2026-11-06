@@ -198,6 +198,8 @@ export default function Footer() {
             <Link href="/learners/courses/python-automation">Python Automation Training India</Link>
             <span className={styles.dot}>·</span>
             <Link href="/about">MSME Registered DeepTech Foundry</Link>
+            <span className={styles.dot}>·</span>
+            <Link href="/dbert-online">DBERT.online is Now DBERT.in Notice</Link>
           </div>
         </div>
 
@@ -210,6 +212,12 @@ export default function Footer() {
             <Link href="/privacy">Privacy</Link> · <Link href="/terms">Terms</Link> ·{' '}
             <Link href="/refund">Refund Policy</Link>
           </span>
+        </div>
+
+        <div className={styles.domainNoticeBar}>
+          <Link href="/dbert-online" className={styles.domainNoticeLink}>
+            Domain Notice: DBERT.online is now DBERT.in.
+          </Link>
         </div>
       </div>
     </footer>

@@ -62,6 +62,17 @@ export default function CredentialsPage() {
         </div>
 
         <div className="card card-lift">
+          <div className="doclabel mb-1">§ DOMAIN AUTHENTICITY &amp; TRANSITION</div>
+          <h2 className={styles.cardTitleTight}>Official Web Domain: DBERT.online is Now DBERT.in</h2>
+          <p className="prose-sm mb-4">
+            Statutory notice: <strong>dbert.online is not the active platform</strong>. To maintain sovereign infrastructure standards and protect learners and partners from obsolete or unofficial third-party mirrors, all operations, digital contracts, and cryptographic credential registries are anchored exclusively to <strong>dbert.in</strong> (transitioned from dbert.online).
+          </p>
+          <div className="pt-3 border-t border-line">
+            <Link href="/dbert-online" className="accent-link text-sm font-medium">Read Domain Migration Announcement &amp; Advisory &rarr;</Link>
+          </div>
+        </div>
+
+        <div className="card card-lift">
           <div className="doclabel mb-1">§ LEARNER IMPACT AUDITOR</div>
           <h2 className={styles.cardTitleTight}>1,500+ Upskilled Developers &amp; Fellows</h2>
           <p className="prose-sm mb-4">

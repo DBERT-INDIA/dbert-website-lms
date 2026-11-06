@@ -111,7 +111,7 @@ export default function DynamicBlogReader() {
     let isMounted = true;
     async function fetchPost() {
       try {
-        const res = await fetch(`https://internship.dbert.online/api/public/blog-posts/${slug}`);
+        const res = await fetch(`https://lms.dbert.in/api/public/blog-posts/${slug}`);
         if (!res.ok) {
           if (isMounted) setError('Technical publication not found.');
           return;

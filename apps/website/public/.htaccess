@@ -1,50 +1,57 @@
 # ==============================================================================
-# DBERT.online — Apache Static Site Configuration for cPanel
+# DBERT.in - Apache Static Site Configuration for cPanel
 # ==============================================================================
 
 DirectoryIndex index.html
 Options -MultiViews -Indexes
 
-RewriteEngine On
-RewriteBase /
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
 
-# 1. Force HTTPS
-RewriteCond %{HTTPS} off
-RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+  # 1. 301 Permanent Redirect from legacy dbert.online -> dbert.in
+  RewriteCond %{HTTP_HOST} ^(www\.)?dbert\.online$ [NC]
+  RewriteRule ^(.*)$ "https://dbert.in/$1" [R=301,L]
 
-# 1.1 Redirect /jobs and /internships to internship.dbert.online subdomain
-RewriteCond %{HTTP_HOST} ^(www\.)?dbert\.online$ [NC]
-RewriteRule ^jobs/?$ https://internship.dbert.online/jobs [L,R=301]
+  # 2. Canonical redirect www.dbert.in -> dbert.in
+  RewriteCond %{HTTP_HOST} ^www\.dbert\.in$ [NC]
+  RewriteRule ^(.*)$ "https://dbert.in/$1" [R=301,L]
 
-RewriteCond %{HTTP_HOST} ^(www\.)?dbert\.online$ [NC]
-RewriteRule ^internships/?(.*)$ https://internship.dbert.online/internships/$1 [L,R=301]
+  # 3. Force HTTPS
+  RewriteCond %{HTTPS} off
+  RewriteRule ^(.*)$ "https://dbert.in/$1" [R=301,L]
 
-# 2. Serve static physical files or directories if they exist
-RewriteCond %{REQUEST_FILENAME} -f [OR]
-RewriteCond %{REQUEST_FILENAME} -d
-RewriteRule ^ - [L]
+  # 4. Subdomain Redirects for /jobs and /internships to official DBERT LMS
+  RewriteRule ^jobs/?$ "https://lms.dbert.in/jobs" [R=301,L]
+  RewriteRule ^internships/?(.*)$ "https://lms.dbert.in/internships/$1" [R=301,L]
 
-# 3. Directory Index support for subfolders without trailing slash
-RewriteCond %{DOCUMENT_ROOT}/$1/index.html -f
-RewriteRule ^(.*)/?$ $1/index.html [L]
+  # 5. Serve physical files and directories directly if they exist
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^.*$ - [L]
 
-# 3.1 Dynamic Blog Reader fallback for newly approved posts (maintains clean /blog/<slug> URL)
-RewriteCond %{REQUEST_URI} ^/blog/([a-zA-Z0-9_-]+)/?$
-RewriteCond %{DOCUMENT_ROOT}/blog/%1/index.html !-f
-RewriteCond %{DOCUMENT_ROOT}/blog/%1.html !-f
-RewriteRule ^blog/([a-zA-Z0-9_-]+)/?$ blog/reader/index.html?slug=$1 [L,QSA]
+  # 6. Clean URL routing for Next.js folder-based exports (e.g. /pricing -> /pricing/index.html)
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME}/index.html -f
+  RewriteRule ^(.*)$ "$1/index.html" [L]
 
-# 4. Custom 404 Error Document
+  # 7. Dynamic Blog Reader fallback for non-static slug lookups
+  RewriteCond %{REQUEST_URI} ^/blog/([a-zA-Z0-9_-]+)/?$
+  RewriteCond %{DOCUMENT_ROOT}/blog/%1/index.html !-f
+  RewriteRule ^blog/([a-zA-Z0-9_-]+)/?$ "blog/reader/index.html?slug=$1" [L,QSA]
+</IfModule>
+
+# 8. Custom 404 Error Document
 ErrorDocument 404 /404.html
 
-# 5. Security Headers
+# 9. Security Headers
 <IfModule mod_headers.c>
   Header always set X-Content-Type-Options "nosniff"
   Header always set X-Frame-Options "SAMEORIGIN"
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
 </IfModule>
 
-# 6. Ensure Correct MIME Types for CSS, JS, and Fonts
+# 10. Ensure Correct MIME Types for CSS, JS, and Fonts
 <IfModule mod_mime.c>
   AddType text/css .css
   AddType application/javascript .js
@@ -54,19 +61,21 @@ ErrorDocument 404 /404.html
   AddType font/ttf .ttf
 </IfModule>
 
-# 7. Grant Public Access to all static assets and subfolders
+# 11. Grant Public Access to all static assets and subfolders
 <FilesMatch "\.(css|js|woff2|woff|ttf|svg|png|jpg|jpeg|gif|ico|webp|txt|xml|html)$">
   <IfModule mod_authz_core.c>
     Require all granted
   </IfModule>
 </FilesMatch>
 
-# 8. Browser Caching for Next.js Static Assets
+# 12. Browser Caching for Next.js Static Assets
 <IfModule mod_expires.c>
   ExpiresActive On
   ExpiresByType text/css "access plus 1 year"
   ExpiresByType application/javascript "access plus 1 year"
   ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType font/woff "access plus 1 year"
+  ExpiresByType font/ttf "access plus 1 year"
   ExpiresByType image/webp "access plus 1 year"
   ExpiresByType image/png "access plus 1 year"
   ExpiresByType image/jpeg "access plus 1 year"
@@ -74,7 +83,7 @@ ErrorDocument 404 /404.html
   ExpiresByType image/x-icon "access plus 1 year"
 </IfModule>
 
-# 9. Gzip / Deflate Compression
+# 13. Gzip / Deflate Compression
 <IfModule mod_deflate.c>
   AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/javascript application/json
 </IfModule>

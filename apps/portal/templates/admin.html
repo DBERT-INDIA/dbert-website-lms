@@ -348,27 +348,27 @@
           </div>
           <div style="display:grid; grid-template-columns: 2fr 1fr; gap:14px;">
             <div class="form-group">
-              <label class="field-label" style="font-weight:600; margin-bottom:6px; display:block;">Article Title</label>
+              <label class="field-label" for="arEditTitle" style="font-weight:600; margin-bottom:6px; display:block;">Article Title</label>
               <input type="text" id="arEditTitle" class="field-input" placeholder="Title..." style="width:100%; font-weight:600; font-size:14px;"/>
             </div>
             <div class="form-group">
-              <label class="field-label" style="font-weight:600; margin-bottom:6px; display:block;">Domain</label>
+              <label class="field-label" for="arEditDomain" style="font-weight:600; margin-bottom:6px; display:block;">Domain</label>
               <input type="text" id="arEditDomain" class="field-input" placeholder="Domain (e.g. General, Python)..." style="width:100%;"/>
             </div>
           </div>
           <div class="form-group">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-              <label class="field-label" style="font-weight:600; margin:0;">Article Markdown Content</label>
+              <label class="field-label" for="arEditContent" style="font-weight:600; margin:0;">Article Markdown Content</label>
               <span style="font-size:11px; color:var(--tx-muted);"><i class="fas fa-edit"></i> Editable markdown</span>
             </div>
             <textarea id="arEditContent" class="field-input" rows="14" style="width:100%; white-space:pre-wrap; font-family:monospace; font-size:13px; color:#fff; resize:vertical; line-height:1.6;" placeholder="Article markdown content..."></textarea>
           </div>
           <div class="form-group">
-            <label class="field-label" style="font-weight:600; margin-bottom:6px; display:block;">Mentor Feedback / Revision Notes</label>
+            <label class="field-label" for="arFeedback" style="font-weight:600; margin-bottom:6px; display:block;">Mentor Feedback / Revision Notes</label>
             <textarea id="arFeedback" class="field-input" rows="3" style="width:100%;" placeholder="Provide feedback or revision instructions..."></textarea>
           </div>
           <div id="arPublishBox" class="form-group hidden" style="border-top:1px solid var(--border); padding-top:16px;">
-            <label class="field-label" style="font-weight:600; margin-bottom:6px; display:block;">Publish to Live Blog (Admin Only)</label>
+            <label class="field-label" for="arPubUrl" style="font-weight:600; margin-bottom:6px; display:block;">Publish to Live Blog (Admin Only)</label>
             <div style="display:flex; gap:10px;">
               <input type="url" id="arPubUrl" class="field-input" placeholder="https://dbert.in/blog/your-article" style="flex:1;"/>
               <button class="btn-primary" data-act-click="publishArticle"><i class="fas fa-globe"></i> Set Live</button>
@@ -688,7 +688,7 @@
   }
   function productBadge(r){
     const paid=(r.product==='paid_program');
-    const amt=r.amount!=null?('&#8377;'+r.amount):(paid?'&#8377;1599':'&#8377;499');
+    const amt=r.amount!=null?('&#8377;'+r.amount):(paid?'&#8377;1999':'&#8377;499');
     const cls=paid?'badge-gold':'badge-muted';
     const label=paid?'Paid Program':'Free Deposit';
     return `<span class="badge ${cls}">${label}</span> <span style="color:var(--tx-muted);font-size:11px;">${amt}</span>`;
@@ -1711,7 +1711,7 @@
     document.getElementById('ee_joining_date').value = e.joining_date || '';
     document.getElementById('ee_batch_label').value = e.batch_label || '';
     document.getElementById('ee_product').value = e.product || 'free_deposit';
-    document.getElementById('ee_amount').value = e.amount != null ? e.amount : (e.product === 'paid_program' ? 1599 : 499);
+    document.getElementById('ee_amount').value = e.amount != null ? e.amount : (e.product === 'paid_program' ? 1999 : 499);
     document.getElementById('ee_payment_status').value = e.payment_status || 'Pending Verification';
     document.getElementById('ee_admin_note').value = e.admin_note || '';
     openModal('enrEditModal');

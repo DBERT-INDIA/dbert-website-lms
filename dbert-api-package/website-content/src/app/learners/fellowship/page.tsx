@@ -46,7 +46,7 @@ const faqs = [
   {
     question: 'Do you guarantee placement at the end?',
     answer:
-      'No, and you should be sceptical of any programme in India that does. What we actually provide is a verifiable record: an experience letter signed by the engineers who reviewed your code, a certificate ID anyone can check at dbert.online/verify, and commits on a real client repository. Partner startups review fellow performance logs when they hire, so the pipeline is real, but a referral is not an offer and we will not describe it as one.',
+      'No, and you should be sceptical of any programme in India that does. What we actually provide is a verifiable record: an experience letter signed by the engineers who reviewed your code, a certificate ID anyone can check at dbert.in/verify, and commits on a real client repository. Partner startups review fellow performance logs when they hire, so the pipeline is real, but a referral is not an offer and we will not describe it as one.',
   },
   {
     question: 'What kind of work do fellows actually do?',
@@ -56,7 +56,7 @@ const faqs = [
   {
     question: 'How long is the fellowship and how much does it cost?',
     answer:
-      'The programme runs three months and the fee is ₹1,599. The fee covers mentorship, code review, and the certification and letter issuance at the end; the stipend is separate and flows to you. Fees are reviewed each cohort, so treat the figure on this page as current rather than permanent.',
+      'The programme runs 2 months and the fee is ₹1,999 with guaranteed internship placement. The fee covers mentorship, code review, and the certification and letter issuance at the end; the stipend is separate and flows to you. Fees are reviewed each cohort, so treat the figure on this page as current rather than permanent.',
   },
   {
     question: 'Is this remote, and does it work alongside a degree or a job?',
@@ -66,12 +66,12 @@ const faqs = [
   {
     question: 'How is the experience letter different from a normal internship certificate?',
     answer:
-      'Two ways. It names the engineer who reviewed your work and the system you contributed to, rather than certifying attendance; and it carries a certificate ID that a recruiter can verify independently at dbert.online/verify without contacting us. A letter nobody can check is worth roughly what it costs to print.',
+      'Two ways. It names the engineer who reviewed your work and the system you contributed to, rather than certifying attendance; and it carries a certificate ID that a recruiter can verify independently at dbert.in/verify without contacting us. A letter nobody can check is worth roughly what it costs to print.',
   },
   {
     question: 'Where do I apply?',
     answer:
-      'Applications run through the DBERT internship platform at internship.dbert.online. The application asks for your code — a repository, a deployed project, or your screening submission — rather than a CV of coursework, because that is what the selection is actually based on.',
+      'Applications run through the DBERT internship platform at lms.dbert.in. The application asks for your code — a repository, a deployed project, or your screening submission — rather than a CV of coursework, because that is what the selection is actually based on.',
   },
 ];
 
@@ -86,9 +86,9 @@ const jsonLd = {
         '@type': 'Organization',
         name: 'Digital Blinc Education Research And Technology',
         alternateName: 'DBERT',
-        url: 'https://dbert.online',
+        url: 'https://dbert.in',
       },
-      url: 'https://dbert.online/learners/fellowship',
+      url: 'https://dbert.in/learners/fellowship',
       hasCourseInstance: {
         '@type': 'CourseInstance',
         courseMode: 'online',
@@ -97,10 +97,10 @@ const jsonLd = {
       offers: {
         '@type': 'Offer',
         category: 'Paid',
-        price: '1599',
+        price: '1999',
         priceCurrency: 'INR',
         availability: 'https://schema.org/InStock',
-        url: 'https://internship.dbert.online/',
+        url: 'https://lms.dbert.in/',
       },
     },
     {
@@ -284,7 +284,7 @@ export default function FellowshipProgramPage() {
             you discover it in month two. To see how intermediate and advanced performance directly scales into full-time compensation across Indian technology hubs, inspect our analysis of <Link href="/blog/ai-agent-developer-salary-2026">2026 AI Developer Salaries in India</Link>.
           </p>
           <p>
-            The programme fee is <strong>₹1,599</strong> for the three months, covering mentorship,
+            The programme fee is <strong>₹1,999</strong> for the 2 months with guaranteed internship placement, covering mentorship,
             code review, and certificate and letter issuance. Fees are reviewed each cohort, so treat
             that as the current figure rather than a permanent one.
           </p>
@@ -390,7 +390,7 @@ export default function FellowshipProgramPage() {
             screening challenge. Bring code, not a CV.
           </p>
           <a
-            href="https://internship.dbert.online/"
+            href="https://lms.dbert.in/program"
             target="_blank"
             rel="noopener noreferrer"
             className="btn btn-primary btn-lg"

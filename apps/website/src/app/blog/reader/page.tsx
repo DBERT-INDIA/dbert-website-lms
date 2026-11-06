@@ -11,6 +11,7 @@ export default function BlogReaderPage() {
   return (
     <Suspense fallback={
       <div className="container pad-block" style={{ minHeight: '60vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <h1 className="visually-hidden">Technical Publication | DBERT Engineering Blog</h1>
         <p className="body-copy">Loading publication...</p>
       </div>
     }>

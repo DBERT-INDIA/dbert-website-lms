@@ -1,0 +1,1871 @@
+[
+  {
+    "file": "DBERT_LMS_MASTER_DEVELOPMENT_HARDENING_PLAN.md",
+    "line": 6,
+    "snippet": "**Primary production portal:** `https://internship.dbert.online/`\\",
+    "replacement": "lms.dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "DBERT_LMS_MASTER_DEVELOPMENT_HARDENING_PLAN.md",
+    "line": 641,
+    "snippet": "mailer.dbert.online",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "DBERT_WEBSITE_UIUX_REDESIGN_PHASE_PLAN.md",
+    "line": 3,
+    "snippet": "- Production website: `https://dbert.online`",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "DBERT_WEBSITE_UIUX_REDESIGN_PHASE_PLAN.md",
+    "line": 45,
+    "snippet": "- break `internship.dbert.online` links,",
+    "replacement": "lms.dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "DBERT_WEBSITE_UIUX_REDESIGN_PHASE_PLAN.md",
+    "line": 1102,
+    "snippet": "Current live site is `https://dbert.online`.",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "ORIGINAL_REQUEST.md",
+    "line": 5,
+    "snippet": "...ive. The domain is being migrated from `dbert.online` \u2192 `dbert.in`.",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "ORIGINAL_REQUEST.md",
+    "line": 17,
+    "snippet": "1. `apps/portal/.env:27` \u2014 `SMTP_HOST=dbert.online` (blocker)",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "ORIGINAL_REQUEST.md",
+    "line": 18,
+    "snippet": "2. `apps/portal/.env:29` \u2014 `SMTP_USER=contactus@dbert.online` (blocker)",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "ORIGINAL_REQUEST.md",
+    "line": 19,
+    "snippet": "3. `apps/portal/.env:31` \u2014 `FROM_EMAIL=contactus@dbert.online` (blocker)",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "ORIGINAL_REQUEST.md",
+    "line": 20,
+    "snippet": "4. `apps/portal/app.py:304` \u2014 `SMTP_HOST` code default = `\"dbert.online\"` (blocker)",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "ORIGINAL_REQUEST.md",
+    "line": 21,
+    "snippet": "5. `apps/portal/app.py:2690` \u2014 `staff_email = f\"{ADMIN_USERNAME}@dbert.online\"` hardcode (blocker)",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "ORIGINAL_REQUEST.md",
+    "line": 23,
+    "snippet": "...ype: Organization` has `\"url\": \"https://dbert.online\"`, `\"logo\": \"https://dbert.online/logo.svg\"`, and `\"email\": \"contactus@dbert.online\"` (...",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "ORIGINAL_REQUEST.md",
+    "line": 24,
+    "snippet": "8. `apps/portal/templates/seo_landing.html:133` \u2014 anchor tag `href=\"https://dbert.in\"` but link text reads `dbert.online` (warning \u2014 misleading UX)",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "ORIGINAL_REQUEST.md",
+    "line": 30,
+    "snippet": "### R1. Domain Migration Completeness \u2014 `dbert.online` \u2192 `dbert.in`",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "ORIGINAL_REQUEST.md",
+    "line": 32,
+    "snippet": "...kdown docs) for residual references to `dbert.online` that are NOT intentional redirect rules. Classify each reference:",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "ORIGINAL_REQUEST.md",
+    "line": 39,
+    "snippet": "- All Nginx configs under `deploy/` \u2014 intentional `dbert.online \u2192 dbert.in` redirect rules are OK; any other reference is a warning or blocker",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "ORIGINAL_REQUEST.md",
+    "line": 43,
+    "snippet": "- Portal blog redirect routes \u2014 confirm they redirect to `dbert.in/blog`, not `dbert.online`",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "ORIGINAL_REQUEST.md",
+    "line": 69,
+    "snippet": "...firmed the homepage JSON-LD still uses `dbert.online` \u2014 flag all pages with this issue)",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "ORIGINAL_REQUEST.md",
+    "line": 75,
+    "snippet": "...or `dbert.in`. The redirect blocks for `dbert.online \u2192 dbert.in` and `internship.dbert.online \u2192 lms.dbert.in` are intentional \u2014 confirm they...",
+    "replacement": "lms.dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "ORIGINAL_REQUEST.md",
+    "line": 96,
+    "snippet": "- [ ] Complete list of all `dbert.online` references, each classified as Blocker/Warning/Info",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "QA_REPORT.md",
+    "line": 10,
+    "snippet": "**Audit Context**: Domain Migration from legacy domains (`dbert.online`, `internship.dbert.online`) to production domains (`dbert.in`, `lms.dbert.in`)",
+    "replacement": "lms.dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "QA_REPORT.md",
+    "line": 24,
+    "snippet": "... pointing to legacy `https://internship.dbert.online/` in headers and footers, retains legacy `internship.dbert.online` URLs in Course and F...",
+    "replacement": "lms.dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "QA_REPORT.md",
+    "line": 59,
+    "snippet": "...** | `apps/portal/.env:27` | `SMTP_HOST=dbert.online` directs live portal transactional email connections to legacy domain mailserver. | Cha...",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "QA_REPORT.md",
+    "line": 60,
+    "snippet": ".../portal/.env:29` | `SMTP_USER=contactus@dbert.online` specifies legacy authentication account for SMTP. | Update to `SMTP_USER=contactus@dbe...",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "QA_REPORT.md",
+    "line": 61,
+    "snippet": "...portal/.env:31` | `FROM_EMAIL=contactus@dbert.online` causes outbound emails to fail SPF/DKIM alignment on `dbert.in` and sends user replies...",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "QA_REPORT.md",
+    "line": 62,
+    "snippet": "...MTP_HOST = os.environ.get(\"SMTP_HOST\", \"dbert.online\")` defaults to legacy domain if environment variable is absent. | Change fallback defau...",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "QA_REPORT.md",
+    "line": 63,
+    "snippet": "...codes `staff_email = f\"{ADMIN_USERNAME}@dbert.online\"`, generating non-functional admin email. | Change hardcoded string to `f\"{ADMIN_USERNA...",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "QA_REPORT.md",
+    "line": 65,
+    "snippet": "...ype: Organization` has `\"url\": \"https://dbert.online\"`, `\"logo\": \"https://dbert.online/logo.svg\"`, and `\"email\": \"contactus@dbert.online\"`. ...",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "QA_REPORT.md",
+    "line": 66,
+    "snippet": "...ert.in\"` but visible anchor text reads `dbert.online`. | Change anchor text from `dbert.online` to `dbert.in`. | **Confirmed** |",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "QA_REPORT.md",
+    "line": 74,
+    "snippet": "### Category R1: Domain Migration Completeness (`dbert.online` $\\rightarrow$ `dbert.in`)",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "QA_REPORT.md",
+    "line": 78,
+    "snippet": "...>` tags pointing to `https://internship.dbert.online/...` (e.g. `/jobs`, `/internships`, `/cv/*`, `/program`), causing search crawlers to in...",
+    "replacement": "lms.dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "QA_REPORT.md",
+    "line": 79,
+    "snippet": "...0 `<loc>` tags all pointing to `https://dbert.online/...` (e.g. `/pricing`, `/verify`, `/privacy`). | Overwrite `apps/website/sitemap.xml` w...",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "QA_REPORT.md",
+    "line": 80,
+    "snippet": "... explicitly specifies `Sitemap: https://dbert.online/sitemap.xml`, directing all search engine robots to the legacy domain sitemap. | Update...",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "QA_REPORT.md",
+    "line": 81,
+    "snippet": "... HTML files link to `https://internship.dbert.online/` due to an outdated static export. | Rebuild and export static site via `npm run expor...",
+    "replacement": "lms.dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "QA_REPORT.md",
+    "line": 82,
+    "snippet": "...iles) | 203 static export files retain `dbert.online` in `og:image`, `twitter:image`, and Organization JSON-LD schemas. | Re-export static b...",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "QA_REPORT.md",
+    "line": 83,
+    "snippet": "...tion.sample:18` | `CORS_ORIGINS=https://dbert.online,https://internship.dbert.online` restricts FastAPI CORS to legacy domains; API requests...",
+    "replacement": "lms.dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "QA_REPORT.md",
+    "line": 84,
+    "snippet": "... production sample specifies `SMTP_HOST=dbert.online`, `SMTP_USER=contactus@dbert.online`, and `FROM_EMAIL=contactus@dbert.online`. | Update...",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "QA_REPORT.md",
+    "line": 85,
+    "snippet": "...P_USER`, and `FROM_EMAIL` fall back to `dbert.online` if omitted from the environment. | Update default fallbacks to `dbert.in` and `contact...",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "QA_REPORT.md",
+    "line": 86,
+    "snippet": "...claims and user profile payload embed `@dbert.online` in admin authentication tokens (`f\"{settings.ADMIN_USERNAME}@dbert.online\"`). | Update...",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "QA_REPORT.md",
+    "line": 87,
+    "snippet": "...gacy sender email `FROM_EMAIL=contactus@dbert.online`. | Update line 51 to `FROM_EMAIL=contactus@dbert.in` or remove obsolete `.cgi` file. |...",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "QA_REPORT.md",
+    "line": 88,
+    "snippet": "...nment file specifies `SMTP_USER=staging@dbert.online` and `FROM_EMAIL=staging@dbert.online`. | Update to `staging@dbert.in`. | **Confirmed**...",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "QA_REPORT.md",
+    "line": 90,
+    "snippet": "... and section header comments reference `dbert.online` (code itself redirects to `https://dbert.in/blog/{slug}`). | Update comments and docst...",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "QA_REPORT.md",
+    "line": 91,
+    "snippet": "...nx configuration references `internship.dbert.online`. | Mark file as deprecated or replace with redirection to `lms.dbert.in`. | **Confirme...",
+    "replacement": "lms.dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "QA_REPORT.md",
+    "line": 92,
+    "snippet": "... under `deploy/` references `internship.dbert.online`. | Deprecate in favor of `deploy/dbert-unified-nginx.conf`. | **Confirmed** |",
+    "replacement": "lms.dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "QA_REPORT.md",
+    "line": 93,
+    "snippet": "...e standalone website config references `dbert.online`. | Deprecate in favor of `deploy/dbert-unified-nginx.conf`. | **Confirmed** |",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "QA_REPORT.md",
+    "line": 94,
+    "snippet": "... | Intentional 301 redirect blocks for `dbert.online -> dbert.in` and `internship.dbert.online -> lms.dbert.in`. | Maintain redirect rules; ...",
+    "replacement": "lms.dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "QA_REPORT.md",
+    "line": 122,
+    "snippet": "...Offer\", ..., \"url\": \"https://internship.dbert.online/\"}` and FAQ text references `internship.dbert.online`. | Rebuild static export via `npm...",
+    "replacement": "lms.dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "QA_REPORT.md",
+    "line": 123,
+    "snippet": "...JSON-LD FAQ schema contains `internship.dbert.online` in `acceptedAnswer`. | Rebuild static export via `npm run export:cpanel` in `apps/webs...",
+    "replacement": "lms.dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "QA_REPORT.md",
+    "line": 126,
+    "snippet": "...oogle AdSense Publisher Declaration for dbert.online`. | Update header to `# Google AdSense Publisher Declaration for dbert.in`. | **Confirm...",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "QA_REPORT.md",
+    "line": 137,
+    "snippet": "...em`. Because the certificate SAN lacks `dbert.online` and `internship.dbert.online`, browser TLS handshakes abort before the 301 redirect is...",
+    "replacement": "lms.dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "QA_REPORT.md",
+    "line": 138,
+    "snippet": "...nginx.conf` routing only to `internship.dbert.online` on port 5001, overwriting the unified configuration. | Replace legacy deploy script in...",
+    "replacement": "lms.dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "QA_REPORT.md",
+    "line": 146,
+    "snippet": "...TP redirect for legacy domains (`http://dbert.online` $\\rightarrow$ `https://dbert.online` $\\rightarrow$ `https://dbert.in`), causing TLS ha...",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "QA_REPORT.md",
+    "line": 290,
+    "snippet": "...D and OG tags still explicitly specify `dbert.online`.",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "QA_REPORT.md",
+    "line": 294,
+    "snippet": "...audit noted that blog routes reference `dbert.online`. Re-reading lines 6027 and 6067 revealed that the actual Python redirection logic issu...",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "QA_REPORT.md",
+    "line": 315,
+    "snippet": "- [x] **Complete list of all `dbert.online` references**: Cataloged across Python, TypeScript, HTML, XML, JSON, shell scripts, and configs, classified into Blocker, Warning, and Informational.",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "QA_REPORT.md",
+    "line": 317,
+    "snippet": "...site/sitemap.xml` and `robots.txt` use `dbert.online` (Blockers R1-02, R1-03), while `cpanel_public_html/sitemap.xml` uses `dbert.in`.",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "QA_REPORT.md",
+    "line": 427,
+    "snippet": "(Get-ChildItem -Path cpanel_public_html -Recurse -Filter *.html | Select-String -Pattern \"internship.dbert.online\").Count",
+    "replacement": "lms.dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "QA_REPORT.md",
+    "line": 457,
+    "snippet": "4. **Expand Certbot SAN**: Issue certificates covering `dbert.in`, `www.dbert.in`, `lms.dbert.in`, `dbert.online`, `www.dbert.online`, and `internship.dbert.online`.",
+    "replacement": "lms.dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "QA_REPORT.md",
+    "line": 462,
+    "snippet": "3. **Update Sitemaps in Portal**: Bulk replace `https://internship.dbert.online` with `https://lms.dbert.in` in `apps/portal/sitemap.xml`.",
+    "replacement": "lms.dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "WEBSITE_ROUTE_INVENTORY.md",
+    "line": 4,
+    "snippet": "- **Production URL**: `https://dbert.online`",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "WEBSITE_UIUX_PHASE_PLAN.md",
+    "line": 4,
+    "snippet": "- **Target Site**: `https://dbert.online` (Repository: `DBERT-INDIA/dbert-website-lms`, Scope: `apps/website/**`)",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "WEBSITE_UIUX_PHASE_PLAN.md",
+    "line": 140,
+    "snippet": ".../website/src/app/robots.ts` to `https://dbert.online` as the definitive production fallback, matching `sitemap.ts`.",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "WEBSITE_UIUX_PHASE_PLAN.md",
+    "line": 171,
+    "snippet": "- Verify that all `internship.dbert.online` outbound link targets remain active, consistent, and correctly tagged with `rel=\"noopener noreferrer\"`.",
+    "replacement": "lms.dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "WEBSITE_UIUX_PRODUCTION_PREFLIGHT.md",
+    "line": 7,
+    "snippet": "**Target Domain**: `https://dbert.online`",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "WEBSITE_UIUX_PRODUCTION_PREFLIGHT.md",
+    "line": 38,
+    "snippet": "| `NEXT_PUBLIC_SITE_URL` | Global canonical | Defaults strictly to authoritative `https://dbert.online` in `layout.tsx`, `sitemap.ts`, and `robots.ts` | Verified |",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "WEBSITE_UIUX_PRODUCTION_PREFLIGHT.md",
+    "line": 82,
+    "snippet": "...All links targeting `https://internship.dbert.online/` (fellowship applications, cohort registrations, job board) feature `target=\"_blank\"` ...",
+    "replacement": "lms.dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "WEBSITE_UIUX_PROGRESS.md",
+    "line": 29,
+    "snippet": "...Canonical URL domain unified to https://dbert.online, robots.txt sitemap aligned, 64 SEO entries verified |",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": ".agent/FINAL_RELEASE_GATE_REPORT.md",
+    "line": 4,
+    "snippet": "**Primary Production Portal:** `https://internship.dbert.online/`",
+    "replacement": "lms.dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "apps/website/.htaccess",
+    "line": 12,
+    "snippet": "# 1. 301 Permanent Redirect from legacy dbert.online -> dbert.in",
+    "replacement": "dbert.in",
+    "classification": "Intentional redirect rule"
+  },
+  {
+    "file": "apps/website/public/.htaccess",
+    "line": 12,
+    "snippet": "# 1. 301 Permanent Redirect from legacy dbert.online -> dbert.in",
+    "replacement": "dbert.in",
+    "classification": "Intentional redirect rule"
+  },
+  {
+    "file": "cpanel_public_html/.htaccess",
+    "line": 12,
+    "snippet": "# 1. 301 Permanent Redirect from legacy dbert.online -> dbert.in",
+    "replacement": "dbert.in",
+    "classification": "Intentional redirect rule"
+  },
+  {
+    "file": "dbert-api-package/docs/env_vars.md",
+    "line": 30,
+    "snippet": "| `FROM_EMAIL` | `contactus@dbert.online` | NO | Environment configuration parameter |",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "dbert-api-package/docs/env_vars.md",
+    "line": 65,
+    "snippet": "| `SITE_ORIGIN` | `https://internship.dbert.online` | NO | Environment configuration parameter |",
+    "replacement": "lms.dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "dbert-api-package/docs/env_vars.md",
+    "line": 70,
+    "snippet": "| `SMTP_HOST` | `dbert.online` | NO | Environment configuration parameter |",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "dbert-api-package/docs/env_vars.md",
+    "line": 73,
+    "snippet": "| `SMTP_USER` | `contactus@dbert.online` | NO | Environment configuration parameter |",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "dbert-api-package/docs/integrations.md",
+    "line": 47,
+    "snippet": "- **Primary Host**: `SMTP_HOST` (`dbert.online`), port 465 (SSL).",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "dbert-api-package/website-content/public/.htaccess",
+    "line": 15,
+    "snippet": "# 1.1 Redirect /jobs and /internships to internship.dbert.online subdomain",
+    "replacement": "lms.dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "dbert-api-package/website-content/public/.htaccess",
+    "line": 17,
+    "snippet": "RewriteRule ^jobs/?$ https://internship.dbert.online/jobs [L,R=301]",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/public/.htaccess",
+    "line": 20,
+    "snippet": "RewriteRule ^internships/?(.*)$ https://internship.dbert.online/internships/$1 [L,R=301]",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/public/ads.txt",
+    "line": 1,
+    "snippet": "# Google AdSense Publisher Declaration for dbert.online",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/layout.tsx",
+    "line": 51,
+    "snippet": "metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.online'),",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/layout.tsx",
+    "line": 103,
+    "snippet": "\"url\": process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.online',",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/layout.tsx",
+    "line": 104,
+    "snippet": "\"logo\": `${process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.online'}/logo.svg`,",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/layout.tsx",
+    "line": 124,
+    "snippet": "\"email\": \"contactus@dbert.online\",",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/robots.ts",
+    "line": 5,
+    "snippet": "const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.online';",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/sitemap.ts",
+    "line": 7,
+    "snippet": "* High-authority dynamic sitemap generator for dbert.online",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/sitemap.ts",
+    "line": 11,
+    "snippet": "const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.online';",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/about/careers/page.tsx",
+    "line": 52,
+    "snippet": "<a href=\"mailto:contactus@dbert.online\" className=\"btn btn-outline\">Submit Your Portfolio</a>",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/about/contact/page.tsx",
+    "line": 37,
+    "snippet": "<p><a href=\"mailto:contactus@dbert.online\" className={styles.accentLink}>contactus@dbert.online</a></p>",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/ai-consultant/page.tsx",
+    "line": 44,
+    "snippet": "url: 'https://dbert.online'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/ai-solutions/page.tsx",
+    "line": 53,
+    "snippet": "url: 'https://dbert.online'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/ai-solutions/page.tsx",
+    "line": 60,
+    "snippet": "url: 'https://dbert.online/ai-solutions'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/ai-solutions/consultation/page.tsx",
+    "line": 52,
+    "snippet": "url: 'https://dbert.online'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/ai-solutions/llm-training/page.tsx",
+    "line": 45,
+    "snippet": "url: 'https://dbert.online'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/ai-solutions/llm-training/dbert-ai/page.tsx",
+    "line": 52,
+    "snippet": "url: 'https://dbert.online'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/ai-solutions/llm-training/pipeline/page.tsx",
+    "line": 55,
+    "snippet": "url: 'https://dbert.online'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/ai-solutions/llm-training/private-hosting/page.tsx",
+    "line": 43,
+    "snippet": "url: 'https://dbert.online'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/ai-solutions/llm-training/private-hosting/page.tsx",
+    "line": 50,
+    "snippet": "url: 'https://dbert.online/ai-solutions/llm-training/private-hosting'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/ai-solutions/products/page.tsx",
+    "line": 79,
+    "snippet": "url: 'https://dbert.online/ai-solutions/products',",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/ai-solutions/products/page.tsx",
+    "line": 85,
+    "snippet": "url: `https://dbert.online/ai-solutions/products/${p.slug}`,",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/ai-solutions/products/certificate-verification-api/page.tsx",
+    "line": 48,
+    "snippet": "url: 'https://dbert.online'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/ai-solutions/products/certificate-verification-api/page.tsx",
+    "line": 56,
+    "snippet": "url: 'https://dbert.online/ai-solutions/products/certificate-verification-api'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/ai-solutions/products/certificate-verification-api/page.tsx",
+    "line": 122,
+    "snippet": "{`curl -X GET \"https://api.dbert.online/v1/verify?certId=DBERT-ENG-2026-8894\" \\\\",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/ai-solutions/products/dbert-chat/page.tsx",
+    "line": 48,
+    "snippet": "url: 'https://dbert.online'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/ai-solutions/products/dbert-chat/page.tsx",
+    "line": 56,
+    "snippet": "url: 'https://dbert.online/ai-solutions/products/dbert-chat'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/ai-solutions/products/dbert-chat/page.tsx",
+    "line": 133,
+    "snippet": "{`curl -X POST \"https://api.dbert.online/v1/chat\" \\\\",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/ai-solutions/products/document-ai/page.tsx",
+    "line": 48,
+    "snippet": "url: 'https://dbert.online'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/ai-solutions/products/document-ai/page.tsx",
+    "line": 56,
+    "snippet": "url: 'https://dbert.online/ai-solutions/products/document-ai'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/ai-solutions/products/document-ai/page.tsx",
+    "line": 122,
+    "snippet": "{`curl -X POST \"https://api.dbert.online/v1/extract\" \\\\",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/ai-solutions/products/document-ai/page.tsx",
+    "line": 126,
+    "snippet": "\"document_url\": \"https://secure-storage.dbert.online/client_invoices/inv_9981.pdf\",",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/ai-solutions/products/hiring-automation-suite/page.tsx",
+    "line": 48,
+    "snippet": "url: 'https://dbert.online'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/ai-solutions/products/hiring-automation-suite/page.tsx",
+    "line": 56,
+    "snippet": "url: 'https://dbert.online/ai-solutions/products/hiring-automation-suite'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/ai-solutions/products/intern-management-system/page.tsx",
+    "line": 48,
+    "snippet": "url: 'https://dbert.online'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/ai-solutions/products/intern-management-system/page.tsx",
+    "line": 56,
+    "snippet": "url: 'https://dbert.online/ai-solutions/products/intern-management-system'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/cohorts/aivara/page.tsx",
+    "line": 144,
+    "snippet": "<li><strong>Independent Credential Verification:</strong> Earn an accredited experience letter with a unique SHA-256 validation ID checkable on <code>dbert.online/verify</code>.</li>",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/hire/pre-vetted-engineers/page.tsx",
+    "line": 88,
+    "snippet": "url: 'https://dbert.online'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/page.tsx",
+    "line": 26,
+    "snippet": "... code screening challenge at internship.dbert.online.'",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/page.tsx",
+    "line": 36,
+    "snippet": "...R departments enter this ID directly at dbert.online/verify to inspect verified project deliverables without waiting for manual email confir...",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/page.tsx",
+    "line": 56,
+    "snippet": "url: 'https://dbert.online/learners/launchpad',",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/page.tsx",
+    "line": 62,
+    "snippet": "url: 'https://dbert.online/learners/accelerate',",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/page.tsx",
+    "line": 68,
+    "snippet": "url: 'https://dbert.online/learners/fellowship',",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/page.tsx",
+    "line": 74,
+    "snippet": "url: 'https://dbert.online/learners/jobs',",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/page.tsx",
+    "line": 123,
+    "snippet": "ctaHref: 'https://internship.dbert.online/',",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/page.tsx",
+    "line": 204,
+    "snippet": "href: 'https://internship.dbert.online/',",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/page.tsx",
+    "line": 235,
+    "snippet": "<a href=\"https://internship.dbert.online/\" target=\"_blank\" rel=\"noopener noreferrer\" className=\"btn btn-outline\">",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/page.tsx",
+    "line": 408,
+    "snippet": "<a href=\"https://internship.dbert.online/\" target=\"_blank\" rel=\"noopener noreferrer\" className=\"btn btn-primary btn-sm\">Open Career Portal \u2197</a>",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/page.tsx",
+    "line": 22,
+    "snippet": "url: 'https://dbert.online/learners/courses/ai-agent-development',",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/page.tsx",
+    "line": 23,
+    "snippet": "provider: { '@type': 'Organization', name: 'DBERT', url: 'https://dbert.online' },",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/page.tsx",
+    "line": 30,
+    "snippet": "url: 'https://dbert.online/learners/courses/generative-ai',",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/page.tsx",
+    "line": 31,
+    "snippet": "provider: { '@type': 'Organization', name: 'DBERT', url: 'https://dbert.online' },",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/page.tsx",
+    "line": 38,
+    "snippet": "url: 'https://dbert.online/learners/courses/machine-learning',",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/page.tsx",
+    "line": 39,
+    "snippet": "provider: { '@type': 'Organization', name: 'DBERT', url: 'https://dbert.online' },",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/page.tsx",
+    "line": 46,
+    "snippet": "url: 'https://dbert.online/learners/courses/python-automation',",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/page.tsx",
+    "line": 47,
+    "snippet": "provider: { '@type': 'Organization', name: 'DBERT', url: 'https://dbert.online' },",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/page.tsx",
+    "line": 54,
+    "snippet": "url: 'https://dbert.online/learners/courses/full-stack-development',",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/page.tsx",
+    "line": 55,
+    "snippet": "provider: { '@type': 'Organization', name: 'DBERT', url: 'https://dbert.online' },",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/page.tsx",
+    "line": 62,
+    "snippet": "url: 'https://dbert.online/learners/courses/data-analytics',",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/page.tsx",
+    "line": 63,
+    "snippet": "provider: { '@type': 'Organization', name: 'DBERT', url: 'https://dbert.online' },",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/page.tsx",
+    "line": 197,
+    "snippet": "href=\"https://internship.dbert.online/\"",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/page.tsx",
+    "line": 208,
+    "snippet": "href=\"https://internship.dbert.online/internships/full-stack-development\"",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/page.tsx",
+    "line": 217,
+    "snippet": "href=\"https://internship.dbert.online/internships/data-analyst\"",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/page.tsx",
+    "line": 226,
+    "snippet": "href=\"https://internship.dbert.online/internships/python-automation\"",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/page.tsx",
+    "line": 235,
+    "snippet": "href=\"https://internship.dbert.online/internships/ai-agent-development\"",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/ai-agent-development/page.tsx",
+    "line": 23,
+    "snippet": "...essing our open institutional portal at dbert.online/verify.'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/ai-agent-development/page.tsx",
+    "line": 45,
+    "snippet": "url: 'https://dbert.online'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/ai-agent-development/page.tsx",
+    "line": 57,
+    "snippet": "url: 'https://dbert.online/learners/courses/ai-agent-development'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/ai-agent-development/page.tsx",
+    "line": 271,
+    "snippet": "hubHref=\"https://internship.dbert.online/internships/ai-agent-development\"",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/ai-agent-development/page.tsx",
+    "line": 272,
+    "snippet": "jobsHref=\"https://internship.dbert.online/jobs/ai-agent-development\"",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/ai-agent-development/page.tsx",
+    "line": 280,
+    "snippet": "href: 'https://internship.dbert.online/internships/ai-sales-assistant-bot-intern-mumbai-remote-14',",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/ai-agent-development/page.tsx",
+    "line": 289,
+    "snippet": "href: 'https://internship.dbert.online/internships/ai-workflow-automation-intern-bangalore-remote-10',",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/ai-agent-development/page.tsx",
+    "line": 298,
+    "snippet": "href: 'https://internship.dbert.online/internships/agentic-search-systems-intern-delhi-ncr-remote-11',",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/ai-agent-development/page.tsx",
+    "line": 307,
+    "snippet": "href: 'https://internship.dbert.online/internships/ai-coding-assistant-intern-hyderabad-remote-12',",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/ai-agent-development/page.tsx",
+    "line": 316,
+    "snippet": "href: 'https://internship.dbert.online/internships/knowledge-base-rag-agent-intern-pune-remote-13',",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/ai-agent-development/page.tsx",
+    "line": 325,
+    "snippet": "href: 'https://internship.dbert.online/internships/rag-pipeline-engineering-intern-remote-1',",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/data-analytics/page.tsx",
+    "line": 23,
+    "snippet": "... into our public verification portal at dbert.online/verify, enabling instant cryptographic HR checks.'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/data-analytics/page.tsx",
+    "line": 45,
+    "snippet": "url: 'https://dbert.online'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/data-analytics/page.tsx",
+    "line": 57,
+    "snippet": "url: 'https://dbert.online/learners/courses/data-analytics'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/data-analytics/page.tsx",
+    "line": 342,
+    "snippet": "hubHref=\"https://internship.dbert.online/internships/data-analyst\"",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/data-analytics/page.tsx",
+    "line": 343,
+    "snippet": "jobsHref=\"https://internship.dbert.online/jobs/data-analyst\"",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/data-analytics/page.tsx",
+    "line": 351,
+    "snippet": "href: 'https://internship.dbert.online/internships/survey-research-data-intern-mumbai-remote-32',",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/data-analytics/page.tsx",
+    "line": 360,
+    "snippet": "href: 'https://internship.dbert.online/internships/operations-data-analyst-intern-bangalore-remote-28',",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/data-analytics/page.tsx",
+    "line": 369,
+    "snippet": "href: 'https://internship.dbert.online/internships/customer-insights-analyst-delhi-ncr-remote-29',",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/data-analytics/page.tsx",
+    "line": 378,
+    "snippet": "href: 'https://internship.dbert.online/internships/data-cleaning-etl-intern-hyderabad-remote-30',",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/data-analytics/page.tsx",
+    "line": 387,
+    "snippet": "href: 'https://internship.dbert.online/internships/excel-reporting-automation-intern-pune-remote-31',",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/data-analytics/page.tsx",
+    "line": 396,
+    "snippet": "href: 'https://internship.dbert.online/internships/power-bi-dashboard-intern-remote-21',",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/full-stack-development/page.tsx",
+    "line": 27,
+    "snippet": "...o our public authentication registry at dbert.online/verify, eliminating verification friction during enterprise hiring audits.'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/full-stack-development/page.tsx",
+    "line": 45,
+    "snippet": "url: 'https://dbert.online'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/full-stack-development/page.tsx",
+    "line": 57,
+    "snippet": "url: 'https://dbert.online/learners/courses/full-stack-development'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/full-stack-development/page.tsx",
+    "line": 271,
+    "snippet": "hubHref=\"https://internship.dbert.online/internships/full-stack-development\"",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/full-stack-development/page.tsx",
+    "line": 272,
+    "snippet": "jobsHref=\"https://internship.dbert.online/jobs/full-stack-development\"",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/full-stack-development/page.tsx",
+    "line": 280,
+    "snippet": "href: 'https://internship.dbert.online/internships/booking-system-development-intern-mumbai-remote-50',",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/full-stack-development/page.tsx",
+    "line": 289,
+    "snippet": "href: 'https://internship.dbert.online/internships/saas-feature-development-intern-bangalore-remote-46',",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/full-stack-development/page.tsx",
+    "line": 298,
+    "snippet": "href: 'https://internship.dbert.online/internships/authentication-security-intern-delhi-ncr-remote-47',",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/full-stack-development/page.tsx",
+    "line": 307,
+    "snippet": "href: 'https://internship.dbert.online/internships/progressive-web-app-intern-pune-remote-49',",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/full-stack-development/page.tsx",
+    "line": 316,
+    "snippet": "href: 'https://internship.dbert.online/internships/react-frontend-development-intern-remote-37',",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/full-stack-development/page.tsx",
+    "line": 325,
+    "snippet": "href: 'https://internship.dbert.online/internships/internal-tools-development-intern-hyderabad-remote-48',",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/generative-ai/page.tsx",
+    "line": 26,
+    "snippet": "answer: 'Every credential issued by DBERT Labs contains a cryptographically signed UUID that HR managers and tech recruiters can verify in real-time at dbert.online/verify.'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/generative-ai/page.tsx",
+    "line": 44,
+    "snippet": "url: 'https://dbert.online'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/generative-ai/page.tsx",
+    "line": 56,
+    "snippet": "url: 'https://dbert.online/learners/courses/generative-ai'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/machine-learning/page.tsx",
+    "line": 30,
+    "snippet": "answer: 'Graduates receive a cryptographically verified credential serial number that recruiters can audit instantly at dbert.online/verify, coupled with verifiable Git commits.'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/machine-learning/page.tsx",
+    "line": 44,
+    "snippet": "url: 'https://dbert.online'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/machine-learning/page.tsx",
+    "line": 56,
+    "snippet": "url: 'https://dbert.online/learners/courses/machine-learning'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/python-automation/page.tsx",
+    "line": 27,
+    "snippet": "...by inputting your unique serial code at dbert.online/verify.'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/python-automation/page.tsx",
+    "line": 45,
+    "snippet": "url: 'https://dbert.online'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/python-automation/page.tsx",
+    "line": 57,
+    "snippet": "url: 'https://dbert.online/learners/courses/python-automation'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/python-automation/page.tsx",
+    "line": 271,
+    "snippet": "hubHref=\"https://internship.dbert.online/internships/python-automation\"",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/python-automation/page.tsx",
+    "line": 272,
+    "snippet": "jobsHref=\"https://internship.dbert.online/jobs/python-automation\"",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/python-automation/page.tsx",
+    "line": 280,
+    "snippet": "href: 'https://internship.dbert.online/internships/qa-automation-intern-mumbai-remote-68',",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/python-automation/page.tsx",
+    "line": 289,
+    "snippet": "href: 'https://internship.dbert.online/internships/lead-generation-automation-intern-bangalore-remote-64',",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/python-automation/page.tsx",
+    "line": 298,
+    "snippet": "href: 'https://internship.dbert.online/internships/price-monitoring-automation-intern-delhi-ncr-remote-65',",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/python-automation/page.tsx",
+    "line": 307,
+    "snippet": "href: 'https://internship.dbert.online/internships/document-processing-automation-intern-hyderabad-remote-66',",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/python-automation/page.tsx",
+    "line": 316,
+    "snippet": "href: 'https://internship.dbert.online/internships/social-media-automation-intern-pune-remote-67',",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/courses/python-automation/page.tsx",
+    "line": 325,
+    "snippet": "href: 'https://internship.dbert.online/internships/web-scraping-intern-remote-55',",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/fellowship/page.tsx",
+    "line": 49,
+    "snippet": "...e, a certificate ID anyone can check at dbert.online/verify, and commits on a real client repository. Partner startups review fellow perform...",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/fellowship/page.tsx",
+    "line": 69,
+    "snippet": "...a recruiter can verify independently at dbert.online/verify without contacting us. A letter nobody can check is worth roughly what it costs ...",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/fellowship/page.tsx",
+    "line": 74,
+    "snippet": "...DBERT internship platform at internship.dbert.online. The application asks for your code \u2014 a repository, a deployed project, or your screeni...",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/fellowship/page.tsx",
+    "line": 89,
+    "snippet": "url: 'https://dbert.online',",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/fellowship/page.tsx",
+    "line": 91,
+    "snippet": "url: 'https://dbert.online/learners/fellowship',",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/fellowship/page.tsx",
+    "line": 103,
+    "snippet": "url: 'https://internship.dbert.online/',",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/fellowship/page.tsx",
+    "line": 393,
+    "snippet": "href=\"https://internship.dbert.online/\"",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/jobs/page.tsx",
+    "line": 100,
+    "snippet": "<a href=\"https://internship.dbert.online/\" target=\"_blank\" rel=\"noopener noreferrer\" className=\"btn btn-primary btn-sm\">Apply via Portal</a>",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/learners/jobs/page.tsx",
+    "line": 116,
+    "snippet": "<a href=\"https://internship.dbert.online/\" target=\"_blank\" rel=\"noopener noreferrer\" className=\"btn btn-outline btn-lg\">Apply for Internship Track</a>",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/pricing/page.tsx",
+    "line": 45,
+    "snippet": "url: 'https://dbert.online/pricing'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/privacy/page.tsx",
+    "line": 31,
+    "snippet": "...onal security across our website (<code>dbert.online</code>), learning platforms, and verification registries.",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/privacy/page.tsx",
+    "line": 51,
+    "snippet": "...dor, uses cookies to serve ads on <code>dbert.online</code>. Google&apos;s use of advertising cookies enables it and its partners to serve a...",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/refund/page.tsx",
+    "line": 55,
+    "snippet": "... available at <a href=\"mailto:contactus@dbert.online\" className=\"accent-link\">contactus@dbert.online</a>.",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/startups/page.tsx",
+    "line": 58,
+    "snippet": "url: 'https://dbert.online'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/startups/page.tsx",
+    "line": 65,
+    "snippet": "url: 'https://dbert.online/startups'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/startups/investor-network/page.tsx",
+    "line": 46,
+    "snippet": "url: 'https://dbert.online'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/startups/services/page.tsx",
+    "line": 96,
+    "snippet": "url: 'https://dbert.online'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/startups/services/equity/page.tsx",
+    "line": 51,
+    "snippet": "url: 'https://dbert.online'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/startups/services/equity/page.tsx",
+    "line": 59,
+    "snippet": "url: 'https://dbert.online/startups/services/equity'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/startups/services/equity/term-sheets/page.tsx",
+    "line": 47,
+    "snippet": "url: 'https://dbert.online'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/startups/services/equity/term-sheets/page.tsx",
+    "line": 54,
+    "snippet": "url: 'https://dbert.online/startups/services/equity/term-sheets'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/startups/services/funding/page.tsx",
+    "line": 51,
+    "snippet": "url: 'https://dbert.online'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/startups/services/funding/page.tsx",
+    "line": 59,
+    "snippet": "url: 'https://dbert.online/startups/services/funding'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/startups/services/hiring/page.tsx",
+    "line": 53,
+    "snippet": "url: 'https://dbert.online'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/startups/services/hiring/page.tsx",
+    "line": 61,
+    "snippet": "url: 'https://dbert.online/startups/services/hiring'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/startups/services/infrastructure/page.tsx",
+    "line": 51,
+    "snippet": "url: 'https://dbert.online'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/startups/services/infrastructure/page.tsx",
+    "line": 59,
+    "snippet": "url: 'https://dbert.online/startups/services/infrastructure'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/startups/services/legal/page.tsx",
+    "line": 51,
+    "snippet": "url: 'https://dbert.online'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/startups/services/legal/page.tsx",
+    "line": 59,
+    "snippet": "url: 'https://dbert.online/startups/services/legal'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/startups/services/technical/page.tsx",
+    "line": 52,
+    "snippet": "url: 'https://dbert.online'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/app/startups/services/technical/page.tsx",
+    "line": 60,
+    "snippet": "url: 'https://dbert.online/startups/services/technical'",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/components/blog/BlogClientView.tsx",
+    "line": 23,
+    "snippet": "const res = await fetch('https://internship.dbert.online/api/public/blog-posts', {",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/components/blog/DynamicBlogReader.tsx",
+    "line": 114,
+    "snippet": "const res = await fetch(`https://internship.dbert.online/api/public/blog-posts/${slug}`);",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/components/cohorts/AivaraCohortForm.tsx",
+    "line": 289,
+    "snippet": "href=\"https://internship.dbert.online/apply?cohort=aivara\"",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/components/layout/AlkameCaseStudyContent.tsx",
+    "line": 374,
+    "snippet": "<a href=\"https://internship.dbert.online\" target=\"_blank\" rel=\"noopener noreferrer\" className=\"btn btn-primary btn-lg\">Apply on internship.dbert.online</a>",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/components/layout/Footer.tsx",
+    "line": 71,
+    "snippet": "{ label: 'Full Stack Internships Mumbai', href: 'https://internship.dbert.online/internships/booking-system-development-intern-mumbai-remote-50', external: true },",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/components/layout/Footer.tsx",
+    "line": 72,
+    "snippet": "{ label: 'Data Analyst Bangalore', href: 'https://internship.dbert.online/internships/operations-data-analyst-intern-bangalore-remote-28', external: true },",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/components/layout/Footer.tsx",
+    "line": 73,
+    "snippet": "{ label: 'AI Agent Roles Delhi NCR', href: 'https://internship.dbert.online/internships/agentic-search-systems-intern-delhi-ncr-remote-11', external: true },",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/components/layout/Footer.tsx",
+    "line": 74,
+    "snippet": "{ label: 'Python Automation Pune', href: 'https://internship.dbert.online/internships/social-media-automation-intern-pune-remote-67', external: true },",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/components/layout/Footer.tsx",
+    "line": 75,
+    "snippet": "{ label: 'Virtual Remote Sprints', href: 'https://internship.dbert.online/internships/virtual-remote-internships', external: true },",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/components/layout/Footer.tsx",
+    "line": 76,
+    "snippet": "{ label: 'Paid Internships With Stipend', href: 'https://internship.dbert.online/internships/paid-internships', external: true },",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/components/layout/Footer.tsx",
+    "line": 77,
+    "snippet": "{ label: 'Job Board & Placement Hub', href: 'https://internship.dbert.online/jobs', external: true },",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/components/layout/Footer.tsx",
+    "line": 105,
+    "snippet": "href=\"mailto:contactus@dbert.online\"",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/components/layout/Footer.tsx",
+    "line": 108,
+    "snippet": "contactus@dbert.online",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/components/layout/Footer.tsx",
+    "line": 184,
+    "snippet": "<a href=\"https://internship.dbert.online/internships/full-stack-development\" target=\"_blank\" rel=\"noopener noreferrer\">Full Stack Internships Mumbai &amp; Bangalore</a>",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/components/layout/Footer.tsx",
+    "line": 186,
+    "snippet": "<a href=\"https://internship.dbert.online/internships/data-analyst-internship-work-from-home\" target=\"_blank\" rel=\"noopener noreferrer\">Data Analyst Work From Home</a>",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/components/layout/Footer.tsx",
+    "line": 188,
+    "snippet": "<a href=\"https://internship.dbert.online/internships/ai-automation-internship\" target=\"_blank\" rel=\"noopener noreferrer\">AI Automation Internships Bangalore</a>",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/components/layout/Footer.tsx",
+    "line": 190,
+    "snippet": "<a href=\"https://internship.dbert.online/jobs/full-stack-development\" target=\"_blank\" rel=\"noopener noreferrer\">Full Stack AI Developer Jobs</a>",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/components/layout/Footer.tsx",
+    "line": 205,
+    "snippet": "<span>\u00a9 {new Date().getFullYear()} DBERT \u00b7 dbert.online \u00b7 All rights reserved</span>",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/components/layout/ProgramDetailTemplate.tsx",
+    "line": 153,
+    "snippet": "\"sameAs\": \"https://dbert.online\"",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/components/seo/ArticleSchema.tsx",
+    "line": 12,
+    "snippet": "const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.online';",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/components/seo/Breadcrumbs.tsx",
+    "line": 6,
+    "snippet": "const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.online';",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/components/ui/MultiStepForm.tsx",
+    "line": 160,
+    "snippet": "<input type=\"email\" name=\"email\" required value={formData.email} onChange={handleInputChange} placeholder=\"you@dbert.online\" />",
+    "replacement": "dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/components/ui/RegionalOpportunityBento.module.css",
+    "line": 2,
+    "snippet": "Bilateral keyword anchors linking dbert.online -> internship.dbert.online */",
+    "replacement": "lms.dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/content/blog/ai-agent-frameworks-comparison.mdx",
+    "line": 143,
+    "snippet": "...er Discovery Portal](https://internship.dbert.online/internships/ai-agent-development).",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/content/blog/building-scalable-microservices-with-fastapi.mdx",
+    "line": 10,
+    "snippet": "canonicalUrl: \"https://dbert.online/blog/building-scalable-microservices-with-fastapi\"",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/data/nav.config.json",
+    "line": 121,
+    "snippet": "{ \"label\": \"Job Board\", \"href\": \"https://internship.dbert.online/jobs\", \"external\": true },",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/data/nav.config.json",
+    "line": 122,
+    "snippet": "{ \"label\": \"Apply for Fellowship\", \"href\": \"https://internship.dbert.online/apply\", \"external\": true, \"highlight\": true }",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/data/nav.config.json",
+    "line": 146,
+    "snippet": "\"href\": \"https://internship.dbert.online/\",",
+    "replacement": "lms.dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/lib/email.ts",
+    "line": 86,
+    "snippet": "...ntial independently verifiable at <code>dbert.online/verify</code>.</p>",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/lib/email.ts",
+    "line": 100,
+    "snippet": "... engineering certification checkable on dbert.online/verify.${notesText}\\n\\nOur coordinators will reach out shortly with onboarding details....",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "dbert-api-package/website-content/src/lib/seo.ts",
+    "line": 4,
+    "snippet": "const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.online';",
+    "replacement": "dbert.in",
+    "classification": "Blocker"
+  },
+  {
+    "file": "deploy/dbert-unified-nginx.conf",
+    "line": 31,
+    "snippet": "server_name dbert.online www.dbert.online;",
+    "replacement": "dbert.in",
+    "classification": "Intentional redirect rule"
+  },
+  {
+    "file": "deploy/dbert-unified-nginx.conf",
+    "line": 45,
+    "snippet": "server_name internship.dbert.online;",
+    "replacement": "lms.dbert.in",
+    "classification": "Intentional redirect rule"
+  },
+  {
+    "file": "deploy/dbert-unified-nginx.conf",
+    "line": 57,
+    "snippet": "# Redirect legacy dbert.online -> https://dbert.in",
+    "replacement": "dbert.in",
+    "classification": "Intentional redirect rule"
+  },
+  {
+    "file": "deploy/dbert-unified-nginx.conf",
+    "line": 61,
+    "snippet": "server_name dbert.online www.dbert.online;",
+    "replacement": "dbert.in",
+    "classification": "Intentional redirect rule"
+  },
+  {
+    "file": "deploy/dbert-unified-nginx.conf",
+    "line": 69,
+    "snippet": "# Redirect legacy internship.dbert.online -> https://lms.dbert.in",
+    "replacement": "lms.dbert.in",
+    "classification": "Intentional redirect rule"
+  },
+  {
+    "file": "deploy/dbert-unified-nginx.conf",
+    "line": 73,
+    "snippet": "server_name internship.dbert.online;",
+    "replacement": "lms.dbert.in",
+    "classification": "Intentional redirect rule"
+  },
+  {
+    "file": "deploy/deploy_ec2_unified.sh",
+    "line": 229,
+    "snippet": "echo \"  sudo certbot --nginx -d dbert.in -d www.dbert.in -d lms.dbert.in -d api.dbert.in -d dbert.online -d www.dbert.online -d internship.dbert.online\"",
+    "replacement": "lms.dbert.in",
+    "classification": "Intentional redirect rule"
+  },
+  {
+    "file": "deploy/FILEZILLA_DEPLOYMENT_GUIDE.md",
+    "line": 19,
+    "snippet": "- (Optional for 301 redirects): `dbert.online`, `internship.dbert.online` $\\rightarrow$ A records to `YOUR_EC2_IP`",
+    "replacement": "lms.dbert.in",
+    "classification": "Intentional redirect rule"
+  },
+  {
+    "file": "deploy/FIRST_TIME_EC2_DEPLOYMENT.md",
+    "line": 134,
+    "snippet": "sudo cp /var/www/dbert-website-lms/deploy/nginx.conf /etc/nginx/sites-available/internship.dbert.online",
+    "replacement": "lms.dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "deploy/FIRST_TIME_EC2_DEPLOYMENT.md",
+    "line": 135,
+    "snippet": "sudo ln -sf /etc/nginx/sites-available/internship.dbert.online /etc/nginx/sites-enabled/",
+    "replacement": "lms.dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "deploy/FIRST_TIME_EC2_DEPLOYMENT.md",
+    "line": 141,
+    "snippet": "sudo certbot --nginx -d internship.dbert.online",
+    "replacement": "lms.dbert.in",
+    "classification": "Warning"
+  },
+  {
+    "file": "deploy/FIRST_TIME_EC2_DEPLOYMENT.md",
+    "line": 156,
+    "snippet": "2. `https://internship.dbert.online/` loads with valid SSL.",
+    "replacement": "lms.dbert.in",
+    "classification": "Warning"
+  }
+]

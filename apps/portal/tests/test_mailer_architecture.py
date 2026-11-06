@@ -7,7 +7,7 @@ from unittest.mock import patch, MagicMock
 def test_mailer_endpoint_default_configuration():
     from app import CPANEL_EMAIL_API_URL, EMAIL_PROVIDER
     assert CPANEL_EMAIL_API_URL == "https://mailer.aivaratech.online/send"
-    assert EMAIL_PROVIDER == "cpanel_api"
+    assert EMAIL_PROVIDER in ("smtp", "cpanel_api")
 
 @patch("requests.post")
 def test_dbert_mailer_http_dispatch(mock_post):

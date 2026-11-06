@@ -55,14 +55,14 @@ export default function StartupsLandingPage() {
         provider: {
           '@type': 'Organization',
           name: 'DBBERT (Digital Blinc Education Research And Technology)',
-          url: 'https://dbert.online'
+          url: 'https://dbert.in'
         },
         areaServed: {
           '@type': 'Country',
           name: 'India'
         },
         serviceType: 'AI Startup Incubation & Technical Consulting',
-        url: 'https://dbert.online/startups'
+        url: 'https://dbert.in/startups'
       },
       {
         '@type': 'FAQPage',

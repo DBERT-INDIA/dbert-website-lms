@@ -115,7 +115,7 @@ if [ ! -f ".env" ]; then
     cat << EOF > .env
 NEXT_PUBLIC_SITE_URL=https://dbert.in
 NEXT_PUBLIC_LMS_URL=https://lms.dbert.in
-NEXT_PUBLIC_GA_ID=G-GZ17KZ7MDW
+NEXT_PUBLIC_GA_ID=G-MN7ME9X518
 PORT=3001
 NODE_ENV=production
 DATABASE_URL=postgresql://dbert_user:${DB_PASS}@localhost:5432/dbert_lms

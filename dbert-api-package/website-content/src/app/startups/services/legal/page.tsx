@@ -48,7 +48,7 @@ export default function LegalServicePage() {
         provider: {
           '@type': 'Organization',
           name: 'DBERT Labs Industrial Training & Venture Studio',
-          url: 'https://dbert.online'
+          url: 'https://dbert.in'
         },
         offers: {
           '@type': 'Offer',
@@ -56,7 +56,7 @@ export default function LegalServicePage() {
           price: '25000',
           priceCurrency: 'INR',
           description: 'Flat fee incorporation and standardized contract suite or included within equity incubation scope',
-          url: 'https://dbert.online/startups/services/legal'
+          url: 'https://dbert.in/startups/services/legal'
         }
       },
       {

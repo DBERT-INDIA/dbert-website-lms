@@ -1,0 +1,21 @@
+deploy\dbert-portal-nginx.conf:3:# Domain: https://internship.dbert.online/
+deploy\dbert-portal-nginx.conf:9:server_name internship.dbert.online;
+deploy\dbert-portal-nginx.conf:25:server_name internship.dbert.online;
+deploy\dbert-portal-nginx.conf:28:ssl_certificate /etc/letsencrypt/live/internship.dbert.online/fullchain.pem;
+deploy\dbert-portal-nginx.conf:29:ssl_certificate_key /etc/letsencrypt/live/internship.dbert.online/privkey.pem;
+deploy\dbert-unified-nginx.conf:11:server_name dbert.in www.dbert.in lms.dbert.in dbert.online www.dbert.online internship.dbert.online;
+deploy\dbert-unified-nginx.conf:24:# Redirect legacy dbert.online -> https://dbert.in
+deploy\dbert-unified-nginx.conf:28:server_name dbert.online www.dbert.online;
+deploy\dbert-unified-nginx.conf:36:# Redirect legacy internship.dbert.online -> https://lms.dbert.in
+deploy\dbert-unified-nginx.conf:40:server_name internship.dbert.online;
+deploy\dbert-website-nginx.conf:3:# Domain: https://dbert.online/
+deploy\dbert-website-nginx.conf:9:server_name dbert.online www.dbert.online;
+deploy\dbert-website-nginx.conf:25:server_name dbert.online www.dbert.online;
+deploy\dbert-website-nginx.conf:28:# The actual path might differ slightly on Amazon Linux, usually /etc/letsencrypt/live/dbert.online/fullchain.pem
+deploy\dbert-website-nginx.conf:29:ssl_certificate /etc/letsencrypt/live/dbert.online/fullchain.pem;
+deploy\dbert-website-nginx.conf:30:ssl_certificate_key /etc/letsencrypt/live/dbert.online/privkey.pem;
+deploy\FILEZILLA_DEPLOYMENT_GUIDE.md:19:- (Optional for 301 redirects): `dbert.online`, `internship.dbert.online` $\rightarrow$ A records to `YOUR_EC2_IP`
+deploy\FIRST_TIME_EC2_DEPLOYMENT.md:134:sudo cp /var/www/dbert-website-lms/deploy/nginx.conf /etc/nginx/sites-available/internship.dbert.online
+deploy\FIRST_TIME_EC2_DEPLOYMENT.md:135:sudo ln -sf /etc/nginx/sites-available/internship.dbert.online /etc/nginx/sites-enabled/
+deploy\FIRST_TIME_EC2_DEPLOYMENT.md:141:sudo certbot --nginx -d internship.dbert.online
+deploy\FIRST_TIME_EC2_DEPLOYMENT.md:156:2. `https://internship.dbert.online/` loads with valid SSL.

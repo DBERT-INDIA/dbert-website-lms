@@ -1,0 +1,12 @@
+CPanel Matches Pattern Breakdown:
+
+[internship.dbert.online link/ref]: 157 occurrences
+  cpanel_public_html\404.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+  cpanel_public_html\index.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+  cpanel_public_html\404\index.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+  cpanel_public_html\about\index.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+  cpanel_public_html\about\careers\index.html:1 -> <!DOCTYPE html><html lang="en" class="bricolage_grotesque_a0f733-module__AcwZAa__variable inter_f2544dd8-module__ZBvz6W_
+
+[dbert.online text/comment]: 2 occurrences
+  cpanel_public_html\.htaccess:12 -> # 1. 301 Permanent Redirect from legacy dbert.online -> dbert.in
+  cpanel_public_html\ads.txt:1 -> # Google AdSense Publisher Declaration for dbert.online

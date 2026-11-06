@@ -49,7 +49,7 @@ export default function CareersPage() {
           <p className={styles.bodyMuted}>
             We are always looking for passionate AI practitioners, researchers, and technical mentors. Feel free to reach out to us with your portfolio.
           </p>
-          <a href="mailto:contactus@dbert.online" className="btn btn-outline">Submit Your Portfolio</a>
+          <a href="mailto:contactus@dbert.in" className="btn btn-outline">Submit Your Portfolio</a>
         </div>
       </div>
     </div>

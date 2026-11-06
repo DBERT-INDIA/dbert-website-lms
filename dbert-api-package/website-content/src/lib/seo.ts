@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { seoConfig } from '@/data/seo.config';
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.online';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.in';
 
 /**
  * Builds a page's Metadata from the central map in src/data/seo.config.ts.

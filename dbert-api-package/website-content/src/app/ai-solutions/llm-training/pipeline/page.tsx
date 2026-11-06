@@ -52,7 +52,7 @@ export default function FineTuningPipelinePage() {
         provider: {
           '@type': 'Organization',
           name: 'DBERT Labs Industrial Training & Venture Studio',
-          url: 'https://dbert.online'
+          url: 'https://dbert.in'
         },
         offers: {
           '@type': 'Offer',
@@ -160,18 +160,18 @@ export default function FineTuningPipelinePage() {
 
         <div className="grid gap-6 md:grid-cols-3 mt-6">
           {/* Workstation Card */}
-          <div className="card bg-card border border-line flex flex-col justify-between relative">
+          <div className="card p-6 bg-card border border-line flex flex-col justify-between relative">
             <div>
-              <div className="flex items-center justify-between mb-4">
-                <span className="font-mono text-xs text-accent uppercase font-bold tracking-wider">Edge / Workstation</span>
+              <div className="flex items-center justify-between mb-3">
+                <span className="font-mono text-xs text-accent font-bold uppercase tracking-wider">Edge / Workstation</span>
                 <span className="font-mono text-[11px] bg-zinc-800 text-zinc-300 px-2 py-0.5 rounded">7B – 8B Models</span>
               </div>
-              <h3 className="font-mono text-xl font-bold text-white mb-2">Single RTX 4090 <span className="text-sm text-muted font-normal">(24GB)</span></h3>
-              <p className="text-[13px] text-muted mb-6 leading-relaxed">
+              <h3 className="font-mono text-base font-bold text-white mb-2">Single RTX 4090 <span className="text-xs text-muted font-normal">(24GB)</span></h3>
+              <p className="text-xs text-muted leading-relaxed mb-4">
                 4-bit NormalFloat QLoRA with batch size 4 and 4k context. Ideal for local RAG adapters, code syntax linters, and departmental pilots.
               </p>
               
-              <div className="space-y-3 border-t border-line/60 pt-4 font-mono text-xs">
+              <div className="space-y-2.5 border-t border-line/60 pt-3 font-mono text-xs">
                 <div className="flex justify-between items-baseline text-muted">
                   <span>Base Weight VRAM:</span>
                   <span className="text-white font-semibold">5.8 GB (NF4)</span>
@@ -191,28 +191,28 @@ export default function FineTuningPipelinePage() {
               </div>
             </div>
 
-            <div className="mt-8 pt-4 border-t border-line/40 flex items-center justify-between">
-              <span className="font-mono text-[11px] text-muted">~48–55 tok/s (Native C++ / GGML)</span>
-              <span className="handnote blue text-sm" style={{ transform: 'rotate(-4deg)' }}>runs cool on desk</span>
+            <div className="mt-4 pt-3 border-t border-line font-mono text-[11px] text-muted flex items-center justify-between">
+              <span>~48–55 tok/s (Native C++ / GGML)</span>
+              <span className="handnote blue text-xs" style={{ transform: 'rotate(-4deg)' }}>runs cool on desk</span>
             </div>
           </div>
 
           {/* Standard Enterprise Card */}
-          <div className="card bg-card border-2 border-accent/60 relative flex flex-col justify-between">
+          <div className="card p-6 bg-card border-2 border-accent/70 relative flex flex-col justify-between">
             <div className="absolute -top-3 right-4 bg-accent text-zinc-950 font-mono text-[10px] uppercase font-bold px-2 py-0.5 rounded shadow-lg">
               Studio Standard
             </div>
             <div>
-              <div className="flex items-center justify-between mb-4">
-                <span className="font-mono text-xs text-accent uppercase font-bold tracking-wider">Mid-Scale Cluster</span>
+              <div className="flex items-center justify-between mb-3">
+                <span className="font-mono text-xs text-emerald-400 font-bold uppercase tracking-wider">Mid-Scale Cluster</span>
                 <span className="font-mono text-[11px] bg-zinc-800 text-zinc-300 px-2 py-0.5 rounded">14B – 32B Models</span>
               </div>
-              <h3 className="font-mono text-xl font-bold text-white mb-2">Dual RTX 4090 / A10G Array</h3>
-              <p className="text-[13px] text-muted mb-6 leading-relaxed">
+              <h3 className="font-mono text-base font-bold text-white mb-2">Dual RTX 4090 / A10G Array</h3>
+              <p className="text-xs text-muted leading-relaxed mb-4">
                 Dual 24GB/48GB VRAM configuration with ZeRO-2 stage offloading. Handles multi-turn agent logic and high-throughput document OCR.
               </p>
               
-              <div className="space-y-3 border-t border-line pt-4 font-mono text-xs">
+              <div className="space-y-2.5 border-t border-line pt-3 font-mono text-xs">
                 <div className="flex justify-between items-baseline text-muted">
                   <span>Base Weight VRAM:</span>
                   <span className="text-white font-semibold">18.4 GB (NF4)</span>
@@ -232,25 +232,25 @@ export default function FineTuningPipelinePage() {
               </div>
             </div>
 
-            <div className="mt-8 pt-4 border-t border-line/40 flex items-center justify-between">
-              <span className="font-mono text-[11px] text-muted">~32–40 tok/s (Bare-Metal Engine)</span>
-              <span className="handnote text-sm" style={{ transform: 'rotate(-4deg)' }}>powers our studio</span>
+            <div className="mt-4 pt-3 border-t border-line font-mono text-[11px] text-muted flex items-center justify-between">
+              <span>~32–40 tok/s (Bare-Metal Engine)</span>
+              <span className="handnote text-xs" style={{ transform: 'rotate(-4deg)' }}>powers our studio</span>
             </div>
           </div>
 
           {/* High-Throughput Rack Card */}
-          <div className="card bg-card border border-line flex flex-col justify-between relative">
+          <div className="card p-6 bg-card border border-line flex flex-col justify-between relative">
             <div>
-              <div className="flex items-center justify-between mb-4">
-                <span className="font-mono text-xs text-muted uppercase font-bold tracking-wider">High-Throughput Rack</span>
+              <div className="flex items-center justify-between mb-3">
+                <span className="font-mono text-xs text-signal font-bold uppercase tracking-wider">High-Throughput Rack</span>
                 <span className="font-mono text-[11px] bg-zinc-800 text-zinc-300 px-2 py-0.5 rounded">70B+ Frontier</span>
               </div>
-              <h3 className="font-mono text-xl font-bold text-white mb-2">RTX 6000 Ada / H100 Node</h3>
-              <p className="text-[13px] text-muted mb-6 leading-relaxed">
+              <h3 className="font-mono text-base font-bold text-white mb-2">RTX 6000 Ada / H100 Node</h3>
+              <p className="text-xs text-muted leading-relaxed mb-4">
                 High-bandwidth memory architecture for heavy parameter weights, 32k context windows, and continuous enterprise batch embeddings.
               </p>
               
-              <div className="space-y-3 border-t border-line pt-4 font-mono text-xs">
+              <div className="space-y-2.5 border-t border-line pt-3 font-mono text-xs">
                 <div className="flex justify-between items-baseline text-muted">
                   <span>Base Weight VRAM:</span>
                   <span className="text-white font-semibold">39.2 GB (8-bit Quant)</span>
@@ -270,9 +270,9 @@ export default function FineTuningPipelinePage() {
               </div>
             </div>
 
-            <div className="mt-8 pt-4 border-t border-line/40 flex items-center justify-between">
-              <span className="font-mono text-[11px] text-muted leading-relaxed">Zero external telemetry<br/>air-gapped execution</span>
-              <span className="handnote blue text-sm" style={{ transform: 'rotate(-4deg)' }}>bank grade isolation</span>
+            <div className="mt-4 pt-3 border-t border-line font-mono text-[11px] text-muted flex items-center justify-between">
+              <span className="leading-tight">Zero external telemetry &bull; air-gapped</span>
+              <span className="handnote blue text-xs" style={{ transform: 'rotate(-4deg)' }}>bank grade isolation</span>
             </div>
           </div>
         </div>

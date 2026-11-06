@@ -3,27 +3,27 @@
 <head>
 {# Title/description/canonical preserved byte-for-byte; this page is indexed and
    carries Course structured data. #}
-{% set page_title_full = "Paid Program — Guaranteed Placement Opportunity | DBERT" %}
-{% set page_desc %}{{ PROGRAM_META_DESC | default("DBERT Paid Program: 15 days training + 45-day production role + a guaranteed placement opportunity with our hiring partners on completion.") }}{% endset %}
+{% set page_title_full = "Paid Program — 2 Months with Guaranteed Internship Placement | DBERT" %}
+{% set page_desc %}{{ PROGRAM_META_DESC | default("DBERT Paid Program: 2 months program with guaranteed internship placement with our hiring partners on completion.") }}{% endset %}
 {% set page_canonical = SITE_ORIGIN ~ "/program" %}
 {% include "_head.html" %}
 
   <meta property="og:type" content="website"/>
   <meta property="og:site_name" content="DBERT"/>
   <meta property="og:title" content="DBERT Paid Program — Guaranteed Placement Opportunity"/>
-  <meta property="og:description" content="Skip the wait. 15 days training + 45-day production role + a guaranteed placement opportunity with our hiring partners on completion + certification. ₹1,599 (all taxes included)."/>
+  <meta property="og:description" content="Skip the wait. 2 months program with guaranteed internship placement with our hiring partners on completion + certification. ₹1,999 (all taxes included)."/>
   <meta property="og:url" content="{{ SITE_ORIGIN }}/program"/>
   {% if OG_IMAGE_URL %}<meta property="og:image" content="{{ OG_IMAGE_URL }}"/>{% endif %}
   <meta name="twitter:card" content="{% if OG_IMAGE_URL %}summary_large_image{% else %}summary{% endif %}"/>
   <meta name="twitter:title" content="DBERT Paid Program — Guaranteed Placement Opportunity"/>
-  <meta name="twitter:description" content="15 days training + 45-day production + a guaranteed placement opportunity with our hiring partners on completion + certification. ₹1,599 incl. taxes."/>
+  <meta name="twitter:description" content="2 months program with guaranteed internship placement with our hiring partners on completion + certification. ₹1,999 incl. taxes."/>
   {% if OG_IMAGE_URL %}<meta name="twitter:image" content="{{ OG_IMAGE_URL }}"/>{% endif %}
 <script nonce="{{ csp_nonce() }}" type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Course",
-    "name": "DBERT Paid Program — Guaranteed Placement Opportunity",
-    "description": "15 days of hands-on training plus a minimum 45-day production role with mentor sessions, leading to a guaranteed placement opportunity with our hiring partners, Offer Letter and Certificate of Completion on completion + certification.",
+    "name": "DBERT Paid Program — 2 Months with Guaranteed Internship Placement",
+    "description": "2 months program with hands-on training and production role, leading to a guaranteed internship placement with our hiring partners, Offer Letter and Certificate of Completion on completion.",
     "provider": {"@type": "Organization", "name": "DBERT", "sameAs": "{{ SITE_ORIGIN }}"},
     "offers": {"@type": "Offer", "price": "{{ paid_amount }}", "priceCurrency": "INR", "category": "Paid", "url": "{{ SITE_ORIGIN }}/program"},
     "hasCourseInstance": {"@type": "CourseInstance", "courseMode": "online", "courseWorkload": "P60D"}
@@ -39,7 +39,7 @@
         "name": "Is placement guaranteed in the DBERT paid program?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes. A placement opportunity with DBERT or one of our hiring and channel partners is guaranteed on successful completion of the training and the 45-day production role, along with certification."
+          "text": "Yes. A guaranteed internship placement with DBERT or one of our hiring and channel partners is assured on successful completion of the 2-month program, along with certification."
         }
       },
       {
@@ -47,7 +47,7 @@
         "name": "What is the fee for the DBERT paid program?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "The program fee is Rs. 1,599 (all taxes included). This is a one-time committed seat fee and is non-refundable."
+          "text": "The program fee is Rs. 1,999 (all taxes included). This is a one-time committed seat fee and is non-refundable."
         }
       },
       {
@@ -63,7 +63,7 @@
         "name": "What duration is the DBERT paid program?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "The program is 60 days long, consisting of 15 days of hands-on training followed by a 45-day production role."
+          "text": "The program is 2 months long, covering comprehensive skills training and live production role delivery."
         }
       }
     ]
@@ -80,20 +80,20 @@
 
   <div class="main">
     <div class="hero">
-      <span class="pill"><i class="fas fa-shield-halved"></i> Guaranteed placement opportunity on completion</span>
-      <h1>Launch your career with a <span class="grad">guaranteed placement opportunity</span></h1>
-      <p>Skip the wait and the uncertainty. Secure your seat today and follow a proven path from training to a real production role to a guaranteed placement opportunity with our hiring partners on completion + certification.</p>
+      <span class="pill"><i class="fas fa-shield-halved"></i> 2 Months Program · Guaranteed Internship Placement</span>
+      <h1>Launch your career with a <span class="grad">guaranteed internship placement</span></h1>
+      <p>Skip the wait and the uncertainty. Secure your seat today and follow a proven path through a comprehensive 2-month program from training to live production delivery to a guaranteed internship placement with our hiring partners on completion + certification.</p>
     </div>
 
     <!-- Journey -->
     <div class="glass-card">
       <div class="card-h"><i class="fas fa-route" style="color:var(--gold);"></i> Your journey</div>
       <ul class="journey">
-        <li><div class="ji"><i class="fas fa-graduation-cap"></i></div><div><h4>15 days of hands-on training</h4><p>Build job-ready skills in your chosen domain.</p></div></li>
-        <li><div class="ji"><i class="fas fa-laptop-code"></i></div><div><h4>Minimum 45-day production role</h4><p>Work on live projects — real work, real experience.</p></div></li>
-        <li><div class="ji"><i class="fas fa-user-tie"></i></div><div><h4>Mentor sessions throughout</h4><p>Guidance at every step of the program.</p></div></li>
-        <li><div class="ji"><i class="fas fa-handshake"></i></div><div><h4>Guaranteed placement opportunity</h4><p>With DBERT or one of our hiring &amp; channel partners on completion + certification.</p></div></li>
-        <li><div class="ji"><i class="fas fa-certificate"></i></div><div><h4>Offer Letter &amp; Certificate of Completion</h4><p>Verifiable for academic and industry use.</p></div></li>
+        <li><div class="ji"><i class="fas fa-graduation-cap"></i></div><div><h4>2 Months Structured Program</h4><p>Intensive curriculum spanning foundational mastery to live production delivery.</p></div></li>
+        <li><div class="ji"><i class="fas fa-laptop-code"></i></div><div><h4>Live Production Role</h4><p>Work directly on client repositories and live sprint tasks — real experience.</p></div></li>
+        <li><div class="ji"><i class="fas fa-user-tie"></i></div><div><h4>Mentor Sessions Throughout</h4><p>Dedicated 1:1 guidance and code reviews at every step of the program.</p></div></li>
+        <li><div class="ji"><i class="fas fa-handshake"></i></div><div><h4>Guaranteed Internship Placement</h4><p>Guaranteed internship placement with DBERT or one of our verified hiring partners on completion + certification.</p></div></li>
+        <li><div class="ji"><i class="fas fa-certificate"></i></div><div><h4>Offer Letter &amp; Verified Credentials</h4><p>Official Offer Letter and verifiable Certificate of Completion for academic and industry use.</p></div></li>
       </ul>
     </div>
 
@@ -115,7 +115,7 @@
     <!-- TERMS — always shown BEFORE any CTA -->
     <div class="glass-card terms-card">
       <div class="card-h" style="font-size:15px;color:var(--amber);"><i class="fas fa-circle-info"></i> Good to know before you enrol</div>
-      <p>Your placement, Offer Letter, and Certificate are <strong>guaranteed when you successfully complete the training and your 45-day production period</strong> — finish the program and your placement is assured.</p>
+      <p>Your placement, Offer Letter, and Certificate are <strong>guaranteed when you successfully complete the 2-month program</strong> — finish the program and your placement is assured.</p>
       <p>Enrolment is a committed seat, so the <strong>&#8377;{{ paid_amount | formatINR }} fee is non-refundable</strong>.</p>
       <p>Open to all four DBERT domains: AI Agent Development, Data Analyst, Full Stack Development, and Python Automation.</p>
       <p style="color:var(--tx-muted);">By enrolling you confirm you've read and accepted these terms.</p>
@@ -165,7 +165,7 @@
     </div>
 
     <div class="footer">
-      <a href="/">Internships</a> &middot; <a href="mailto:careers@dbert.info">careers@dbert.info</a>
+      <a href="/">Internships</a> &middot; <a href="mailto:support@dbert.in">support@dbert.in</a>
       <p style="margin-top:8px;">&copy; 2026 DBERT. MSME Registered.</p>
     </div>
   </div>

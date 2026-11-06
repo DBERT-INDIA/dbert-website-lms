@@ -525,6 +525,14 @@ export default function HomePage() {
               <Link href="/pricing">what everything costs</Link>, or read the{' '}
               <Link href="/blog">engineering blog</Link>.
             </p>
+            <div className={styles.migrationBanner}>
+              <div className={styles.migrationBannerTitle}>Official Domain Notice: DBERT.online is Now DBERT.in</div>
+              <p className={styles.migrationBannerText}>
+                Please note that <strong>dbert.online is not the active platform</strong>. All official operations,
+                startup incubation tracks, and learner certifications have permanently moved to <strong>dbert.in</strong>.
+                Read our full <Link href="/dbert-online">dbert.online domain migration advisory</Link>.
+              </p>
+            </div>
           </div>
         </div>
       </section>

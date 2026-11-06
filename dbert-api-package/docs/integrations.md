@@ -44,7 +44,7 @@ This document details all third-party and external service integrations ported i
 ## 3. Email Delivery Engine
 
 ### 3.1 Dual-Failover Architecture
-- **Primary Host**: `SMTP_HOST` (`dbert.online`), port 465 (SSL).
+- **Primary Host**: `SMTP_HOST` (`dbert.in`), port 465 (SSL).
 - **Secondary Host**: `SMTP_BACKUP_HOST` (`dbert.info`), port 465 (SSL).
 - **Relay Microservice**: `CPANEL_EMAIL_API_URL` (`https://mailer.aivaratech.online/send`).
 - **AWS SES Fallback**: If `EMAIL_PROVIDER=ses`, dispatches using Amazon SES API.
