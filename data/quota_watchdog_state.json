@@ -12,5 +12,8 @@
   "phase3_409_provisional_sent_at": null,
   "phase4_omnichannel_synced": false,
   "phase4_omnichannel_synced_at": null,
-  "completed_time": null
+  "completed_time": null,
+  "phase3_completed": true,
+  "phase4_completed": true,
+  "phase5_completed": true
 }
