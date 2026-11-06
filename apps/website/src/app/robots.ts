@@ -1,4 +1,5 @@
 import { MetadataRoute } from 'next';
+
 export const dynamic = 'force-static';
 
 export default function robots(): MetadataRoute.Robots {
@@ -20,6 +21,10 @@ export default function robots(): MetadataRoute.Robots {
         allow: '/',
       },
     ],
-    sitemap: `${baseUrl}/sitemap.xml`,
+    sitemap: [
+      `${baseUrl}/sitemap.xml`,
+      'https://lms.dbert.in/sitemap.xml',
+      `${baseUrl}/sitemap-lms.xml`,
+    ],
   };
 }

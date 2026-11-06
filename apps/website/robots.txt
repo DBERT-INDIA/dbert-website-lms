@@ -11,3 +11,5 @@ User-Agent: Googlebot-Image
 Allow: /
 
 Sitemap: https://dbert.in/sitemap.xml
+Sitemap: https://lms.dbert.in/sitemap.xml
+Sitemap: https://dbert.in/sitemap-lms.xml
