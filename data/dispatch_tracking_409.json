@@ -6707,10 +6707,10 @@
     "score": 80,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-175",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T02:37:48.107489",
+    "message_id": "<0c286128-45e5-4074-adf2-730301bd22f0@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -6725,10 +6725,10 @@
     "score": 83,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-149",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T02:38:18.557700",
+    "message_id": "<91bdd4e0-bd9d-437f-aef8-497ff7483c5f@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
