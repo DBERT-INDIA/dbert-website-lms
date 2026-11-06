@@ -13,7 +13,8 @@ from backend.services.application_service import (
     STATUS_APPLY_PENDING
 )
 from backend.schemas.portal import (
-    ApplicationCreateRequest, ApplicationResponse, ApplicationTransitionRequest
+    ApplicationCreateRequest, ApplicationResponse, ApplicationTransitionRequest,
+    ApplicationPublicStatusResponse
 )
 
 router = APIRouter(prefix="/applications", tags=["Applications"])
@@ -74,7 +75,37 @@ async def apply_for_internship(
     return new_app
 
 @router.get("/{app_id}", response_model=ApplicationResponse, summary="Get Application Details")
-async def get_application(app_id: int, db: AsyncSession = Depends(get_db)):
+async def get_application(
+    app_id: int,
+    current_user: Dict[str, Any] = Depends(get_current_user_token),
+    db: AsyncSession = Depends(get_db)
+):
+    stmt = select(Application).where(Application.id == app_id)
+    res = await db.execute(stmt)
+    app = res.scalar_one_or_none()
+    if not app:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Application not found")
+
+    user_role = current_user.get("role", "")
+    user_email = (current_user.get("email") or "").lower().strip()
+    user_sub = str(current_user.get("sub", ""))
+
+    # Privileged staff/admin/mentor can access applications
+    if user_role in ("admin", "staff", "mentor"):
+        return app
+
+    # Candidate can only access their own application
+    app_email = (app.email or "").lower().strip()
+    if user_email and app_email == user_email:
+        return app
+    if user_sub and hasattr(app, "user_id") and str(getattr(app, "user_id", "")) == user_sub:
+        return app
+
+    # Privacy-preserving 404 to prevent ID enumeration
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Application not found")
+
+@router.get("/{app_id}/status", response_model=ApplicationPublicStatusResponse, summary="Get Public Application Status Tracking")
+async def get_application_public_status(app_id: int, db: AsyncSession = Depends(get_db)):
     stmt = select(Application).where(Application.id == app_id)
     res = await db.execute(stmt)
     app = res.scalar_one_or_none()

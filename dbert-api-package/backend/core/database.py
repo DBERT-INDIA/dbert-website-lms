@@ -12,11 +12,24 @@ if db_url.startswith("postgres://"):
 elif db_url.startswith("postgresql://") and not db_url.startswith("postgresql+asyncpg://"):
     db_url = db_url.replace("postgresql://", "postgresql+asyncpg://", 1)
 
-# Check if SQLite is configured (e.g. for lightweight local testing)
+# Check if SQLite is configured (Finding DBERT-018: strictly prohibit SQLite in production)
 is_sqlite = "sqlite" in db_url
-
 connect_args = {}
 if is_sqlite:
+    import socket
+    hostname = socket.gethostname()
+    is_prod = (
+        settings.ENVIRONMENT == "production"
+        or hostname.startswith("ip-")
+        or "dbert" in hostname
+        or os.path.exists("/var/www/dbert-website-lms")
+    )
+    is_testing = bool(os.environ.get("TESTING") or os.environ.get("PYTEST_CURRENT_TEST"))
+    if is_prod and not is_testing:
+        raise RuntimeError(
+            "CRITICAL DATABASE ERROR: SQLite database URLs are strictly prohibited in production. "
+            "PostgreSQL runtime is enforced."
+        )
     connect_args["check_same_thread"] = False
 
 engine = create_async_engine(

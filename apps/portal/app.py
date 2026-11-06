@@ -345,17 +345,31 @@ ADMIN_KEY        = os.environ.get("ADMIN_KEY", "dbert_admin_2026")          # ke
 ADMIN_USERNAME   = os.environ.get("ADMIN_USERNAME", "dbert_admin")
 ADMIN_PASSWORD   = os.environ.get("ADMIN_PASSWORD", "dbert_admin_2026")
 
-# Production guard: refuse to boot with shipped default credentials/secret when not in debug.
-# (Mirrors the TUTOR_SSO_SECRET guard above. Prevents an accidental insecure deploy.)
-if os.environ.get("FLASK_ENV") == "production" or os.environ.get("FLASK_DEBUG", "false").lower() != "true":
+# Production guard: refuse to boot with shipped default credentials/secret.
+# Finding R2-04: Enforce credential assertions unconditionally on production hostnames regardless of debug flag.
+import socket
+_hostname = socket.gethostname()
+_is_prod_host = (
+    _hostname.startswith("ip-")
+    or "dbert" in _hostname
+    or os.path.exists("/var/www/dbert-website-lms")
+    or os.environ.get("FLASK_ENV") == "production"
+    or os.environ.get("ENVIRONMENT") == "production"
+)
+_enforce_guard = (
+    _is_prod_host
+    or os.environ.get("FLASK_ENV") == "production"
+    or os.environ.get("FLASK_DEBUG", "false").lower() != "true"
+)
+if _enforce_guard and not app.config.get("TESTING") and not os.environ.get("PYTEST_CURRENT_TEST"):
     _insecure = []
     if app.secret_key == "digitalblinc2026secretkey": _insecure.append("FLASK_SECRET_KEY")
     if ADMIN_PASSWORD == "dbert_admin_2026":           _insecure.append("ADMIN_PASSWORD")
     if ADMIN_KEY == "dbert_admin_2026":                _insecure.append("ADMIN_KEY")
     if ADMIN_USERNAME == "dbert_admin":                _insecure.append("ADMIN_USERNAME")
     assert not _insecure, (
-        "Refusing to start in production with default value(s) for: " + ", ".join(_insecure) +
-        ". Set strong values in .env (or set FLASK_DEBUG=true for local dev)."
+        "Refusing to start with default value(s) for: " + ", ".join(_insecure) +
+        ". Set strong values in .env."
     )
 
 # â”€â”€ Phase 5 Â§5.4: encryption key for financial PII (ambassador UPI ids) â”€â”€â”€â”€

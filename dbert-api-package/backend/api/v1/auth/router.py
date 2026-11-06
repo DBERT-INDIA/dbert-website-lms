@@ -170,15 +170,28 @@ async def refresh_tokens(req: RefreshRequest, db: AsyncSession = Depends(get_db)
     if payload.get("type") != "refresh":
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token type")
 
-    # Invalidate old refresh token
+    # Enforce server-side token store presence (Finding DBERT-010)
     rf_hash = hashlib.sha256(req.refresh_token.encode()).hexdigest()
     stmt = select(MobileRefreshToken).where(MobileRefreshToken.token_hash == rf_hash)
     res = await db.execute(stmt)
     token_record = res.scalar_one_or_none()
-    if token_record:
-        if token_record.revoked:
-            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Refresh token has been revoked")
-        token_record.revoked = True
+    if not token_record:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Refresh token not recognized or already consumed"
+        )
+    if token_record.revoked:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Refresh token has been revoked"
+        )
+    now = datetime.now(timezone.utc)
+    if token_record.expires_at and token_record.expires_at < now:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Refresh token has expired"
+        )
+    token_record.revoked = True
 
     # Generate new pair
     token_data = {"sub": payload.get("sub"), "email": payload.get("email"), "role": payload.get("role"), "name": payload.get("name")}
@@ -204,8 +217,35 @@ async def refresh_tokens(req: RefreshRequest, db: AsyncSession = Depends(get_db)
     )
 
 @router.post("/logout", summary="Logout and Revoke Token")
-async def logout(current_user: Dict[str, Any] = Depends(get_current_user_token)):
-    return {"status": "success", "message": "Successfully logged out"}
+async def logout(
+    current_user: Dict[str, Any] = Depends(get_current_user_token),
+    db: AsyncSession = Depends(get_db)
+):
+    # Enforce server-side revocation of active sessions on logout (Finding DBERT-011)
+    user_email = (current_user.get("email") or "").strip().lower()
+    user_sub = str(current_user.get("sub", "")).strip()
+
+    if user_email or user_sub:
+        conditions = []
+        if user_email:
+            conditions.append(MobileRefreshToken.email == user_email)
+        if user_sub:
+            conditions.append(MobileRefreshToken.intern_id == user_sub)
+
+        stmt = (
+            update(MobileRefreshToken)
+            .where(
+                MobileRefreshToken.revoked == False,
+                select(MobileRefreshToken.id).where(*conditions).exists() if False else (
+                    (MobileRefreshToken.email == user_email) if user_email else (MobileRefreshToken.intern_id == user_sub)
+                )
+            )
+            .values(revoked=True)
+        )
+        await db.execute(stmt)
+        await db.commit()
+
+    return {"status": "success", "message": "Successfully logged out and session revoked"}
 
 @router.post("/signup/stage1", response_model=TokenResponse, summary="Intern Signup Stage 1")
 async def signup_stage1(req: SignupStage1Request, db: AsyncSession = Depends(get_db)):
@@ -320,38 +360,77 @@ async def check_email(req: CheckEmailRequest, db: AsyncSession = Depends(get_db)
 
 @router.post("/forgot-password", summary="Trigger Password Reset Email")
 async def forgot_password(req: ForgotPasswordRequest, db: AsyncSession = Depends(get_db)):
+    clean_email = req.email.lower().strip()
     token = secrets.token_urlsafe(32)
     exp = datetime.now(timezone.utc) + timedelta(hours=2)
+
+    # Invalidate prior unused tokens for this email
+    await db.execute(
+        update(PasswordReset)
+        .where(PasswordReset.email == clean_email, PasswordReset.used == False)
+        .values(used=True, used_at=datetime.now(timezone.utc))
+    )
+
     reset_entry = PasswordReset(
-        email=req.email.lower().strip(),
+        email=clean_email,
         token=token,
         expires_at=exp,
         account_type=req.account_type or "intern"
     )
     db.add(reset_entry)
     await db.commit()
-    # In production, dispatch email; in dev return status
-    return {"status": "success", "message": "Password reset instructions sent"}
+
+    # Neutral response prevents user enumeration (Finding DBERT-005)
+    return {"status": "success", "message": "If that email is registered, password reset instructions have been dispatched."}
 
 @router.post("/reset-password", summary="Reset Password with Token")
 async def reset_password(req: ResetPasswordRequest, db: AsyncSession = Depends(get_db)):
+    now = datetime.now(timezone.utc)
     stmt = select(PasswordReset).where(PasswordReset.token == req.token, PasswordReset.used == False)
     res = await db.execute(stmt)
     reset_record = res.scalar_one_or_none()
     if not reset_record:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid or expired reset token")
 
+    # Enforce token expiry (Finding DBERT-005)
+    if reset_record.expires_at and reset_record.expires_at.replace(tzinfo=timezone.utc if reset_record.expires_at.tzinfo is None else None) < now:
+        reset_record.used = True
+        await db.commit()
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Reset token has expired. Please request a new one.")
+
     new_hash = hash_password(req.new_password)
-    # Update intern password
-    intern_stmt = select(InternAccount).where(InternAccount.email == reset_record.email)
-    intern_res = await db.execute(intern_stmt)
-    intern = intern_res.scalar_one_or_none()
-    if intern:
-        intern.password_hash = new_hash
-        intern.password_set = True
+    # Update account password based on account_type
+    acct_type = reset_record.account_type or "intern"
+    if acct_type == "intern":
+        intern_stmt = select(InternAccount).where(InternAccount.email == reset_record.email)
+        intern_res = await db.execute(intern_stmt)
+        intern = intern_res.scalar_one_or_none()
+        if intern:
+            intern.password_hash = new_hash
+            intern.password_set = True
+    elif acct_type == "company":
+        comp_stmt = select(Company).where(Company.email == reset_record.email)
+        comp_res = await db.execute(comp_stmt)
+        comp = comp_res.scalar_one_or_none()
+        if comp:
+            comp.password_hash = new_hash
+    elif acct_type == "mentor":
+        m_stmt = select(Mentor).where(Mentor.email == reset_record.email)
+        m_res = await db.execute(m_stmt)
+        mentor = m_res.scalar_one_or_none()
+        if mentor:
+            mentor.password_hash = new_hash
 
     reset_record.used = True
-    reset_record.used_at = datetime.now(timezone.utc)
+    reset_record.used_at = now
+
+    # Invalidate all active sessions/tokens upon password reset
+    await db.execute(
+        update(MobileRefreshToken)
+        .where(MobileRefreshToken.email == reset_record.email, MobileRefreshToken.revoked == False)
+        .values(revoked=True)
+    )
+
     await db.commit()
     return {"status": "success", "message": "Password successfully updated"}
 

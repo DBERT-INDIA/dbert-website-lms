@@ -93,6 +93,21 @@ async def handle_webhook(request: Request, db: AsyncSession = Depends(get_db)):
     if res.scalar_one_or_none():
         return {"status": "ignored", "reason": "duplicate event"}
 
+    # Reconcile enrollment on payment capture (Finding DBERT-009)
+    if event_type in ("payment.captured", "order.paid"):
+        payment_entity = payload.get("payload", {}).get("payment", {}).get("entity", {})
+        order_id = payment_entity.get("order_id") or payload.get("payload", {}).get("order", {}).get("entity", {}).get("id")
+        payment_id = payment_entity.get("id")
+
+        if order_id:
+            enr_stmt = select(Enrollment).where(Enrollment.razorpay_order_id == order_id)
+            enr_res = await db.execute(enr_stmt)
+            enr = enr_res.scalar_one_or_none()
+            if enr:
+                enr.payment_status = "Accepted"
+                if payment_id:
+                    enr.razorpay_payment_id = payment_id
+
     db.add(PaymentEvent(
         event_id=event_id,
         event_type=event_type,

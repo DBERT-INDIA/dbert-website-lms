@@ -13,10 +13,12 @@ interface BalanceSubmission {
   certId?: string;
   internId?: string;
   amountExpected: number;
+  amountClaimed?: number;
+  amountVerified?: number;
   amountPaid: number;
   utrNumber: string;
   remarks?: string;
-  status: 'SUBMITTED' | 'VERIFIED' | 'REJECTED';
+  status: 'SUBMITTED' | 'UNDER_REVIEW' | 'VERIFIED' | 'REJECTED';
   ipAddress?: string;
   userAgent?: string;
 }
@@ -86,7 +88,9 @@ export async function POST(request: NextRequest) {
       certId: cleanCertId || undefined,
       internId: cleanInternId || undefined,
       amountExpected: 1500,
-      amountPaid: 1500,
+      amountClaimed: 1500,
+      amountVerified: 0,
+      amountPaid: 0, // Finding DBERT-013: Payment verified only after admin reconciliation
       utrNumber: cleanUtr,
       remarks: (remarks || '').trim() || undefined,
       status: 'SUBMITTED',

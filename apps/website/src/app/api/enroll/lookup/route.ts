@@ -31,7 +31,7 @@ interface BalanceEnrollment {
   amountPaid: number;
   utrNumber: string;
   remarks?: string;
-  status: 'SUBMITTED' | 'APPROVED' | 'REJECTED';
+  status: 'SUBMITTED' | 'UNDER_REVIEW' | 'VERIFIED' | 'APPROVED' | 'REJECTED';
   approvedAt?: string;
   batchStartDate?: string;
   batchStartDisplay?: string;
@@ -45,9 +45,9 @@ function getBalanceEnrollments(): BalanceEnrollment[] {
   ];
 
   for (const p of possiblePaths) {
-    if (fs.existsSync(p)) {
+    if (fs.existsSync(/*turbopackIgnore: true*/ p)) {
       try {
-        const raw = fs.readFileSync(p, 'utf-8');
+        const raw = fs.readFileSync(/*turbopackIgnore: true*/ p, 'utf-8');
         const parsed = JSON.parse(raw);
         if (Array.isArray(parsed)) return parsed;
       } catch {
@@ -94,26 +94,35 @@ export async function GET(request: NextRequest) {
     });
 
     if (balanceMatch) {
-      const isApproved = balanceMatch.status === 'APPROVED';
+      const isApproved = balanceMatch.status === 'APPROVED' || balanceMatch.status === 'VERIFIED';
+      // Mask PII for public lookup (Finding DBERT-014)
+      const rawEmail = balanceMatch.email || '';
+      const maskedEmail = rawEmail.includes('@')
+        ? `${rawEmail.split('@')[0].slice(0, 3)}***@${rawEmail.split('@')[1]}`
+        : '';
+      const rawPhone = (balanceMatch.phone || '').replace(/\D/g, '');
+      const maskedPhone = rawPhone.length >= 4
+        ? `+91 ******${rawPhone.slice(-4)}`
+        : '';
+
       return NextResponse.json({
         found: true,
-        enrollmentStatus: balanceMatch.status || 'APPROVED',
+        enrollmentStatus: balanceMatch.status || 'SUBMITTED',
         isApproved,
         batchStartDate: balanceMatch.batchStartDate || '2026-11-09T18:00:00+05:30',
         batchStartDisplay: balanceMatch.batchStartDisplay || 'Monday, 9 Nov 2026',
         candidate: {
-          certId: balanceMatch.certId || 'CERT-DBERT-2026-FSD-156',
-          internId: balanceMatch.internId || 'DBERT-2026-INT-1412',
+          // Never fabricate fake IDs (Finding DBERT-015)
+          certId: balanceMatch.certId || null,
+          internId: balanceMatch.internId || null,
           holderName: balanceMatch.fullName,
-          email: balanceMatch.email,
-          phone: balanceMatch.phone,
+          email: maskedEmail,
+          phone: maskedPhone,
           college: balanceMatch.college || 'Full Stack Incubation Scholar',
           domain: balanceMatch.domain,
           project: balanceMatch.domain + ' Production Architecture',
           batch: balanceMatch.batchStartDisplay || 'Monday, 9 Nov 2026',
-          isProvisional: false,
-          amountPaid: balanceMatch.amountPaid,
-          utrNumber: balanceMatch.utrNumber,
+          isProvisional: !isApproved,
           submissionId: balanceMatch.id,
           status: balanceMatch.status
         }

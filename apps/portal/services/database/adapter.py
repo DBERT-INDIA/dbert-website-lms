@@ -896,15 +896,29 @@ def get_db_adapter(
         or engine == "postgres"
     )
 
-    require_postgres = os.environ.get("REQUIRE_POSTGRES", "false").lower() == "true" or os.environ.get("FLASK_ENV") == "production"
+    import socket
+    _hostname = socket.gethostname()
+    _is_prod_host = (
+        _hostname.startswith("ip-")
+        or "dbert" in _hostname
+        or os.path.exists("/var/www/dbert-website-lms")
+        or os.environ.get("FLASK_ENV") == "production"
+        or os.environ.get("ENVIRONMENT") == "production"
+    )
+    _is_testing = bool(os.environ.get("TESTING") or os.environ.get("PYTEST_CURRENT_TEST"))
+    require_postgres = (
+        os.environ.get("REQUIRE_POSTGRES", "false").lower() == "true"
+        or (_is_prod_host and not _is_testing)
+        or (os.environ.get("FLASK_DEBUG", "false").lower() != "true" and not _is_testing)
+    )
 
     if is_postgres_target:
         return PostgreSQLAdapter(db_target)
 
     if require_postgres:
         raise RuntimeError(
-            "PostgreSQL runtime database is enforced (REQUIRE_POSTGRES=true or production env). "
-            "SQLite connections and fallbacks are strictly prohibited."
+            "PostgreSQL runtime database is enforced (REQUIRE_POSTGRES=true or production environment). "
+            "SQLite connections and silent fallbacks are strictly prohibited."
         )
 
     # 4. Default SQLiteAdapter (Allowed ONLY for legacy unit testing when REQUIRE_POSTGRES is false)

@@ -113,4 +113,32 @@ class Settings(BaseSettings):
     ENROLLMENT_DEADLINE: str = os.environ.get("ENROLLMENT_DEADLINE", "2026-12-31")
     MAX_APPLICATIONS_PER_PERSON: int = int(os.environ.get("MAX_APPLICATIONS_PER_PERSON", "3"))
 
+    def validate_production_guards(self, force: bool = False):
+        """Enforces security guardrails when running in production (Finding DBERT-006)."""
+        import socket
+        hostname = socket.gethostname()
+        is_prod = (
+            self.ENVIRONMENT == "production"
+            or hostname.startswith("ip-")
+            or "dbert" in hostname
+            or os.path.exists("/var/www/dbert-website-lms")
+        )
+        is_testing = bool(os.environ.get("TESTING") or os.environ.get("PYTEST_CURRENT_TEST"))
+        if (is_prod and not is_testing) or force:
+            insecure = []
+            if not self.SECRET_KEY or self.SECRET_KEY == "dbert-secure-default-secret-key-change-in-prod-32chars":
+                insecure.append("SECRET_KEY")
+            if self.ADMIN_PASSWORD == "dbert_admin_2026":
+                insecure.append("ADMIN_PASSWORD")
+            if self.ADMIN_KEY == "dbert_admin_2026":
+                insecure.append("ADMIN_KEY")
+            if self.CRON_SECRET == "dbert_cron_secret_2026":
+                insecure.append("CRON_SECRET")
+            if insecure:
+                raise RuntimeError(
+                    f"CRITICAL CONFIGURATION ERROR: Default credentials detected for {', '.join(insecure)} in production. "
+                    "Service startup halted."
+                )
+
 settings = Settings()
+settings.validate_production_guards()

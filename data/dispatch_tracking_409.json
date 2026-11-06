@@ -677,10 +677,10 @@
     "score": 85,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-068",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:36:03.363549",
+    "message_id": "<527ba919-2e8f-4335-af65-16ea0c99e1ed@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -695,10 +695,10 @@
     "score": 77,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-080",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:36:33.613550",
+    "message_id": "<6172c818-124b-4e14-a581-17b08158950f@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -713,10 +713,10 @@
     "score": 84,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-UIUX-027",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:37:02.535515",
+    "message_id": "<6df3e670-e066-4cb9-a874-2478afee041e@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -731,10 +731,10 @@
     "score": 81,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-060",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:37:32.344044",
+    "message_id": "<d66aa8ec-021f-4d27-a350-e88795845604@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -749,10 +749,10 @@
     "score": 79,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-081",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:38:03.042829",
+    "message_id": "<ebd57262-8f82-4387-b4c1-32822d4a4e19@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -767,10 +767,10 @@
     "score": 74,
     "grade": "Grade B (Above Average)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-082",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:38:33.411858",
+    "message_id": "<af2254e1-4a33-41e1-bf9e-9cc0b724e5d7@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -785,10 +785,10 @@
     "score": 77,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-069",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:39:02.301407",
+    "message_id": "<ee834101-9478-4f72-8d0c-3fe4af4e44db@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -803,10 +803,10 @@
     "score": 79,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-083",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:39:33.139786",
+    "message_id": "<c711ee5d-b120-44c5-b754-dbe06b5d9e76@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -821,10 +821,10 @@
     "score": 82,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-070",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:40:02.710054",
+    "message_id": "<2576aa43-8b09-495c-9674-60f6e42189fc@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -839,10 +839,10 @@
     "score": 87,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-071",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:40:32.765003",
+    "message_id": "<9210013b-338e-4c76-8862-2f216262c0c3@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -857,10 +857,10 @@
     "score": 79,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-084",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:41:02.727244",
+    "message_id": "<e381e933-df74-4be8-a127-3e514a822805@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -875,10 +875,10 @@
     "score": 79,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-072",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:41:33.964219",
+    "message_id": "<48f55bf3-d0a4-47c1-99ce-ef6cda37af46@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -893,10 +893,10 @@
     "score": 86,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-085",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:42:02.853085",
+    "message_id": "<709bddb5-711a-4165-966a-088b73ce1b86@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -911,10 +911,10 @@
     "score": 81,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-061",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:42:32.822435",
+    "message_id": "<0d83e3a8-68e1-41ad-92d1-70141704a8b1@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -929,10 +929,10 @@
     "score": 77,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-073",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:43:02.537832",
+    "message_id": "<462ff778-ea2a-4225-9b52-d487591f2cab@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -947,10 +947,10 @@
     "score": 82,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-PA-022",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:43:33.212320",
+    "message_id": "<d2a44f1e-32fb-45f4-b326-055f18db4d2d@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -965,10 +965,10 @@
     "score": 85,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-074",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:44:03.776962",
+    "message_id": "<172a9b94-32bc-433a-badd-79cead963e85@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -983,10 +983,10 @@
     "score": 83,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-075",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:44:33.689131",
+    "message_id": "<77b6334e-5fe7-43ed-9437-36a685e53a7e@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1001,10 +1001,10 @@
     "score": 78,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-086",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:45:03.456670",
+    "message_id": "<6a16a985-9165-40ed-80cf-62505776c5f3@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1019,10 +1019,10 @@
     "score": 75,
     "grade": "Grade B (Above Average)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-087",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:45:32.961652",
+    "message_id": "<23a031c9-d625-44c5-bcbf-2d48f6360fc5@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1037,10 +1037,10 @@
     "score": 81,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-076",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:46:03.465831",
+    "message_id": "<d150d088-f179-4965-a9b6-f7c6bd233bcf@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1055,10 +1055,10 @@
     "score": 74,
     "grade": "Grade B (Above Average)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-077",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:46:33.651335",
+    "message_id": "<6ee3d9c2-f578-426e-b117-ffc378779b51@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1073,10 +1073,10 @@
     "score": 88,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-078",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:47:03.616895",
+    "message_id": "<f0b8c730-4911-4b75-8777-fe5087742cf2@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1091,10 +1091,10 @@
     "score": 81,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-088",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:47:33.394311",
+    "message_id": "<a3957ba3-c51b-40ee-8078-10fddc46874d@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1109,10 +1109,10 @@
     "score": 85,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-079",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:48:02.535736",
+    "message_id": "<0c5b5762-6c60-4b77-8ff5-b1ed7dda49ed@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1127,10 +1127,10 @@
     "score": 84,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-089",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:48:32.220707",
+    "message_id": "<630eb604-b962-4569-b45c-256056577ed7@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1145,10 +1145,10 @@
     "score": 84,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-080",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:49:03.823918",
+    "message_id": "<e0c80d6e-045b-4783-89f7-a13b0900e679@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1163,10 +1163,10 @@
     "score": 80,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-090",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:49:33.665757",
+    "message_id": "<b159cd42-761b-4f55-8935-477654ba9652@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1181,10 +1181,10 @@
     "score": 77,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-062",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:50:04.220967",
+    "message_id": "<9438a957-96bc-4437-a025-7c9708122746@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1199,10 +1199,10 @@
     "score": 75,
     "grade": "Grade B (Above Average)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-081",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:50:33.375142",
+    "message_id": "<e36baf69-d3cd-4042-9c7b-ddc2f3f61711@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1217,10 +1217,10 @@
     "score": 79,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-091",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:51:03.203989",
+    "message_id": "<e793d133-1bcd-45ab-bf01-a6664d279e4c@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1235,10 +1235,10 @@
     "score": 82,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-082",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:51:33.698042",
+    "message_id": "<fd4e08d0-b480-4548-92d0-bb9453d9b96a@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1253,10 +1253,10 @@
     "score": 85,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-063",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:52:03.959263",
+    "message_id": "<e4a9016d-9735-4c19-a87f-e8e89a04b86f@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1271,10 +1271,10 @@
     "score": 85,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-092",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:52:37.506704",
+    "message_id": "<76f4fcdc-e77f-44fd-bdbd-735cac3582ff@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1289,10 +1289,10 @@
     "score": 88,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-064",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:53:03.410908",
+    "message_id": "<d36943a0-1785-4b1e-9c2b-f1aee2e9172b@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1307,10 +1307,10 @@
     "score": 81,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-083",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:53:33.761438",
+    "message_id": "<a7f3bf46-0b9b-4111-910a-83af9d6db51c@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1325,10 +1325,10 @@
     "score": 82,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-084",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:54:03.154547",
+    "message_id": "<e87900ce-6ad8-4fd0-b0d2-d655b96d4942@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1343,10 +1343,10 @@
     "score": 81,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-093",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:54:33.848283",
+    "message_id": "<c5d872d4-5124-449a-9bca-26a5084aec18@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1361,10 +1361,10 @@
     "score": 86,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-085",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:55:03.173204",
+    "message_id": "<8c22d9e3-278a-4c8d-9c03-e7deb4473d26@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1379,10 +1379,10 @@
     "score": 85,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-094",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:55:32.531930",
+    "message_id": "<6cf13410-f8e7-432f-9c5a-73211256d982@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1397,10 +1397,10 @@
     "score": 85,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-065",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:56:03.214313",
+    "message_id": "<ee69f900-b59e-4844-8002-7e35e3ddeaf5@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1415,10 +1415,10 @@
     "score": 85,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-086",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:56:33.862857",
+    "message_id": "<f4124d1c-7529-4ae5-bccc-0de6c124ab7e@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1433,10 +1433,10 @@
     "score": 85,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-087",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:57:02.996338",
+    "message_id": "<5e5de42b-e7b6-4c9d-8360-e57c94abca0c@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1451,10 +1451,10 @@
     "score": 82,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-088",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:57:32.785620",
+    "message_id": "<2faf16fa-0467-4214-aba9-ff5af3119ae0@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1469,10 +1469,10 @@
     "score": 83,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-095",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:58:02.618124",
+    "message_id": "<2690f2e8-3cdf-4f6a-a023-59e9e2222812@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1487,10 +1487,10 @@
     "score": 74,
     "grade": "Grade B (Above Average)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-096",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:58:32.547609",
+    "message_id": "<f0cd80e8-2269-4592-bac3-8113fb28a046@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1505,10 +1505,10 @@
     "score": 76,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-097",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:59:02.669213",
+    "message_id": "<41af1f49-2c08-47f5-8d38-28b0a08ecafc@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1523,10 +1523,10 @@
     "score": 84,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-098",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-06T23:59:32.705146",
+    "message_id": "<49567916-9f7a-472b-8af3-6c8e6ca41f52@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1541,10 +1541,10 @@
     "score": 75,
     "grade": "Grade B (Above Average)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-089",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:00:03.418691",
+    "message_id": "<695f462f-64c4-4359-a70c-8bcd94c9ae86@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1559,10 +1559,10 @@
     "score": 75,
     "grade": "Grade B (Above Average)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-090",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:00:33.465525",
+    "message_id": "<4bdae0cf-c33c-4ee2-84cd-06a5faf426ae@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1577,10 +1577,10 @@
     "score": 76,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-091",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:01:02.530103",
+    "message_id": "<7e55055f-80e2-422f-9e7c-e047f09b3d93@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1595,10 +1595,10 @@
     "score": 80,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-066",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:01:34.145202",
+    "message_id": "<2077a6da-a00b-4203-97f6-d48a2ca63c10@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1613,10 +1613,10 @@
     "score": 74,
     "grade": "Grade B (Above Average)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-092",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:02:02.639128",
+    "message_id": "<1a2fd7a4-3fdb-4cf2-a425-f692ff73f51c@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1631,10 +1631,10 @@
     "score": 82,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-093",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:02:32.646767",
+    "message_id": "<c4a85a8a-8afd-415e-ac17-4f25a115b354@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1649,10 +1649,10 @@
     "score": 82,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-067",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:03:03.726716",
+    "message_id": "<621097bb-08e6-40ba-8a60-dff41a0d02d9@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1667,10 +1667,10 @@
     "score": 78,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-099",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:03:33.323691",
+    "message_id": "<cae11cb4-f892-4a13-b8ed-9c19389d9dbc@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1685,10 +1685,10 @@
     "score": 84,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-UIUX-028",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:04:02.730340",
+    "message_id": "<23591ab2-3d39-40d3-902e-4e3bad7526d3@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1703,10 +1703,10 @@
     "score": 85,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-100",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:04:32.374786",
+    "message_id": "<35364d8f-5896-4528-bcd3-b0a09e76c7f1@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1721,10 +1721,10 @@
     "score": 82,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-101",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:05:03.776903",
+    "message_id": "<351429fe-c617-4e11-b2bf-f6743e9f8410@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1739,10 +1739,10 @@
     "score": 77,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-102",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:05:33.335946",
+    "message_id": "<90981b19-2d25-4769-940d-38633cbd4510@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1757,10 +1757,10 @@
     "score": 78,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-103",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:06:03.290747",
+    "message_id": "<654f90b3-2064-4f50-a04f-9fec9239a58c@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1775,10 +1775,10 @@
     "score": 87,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-104",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:06:32.442682",
+    "message_id": "<912f02c7-48ff-4372-be8c-f42b962e33d5@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1793,10 +1793,10 @@
     "score": 74,
     "grade": "Grade B (Above Average)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-094",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:07:02.509517",
+    "message_id": "<0a9a6823-2440-4d5d-af3e-b92db816838a@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1811,10 +1811,10 @@
     "score": 80,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-105",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:08:32.646087",
+    "message_id": "<8f6a3341-e9dc-4e95-932e-3e6aa8d62b82@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1829,10 +1829,10 @@
     "score": 75,
     "grade": "Grade B (Above Average)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-068",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:09:02.412588",
+    "message_id": "<ad6a01f4-6ddf-404a-91d4-8446c6aa61f5@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1847,10 +1847,10 @@
     "score": 84,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-095",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:09:32.539506",
+    "message_id": "<3300ef09-988a-4df9-86bb-292cf50ce500@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1865,10 +1865,10 @@
     "score": 83,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-096",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:10:03.659469",
+    "message_id": "<848e86fc-27bf-47e7-bc8c-52640af7a2e5@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1883,10 +1883,10 @@
     "score": 77,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-106",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:10:32.471347",
+    "message_id": "<913f6faa-f503-4603-bd95-63ea72718d10@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1901,10 +1901,10 @@
     "score": 85,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-107",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:11:02.414729",
+    "message_id": "<1b5be425-53d9-4d34-9000-a3040276656f@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1919,10 +1919,10 @@
     "score": 77,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-097",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:11:34.180601",
+    "message_id": "<d20a3b3d-b033-4ca6-bc29-cafb065d8ee0@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1937,10 +1937,10 @@
     "score": 84,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-098",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:12:03.380711",
+    "message_id": "<6b717df7-99c3-40fe-a057-8c4634e7b003@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1955,10 +1955,10 @@
     "score": 88,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-108",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:12:33.373493",
+    "message_id": "<463c6975-c729-4ab5-b2ad-9aed29480ce8@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1973,10 +1973,10 @@
     "score": 74,
     "grade": "Grade B (Above Average)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-109",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:13:02.633088",
+    "message_id": "<22b61efc-d7bd-4d53-b07c-71857b7712ee@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -1991,10 +1991,10 @@
     "score": 87,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-069",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:13:33.275852",
+    "message_id": "<83c80a69-9bdc-4705-8bfb-273498542df1@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2009,10 +2009,10 @@
     "score": 84,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-099",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:14:03.544726",
+    "message_id": "<34dda853-c7fe-4cd2-a286-b4c9b19f743b@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2027,10 +2027,10 @@
     "score": 86,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-070",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:14:41.364087",
+    "message_id": "<ce138d3b-a2bb-44db-be28-6807d16e474d@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2045,10 +2045,10 @@
     "score": 76,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-100",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:15:03.249945",
+    "message_id": "<9e09c3bf-8551-40e8-9dba-2bcd31b6ae7e@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2063,10 +2063,10 @@
     "score": 88,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-101",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:15:33.437866",
+    "message_id": "<523e15a8-a379-4e34-96de-b83321795769@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2081,10 +2081,10 @@
     "score": 74,
     "grade": "Grade B (Above Average)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-102",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:16:03.620652",
+    "message_id": "<14ae246f-5372-4190-a61c-440a4518066c@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2099,10 +2099,10 @@
     "score": 78,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-110",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:16:33.195096",
+    "message_id": "<0cb0b9d9-c3f9-4d63-8765-f8193e0fee6a@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2117,10 +2117,10 @@
     "score": 84,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-103",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:17:03.318529",
+    "message_id": "<b72b2c99-dc8f-4d8c-b167-96b28c50b273@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2135,10 +2135,10 @@
     "score": 88,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-104",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:17:33.397227",
+    "message_id": "<97443cf9-108c-4c7e-bd34-0e173317e774@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2153,10 +2153,10 @@
     "score": 88,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-111",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:18:04.108355",
+    "message_id": "<847d0deb-77fa-4593-8ab6-1b95d81ccd86@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2171,10 +2171,10 @@
     "score": 82,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-071",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:18:34.212648",
+    "message_id": "<749abe89-4abf-4bbf-89cb-132974b452c6@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2189,10 +2189,10 @@
     "score": 79,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-112",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:19:03.499589",
+    "message_id": "<c4ce1710-fda9-4692-a72c-dd22936d022f@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2207,10 +2207,10 @@
     "score": 77,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-113",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:19:32.615988",
+    "message_id": "<9350f06f-d5c3-4ba2-bdb3-9b7c68987877@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2225,10 +2225,10 @@
     "score": 83,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-114",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:20:03.916414",
+    "message_id": "<fe1ff2e6-faec-4ec7-82ed-af788a378849@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2243,10 +2243,10 @@
     "score": 87,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-105",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:20:33.344812",
+    "message_id": "<035a6743-dc8a-4cca-8415-546fef239049@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2261,10 +2261,10 @@
     "score": 83,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-106",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:21:03.418905",
+    "message_id": "<5c66e37b-56d7-4a89-9521-a285d745eb26@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2279,10 +2279,10 @@
     "score": 83,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-107",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:21:33.851888",
+    "message_id": "<3c1a44e4-a74c-4ba7-a4f2-ec81db850f48@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2297,10 +2297,10 @@
     "score": 76,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-108",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:22:03.050694",
+    "message_id": "<88dbec50-ae53-47e5-96eb-1268fabf5f14@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2315,10 +2315,10 @@
     "score": 86,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-115",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:22:33.035995",
+    "message_id": "<90d115fc-40ef-4d08-b01e-e50c690db952@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2333,10 +2333,10 @@
     "score": 77,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-116",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:23:03.831625",
+    "message_id": "<5cf955c0-bb28-41a2-a8dd-2d3dda1ea7f8@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2351,10 +2351,10 @@
     "score": 75,
     "grade": "Grade B (Above Average)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-117",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:23:33.016297",
+    "message_id": "<79e5de34-3dbe-4a85-9baf-cd009046f0f4@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2369,10 +2369,10 @@
     "score": 84,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-072",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:24:02.916344",
+    "message_id": "<0160f2b9-d5d6-4da5-baf2-8cff3f6a651e@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2387,10 +2387,10 @@
     "score": 81,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-073",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:24:33.226715",
+    "message_id": "<b769aa2e-e89d-431a-920d-81503df1d0e5@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2405,10 +2405,10 @@
     "score": 78,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-118",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:25:03.221360",
+    "message_id": "<bb0f9e44-2de0-4281-a92a-3cb545f747b5@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2423,10 +2423,10 @@
     "score": 76,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-119",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:25:33.412133",
+    "message_id": "<11b75eb5-ba8f-40f8-baa6-88a4d50e9dbb@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2441,10 +2441,10 @@
     "score": 87,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-109",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:26:03.515910",
+    "message_id": "<f1fa97a3-6d03-489d-a5de-364f02090194@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2459,10 +2459,10 @@
     "score": 88,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-120",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:26:33.542739",
+    "message_id": "<1ea04c39-9fba-46f2-b501-9db417024313@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2477,10 +2477,10 @@
     "score": 78,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-110",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:27:03.753498",
+    "message_id": "<5e69cfa4-d6e0-4ac6-83a6-a9989a130876@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2495,10 +2495,10 @@
     "score": 80,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-121",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:27:32.574148",
+    "message_id": "<876b56f9-0017-4068-a77b-731341118e18@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2513,10 +2513,10 @@
     "score": 86,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-122",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:28:03.412669",
+    "message_id": "<2d2dfaf7-695d-4457-9ce1-4930a40a5148@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2531,10 +2531,10 @@
     "score": 77,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-123",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:28:32.625017",
+    "message_id": "<f5423fbb-1b83-405b-9c99-74d71ea4aea6@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2549,10 +2549,10 @@
     "score": 84,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-124",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:29:02.675251",
+    "message_id": "<05d9fd47-a0b0-42cc-9ddd-9f0fdbad234f@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2567,10 +2567,10 @@
     "score": 79,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-111",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:29:33.279552",
+    "message_id": "<13f94d6b-ac7b-47da-a624-869823d3a85e@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2585,10 +2585,10 @@
     "score": 88,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-125",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:30:02.940010",
+    "message_id": "<b54ce932-3aa5-430d-9df7-8ca9d8c85ff2@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2603,10 +2603,10 @@
     "score": 85,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-126",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:30:33.116446",
+    "message_id": "<40de700b-cdde-4ff3-ba59-60b4ef7c5f30@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2621,10 +2621,10 @@
     "score": 78,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-127",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:31:02.686542",
+    "message_id": "<01c1e3e9-f4f9-467f-9a9f-9b969adbc165@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2639,10 +2639,10 @@
     "score": 86,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-PA-023",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:31:32.896921",
+    "message_id": "<42003c26-3bd9-4fe6-b606-5dbb136ed776@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2657,10 +2657,10 @@
     "score": 84,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-112",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:32:03.440637",
+    "message_id": "<4bc28591-b8c6-40c8-a471-9bea8ffbbfcb@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2675,10 +2675,10 @@
     "score": 83,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-077",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:32:33.365176",
+    "message_id": "<ab8dfff3-2949-48de-b80a-91793c2a515a@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2693,10 +2693,10 @@
     "score": 87,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-078",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:33:03.945742",
+    "message_id": "<aa5e7479-9c80-4a12-8c78-e0b0c869092c@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2711,10 +2711,10 @@
     "score": 83,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-079",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:33:32.646277",
+    "message_id": "<960bbb1b-7e72-44fc-b162-6a6872569a01@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2729,10 +2729,10 @@
     "score": 74,
     "grade": "Grade B (Above Average)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-080",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:34:02.717887",
+    "message_id": "<c7432d6f-026e-4d48-bd91-6f0f94b22236@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2747,10 +2747,10 @@
     "score": 76,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-108",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:34:34.261227",
+    "message_id": "<63226ec6-6a87-4d73-9c72-5b2e604f5546@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2765,10 +2765,10 @@
     "score": 87,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-109",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:35:02.765603",
+    "message_id": "<ae2e491c-28a3-44b1-a8fa-991c509bd0f2@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2783,10 +2783,10 @@
     "score": 74,
     "grade": "Grade B (Above Average)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-081",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:35:33.507088",
+    "message_id": "<b4d6c465-8519-4ed1-9483-44ffe3dbba7b@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2801,10 +2801,10 @@
     "score": 77,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-082",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:36:03.754824",
+    "message_id": "<3ddfa2d7-cfc4-4fc6-8a89-e6e78ceb12f1@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2819,10 +2819,10 @@
     "score": 78,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-127",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:36:32.601412",
+    "message_id": "<a1281f32-565e-41c1-90ec-ee8b9a8cf91f@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2837,10 +2837,10 @@
     "score": 74,
     "grade": "Grade B (Above Average)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-UIUX-034",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:37:02.731550",
+    "message_id": "<689bdb7f-5120-4370-b031-246fdc619ea3@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2855,10 +2855,10 @@
     "score": 75,
     "grade": "Grade B (Above Average)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-UIUX-035",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:37:34.135642",
+    "message_id": "<d3341613-cc94-48c6-a4b0-119078fc63b0@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2873,10 +2873,10 @@
     "score": 78,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-110",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:38:03.392235",
+    "message_id": "<136f6e25-5597-4165-99f9-92f501ba05ba@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2891,10 +2891,10 @@
     "score": 79,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-PA-024",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:38:33.154716",
+    "message_id": "<c662fe50-6133-4004-bfde-8a1d57446e91@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2909,10 +2909,10 @@
     "score": 83,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-UIUX-036",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:39:02.614636",
+    "message_id": "<f48da36e-a096-423d-b3e0-2fa655ccc012@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2927,10 +2927,10 @@
     "score": 82,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-083",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:39:33.206058",
+    "message_id": "<48a9424a-9fdb-4b25-94bc-89660b1ffb01@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2945,10 +2945,10 @@
     "score": 75,
     "grade": "Grade B (Above Average)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-128",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:40:03.265716",
+    "message_id": "<ae6a32c1-c238-43bd-b960-756f95b8bcc2@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2963,10 +2963,10 @@
     "score": 79,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-111",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:40:32.812709",
+    "message_id": "<b7239d43-0d03-4e4a-bcfa-10585e122b0e@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2981,10 +2981,10 @@
     "score": 86,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-UIUX-037",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:41:02.464781",
+    "message_id": "<c4ecf350-9196-48b8-aae1-c62be9e2e541@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -2999,10 +2999,10 @@
     "score": 84,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-112",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:41:33.856768",
+    "message_id": "<4c00b72f-5509-44e9-a494-c798e232e313@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3017,10 +3017,10 @@
     "score": 84,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-113",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:42:03.417260",
+    "message_id": "<a1049a1a-9b81-40a7-999d-01a449784fb0@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3035,10 +3035,10 @@
     "score": 82,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-129",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:42:33.349217",
+    "message_id": "<d14d087b-cc9c-4d96-afc2-7e93e784263b@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3053,10 +3053,10 @@
     "score": 77,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-PA-025",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:43:04.101404",
+    "message_id": "<445e08df-e8cf-4d81-a180-161bf6df384a@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3071,10 +3071,10 @@
     "score": 78,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-114",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:43:34.393796",
+    "message_id": "<6c71d2b1-f1a7-4acf-bfb8-35229e24e8a9@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3089,10 +3089,10 @@
     "score": 82,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-115",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:44:04.424981",
+    "message_id": "<881be4de-5156-43b4-8cc3-d2307acf73d8@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3107,10 +3107,10 @@
     "score": 82,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-084",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:44:33.979918",
+    "message_id": "<150a3d56-767f-4ad4-8dba-09a075c1e933@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3125,10 +3125,10 @@
     "score": 76,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-085",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:45:04.529947",
+    "message_id": "<08c68f12-75f9-432c-b21e-07bf2249746e@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3143,10 +3143,10 @@
     "score": 83,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-086",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:45:34.948622",
+    "message_id": "<6cf10f17-1430-43d6-b82c-0c8531de14cc@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3161,10 +3161,10 @@
     "score": 81,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-130",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:46:04.017719",
+    "message_id": "<3a49603f-23e3-4e69-9ac8-c924204eb6b4@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3179,10 +3179,10 @@
     "score": 84,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-087",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:46:33.644200",
+    "message_id": "<9f0b1380-38c8-43b6-8820-b81a5acab58f@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3197,10 +3197,10 @@
     "score": 77,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-088",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:47:04.020978",
+    "message_id": "<2d652bb4-2a23-4750-81f4-5532d292919f@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3215,10 +3215,10 @@
     "score": 76,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-089",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:52:40.137301",
+    "message_id": "<675ab8ea-7172-4b5b-8e99-8bce86400f5d@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3233,10 +3233,10 @@
     "score": 78,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-090",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:53:10.723704",
+    "message_id": "<df0b4145-5ff2-483f-a59a-8658e3ba9cd7@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3251,10 +3251,10 @@
     "score": 78,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-116",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:53:39.896344",
+    "message_id": "<69b730ad-d6a3-4110-a046-53965fed0b02@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3269,10 +3269,10 @@
     "score": 79,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-091",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:54:10.651890",
+    "message_id": "<7d83230c-0f6a-49c0-9479-b9d63a62b3ec@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3287,10 +3287,10 @@
     "score": 76,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-131",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:54:39.911126",
+    "message_id": "<91db9112-6d30-43dc-ad6d-ac74905d0ae8@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3305,10 +3305,10 @@
     "score": 87,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-PA-026",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:55:10.549539",
+    "message_id": "<c5f2c6c7-1834-4a1f-a8bc-771c76617a3f@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3323,10 +3323,10 @@
     "score": 76,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-092",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:55:40.936687",
+    "message_id": "<5f66503c-227a-42b0-a651-870e2b3e8c8c@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3341,10 +3341,10 @@
     "score": 83,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-117",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:56:11.459567",
+    "message_id": "<9bde679e-bd2f-4e5e-a2dd-acb74be6ee4b@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3359,10 +3359,10 @@
     "score": 75,
     "grade": "Grade B (Above Average)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-118",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:56:39.975737",
+    "message_id": "<915070d5-d57c-459c-81e9-1478e8695cf5@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3377,10 +3377,10 @@
     "score": 88,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-119",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:57:11.115795",
+    "message_id": "<86708e53-e08e-45e2-a1ae-e0b2a6c2280e@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3395,10 +3395,10 @@
     "score": 76,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-120",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:57:40.127871",
+    "message_id": "<7b041c89-8a04-411b-b9e3-7e7001c5309f@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3413,10 +3413,10 @@
     "score": 83,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-PA-027",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:58:11.387407",
+    "message_id": "<7a999931-4ce8-49ec-ad4a-39a69de950c4@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3431,10 +3431,10 @@
     "score": 80,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-121",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:58:40.589962",
+    "message_id": "<ccada60f-bc04-438f-a8cb-7279e3ce404a@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3449,10 +3449,10 @@
     "score": 86,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-093",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:59:10.772671",
+    "message_id": "<7a2bd313-b8b7-48d1-934e-654fde588206@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3467,10 +3467,10 @@
     "score": 85,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-094",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T00:59:40.313484",
+    "message_id": "<20c81997-07e2-4a28-97fc-ddca5591a023@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3485,10 +3485,10 @@
     "score": 79,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-095",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:00:10.373970",
+    "message_id": "<b8464991-a386-4647-83b5-76a3dc581771@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3503,10 +3503,10 @@
     "score": 88,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-122",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:00:40.421465",
+    "message_id": "<6c3e6beb-880e-43f2-9ebd-5dfc897e45d7@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3521,10 +3521,10 @@
     "score": 86,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-096",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:01:10.331035",
+    "message_id": "<fa0c4e9d-19c0-4600-9ebb-c940092c14fa@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3539,10 +3539,10 @@
     "score": 78,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-MAD-001",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:01:40.205012",
+    "message_id": "<f837e209-2565-4bd2-ae0e-27e55daf9c8a@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3557,10 +3557,10 @@
     "score": 87,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-097",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:02:10.237857",
+    "message_id": "<0874321a-6edf-419e-9d9a-942b585115f3@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3575,10 +3575,10 @@
     "score": 78,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-098",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:02:40.562852",
+    "message_id": "<53f3ccdc-d813-40d5-a91c-1d1d590669cc@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3593,10 +3593,10 @@
     "score": 87,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-MAD-002",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:03:12.739778",
+    "message_id": "<2757e267-8586-466e-b391-2379b0192944@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3611,10 +3611,10 @@
     "score": 84,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-099",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:04:40.917961",
+    "message_id": "<d3b35266-7f4a-4ddc-a949-d7e8ad62fb50@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3629,10 +3629,10 @@
     "score": 84,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-100",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:05:11.949426",
+    "message_id": "<3943874f-0c26-422f-9f79-23f16dee83df@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3647,10 +3647,10 @@
     "score": 75,
     "grade": "Grade B (Above Average)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DOC-001",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:05:41.172427",
+    "message_id": "<9956eab1-bab3-4f9d-8242-d6941bb13273@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3665,10 +3665,10 @@
     "score": 82,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-101",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:06:10.082413",
+    "message_id": "<a9bb5705-29f9-4080-b0d5-4b8866cad819@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3683,10 +3683,10 @@
     "score": 77,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-102",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:06:40.781941",
+    "message_id": "<d58707bd-ee62-4e01-9aaf-8d073e432a05@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3701,10 +3701,10 @@
     "score": 83,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-103",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:07:10.756804",
+    "message_id": "<d0d817d2-7f95-4baf-9783-07ac15637ba0@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3719,10 +3719,10 @@
     "score": 77,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-104",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:07:41.370611",
+    "message_id": "<10c66c05-773a-470b-8137-2ee5e1a10024@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3737,10 +3737,10 @@
     "score": 83,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-105",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:08:10.620705",
+    "message_id": "<008db421-dc2c-4964-83a2-e6e42a7c413d@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3755,10 +3755,10 @@
     "score": 78,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-MAD-003",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:08:40.911650",
+    "message_id": "<fb631d45-ed8e-4449-8c7a-69a461220b95@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3773,10 +3773,10 @@
     "score": 81,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-106",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:09:10.618826",
+    "message_id": "<8527b20d-6a38-4ce2-a569-992e348c10b1@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3791,10 +3791,10 @@
     "score": 87,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DOC-002",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:09:39.921452",
+    "message_id": "<5f988e5b-06d9-45e5-93eb-93d470b78953@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3809,10 +3809,10 @@
     "score": 75,
     "grade": "Grade B (Above Average)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-MAD-004",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:10:10.551570",
+    "message_id": "<d53a8d16-d3b3-4db4-838e-c7269201515f@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3827,10 +3827,10 @@
     "score": 85,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-107",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:10:40.881016",
+    "message_id": "<c285e8b5-9233-4598-9eea-b94a748f6ee4@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3845,10 +3845,10 @@
     "score": 85,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-123",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:11:10.458352",
+    "message_id": "<e9573449-de8e-43d8-844f-5cd8454a8a93@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3863,10 +3863,10 @@
     "score": 86,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-124",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:11:41.427629",
+    "message_id": "<c59be216-1f80-42b8-80c5-1f5f4b51a083@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3881,10 +3881,10 @@
     "score": 81,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-125",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:12:09.968290",
+    "message_id": "<a76c8de8-dcd9-49f1-8ff9-3ba167093d46@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3899,10 +3899,10 @@
     "score": 86,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DOC-003",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:12:41.144274",
+    "message_id": "<3fa1a3c8-f579-4950-a01d-8373b74b87b3@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3917,10 +3917,10 @@
     "score": 83,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-108",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:13:10.084549",
+    "message_id": "<a4411ca9-5387-4783-bcd4-0c3739ced8c1@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3935,10 +3935,10 @@
     "score": 85,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-126",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:13:41.031880",
+    "message_id": "<17744c5f-f677-4702-9e46-66cfd667d3a8@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3953,10 +3953,10 @@
     "score": 82,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-109",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:14:10.502355",
+    "message_id": "<0543110c-c383-4abf-b126-211fc18cbef4@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3971,10 +3971,10 @@
     "score": 79,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-127",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:14:43.403840",
+    "message_id": "<33db2789-d02f-4763-a333-37edecc03bc3@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -3989,10 +3989,10 @@
     "score": 81,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-128",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:15:10.348028",
+    "message_id": "<58b1adda-0c1e-4aa5-9b7e-55b2f858be2e@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4007,10 +4007,10 @@
     "score": 86,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-129",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:15:40.081727",
+    "message_id": "<89cda618-c4af-4fc5-ae5b-f2255bad2822@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4025,10 +4025,10 @@
     "score": 83,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-110",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:16:10.921131",
+    "message_id": "<7d2bcb89-e7f9-4d29-ab3b-73f0178f2d5c@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4043,10 +4043,10 @@
     "score": 79,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-111",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:16:40.190853",
+    "message_id": "<3e3b5e91-6731-4680-a5df-38f88ad48a6a@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4061,10 +4061,10 @@
     "score": 86,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-112",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:17:10.168829",
+    "message_id": "<4edf1e12-dc2b-4604-9f3e-51294df0404b@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4079,10 +4079,10 @@
     "score": 82,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-130",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:17:41.435633",
+    "message_id": "<3e836a1e-6445-4df5-9e74-a4ff7fb9ddbd@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4097,10 +4097,10 @@
     "score": 88,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-131",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:18:10.418346",
+    "message_id": "<4262be25-4396-494c-8432-994d073d5800@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4115,10 +4115,10 @@
     "score": 77,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DBB-001",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:18:40.519496",
+    "message_id": "<c9623e5d-dded-455d-af63-b4a6e74675c5@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4133,10 +4133,10 @@
     "score": 74,
     "grade": "Grade B (Above Average)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-113",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:19:10.669313",
+    "message_id": "<e3c9e0c7-3a63-46fe-8ee6-7234f1b6956f@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4151,10 +4151,10 @@
     "score": 83,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-114",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:19:40.067501",
+    "message_id": "<057f7cae-fd84-4b72-ab74-5fece3970e04@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4169,10 +4169,10 @@
     "score": 87,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-132",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:20:10.135406",
+    "message_id": "<b6d6da26-eb68-407c-a34e-99b651e04aa0@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4187,10 +4187,10 @@
     "score": 82,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-115",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:20:40.064662",
+    "message_id": "<92298679-11d5-4340-a282-303aa9622c91@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4205,10 +4205,10 @@
     "score": 88,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-116",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:21:10.463548",
+    "message_id": "<89947200-08df-48ac-9963-928065bc85f2@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4223,10 +4223,10 @@
     "score": 88,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-117",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:21:41.186406",
+    "message_id": "<698b5764-85cb-4d86-b1a4-9c62b7728124@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4241,10 +4241,10 @@
     "score": 79,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-118",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:22:10.749036",
+    "message_id": "<62c00209-3ca6-4a12-85fb-a233da01c79c@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4259,10 +4259,10 @@
     "score": 76,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-119",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:22:40.172366",
+    "message_id": "<36136bb5-2c84-491f-ab26-82c9e27c4a39@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4277,10 +4277,10 @@
     "score": 75,
     "grade": "Grade B (Above Average)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-120",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:23:11.027962",
+    "message_id": "<55a7ae9c-f36a-4710-b21a-ed3d92de0179@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4295,10 +4295,10 @@
     "score": 78,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-MAD-005",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:23:40.308105",
+    "message_id": "<dd8bd378-d43b-4c84-9b8f-3a6223f0988a@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4313,10 +4313,10 @@
     "score": 82,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-121",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:24:09.813361",
+    "message_id": "<27288b60-5a13-4346-a706-33d0385921c0@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4331,10 +4331,10 @@
     "score": 86,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-122",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:24:40.778205",
+    "message_id": "<b4296735-0197-45d1-bf71-0f209675ef3f@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4349,10 +4349,10 @@
     "score": 78,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-123",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:25:09.965028",
+    "message_id": "<bb207748-40d2-478b-80fd-30009272dc9b@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4367,10 +4367,10 @@
     "score": 84,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-124",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:25:40.238477",
+    "message_id": "<dc875813-9d9d-48d8-ae90-d6596328f603@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4385,10 +4385,10 @@
     "score": 84,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-125",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:26:10.057425",
+    "message_id": "<badb7876-7f28-426b-adba-fbc2f2d8b724@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4403,10 +4403,10 @@
     "score": 87,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-126",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:26:40.908047",
+    "message_id": "<0347492c-2b43-427c-9f91-d549b9e56f7a@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4421,10 +4421,10 @@
     "score": 80,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-133",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:27:11.476275",
+    "message_id": "<29fe85fb-34be-4470-a456-e4265a74c20e@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4439,10 +4439,10 @@
     "score": 84,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-127",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:27:39.955578",
+    "message_id": "<497ed100-e3d6-4a45-92ac-8b20bc1951c9@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4457,10 +4457,10 @@
     "score": 77,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-134",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:28:10.015965",
+    "message_id": "<37a69100-7156-47cb-b8c9-c4347d4ebd3d@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4475,10 +4475,10 @@
     "score": 77,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-135",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:28:39.918308",
+    "message_id": "<a232ff2d-cab6-465d-a85f-12d6205b9139@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4493,10 +4493,10 @@
     "score": 82,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-136",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:29:10.235130",
+    "message_id": "<2d25da3a-a87b-4c8c-b5c4-ac26085cb08d@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4511,10 +4511,10 @@
     "score": 78,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-137",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:29:40.127665",
+    "message_id": "<79757515-691f-4904-a6c9-640fd661d024@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4529,10 +4529,10 @@
     "score": 76,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DBB-002",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:30:11.261735",
+    "message_id": "<a29b026e-12ff-49ce-a455-6df1b579002f@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4547,10 +4547,10 @@
     "score": 87,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-128",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:30:42.998120",
+    "message_id": "<609033c5-afc2-450d-a65f-2d5a03eaff83@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4565,11 +4565,11 @@
     "score": 78,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-PA-028",
-    "status": "PENDING",
+    "status": "FAILED",
     "sent_at": null,
     "message_id": null,
     "provider": null,
-    "error": null
+    "error": "Primary failed (timed out). Fallbacks failed: cpanel_api: HTTPSConnectionPool(host='mailer.aivaratech.online', port=443): Max retries exceeded with url: /send (Caused by NameResolutionError(\"HTTPSConnection(host='mailer.aivaratech.online', port=443): Failed to resolve 'mailer.aivaratech.online' ([Errno 11001] getaddrinfo failed)\"))"
   },
   {
     "index": 255,
@@ -4583,10 +4583,10 @@
     "score": 76,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-129",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:31:43.432354",
+    "message_id": "<66a09c6f-a1b6-4728-8a4b-5acec6b0a53b@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4601,10 +4601,10 @@
     "score": 86,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-130",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:32:12.040826",
+    "message_id": "<e6b35679-2de4-456b-982e-eaa98bba00b8@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4619,10 +4619,10 @@
     "score": 83,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-131",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:32:40.478168",
+    "message_id": "<8f951a90-b09e-4f4f-b8e9-8a68911c6fa8@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4637,10 +4637,10 @@
     "score": 78,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-132",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:33:11.712556",
+    "message_id": "<af28fe98-2581-4f27-bef9-6b907c78afb7@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4655,10 +4655,10 @@
     "score": 80,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-133",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:33:42.558028",
+    "message_id": "<f215c74d-9543-49b2-86a2-e8016dc79cc0@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4673,10 +4673,10 @@
     "score": 77,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-138",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:34:11.457233",
+    "message_id": "<0131b02f-b3c8-4d51-bb17-e5c20f1b35fe@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4691,10 +4691,10 @@
     "score": 76,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-139",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:34:42.356342",
+    "message_id": "<2442b72c-066b-4043-9d50-1f33ddb47867@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4709,10 +4709,10 @@
     "score": 76,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-140",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:35:10.939271",
+    "message_id": "<f516030b-70f3-4774-98f4-b6f99b522bdd@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4727,10 +4727,10 @@
     "score": 78,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-134",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:35:41.029938",
+    "message_id": "<3b2e9c28-3c9f-4b4b-b28c-3396ca8750b5@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4745,10 +4745,10 @@
     "score": 86,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-132",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:36:14.548012",
+    "message_id": "<a8275e8e-1d85-4347-92c2-d266497dcbc5@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4763,10 +4763,10 @@
     "score": 80,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-133",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:36:42.902696",
+    "message_id": "<3669ebc8-2381-468a-895d-1a61de801628@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4781,10 +4781,10 @@
     "score": 83,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-141",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:37:11.023187",
+    "message_id": "<a0a6f905-bfec-45ad-a6ab-74ec3864c04f@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4799,10 +4799,10 @@
     "score": 78,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-142",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:37:40.964894",
+    "message_id": "<358c341f-0892-47b9-a276-accd588a59e2@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4817,10 +4817,10 @@
     "score": 81,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-PA-029",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:38:09.972485",
+    "message_id": "<931f4013-89aa-40ef-b7e4-2788135d9afe@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4835,10 +4835,10 @@
     "score": 86,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-143",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:38:40.148821",
+    "message_id": "<6f18ce56-bfc5-4224-83e1-386841db9302@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4853,10 +4853,10 @@
     "score": 75,
     "grade": "Grade B (Above Average)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-144",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:39:10.086783",
+    "message_id": "<0cc57b20-b7c9-4c7a-ba85-6ea541d58251@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4871,10 +4871,10 @@
     "score": 86,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-145",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:39:40.386306",
+    "message_id": "<0aa2b25c-9ed7-40a7-bc64-a77f59a9a99a@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4889,10 +4889,10 @@
     "score": 83,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-PA-030",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:40:11.684054",
+    "message_id": "<7b68c2dc-19a7-4da4-851d-e95f18fee37e@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4907,10 +4907,10 @@
     "score": 84,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-134",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:40:41.268052",
+    "message_id": "<23b9adc7-b5ab-4080-bddc-bef500e4ab63@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4925,10 +4925,10 @@
     "score": 81,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-135",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:41:10.521911",
+    "message_id": "<81493ae0-ce70-4d99-b254-267c6fdbe7f2@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4943,10 +4943,10 @@
     "score": 81,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-146",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:41:40.150393",
+    "message_id": "<4fe1019e-3586-467e-bb15-6da220ad37f0@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4961,10 +4961,10 @@
     "score": 80,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-136",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:42:10.416351",
+    "message_id": "<d2cc235c-6879-40a2-bde7-9342ba521494@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4979,10 +4979,10 @@
     "score": 77,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-147",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:42:40.168232",
+    "message_id": "<9623cf6c-377e-4d96-8fa8-532775cd9edc@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -4997,10 +4997,10 @@
     "score": 75,
     "grade": "Grade B (Above Average)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-148",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:43:11.009312",
+    "message_id": "<650f2926-a51a-40ca-92b0-36607050bf97@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5015,10 +5015,10 @@
     "score": 76,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-149",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:43:40.467395",
+    "message_id": "<97018c7f-493d-4968-b28c-089b77a875ef@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5033,10 +5033,10 @@
     "score": 87,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-137",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:44:11.124251",
+    "message_id": "<2a70d19c-c673-466a-a759-0dcc21937cd2@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5051,10 +5051,10 @@
     "score": 84,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-138",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:44:40.902691",
+    "message_id": "<2f3c1512-eef5-4517-935d-8425ae3170db@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5069,10 +5069,10 @@
     "score": 80,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-139",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:45:10.944774",
+    "message_id": "<84421d40-e074-4385-bdea-563e7a96bad8@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5087,10 +5087,10 @@
     "score": 80,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-140",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:45:40.451534",
+    "message_id": "<a75a7118-a11f-4f2c-9f45-058e45c3694d@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5105,10 +5105,10 @@
     "score": 83,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-141",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:46:10.988368",
+    "message_id": "<21e2f1f4-5b60-4554-8d56-9032b9695f44@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5123,10 +5123,10 @@
     "score": 76,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-150",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:46:41.810935",
+    "message_id": "<09c4880b-a019-4418-a0b0-6ce0dcb6134f@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5141,10 +5141,10 @@
     "score": 88,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-PA-031",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:47:10.854909",
+    "message_id": "<ecbd63f7-881e-4127-8a53-64e5c03c99fb@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5159,10 +5159,10 @@
     "score": 88,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-142",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:47:40.894027",
+    "message_id": "<a1e0071d-bc7a-4288-9843-47d067ad1bc1@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5177,10 +5177,10 @@
     "score": 75,
     "grade": "Grade B (Above Average)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-143",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:48:09.941026",
+    "message_id": "<96288d12-a85c-498d-979f-92ac5276d8c5@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5195,10 +5195,10 @@
     "score": 85,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-135",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:48:41.078204",
+    "message_id": "<dd98e385-b97d-4bad-ada1-3c64bd16dc94@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5213,10 +5213,10 @@
     "score": 86,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-144",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:49:11.159667",
+    "message_id": "<a7d93401-326c-461a-b15f-502366581fba@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5231,10 +5231,10 @@
     "score": 86,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-151",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:49:40.865662",
+    "message_id": "<d671628e-5fa8-4125-9b44-f0570f33003f@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5249,10 +5249,10 @@
     "score": 74,
     "grade": "Grade B (Above Average)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-145",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:50:10.974949",
+    "message_id": "<d32dfe15-6b28-4026-a3b8-50330920a99f@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5267,10 +5267,10 @@
     "score": 84,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-146",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:50:40.210075",
+    "message_id": "<67e5bd1c-777c-436a-8ae5-8c525a758725@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5285,10 +5285,10 @@
     "score": 86,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-147",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:51:10.123431",
+    "message_id": "<9211b63b-e351-471c-81a0-5c5b9a709ede@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5303,10 +5303,10 @@
     "score": 86,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-152",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:51:40.045921",
+    "message_id": "<bbd056f1-2b4b-4242-b488-3f0dd1c34945@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5321,10 +5321,10 @@
     "score": 88,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-153",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:52:09.944778",
+    "message_id": "<1e7ba978-e7ee-48ed-bcb2-a8b962f018f2@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5339,10 +5339,10 @@
     "score": 87,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-148",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:52:40.075148",
+    "message_id": "<7462cc38-dbcf-40e2-b6fc-227de320f8de@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5357,10 +5357,10 @@
     "score": 81,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-149",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:53:10.365933",
+    "message_id": "<fff23b04-9623-48e6-832a-dbc450e179c5@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5375,10 +5375,10 @@
     "score": 83,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-154",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:53:39.930273",
+    "message_id": "<8e1032b2-b82f-4cbd-99e7-3eea6d14f7a6@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5393,10 +5393,10 @@
     "score": 80,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-155",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:54:10.429668",
+    "message_id": "<5015f0cd-9fc7-487b-b2b7-5a52f7b1f435@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5411,10 +5411,10 @@
     "score": 87,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-PA-032",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:54:39.963702",
+    "message_id": "<6db448b6-a3f6-4312-ba70-8dc7a85a35fd@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5429,10 +5429,10 @@
     "score": 78,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-156",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:56:10.840994",
+    "message_id": "<cb48252b-e89a-4cd8-b380-cc0a386bb571@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5447,10 +5447,10 @@
     "score": 74,
     "grade": "Grade B (Above Average)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-150",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:56:41.167094",
+    "message_id": "<638bcc36-468a-4a11-abc3-0a226b321a83@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5465,10 +5465,10 @@
     "score": 76,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-151",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:57:10.958878",
+    "message_id": "<8b1e4be1-fd7a-4682-9d9d-e629ac82a68e@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5483,10 +5483,10 @@
     "score": 76,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-152",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:57:39.880050",
+    "message_id": "<912208e8-640a-44cd-aa92-d4f8a2bd57be@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5501,10 +5501,10 @@
     "score": 88,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-PA-033",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:58:10.790479",
+    "message_id": "<b7f86a18-3635-4137-b0ea-1d79c01a0302@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5519,10 +5519,10 @@
     "score": 77,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-153",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:58:39.920902",
+    "message_id": "<ff73657a-48a4-48c2-bf99-3d8b7aa9f36c@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5537,10 +5537,10 @@
     "score": 85,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-154",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:59:10.945085",
+    "message_id": "<404d07b0-54c0-456a-8e4d-f07211b4fa69@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5555,10 +5555,10 @@
     "score": 83,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-155",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T01:59:40.344290",
+    "message_id": "<9b302ea2-adbe-4a0d-8548-28a15428997a@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5573,10 +5573,10 @@
     "score": 82,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-156",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T02:00:10.201146",
+    "message_id": "<781c07ef-5568-4506-be87-4d5441916be2@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5591,11 +5591,11 @@
     "score": 85,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-157",
-    "status": "PENDING",
+    "status": "FAILED",
     "sent_at": null,
     "message_id": null,
     "provider": null,
-    "error": null
+    "error": "Primary failed (Connection unexpectedly closed: The read operation timed out). Fallbacks failed: cpanel_api: HTTPSConnectionPool(host='mailer.aivaratech.online', port=443): Max retries exceeded with url: /send (Caused by NameResolutionError(\"HTTPSConnection(host='mailer.aivaratech.online', port=443): Failed to resolve 'mailer.aivaratech.online' ([Errno 11001] getaddrinfo failed)\"))"
   },
   {
     "index": 312,
@@ -5609,10 +5609,10 @@
     "score": 80,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-157",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T02:01:23.641293",
+    "message_id": "<03be25d7-a38b-40e5-973b-db9fd4f0ade7@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5627,10 +5627,10 @@
     "score": 85,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-158",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T02:01:42.731902",
+    "message_id": "<d4d8ab90-e178-488c-9ccf-3e5cc8bd2aa7@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5645,10 +5645,10 @@
     "score": 79,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-PA-034",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T02:02:10.718965",
+    "message_id": "<10d13338-5153-45ee-b9b9-a939664a8fdb@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5663,10 +5663,10 @@
     "score": 84,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-158",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T02:02:44.478815",
+    "message_id": "<aa8089d0-4279-4c7c-939a-a919aab8c670@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5681,10 +5681,10 @@
     "score": 79,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-136",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T02:03:20.355718",
+    "message_id": "<818a2f49-58c1-4a9a-b69e-71884718ae2e@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5699,10 +5699,10 @@
     "score": 80,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-159",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T02:03:42.753995",
+    "message_id": "<95c30952-ceae-4ca6-9cf3-2351fa357aea@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5717,10 +5717,10 @@
     "score": 75,
     "grade": "Grade B (Above Average)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-159",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T02:04:11.506753",
+    "message_id": "<8fd3ad09-b2bd-4363-ba54-87d9a5acc9b8@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5735,10 +5735,10 @@
     "score": 74,
     "grade": "Grade B (Above Average)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-160",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T02:04:41.397106",
+    "message_id": "<0336f142-6d23-4475-b875-6c41ca7ecd74@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5753,10 +5753,10 @@
     "score": 74,
     "grade": "Grade B (Above Average)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-160",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T02:05:11.150566",
+    "message_id": "<2c35046c-5b0d-4f08-bff3-be3635a54b73@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5771,10 +5771,10 @@
     "score": 76,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-161",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T02:05:41.734212",
+    "message_id": "<8998f52f-1579-4972-becc-07d26e615b06@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5789,10 +5789,10 @@
     "score": 78,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-162",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T02:06:11.726774",
+    "message_id": "<c62a83bb-2e10-4b96-8eb8-6d65bd8f5923@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5807,10 +5807,10 @@
     "score": 87,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-163",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T02:06:40.341619",
+    "message_id": "<fffc7f87-14ee-4e93-95d4-1f3edb52409c@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5825,10 +5825,10 @@
     "score": 84,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-161",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T02:07:11.550982",
+    "message_id": "<e149bd53-1aad-4eab-9583-2b9749f5d907@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5843,10 +5843,10 @@
     "score": 79,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-164",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T02:07:40.983673",
+    "message_id": "<2fab5a33-f6b0-4b7a-9c80-e227f379b76d@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5861,10 +5861,10 @@
     "score": 81,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-PA-035",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T02:08:11.288097",
+    "message_id": "<389fcd82-ae56-4aab-acd5-de031af68536@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5879,10 +5879,10 @@
     "score": 85,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-162",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T02:08:41.548981",
+    "message_id": "<04d57d01-94a2-42e8-812d-20ac3152fc3a@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5897,10 +5897,10 @@
     "score": 78,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-AIML-165",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T02:09:11.546267",
+    "message_id": "<78be0931-b05f-45fc-94bc-e9aa099d079e@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5915,10 +5915,10 @@
     "score": 83,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-PA-036",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T02:09:40.691292",
+    "message_id": "<d119998b-bce4-4d0c-98ae-bfdb776f015d@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5933,10 +5933,10 @@
     "score": 75,
     "grade": "Grade B (Above Average)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-163",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T02:10:13.114218",
+    "message_id": "<49e2cead-69be-4f52-9514-9598346bfc8b@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5951,10 +5951,10 @@
     "score": 86,
     "grade": "Grade A+ (Outstanding)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-137",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T02:10:41.652925",
+    "message_id": "<11759c37-7472-4599-b758-8e6103f806c9@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5969,10 +5969,10 @@
     "score": 80,
     "grade": "Grade A (Very Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-FSD-138",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T02:11:11.870318",
+    "message_id": "<40f01ddd-769d-46ad-afc9-771aea82f3e0@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {
@@ -5987,10 +5987,10 @@
     "score": 77,
     "grade": "Grade B+ (Good)",
     "verifyUrl": "https://dbert.in/verify/CERT-DBERT-2026-DA-164",
-    "status": "PENDING",
-    "sent_at": null,
-    "message_id": null,
-    "provider": null,
+    "status": "SENT",
+    "sent_at": "2026-11-07T02:11:40.765762",
+    "message_id": "<33b08d4b-550a-4645-9adb-c2470350756f@dbert.in>",
+    "provider": "google_workspace_smtp",
     "error": null
   },
   {

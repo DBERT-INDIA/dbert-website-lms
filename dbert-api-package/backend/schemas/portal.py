@@ -36,6 +36,15 @@ class ApplicationResponse(BaseModel):
     class Config:
         from_attributes = True
 
+class ApplicationPublicStatusResponse(BaseModel):
+    id: int
+    domain: str
+    status: str
+    created_at: Optional[datetime] = None
+
+    class Config:
+        from_attributes = True
+
 class ApplicationTransitionRequest(BaseModel):
     target_status: str
     reason: Optional[str] = None
@@ -74,6 +83,7 @@ class EnrollmentResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
 
 class InternProfileUpdateRequest(BaseModel):
     name: Optional[str] = None

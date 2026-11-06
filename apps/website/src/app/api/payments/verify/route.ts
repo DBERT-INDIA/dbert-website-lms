@@ -24,41 +24,75 @@ export async function POST(request: Request) {
       .update(signaturePayload)
       .digest('hex');
 
-    if (generatedSignature === razorpay_signature) {
-      // Payment is valid — update enrollment to paid
-      if (enrollmentId) {
-        try {
-          await db.enrollmentInquiry.update({
-            where: { id: enrollmentId },
-            data: {
-              razorpayPaymentId: razorpay_payment_id,
-              razorpaySignature: razorpay_signature,
-              status: 'paid'
-            }
-          });
-        } catch (dbErr) {
-          console.warn('Enrollment DB update skipped (DB may be unreachable):', dbErr);
-        }
+    // Timing-safe cryptographic comparison
+    const genBuf = Buffer.from(generatedSignature, 'utf-8');
+    const supBuf = Buffer.from(String(razorpay_signature), 'utf-8');
+    const isSignatureValid = genBuf.length === supBuf.length && crypto.timingSafeEqual(genBuf, supBuf);
+
+    if (!isSignatureValid) {
+      // Payment signature is invalid — record failed state if order exists
+      try {
+        await db.enrollmentInquiry.updateMany({
+          where: { razorpayOrderId: razorpay_order_id, status: { not: 'paid' } },
+          data: { status: 'failed' }
+        });
+      } catch (e) {
+        console.warn('Failed state update warning:', e);
       }
-      return NextResponse.json({ success: true, message: 'Payment verified successfully' }, { status: 200 });
-    } else {
-      // Payment is invalid — do NOT mark as paid
-      if (enrollmentId) {
-        try {
-          await db.enrollmentInquiry.update({
-            where: { id: enrollmentId },
-            data: {
-              status: 'failed'
-            }
-          });
-        } catch (dbErr) {
-          console.warn('Enrollment DB update skipped (DB may be unreachable):', dbErr);
-        }
-      }
-      return NextResponse.json({ error: 'Invalid signature' }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid cryptographic payment signature' }, { status: 400 });
     }
+
+    // Strict Binding: Payment must belong to the matching local order / enrollment (Finding DBERT-008)
+    let enrollment = null;
+    try {
+      if (enrollmentId) {
+        enrollment = await db.enrollmentInquiry.findFirst({
+          where: { id: enrollmentId, razorpayOrderId: razorpay_order_id }
+        });
+        if (!enrollment) {
+          return NextResponse.json({
+            error: 'Security Mismatch: The provided enrollment does not match the payment order.'
+          }, { status: 400 });
+        }
+      } else {
+        enrollment = await db.enrollmentInquiry.findFirst({
+          where: { razorpayOrderId: razorpay_order_id }
+        });
+      }
+    } catch (lookupErr) {
+      console.error('Enrollment lookup error:', lookupErr);
+    }
+
+    // Durable state update (Finding DBERT-004: Never return false success on DB failure)
+    if (enrollment) {
+      try {
+        await db.enrollmentInquiry.update({
+          where: { id: enrollment.id },
+          data: {
+            razorpayPaymentId: razorpay_payment_id,
+            razorpaySignature: razorpay_signature,
+            status: 'paid'
+          }
+        });
+      } catch (dbErr) {
+        console.error('CRITICAL: Payment verified but enrollment update failed:', dbErr);
+        return NextResponse.json({
+          error: 'Payment received at gateway but database record update failed. Support has been notified for manual reconciliation.',
+          orderId: razorpay_order_id,
+          paymentId: razorpay_payment_id
+        }, { status: 500 });
+      }
+    }
+
+    return NextResponse.json({
+      success: true,
+      message: 'Payment verified and enrollment confirmed',
+      orderId: razorpay_order_id,
+      paymentId: razorpay_payment_id
+    }, { status: 200 });
+
   } catch (err) {
     console.error('Payment verification error:', err);
-    return NextResponse.json({ error: 'Verification failed' }, { status: 500 });
+    return NextResponse.json({ error: 'Verification processing failed' }, { status: 500 });
   }
 }

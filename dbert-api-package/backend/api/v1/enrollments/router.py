@@ -21,6 +21,16 @@ async def create_enrollment(
     request: Request,
     db: AsyncSession = Depends(get_db)
 ):
+    # Verify linked application if provided
+    if req.application_id:
+        app_stmt = select(Application).where(Application.id == req.application_id)
+        app_res = await db.execute(app_stmt)
+        if not app_res.scalar_one_or_none():
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Linked application {req.application_id} not found."
+            )
+
     new_enrollment = Enrollment(
         application_id=req.application_id,
         name=req.name,
@@ -43,10 +53,9 @@ async def create_enrollment(
         razorpay_signature=req.razorpay_signature
     )
     db.add(new_enrollment)
-    await db.commit()
-    await db.refresh(new_enrollment)
+    await db.flush()  # Flush to assign new_enrollment.id without committing transaction
 
-    # Initial history
+    # Initial history record
     req_id = getattr(request.state, "request_id", None)
     history = EnrollmentStatusHistory(
         enrollment_id=new_enrollment.id,
@@ -58,7 +67,7 @@ async def create_enrollment(
     )
     db.add(history)
 
-    # Synchronize application status to Enrolled
+    # Synchronize application status to Enrolled atomically (Finding DBERT-003)
     if req.application_id:
         target_app_status = STATUS_PAID_ENROLLED if req.product == "paid_program" else STATUS_ENROLLED
         try:
@@ -70,10 +79,15 @@ async def create_enrollment(
                 reason=f"Enrollment {new_enrollment.id} created",
                 request_id=req_id
             )
-        except Exception:
-            pass
+        except Exception as sync_err:
+            await db.rollback()
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"Failed to synchronize application status: {str(sync_err)}"
+            )
 
     await db.commit()
+    await db.refresh(new_enrollment)
     return new_enrollment
 
 @router.get("/enrollment-count", summary="Public Enrollment Counter")
