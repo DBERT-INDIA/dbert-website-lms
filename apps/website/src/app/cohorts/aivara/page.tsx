@@ -16,8 +16,46 @@ import styles from './aivara.module.css';
 export const metadata = pageMetadata('/cohorts/aivara');
 
 export default function AivaraCohortLandingPage() {
+  const jobPostingLd = {
+    '@context': 'https://schema.org',
+    '@type': 'JobPosting',
+    title: 'Aivara Technologies Remote Internship Cohort (2026)',
+    description: '<p>A production-level technical internship designed specifically for college students and emerging developers. Build real systems, receive senior engineering code reviews, and earn performance-linked stipends from anywhere in India.</p><p><strong>Tracks:</strong> AI Agent Development, Full Stack Web Development, Python Automation, Data Analytics, and Machine Learning.</p><p><strong>Requirements:</strong> Laptop with internet connection, commitment of 10 hours per week, foundational programming knowledge.</p>',
+    datePosted: '2026-10-01T00:00:00+05:30',
+    validThrough: '2027-06-30T23:59:59+05:30',
+    employmentType: 'INTERN',
+    workHours: '10 hours per week (Flexible)',
+    educationRequirements: 'College Students (B.Tech, BCA, MCA, B.Sc, Diploma) or Recent Graduates',
+    hiringOrganization: {
+      '@type': 'Organization',
+      name: 'Aivara Technologies & DBERT Labs',
+      sameAs: 'https://dbert.in',
+      logo: 'https://dbert.in/images/dbert_seal.png',
+    },
+    jobLocationType: 'TELECOMMUTE',
+    applicantLocationRequirements: {
+      '@type': 'Country',
+      name: 'IN',
+    },
+    baseSalary: {
+      '@type': 'MonetaryAmount',
+      currency: 'INR',
+      value: {
+        '@type': 'QuantitativeValue',
+        minValue: 10000,
+        maxValue: 22000,
+        unitText: 'MONTH',
+      },
+    },
+    directApply: true,
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jobPostingLd) }}
+      />
       <CohortBanner deadlineDate="October 15, 2026 — Applications Open" />
 
       <div className="container pad-block">

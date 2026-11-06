@@ -2,7 +2,6 @@ import React from 'react';
 import { pageMetadata } from '@/lib/seo';
 import s from '../learners.module.css';
 
-
 export const metadata = pageMetadata('/learners/jobs');
 
 export default function JobBoardPage() {
@@ -49,8 +48,71 @@ export default function JobBoardPage() {
     }
   ];
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@graph': jobs.map((job) => {
+      const isIntern = job.type.toLowerCase().includes('intern') || job.type.toLowerCase().includes('fellowship');
+      const isLpa = job.salary.includes('LPA');
+      let minValue = 12000;
+      let maxValue = 18000;
+      let unitText = 'MONTH';
+
+      if (isLpa) {
+        unitText = 'YEAR';
+        if (job.title.includes('Full Stack')) {
+          minValue = 480000;
+          maxValue = 720000;
+        } else if (job.title.includes('Data & BI')) {
+          minValue = 500000;
+          maxValue = 800000;
+        } else {
+          minValue = 400000;
+          maxValue = 650000;
+        }
+      } else if (job.title.includes('Local AI')) {
+        minValue = 10000;
+        maxValue = 15000;
+      }
+
+      return {
+        '@type': 'JobPosting',
+        title: job.title,
+        description: `<p>${job.desc}</p><p><strong>Role Requirements:</strong> ${job.requirements}</p><p><strong>Employment Type:</strong> ${job.type}</p><p><strong>Compensation:</strong> ${job.salary}</p>`,
+        datePosted: '2026-10-15T00:00:00+05:30',
+        validThrough: '2027-06-30T23:59:59+05:30',
+        employmentType: isIntern ? 'INTERN' : 'FULL_TIME',
+        hiringOrganization: {
+          '@type': 'Organization',
+          name: `${job.company} (DBERT Venture Network)`,
+          sameAs: 'https://dbert.in',
+          logo: 'https://dbert.in/images/dbert_seal.png',
+        },
+        jobLocationType: 'TELECOMMUTE',
+        applicantLocationRequirements: {
+          '@type': 'Country',
+          name: 'IN',
+        },
+        baseSalary: {
+          '@type': 'MonetaryAmount',
+          currency: 'INR',
+          value: {
+            '@type': 'QuantitativeValue',
+            minValue,
+            maxValue,
+            unitText,
+          },
+        },
+        directApply: true,
+      };
+    }),
+  };
+
   return (
     <div className="glow-wrapper">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="glow-spot"></div>
 
       {/* Hero Header Section */}
