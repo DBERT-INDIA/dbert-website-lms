@@ -17997,6 +17997,28 @@ def forgot_password():
                     "SELECT * FROM companies WHERE email=? AND is_active=1 LIMIT 1", (email,)
                 ).fetchone()
 
+            # Seamless Auto-Provisioning for Certified Interns
+            if not acct and not (comp and comp["password_hash"]):
+                try:
+                    from services.certificate_service import CertificateService
+                    reg = CertificateService.load_registry_record(email=email)
+                    if reg:
+                        holder_name = reg.get("holderName") or "Intern"
+                        domain = reg.get("domain") or "General"
+                        college = reg.get("college") or ""
+                        conn.execute(
+                            """
+                            INSERT INTO intern_accounts 
+                            (name, email, domain, college, is_active, password_set, created_at, updated_at)
+                            VALUES (?, ?, ?, ?, 1, 0, datetime('now','localtime'), datetime('now','localtime'))
+                            """,
+                            (holder_name, email, domain, college)
+                        )
+                        conn.commit()
+                        acct = conn.execute("SELECT * FROM intern_accounts WHERE email=? AND is_active=1", (email,)).fetchone()
+                except Exception as ap_err:
+                    log_error("auto-provision-certified-intern", ap_err)
+
             # AUTH-002: unknown email -> return same neutral response, never reveal existence.
             if not acct and not (comp and comp["password_hash"]):
                 return neutral

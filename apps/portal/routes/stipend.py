@@ -4,7 +4,10 @@ Fulfills Phase 13 of AGENTS.md / GEMINI.md.
 """
 import os
 import uuid
+import secrets
+import hashlib
 import logging
+from datetime import datetime, timedelta
 from flask import Blueprint, jsonify, render_template, request, redirect, flash, session, current_app
 from werkzeug.utils import secure_filename
 
@@ -14,7 +17,8 @@ logger = logging.getLogger("stipend_routes")
 from app import (
     get_db, current_intern, is_admin_request, current_staff,
     clean_text, log_error, mask_upi, send_email_async,
-    credit_intern_coins, get_coin_balances, set_config, get_config
+    credit_intern_coins, get_coin_balances, set_config, get_config,
+    SITE_ORIGIN, send_password_reset_email, now_str
 )
 from services.certificate_service import CertificateService
 from services.ai.stipend_evaluator import (
@@ -27,6 +31,23 @@ def stipend_tasks():
     """Intern-facing Stipend Milestone Dashboard with 3-step gating."""
     intern = current_intern()
     if not intern:
+        req_email = clean_text(request.args.get("email", "")).lower()
+        if req_email:
+            reg = CertificateService.load_registry_record(email=req_email)
+            if reg:
+                with get_db() as conn:
+                    acct = conn.execute("SELECT id FROM intern_accounts WHERE LOWER(email) = LOWER(?)", (req_email,)).fetchone()
+                    if not acct:
+                        conn.execute(
+                            """
+                            INSERT INTO intern_accounts 
+                            (name, email, domain, college, is_active, password_set, created_at, updated_at)
+                            VALUES (?, ?, ?, ?, 1, 0, datetime('now','localtime'), datetime('now','localtime'))
+                            """,
+                            (reg.get("holderName", "Intern"), req_email, reg.get("domain", "General"), reg.get("college", ""))
+                        )
+                        conn.commit()
+                flash(f"Welcome {reg.get('holderName', 'Candidate')}! Your certified account is recognized. Please sign in or use 'Forgot Password' to set your credentials and claim your stipend.", "info")
         return redirect("/#signin")
 
     email = intern.get("email", "").strip().lower()
@@ -60,7 +81,6 @@ def stipend_tasks():
         target_domain = (acct["domain"] if acct and acct["domain"] else ver_info.get("domain", "")).strip()
         active_task = None
         if all_gates_passed:
-            # Look for domain specific milestone task
             active_task = conn.execute(
                 """
                 SELECT * FROM tasks 
@@ -73,7 +93,6 @@ def stipend_tasks():
             ).fetchone()
 
             if not active_task:
-                # Fallback to any active stipend milestone task
                 active_task = conn.execute(
                     "SELECT * FROM tasks WHERE task_type = 'stipend_milestone' AND is_active = 1 LIMIT 1"
                 ).fetchone()
@@ -237,6 +256,52 @@ def submit_stipend_task(task_id: int):
 
     flash("Your technical contribution was submitted and pre-screened successfully! Mentors will review and release your stipend.", "success")
     return redirect("/stipend/tasks")
+
+
+@stipend_bp.route("/stipend/activate", methods=["POST"])
+def stipend_activate():
+    """1-Click password setup and account activation for verified interns."""
+    data = request.get_json(silent=True) or request.form
+    email = clean_text(data.get("email", "")).lower()
+    if not email:
+        return jsonify({"status": "error", "message": "Email is required."}), 400
+
+    reg = CertificateService.load_registry_record(email=email)
+    if not reg:
+        return jsonify({"status": "error", "message": "No certified candidate found for this email address."}), 404
+
+    with get_db() as conn:
+        acct = conn.execute("SELECT * FROM intern_accounts WHERE LOWER(email) = LOWER(?)", (email,)).fetchone()
+        if not acct:
+            conn.execute(
+                """
+                INSERT INTO intern_accounts 
+                (name, email, domain, college, is_active, password_set, created_at, updated_at)
+                VALUES (?, ?, ?, ?, 1, 0, datetime('now','localtime'), datetime('now','localtime'))
+                """,
+                (reg.get("holderName", "Intern"), email, reg.get("domain", "General"), reg.get("college", ""))
+            )
+            conn.commit()
+            acct = conn.execute("SELECT * FROM intern_accounts WHERE LOWER(email) = LOWER(?)", (email,)).fetchone()
+
+        conn.execute("UPDATE password_resets SET used=1, used_at=? WHERE email=? AND account_type='intern' AND used=0", (now_str(), email))
+        token = secrets.token_urlsafe(32)
+        token_hash = hashlib.sha256(token.encode("utf-8")).hexdigest()
+        expires_at = (datetime.now() + timedelta(hours=2)).strftime("%Y-%m-%d %H:%M:%S")
+
+        conn.execute(
+            "INSERT INTO password_resets (account_type, account_id, email, token, expires_at) VALUES (?,?,?,?,?)",
+            ("intern", acct["id"], email, token_hash, expires_at)
+        )
+        conn.commit()
+
+        reset_url = f"{SITE_ORIGIN}/reset?token={token}"
+        send_password_reset_email(acct["name"], email, reset_url)
+
+    return jsonify({
+        "status": "success",
+        "message": f"Password activation link dispatched to {email}."
+    })
 
 
 # ==============================================================================
