@@ -7679,7 +7679,7 @@ def staff_task_decision(submission_id):
 
     with get_db() as conn:
         sub = conn.execute(
-            "SELECT ts.*, t.title AS task_title, t.coin_reward, t.payment_type, a.name AS intern_name, a.email AS intern_email "
+            "SELECT ts.*, t.title AS task_title, t.coin_reward, t.payment_type, t.task_type, a.name AS intern_name, a.email AS intern_email "
             "FROM task_submissions ts "
             "JOIN tasks t ON ts.task_id = t.id "
             "JOIN intern_accounts a ON (ts.intern_id = a.id OR (ts.email IS NOT NULL AND LOWER(ts.email) = LOWER(a.email))) "
@@ -7711,7 +7711,61 @@ def staff_task_decision(submission_id):
         )
 
         if decision == "approved" and coins_awarded > 0:
-            credit_intern_coins(conn, sub["intern_id"], coins_awarded, f"Task Reward: {sub['task_title']}", ref_id=submission_id, email=sub["intern_email"])
+            is_stipend = (sub.get("task_type") == "stipend_milestone" or sub.get("task_category") == "stipend_milestone")
+            if is_stipend:
+                # Award 5,000 withdrawable coins into referral ledger (§6.5)
+                idem = f"stipend_reward_{submission_id}_{uuid.uuid4().hex[:6]}"
+                conn.execute(
+                    """
+                    INSERT INTO coin_ledger_mirror 
+                    (intern_id, ledger_kind, delta, balance_after, reason, event_ts, idem_key, email)
+                    VALUES (?, 'referral', ?, 
+                        (SELECT COALESCE(SUM(delta), 0) + ? FROM coin_ledger_mirror WHERE intern_id = ? AND ledger_kind IN ('referral', 'withdrawal')),
+                        ?, datetime('now','localtime'), ?, ?)
+                    """,
+                    (sub["intern_id"], coins_awarded, coins_awarded, sub["intern_id"], f"Stipend Bounty: {sub['task_title']}", idem, sub["intern_email"])
+                )
+                try:
+                    student_name = sub.get("intern_name", "Intern")
+                    email_html = f"""
+                    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 12px; background: #ffffff;">
+                        <div style="text-align: center; margin-bottom: 24px;">
+                            <h2 style="color: #065f46; margin: 0;">DBERT Academic & Project Admissions</h2>
+                            <p style="color: #64748b; font-size: 13px; margin-top: 4px;">Technical Stipend Milestone Approved</p>
+                        </div>
+                        <p>Dear <strong>{student_name}</strong>,</p>
+                        <p>Congratulations! Your technical contribution for <strong>{sub['task_title']}</strong> has been officially approved by the evaluation committee.</p>
+                        
+                        <div style="background: #ecfdf5; border-left: 4px solid #10b981; padding: 14px; margin: 20px 0; border-radius: 4px;">
+                            <p style="margin: 0 0 6px 0; font-size: 14px; color: #065f46;"><strong>Status:</strong> Approved & Reconciled</p>
+                            <p style="margin: 0; font-size: 16px; color: #047857;"><strong>Withdrawable Stipend Credited:</strong> 5,000 Coins (₹5,000)</p>
+                        </div>
+
+                        <p style="font-size: 13px; color: #475569; line-height: 1.6;">
+                            The funds have been credited to your LMS wallet. You can request your direct UPI payout at any time by visiting your Ambassador & Wallet Dashboard:
+                        </p>
+                        <div style="text-align: center; margin: 24px 0;">
+                            <a href="https://lms.dbert.in/ambassador" style="background: #10b981; color: #ffffff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 14px; display: inline-block;">
+                                Claim ₹5,000 UPI Payout &rarr;
+                            </a>
+                        </div>
+                        <p style="margin-top: 24px; font-size: 13px; color: #64748b;">
+                            Best regards,<br>
+                            <strong>DBERT Admissions & Evaluation Board</strong><br>
+                            <a href="https://dbert.in" style="color: #6366f1;">https://dbert.in</a>
+                        </p>
+                    </div>
+                    """
+                    send_email_async(
+                        to_email=sub["intern_email"],
+                        subject="🎉 Congratulations! Your Technical Stipend (₹5,000) Has Been Approved",
+                        html_body=email_html,
+                        name=student_name
+                    )
+                except Exception as em_err:
+                    log_error("stipend-approval-email", em_err)
+            else:
+                credit_intern_coins(conn, sub["intern_id"], coins_awarded, f"Task Reward: {sub['task_title']}", ref_id=submission_id, email=sub["intern_email"])
 
         # Phase 14: Transactional Outbox Event
         try:

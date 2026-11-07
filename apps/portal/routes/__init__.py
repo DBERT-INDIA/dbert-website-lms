@@ -15,6 +15,7 @@ from routes.mentor import mentor_bp
 from routes.company import company_bp
 from routes.intern import intern_bp
 from routes.learning import learning_bp
+from routes.stipend import stipend_bp
 
 ALL_BLUEPRINTS = [
     ambassador_bp,
@@ -28,6 +29,7 @@ ALL_BLUEPRINTS = [
     company_bp,
     intern_bp,
     learning_bp,
+    stipend_bp,
 ]
 
 

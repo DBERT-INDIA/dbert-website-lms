@@ -1,0 +1,365 @@
+{% extends "_app_shell.html" %}
+
+{% block title %}Internship Stipend Milestone — DBERT LMS{% endblock %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto px-4 py-8">
+  <!-- Header Banner -->
+  <div class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border border-indigo-500/30 rounded-2xl p-6 sm:p-8 mb-8 shadow-xl relative overflow-hidden">
+    <div class="absolute -right-10 -bottom-10 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 relative z-10">
+      <div>
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/20 border border-indigo-400/30 text-indigo-300 text-xs font-semibold mb-3">
+          <i class="fa-solid fa-award"></i> Official DBERT Capstone Milestone
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+          Internship Technical Contribution & Stipend
+        </h1>
+        <p class="text-slate-300 text-sm sm:text-base mt-2 max-w-2xl leading-relaxed">
+          Submit your capstone deliverables to validate technical mastery. Approved submissions receive an official grant of <span class="text-emerald-400 font-bold">5,000 Coins (₹5,000)</span> credited directly to your withdrawable wallet.
+        </p>
+      </div>
+      <div class="flex flex-col items-start md:items-end justify-center bg-slate-800/60 backdrop-blur-sm border border-slate-700/60 rounded-xl p-4 min-w-[200px]">
+        <span class="text-xs text-slate-400 font-medium uppercase tracking-wider">Milestone Bounty</span>
+        <span class="text-2xl sm:text-3xl font-black text-emerald-400 mt-1 flex items-center gap-1.5">
+          <i class="fa-solid fa-coins text-amber-400 text-xl"></i> 5,000 <span class="text-xs text-slate-300 font-normal">Coins (₹5,000)</span>
+        </span>
+        <span class="text-xs text-slate-400 mt-1">Directly withdrawable via UPI</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3-Point Eligibility Checklist Cards -->
+  <div class="mb-8">
+    <h2 class="text-base font-bold text-slate-200 uppercase tracking-wider mb-4 flex items-center gap-2">
+      <i class="fa-solid fa-list-check text-indigo-400"></i> Eligibility & Pre-flight Checklist
+    </h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      
+      <!-- Gate 1: Certificate Verification -->
+      <div class="bg-slate-900/80 border {% if ver_info.verified %}border-emerald-500/40{% elif ver_info.is_provisional %}border-amber-500/40{% else %}border-rose-500/40{% endif %} rounded-xl p-5 shadow-sm transition-all">
+        <div class="flex items-start justify-between">
+          <div class="w-10 h-10 rounded-lg {% if ver_info.verified %}bg-emerald-500/20 text-emerald-400{% elif ver_info.is_provisional %}bg-amber-500/20 text-amber-400{% else %}bg-rose-500/20 text-rose-400{% endif %} flex items-center justify-center text-lg">
+            {% if ver_info.verified %}
+              <i class="fa-solid fa-certificate"></i>
+            {% else %}
+              <i class="fa-solid fa-lock"></i>
+            {% endif %}
+          </div>
+          <span class="text-xs px-2.5 py-1 rounded-full font-bold uppercase tracking-wider {% if ver_info.verified %}bg-emerald-500/20 text-emerald-300 border border-emerald-500/30{% elif ver_info.is_provisional %}bg-amber-500/20 text-amber-300 border border-amber-500/30{% else %}bg-rose-500/20 text-rose-300 border border-rose-500/30{% endif %}">
+            {{ ver_info.status }}
+          </span>
+        </div>
+        <h3 class="text-white font-bold mt-4 text-sm">Step 1: Certificate Verification</h3>
+        <p class="text-slate-400 text-xs mt-1.5 leading-normal">
+          {% if ver_info.verified %}
+            Official credential verified: <span class="text-slate-200 font-mono">{{ ver_info.cert_id }}</span>. Full eligibility unlocked.
+          {% elif ver_info.is_provisional %}
+            Your credential is currently Provisional. Balance completion is required to unlock official verification and stipend rights.
+          {% else %}
+            No certified internship record found for your account. Please complete verification.
+          {% endif %}
+        </p>
+        {% if not ver_info.verified %}
+          <div class="mt-4 pt-3 border-t border-slate-800">
+            <a href="https://dbert.in/enroll/1999?email={{ intern.email }}" target="_blank" class="inline-flex items-center gap-1.5 text-xs font-semibold text-amber-400 hover:text-amber-300 underline">
+              Complete Verification to Unlock <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+            </a>
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- Gate 2: Completion Date -->
+      <div class="bg-slate-900/80 border {% if comp_info.is_completed %}border-emerald-500/40{% else %}border-sky-500/40{% endif %} rounded-xl p-5 shadow-sm transition-all">
+        <div class="flex items-start justify-between">
+          <div class="w-10 h-10 rounded-lg {% if comp_info.is_completed %}bg-emerald-500/20 text-emerald-400{% else %}bg-sky-500/20 text-sky-400{% endif %} flex items-center justify-center text-lg">
+            {% if comp_info.is_completed %}
+              <i class="fa-solid fa-calendar-check"></i>
+            {% else %}
+              <i class="fa-solid fa-hourglass-half"></i>
+            {% endif %}
+          </div>
+          <span class="text-xs px-2.5 py-1 rounded-full font-bold uppercase tracking-wider {% if comp_info.is_completed %}bg-emerald-500/20 text-emerald-300 border border-emerald-500/30{% else %}bg-sky-500/20 text-sky-300 border border-sky-500/30{% endif %}">
+            {% if comp_info.is_completed %}Completed{% else %}In Progress{% endif %}
+          </span>
+        </div>
+        <h3 class="text-white font-bold mt-4 text-sm">Step 2: Internship Duration</h3>
+        <p class="text-slate-400 text-xs mt-1.5 leading-normal">
+          {% if comp_info.is_completed %}
+            Official duration completed on <span class="text-slate-200 font-semibold">{{ comp_info.completion_date_display }}</span>. Submissions are open.
+          {% else %}
+            Internship is active. Stipend application unlocks upon completion date: <span class="text-sky-300 font-semibold">{{ comp_info.completion_date_display }}</span> (<span class="text-white font-bold">{{ comp_info.days_remaining }} days</span> remaining).
+          {% endif %}
+        </p>
+        {% if not comp_info.is_completed %}
+          <div class="mt-4 pt-3 border-t border-slate-800 flex items-center gap-2 text-xs text-sky-400">
+            <i class="fa-regular fa-clock"></i> Live countdown active
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- Gate 3: UPI Setup -->
+      <div class="bg-slate-900/80 border {% if has_upi %}border-emerald-500/40{% else %}border-purple-500/40{% endif %} rounded-xl p-5 shadow-sm transition-all">
+        <div class="flex items-start justify-between">
+          <div class="w-10 h-10 rounded-lg {% if has_upi %}bg-emerald-500/20 text-emerald-400{% else %}bg-purple-500/20 text-purple-400{% endif %} flex items-center justify-center text-lg">
+            <i class="fa-solid fa-wallet"></i>
+          </div>
+          <span class="text-xs px-2.5 py-1 rounded-full font-bold uppercase tracking-wider {% if has_upi %}bg-emerald-500/20 text-emerald-300 border border-emerald-500/30{% else %}bg-purple-500/20 text-purple-300 border border-purple-500/30{% endif %}">
+            {% if has_upi %}Ready{% else %}Action Needed{% endif %}
+          </span>
+        </div>
+        <h3 class="text-white font-bold mt-4 text-sm">Step 3: Payout UPI Account</h3>
+        <p class="text-slate-400 text-xs mt-1.5 leading-normal">
+          {% if has_upi %}
+            Fernet-encrypted UPI ID on file: <span class="text-slate-200 font-mono">{{ masked_upi }}</span>. Payouts route automatically.
+          {% else %}
+            No payout UPI ID linked to your account. Add your UPI ID (GPay / PhonePe / Paytm / BHIM) to receive stipend payouts.
+          {% endif %}
+        </p>
+        {% if not has_upi %}
+          <div class="mt-4 pt-3 border-t border-slate-800">
+            <a href="/ambassador" class="inline-flex items-center gap-1.5 text-xs font-semibold text-purple-400 hover:text-purple-300 underline">
+              Add Payout UPI ID Now <i class="fa-solid fa-arrow-right text-[10px]"></i>
+            </a>
+          </div>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+
+  <!-- System Guidance Warning (If AI offline) -->
+  {% if not has_gemini %}
+    <div class="bg-amber-950/40 border border-amber-500/40 rounded-xl p-4 sm:p-5 mb-8 flex items-start gap-4">
+      <div class="text-amber-400 text-xl mt-0.5"><i class="fa-solid fa-triangle-exclamation"></i></div>
+      <div>
+        <h3 class="text-amber-200 font-bold text-sm">System Notice: AI Pre-Screening Engine Setup</h3>
+        <p class="text-amber-300/80 text-xs mt-1">
+          The automated AI evaluation service is currently completing configuration. If you are an LMS administrator, configure the <code class="bg-black/30 px-1 py-0.5 rounded text-amber-200">GEMINI_API_KEY</code> in the Admin Portal to enable instant evaluations. Submissions are temporarily queued.
+        </p>
+      </div>
+    </div>
+  {% endif %}
+
+  <!-- Main Content Area: Unlocked vs Locked -->
+  {% if all_gates_passed %}
+
+    <!-- Unlocked: Active Submission or Submission Form -->
+    <div class="space-y-8">
+      
+      <!-- Existing Submission Tracking (if already submitted) -->
+      {% if existing_submission %}
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-lg">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-800">
+            <div>
+              <span class="text-xs uppercase tracking-wider text-slate-400 font-bold">Submission Status</span>
+              <h2 class="text-xl font-bold text-white mt-1">{{ existing_submission.task_title or "Stipend Milestone Submission" }}</h2>
+              <p class="text-xs text-slate-400 mt-1">Submitted on {{ existing_submission.created_at }}</p>
+            </div>
+            <div>
+              {% if existing_submission.status == 'approved' %}
+                <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-300 text-sm font-bold">
+                  <i class="fa-solid fa-circle-check"></i> Approved & Credited (+5,000 Coins)
+                </span>
+              {% elif existing_submission.status == 'rejected' %}
+                <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-rose-500/20 border border-rose-500/40 text-rose-300 text-sm font-bold">
+                  <i class="fa-solid fa-circle-xmark"></i> Revision Requested
+                </span>
+              {% else %}
+                <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-300 text-sm font-bold">
+                  <i class="fa-solid fa-hourglass-start animate-spin"></i> In Review
+                </span>
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- Status Timeline -->
+          <div class="py-6 border-b border-slate-800">
+            <h3 class="text-xs uppercase tracking-wider text-slate-400 font-bold mb-6">Review Timeline</h3>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <!-- Step 1 -->
+              <div class="flex items-start gap-3">
+                <div class="w-8 h-8 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center justify-center text-xs shrink-0 font-bold">1</div>
+                <div>
+                  <h4 class="text-white text-xs font-bold">Deliverables Submitted</h4>
+                  <p class="text-[11px] text-slate-400 mt-0.5">GitHub, demo & report logged</p>
+                </div>
+              </div>
+              <!-- Step 2 -->
+              <div class="flex items-start gap-3">
+                <div class="w-8 h-8 rounded-full {% if existing_submission.ai_evaluation_score %}bg-emerald-500/20 text-emerald-400 border border-emerald-500/30{% else %}bg-slate-800 text-slate-400{% endif %} flex items-center justify-center text-xs shrink-0 font-bold">2</div>
+                <div>
+                  <h4 class="text-white text-xs font-bold">AI Pre-Screening</h4>
+                  <p class="text-[11px] text-slate-400 mt-0.5">
+                    {% if existing_submission.ai_evaluation_score %}
+                      Score: <span class="text-emerald-400 font-bold">{{ existing_submission.ai_evaluation_score }}/100</span>
+                    {% else %}
+                      Evaluating rubric...
+                    {% endif %}
+                  </p>
+                </div>
+              </div>
+              <!-- Step 3 -->
+              <div class="flex items-start gap-3">
+                <div class="w-8 h-8 rounded-full {% if existing_submission.status == 'approved' %}bg-emerald-500/20 text-emerald-400 border border-emerald-500/30{% else %}bg-amber-500/20 text-amber-400 border border-amber-500/30 animate-pulse{% endif %} flex items-center justify-center text-xs shrink-0 font-bold">3</div>
+                <div>
+                  <h4 class="text-white text-xs font-bold">Staff Review</h4>
+                  <p class="text-[11px] text-slate-400 mt-0.5">
+                    {% if existing_submission.status == 'approved' %}
+                      Approved by Project Mentor
+                    {% else %}
+                      Queued for sign-off
+                    {% endif %}
+                  </p>
+                </div>
+              </div>
+              <!-- Step 4 -->
+              <div class="flex items-start gap-3">
+                <div class="w-8 h-8 rounded-full {% if existing_submission.status == 'approved' %}bg-emerald-500/20 text-emerald-400 border border-emerald-500/30{% else %}bg-slate-800 text-slate-400{% endif %} flex items-center justify-center text-xs shrink-0 font-bold">4</div>
+                <div>
+                  <h4 class="text-white text-xs font-bold">Payout Ready</h4>
+                  <p class="text-[11px] text-slate-400 mt-0.5">
+                    {% if existing_submission.status == 'approved' %}
+                      <a href="/ambassador" class="text-emerald-400 underline font-semibold">Claim ₹5,000 on Wallet</a>
+                    {% else %}
+                      Awaiting approval
+                    {% endif %}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Evaluation Feedback / Notes -->
+          {% if existing_submission.ai_evaluation_notes %}
+            <div class="mt-6 bg-slate-950/60 border border-slate-800 rounded-xl p-4">
+              <span class="text-xs uppercase tracking-wider text-indigo-400 font-bold flex items-center gap-1.5 mb-2">
+                <i class="fa-solid fa-microchip"></i> Evaluator Rubric Feedback
+              </span>
+              <p class="text-slate-300 text-xs leading-relaxed">{{ existing_submission.ai_evaluation_notes }}</p>
+            </div>
+          {% endif %}
+
+          {% if existing_submission.status == 'approved' %}
+            <div class="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 bg-emerald-950/30 border border-emerald-500/30 rounded-xl p-4">
+              <div class="flex items-center gap-3">
+                <div class="text-emerald-400 text-2xl"><i class="fa-solid fa-wallet"></i></div>
+                <div>
+                  <h4 class="text-emerald-200 text-sm font-bold">Stipend Credited to Wallet</h4>
+                  <p class="text-emerald-300/80 text-xs">5,000 Coins are available in your withdrawable balance.</p>
+                </div>
+              </div>
+              <a href="/ambassador" class="px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs transition-colors shadow-lg shadow-emerald-500/20">
+                Request UPI Payout <i class="fa-solid fa-arrow-right ml-1"></i>
+              </a>
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+
+      <!-- Submission Form (if not submitted yet or if resubmission allowed) -->
+      {% if not existing_submission or existing_submission.status == 'rejected' %}
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sm:p-8 shadow-lg">
+          <div class="mb-6">
+            <span class="text-xs uppercase tracking-wider text-indigo-400 font-bold">Step 4 of 4</span>
+            <h2 class="text-xl sm:text-2xl font-bold text-white mt-1">Submit Capstone Deliverables</h2>
+            <p class="text-slate-400 text-xs sm:text-sm mt-1">
+              Track: <span class="text-white font-semibold">{{ active_task.target_domain or ver_info.domain }}</span> — Bounty: <span class="text-emerald-400 font-bold">5,000 Coins (₹5,000)</span>
+            </p>
+          </div>
+
+          <form action="/stipend/tasks/{{ active_task.id }}/submit" method="POST" enctype="multipart/form-data" class="space-y-6">
+            <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
+            
+            <!-- GitHub Repo URL -->
+            <div>
+              <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
+                1. GitHub Repository URL <span class="text-rose-400">*</span>
+              </label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                  <i class="fa-brands fa-github text-base"></i>
+                </div>
+                <input type="url" name="github_repo_url" required placeholder="https://github.com/username/project-repo" 
+                  class="w-full bg-slate-950 border border-slate-700 rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
+              </div>
+              <p class="text-[11px] text-slate-500 mt-1.5">Repository must be public and contain source code, dependencies, and README documentation.</p>
+            </div>
+
+            <!-- Live Deployment / Demo URL -->
+            <div>
+              <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
+                2. Live Demo / Deployment URL <span class="text-slate-500">(Optional but recommended)</span>
+              </label>
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-500">
+                  <i class="fa-solid fa-globe text-base"></i>
+                </div>
+                <input type="url" name="live_demo_url" placeholder="https://my-project.vercel.app or Colab / Streamlit link" 
+                  class="w-full bg-slate-950 border border-slate-700 rounded-xl pl-10 pr-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500">
+              </div>
+            </div>
+
+            <!-- Technical Report PDF -->
+            <div>
+              <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
+                3. Technical Contribution Report (PDF) <span class="text-slate-500">(Optional, Max 10MB)</span>
+              </label>
+              <input type="file" name="report_pdf" accept=".pdf" 
+                class="block w-full text-xs text-slate-400 file:mr-4 file:py-2.5 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-slate-800 file:text-slate-200 hover:file:bg-slate-700 cursor-pointer">
+              <p class="text-[11px] text-slate-500 mt-1.5">Include architecture diagrams, benchmark metrics, or executive summaries.</p>
+            </div>
+
+            <!-- Architectural Notes -->
+            <div>
+              <label class="block text-xs font-bold text-slate-300 uppercase tracking-wider mb-2">
+                4. Project Architecture & Technical Description <span class="text-rose-400">*</span>
+              </label>
+              <textarea name="submission_content" rows="4" required placeholder="Summarize your architecture, tech stack, key algorithms, and problems solved..." 
+                class="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 leading-relaxed"></textarea>
+            </div>
+
+            <div class="pt-4 border-t border-slate-800 flex items-center justify-between">
+              <span class="text-xs text-slate-400 flex items-center gap-1.5">
+                <i class="fa-solid fa-shield-halved text-emerald-400"></i> AI pre-screened & evaluated against rubrics
+              </span>
+              <button type="submit" class="px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-sm transition-all shadow-lg shadow-indigo-600/30 flex items-center gap-2">
+                Submit for Stipend Evaluation <i class="fa-solid fa-arrow-right"></i>
+              </button>
+            </div>
+          </form>
+        </div>
+      {% endif %}
+
+    </div>
+
+  {% else %}
+
+    <!-- Locked Experience: Guide candidate on what to do -->
+    <div class="bg-slate-900/90 border border-slate-800 rounded-2xl p-8 text-center max-w-2xl mx-auto shadow-2xl">
+      <div class="w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center text-2xl mx-auto mb-4">
+        <i class="fa-solid fa-lock"></i>
+      </div>
+      <h3 class="text-xl font-bold text-white">Stipend Submission Form is Currently Locked</h3>
+      <p class="text-slate-400 text-sm mt-2 leading-relaxed">
+        To maintain academic integrity and financial compliance, all three prerequisite criteria in the checklist above must be completed before submitting your capstone contribution.
+      </p>
+
+      <div class="mt-6 flex flex-col sm:flex-row items-center justify-center gap-4">
+        {% if not ver_info.verified %}
+          <a href="https://dbert.in/enroll/1999?email={{ intern.email }}" target="_blank" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition-colors shadow-lg shadow-amber-500/20 flex items-center justify-center gap-2">
+            Complete Verification Now <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+          </a>
+        {% endif %}
+        {% if not has_upi %}
+          <a href="/ambassador" class="w-full sm:w-auto px-6 py-3 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs transition-colors shadow-lg shadow-purple-600/20 flex items-center justify-center gap-2">
+            Configure Payout UPI ID <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        {% endif %}
+      </div>
+    </div>
+
+  {% endif %}
+
+</div>
+{% endblock %}

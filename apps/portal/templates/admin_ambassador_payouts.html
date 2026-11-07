@@ -26,6 +26,63 @@
     </div>
     {% endif %}
 
+        <!-- Stipend & AI Telemetry Card -->
+    <div style="margin-bottom: 1.5rem; padding: 1.25rem; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 12px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem;">
+        <div>
+            <div style="font-size: 0.75rem; text-transform: uppercase; color: #94A3B8; font-weight: bold; letter-spacing: 0.05em;">Stipend & AI Engine Health</div>
+            <div style="display: flex; align-items: center; gap: 0.5rem; margin-top: 0.25rem;">
+                <span id="payoutGeminiDot" style="width: 10px; height: 10px; border-radius: 50%; background: #94A3B8; display: inline-block;"></span>
+                <span id="payoutGeminiMsg" style="font-size: 0.9rem; font-weight: bold; color: #F8FAFC;">Loading Gemini Telemetry...</span>
+            </div>
+        </div>
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+            <input type="password" id="adminPayoutGeminiKey" placeholder="Update GEMINI_API_KEY..." style="background: rgba(0,0,0,0.5); border: 1px solid #475569; border-radius: 8px; padding: 0.5rem 0.75rem; color: #fff; font-size: 0.85rem; width: 220px;">
+            <button onclick="saveAdminPayoutKey()" style="background: #10B981; color: #022c22; border: none; border-radius: 8px; padding: 0.5rem 1rem; font-size: 0.85rem; font-weight: bold; cursor: pointer;">Save & Test</button>
+        </div>
+    </div>
+
+    <script>
+    function checkPayoutTelemetry() {
+        fetch('/admin/api/stipend-health')
+            .then(r => r.json())
+            .then(d => {
+                const dot = document.getElementById('payoutGeminiDot');
+                const msg = document.getElementById('payoutGeminiMsg');
+                if (d.gemini && d.gemini.healthy) {
+                    dot.style.background = '#10B981';
+                    msg.innerHTML = '<span style="color:#10B981;">Online & Active</span> — ' + (d.gemini.masked_key || 'Configured') + ' (' + d.database.verified_certificates_in_db + ' verified interns in DB)';
+                } else if (d.gemini && d.gemini.configured) {
+                    dot.style.background = '#F59E0B';
+                    msg.innerHTML = '<span style="color:#F59E0B;">Warning:</span> ' + (d.gemini.message || 'Key needs review');
+                } else {
+                    dot.style.background = '#EF4444';
+                    msg.innerHTML = '<span style="color:#EF4444;">Offline:</span> GEMINI_API_KEY is not configured. AI pre-screening paused.';
+                }
+            }).catch(() => {
+                document.getElementById('payoutGeminiMsg').textContent = 'Telemetry probe offline';
+            });
+    }
+    function saveAdminPayoutKey() {
+        const key = document.getElementById('adminPayoutGeminiKey').value.trim();
+        if (!key) { alert('Please enter a key.'); return; }
+        fetch('/admin/api/stipend-health/set-gemini-key', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': (document.querySelector('meta[name="csrf-token"]') || {}).content || '' },
+            body: JSON.stringify({ api_key: key })
+        }).then(r => r.json()).then(d => {
+            if (d.status === 'success') {
+                alert('Success: ' + d.message);
+                document.getElementById('adminPayoutGeminiKey').value = '';
+                checkPayoutTelemetry();
+            } else {
+                alert('Error: ' + (d.message || 'Failed to save key.'));
+            }
+        }).catch(e => alert('Request failed: ' + e));
+    }
+    document.addEventListener('DOMContentLoaded', checkPayoutTelemetry);
+    </script>
+
+
     <div class="card card-flush">
       <div class="table-wrap">
         <table class="table">

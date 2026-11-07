@@ -282,5 +282,41 @@ python scripts\verify_and_launch_dbert_whatsapp.py
 5. **Phase 5: Mission Completion Telemetry**:
    - Dispatches a comprehensive HTML + plain text completion report to `ain.sharma.abhinav@gmail.com` and `ajnatechrpa@gmail.com`.
 
+---
+
+## 13. Stipend Contribution & Verification Gating System (`/stipend/tasks`)
+
+### 13.1. Business Rules & 3-Step Eligibility Checklist
+- **Strict Verification Gate**: Stipend eligibility and technical contribution submission are **strictly restricted to candidates with VERIFIED credentials** (`status: "VERIFIED"`, `verified: true`, `isProvisional: false`).
+- **Completion Date Gate**: Interns can only apply for stipend **on or after their official completion date** (`joining_date + 60 days` from LMS enrollment, fallback to certificate `endDate`). Before this date, an informative countdown timer is displayed.
+- **Payout Setup Requirement**: Intern must configure and verify their Fernet-encrypted UPI ID on their profile before submitting their contribution dossier.
+- **Provisional Candidates Locked View**: Candidates with provisional status (`isProvisional: true`) see a locked stipend dashboard:
+  - Prominent alert: *"Verification Required: Your certificate is currently Provisional"*.
+  - Action CTA button: *"Complete Verification to Unlock Stipend"* deep-linking to `https://dbert.in/enroll/1999?email={email}` (or `/eroll?email=...`).
+  - No access to submit contributions until verified.
+- **LMS Authentication & Tracking**: Interns must authenticate at LMS portal (`https://lms.dbert.in`). All milestone submissions, AI reviews, and payout disbursements are tracked within their individual student profile. Seamless onboarding allows verified certified candidates without an LMS account to activate with 1-click password setup.
+
+### 13.2. Technical Contribution, AI Pre-Screening & 5,000 Coins Payout Engine
+1. **Domain-Specific Task Tracks**:
+   - Matching the intern's certified domain: AI & Machine Learning, Data Analyst, Full Stack Web Development, Python Automation.
+   - Requires: GitHub Repository URL, Live Demo / Deployment URL, and Technical Contribution Report PDF.
+2. **Automated AI Pre-Screening Engine (`GeminiProvider`) & Silent-Fail Elimination**:
+   - Upfront strict validation of `GEMINI_API_KEY` via an in-portal Admin Health Card (`/admin`) and pre-flight probe. Submissions are safely halted if AI is unconfigured to prevent silent failures.
+   - On submission, AI evaluates deliverables against domain rubrics, outputting an informational 0–100 score, rubric breakdown, and summary notes.
+   - Dual notification automatically dispatched: Confirmation email via Google Workspace SMTP + real-time in-app status timeline.
+3. **Staff / Admin Review Queue (`/staff/tasks/<id>/decision`)**:
+   - Staff queue displays AI score badge and rubric breakdown.
+   - Human staff holds final approval authority.
+   - 1-click "Approve & Release Stipend" button atomically credits **5,000 coins** to LMS wallet (`coin_ledger_mirror` with `ledger_kind='referral'` withdrawable balance) and dispatches an approval email.
+4. **LMS Wallet & UPI Payout Engine**:
+   - Intern visits `/intern/ambassador/withdraw` and clicks "Request Payout" for their 5,000 coins.
+   - Admin reviews decrypted UPI ID (with single-reveal audit log) and executes payout on `/admin/ambassador-payouts`.
+5. **Database & Sync Architecture**:
+   - Dual-layer verification check in `CertificateService.is_intern_verified()`: Primary lookup in PostgreSQL `intern_certificates`, auto-healing fallback to `certificates_registry.json`.
+   - Seeding and sync script: `scripts/sync_verified_certificates_to_portal.py` to ensure all 66 verified candidates are synced to LMS PostgreSQL.
+   - Master implementation plan: [`stipend_contribution_and_lms_tracking_plan.md`](file:///C:/Users/user/.gemini/antigravity/brain/59004557-b26d-4b45-b8e4-941544fadc24/stipend_contribution_and_lms_tracking_plan.md).
+
+
+
 
 

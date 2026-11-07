@@ -20,6 +20,61 @@
             </div>
         </header>
 
+                <!-- Stipend & AI Health Bar -->
+        <div id="stipendHealthBanner" style="margin-bottom: 1.5rem; padding: 1rem 1.25rem; background: rgba(30, 27, 75, 0.5); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 12px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem;">
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+                <div style="width: 10px; height: 10px; border-radius: 50%; background: #10B981;" id="healthDot"></div>
+                <div style="font-size: 0.875rem; color: #E2E8F0;">
+                    <strong>AI Pre-Screening Engine:</strong> <span id="healthStatusText" style="color: #A5B4FC;">Checking...</span>
+                </div>
+            </div>
+            <div style="display: flex; gap: 0.5rem; align-items: center;">
+                <input type="password" id="geminiKeyInput" placeholder="Enter GEMINI_API_KEY..." style="background: rgba(0,0,0,0.4); border: 1px solid #475569; border-radius: 8px; padding: 0.4rem 0.75rem; color: #fff; font-size: 0.8rem; width: 220px;">
+                <button onclick="saveGeminiKey()" style="background: #4F46E5; color: #fff; border: none; border-radius: 8px; padding: 0.4rem 0.85rem; font-size: 0.8rem; font-weight: bold; cursor: pointer;">Save & Test Key</button>
+            </div>
+        </div>
+
+        <script>
+        function checkStipendHealth() {
+            fetch('/admin/api/stipend-health')
+                .then(r => r.json())
+                .then(d => {
+                    const dot = document.getElementById('healthDot');
+                    const txt = document.getElementById('healthStatusText');
+                    if (d.gemini && d.gemini.healthy) {
+                        dot.style.background = '#10B981';
+                        txt.innerHTML = '<span style="color:#10B981; font-weight:bold;">Active & Online</span> (' + (d.gemini.masked_key || 'Key configured') + ')';
+                    } else if (d.gemini && d.gemini.configured) {
+                        dot.style.background = '#F59E0B';
+                        txt.innerHTML = '<span style="color:#F59E0B; font-weight:bold;">Key Warning:</span> ' + (d.gemini.message || 'Verification needed');
+                    } else {
+                        dot.style.background = '#EF4444';
+                        txt.innerHTML = '<span style="color:#EF4444; font-weight:bold;">Key Missing:</span> Pre-screening offline. Add key to right.';
+                    }
+                }).catch(() => {
+                    document.getElementById('healthStatusText').textContent = 'Telemetry offline';
+                });
+        }
+        function saveGeminiKey() {
+            const key = document.getElementById('geminiKeyInput').value.trim();
+            if (!key) { alert('Please enter a Gemini API key.'); return; }
+            fetch('/admin/api/stipend-health/set-gemini-key', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'X-CSRF-Token': (document.querySelector('meta[name="csrf-token"]') || {}).content || '' },
+                body: JSON.stringify({ api_key: key })
+            }).then(r => r.json()).then(d => {
+                if (d.status === 'success') {
+                    alert('Success: ' + d.message);
+                    document.getElementById('geminiKeyInput').value = '';
+                    checkStipendHealth();
+                } else {
+                    alert('Error: ' + (d.message || 'Key validation failed.'));
+                }
+            }).catch(e => alert('Failed to save key: ' + e));
+        }
+        document.addEventListener('DOMContentLoaded', checkStipendHealth);
+        </script>
+
         <div class="filter-tabs">
             <a href="/staff/tasks?status=pending" class="tab-btn {% if current_status == 'pending' %}active{% endif %}">Pending Review</a>
             <a href="/staff/tasks?status=approved" class="tab-btn {% if current_status == 'approved' %}active{% endif %}">Approved</a>
@@ -33,10 +88,18 @@
                     <div>
                         <h3 class="sub-title">{{ sub.task_title }}</h3>
                         <div style="margin-top: 4px; margin-bottom: 6px;">
-                            {% if sub.task_type == 'domain_specific' %}
+                            {% if sub.task_type == 'stipend_milestone' or sub.task_category == 'stipend_milestone' %}
+                            <span class="badge-type" style="background: rgba(16, 185, 129, 0.2); color: #10B981; border: 1px solid #10B981; font-weight: bold;">🎓 STIPEND CAPSTONE (₹5,000)</span>
+                            {% elif sub.task_type == 'domain_specific' %}
                             <span class="badge-type badge-domain">🎯 Domain: {{ sub.target_domain or 'Specific' }}</span>
                             {% else %}
                             <span class="badge-type badge-general">🌐 General</span>
+                            {% endif %}
+
+                            {% if sub.ai_evaluation_score %}
+                            <span class="badge-type" style="background: rgba(99, 102, 241, 0.2); color: #818CF8; border: 1px solid rgba(99, 102, 241, 0.4); font-weight: bold;">
+                                🤖 AI Pre-Screen: {{ sub.ai_evaluation_score }}/100 ({{ sub.ai_evaluation_status }})
+                            </span>
                             {% endif %}
                             
                             {% if sub.payment_type == 'unpaid' %}
@@ -60,10 +123,31 @@
 
                 <div class="content-box">
                     {{ sub.submission_content }}
-                    {% if sub.submission_file %}
+                    
+                    {% if sub.github_repo_url %}
                     <div style="margin-top: 10px; padding-top: 8px; border-top: 1px dashed var(--border);">
-                        📁 <strong>Uploaded File Attachment:</strong> 
-                        <a href="{{ sub.submission_file }}" target="_blank" style="color: #60A5FA; text-decoration: underline; margin-left: 6px;">Download / View File →</a>
+                        💻 <strong>GitHub Repository:</strong> 
+                        <a href="{{ sub.github_repo_url }}" target="_blank" style="color: #818CF8; text-decoration: underline; margin-left: 6px;">{{ sub.github_repo_url }} →</a>
+                    </div>
+                    {% endif %}
+
+                    {% if sub.live_demo_url %}
+                    <div style="margin-top: 6px;">
+                        🌐 <strong>Live Deployment / Demo:</strong> 
+                        <a href="{{ sub.live_demo_url }}" target="_blank" style="color: #34D399; text-decoration: underline; margin-left: 6px;">{{ sub.live_demo_url }} →</a>
+                    </div>
+                    {% endif %}
+
+                    {% if sub.submission_file or sub.report_file_url %}
+                    <div style="margin-top: 6px;">
+                        📁 <strong>Technical Report Attachment:</strong> 
+                        <a href="{{ sub.submission_file or sub.report_file_url }}" target="_blank" style="color: #60A5FA; text-decoration: underline; margin-left: 6px;">Download / View Report →</a>
+                    </div>
+                    {% endif %}
+
+                    {% if sub.ai_evaluation_notes %}
+                    <div style="margin-top: 10px; padding: 10px; background: rgba(99, 102, 241, 0.08); border-left: 3px solid #6366F1; border-radius: 4px; font-size: 0.85rem; color: #CBD5E1;">
+                        <strong>🤖 AI Pre-Screening Rubric Notes:</strong> {{ sub.ai_evaluation_notes }}
                     </div>
                     {% endif %}
                 </div>
