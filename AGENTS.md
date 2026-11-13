@@ -1050,3 +1050,131 @@ All canonical system audit deliverables specified in `DBERT_PLATFORM_EVOLUTION_R
 - When an unlocked scan runs, the candidate is atomically provisioned/linked in `dbert_internship.intern_accounts` and audit record saved permanently.
 
 
+
+
+---
+
+## 32. Repository Hygiene, Tri-Target File Inventory & Pristine Layout
+
+### 32.1. Pristine Root Mandate
+The repository root contains strictly 4 required files:
+- `README.md`: Ecosystem architecture and quickstart guide.
+- `AGENTS.md`: Universal architectural brain and playbook for all AI agents.
+- `GEMINI.md`: Mirror of AGENTS.md for Gemini agents.
+- `.gitignore`: Production-grade exclusions (excluding databases, archives, temp screenshots, and vendor folders).
+
+All other loose files previously in root have been organized or purged:
+- **Windows Batch Files**: Moved to `scripts/bat/` (paths updated to run seamlessly from repo root).
+- **Candidate CSV Datasets**: Moved to `data/sources/` (safely ignored by Git).
+- **Presentations & Slide Decks**: Moved to `docs/presentations/`.
+- **Sample Certificates & Assets**: Moved to `docs/samples/`.
+- **External QA / Audit Reports**: Moved to `docs/reports/` and `docs/audit/`.
+- **Obsolete Scratch DBs & ZIPs**: Deleted (`internship.db`, `target_test.db`, `dbert-api-package-v1.zip`, `DBERT_Fieldwork_UI_UX_Agent_Handoff.zip`, etc.).
+
+### 32.2. Curated Production Scripts (`scripts/`)
+From 510 legacy scripts, **483 ad-hoc one-off inspection, probe, and patch scripts** were safely archived and removed. Exactly **35 Canonical Production Scripts** are actively maintained:
+1. **EC2 Deployment Automation (10)**: `deploy_website_updates_to_ec2.py`, `deploy_enrollment_1999_to_ec2.py`, `deploy_directory_to_ec2.py`, `deploy_new_certificates_to_ec2.py`, `deploy_stipend_system_to_ec2.py`, `deploy_bhargavi_approval_to_ec2.py`, `deploy_footer_and_verify_notice.py`, `deploy_sitemap_and_jobs_to_ec2.py`, `full_production_deployment.py`, `fast_sync_to_ec2.py`.
+2. **Delivery Daemons & Candidate Dispatchers (6)**: `dispatch_409_provisional.py`, `dispatch_9_verified_certificates.py`, `dispatch_cohort_drive_nov2026.py`, `dispatch_sheet_1593.py`, `dispatch_sheet_859_cohort.py`, `quota_watchdog_and_dispatcher.py`, `dbert_inbox_responder.py`.
+3. **WhatsApp Automation Suite (5)**: `send_dbert_whatsapp.py`, `verify_and_launch_dbert_whatsapp.py`, `send_ambassador_whatsapp.py`, `send_rejected_payments_whatsapp.py`, `verify_and_launch_16nov_whatsapp.py`.
+4. **Registry & Certificate Generation (4)**: `generate_provisional_registry.py`, `issue_9_verified_certificates.py`, `generate_all_packets.py`, `generate_sample_packet.py`.
+5. **Database Migration, Seeding & Scraping (6)**: `sync_verified_certificates_to_portal.py`, `migrate_stipend_schema_and_tasks.py`, `migrate_mentor_group_capacity.py`, `seed_mentor_slots.py`, `run_omnichannel_job_scraper.py`, `scripts/scrapers/` (All 6 core scraping adapters).
+6. **Live Production Health & Verification (5)**: `verify_production_live.py`, `verify_admin_routes_live.py`, `verify_stipend_flow_e2e.py`, `verify_ec2_deployment.py`, `production_preflight.sh`.
+
+### 32.3. Pre-Deletion Safety Backups
+- **Local Archive**: `archive/pre_cleanup_backup_20261113.zip` (**220 MB**, 6,388 archived files).
+- **EC2 Production Backup**: `/home/ubuntu/pre_cleanup_ec2_20261113.tar.gz` (**180 MB**).
+
+---
+
+## 33. Intern Lifecycle, Payment Blocking Analysis & 4-Gate Stipend Architecture
+
+### 33.1. The 5-Stage Candidate Lifecycle & Payment Gating
+The LMS platform enforces a strict 5-stage lifecycle state machine in `apps/portal/app.py` (`get_intern_flow_state()`):
+
+```mermaid
+stateDiagram-v2
+    [*] --> Stage1_Applied: Candidate registers & submits profile
+    Stage1_Applied --> Stage2_UnderReview: Application submitted
+    Stage2_UnderReview --> Stage3_Selected: Admin approval (or Auto-Selection Bridge)
+    Stage3_Selected --> Stage4_PaymentPending: Candidate selects joining Monday & uploads ₹499 receipt / UTR
+    Stage4_PaymentPending --> Stage5_Confirmed: Admin verifies transaction (or Auto-Verify via Razorpay/UTR API)
+    Stage5_Confirmed --> [*]: Full Access, Course Auto-Enrolled, Certificate Unlocked
+```
+
+#### Why Interns Are "Unable to Complete ₹499 Payments" (Root Cause Analysis):
+1. **The Silent Fail / Gate Block**:
+   - When a candidate signs up and submits their profile, their record in the `applications` table is created with `status = 'Under Review'`.
+   - In `app.py:get_intern_flow_state()`:
+     ```python
+     # Stage 3: Selected (Admin Approved Application -> Deposit Required)
+     is_selected = bool(app_row and app_row["status"] in (STATUS_SELECTED, STATUS_ENROLLMENT_PENDING))
+     ```
+   - If `is_selected` is False (which it is for all candidates in Stage 2 `UNDER_REVIEW`), `can_upload_payment` is set to `False`.
+   - In `apps/portal/templates/portal.html`, the entire payment interface (`#ovSelected`, payment QR code, 1-tap UPI buttons, and receipt upload input) is wrapped in `<div class="glass-card hidden" id="ovSelected">`.
+   - It is only rendered if `_status === 'Selected' || _status === 'Enrollment Pending'`.
+2. **The Operational Disconnect**:
+   - Outreach campaigns (WhatsApp & Email) invite candidates to "Confirm your enrollment & deposit".
+   - Candidates click the login link and arrive on `/portal`.
+   - They see: *"Application Under Review by Mentors"* with a disabled state.
+   - There is NO payment CTA, NO QR code, and NO submit button visible!
+   - Unless an admin manually logs into `/admin` and transitions the candidate from `UNDER_REVIEW` to `SELECTED`, or a script runs `promote_*_selected.py`, candidates are completely blocked from completing their payments!
+
+### 33.2. The 4-Gate Stipend Release Funnel (`/stipend/tasks`)
+Stipend claims (worth ₹5,000 / 5,000 coins withdrawable via UPI) are gated behind 4 strict sequential gates in `apps/portal/routes/stipend.py`:
+
+```mermaid
+flowchart LR
+    G1["Gate 1:<br/>Verified Certificate<br/>(isProvisional: false)"] --> G2["Gate 2:<br/>60-Day Maturity<br/>(today >= joining + 60d)"]
+    G2 --> G3["Gate 3:<br/>Encrypted UPI Setup<br/>(Profile UPI Verified)"]
+    G3 --> G4["Gate 4:<br/>Capstone Deliverable<br/>(GitHub + Live Demo + Report)"]
+    G4 --> Release["Staff Approval &<br/>₹5,000 UPI Release"]
+```
+
+#### Why Interns Are "Unable to Complete Stipend Release Forms" (Root Cause Analysis):
+1. **Gate 1 Block (Provisional Status)**:
+   - `CertificateService.is_intern_verified()` checks if `status == 'VERIFIED'` and `isProvisional == false`.
+   - 400 out of 465 candidates hold provisional certificates (`isProvisional: true`).
+   - For all provisional candidates, Gate 1 fails immediately, locking the submission form and displaying a red banner: *"Verification Required: Your certificate is currently Provisional"*.
+2. **Gate 2 Block (Maturity Date Countdown)**:
+   - `CertificateService.get_intern_completion_info()` enforces that interns must serve their full 60-day tenure (`today >= joining_date + 60 days`).
+   - For candidates who joined recently (e.g. October or November 2026 cohorts), their 60-day date is in December 2026 or January 2027.
+   - The form displays a real-time countdown clock and disables the submission button until the maturity date is reached.
+3. **Gate 3 Block (UPI Missing)**:
+   - The intern must configure their encrypted UPI ID on `/profile` before submitting.
+4. **Lack of In-App Guidance & Feedback**:
+   - The stipend dashboard does not currently show an interactive 4-step checklist on the main `/portal` page, so candidates do not realize which exact gate is pending until they discover `/stipend/tasks`.
+
+---
+
+## 34. Dual Sidebar Discrepancy & Unified Dashboard Redesign Blueprint
+
+### 34.1. The Dual Sidebar Conflict
+The LMS portal currently possesses two completely separate, conflicting sidebar implementations:
+
+| Feature | Sidebar A: Legacy Monolith (`portal.html`) | Sidebar B: Responsive Shell (`_app_shell.html` / `_intern_sidebar.html`) |
+| :--- | :--- | :--- |
+| **Location** | Hardcoded in `apps/portal/templates/portal.html` (lines 25–59) | Shared partial in `apps/portal/templates/_intern_sidebar.html` |
+| **Element ID** | `<aside class="sidebar" id="sidebar">` | `<aside class="sidebar" id="appSidebar">` |
+| **Drawer Logic** | `toggleSidebar()` / `#scrim` | `toggleAppSidebar()` / `#appBurger` |
+| **Navigation Model** | 18 SPA JavaScript tabs (`data-tab="overview"`, `learning`, `coins`, etc.) | Semantic categorized routes (`/courses`, `/stipend/tasks`, `/jobs`, etc.) |
+| **Width & Spacing** | Variable CSS width | Fixed 240px clearance (`.has-sidebar`) |
+| **Used On** | `/portal` only | All subpages (`/courses`, `/stipend/tasks`, `/tasks`, `/ambassador`, etc.) |
+
+**User Experience Breakdown**:
+When an intern is on `/portal`, they see Sidebar A. When they click "Micro-Tasks" (`/tasks`) or "Stipend Milestone" (`/stipend/tasks`), the page reloads with Sidebar B, which has different icons, different grouped headers, and different responsive behavior. Clicking back to `/portal` reverts to Sidebar A.
+
+### 34.2. Unified Navigation & Dashboard Redesign Architecture
+To resolve the discrepancy and modernize the intern experience:
+1. **Unify under `_app_shell.html`**:
+   - Remove the hardcoded `<aside id="sidebar">` from `portal.html`.
+   - Standardize `portal.html` to use `{% include '_intern_sidebar.html' %}` with `.has-sidebar`.
+2. **Harmonize the 4 Nav Groups**:
+   - **Learn**: Learning Dashboard (`/portal`), Course Catalog (`/courses`), 1:1 Mentorship (`/mentors/slots`).
+   - **Practice & Earn**: 4-Gate Stipend Milestone (`/stipend/tasks`), Sprint Tasks (`/tasks`), Coins Ledger (`/account/coins`), Ambassador Program (`/ambassador`).
+   - **Career Outcomes**: Placements & Jobs (`/jobs`), Engineering Articles (`/intern/articles`), AI Resume & ATS Audit (`/learners/resume-checker`).
+   - **Account**: AI Tutor Key (`/account/gemini-key`), Profile & UPI Settings (`/profile`), Logout.
+3. **Dashboard Modernization (`portal.html`)**:
+   - **Hero Progress Tracker**: Real-time 5-stage application status with instant 1-tap "Confirm Seat & Pay ₹499" action button.
+   - **4-Gate Stipend Milestone Card**: Visual checklist (Gate 1: Credential, Gate 2: Tenure, Gate 3: UPI, Gate 4: Capstone) with progress percentage.
+   - **Course Learning Progress Widget**: Dynamic progress bar showing enrolled modules, completed lessons, and next assignment.
+   - **Fast Action Drawer**: Direct 1-click access to Book Mentor, View Tasks, and Withdraw Coins.

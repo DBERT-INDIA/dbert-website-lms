@@ -1,67 +1,135 @@
-# DBERT Website & LMS Ecosystem
-
-Welcome to the **DBERT (Digital Blaize Ecosystem for Research & Training)** platform repository.
+# DBERT Ecosystem: Website, LMS Portal & REST API
+================================================================================
+**Universal Documentation for Engineers & AI Agents**  
+**Active Production Domain**: [https://dbert.in](https://dbert.in)  
+**Production Host**: AWS EC2 (`ubuntu@3.26.237.171`)  
 
 ---
 
-## 🚀 Repository Highlights
+## 1. Ecosystem Overview & Architecture
 
-This repository contains the complete ecosystem codebase, including the modernized **FastAPI + PostgreSQL REST API**, the database migration engine, documentation, and the legacy portal and website applications:
+The DBERT (Digital Blaize Ecosystem for Research & Training) platform is an integrated, production-grade education, credentialing, and internship hiring infrastructure comprising three core runtime services reverse-proxied by Nginx on AWS EC2:
+
+```mermaid
+flowchart TD
+    Client["User Browser / Candidate / Recruiter"] --> Nginx["Nginx Reverse Proxy (SSL Termination)<br/>dbert.in / lms.dbert.in / api.dbert.in"]
+
+    Nginx -->|"https://dbert.in (Port 3001)"| Website["apps/website<br/>Next.js 14/16 App Router (Standalone Node)"]
+    Nginx -->|"https://lms.dbert.in (Port 5001)"| Portal["apps/portal<br/>Python Flask LMS (Gunicorn + venv)"]
+    Nginx -->|"https://api.dbert.in (Port 8000)"| FastAPI["dbert-api-package<br/>FastAPI Async REST API (Uvicorn + venv)"]
+
+    Website -->|"Symlink: /data"| DataFiles["data/<br/>balance_enrollments_1500.json<br/>verification_submissions_299.json"]
+    Portal -->|"PostgreSQL (74 Tables)"| PostgresDB[(PostgreSQL 15 Database)]
+    FastAPI -->|"PostgreSQL (74 Tables)"| PostgresDB
+    Portal -->|"SMTP (465)"| GoogleSMTP["Google Workspace SMTP<br/>abhinav.sharma@dbert.in"]
+```
+
+### 1.1. Core Production Services
+1. **Public Marketing & Verification Portal (`apps/website`)**:
+   - Next.js 14/16 App Router application running in Node.js standalone mode on port 3001 (`dbert-website.service`).
+   - Handles public landing pages, candidate search directory (`/verify/directory`), instant certificate verification engine (`/verify/[certId]`), and incubation balance enrollment portal (`/enroll/1999`, `/eroll`).
+2. **Student & Administration LMS Portal (`apps/portal`)**:
+   - Python Flask monolith running via Gunicorn on port 5001 (`dbert-portal.service`) with Python virtual environment (`.venv`).
+   - Powers the student learning dashboard, courses catalog, 1:1 mentor bookings, task submissions, ambassador coins ledger, and staff/admin review queues.
+3. **High-Performance REST Backend (`dbert-api-package`)**:
+   - Modern FastAPI async REST backend running via Uvicorn on port 8000 (`dbert-api.service`).
+   - Exposes 88+ REST endpoints, Pydantic v2 schemas, interactive Swagger documentation (`/docs`), and JWT multi-role authentication.
+
+---
+
+## 2. Directory Structure Map (Normalized & Pristine)
 
 ```
 .
-├── dbert-api-package/             ← PRODUCTION REST API (FastAPI, PostgreSQL 15, Docker)
-│   ├── backend/                   ← 88 REST endpoints, SQLAlchemy 2.0 ORM, JWT auth
-│   ├── data-migration/            ← SQLite to PostgreSQL ETL & parity auditor
-│   ├── databases/                 ← Target folder for internship.db
-│   ├── website-content/           ← Clean Next.js marketing content snapshot
-│   ├── docs/                      # OpenAPI 3.1 JSON, schema.sql, handover spec
-│   ├── nginx/                     ← Production reverse proxy configuration
-│   ├── Dockerfile                 ← Multi-stage production container build
-│   ├── docker-compose.yml         ← Complete stack (FastAPI, Postgres, Nginx)
-│   ├── .env.example               ← Complete environment variable reference
-│   └── README.md                  ← Detailed API deployment runbook
+├── .agent/                             # Agent memory, architectural reports, and state tracking
+├── .agents/
+│   └── rules/                          # Operational rules and guidelines
 ├── apps/
-│   ├── portal/                    ← Legacy Flask monolith (Reference source)
-│   └── website/                   ← Next.js marketing website (Reference source)
-└── README.md                      ← This repository guide
+│   ├── portal/                         # Flask LMS Platform (app.py, wsgi.py, routes/, services/, templates/)
+│   └── website/                        # Next.js App Router (src/app/, components/, public/, prisma/)
+├── archive/                            # Safety backup archives (git-ignored)
+├── data/                               # Live candidate registries, balance enrollments & campaign logs
+│   ├── sources/                        # Historical source CSV datasets (git-ignored)
+│   ├── all_409_provisional_registry.json # Master registry for 409 provisional candidates
+│   ├── balance_enrollments_1500.json   # CRITICAL: Live candidate balance enrollment records
+│   ├── verification_submissions_299.json # CRITICAL: Live ₹299 verification submissions
+│   ├── sheet_1593_provisional_registry.json # Master registry for Sheet 1593
+│   ├── sheet_859_registry.json         # Master registry for Sheet 859
+│   └── quota_watchdog_state.json       # SMTP watchdog circuit-breaker state
+├── dbert-api-package/                  # FastAPI REST Backend (backend/, alembic.ini, Dockerfile)
+├── deploy/                             # Production Nginx configurations and systemd service templates
+├── design/                             # Design system reference files
+├── docs/                               # Ecosystem documentation
+│   ├── audit/                          # Architectural audit reports and hardening plans
+│   ├── dbert-roadmap/                  # Roadmap specifications and route inventories
+│   ├── presentations/                  # Program slide decks and presentation materials
+│   ├── reports/                        # External QA and audit docx reports
+│   └── samples/                        # Reference certificate samples
+├── logs/                               # Application log dumps
+├── scripts/                            # 35 Curated Canonical Production Scripts
+│   ├── bat/                            # Windows batch automation launchers (git-ignored)
+│   ├── scrapers/                       # Omnichannel internship scraping adapters
+│   ├── deploy_*.py                     # Automated EC2 deployment scripts
+│   ├── dispatch_*.py                   # Production email campaign daemons
+│   ├── send_dbert_whatsapp.py          # Playwright WhatsApp dual-worker automation engine
+│   ├── quota_watchdog_and_dispatcher.py # Automated SMTP quota monitor & pipeline launcher
+│   └── verify_*.py                     # End-to-end health & verification probes
+├── uploads/                            # Staged uploads and reference assets
+├── .gitignore                          # Strict git ignore definitions
+├── AGENTS.md                           # Universal Architectural Context & Playbook
+├── GEMINI.md                           # Universal Architectural Context & Playbook (Mirror)
+└── README.md                           # This Ecosystem Guide
 ```
 
 ---
 
-## ⚡ Modern REST Backend: `dbert-api-package`
+## 3. Production Server Deployment & Management
 
-The core backend has been rebuilt from the monolithic Flask + SQLite codebase into a modern, decoupled **FastAPI + PostgreSQL REST API** ready for Docker Compose deployment.
+### 3.1. Infrastructure Details
+- **Host**: `ubuntu@3.26.237.171`
+- **SSH Key**: `C:\Users\user\.ssh\dbert-production-server.pem`
+- **Base Directory**: `/var/www/dbert-website-lms`
+- **Systemd Services**:
+  - `dbert-website.service` (Port 3001, Node standalone)
+  - `dbert-portal.service` (Port 5001, Gunicorn Python 3.10+)
+  - `dbert-api.service` (Port 8000, Uvicorn FastAPI)
+  - `nginx.service` (SSL termination for `dbert.in`, `lms.dbert.in`, `api.dbert.in`)
 
-### Key Capabilities
-- **FastAPI (Python 3.11+)**: Async I/O, Pydantic v2 schemas, automated interactive Swagger UI (`/docs`) and ReDoc (`/redoc`).
-- **PostgreSQL 15**: All 74 database tables ported from SQLite with full foreign key graphs, indices, and Alembic migrations.
-- **Authentication**: Dual-token JWT (HS256) access (1h) and refresh tokens (60d) with cryptographic JTI rotation across 5 roles: `intern`, `company`, `mentor`, `staff`, `admin`. Legacy SHA-256 passwords transparently upgrade to PBKDF2 upon login.
-- **Data Migration Suite**: `data-migration/sqlite_to_pg.py` and `data-migration/verify_migration.py` tested with 100% row match (46,135 rows across all 74 tables).
-- **Core Integrations**: Async Razorpay checkout/webhook verification, Google Gemini AI interview engine with round-robin key rotation and cooling periods, OneSignal push notifications, and transaction-safe SMTP outbox.
-
-### Quick Start with Docker
+### 3.2. Common Operations Commands
 ```bash
-cd dbert-api-package
-cp .env.example .env
-docker-compose up -d --build
-curl http://localhost:8000/health
+# Check service health
+ssh -i "C:\Users\user\.ssh\dbert-production-server.pem" ubuntu@3.26.237.171 "systemctl status dbert-website dbert-portal dbert-api"
+
+# Restart all services
+ssh -i "C:\Users\user\.ssh\dbert-production-server.pem" ubuntu@3.26.237.171 "sudo systemctl restart dbert-website.service dbert-portal.service dbert-api.service nginx.service"
+
+# View live portal error logs
+ssh -i "C:\Users\user\.ssh\dbert-production-server.pem" ubuntu@3.26.237.171 "sudo journalctl -u dbert-portal.service -f -n 50"
+
+# View live website logs
+ssh -i "C:\Users\user\.ssh\dbert-production-server.pem" ubuntu@3.26.237.171 "sudo journalctl -u dbert-website.service -f -n 50"
 ```
 
 ---
 
-## 📚 Documentation & Specifications
+## 4. Key Workflows & Lifecycle Logic
 
-- **Interactive API Documentation**: Run the container and visit `http://localhost:8000/docs`
-- **Static OpenAPI 3.1 Spec**: `dbert-api-package/docs/openapi.json`
-- **Frontend AI Agent Handover Guide**: `dbert-api-package/docs/FRONTEND_HANDOVER_SPECIFICATION.md`
-- **PostgreSQL DDL (74 Tables)**: `dbert-api-package/docs/schema.sql`
-- **Route Catalog (312 Monolith Routes)**: `dbert-api-package/docs/route_catalog.md`
-- **Environment Variables**: `dbert-api-package/docs/env_vars.md`
-- **State Machines**: `dbert-api-package/docs/state_machines.md`
+### 4.1. The 5-Stage Candidate Lifecycle (`apps/portal`)
+1. **Stage 1: APPLIED** (`stage_num: 1`) - Candidate created account; pending domain declaration and statement of purpose. Payment form is locked.
+2. **Stage 2: UNDER_REVIEW** (`stage_num: 2`) - Application submitted and under review by admissions mentors. Payment form is locked.
+3. **Stage 3: SELECTED** (`stage_num: 3`) - Candidate approved for cohort. Prompts candidate to select a joining Monday and unlock the ₹499 caution deposit / ₹1,999 incubation payment.
+4. **Stage 4: PAYMENT_PENDING** (`stage_num: 4`) - Candidate uploaded transaction receipt / UTR. Admin verification in progress.
+5. **Stage 5: CONFIRMED / ENROLLED** (`stage_num: 5`) - Payment verified by admin. Seat confirmed, auto-enrolled into domain course workspace.
+
+### 4.2. The 4 Stipend Release Gates (`/stipend/tasks`)
+1. **Gate 1: Verified Credential**: Candidate must possess a non-provisional, cryptographically verified certificate (`status: "VERIFIED"`, `isProvisional: false`).
+2. **Gate 2: 60-Day Completion Maturity**: Intern can only submit the stipend claim on or after their official completion date (`joining_date + 60 days`). A live countdown timer is shown prior to maturity.
+3. **Gate 3: Encrypted UPI Verification**: Candidate must configure and confirm their Fernet-encrypted UPI ID on their profile.
+4. **Gate 4: Domain Capstone & AI Rubric**: Intern submits GitHub repository URL, live deployment URL, and technical report PDF. Gemini AI evaluates deliverables against domain rubrics, staff performs final approval, and 5,000 coins are credited to the withdrawable wallet.
 
 ---
 
-## 🔒 Security Notice
-
-Per security protocols, live SQLite database files (`*.db`) and sensitive production `.env` files are strictly excluded via `.gitignore` and retained on local environments only. Refer to `.env.example` and `.env.production.sample` for configuration templates.
+## 5. Security & Deliverability Rules
+- **Domain Sovereign Rule**: All active URLs, canonical tags, API routes, and emails MUST use `https://dbert.in` (legacy `dbert.online` is retired).
+- **Google Workspace SMTP**: Authenticated sender is strictly `abhinav.sharma@dbert.in`.
+- **Database Security**: Production database runs PostgreSQL 15. All SQLite files are strictly for local/offline testing and never committed to Git.
