@@ -4620,3 +4620,246 @@ body.home .hp-field {
   border-color: rgba(212, 154, 55, 0.4) !important;
   transform: translateY(-1px) !important;
 }
+
+
+/* ==========================================================================
+   DBERT Clean Minimalist Light Mode Theme (Intern Portal Overhaul)
+   ========================================================================== */
+body.portal-light {
+  background-color: #f8fafc !important;
+  color: #334155 !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
+
+body.portal-light .sidebar {
+  background: #ffffff !important;
+  border-right: 1px solid #e2e8f0 !important;
+  box-shadow: 2px 0 16px rgba(15, 23, 42, 0.03) !important;
+}
+
+body.portal-light .brand-mark {
+  background: linear-gradient(135deg, #4f46e5, #6366f1) !important;
+  color: #ffffff !important;
+}
+
+body.portal-light .brand-txt h2 {
+  color: #0f172a !important;
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+
+body.portal-light .brand-txt p {
+  color: #64748b !important;
+}
+
+body.portal-light .nav-group-label {
+  color: #94a3b8 !important;
+  font-size: 11px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.08em !important;
+}
+
+body.portal-light .nav-item {
+  color: #475569 !important;
+  border-radius: 10px !important;
+  transition: all 0.18s ease !important;
+}
+
+body.portal-light .nav-item:hover {
+  background: #f1f5f9 !important;
+  color: #0f172a !important;
+}
+
+body.portal-light .nav-item.active {
+  background: rgba(79, 70, 229, 0.09) !important;
+  color: #4f46e5 !important;
+  font-weight: 700 !important;
+}
+
+body.portal-light .main {
+  background-color: #f8fafc !important;
+}
+
+/* Light Mode Cards */
+.portal-card {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 16px !important;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.03) !important;
+  padding: 24px !important;
+  transition: all 0.2s ease !important;
+}
+
+.portal-card:hover {
+  box-shadow: 0 10px 25px -3px rgba(15, 23, 42, 0.08), 0 4px 10px -2px rgba(15, 23, 42, 0.04) !important;
+}
+
+/* Stepper & Badges */
+.stage-step-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 700;
+}
+
+.stage-step-active {
+  background: #eef2ff;
+  color: #4f46e5;
+  border: 1px solid #c7d2fe;
+}
+
+.stage-step-done {
+  background: #ecfdf5;
+  color: #059669;
+  border: 1px solid #a7f3d0;
+}
+
+.stage-step-pending {
+  background: #f8fafc;
+  color: #94a3b8;
+  border: 1px solid #e2e8f0;
+}
+
+/* Buttons */
+.btn-indigo-action {
+  background: linear-gradient(135deg, #4f46e5, #4338ca) !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 10px !important;
+  padding: 11px 20px !important;
+  font-size: 13.5px !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  text-decoration: none !important;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3) !important;
+  transition: all 0.2s ease !important;
+}
+
+.btn-indigo-action:hover {
+  background: linear-gradient(135deg, #4338ca, #3730a3) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 6px 16px rgba(79, 70, 229, 0.4) !important;
+}
+
+.btn-amber-fasttrack {
+  background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 10px !important;
+  padding: 10px 18px !important;
+  font-size: 13px !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  text-decoration: none !important;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3) !important;
+  transition: all 0.2s ease !important;
+}
+
+.btn-amber-fasttrack:hover {
+  background: linear-gradient(135deg, #d97706, #b45309) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Light Mode Overrides for Legacy Glass & Next-Step Cards */
+body.portal-light .glass-card,
+body.portal-light .nextstep-card {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 16px !important;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.03) !important;
+  color: #0f172a !important;
+}
+
+body.portal-light .nextstep-card .ns-title,
+body.portal-light .glass-card h2,
+body.portal-light .glass-card h3 {
+  color: #0f172a !important;
+}
+
+body.portal-light .nextstep-card .ns-msg,
+body.portal-light .glass-card p {
+  color: #475569 !important;
+}
+
+body.portal-light .upi-card {
+  background: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 12px !important;
+}
+
+body.portal-light .upi-id-box {
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+body.portal-light .field-input,
+body.portal-light .field-select,
+body.portal-light .field-textarea {
+  background: #ffffff !important;
+  border: 1px solid #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+body.portal-light .step-bar .step-dot {
+  background: #ffffff !important;
+  border: 2px solid #cbd5e1 !important;
+  color: #64748b !important;
+}
+
+body.portal-light .step-bar .step-dot.active {
+  background: #4f46e5 !important;
+  border-color: #4f46e5 !important;
+  color: #ffffff !important;
+}
+
+body.portal-light .step-bar .step-dot.done {
+  background: #10b981 !important;
+  border-color: #10b981 !important;
+  color: #ffffff !important;
+}
+
+body.portal-light .step-bar .step-label {
+  color: #64748b !important;
+}
+
+body.portal-light .step-bar .step-label.active {
+  color: #4f46e5 !important;
+  font-weight: 800 !important;
+}
+
+body.portal-light .step-bar .step-label.done {
+  color: #10b981 !important;
+}
+
+body.portal-light .step-bar .step-line {
+  background: #e2e8f0 !important;
+}
+
+body.portal-light .step-bar .step-line.done {
+  background: #10b981 !important;
+}
+
+body.portal-light .portal-hero-banner {
+  background: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05) !important;
+  color: #0f172a !important;
+}
+
+body.portal-light .portal-hero-banner h1 {
+  color: #0f172a !important;
+}
+
+body.portal-light .portal-hero-banner p {
+  color: #475569 !important;
+}
+

@@ -5514,7 +5514,7 @@ def portal_page():
     if not user:
         return redirect("/#signin")
     try:
-        resp = make_response(render_template("portal.html"))
+        resp = make_response(render_template("portal.html", active_page="dashboard"))
         resp.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
         resp.headers["Pragma"] = "no-cache"
         resp.headers["Expires"] = "-1"
@@ -15287,6 +15287,54 @@ def enroll():
         return jsonify({"status": "error", "message": "Error"}), 500
 
 
+@app.route("/api/intern/request-fast-track", methods=["POST"])
+def request_fast_track_review():
+    """Records an expedited admissions review request for candidates in Stage 2 (UNDER_REVIEW)."""
+    user = require_role("intern")
+    if not user:
+        return jsonify({"status": "error", "message": "Unauthorized"}), 401
+    
+    email = user["email"].strip().lower()
+    now = now_str()
+    
+    try:
+        with get_db() as conn:
+            app_row = conn.execute(
+                "SELECT id, status, admin_note FROM applications WHERE LOWER(email)=? ORDER BY id DESC LIMIT 1",
+                (email,)
+            ).fetchone()
+            
+            if not app_row:
+                return jsonify({"status": "error", "message": "No active application found."}), 404
+                
+            current_status = app_row["status"]
+            if current_status not in (STATUS_APPLIED, STATUS_UNDER_REVIEW):
+                return jsonify({
+                    "status": "info",
+                    "already_processed": True,
+                    "message": f"Your application is currently '{current_status}'."
+                })
+                
+            existing_note = app_row["admin_note"] or ""
+            fast_track_tag = f"[FAST_TRACK_REQUESTED: {now}]"
+            
+            if "[FAST_TRACK_REQUESTED" not in existing_note:
+                updated_note = f"{fast_track_tag} {existing_note}".strip()
+                conn.execute(
+                    "UPDATE applications SET admin_note=?, updated_at=? WHERE id=?",
+                    (updated_note, now, app_row["id"])
+                )
+                conn.commit()
+                
+        return jsonify({
+            "status": "success",
+            "message": "Fast-track review requested successfully! Admissions team prioritized."
+        })
+    except Exception as e:
+        log_error("fast-track-review", e)
+        return jsonify({"status": "error", "message": "Unable to submit fast-track request. Please try again."}), 500
+
+
 @app.route("/intern/wizard-status")
 def intern_wizard_status():
     """Inspects intern profile and stage according to the strict 5-stage lifecycle:
@@ -15357,6 +15405,7 @@ def intern_wizard_status():
                         }
                     })
 
+                fast_track_requested = bool(app_row and "[FAST_TRACK_REQUESTED" in (app_row["admin_note"] or ""))
                 return jsonify({
                     "status": "success",
                     "stage": stage,
@@ -15366,6 +15415,7 @@ def intern_wizard_status():
                     "total_steps": len(missing_steps),
                     "steps": missing_steps,
                     "payment_locked": True,
+                    "fast_track_requested": fast_track_requested,
                     "message": "Your application is under review by DBERT mentors. Deposit payment will unlock upon admin selection."
                 })
 
