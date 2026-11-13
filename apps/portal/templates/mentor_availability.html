@@ -1,124 +1,493 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-{% set page_title_full = "Mentor Availability Management — Staff Portal" %}
+{% set page_title_full = "Mentor Group Availability Management — Staff Portal" %}
 {% include "_head.html" %}
+
+<style nonce="{{ csp_nonce() }}">
+  /* ==========================================================================
+     DBERT LMS — MENTOR GROUP AVAILABILITY MANAGEMENT STYLING
+     CSP Nonce Compliant & Self-Contained
+     ========================================================================== */
+  .availability-wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem;
+  }
+
+  .header-card {
+    background: linear-gradient(135deg, #0A0D17 0%, #171E36 50%, #0F172A 100%);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 20px;
+    padding: 2.25rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5);
+  }
+
+  .header-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.85rem;
+    border-radius: 9999px;
+    background: rgba(212, 175, 55, 0.15);
+    border: 1px solid rgba(212, 175, 55, 0.35);
+    color: #F5E096;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-bottom: 0.5rem;
+  }
+
+  .header-title {
+    font-size: 1.85rem;
+    font-weight: 850;
+    color: #FFFFFF;
+    margin: 0 0 0.35rem 0;
+    letter-spacing: -0.5px;
+  }
+
+  .header-sub {
+    font-size: 0.9375rem;
+    color: #94A3B8;
+  }
+
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1.25rem;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #F8FAFC;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+  .back-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #D4AF37;
+  }
+
+  /* Form Card */
+  .dash-card {
+    background: #0E131F;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 2rem;
+    margin-bottom: 2.25rem;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+  }
+
+  .card-h {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #FFFFFF;
+    margin: 0 0 1.25rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.25rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .fg {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+
+  .fg label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #94A3B8;
+  }
+
+  .fg input, .fg select {
+    background: #07090E;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    color: #FFFFFF;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.15s ease;
+  }
+  .fg input:focus, .fg select:focus {
+    border-color: #D4AF37;
+    box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+  }
+
+  .btn-submit-slot {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.85rem 1.75rem;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #D4AF37 0%, #F5E096 100%);
+    color: #07090E;
+    font-size: 0.9rem;
+    font-weight: 850;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(212, 175, 55, 0.35);
+    transition: transform 0.15s ease, filter 0.15s ease;
+  }
+  .btn-submit-slot:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.08);
+  }
+
+  .window-note {
+    font-size: 0.8125rem;
+    color: #D4AF37;
+    background: rgba(212, 175, 55, 0.08);
+    border: 1px dashed rgba(212, 175, 55, 0.3);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  /* Slots Table / List */
+  .slots-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+  }
+
+  .slots-table th {
+    text-align: left;
+    padding: 0.85rem 1rem;
+    background: rgba(255, 255, 255, 0.03);
+    color: #94A3B8;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .slots-table td {
+    padding: 1.15rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    color: #F8FAFC;
+    font-size: 0.875rem;
+    vertical-align: middle;
+  }
+
+  .capacity-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.25rem 0.65rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 800;
+  }
+  .capacity-pill.open {
+    background: rgba(16, 185, 129, 0.15);
+    color: #34D399;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+  }
+  .capacity-pill.filling {
+    background: rgba(245, 158, 11, 0.15);
+    color: #FBBF24;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+  }
+  .capacity-pill.full {
+    background: rgba(244, 63, 94, 0.15);
+    color: #FB7185;
+    border: 1px solid rgba(244, 63, 94, 0.3);
+  }
+
+  .progress-bg {
+    width: 100px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 0.35rem;
+  }
+  .progress-bar {
+    height: 100%;
+    background: #10B981;
+    border-radius: 3px;
+    transition: width 0.3s ease;
+  }
+
+  .roster-btn {
+    background: rgba(59, 130, 246, 0.15);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    color: #60A5FA;
+    padding: 0.35rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .roster-btn:hover {
+    background: rgba(59, 130, 246, 0.25);
+  }
+
+  .roster-drawer {
+    display: none;
+    margin-top: 0.75rem;
+    padding: 0.85rem;
+    background: #07090E;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+  }
+  .attendee-item {
+    font-size: 0.8125rem;
+    color: #CBD5E1;
+    padding: 0.25rem 0;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.05);
+  }
+  .attendee-item:last-child {
+    border-bottom: none;
+  }
+
+  #formMsg {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    display: none;
+  }
+</style>
 </head>
 <body class="pg-mentor-availability has-mentor-sidebar">
 {% set active_page = 'mentor_slots' %}
 {% include '_mentor_sidebar.html' %}
 
-
-    <div class="availability-container">
-        <header class="header-bar">
-            <div>
-                <h1>Mentor Availability Slots</h1>
-                <div style="font-size: 0.875rem; color: var(--tx-muted);">Mentor: {{ staff.name }}</div>
-            </div>
-            <a href="/staff/dashboard" style="color: var(--tx-muted); text-decoration: none; font-size: 0.9rem;">← Back to Dashboard</a>
-        </header>
-
-        <div class="card form-card">
-            <h3 style="margin: 0 0 1rem 0; font-family: var(--f-display); color: var(--tx-head);">Add Available Slot</h3>
-            <form id="slotForm" data-act-submit="createSlot" data-arg-submit='["$event"]'>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="startTime">Start Time (YYYY-MM-DD HH:MM)</label>
-                        <input type="text" id="startTime" placeholder="2026-07-23 15:00" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="endTime">End Time (YYYY-MM-DD HH:MM)</label>
-                        <input type="text" id="endTime" placeholder="2026-07-23 15:30" required>
-                    </div>
-                    <div>
-                        <button type="submit" class="btn btn-primary" style="padding: 0.65rem 1.5rem;">
-                            + Add Availability
-                        </button>
-                    </div>
-                </div>
-                <div class="time-hint">⏱ Slots must be scheduled strictly within the 14:00 to 20:15 IST window.</div>
-            </form>
-            <div id="formMsg" style="margin-top: 1rem; font-size: 0.9rem; display: none;"></div>
-        </div>
-
-        <div class="card slots-card">
-            <h3 style="margin: 0 0 1.25rem 0; font-family: var(--f-display); color: var(--tx-head);">Your Scheduled Availability</h3>
-
-            {% if slots %}
-            <table class="slots-table">
-                <thead>
-                    <tr>
-                        <th>Start Time</th>
-                        <th>End Time</th>
-                        <th>Status</th>
-                        <th>Booked Intern</th>
-                        <th>Meeting Link</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for slot in slots %}
-                    <tr>
-                        <td style="font-family: var(--f-mono); color: var(--tx-head);">{{ slot.start_time }}</td>
-                        <td style="font-family: var(--f-mono); color: var(--tx-head);">{{ slot.end_time }}</td>
-                        <td>
-                            {% if slot.is_booked %}
-                                <span class="status-pill booked">Booked</span>
-                            {% else %}
-                                <span class="status-pill available">Available</span>
-                            {% endif %}
-                        </td>
-                        <td>{{ slot.intern_name or '—' }}</td>
-                        <td>
-                            {% if slot.meeting_link %}
-                                <a href="{{ slot.meeting_link }}" target="_blank" style="color: var(--gold); font-size: 0.85rem;">Join Meeting ↗</a>
-                            {% else %}
-                                —
-                            {% endif %}
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            {% else %}
-            <div style="text-align: center; padding: 2rem; color: var(--tx-muted);">
-                No availability slots scheduled yet. Add slots above for interns to book 1-on-1 sessions.
-            </div>
-            {% endif %}
-        </div>
+<div class="availability-wrap">
+  <div class="header-card">
+    <div>
+      <div class="header-pill">
+        <i class="fa-solid fa-chalkboard-user"></i> Mentor Faculty Console
+      </div>
+      <h1 class="header-title">Group Availability & Cohort Sessions</h1>
+      <div class="header-sub">
+        Mentor: <strong>{{ staff.name }}</strong> &middot; Group capacity up to 30 interns per session
+      </div>
     </div>
+    <a href="/staff/dashboard" class="back-btn">
+      <i class="fa-solid fa-arrow-left"></i> Staff Dashboard
+    </a>
+  </div>
 
-    <script nonce="{{ csp_nonce() }}">
-        function createSlot(e) {
-            e.preventDefault();
-            const start = document.getElementById('startTime').value.trim();
-            const end = document.getElementById('endTime').value.trim();
-            const msg = document.getElementById('formMsg');
+  <!-- ADD SLOT FORM -->
+  <div class="dash-card">
+    <h3 class="card-h">
+      <i class="fa-solid fa-calendar-plus" style="color: #D4AF37;"></i>
+      Publish New Mentorship Session
+    </h3>
 
-            msg.style.display = 'block';
-            msg.style.color = 'var(--tx-muted)';
-            msg.textContent = 'Saving mentor slot...';
+    <form id="slotForm" onsubmit="createGroupSlot(event)">
+      <div class="form-grid">
+        <div class="fg">
+          <label for="startTime">Start Time (YYYY-MM-DD HH:MM)</label>
+          <input type="text" id="startTime" placeholder="2026-11-09 14:00" required>
+        </div>
+        <div class="fg">
+          <label for="endTime">End Time (YYYY-MM-DD HH:MM)</label>
+          <input type="text" id="endTime" placeholder="2026-11-09 14:45" required>
+        </div>
+        <div class="fg">
+          <label for="domainSelect">Target Domain Track</label>
+          <select id="domainSelect" required>
+            <option value="All Tracks">All Tracks (Cohort Open)</option>
+            <option value="Data Analyst">Data Analyst</option>
+            <option value="AI / Machine Learning">AI & Machine Learning</option>
+            <option value="Full Stack Web Development">Full Stack Web Development</option>
+            <option value="Python Automation">Python Automation</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label for="capacityInput">Capacity (Max 30 Interns)</label>
+          <input type="number" id="capacityInput" value="30" min="1" max="30" required>
+        </div>
+      </div>
 
-            fetch('/staff/mentor-slots', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ start_time: start, end_time: end })
-            })
-            .then(r => r.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    msg.style.color = '#10B981';
-                    msg.textContent = data.message;
-                    setTimeout(() => window.location.reload(), 1200);
-                } else {
-                    msg.style.color = '#F43F5E';
-                    msg.textContent = data.message || 'Error creating slot.';
-                }
-            })
-            .catch(() => {
-                msg.style.color = '#F43F5E';
-                msg.textContent = 'Server error creating slot.';
-            });
-        }
-    </script>
+      <div class="fg" style="margin-bottom: 1.25rem;">
+        <label for="topicInput">Session Agenda / Topic</label>
+        <input type="text" id="topicInput" value="Technical Mentorship & Capstone Review" placeholder="e.g. Capstone Architecture & Code Review" required>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <div class="window-note">
+          <i class="fa-regular fa-clock"></i> Mandatory Window: Scheduled strictly between <strong>14:00 – 20:15 IST</strong>.
+        </div>
+        <button type="submit" class="btn-submit-slot">
+          <i class="fa-solid fa-plus"></i> Publish Session Slot
+        </button>
+      </div>
+
+      <div id="formMsg"></div>
+    </form>
+  </div>
+
+  <!-- SCHEDULED SESSIONS TABLE -->
+  <div class="dash-card">
+    <h3 class="card-h">
+      <i class="fa-solid fa-list-check" style="color: #38BDF8;"></i>
+      Your Scheduled Group Sessions
+    </h3>
+
+    {% if slots %}
+      <div style="overflow-x: auto;">
+        <table class="slots-table">
+          <thead>
+            <tr>
+              <th>Date & Time (IST)</th>
+              <th>Domain Track</th>
+              <th>Topic / Agenda</th>
+              <th>Capacity & Bookings</th>
+              <th>Status</th>
+              <th>Attendee Roster</th>
+              <th>Meeting Room</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for slot in slots %}
+              <tr>
+                <td>
+                  <strong style="color:#FFF;">{{ slot.start_time.split(' ')[0] }}</strong><br>
+                  <span style="font-family: monospace; color:#94A3B8;">{{ slot.start_time.split(' ')[1] }} – {{ slot.end_time.split(' ')[1] }}</span>
+                </td>
+                <td>
+                  <span style="padding: 0.2rem 0.5rem; background: rgba(255,255,255,0.06); border-radius: 6px; font-size: 0.78rem;">
+                    {{ slot.domain }}
+                  </span>
+                </td>
+                <td>
+                  <span style="color:#E2E8F0; font-weight: 600;">{{ slot.topic }}</span>
+                </td>
+                <td>
+                  <div style="font-weight: 800; font-size: 0.85rem;">
+                    {{ slot.seats_booked }} / {{ slot.capacity }} Interns
+                  </div>
+                  <div class="progress-bg">
+                    <div class="progress-bar" style="width: {{ (slot.seats_booked / slot.capacity * 100)|round }}%;"></div>
+                  </div>
+                </td>
+                <td>
+                  {% if slot.seats_booked >= slot.capacity %}
+                    <span class="capacity-pill full">Full (30/30)</span>
+                  {% elif slot.seats_booked >= slot.capacity - 5 %}
+                    <span class="capacity-pill filling">Filling Fast</span>
+                  {% else %}
+                    <span class="capacity-pill open">Open</span>
+                  {% endif %}
+                </td>
+                <td>
+                  {% if slot.attendees %}
+                    <button type="button" class="roster-btn" onclick="toggleRoster({{ slot.id }})">
+                      <i class="fa-solid fa-users"></i> {{ slot.attendees|length }} Interns View
+                    </button>
+                    <div id="roster-{{ slot.id }}" class="roster-drawer">
+                      {% for a in slot.attendees %}
+                        <div class="attendee-item">
+                          &bull; <strong>{{ a.intern_name }}</strong> ({{ a.intern_email }})
+                        </div>
+                      {% endfor %}
+                    </div>
+                  {% else %}
+                    <span style="color: #64748B; font-size: 0.8rem;">No interns yet</span>
+                  {% endif %}
+                </td>
+                <td>
+                  <a href="{{ slot.meeting_link }}" target="_blank" rel="noopener" style="color: #D4AF37; font-weight: 700; text-decoration: none; font-size: 0.82rem;">
+                    <i class="fa-solid fa-video"></i> Join Meet ↗
+                  </a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <div style="text-align: center; padding: 3rem 1rem; color: #94A3B8;">
+        <i class="fa-regular fa-calendar-xmark" style="font-size: 2rem; color: #475569; margin-bottom: 0.75rem;"></i>
+        <div style="font-weight: 700; color: #FFF; font-size: 1.05rem;">No Scheduled Availability Slots</div>
+        <div style="font-size: 0.85rem; color: #64748B; margin-top: 0.25rem;">Add availability slots above for interns to register for group mentorship sessions.</div>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<script nonce="{{ csp_nonce() }}">
+  function toggleRoster(slotId) {
+    const el = document.getElementById('roster-' + slotId);
+    if (el) {
+      el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+    }
+  }
+
+  function createGroupSlot(e) {
+    e.preventDefault();
+    const start = document.getElementById('startTime').value.trim();
+    const end = document.getElementById('endTime').value.trim();
+    const domain = document.getElementById('domainSelect').value;
+    const capacity = parseInt(document.getElementById('capacityInput').value, 10) || 30;
+    const topic = document.getElementById('topicInput').value.trim();
+    const msg = document.getElementById('formMsg');
+
+    msg.style.display = 'block';
+    msg.style.color = '#94A3B8';
+    msg.textContent = 'Saving group mentor session...';
+
+    fetch('/staff/mentor-slots', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': '{{ csrf_token() }}'
+      },
+      body: JSON.stringify({
+        start_time: start,
+        end_time: end,
+        domain: domain,
+        capacity: capacity,
+        topic: topic
+      })
+    })
+    .then(r => r.json())
+    .then(data => {
+      if (data.status === 'success') {
+        msg.style.color = '#34D399';
+        msg.textContent = data.message;
+        setTimeout(() => window.location.reload(), 1000);
+      } else {
+        msg.style.color = '#FB7185';
+        msg.textContent = data.message || 'Error creating slot.';
+      }
+    })
+    .catch(() => {
+      msg.style.color = '#FB7185';
+      msg.textContent = 'Server communication error.';
+    });
+  }
+
+  window.toggleRoster = toggleRoster;
+  window.createGroupSlot = createGroupSlot;
+</script>
 </body>
 </html>

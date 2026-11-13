@@ -122,7 +122,7 @@ export default function DBERTLabsLandingPage() {
               </HandNote>
             </h1>
             <p className="intro-copy">
-              DBERT Labs is an applied artificial intelligence engineering facility and technical research division based in Delhi NCR. 
+              DBERT Labs is the dedicated applied artificial intelligence engineering facility and technical research division of DBERT based in Delhi NCR. 
               We investigate multi-agent orchestration architectures, local LLM edge quantization, custom RAG evaluation harnesses, and algorithmic financial intelligence—open-sourcing our findings and feeding validated systems directly into our incubation and learning ecosystems.
             </p>
             <div className="stack-h gap-3 mt-6 flex-wrap">

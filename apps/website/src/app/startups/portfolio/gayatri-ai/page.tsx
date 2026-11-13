@@ -16,6 +16,7 @@ export default function GayatriAICaseStudyPage() {
       contribution="DBERT Labs spearheaded the open-source collaboration, delegating technical researchers and developers to commit directly to their repository. We designed modular multi-agent orchestration libraries, configured automated validation setups to review student-submitted prompts, and optimized local model pipelines utilizing Ollama integrations."
       outcome="The collaborative open-source partnership successfully published the Gayatri-AI framework. The libraries now support lightweight, offline-first multi-agent systems, enabling school environments to run interactive AI agent demonstrations on existing lab computers with sub-2s generation latency."
       metrics="10+ Schools Deployed | ₹0 API Costs | Open Source"
+      slug="gayatri-ai"
     />
   );
 }

@@ -95,6 +95,27 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             });
           `}
         </Script>
+        {/* Universal Cross-Domain Referral Attribution Script */}
+        <Script id="dbert-referral-capture" strategy="afterInteractive">
+          {`
+            (function() {
+              try {
+                var m = window.location.search.match(/[?&]ref=([A-Za-z0-9_-]{3,40})/);
+                if (m) {
+                  var code = m[1];
+                  var d = new Date(); d.setTime(d.getTime() + 30 * 864e5);
+                  var isDbert = window.location.hostname.indexOf('dbert.in') !== -1;
+                  var domain = isDbert ? ';domain=.dbert.in' : '';
+                  document.cookie = 'dbert_ref=' + encodeURIComponent(code) + ';expires=' + d.toUTCString() + ';path=/' + domain + ';SameSite=Lax';
+                  if (window.localStorage) {
+                    localStorage.setItem('dbert_ref', code);
+                    localStorage.setItem('dbert_ref_exp', d.getTime().toString());
+                  }
+                }
+              } catch (e) {}
+            })();
+          `}
+        </Script>
         <Script id="org-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Organization",

@@ -3,8 +3,8 @@
 <head>
 {# Homepage SEO is preserved byte-for-byte: title, description, robots and the
    Organization/FAQ structured data below all drive live search results. #}
-{% set page_title_full = "DBERT LMS — Learning Management & Career Sprints Platform" %}
-{% set page_desc = "Master AI Agent Engineering, Data Analytics, Full Stack and Python with DBERT LMS. Interactive curriculum, live sprints, mentor guidance, and verified credentials." %}
+{% set page_title_full = "DBERT Remote Internship " ~ (cohort_month if cohort_month else "2026") ~ " — Apply Across 9 Tech Tracks" %}
+{% set page_desc = "Apply for DBERT Remote Internship cohort starting " ~ (cohort_display if cohort_display else "Monday") ~ ". 2-month sprints, MSME certificate, LOR & ₹5K–₹18K performance stipend across 9 technical tracks." %}
 {% set page_robots = "index,follow,max-image-preview:large" %}
 {% set page_canonical = SITE_ORIGIN ~ "/" %}
 {% include "_head.html" %}
@@ -12,13 +12,13 @@
   <meta property="og:type" content="website"/>
   <meta property="og:locale" content="en_IN"/>
   <meta property="og:site_name" content="DBERT"/>
-  <meta property="og:title" content="DBERT Internship 2026 — Remote AI, Data, Full Stack & Python"/>
-  <meta property="og:description" content="Apply for DBERT Internship 2026. Remote internships + a guaranteed-placement paid program across AI Agent Development, Data Analyst, Full Stack Development, and Python Automation."/>
+  <meta property="og:title" content="DBERT Remote Internship {{ cohort_month if cohort_month else '2026' }} — Next Cohort {{ cohort_display if cohort_display else 'Starting Monday' }}"/>
+  <meta property="og:description" content="Apply for DBERT Remote Internship cohort starting {{ cohort_display if cohort_display else 'Monday' }}. 2-month sprints, MSME certificate, LOR & ₹5K–₹18K stipend across 9 domains. Free application."/>
   <meta property="og:url" content="{{ SITE_ORIGIN }}/"/>
   {% if OG_IMAGE_URL %}<meta property="og:image" content="{{ OG_IMAGE_URL }}"/>{% endif %}
   <meta name="twitter:card" content="{% if OG_IMAGE_URL %}summary_large_image{% else %}summary{% endif %}"/>
-  <meta name="twitter:title" content="DBERT Internship 2026"/>
-  <meta name="twitter:description" content="Remote internships + guaranteed-placement paid program. AI, Data, Full Stack, Python Automation."/>
+  <meta name="twitter:title" content="DBERT Remote Internship {{ cohort_month if cohort_month else '2026' }}"/>
+  <meta name="twitter:description" content="Next cohort starts {{ cohort_display if cohort_display else 'Monday' }}. Free application, 100% remote across 9 technical tracks."/>
   {% if OG_IMAGE_URL %}<meta name="twitter:image" content="{{ OG_IMAGE_URL }}"/>{% endif %}
   <meta name="robots" content="index,follow,max-image-preview:large"/>
 <meta name="author" content="DBERT"/>
@@ -42,7 +42,7 @@
        "description":"Remote internship across AI Agent Development, Data Analysis, Full Stack Development, and Python Automation, with an optional guaranteed-placement paid track."},
       {"@type":"FAQPage","@id":"{{ SITE_ORIGIN }}/#faq","mainEntity":[
         {"@type":"Question","name":"Who can apply for the DBERT internship?","acceptedAnswer":{"@type":"Answer","text":"Any student enrolled in B.Tech, BCA, B.Sc, MCA, MBA, Diploma or any tech or management course. We accept students from 1st semester to final year as well as fresh graduates."}},
-        {"@type":"Question","name":"Is there any fee to apply?","acceptedAnswer":{"@type":"Answer","text":"Application is 100% free. After selection, a one-time Rs. 499 refundable security deposit is required to confirm your seat, and it is refunded on successful completion."}},
+        {"@type":"Question","name":"Is there any fee to apply?","acceptedAnswer":{"@type":"Answer","text":"Application and screening are 100% free with zero fees. An optional paid incubation track offers live venture sprints and guaranteed placement, or ₹299 project verification upon completion."}},
         {"@type":"Question","name":"When does the batch start?","acceptedAnswer":{"@type":"Answer","text":"Batches start every Monday throughout 2026 up to 31 December 2026. You choose your joining Monday during enrollment after selection."}},
         {"@type":"Question","name":"How many hours per week are required?","acceptedAnswer":{"@type":"Answer","text":"A minimum of 10 hours per week, any time Sunday to Saturday. All tasks are async and fully remote."}},
         {"@type":"Question","name":"What documents do I get on completion?","acceptedAnswer":{"@type":"Answer","text":"An MSME-registered Completion Certificate, a Letter of Recommendation from your assigned mentor, and an Offer Letter issued after enrollment."}},
@@ -79,6 +79,12 @@
       });
     });
   </script>
+  <style nonce="{{ csp_nonce() }}">
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+  </style>
 </head>
 <body class="home">
   <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -98,6 +104,7 @@
         <a href="/tasks"><i class="fas fa-tasks"></i> Sprint Tasks</a>
         <a href="/mentors/slots"><i class="fas fa-user-tie"></i> 1:1 Mentorship</a>
         <a href="/jobs"><i class="fas fa-briefcase"></i> Placements &amp; Sprints</a>
+        <a href="/resume-checker"><i class="fas fa-wand-magic-sparkles"></i> AI Resume Checker</a>
         <a href="#benefits">Why DBERT LMS</a>
         <a href="#faq">FAQ</a>
         <a href="/jobs" class="nav-search-btn" title="Search"><i class="fas fa-magnifying-glass"></i></a>
@@ -115,12 +122,27 @@
     <section class="hero" id="main-content">
 
       <div class="hero-content">
-        <div class="hero-badge"><span class="badge-dot"></span> Next Cohort Sprint Starting Monday</div>
-        <h1>Master Industry Skills with the<br/><span class="highlight">DBERT LMS Platform</span></h1>
-        <p class="hero-sub">Hands-on learning, interactive curriculum, live engineering sprints, and industry mentorship across <strong>AI Agent Development, Data Analytics, Full Stack Engineering, and Python Automation</strong>.</p>
+        <div class="hero-badge"><span class="badge-dot" style="background:#16A34A;animation:pulseDot 1.8s infinite;"></span> 🔥 Next Cohort Starting {{ cohort_display if cohort_display else "Monday" }} at 06:00 PM IST</div>
+        <h1>Apply for <span class="highlight">Remote Internship 2026</span><br/>Across 9 Specialized Domains</h1>
+        <p class="hero-sub">Hands-on learning, interactive curriculum, live engineering sprints, and industry mentorship across <strong>AI Agent Development, Data Analytics, Full Stack Engineering, Python Automation, DevOps, UI/UX, Mobile App, Cybersecurity, and Digital Marketing</strong>. 100% remote, MSME credentials + performance stipend.</p>
+
+        <!-- DYNAMIC LIVE COUNTDOWN TO NEXT MONDAY -->
+        <div class="cohort-countdown-card" id="cohortCountdown">
+          <div class="cd-title-strip"><i class="fas fa-fire" style="color:#EA580C;"></i> Cohort Sprint Starting In:</div>
+          <div class="cd-units-wrap">
+            <div class="cd-unit"><span class="cd-num" id="cd-days">{{ init_days if init_days is defined else '05' }}</span><span class="cd-lbl">Days</span></div>
+            <div class="cd-sep">:</div>
+            <div class="cd-unit"><span class="cd-num" id="cd-hours">{{ init_hours if init_hours is defined else '15' }}</span><span class="cd-lbl">Hours</span></div>
+            <div class="cd-sep">:</div>
+            <div class="cd-unit"><span class="cd-num" id="cd-mins">{{ init_mins if init_mins is defined else '20' }}</span><span class="cd-lbl">Minutes</span></div>
+            <div class="cd-sep">:</div>
+            <div class="cd-unit"><span class="cd-num" id="cd-secs">{{ init_secs if init_secs is defined else '30' }}</span><span class="cd-lbl">Seconds</span></div>
+          </div>
+        </div>
+
         <div class="hero-cta-row">
-          <a href="/courses" class="btn-hero-primary" style="display:inline-flex;align-items:center;text-decoration:none;">Explore Courses &nbsp;<i class="fas fa-arrow-right"></i></a>
-          <button class="btn-hero-secondary" data-act-click="showAuthOverlay" data-arg-click='["signup"]'><i class="fas fa-user-plus"></i>&nbsp; Join Platform</button>
+          <button class="btn-hero-primary" data-act-click="showAuthOverlay" data-arg-click='["signup"]' style="font-size:15px;padding:15px 32px;"><i class="fas fa-paper-plane"></i>&nbsp; Apply Now</button>
+          <a href="#positions" class="btn-hero-secondary" style="display:inline-flex;align-items:center;text-decoration:none;"><i class="fas fa-layer-group"></i>&nbsp; Explore 9 Domains</a>
         </div>
         <div class="hero-stats">
           <div class="hero-stat-badge">
@@ -134,6 +156,10 @@
           <div class="hero-stat-badge">
             <i class="fas fa-laptop"></i>
             <div class="stat-text"><strong>100% Remote</strong><span>Work Mode</span></div>
+          </div>
+          <div class="hero-stat-badge">
+            <i class="fas fa-sack-dollar" style="color:#D97706;"></i>
+            <div class="stat-text"><strong>&#8377;5K &ndash; &#8377;18K</strong><span>Performance Stipend</span></div>
           </div>
         </div>
       </div>
@@ -153,54 +179,140 @@
             <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=64&h=64&fit=crop&crop=faces" alt="Intern"/>
           </div>
           <div>
-            <strong>10K+</strong>
-            <span>Students growing with DBERT</span>
+            <strong>{{ (trust_stats.interns if trust_stats and trust_stats.interns else 2000) }}+</strong>
+            <span>Active registered interns</span>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- BROWSE BY DOMAIN (IMAGE 2) -->
+    <!-- BROWSE BY DOMAIN (9 DOMAINS) -->
     <section id="positions" class="section container">
       <div class="section-header">
-        <span class="section-tag">OPEN POSITIONS</span>
+        <span class="section-tag">OPEN COHORT TRACKS &middot; NOVEMBER 2026</span>
         <div class="section-header-row">
           <h2>Browse by Domain</h2>
-          <a href="/jobs" class="view-all-link">View All <i class="fas fa-arrow-right"></i></a>
+          <a href="/internships" class="view-all-link">View All Internships <i class="fas fa-arrow-right"></i></a>
         </div>
-        <p>Live internships and jobs posted by companies on the DBERT board — pick a domain to see what's open now.</p>
+        <p>Live remote internships across 9 specialized tracks &mdash; select your domain to view live company requirements and submit your application.</p>
       </div>
       <div class="jd-grid">
-        <a class="jd-card" href="/jobs/ai-agent-development">
+        <a class="jd-card" href="/internships/remote/ai-agent-development">
           <div class="domain-icon-box ic-ai"><i class="fas fa-wand-magic-sparkles"></i></div>
-          <h3>Artificial Intelligence</h3>
-          <div class="jd-card-sub"><span>120+ openings</span><i class="fas fa-arrow-right"></i></div>
+          <h3>AI Agent Development</h3>
+          <div class="jd-card-sub"><span>{{ domain_tiles_map['AI Agent Development']['total_openings'] if (domain_tiles_map and 'AI Agent Development' in domain_tiles_map) else '520+' }} openings</span><i class="fas fa-arrow-right"></i></div>
         </a>
-        <a class="jd-card" href="/jobs/data-analyst">
+        <a class="jd-card" href="/internships/remote/data-analyst">
           <div class="domain-icon-box ic-data"><i class="fas fa-chart-simple"></i></div>
-          <h3>Data Analysis</h3>
-          <div class="jd-card-sub"><span>95+ openings</span><i class="fas fa-arrow-right"></i></div>
+          <h3>Data Analysis &amp; BI</h3>
+          <div class="jd-card-sub"><span>{{ domain_tiles_map['Data Analyst']['total_openings'] if (domain_tiles_map and 'Data Analyst' in domain_tiles_map) else '380+' }} openings</span><i class="fas fa-arrow-right"></i></div>
         </a>
-        <a class="jd-card" href="/jobs/full-stack-development">
+        <a class="jd-card" href="/internships/remote/full-stack-development">
           <div class="domain-icon-box ic-fullstack"><i class="fas fa-code"></i></div>
           <h3>Full Stack Development</h3>
-          <div class="jd-card-sub"><span>110+ openings</span><i class="fas fa-arrow-right"></i></div>
+          <div class="jd-card-sub"><span>{{ domain_tiles_map['Full Stack Development']['total_openings'] if (domain_tiles_map and 'Full Stack Development' in domain_tiles_map) else '4600+' }} openings</span><i class="fas fa-arrow-right"></i></div>
         </a>
-        <a class="jd-card" href="/jobs/python-automation">
+        <a class="jd-card" href="/internships/remote/python-automation">
           <div class="domain-icon-box ic-python"><i class="fab fa-python"></i></div>
           <h3>Python Automation</h3>
-          <div class="jd-card-sub"><span>80+ openings</span><i class="fas fa-arrow-right"></i></div>
+          <div class="jd-card-sub"><span>{{ domain_tiles_map['Python Automation']['total_openings'] if (domain_tiles_map and 'Python Automation' in domain_tiles_map) else '120+' }} openings</span><i class="fas fa-arrow-right"></i></div>
         </a>
-        <a class="jd-card" href="/jobs?domain=web-development">
-          <div class="domain-icon-box ic-web"><i class="fas fa-globe"></i></div>
-          <h3>Web Development</h3>
-          <div class="jd-card-sub"><span>75+ openings</span><i class="fas fa-arrow-right"></i></div>
+        <a class="jd-card" href="/internships/remote/ui-ux-design">
+          <div class="domain-icon-box ic-web" style="background:#FFF1F2;color:#E11D48;"><i class="fas fa-palette"></i></div>
+          <h3>UI/UX Design</h3>
+          <div class="jd-card-sub"><span>{{ domain_tiles_map['UI/UX Design']['total_openings'] if (domain_tiles_map and 'UI/UX Design' in domain_tiles_map) else '190+' }} openings</span><i class="fas fa-arrow-right"></i></div>
         </a>
-        <a class="jd-card" href="/jobs">
-          <div class="domain-icon-box ic-more"><i class="fas fa-table-cells-large"></i></div>
-          <h3>More Domains</h3>
-          <div class="jd-card-sub"><span>Explore all</span><i class="fas fa-arrow-right"></i></div>
+        <a class="jd-card" href="/internships/remote/devops-cloud">
+          <div class="domain-icon-box" style="background:#F0FDF4;color:#16A34A;"><i class="fas fa-cloud"></i></div>
+          <h3>DevOps &amp; Cloud</h3>
+          <div class="jd-card-sub"><span>{{ domain_tiles_map['DevOps & Cloud']['total_openings'] if (domain_tiles_map and 'DevOps & Cloud' in domain_tiles_map) else '120+' }} openings</span><i class="fas fa-arrow-right"></i></div>
         </a>
+        <a class="jd-card" href="/internships/remote/mobile-app-development">
+          <div class="domain-icon-box" style="background:#FAF5FF;color:#9333EA;"><i class="fas fa-mobile-screen-button"></i></div>
+          <h3>Mobile App Development</h3>
+          <div class="jd-card-sub"><span>{{ domain_tiles_map['Mobile App Development']['total_openings'] if (domain_tiles_map and 'Mobile App Development' in domain_tiles_map) else '50+' }} openings</span><i class="fas fa-arrow-right"></i></div>
+        </a>
+        <a class="jd-card" href="/internships/remote/cybersecurity">
+          <div class="domain-icon-box" style="background:#FEF2F2;color:#DC2626;"><i class="fas fa-shield-halved"></i></div>
+          <h3>Cybersecurity &amp; SOC</h3>
+          <div class="jd-card-sub"><span>{{ domain_tiles_map['Cybersecurity']['total_openings'] if (domain_tiles_map and 'Cybersecurity' in domain_tiles_map) else '50+' }} openings</span><i class="fas fa-arrow-right"></i></div>
+        </a>
+        <a class="jd-card" href="/internships/remote/digital-marketing">
+          <div class="domain-icon-box" style="background:#FFFBEB;color:#D97706;"><i class="fas fa-bullhorn"></i></div>
+          <h3>Digital Marketing &amp; SEO</h3>
+          <div class="jd-card-sub"><span>{{ domain_tiles_map['Digital Marketing']['total_openings'] if (domain_tiles_map and 'Digital Marketing' in domain_tiles_map) else '660+' }} openings</span><i class="fas fa-arrow-right"></i></div>
+        </a>
+      </div>
+    </section>
+
+    <!-- PRE-VETTED TALENT & RECRUITER SHOWCASE -->
+    <section id="prevetted" class="section container prevetted-section">
+      <div class="prevetted-banner">
+        <div class="prevetted-glow"></div>
+        <div class="prevetted-grid">
+          <div class="prevetted-left">
+            <div class="prevetted-pill">
+              <i class="fas fa-certificate" style="color:#F3D18B;"></i> Audited Sovereign Credentials
+            </div>
+            <h2 class="prevetted-title">Hire Pre-Vetted Engineers in 48 Hours</h2>
+            <p class="prevetted-desc">
+              Looking for verified talent? Browse <strong>65+ pre-vetted engineers</strong> across AI Agent Engineering, Full Stack, Data Analytics, and Python Automation with verified Turnitin originality (&lt;3%), 100-mark evaluation rubrics, and production GitHub code.
+            </p>
+            <div class="prevetted-perks">
+              <div class="prevetted-perk-chip">
+                <i class="fas fa-bolt" style="color:#38BDF8;"></i> 48-Hour Turnaround
+              </div>
+              <div class="prevetted-perk-chip">
+                <i class="fas fa-shield-check" style="color:#4ADE80;"></i> 14-Day Risk-Free Trial
+              </div>
+              <div class="prevetted-perk-chip">
+                <i class="fas fa-percent" style="color:#FBBF24;"></i> Zero Recruiter Markup
+              </div>
+            </div>
+            <div class="prevetted-ctas">
+              <a href="https://dbert.in/verify/directory" target="_blank" rel="noopener" class="prevetted-btn-gold">
+                <i class="fas fa-users-viewfinder"></i> Browse Pre-Vetted Directory &rarr;
+              </a>
+              <a href="https://dbert.in/hire/pre-vetted-engineers" target="_blank" rel="noopener" class="prevetted-btn-ghost">
+                <i class="fas fa-building"></i> Employer Hiring Info
+              </a>
+            </div>
+          </div>
+          <div class="prevetted-right">
+            <div class="prevetted-card-head">
+              <span class="prevetted-card-title">Top Vetted Profiles</span>
+              <span class="prevetted-card-badge">65+ Verified</span>
+            </div>
+            <div class="prevetted-profiles-list">
+              <div class="prevetted-profile-row">
+                <div>
+                  <div class="prevetted-row-role">Full Stack Engineers</div>
+                  <div class="prevetted-row-stack">Next.js, Node, PostgreSQL</div>
+                </div>
+                <span class="prevetted-score-tag">98/100</span>
+              </div>
+              <div class="prevetted-profile-row">
+                <div>
+                  <div class="prevetted-row-role">AI &amp; ML Engineers</div>
+                  <div class="prevetted-row-stack">PyTorch, LangChain, RAG</div>
+                </div>
+                <span class="prevetted-score-tag">96/100</span>
+              </div>
+              <div class="prevetted-profile-row">
+                <div>
+                  <div class="prevetted-row-role">Data Analysts</div>
+                  <div class="prevetted-row-stack">SQL, Power BI, Python</div>
+                </div>
+                <span class="prevetted-score-tag">95/100</span>
+              </div>
+            </div>
+            <div class="prevetted-footer-link">
+              <a href="https://dbert.in/verify/directory" target="_blank" rel="noopener">
+                View all 65 verified dossiers &rarr;
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -289,7 +401,7 @@
               <div class="faq-q-left"><i class="fas fa-credit-card"></i><span>Is there any fee?</span></div>
               <i class="fas fa-plus faq-icon"></i>
             </button>
-            <div class="faq-a"><p><strong>Application is 100% free.</strong> After selection, a one-time <strong>&#8377;499 refundable security deposit</strong> is required to confirm your seat. Refunded on successful completion.</p></div>
+            <div class="faq-a"><p><strong>Application and screening assessments are 100% free</strong> with zero screening fees. We offer an optional Paid Incubation Track (&#8377;1,999) with live client repository assignments and guaranteed placement, or statutory &#8377;299 project verification upon completion.</p></div>
           </div>
           <div class="faq-item">
             <button class="faq-q" data-act-click="toggleFAQ" data-arg-click='["$el"]'>
@@ -333,43 +445,21 @@
     </section>
 
     <!-- FOOTER (IMAGE 2) -->
-    <footer class="footer">
-      <div class="footer-inner">
-        <div class="footer-brand">
-          <div class="footer-brand-ic"><i class="fas fa-briefcase"></i></div>
-          <div>
-            <strong>DBERT</strong>
-            <p>MSME Registered &middot; Internship Portal 2026</p>
-          </div>
-        </div>
-        <div class="footer-links">
-          <a href="/">Home</a>
-          <a href="/program" data-act-click="dbertGA" data-arg-click='["paid_program_cta_click", {"source":"footer"}]'>Paid Program</a>
-          <a href="/internships">Internships</a>
-          <a href="/jobs">Jobs</a>
-          <a href="#benefits">Benefits</a>
-          <a href="#faq">FAQ</a>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p class="footer-copy">&copy; 2026 DBERT. All rights reserved.</p>
-        <div class="footer-socials">
-          <a href="https://linkedin.com" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-          <a href="https://twitter.com" target="_blank" rel="noopener" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-          <a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-          <a href="https://youtube.com" target="_blank" rel="noopener" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
-        </div>
-      </div>
-    </footer>
+    {% include '_footer_seo.html' %}
   </main>
 
   <!-- Phase 12.6 — JobPosting structured data (one per domain JD). -->
   <script nonce="{{ csp_nonce() }}" type="application/ld+json">
   [
-    {"@context":"https://schema.org","@type":"JobPosting","title":"AI Agent Development Intern","description":"Remote internship building AI agents and LLM-powered applications at DBERT. 2-month program with certificate and LOR on completion.","datePosted":"2026-01-01","validThrough":"2026-12-31T23:59","employmentType":"INTERN","hiringOrganization":{"@type":"Organization","name":"DBERT","sameAs":"{{ SITE_ORIGIN }}"},"jobLocationType":"TELECOMMUTE","applicantLocationRequirements":{"@type":"Country","name":"India"},"directApply":true,"url":"{{ SITE_ORIGIN }}/"},
-    {"@context":"https://schema.org","@type":"JobPosting","title":"Data Analyst Intern","description":"Remote data analyst internship at DBERT working with SQL, Python and dashboards. 2-month program with certificate and LOR on completion.","datePosted":"2026-01-01","validThrough":"2026-12-31T23:59","employmentType":"INTERN","hiringOrganization":{"@type":"Organization","name":"DBERT","sameAs":"{{ SITE_ORIGIN }}"},"jobLocationType":"TELECOMMUTE","applicantLocationRequirements":{"@type":"Country","name":"India"},"directApply":true,"url":"{{ SITE_ORIGIN }}/"},
-    {"@context":"https://schema.org","@type":"JobPosting","title":"Full Stack Development Intern","description":"Remote full stack development internship at DBERT building web apps end to end. 2-month program with certificate and LOR on completion.","datePosted":"2026-01-01","validThrough":"2026-12-31T23:59","employmentType":"INTERN","hiringOrganization":{"@type":"Organization","name":"DBERT","sameAs":"{{ SITE_ORIGIN }}"},"jobLocationType":"TELECOMMUTE","applicantLocationRequirements":{"@type":"Country","name":"India"},"directApply":true,"url":"{{ SITE_ORIGIN }}/"},
-    {"@context":"https://schema.org","@type":"JobPosting","title":"Python Automation Intern","description":"Remote Python automation internship at DBERT scripting and automating workflows. 2-month program with certificate and LOR on completion.","datePosted":"2026-01-01","validThrough":"2026-12-31T23:59","employmentType":"INTERN","hiringOrganization":{"@type":"Organization","name":"DBERT","sameAs":"{{ SITE_ORIGIN }}"},"jobLocationType":"TELECOMMUTE","applicantLocationRequirements":{"@type":"Country","name":"India"},"directApply":true,"url":"{{ SITE_ORIGIN }}/"}
+    {"@context":"https://schema.org","@type":"JobPosting","title":"AI Agent Development Intern","description":"Remote internship building AI agents, LangChain/CrewAI orchestration and LLM-powered applications at DBERT. 2-month program with verifiable certificate and LOR on completion.","datePosted":"2026-01-01","validThrough":"2026-12-31T23:59","employmentType":"INTERN","hiringOrganization":{"@type":"Organization","name":"DBERT","sameAs":"{{ SITE_ORIGIN }}"},"jobLocationType":"TELECOMMUTE","applicantLocationRequirements":{"@type":"Country","name":"India"},"baseSalary":{"@type":"MonetaryAmount","currency":"INR","value":{"@type":"QuantitativeValue","minValue":5000,"maxValue":18000,"unitText":"MONTH"}},"directApply":true,"url":"{{ SITE_ORIGIN }}/internships/ai-agent-development"},
+    {"@context":"https://schema.org","@type":"JobPosting","title":"Data Analyst Intern","description":"Remote data analyst internship at DBERT working with SQL schemas, Python Pandas ETL pipelines, and Power BI dashboards. 2-month program with verifiable certificate and LOR on completion.","datePosted":"2026-01-01","validThrough":"2026-12-31T23:59","employmentType":"INTERN","hiringOrganization":{"@type":"Organization","name":"DBERT","sameAs":"{{ SITE_ORIGIN }}"},"jobLocationType":"TELECOMMUTE","applicantLocationRequirements":{"@type":"Country","name":"India"},"baseSalary":{"@type":"MonetaryAmount","currency":"INR","value":{"@type":"QuantitativeValue","minValue":5000,"maxValue":18000,"unitText":"MONTH"}},"directApply":true,"url":"{{ SITE_ORIGIN }}/internships/data-analyst"},
+    {"@context":"https://schema.org","@type":"JobPosting","title":"Full Stack Development Intern","description":"Remote full stack development internship at DBERT building modern web applications with React, Next.js, Node.js and PostgreSQL. 2-month program with certificate and LOR on completion.","datePosted":"2026-01-01","validThrough":"2026-12-31T23:59","employmentType":"INTERN","hiringOrganization":{"@type":"Organization","name":"DBERT","sameAs":"{{ SITE_ORIGIN }}"},"jobLocationType":"TELECOMMUTE","applicantLocationRequirements":{"@type":"Country","name":"India"},"baseSalary":{"@type":"MonetaryAmount","currency":"INR","value":{"@type":"QuantitativeValue","minValue":5000,"maxValue":18000,"unitText":"MONTH"}},"directApply":true,"url":"{{ SITE_ORIGIN }}/internships/full-stack-development"},
+    {"@context":"https://schema.org","@type":"JobPosting","title":"Python Automation Intern","description":"Remote Python automation internship at DBERT scripting scraping pipelines, browser automation with Playwright/Selenium, and background worker queues. 2-month program with certificate and LOR on completion.","datePosted":"2026-01-01","validThrough":"2026-12-31T23:59","employmentType":"INTERN","hiringOrganization":{"@type":"Organization","name":"DBERT","sameAs":"{{ SITE_ORIGIN }}"},"jobLocationType":"TELECOMMUTE","applicantLocationRequirements":{"@type":"Country","name":"India"},"baseSalary":{"@type":"MonetaryAmount","currency":"INR","value":{"@type":"QuantitativeValue","minValue":5000,"maxValue":18000,"unitText":"MONTH"}},"directApply":true,"url":"{{ SITE_ORIGIN }}/internships/python-automation"},
+    {"@context":"https://schema.org","@type":"JobPosting","title":"UI/UX Design Intern","description":"Remote UI/UX design internship at DBERT designing user flows, wireframes, design systems and interactive high-fidelity prototypes in Figma. 2-month program with certificate and LOR on completion.","datePosted":"2026-01-01","validThrough":"2026-12-31T23:59","employmentType":"INTERN","hiringOrganization":{"@type":"Organization","name":"DBERT","sameAs":"{{ SITE_ORIGIN }}"},"jobLocationType":"TELECOMMUTE","applicantLocationRequirements":{"@type":"Country","name":"India"},"baseSalary":{"@type":"MonetaryAmount","currency":"INR","value":{"@type":"QuantitativeValue","minValue":5000,"maxValue":18000,"unitText":"MONTH"}},"directApply":true,"url":"{{ SITE_ORIGIN }}/internships/ui-ux-design"},
+    {"@context":"https://schema.org","@type":"JobPosting","title":"DevOps & Cloud Engineering Intern","description":"Remote DevOps and cloud engineering internship at DBERT managing Docker containers, Kubernetes clusters, CI/CD GitHub workflows, and cloud deployments. 2-month program with certificate and LOR on completion.","datePosted":"2026-01-01","validThrough":"2026-12-31T23:59","employmentType":"INTERN","hiringOrganization":{"@type":"Organization","name":"DBERT","sameAs":"{{ SITE_ORIGIN }}"},"jobLocationType":"TELECOMMUTE","applicantLocationRequirements":{"@type":"Country","name":"India"},"baseSalary":{"@type":"MonetaryAmount","currency":"INR","value":{"@type":"QuantitativeValue","minValue":5000,"maxValue":18000,"unitText":"MONTH"}},"directApply":true,"url":"{{ SITE_ORIGIN }}/internships/devops-cloud"},
+    {"@context":"https://schema.org","@type":"JobPosting","title":"Mobile App Development Intern","description":"Remote mobile app development internship at DBERT engineering cross-platform iOS and Android applications with Flutter, Dart and React Native. 2-month program with certificate and LOR on completion.","datePosted":"2026-01-01","validThrough":"2026-12-31T23:59","employmentType":"INTERN","hiringOrganization":{"@type":"Organization","name":"DBERT","sameAs":"{{ SITE_ORIGIN }}"},"jobLocationType":"TELECOMMUTE","applicantLocationRequirements":{"@type":"Country","name":"India"},"baseSalary":{"@type":"MonetaryAmount","currency":"INR","value":{"@type":"QuantitativeValue","minValue":5000,"maxValue":18000,"unitText":"MONTH"}},"directApply":true,"url":"{{ SITE_ORIGIN }}/internships/mobile-app-development"},
+    {"@context":"https://schema.org","@type":"JobPosting","title":"Cybersecurity Intern","description":"Remote cybersecurity internship at DBERT auditing web applications, conducting vulnerability assessments, configuring SIEM alerts, and practicing ethical penetration testing. 2-month program with certificate and LOR on completion.","datePosted":"2026-01-01","validThrough":"2026-12-31T23:59","employmentType":"INTERN","hiringOrganization":{"@type":"Organization","name":"DBERT","sameAs":"{{ SITE_ORIGIN }}"},"jobLocationType":"TELECOMMUTE","applicantLocationRequirements":{"@type":"Country","name":"India"},"baseSalary":{"@type":"MonetaryAmount","currency":"INR","value":{"@type":"QuantitativeValue","minValue":5000,"maxValue":18000,"unitText":"MONTH"}},"directApply":true,"url":"{{ SITE_ORIGIN }}/internships/cybersecurity"},
+    {"@context":"https://schema.org","@type":"JobPosting","title":"Digital Marketing Intern","description":"Remote digital marketing internship at DBERT executing technical SEO audits, Google & Meta Ads performance campaigns, content strategy, and GA4 funnel tracking. 2-month program with certificate and LOR on completion.","datePosted":"2026-01-01","validThrough":"2026-12-31T23:59","employmentType":"INTERN","hiringOrganization":{"@type":"Organization","name":"DBERT","sameAs":"{{ SITE_ORIGIN }}"},"jobLocationType":"TELECOMMUTE","applicantLocationRequirements":{"@type":"Country","name":"India"},"baseSalary":{"@type":"MonetaryAmount","currency":"INR","value":{"@type":"QuantitativeValue","minValue":5000,"maxValue":18000,"unitText":"MONTH"}},"directApply":true,"url":"{{ SITE_ORIGIN }}/internships/digital-marketing"}
   ]
   </script>
 
@@ -448,9 +538,14 @@
                   <select id="su_domain" class="field-select">
                     <option value="">-- Select Preferred Track --</option>
                     <option value="AI Agent Development">AI Agent Development</option>
-                    <option value="Full Stack Development">Full Stack Development</option>
                     <option value="Data Analyst">Data Analyst</option>
+                    <option value="Full Stack Development">Full Stack Development</option>
                     <option value="Python Automation">Python Automation</option>
+                    <option value="UI/UX Design">UI/UX Design</option>
+                    <option value="DevOps & Cloud">DevOps & Cloud</option>
+                    <option value="Mobile App Development">Mobile App Development</option>
+                    <option value="Cybersecurity">Cybersecurity</option>
+                    <option value="Digital Marketing">Digital Marketing</option>
                   </select>
                 </div>
                 <div class="form-group"><label class="field-label" for="su_course">Course *</label>
@@ -644,11 +739,40 @@
     ov.scrollTop=0;
     document.body.style.overflow='auto';
     switchAuthTab(tab||'signup');
-    /* `domain` is still accepted so the "Browse by Domain" tiles can keep
-       calling showAuthOverlay('signup', tile.domain), but there is no #su_domain
-       field to prefill: the three-stage signup (/signup/stage1|2|3) does not
-       collect a domain — that happens later via /apply?domain=. The old write
-       here targeted an element that has not existed for some time. */
+    const targetDomain = domain || new URLSearchParams(window.location.search).get('domain') || '';
+    if(targetDomain){
+      const domSelect = document.getElementById('su_domain');
+      if(domSelect){
+        const domainMap = {
+          'ai-agent-development': 'AI Agent Development',
+          'ai-agent': 'AI Agent Development',
+          'data-analyst': 'Data Analyst',
+          'data-analytics': 'Data Analyst',
+          'full-stack-development': 'Full Stack Development',
+          'full-stack': 'Full Stack Development',
+          'python-automation': 'Python Automation',
+          'python': 'Python Automation',
+          'ui-ux-design': 'UI/UX Design',
+          'ui-ux': 'UI/UX Design',
+          'devops-cloud': 'DevOps & Cloud',
+          'devops': 'DevOps & Cloud',
+          'mobile-app-development': 'Mobile App Development',
+          'mobile': 'Mobile App Development',
+          'cybersecurity': 'Cybersecurity',
+          'digital-marketing': 'Digital Marketing'
+        };
+        const cleanKey = targetDomain.toLowerCase().trim();
+        const targetName = domainMap[cleanKey] || targetDomain.replace(/[-_]/g, ' ').toLowerCase();
+        for(let i=0; i<domSelect.options.length; i++){
+          const optVal = domSelect.options[i].value.toLowerCase();
+          if(optVal === targetName.toLowerCase() || optVal.includes(targetName.toLowerCase()) || targetName.toLowerCase().includes(optVal)){
+            domSelect.selectedIndex = i;
+            try { domSelect.dispatchEvent(new Event('change')); } catch(e){}
+            break;
+          }
+        }
+      }
+    }
     fetchApplyToken();
     if((tab||'signup')==='signup'){try{suGoStep(1);}catch(e){} suResume();}
     history.pushState(null,'',tab==='signin'?'#signin':'#signup');
@@ -749,9 +873,13 @@
     }
     setLoading('forgotBtn', true);
     try {
+      const csrfTok = document.querySelector('meta[name="csrf-token"]')?.content || '';
       const res = await fetch('/forgot-password', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'X-CSRFToken': csrfTok
+        },
         credentials: 'include',
         body: JSON.stringify({ email, company_website: document.getElementById('fp_company_website').value })
       });
@@ -826,8 +954,9 @@
     if(!terms){showAuthError('signupError','Please accept the Terms & Conditions and Privacy Policy to continue.');return;}
     setLoading('suBtn1',true);
     try{
-      const nextDest = new URLSearchParams(window.location.search).get('next') || '';
-      const res=await fetch('/signup/stage1',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'include',body:JSON.stringify({name,email,phone,password,terms_accepted:true,newsletter_opt_in:newsletter,visitor_id:_visitorId,company_website:document.getElementById('su_company_website').value,_ts:document.getElementById('su_ts').value,next:nextDest,/* §6.1 attribution: the 30-day ref cookie set on landing */ref:(window.dbertRefCode?window.dbertRefCode():'')})});
+      const planVal = sessionStorage.getItem('dbert_plan') || '';
+      const nextDest = (planVal === 'program1999') ? '' : (new URLSearchParams(window.location.search).get('next') || '');
+      const res=await fetch('/signup/stage1',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'include',body:JSON.stringify({name,email,phone,password,terms_accepted:true,newsletter_opt_in:newsletter,visitor_id:_visitorId,company_website:document.getElementById('su_company_website').value,_ts:document.getElementById('su_ts').value,next:nextDest,plan:planVal,/* §6.1 attribution: the 30-day ref cookie set on landing */ref:(window.dbertRefCode?window.dbertRefCode():'')})});
       const data=await res.json(); setLoading('suBtn1',false);
       if(data.status==='success'){
         dbertGA('signup_stage1',{});
@@ -873,7 +1002,7 @@
     try{
       const res=await fetch('/signup/stage3',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'include',body:JSON.stringify({why_join:why,portfolio,linkedin_url,github_url,intent_answers,visitor_id:_visitorId})});
       const data=await res.json();
-      if(data.status==='success'){dbertGA('apply_submitted',{});launchConfetti();document.getElementById('signupFormWrap').style.display='none';document.getElementById('signupSuccess').classList.add('visible');showToast('Application submitted!','success');setTimeout(()=>{window.location.href=data.redirect||'/portal';},1800);}
+      if(data.status==='success'){dbertGA('apply_submitted',{});launchConfetti();document.getElementById('signupFormWrap').style.display='none';document.getElementById('signupSuccess').classList.add('visible');showToast('Application submitted!','success');const planVal=sessionStorage.getItem('dbert_plan')||'';const targetUrl=(planVal==='program1999')?'/program':(data.redirect||'/portal');setTimeout(()=>{window.location.href=targetUrl;},1800);}
       else if(res.status===401){setLoading('suBtn3',false);switchAuthTab('signin');showAuthError('signinError','Please sign in to finish your application.');}
       else if(data.next===2){setLoading('suBtn3',false);showAuthError('signupError',data.message||'Please complete your academic details.');suGoStep(2);}
       else{setLoading('suBtn3',false);showAuthError('signupError',data.message||'Submission failed.');}
@@ -913,7 +1042,8 @@
     if(!inputVal){showAuthError('signinError','Please enter your email or 10-digit mobile.');return;}
     setLoading('siEmailBtn',true);
     try{
-      const res=await fetch('/check-email',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'include',body:JSON.stringify({email:inputVal})});
+      const csrfTok = document.querySelector('meta[name="csrf-token"]')?.content || '';
+      const res=await fetch('/check-email',{method:'POST',headers:{'Content-Type':'application/json','X-CSRF-Token':csrfTok},credentials:'include',body:JSON.stringify({email:inputVal})});
       const data=await res.json();
       if(data.status!=='success'){showAuthError('signinError',data.message||'Error.');setLoading('siEmailBtn',false);return;}
       _siEmail=data.email||inputVal;
@@ -961,13 +1091,141 @@
     if(!email||!password){showAuthError('signinError','Please enter email and password.');return;}
     setLoading('signinBtn',true);
     const nextDest = new URLSearchParams(window.location.search).get('next') || '';
-    try{const res=await fetch('/intern/login',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'include',body:JSON.stringify({email,password,visitor_id:_visitorId,next:nextDest})});const data=await res.json();if(data.status==='success'){osLogin(email);showToast('Login successful! Redirecting...','success');setTimeout(()=>{window.location.href=data.redirect||'/profile';},800);}else{showAuthError('signinError',data.message||'Invalid credentials.');setLoading('signinBtn',false);document.getElementById('si_password').value='';}}catch(e){showAuthError('signinError','Network error. Please try again.');setLoading('signinBtn',false);}
+    try{
+      const csrfTok = document.querySelector('meta[name="csrf-token"]')?.content || '';
+      const res=await fetch('/intern/login',{method:'POST',headers:{'Content-Type':'application/json','X-CSRF-Token':csrfTok},credentials:'include',body:JSON.stringify({email,password,visitor_id:_visitorId,next:nextDest})});
+      const data=await res.json();
+      if(data.status==='success'){
+        osLogin(email);
+        showToast('Login successful! Redirecting...','success');
+        const planVal=sessionStorage.getItem('dbert_plan')||'';
+        const targetUrl=(planVal==='program1999')?'/program':(data.redirect||'/profile');
+        setTimeout(()=>{window.location.href=targetUrl;},800);
+      }else{
+        showAuthError('signinError',data.message||'Invalid credentials.');
+        setLoading('signinBtn',false);
+        document.getElementById('si_password').value='';
+      }
+    }catch(e){
+      showAuthError('signinError','Network error. Please try again.');
+      setLoading('signinBtn',false);
+    }finally{
+      // Failsafe: unlock button after 4s if still in loading state
+      setTimeout(()=>setLoading('signinBtn',false),4000);
+    }
   }
 
   function initVisitTracking(){let vc=parseInt(getCookie('dbert_vc')||'0')+1;setCookie('dbert_vc',vc,60);if(vc>1)setCookie('dbert_rv','1',60);setTimeout(async()=>{try{await fetch('/track-visit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({visitor_id:_visitorId,user_agent:navigator.userAgent,screen_res:screen.width+'x'+screen.height,timezone:Intl.DateTimeFormat().resolvedOptions().timeZone,language:navigator.language,device_type:window.innerWidth>768?'desktop':'mobile',referrer:document.referrer,is_return_visit:getCookie('dbert_rv')==='1',visit_count:vc,time_on_page:Math.floor((Date.now()-_pageLoadTime)/1000),path:window.location.pathname})});}catch(e){}},3000);}
 
-  function handleHash(){const h=window.location.hash.split('?')[0];if(h==='#signup')showAuthOverlay('signup');else if(h==='#signin')showAuthOverlay('signin');}
+  function handleHash(){
+    const _uParams=new URLSearchParams(window.location.search);
+    const _hRaw=window.location.hash||'';
+    let _hashQs = '';
+    if (_hRaw.includes('?')) {
+      _hashQs = _hRaw.substring(_hRaw.indexOf('?') + 1);
+    }
+    const _hParams = new URLSearchParams(_hashQs);
+    const _p=_uParams.get('plan')||_hParams.get('plan')||(_hRaw.includes('plan=program1999')?'program1999':'')||'';
+    if(_p==='program1999')sessionStorage.setItem('dbert_plan','program1999');
+    const h=_hRaw.split('?')[0];
+    if(h==='#signup'){
+      showAuthOverlay('signup');
+      const rawDomain = _uParams.get('domain') || _hParams.get('domain') || '';
+      if(rawDomain){
+        const domSelect = document.getElementById('su_domain');
+        if(domSelect){
+          const domainMap = {
+            'ai-agent-development': 'AI Agent Development',
+            'ai-agent': 'AI Agent Development',
+            'data-analyst': 'Data Analyst',
+            'data-analytics': 'Data Analyst',
+            'full-stack-development': 'Full Stack Development',
+            'full-stack': 'Full Stack Development',
+            'python-automation': 'Python Automation',
+            'python': 'Python Automation',
+            'ui-ux-design': 'UI/UX Design',
+            'ui-ux': 'UI/UX Design',
+            'devops-cloud': 'DevOps & Cloud',
+            'devops': 'DevOps & Cloud',
+            'mobile-app-development': 'Mobile App Development',
+            'mobile': 'Mobile App Development',
+            'cybersecurity': 'Cybersecurity',
+            'digital-marketing': 'Digital Marketing'
+          };
+          const cleanKey = rawDomain.toLowerCase().trim();
+          const targetName = domainMap[cleanKey] || rawDomain.replace(/[-_]/g, ' ').toLowerCase();
+          for(let i=0; i<domSelect.options.length; i++){
+            const optVal = domSelect.options[i].value.toLowerCase();
+            if(optVal === targetName.toLowerCase() || optVal.includes(targetName.toLowerCase()) || targetName.toLowerCase().includes(optVal)){
+              domSelect.selectedIndex = i;
+              try { domSelect.dispatchEvent(new Event('change')); } catch(e){}
+              break;
+            }
+          }
+        }
+      }
+    } else if(h==='#signin'){
+      showAuthOverlay('signin');
+      const rawEmail = _uParams.get('email') || _hParams.get('email') || '';
+      if(rawEmail){
+        const emInput = document.getElementById('si_email');
+        if(emInput){
+          emInput.value = rawEmail.trim();
+        }
+      }
+    }
+  }
   window.addEventListener('hashchange',handleHash);
+
+  // Dynamic Cohort Countdown Timer with Client Fallback and Robust Ticking
+  (function initCohortCountdown() {
+    var eventTimeStr = "{{ cohort_iso }}";
+    var targetDate = 0;
+    if (eventTimeStr) {
+      targetDate = new Date(eventTimeStr).getTime();
+    }
+    if (!targetDate || isNaN(targetDate)) {
+      var d = new Date();
+      var utc = d.getTime() + (d.getTimezoneOffset() * 60000);
+      var ist = new Date(utc + (3600000 * 5.5));
+      var day = ist.getDay();
+      var diff = (1 - day + 7) % 7;
+      if (diff === 0 && ist.getHours() >= 18) diff = 7;
+      ist.setDate(ist.getDate() + diff);
+      ist.setHours(18, 0, 0, 0);
+      targetDate = ist.getTime() - (3600000 * 5.5) - (d.getTimezoneOffset() * 60000);
+    }
+
+    function updateClock() {
+      var now = new Date().getTime();
+      var distance = targetDate - now;
+      var elD = document.getElementById('cd-days');
+      var elH = document.getElementById('cd-hours');
+      var elM = document.getElementById('cd-mins');
+      var elS = document.getElementById('cd-secs');
+
+      if (!elD || !elH || !elM || !elS) return;
+
+      if (distance <= 0) {
+        elD.textContent = '00';
+        elH.textContent = '00';
+        elM.textContent = '00';
+        elS.textContent = '00';
+        return;
+      }
+      var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      elD.textContent = days < 10 ? '0' + days : days;
+      elH.textContent = hours < 10 ? '0' + hours : hours;
+      elM.textContent = minutes < 10 ? '0' + minutes : minutes;
+      elS.textContent = seconds < 10 ? '0' + seconds : seconds;
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+  })();
 
   // T1: the homepage is a discovery portal interns can browse while signed in, so a logged-in
   // intern stays here (no more bounce-to-portal) and the nav swaps to Dashboard/Profile/Sign out.

@@ -1,5 +1,7 @@
 import { NextResponse } from 'next/server';
 import db from '@/lib/db';
+import fs from 'fs';
+import path from 'path';
 
 const PAGE_SIZE = 15; // 3x5 card grid per page
 const VALID_DOMAINS = [
@@ -18,6 +20,40 @@ function isPlausibleUrl(value: string): boolean {
   } catch {
     return false;
   }
+}
+
+async function isKnownDbertIntern(email: string): Promise<boolean> {
+  const normEmail = email.trim().toLowerCase();
+  try {
+    const registryPath = path.join(process.cwd(), 'src', 'data', 'certificates_registry.json');
+    if (fs.existsSync(registryPath)) {
+      const raw = fs.readFileSync(registryPath, 'utf-8');
+      const registry = JSON.parse(raw);
+      for (const cert of Object.values(registry) as any[]) {
+        if (cert?.holderEmail?.toLowerCase() === normEmail) {
+          return true;
+        }
+      }
+    }
+  } catch (err) {
+    console.warn('Could not inspect certificates_registry for auto-approval:', err);
+  }
+
+  try {
+    const result: any = await db.$queryRaw`
+      SELECT 1 FROM dbert_internship.intern_accounts WHERE LOWER(email) = ${normEmail}
+      UNION
+      SELECT 1 FROM dbert_internship.applications WHERE LOWER(email) = ${normEmail}
+      LIMIT 1;
+    `;
+    if (Array.isArray(result) && result.length > 0) {
+      return true;
+    }
+  } catch (err) {
+    console.warn('Database intern lookup skipped:', err);
+  }
+
+  return false;
 }
 
 export async function POST(request: Request) {
@@ -48,21 +84,33 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'One or more URLs are invalid' }, { status: 400 });
     }
 
+    const isEnrolled = await isKnownDbertIntern(email);
+    const status = isEnrolled ? 'approved' : 'pending';
+    const reviewedAt = isEnrolled ? new Date() : null;
+
     const contributor = await db.projectContributor.create({
       data: {
         projectSlug: 'alkame',
-        name,
-        email,
-        profilePicUrl,
+        name: name.trim(),
+        email: email.trim().toLowerCase(),
+        profilePicUrl: profilePicUrl.trim(),
         comment: comment.trim(),
-        linkedinUrl,
-        githubUrl,
+        linkedinUrl: linkedinUrl.trim(),
+        githubUrl: githubUrl.trim(),
         domain,
-        status: 'pending',
+        status,
+        reviewedAt,
       },
     });
 
-    return NextResponse.json({ success: true, id: contributor.id }, { status: 201 });
+    return NextResponse.json(
+      {
+        success: true,
+        id: contributor.id,
+        autoApproved: isEnrolled,
+      },
+      { status: 201 }
+    );
   } catch (err) {
     console.error('Alkame contributor submission error:', err);
     return NextResponse.json({ error: 'Failed to submit contribution' }, { status: 500 });
@@ -81,11 +129,9 @@ export async function GET(request: Request) {
       db.projectContributor.count({ where }),
       db.projectContributor.findMany({
         where,
-        orderBy: { reviewedAt: 'desc' },
+        orderBy: [{ reviewedAt: 'desc' }, { createdAt: 'desc' }],
         skip: (page - 1) * PAGE_SIZE,
         take: PAGE_SIZE,
-        // Explicit select — email is intentionally excluded and must never
-        // be added here without a corresponding change to the public UI.
         select: {
           id: true,
           name: true,

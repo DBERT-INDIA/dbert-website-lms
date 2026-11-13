@@ -74,6 +74,11 @@ export default function InterviewPrepPage() {
               <li><strong>Commit history curation</strong>: Structure repo README files, flow charts, and clean configurations.</li>
               <li><strong>Outcome framing</strong>: Quantify project descriptions focusing on execution speeds and compute optimizations.</li>
             </ul>
+            <div style={{ marginTop: '16px' }}>
+              <a href="/learners/resume-checker" className="btn btn-secondary btn-sm" style={{ display: 'block', textAlign: 'center', fontWeight: 700 }}>
+                ⚡ Test Your Resume With Free AI ATS Scanner →
+              </a>
+            </div>
           </div>
         </div>
       </div>

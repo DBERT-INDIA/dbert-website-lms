@@ -248,6 +248,12 @@ class TestPostgreSQLAdapterSimulation:
             self.last_query = query
             self.last_params = params
 
+        def __enter__(self):
+            return self
+
+        def __exit__(self, exc_type, exc_val, exc_tb):
+            pass
+
         def fetchone(self):
             return (77, "Charlie", "charlie@postgres.org")
 
@@ -290,6 +296,7 @@ class TestPostgreSQLAdapterSimulation:
         mock_cur = self.MockPgCursor()
         mock_conn = self.MockPgConnection(mock_cur)
         adapter = PostgreSQLAdapter(mock_conn)
+        mock_cur.last_query = None  # Reset query after schema configuration in __init__
 
         cur = adapter.execute("PRAGMA busy_timeout = 8000")
         assert cur.fetchone() is None

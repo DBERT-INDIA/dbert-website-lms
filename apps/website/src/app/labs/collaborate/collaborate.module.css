@@ -43,3 +43,10 @@
   resize: vertical;
   min-height: 120px;
 }
+
+@media (max-width: 640px) {
+  .fieldGroup input, .fieldGroup select, .fieldGroup textarea {
+    font-size: 16px;
+    padding: 12px 14px;
+  }
+}

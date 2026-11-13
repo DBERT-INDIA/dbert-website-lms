@@ -86,3 +86,17 @@
     padding: 38px 28px;
   }
 }
+
+.card {
+  border-radius: 4px 13px 4px 10px;
+  transform: rotate(-.2deg);
+  box-shadow: 8px 10px 0 rgba(49, 93, 74, .06), 0 18px 42px rgba(36, 42, 33, .07);
+}
+.card::before {
+  background: rgba(183, 102, 75, .16);
+  border-left-color: rgba(183, 102, 75, .3);
+  border-right-color: rgba(183, 102, 75, .3);
+}
+.body p { font-family: var(--font-b); }
+.sig { font-family: var(--font-h); }
+.attribution { font-family: var(--font-b); }

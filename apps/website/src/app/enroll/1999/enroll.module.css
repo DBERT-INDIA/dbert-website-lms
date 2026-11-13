@@ -936,3 +936,30 @@
     font-size: 1.65rem;
   }
 }
+
+@media (max-width: 480px) {
+  .container {
+    padding: 20px 12px 60px;
+  }
+  .headerCard {
+    padding: 20px 16px;
+  }
+  .pageTitle {
+    font-size: 1.45rem;
+  }
+  .sectionCard {
+    padding: 18px 14px;
+  }
+  .countdownGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  .intentGrid {
+    grid-template-columns: 1fr;
+  }
+  .approvedWhatsAppBtn {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px 18px;
+  }
+}

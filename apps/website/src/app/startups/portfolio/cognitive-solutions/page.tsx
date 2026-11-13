@@ -17,6 +17,7 @@ export default function CognitiveSolutionsCaseStudyPage() {
       contribution="DBERT engineered a shared training framework and custom recruitment pathway. We synchronized Cognitive Solutions' stack parameters (ROS, Python automation, and device communication protocols) with our advanced learner curricula. We then established a targeted placement channel that pre-vetted interns through live simulation reviews before deployment."
       outcome="The collaborative pipeline successfully trained and placed qualified junior developers directly into live AI, IoT, and robotics integration projects. Technical onboarding time was reduced by 60%, allowing Cognitive Solutions to meet all client deployment schedules."
       metrics="60% Reduction in Onboarding | 100% Client Deployment Compliance"
+      slug="cognitive-solutions"
     />
   );
 }

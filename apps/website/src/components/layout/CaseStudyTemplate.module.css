@@ -56,3 +56,12 @@
   text-align: center;
   margin-top: var(--space-4);
 }
+
+@media (max-width: 640px) {
+  .head {
+    margin-bottom: var(--space-5);
+  }
+  .metricsCard {
+    padding: var(--space-4);
+  }
+}

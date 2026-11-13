@@ -31,6 +31,7 @@
       <a class="nav-item" href="/admin/course-payments" style="text-decoration:none;"><i class="fas fa-indian-rupee-sign"></i> Course Payments</a>
       <a class="nav-item" href="/admin/cohorts" style="text-decoration:none;"><i class="fas fa-users-rectangle"></i> Cohorts</a>
       <a class="nav-item" href="/admin/ledger" style="text-decoration:none;"><i class="fas fa-coins"></i> Coin Ledger</a>
+      <a class="nav-item" href="/admin/stipend-funnel" style="text-decoration:none; background:rgba(16,185,129,0.1); color:#10b981;"><i class="fas fa-funnel-dollar"></i> Stipend &amp; Growth Funnel</a>
       <a class="nav-item" href="/admin/sourcing-dashboard" style="text-decoration:none; background:#1a73e815; color:#1a73e8;"><i class="fas fa-chart-pie"></i> Sourcing Analytics</a>
     </nav>
     <div class="sidebar-footer">
@@ -812,7 +813,14 @@
 
   // ── API FETCH ─────────────────────────────────────────────────
   async function apiFetch(path, method='GET', body=null){
-    const opts = {method, credentials:'include', headers:{}};
+    const opts = {
+      method, 
+      credentials: 'include', 
+      headers: {
+        'Accept': 'application/json',
+        'X-Requested-With': 'XMLHttpRequest'
+      }
+    };
     if(body){ opts.headers['Content-Type']='application/json'; opts.body=JSON.stringify(body); }
     try {
       const res = await fetch(API(path), opts);
@@ -1166,7 +1174,7 @@
   let _currentArticleId = null;
 
   async function loadArticles(){
-    const data = await apiFetch('/admin/articles');
+    const data = await apiFetch('/admin/articles?format=json');
     if(!data || data.status!=='success') return;
     _allArticles = data.articles || [];
     const b = document.getElementById('articlesBody');

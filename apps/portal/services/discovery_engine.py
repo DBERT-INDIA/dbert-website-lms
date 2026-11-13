@@ -581,6 +581,7 @@ def prepare_catalogue_stream(
     duration: Optional[str] = None,
     min_stipend: Optional[int] = None,
     max_age_days: Optional[int] = None,
+    source_filter: Optional[str] = None,
 ) -> Tuple[List[Dict[str, Any]], int]:
     """
     Main pipeline to filter, score, tag, and order all opportunities.
@@ -631,6 +632,14 @@ def prepare_catalogue_stream(
             l["missing_skills"] = []
             l["lms_nudge"] = ""
         candidates.append(l)
+
+    # Filter by source if requested (portal vs curated)
+    if source_filter:
+        s_target = source_filter.strip().lower()
+        if s_target in ("portal", "company", "direct", "post"):
+            candidates = [c for c in candidates if c.get("source") == "post"]
+        elif s_target in ("curated", "scraped", "lead", "leads"):
+            candidates = [c for c in candidates if c.get("source") == "lead"]
 
     # Filter by region if requested
     if active_region:

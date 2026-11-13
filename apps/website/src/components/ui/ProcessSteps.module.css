@@ -90,3 +90,14 @@
     grid-template-columns: 1fr;
   }
 }
+
+.n {
+  border-radius: 6px 50% 50% 50%;
+  background: var(--surface-card);
+  border-color: var(--border-strong);
+  color: var(--accent);
+  font-family: var(--font-d);
+  font-size: 1rem;
+}
+.step:hover .n { border-color: var(--signal); box-shadow: none; }
+.dur { font-family: var(--font-b); font-size: .78rem; }

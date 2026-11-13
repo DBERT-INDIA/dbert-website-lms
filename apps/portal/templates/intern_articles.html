@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% set page_title = "Engineering Articles & Case Studies" %}
+{% set page_robots = "noindex, nofollow" %}
+{% include "_head.html" %}
+
+<style nonce="{{ csp_nonce() }}">
+  .articles-container {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem 3.5rem;
+  }
+  .articles-hero {
+    background: linear-gradient(135deg, #0A0D17 0%, #161D33 50%, #0F172A 100%);
+    border: 1px solid rgba(99, 102, 241, 0.35);
+    border-radius: 20px;
+    padding: 2rem 2.25rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5), 0 0 25px rgba(99, 102, 241, 0.12);
+  }
+  .articles-hero h1 {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #fff;
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.02em;
+  }
+  .articles-hero p {
+    color: rgba(226, 232, 240, 0.85);
+    font-size: 0.9375rem;
+    margin: 0;
+    max-width: 640px;
+    line-height: 1.6;
+  }
+  .hero-badge {
+    background: rgba(99, 102, 241, 0.15);
+    border: 1px solid rgba(99, 102, 241, 0.4);
+    border-radius: 12px;
+    padding: 0.875rem 1.25rem;
+    text-align: right;
+    white-space: nowrap;
+  }
+  .hero-badge-title {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #A5B4FC;
+    font-weight: 700;
+  }
+  .hero-badge-val {
+    font-size: 1.125rem;
+    font-weight: 800;
+    color: #38BDF8;
+    margin-top: 0.25rem;
+  }
+
+  .editor-card {
+    background: #0B0F19;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 1.75rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  }
+  .form-label {
+    display: block;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #94A3B8;
+    margin-bottom: 0.5rem;
+  }
+  .form-control {
+    width: 100%;
+    background: rgba(15, 23, 42, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+    color: #F8FAFC;
+    padding: 0.75rem 1rem;
+    font-size: 0.9375rem;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    box-sizing: border-box;
+  }
+  .form-control:focus {
+    border-color: #6366F1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+  }
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+  @media (max-width: 768px) {
+    .form-row { grid-template-columns: 1fr; }
+    .articles-hero { flex-direction: column; align-items: flex-start; }
+    .hero-badge { text-align: left; }
+  }
+
+  .editor-tabs {
+    display: flex;
+    gap: 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+  }
+  .tab-btn {
+    background: transparent;
+    border: none;
+    color: #94A3B8;
+    font-weight: 600;
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .tab-btn.active {
+    background: rgba(99, 102, 241, 0.2);
+    color: #fff;
+    border: 1px solid rgba(99, 102, 241, 0.4);
+  }
+  .tab-pane {
+    display: none;
+  }
+  .tab-pane.active {
+    display: block;
+  }
+
+  .markdown-editor {
+    min-height: 480px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    resize: vertical;
+  }
+  .preview-box {
+    min-height: 480px;
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 1.5rem 2rem;
+    color: #E2E8F0;
+    line-height: 1.7;
+    overflow-y: auto;
+  }
+  .preview-box h1 { font-size: 1.75rem; color: #fff; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.5rem; margin-top: 0.5rem; }
+  .preview-box h2 { font-size: 1.35rem; color: #38BDF8; margin-top: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 0.35rem; }
+  .preview-box h3 { font-size: 1.1rem; color: #A5B4FC; margin-top: 1.25rem; }
+  .preview-box code { background: rgba(255,255,255,0.08); padding: 2px 6px; border-radius: 4px; font-size: 0.85em; color: #38BDF8; }
+  .preview-box pre { background: #030712; padding: 1rem; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); overflow-x: auto; }
+  .preview-box blockquote { border-left: 3px solid #6366F1; margin: 1rem 0; padding-left: 1rem; color: #94A3B8; }
+  .preview-box a { color: #38BDF8; text-decoration: underline; }
+
+  .actions-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    flex-wrap: wrap;
+  }
+  .btn-save-draft {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s;
+  }
+  .btn-save-draft:hover {
+    background: rgba(255, 255, 255, 0.15);
+  }
+  .btn-submit-review {
+    background: linear-gradient(135deg, #6366F1 0%, #4F46E5 100%);
+    border: none;
+    color: #fff;
+    padding: 0.75rem 1.75rem;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 4px 14px rgba(79, 70, 229, 0.4);
+    transition: all 0.2s;
+  }
+  .btn-submit-review:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(79, 70, 229, 0.5);
+  }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.3rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .status-draft { background: rgba(148, 163, 184, 0.15); border: 1px solid rgba(148, 163, 184, 0.3); color: #94A3B8; }
+  .status-review { background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.4); color: #FBBF24; }
+  .status-published { background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.4); color: #34D399; }
+
+  .articles-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+  }
+  .articles-table th {
+    text-align: left;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #94A3B8;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .articles-table td {
+    padding: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    color: #E2E8F0;
+    font-size: 0.875rem;
+  }
+</style>
+</head>
+
+<body class="has-sidebar">
+{% include '_intern_sidebar.html' %}
+
+<main class="main-content">
+  <div class="articles-container">
+
+    <!-- 1. HERO HEADER -->
+    <div class="articles-hero">
+      <div>
+        <h1>Engineering Articles &amp; Case Studies</h1>
+        <p>
+          Author, verify, and publish your production case studies directly to 
+          <a href="https://dbert.in/blog" target="_blank" rel="noopener" style="color:#38BDF8;text-decoration:underline;">dbert.in/blog</a>. 
+          Every published article is cryptographically tied to your GitHub codebase, live demo, and DBERT certificate.
+        </p>
+      </div>
+      <div class="hero-badge">
+        <div class="hero-badge-title">Editorial Status</div>
+        <div class="hero-badge-val">
+          {% if active_article %}
+            {{ active_article.status or "DRAFT" }}
+          {% else %}
+            No Active Draft
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    {% if not active_article %}
+      <div style="background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.3);border-radius:12px;padding:1.25rem;margin-bottom:1.5rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+        <div>
+          <h4 style="color:#fff;margin:0 0 4px;font-size:1.05rem;font-weight:700;"><i class="fa-solid fa-bolt" style="color:#FBBF24;"></i> Auto-Generate Capstone Case Study with AI</h4>
+          <p style="color:#CBD5E1;font-size:0.85rem;margin:0;">Synthesize your verified milestone deliverables, GitHub repo, and evaluation scores into a publication-ready technical Case Study.</p>
+        </div>
+        <button type="button" class="btn-regenerate-ai" data-act-click="regenerateCaseStudy" style="display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:8px;background:linear-gradient(135deg, #10B981, #059669);border:none;color:#fff;font-weight:700;font-size:0.875rem;cursor:pointer;">
+          <i class="fa-solid fa-sparkles"></i> Generate Draft with Gemini
+        </button>
+      </div>
+    {% endif %}
+
+    <!-- 2. ARTICLE EDITOR OR PREVIEW -->
+    <div class="editor-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem;">
+        <div>
+          <span style="font-size:0.75rem;font-weight:700;color:#6366F1;text-transform:uppercase;letter-spacing:0.08em;">
+            § Technical Case Study Editor
+          </span>
+          <h2 style="font-size:1.25rem;color:#fff;margin:0.25rem 0 0;font-weight:700;">
+            {% if active_article %}Edit: {{ active_article.title }}{% else %}New Engineering Case Study{% endif %}
+          </h2>
+        </div>
+        <div>
+          {% if active_article %}
+            {% if active_article.status == 'PUBLISHED' %}
+              <a href="https://dbert.in/blog/{{ active_article.slug or active_article.title|lower|replace(' ', '-') }}" target="_blank" rel="noopener" class="status-badge status-published" style="text-decoration:none;">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Live on dbert.in/blog
+              </a>
+            {% elif active_article.status == 'PENDING_REVIEW' %}
+              <span class="status-badge status-review">
+                <i class="fa-solid fa-hourglass-half"></i> Under Editorial Review
+              </span>
+            {% else %}
+              <span class="status-badge status-draft">
+                <i class="fa-solid fa-pen-ruler"></i> Draft Mode
+              </span>
+            {% endif %}
+          {% endif %}
+        </div>
+      </div>
+
+      <form id="articleForm">
+        <input type="hidden" id="articleId" value="{{ active_article.id if active_article else '' }}">
+
+        <div style="margin-bottom:1.25rem;">
+          <label class="form-label" for="articleTitle">Article Title</label>
+          <input type="text" id="articleTitle" class="form-control" placeholder="e.g. Architecting Gayatri AI: Production Multi-Agent Engine" value="{{ active_article.title if active_article else '' }}" required>
+        </div>
+
+        <div class="form-row">
+          <div>
+            <label class="form-label" for="articleRepo">GitHub Repository URL</label>
+            <input type="url" id="articleRepo" class="form-control" placeholder="https://github.com/username/repo" value="{{ active_article.github_repo_url if active_article else '' }}">
+          </div>
+          <div>
+            <label class="form-label" for="articleDemo">Live Demo / Deployment URL</label>
+            <input type="url" id="articleDemo" class="form-control" placeholder="https://project.render.com or railway.app" value="{{ active_article.live_demo_url if active_article else '' }}">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div>
+            <label class="form-label" for="articleCert">DBERT Credential ID</label>
+            <input type="text" id="articleCert" class="form-control" placeholder="CERT-DBERT-2026-..." value="{{ active_article.cert_id if active_article else '' }}">
+          </div>
+          <div>
+            <label class="form-label">Domain Specialization</label>
+            <input type="text" class="form-control" value="{{ active_article.domain if active_article else intern.domain or 'AI Engineering' }}" readonly style="opacity:0.75;">
+          </div>
+        </div>
+
+        <!-- Readiness Checklist for Interns -->
+        <div style="background:rgba(15,23,42,0.9);border:1px solid rgba(99,102,241,0.25);border-radius:10px;padding:1rem 1.25rem;margin-bottom:1.25rem;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem;flex-wrap:wrap;gap:8px;">
+            <span style="font-size:0.75rem;font-weight:700;color:#A5B4FC;text-transform:uppercase;letter-spacing:0.06em;">
+              <i class="fa-solid fa-list-check"></i> Editorial Polish Checklist (Requirements for Publication)
+            </span>
+            <span id="readinessScore" style="font-size:0.75rem;font-weight:800;color:#34D399;background:rgba(16,185,129,0.15);padding:2px 8px;border-radius:6px;">
+              Ready to Submit
+            </span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:0.5rem;font-size:0.8125rem;color:#CBD5E1;">
+            <div id="checkTitle" style="display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-circle-check" style="color:#10B981;"></i> Title &amp; Stack Defined</div>
+            <div id="checkRepo" style="display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-circle-check" style="color:#10B981;"></i> GitHub Repo Linked</div>
+            <div id="checkLength" style="display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-circle-check" style="color:#10B981;"></i> Minimum 400+ Words</div>
+            <div id="checkDemo" style="display:flex;align-items:center;gap:6px;"><i class="fa-solid fa-circle-check" style="color:#10B981;"></i> Working Demo or Repo Link</div>
+          </div>
+        </div>
+
+        <!-- Markdown Editor & Preview Tabs -->
+        <div class="editor-tabs">
+          <button type="button" class="tab-btn active" id="tabBtnEdit" data-tab="edit" data-act-click="switchEditorTab" data-arg-click='["edit"]'>
+            <i class="fa-solid fa-code"></i> Markdown Editor
+          </button>
+          <button type="button" class="tab-btn" id="tabBtnPreview" data-tab="preview" data-act-click="switchEditorTab" data-arg-click='["preview"]'>
+            <i class="fa-solid fa-eye"></i> Live Render Preview
+          </button>
+        </div>
+
+        <div id="paneEdit" class="tab-pane active">
+          <textarea id="articleContent" class="form-control markdown-editor" placeholder="Write or paste your markdown article here...">{{ active_article.content_markdown if active_article else '' }}</textarea>
+        </div>
+
+        <div id="panePreview" class="tab-pane">
+          <div id="previewRender" class="preview-box">
+            <p style="color:#94A3B8;">Switch to preview to view rendered markdown...</p>
+          </div>
+        </div>
+
+        <!-- Feedback alert -->
+        <div id="saveFeedback" style="display:none;margin-top:1rem;padding:0.75rem 1rem;border-radius:8px;font-size:0.875rem;"></div>
+
+        <!-- Action Buttons -->
+        <div class="actions-bar">
+          <div>
+            <a href="/stipend/tasks" style="color:#94A3B8;text-decoration:none;font-size:0.875rem;font-weight:600;">
+              &larr; Back to Stipend Milestone
+            </a>
+          </div>
+          <div style="display:flex;gap:0.75rem;">
+            {% if not active_article or active_article.status != 'PUBLISHED' %}
+              <button type="button" class="btn-save-draft btn-regenerate-ai" id="btnRegenerate" data-act-click="regenerateCaseStudy" style="background:rgba(99,102,241,0.15);border:1px solid rgba(99,102,241,0.35);color:#A5B4FC;">
+                <i class="fa-solid fa-sparkles"></i> Regenerate with AI
+              </button>
+              <button type="button" class="btn-save-draft" id="btnSaveDraft" data-act-click="submitArticle" data-arg-click='["draft"]'>
+                <i class="fa-solid fa-floppy-disk"></i> Save Draft
+              </button>
+              <button type="button" class="btn-submit-review" id="btnSubmitReview" data-act-click="submitArticle" data-arg-click='["submit"]'>
+                <i class="fa-solid fa-paper-plane"></i> Submit for Editorial Review
+              </button>
+            {% else %}
+              <a href="https://dbert.in/blog/{{ active_article.slug or active_article.title|lower|replace(' ', '-') }}" target="_blank" rel="noopener" class="btn-submit-review" style="text-decoration:none;">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Live Article
+              </a>
+            {% endif %}
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- 3. PREVIOUS ARTICLES / DRAFTS TABLE -->
+    {% if articles and articles|length > 0 %}
+      <div class="editor-card">
+        <h3 style="font-size:1.125rem;color:#fff;margin:0 0 1rem;font-weight:700;">
+          Your Authored Publications ({{ articles|length }})
+        </h3>
+        <table class="articles-table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Domain</th>
+              <th>Status</th>
+              <th>Updated</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for a in articles %}
+              <tr>
+                <td style="font-weight:600;color:#fff;">{{ a.title }}</td>
+                <td><span style="color:#A5B4FC;">{{ a.domain }}</span></td>
+                <td>
+                  {% if a.status == 'PUBLISHED' %}
+                    <span class="status-badge status-published">Published</span>
+                  {% elif a.status == 'PENDING_REVIEW' %}
+                    <span class="status-badge status-review">In Review</span>
+                  {% else %}
+                    <span class="status-badge status-draft">Draft</span>
+                  {% endif %}
+                </td>
+                <td style="color:#94A3B8;">{{ a.updated_at[:10] if a.updated_at else '' }}</td>
+                <td>
+                  <a href="/intern/articles?edit={{ a.id }}" style="color:#38BDF8;font-weight:700;text-decoration:underline;margin-right:12px;">
+                    Edit
+                  </a>
+                  {% if a.status == 'PUBLISHED' %}
+                    <a href="https://dbert.in/blog/{{ a.slug or a.title|lower|replace(' ', '-') }}" target="_blank" rel="noopener" style="color:#34D399;font-weight:700;text-decoration:underline;">
+                      View ↗
+                    </a>
+                  {% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% endif %}
+
+  </div>
+</main>
+
+<script nonce="{{ csp_nonce() }}">
+  function switchEditorTab(tab) {
+    const btnEdit = document.getElementById('tabBtnEdit');
+    const btnPrev = document.getElementById('tabBtnPreview');
+    const paneEdit = document.getElementById('paneEdit');
+    const panePrev = document.getElementById('panePreview');
+    const previewBox = document.getElementById('previewRender');
+    const content = (document.getElementById('articleContent')?.value || '');
+
+    if (tab === 'edit') {
+      if (btnEdit) btnEdit.classList.add('active');
+      if (btnPrev) btnPrev.classList.remove('active');
+      if (paneEdit) paneEdit.classList.add('active');
+      if (panePrev) panePrev.classList.remove('active');
+    } else {
+      if (btnPrev) btnPrev.classList.add('active');
+      if (btnEdit) btnEdit.classList.remove('active');
+      if (panePrev) panePrev.classList.add('active');
+      if (paneEdit) paneEdit.classList.remove('active');
+
+      // Simple markdown parser for preview
+      if (previewBox) previewBox.innerHTML = renderSimpleMarkdown(content);
+    }
+  }
+
+  function renderSimpleMarkdown(md) {
+    if (!md || !md.trim()) {
+      return '<p style="color:#94A3B8;">(Empty article contents. Write markdown in the editor to preview.)</p>';
+    }
+    let html = md
+      .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+      .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+      .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+      .replace(/^\> (.*$)/gim, '<blockquote>$1</blockquote>')
+      .replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>')
+      .replace(/\*(.*?)\*/gim, '<em>$1</em>')
+      .replace(/`([^`]+)`/gim, '<code>$1</code>')
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/gim, '<a href="$2" target="_blank" rel="noopener">$1</a>')
+      .replace(/\n\s*\n/gim, '</p><p>');
+
+    return '<p>' + html + '</p>';
+  }
+
+  async function submitArticle(action) {
+    const feedback = document.getElementById('saveFeedback');
+    const title = (document.getElementById('articleTitle')?.value || '').trim();
+    const content = (document.getElementById('articleContent')?.value || '').trim();
+    const id = (document.getElementById('articleId')?.value || '').trim();
+    const repo = (document.getElementById('articleRepo')?.value || '').trim();
+    const demo = (document.getElementById('articleDemo')?.value || '').trim();
+    const cert = (document.getElementById('articleCert')?.value || '').trim();
+
+    if (!title) {
+      alert('Please enter an article title.');
+      return;
+    }
+
+    if (action === 'submit' || action === 'submit_review') {
+      const wordCount = content.split(/\s+/).filter(Boolean).length;
+      if (wordCount < 150) {
+        if (feedback) {
+          feedback.style.display = 'block';
+          feedback.style.background = 'rgba(239, 68, 68, 0.15)';
+          feedback.style.border = '1px solid rgba(239, 68, 68, 0.4)';
+          feedback.style.color = '#F87171';
+          feedback.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Draft is too short (' + wordCount + ' words). Please expand your case study with architectural decisions and code snippets before submitting for review.';
+        }
+        return;
+      }
+    }
+
+    if (feedback) {
+      feedback.style.display = 'block';
+      feedback.style.background = 'rgba(99, 102, 241, 0.15)';
+      feedback.style.border = '1px solid rgba(99, 102, 241, 0.4)';
+      feedback.style.color = '#A5B4FC';
+      feedback.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving case study...';
+    }
+
+    var csrfTok = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}';
+
+    try {
+      const res = await fetch('/intern/articles/save', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'X-CSRF-Token': csrfTok
+        },
+        body: JSON.stringify({
+          id: id || null,
+          title: title,
+          content_markdown: content,
+          github_repo_url: repo,
+          live_demo_url: demo,
+          cert_id: cert,
+          action: (action === 'submit' || action === 'submit_review') ? 'submit' : 'draft'
+        })
+      });
+
+      const data = await res.json();
+      if (res.ok && data.status === 'success') {
+        if (feedback) {
+          feedback.style.background = 'rgba(16, 185, 129, 0.15)';
+          feedback.style.border = '1px solid rgba(16, 185, 129, 0.4)';
+          feedback.style.color = '#34D399';
+          feedback.innerHTML = '<i class="fa-solid fa-check"></i> ' + (data.message || 'Saved successfully!');
+        }
+        setTimeout(() => {
+          window.location.href = '/intern/articles';
+        }, 1200);
+      } else {
+        if (feedback) {
+          feedback.style.background = 'rgba(239, 68, 68, 0.15)';
+          feedback.style.border = '1px solid rgba(239, 68, 68, 0.4)';
+          feedback.style.color = '#F87171';
+          feedback.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> ' + (data.message || 'Failed to save.');
+        }
+      }
+    } catch (err) {
+      if (feedback) {
+        feedback.style.background = 'rgba(239, 68, 68, 0.15)';
+        feedback.style.border = '1px solid rgba(239, 68, 68, 0.4)';
+        feedback.style.color = '#F87171';
+        feedback.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Network error connecting to platform.';
+      }
+    }
+  }
+
+  function updateReadinessChecklist() {
+    const title = (document.getElementById('articleTitle')?.value || '').trim();
+    const repo = (document.getElementById('articleRepo')?.value || '').trim();
+    const demo = (document.getElementById('articleDemo')?.value || '').trim();
+    const content = (document.getElementById('articleContent')?.value || '').trim();
+    const wordCount = content ? content.split(/\s+/).filter(Boolean).length : 0;
+
+    const elTitle = document.getElementById('checkTitle');
+    const elRepo = document.getElementById('checkRepo');
+    const elLength = document.getElementById('checkLength');
+    const elDemo = document.getElementById('checkDemo');
+    const elScore = document.getElementById('readinessScore');
+
+    let passed = 0;
+
+    if (title.length >= 10) {
+      passed++;
+      if (elTitle) elTitle.innerHTML = '<i class="fa-solid fa-circle-check" style="color:#10B981;"></i> Title &amp; Stack Defined';
+    } else {
+      if (elTitle) elTitle.innerHTML = '<i class="fa-regular fa-circle" style="color:#64748B;"></i> Title (10+ chars)';
+    }
+
+    if (repo && (repo.includes('github.com') || repo.includes('gitlab.com'))) {
+      passed++;
+      if (elRepo) elRepo.innerHTML = '<i class="fa-solid fa-circle-check" style="color:#10B981;"></i> GitHub Repo Linked';
+    } else {
+      if (elRepo) elRepo.innerHTML = '<i class="fa-regular fa-circle" style="color:#64748B;"></i> GitHub Repo URL';
+    }
+
+    if (wordCount >= 200) {
+      passed++;
+      if (elLength) elLength.innerHTML = '<i class="fa-solid fa-circle-check" style="color:#10B981;"></i> Length (' + wordCount + ' words)';
+    } else {
+      if (elLength) elLength.innerHTML = '<i class="fa-regular fa-circle" style="color:#64748B;"></i> Min 200+ Words (' + wordCount + '/200)';
+    }
+
+    if (demo && demo.startsWith('http')) {
+      passed++;
+      if (elDemo) elDemo.innerHTML = '<i class="fa-solid fa-circle-check" style="color:#10B981;"></i> Live Deployment Linked';
+    } else {
+      if (elDemo) elDemo.innerHTML = '<i class="fa-regular fa-circle" style="color:#64748B;"></i> Live Demo Link (Optional)';
+    }
+
+    if (elScore) {
+      if (passed >= 2) {
+        elScore.textContent = 'Ready to Submit (' + passed + '/4)';
+        elScore.style.color = '#34D399';
+        elScore.style.background = 'rgba(16,185,129,0.15)';
+      } else {
+        elScore.textContent = 'Draft in Progress (' + passed + '/4)';
+        elScore.style.color = '#FBBF24';
+        elScore.style.background = 'rgba(245,158,11,0.15)';
+      }
+    }
+  }
+
+  async function regenerateCaseStudy() {
+    if (!confirm('Regenerate this Capstone Case Study with Gemini AI from your milestone submission?')) return;
+    const feedback = document.getElementById('saveFeedback');
+    if (feedback) {
+      feedback.style.display = 'block';
+      feedback.style.background = 'rgba(99,102,241,0.15)';
+      feedback.style.border = '1px solid rgba(99,102,241,0.35)';
+      feedback.style.color = '#A5B4FC';
+      feedback.innerHTML = '<i class="fa-solid fa-sparkles fa-spin"></i> Generating 800+ word Case Study with Google Gemini 2.0...';
+    }
+    var csrfTok = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}';
+    try {
+      const res = await fetch('/intern/articles/scaffold', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'X-CSRF-Token': csrfTok
+        },
+        credentials: 'include',
+        body: JSON.stringify({ force: true })
+      });
+      const data = await res.json();
+      if (data.status === 'key_required') {
+        alert('Please configure your free Gemini API key on your Stipend Milestone dashboard before generating drafts.');
+        window.location.href = '/stipend/tasks';
+        return;
+      }
+      if (res.ok && data.status === 'success') {
+        if (feedback) {
+          feedback.style.background = 'rgba(16,185,129,0.15)';
+          feedback.style.border = '1px solid rgba(16,185,129,0.35)';
+          feedback.style.color = '#34D399';
+          feedback.innerHTML = '<i class="fa-solid fa-check"></i> ' + (data.message || 'Draft regenerated! Reloading...');
+        }
+        setTimeout(() => { window.location.href = data.redirect_url || window.location.href; }, 1000);
+      } else {
+        if (feedback) {
+          feedback.style.background = 'rgba(239,68,68,0.15)';
+          feedback.style.border = '1px solid rgba(239,68,68,0.35)';
+          feedback.style.color = '#F87171';
+          feedback.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> ' + (data.message || 'Error generating draft.');
+        }
+      }
+    } catch (err) {
+      if (feedback) {
+        feedback.style.background = 'rgba(239,68,68,0.15)';
+        feedback.style.border = '1px solid rgba(239,68,68,0.35)';
+        feedback.style.color = '#F87171';
+        feedback.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Network error connecting to platform.';
+      }
+    }
+  }
+
+  // Bind to window for csp-actions.js delegation
+  window.switchEditorTab = switchEditorTab;
+  window.submitArticle = submitArticle;
+  window.regenerateCaseStudy = regenerateCaseStudy;
+  window.updateReadinessChecklist = updateReadinessChecklist;
+
+  // Direct DOM listeners fallback
+  document.addEventListener('DOMContentLoaded', function() {
+    ['articleTitle', 'articleRepo', 'articleDemo', 'articleContent'].forEach(function(id) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener('input', updateReadinessChecklist);
+        el.addEventListener('keyup', updateReadinessChecklist);
+      }
+    });
+    updateReadinessChecklist();
+
+    const btnEdit = document.getElementById('tabBtnEdit');
+    if (btnEdit) btnEdit.addEventListener('click', () => switchEditorTab('edit'));
+
+    const btnPrev = document.getElementById('tabBtnPreview');
+    if (btnPrev) btnPrev.addEventListener('click', () => switchEditorTab('preview'));
+
+    const btnDraft = document.getElementById('btnSaveDraft');
+    if (btnDraft) btnDraft.addEventListener('click', () => submitArticle('draft'));
+
+    const btnSubmit = document.getElementById('btnSubmitReview');
+    if (btnSubmit) btnSubmit.addEventListener('click', () => submitArticle('submit'));
+
+    document.querySelectorAll('.btn-regenerate-ai').forEach(function(btn) {
+      btn.addEventListener('click', () => regenerateCaseStudy());
+    });
+  });
+</script>
+
+</body>
+</html>

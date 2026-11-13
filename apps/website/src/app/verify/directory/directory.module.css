@@ -1,5 +1,5 @@
 /* ==========================================================================
-   DBERT Alphabetical Credential Directory — CSS Module
+   DBERT Pre-Vetted Engineers Directory — CSS Module
    ========================================================================== */
 
 .container {
@@ -8,9 +8,14 @@
   padding: 32px 16px 64px;
 }
 
-/* Header & Trust Bar */
-.headerShell {
-  margin-bottom: 28px;
+/* Breadcrumb Bar */
+.breadcrumbWrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
 }
 
 .breadcrumb {
@@ -20,7 +25,6 @@
   font-size: 0.82rem;
   color: #8A9AB5;
   text-decoration: none;
-  margin-bottom: 16px;
   transition: color 0.15s ease;
 }
 
@@ -28,76 +32,218 @@
   color: #E2B96F;
 }
 
-.titleBlock {
-  background: #141A23;
-  border: 1px solid #1E2633;
-  border-radius: 12px;
-  padding: 24px 28px;
-  margin-bottom: 24px;
+.vettingLink {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #38BDF8;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.vettingLink:hover {
+  color: #7DD3FC;
+  text-decoration: underline;
+}
+
+/* Executive Employer Hero Banner */
+.employerHero {
+  background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+  border: 1px solid #334155;
+  border-radius: 14px;
+  padding: 32px 36px;
+  margin-bottom: 28px;
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.titleMain {
-  font-size: 1.6rem;
-  font-weight: 800;
-  color: #F0F4F8;
-  letter-spacing: -0.02em;
-  margin: 0 0 6px 0;
-  display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 32px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  position: relative;
+  overflow: hidden;
 }
 
-.titleSubtitle {
-  font-size: 0.88rem;
-  color: #8A9AB5;
-  margin: 0;
+.employerHero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -20%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(0, 242, 254, 0.08) 0%, transparent 70%);
+  pointer-events: none;
 }
 
-.statsBar {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
+.heroMain {
+  max-width: 680px;
 }
 
-.statBadge {
+.heroBadge {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 14px;
-  border-radius: 999px;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-}
-
-.statVerified {
+  gap: 8px;
   background: rgba(16, 185, 129, 0.12);
   border: 1px solid rgba(16, 185, 129, 0.35);
   color: #34D399;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
 }
 
-.statProvisional {
-  background: rgba(245, 158, 11, 0.12);
-  border: 1px solid rgba(245, 158, 11, 0.35);
-  color: #FBBF24;
+.pulseDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10B981;
+  box-shadow: 0 0 8px #10B981;
 }
 
-.statTotal {
-  background: rgba(56, 189, 248, 0.12);
-  border: 1px solid rgba(56, 189, 248, 0.35);
-  color: #38BDF8;
+.heroTitle {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: #F8FAFC;
+  letter-spacing: -0.02em;
+  margin: 0 0 10px 0;
+  line-height: 1.25;
 }
 
-/* Controls: Search and Filters */
+.heroSubtitle {
+  font-size: 0.95rem;
+  color: #94A3B8;
+  margin: 0 0 22px 0;
+  line-height: 1.55;
+}
+
+.metricsRow {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.metricItem {
+  display: flex;
+  flex-direction: column;
+}
+
+.metricItem strong {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #F1F5F9;
+  letter-spacing: -0.02em;
+}
+
+.metricItem span {
+  font-size: 0.75rem;
+  color: #64748B;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.metricDivider {
+  width: 1px;
+  height: 26px;
+  background: #334155;
+}
+
+.heroActions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.btnPrimaryCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #00F2FE 0%, #4FACFE 100%);
+  color: #050811;
+  font-size: 0.96rem;
+  font-weight: 700;
+  padding: 14px 26px;
+  border-radius: 8px;
+  text-decoration: none;
+  box-shadow: 0 4px 18px rgba(0, 242, 254, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  white-space: nowrap;
+}
+
+.btnPrimaryCta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(0, 242, 254, 0.5);
+}
+
+.ctaNote {
+  font-size: 0.74rem;
+  color: #64748B;
+}
+
+/* Status Tabs */
+.tabShell {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #1E293B;
+  padding-bottom: 12px;
+  overflow-x: auto;
+}
+
+.tabBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  background: #0B1120;
+  border: 1px solid #1E293B;
+  color: #94A3B8;
+  padding: 11px 20px;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.tabBtn:hover {
+  border-color: #334155;
+  color: #F1F5F9;
+  background: #111827;
+}
+
+.tabActive {
+  background: rgba(56, 189, 248, 0.1) !important;
+  border-color: #38BDF8 !important;
+  color: #38BDF8 !important;
+  font-weight: 700;
+}
+
+.tabIcon {
+  font-size: 0.95rem;
+}
+
+.tabBadge {
+  background: #1E293B;
+  color: #94A3B8;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.tabBadgeActive {
+  background: #38BDF8;
+  color: #050811;
+}
+
+/* Controls Block */
 .controlsBlock {
-  background: #141A23;
-  border: 1px solid #1E2633;
+  background: #0F172A;
+  border: 1px solid #1E293B;
   border-radius: 10px;
   padding: 16px 20px;
   margin-bottom: 20px;
@@ -126,8 +272,8 @@
 }
 
 .searchInput:focus {
-  border-color: #E2B96F;
-  box-shadow: 0 0 0 3px rgba(226, 185, 111, 0.15);
+  border-color: #38BDF8;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
 }
 
 .searchIcon {
@@ -153,82 +299,10 @@
 }
 
 .selectDropdown:focus {
-  border-color: #E2B96F;
+  border-color: #38BDF8;
 }
 
-/* Alphabet Bar */
-.alphabetShell {
-  margin-bottom: 24px;
-}
-
-.alphabetLabel {
-  font-size: 0.75rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: #8A9AB5;
-  margin-bottom: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.alphabetScroll {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  overflow-x: auto;
-  padding-bottom: 8px;
-  scrollbar-width: thin;
-}
-
-.letterBtn {
-  min-width: 44px;
-  height: 40px;
-  padding: 0 8px;
-  border-radius: 6px;
-  border: 1px solid #232A36;
-  background: #141A23;
-  color: #CBD5E1;
-  font-size: 0.85rem;
-  font-weight: 700;
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.15s ease;
-  flex-shrink: 0;
-}
-
-.letterBtn:hover:not(:disabled) {
-  border-color: #E2B96F;
-  color: #F0F4F8;
-  background: #1C2330;
-}
-
-.letterBtnActive {
-  background: #E2B96F !important;
-  border-color: #E2B96F !important;
-  color: #0B0F17 !important;
-  box-shadow: 0 2px 8px rgba(226, 185, 111, 0.3);
-}
-
-.letterBtnDisabled {
-  opacity: 0.35;
-  cursor: not-allowed;
-  border-color: transparent;
-  background: rgba(20, 26, 35, 0.5);
-}
-
-.letterCount {
-  font-size: 0.65rem;
-  opacity: 0.8;
-  font-weight: 500;
-  margin-top: -2px;
-}
-
-/* Results Grid */
+/* Results Header */
 .resultsHeader {
   display: flex;
   align-items: center;
@@ -238,19 +312,39 @@
   color: #8A9AB5;
 }
 
+.rankTag {
+  color: #38BDF8;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.resetLink {
+  background: none;
+  border: none;
+  color: #38BDF8;
+  cursor: pointer;
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+.resetLink:hover {
+  text-decoration: underline;
+}
+
+/* Candidates Grid */
 .candidatesGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 18px;
   margin-bottom: 32px;
 }
 
 /* Candidate Card */
 .candidateCard {
-  background: #141A23;
-  border: 1px solid #1E2633;
+  background: #0F172A;
+  border: 1px solid #1E293B;
   border-radius: 10px;
-  padding: 20px;
+  padding: 22px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -261,8 +355,8 @@
 
 .candidateCard:hover {
   transform: translateY(-2px);
-  border-color: rgba(226, 185, 111, 0.5);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+  border-color: rgba(56, 189, 248, 0.4);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 
 .cardTop {
@@ -270,14 +364,14 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 
 .candidateName {
-  font-size: 1.05rem;
+  font-size: 1.1rem;
   font-weight: 700;
-  color: #F0F4F8;
-  margin: 0;
+  color: #F8FAFC;
+  margin: 0 0 4px 0;
   line-height: 1.35;
 }
 
@@ -288,7 +382,20 @@
 }
 
 .candidateName a:hover {
-  color: #E2B96F;
+  color: #38BDF8;
+}
+
+.certIdLine {
+  font-family: Menlo, Monaco, Consolas, monospace;
+  font-size: 0.74rem;
+  color: #64748B;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.certIdLine strong {
+  color: #38BDF8;
 }
 
 .cardStatusPill {
@@ -297,7 +404,7 @@
   gap: 5px;
   font-size: 0.72rem;
   font-weight: 700;
-  padding: 3px 10px;
+  padding: 4px 10px;
   border-radius: 999px;
   white-space: nowrap;
   flex-shrink: 0;
@@ -319,21 +426,44 @@
   margin-bottom: 18px;
 }
 
-.certIdLine {
-  font-family: Menlo, Monaco, Consolas, monospace;
-  font-size: 0.78rem;
-  color: #38BDF8;
-  margin-bottom: 8px;
-  display: flex;
+.scoreChip {
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
+  background: #1E293B;
+  border: 1px solid #334155;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  margin-bottom: 12px;
+}
+
+.scoreNum {
+  font-weight: 800;
+  color: #F8FAFC;
+}
+
+.scoreGrade {
+  color: #94A3B8;
+  font-weight: 600;
+}
+
+.distinctionTag {
+  background: rgba(226, 185, 111, 0.2);
+  color: #E2B96F;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .infoRow {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   color: #94A3B8;
   margin-bottom: 4px;
 }
@@ -348,41 +478,84 @@
   font-weight: 500;
 }
 
-.cardFooter {
-  border-top: 1px solid #1E2633;
-  padding-top: 14px;
+/* Skills Chips */
+.skillsWrap {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
 }
 
-.btnVerifyLink {
+.skillChip {
+  background: #111827;
+  border: 1px solid #1E293B;
+  color: #94A3B8;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+/* Card Dual CTAs */
+.cardFooter {
+  border-top: 1px solid #1E293B;
+  padding-top: 14px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.btnDossierLink {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
   background: #0B0F17;
-  border: 1px solid #232A36;
+  border: 1px solid #334155;
   color: #E2B96F;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 700;
-  padding: 8px 16px;
+  padding: 8px 12px;
   border-radius: 6px;
   text-decoration: none;
   transition: all 0.2s ease;
-  width: 100%;
-  justify-content: center;
+  text-align: center;
+  white-space: nowrap;
 }
 
-.btnVerifyLink:hover {
+.btnDossierLink:hover {
   background: #E2B96F;
   color: #0B0F17;
   border-color: #E2B96F;
 }
 
+.btnConnectLms {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  color: #38BDF8;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 8px 12px;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.btnConnectLms:hover {
+  background: #38BDF8;
+  color: #050811;
+  border-color: #38BDF8;
+}
+
 /* Empty State */
 .emptyState {
-  background: #141A23;
-  border: 1px dashed #232A36;
+  background: #0F172A;
+  border: 1px dashed #334155;
   border-radius: 12px;
   padding: 48px 24px;
   text-align: center;
@@ -398,8 +571,8 @@
 
 .resetBtn {
   margin-top: 16px;
-  background: #E2B96F;
-  color: #0B0F17;
+  background: #38BDF8;
+  color: #050811;
   border: none;
   font-weight: 700;
   font-size: 0.82rem;
@@ -408,15 +581,351 @@
   cursor: pointer;
 }
 
+@media (max-width: 900px) {
+  .employerHero {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 24px 20px;
+    gap: 24px;
+  }
+  .heroActions {
+    width: 100%;
+  }
+  .btnPrimaryCta {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
 @media (max-width: 640px) {
   .candidatesGrid {
     grid-template-columns: 1fr;
-  }
-  .titleBlock {
-    padding: 18px 20px;
   }
   .controlsBlock {
     flex-direction: column;
     align-items: stretch;
   }
+  .cardFooter {
+    grid-template-columns: 1fr;
+  }
+  .heroTitle {
+    font-size: 1.45rem;
+  }
+  .metricsRow {
+    gap: 12px;
+  }
+  .metricDivider {
+    display: none;
+  }
+  .metricItem {
+    flex: 1 1 40%;
+  }
+  .tabShell {
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .tabShell::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 20px 12px 48px;
+  }
+  .employerHero {
+    padding: 20px 16px;
+  }
+}
+
+/* ==========================================================================
+   Multi-Domain Navigation & Technical Skills Filtering Additions
+   ========================================================================== */
+
+.domainNavSection {
+  margin-bottom: 24px;
+}
+
+.domainNavLabel {
+  font-size: 0.76rem;
+  font-weight: 800;
+  color: #94A3B8;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.domainNavScroll {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  scrollbar-width: thin;
+  scrollbar-color: #334155 transparent;
+  -webkit-overflow-scrolling: touch;
+}
+
+.domainNavScroll::-webkit-scrollbar {
+  height: 4px;
+}
+
+.domainNavScroll::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 4px;
+}
+
+.domainPillLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: #0F172A;
+  border: 1px solid #334155;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #CBD5E1;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: all 0.18s ease;
+  cursor: pointer;
+}
+
+.domainPillLink:hover {
+  background: #1E293B;
+  border-color: #64748B;
+  color: #FFFFFF;
+}
+
+.domainPillLinkActive {
+  background: linear-gradient(135deg, rgba(200, 153, 69, 0.25) 0%, rgba(200, 153, 69, 0.12) 100%);
+  border-color: #C89945 !important;
+  color: #FBBF24 !important;
+  font-weight: 700;
+  box-shadow: 0 0 12px rgba(200, 153, 69, 0.2);
+}
+
+.pillCount {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.08);
+  color: #94A3B8;
+  font-size: 0.72rem;
+  padding: 1px 6px;
+  border-radius: 10px;
+  font-weight: 700;
+}
+
+.domainPillLinkActive .pillCount {
+  background: rgba(200, 153, 69, 0.35);
+  color: #FEF08A;
+}
+
+/* Skills Filter Section */
+.skillsSection {
+  background: #0B1120;
+  border: 1px solid #1E293B;
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 22px;
+}
+
+.skillsHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.skillsTitle {
+  font-size: 0.78rem;
+  font-weight: 800;
+  color: #38BDF8;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.skillsClearBtn {
+  background: none;
+  border: none;
+  color: #94A3B8;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+  transition: color 0.15s ease;
+}
+
+.skillsClearBtn:hover {
+  color: #F87171;
+}
+
+.skillsGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.skillFilterChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: #0F172A;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  color: #94A3B8;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.skillFilterChip:hover {
+  border-color: #64748B;
+  color: #E2E8F0;
+  background: #1E293B;
+}
+
+.skillFilterChipActive {
+  background: rgba(56, 189, 248, 0.16) !important;
+  border-color: #38BDF8 !important;
+  color: #38BDF8 !important;
+  font-weight: 700;
+}
+
+.skillChipCheck {
+  display: inline-block;
+  font-size: 0.75rem;
+  line-height: 1;
+}
+
+/* Related Domains Cross Links Section (Bottom SEO equity) */
+.relatedDomainsBlock {
+  margin-top: 56px;
+  padding-top: 36px;
+  border-top: 1px solid #1E293B;
+}
+
+.relatedDomainsTitle {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #F8FAFC;
+  margin-bottom: 8px;
+}
+
+.relatedDomainsDesc {
+  font-size: 0.85rem;
+  color: #94A3B8;
+  margin-bottom: 20px;
+}
+
+.relatedDomainsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+}
+
+.relatedDomainCard {
+  background: #0F172A;
+  border: 1px solid #334155;
+  border-radius: 10px;
+  padding: 16px;
+  text-decoration: none;
+  display: block;
+  transition: all 0.18s ease;
+}
+
+.relatedDomainCard:hover {
+  border-color: #C89945;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+.relatedDomainName {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 4px;
+}
+
+.relatedDomainMeta {
+  font-size: 0.78rem;
+  color: #94A3B8;
+}
+
+/* ==========================================================================
+   LinkedIn Verified Directory Styles
+   ========================================================================== */
+
+.linkedinPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 6px;
+  background: rgba(10, 102, 194, 0.12);
+  border: 1px solid rgba(10, 102, 194, 0.35);
+  color: #38BDF8;
+  text-decoration: none;
+  transition: all 0.15s ease;
+  margin-left: 6px;
+}
+
+.linkedinPill:hover {
+  background: rgba(10, 102, 194, 0.25);
+  border-color: #38BDF8;
+  color: #FFFFFF;
+}
+
+.linkedinCheck {
+  color: #10B981;
+  font-weight: 800;
+  font-size: 0.72rem;
+}
+
+.externalArrow {
+  font-size: 0.7rem;
+  opacity: 0.8;
+}
+
+.linkedinFilterBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #0F172A;
+  border: 1px solid #334155;
+  color: #94A3B8;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.linkedinFilterBtn:hover {
+  border-color: #0A66C2;
+  color: #F8FAFC;
+}
+
+.linkedinFilterActive {
+  background: rgba(10, 102, 194, 0.25);
+  border-color: #0A66C2;
+  color: #38BDF8;
 }

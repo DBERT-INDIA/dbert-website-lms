@@ -6,9 +6,10 @@
 <meta name="robots" content="noindex, nofollow">
 </head>
 <body class="pg-admin-post-hire-deposits has-staff-sidebar">
-{% set active_page = 'admin_main' %}
+{% set active_page = 'admin_post_hire_deposits' %}
 {% include '_staff_sidebar.html' %}
 
+  <main class="main content-wrap">
   <div class="wrap">
     <div class="top-row">
       <div>
@@ -61,6 +62,7 @@
       </table>
     </div>
   </div>
+  </main>
   <script nonce="{{ csp_nonce() }}">
     async function review(id, decision){
       if(decision==='reject' && !confirm('Reject this deposit payment?'))return;

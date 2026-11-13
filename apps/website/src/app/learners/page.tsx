@@ -1,8 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import CareerLadder from '@/components/ui/CareerLadder';
-import StudioConsole, { type FeedLine } from '@/components/ui/StudioConsole';
-import FactTicker from '@/components/ui/FactTicker';
+import StudioInPractice from '@/components/ui/StudioInPractice';
 import AudienceDoors, { type Door } from '@/components/ui/AudienceDoors';
 import HandNote from '@/components/ui/HandNote';
 import HandDrawnArrow from '@/components/ui/HandDrawnArrow';
@@ -140,49 +139,6 @@ export default function LearnersLandingPage() {
     },
   ];
 
-  const learnerTelemetryFeed: FeedLine[] = [
-    {
-      time: '09:12:04',
-      tag: 'review',
-      message: 'PR #142 (Vector hybrid search) approved by lead architect',
-      detail: '· merged to staging',
-    },
-    {
-      time: '09:15:30',
-      tag: 'stipend',
-      message: 'milestone sprint 3 stipend disbursed to cohort squad',
-      detail: '· ₹12,500 to 18 fellows',
-    },
-    {
-      time: '09:18:45',
-      tag: 'verify',
-      message: 'credential #DB-2026-881 verified via direct API lookup',
-      detail: '· recruiter query /verify',
-    },
-    {
-      time: '09:21:10',
-      tag: 'commit',
-      message: 'aivara squad pushed 8 commits to core analytics engine',
-      detail: '· 42 CI tests passing',
-    },
-    {
-      time: '09:24:02',
-      tag: 'cohort',
-      message: 'autumn fellowship cohort sprint retrospective completed',
-      detail: '· 4 ventures in active sprint',
-    },
-  ];
-
-  const learnerFacts = [
-    'fellows write real production code, not todo apps',
-    'monthly performance stipends ₹5,000 to ₹18,000',
-    'independently verifiable cryptographic credential IDs',
-    'direct talent referrals into our incubated portfolio companies',
-    'skipping available: bypass Launchpad via screening code challenge',
-    'Delhi NCR in-person studio sprints & audited remote squads',
-    'senior architect reviews on every single GitHub pull request',
-  ];
-
   const learnerDoors: Door[] = [
     {
       kind: 'learner',
@@ -222,13 +178,10 @@ export default function LearnersLandingPage() {
         <div className="wrap subpage-hero-grid">
           <div>
             <div className="doclabel">
-              § 01 — LEARNER PATHWAYS <span className="rev">rev: 2026.2</span>
+              01 / Learning · A path into engineering
             </div>
             <h1 className="relative inline-block">
               AI career programs built as a progressive engineering ladder
-              <HandNote className="absolute -right-8 -top-6 text-lg hidden md:block" tone="blue">
-                Structured Path
-              </HandNote>
             </h1>
             <p className="intro-copy">
               Four structured rungs, executed sequentially: your very first validated Python script, a production applied RAG training pipeline, an embedded paid engineering fellowship on live venture repositories, and a curated jobs board restricted strictly to verified contributors.
@@ -243,32 +196,15 @@ export default function LearnersLandingPage() {
             </div>
           </div>
 
-          <div>
-            <StudioConsole
-              title="dbert-fellowship · live commit & review stream"
-              lines={learnerTelemetryFeed}
-              footLeft="github org: dbert-fellowship"
-              footRight="● 120+ fellows active"
-              note={
-                <HandNote tone="amber">
-                  fellows write real production code, not todo apps ✎
-                </HandNote>
-              }
-            />
-          </div>
+          <StudioInPractice focus="learners" />
         </div>
       </section>
-
-      {/* ══════════ SECTION 2: FULL-BLEED AMBIENT FACT TICKER ══════════ */}
-      <div className="section-ticker-ribbon">
-        <FactTicker facts={learnerFacts} />
-      </div>
 
       {/* ══════════ SECTION 3: ENTRY GATEWAY DOORS ══════════ */}
       <section className="subpage-section">
         <div className="wrap">
           <div className="section-head-sub">
-            <div className="doclabel">§ 02 — CHOOSE YOUR ENTRY GATEWAY</div>
+            <div className="doclabel">02 / Choose a starting point</div>
             <h2>Self-Select Your Engineering Velocity</h2>
             <p>Three structured paths tailored to your programming baseline, from syntax fundamentals to live repository contributions.</p>
           </div>
@@ -280,7 +216,7 @@ export default function LearnersLandingPage() {
       <section className="subpage-section band" id="ladder">
         <div className="wrap">
           <div className="section-head-sub">
-            <div className="doclabel">§ 03 — THE 4-STAGE CAREER LADDER</div>
+            <div className="doclabel">03 / A four-stage progression</div>
             <h2>Progressive Engineering Hierarchy</h2>
             <p>A sequential sequence where each milestone provides the verifiable technical baseline for the next.</p>
           </div>
@@ -300,7 +236,7 @@ export default function LearnersLandingPage() {
       <section className="subpage-section">
         <div className="wrap">
           <div className="article">
-            <div className="doclabel mb-2">§ 04 — PEDAGOGICAL ARCHITECTURE</div>
+            <div className="doclabel mb-2">04 / Learning through real work</div>
             <h2>Why an AI career ladder outperforms detached course catalogues</h2>
             <p>
               Legacy edtech platforms across India treat technology education as an disconnected supermarket of video courses. You buy a course on data analytics, another on basic neural networks, and a bootcamp on React web development—each operating in total isolation. When you present this collection of completion certificates to engineering recruiters in 2026, the market response is consistent indifference.
@@ -353,7 +289,7 @@ export default function LearnersLandingPage() {
       <section className="subpage-section band-alt">
         <div className="wrap">
           <div className="section-head-sub">
-            <div className="doclabel">§ 05 — SPECIALIZATION TRACKS &amp; CURRICULA</div>
+            <div className="doclabel">05 / Courses by specialization</div>
             <h2>Domain Engineering Specializations</h2>
             <p>Focus your engineering trajectory across six high-demand applied AI domains.</p>
           </div>

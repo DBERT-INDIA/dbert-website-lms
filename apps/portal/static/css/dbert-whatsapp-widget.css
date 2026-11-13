@@ -1,0 +1,347 @@
+/* Universal DBERT WhatsApp Floating Widget */
+.dbert-wa-wrapper {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 999999;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.4;
+}
+
+/* Floating Bubble */
+.dbert-wa-bubble {
+  position: relative;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #25D366, #128C7E);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.45);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+  outline: none;
+  padding: 0;
+}
+
+.dbert-wa-bubble:hover {
+  transform: scale(1.08);
+  box-shadow: 0 8px 26px rgba(37, 211, 102, 0.6);
+}
+
+.dbert-wa-bubble.active {
+  transform: scale(0.95);
+}
+
+.dbert-wa-icon {
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.dbert-wa-bubble:hover .dbert-wa-icon {
+  transform: rotate(-8deg) scale(1.05);
+}
+
+/* Pulse Ring Animation */
+.dbert-wa-pulse {
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border-radius: 50%;
+  border: 2px solid #25D366;
+  opacity: 0;
+  animation: dbertWaPulse 2.4s infinite cubic-bezier(0.24, 0, 0.38, 1);
+  pointer-events: none;
+}
+
+@keyframes dbertWaPulse {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.8;
+  }
+  70% {
+    transform: scale(1.45);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+/* Tooltip on Hover */
+.dbert-wa-tooltip {
+  position: absolute;
+  right: 68px;
+  top: 50%;
+  transform: translateY(-50%) translateX(6px);
+  background: rgba(15, 23, 42, 0.95);
+  color: #ffffff;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  pointer-events: none;
+}
+
+.dbert-wa-bubble:hover .dbert-wa-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-50%) translateX(0);
+}
+
+/* Popover Card */
+.dbert-wa-card {
+  position: absolute;
+  bottom: 72px;
+  right: 0;
+  width: 350px;
+  max-width: calc(100vw - 32px);
+  background: #0B1120;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 18px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7), 0 0 1px rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+  display: none;
+  transform-origin: bottom right;
+  animation: dbertWaFadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.dbert-wa-card.open {
+  display: block;
+}
+
+@keyframes dbertWaFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.dbert-wa-header {
+  background: linear-gradient(135deg, #064E3B 0%, #065F46 100%);
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dbert-wa-header-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dbert-wa-avatar {
+  position: relative;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #25D366;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.dbert-wa-online {
+  position: absolute;
+  bottom: -1px;
+  right: -1px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #10B981;
+  border: 2px solid #064E3B;
+}
+
+.dbert-wa-title {
+  margin: 0;
+  color: #ffffff;
+  font-size: 13.5px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.dbert-wa-sub {
+  margin: 2px 0 0;
+  color: #A7F3D0;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.dbert-wa-close {
+  background: transparent;
+  border: none;
+  color: #D1FAE5;
+  font-size: 22px;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+  opacity: 0.8;
+  transition: opacity 0.15s, transform 0.15s;
+}
+
+.dbert-wa-close:hover {
+  opacity: 1;
+  transform: scale(1.15);
+}
+
+.dbert-wa-body {
+  padding: 16px;
+}
+
+.dbert-wa-sec-label {
+  color: #94A3B8;
+  font-size: 11.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+
+.dbert-wa-chips {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.dbert-wa-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  color: #CBD5E1;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s ease;
+  width: 100%;
+}
+
+.dbert-wa-chip:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+}
+
+.dbert-wa-chip.active {
+  background: rgba(37, 211, 102, 0.12) !important;
+  border-color: #25D366 !important;
+  color: #4ADE80 !important;
+  font-weight: 600;
+}
+
+.dbert-wa-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  color: #F8FAFC;
+  padding: 10px 12px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  resize: vertical;
+  outline: none;
+  font-family: inherit;
+  margin-bottom: 12px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.dbert-wa-textarea:focus {
+  border-color: #25D366;
+  box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.2);
+}
+
+.dbert-wa-context {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 11px;
+  color: #94A3B8;
+  margin-bottom: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dbert-wa-context strong {
+  color: #E2E8F0;
+}
+
+.dbert-wa-send {
+  width: 100%;
+  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 11px 16px;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.dbert-wa-send:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+  box-shadow: 0 6px 18px rgba(37, 211, 102, 0.5);
+}
+
+.dbert-wa-send:active {
+  transform: translateY(1px);
+}
+
+.dbert-wa-note {
+  text-align: center;
+  font-size: 10px;
+  color: #64748B;
+  margin-top: 10px;
+  letter-spacing: 0.3px;
+}
+
+@media (max-width: 480px) {
+  .dbert-wa-wrapper {
+    bottom: 20px;
+    right: 20px;
+  }
+  .dbert-wa-bubble {
+    width: 54px;
+    height: 54px;
+  }
+  .dbert-wa-card {
+    bottom: 66px;
+    right: 0;
+    width: calc(100vw - 32px);
+  }
+}

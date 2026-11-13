@@ -46,13 +46,32 @@ class Test5StageLifecycle(unittest.TestCase):
         headers["X-CSRF-Token"] = self.csrf_token
         return self.client.post(url, headers=headers, **kwargs)
 
+    @staticmethod
+    def _cleanup_intern(conn, email):
+        iid_rows = conn.execute("SELECT id FROM intern_accounts WHERE email=?", (email,)).fetchall()
+        iids = [r["id"] for r in iid_rows]
+        for iid in iids:
+            conn.execute("DELETE FROM attendance WHERE intern_id=?", (iid,))
+            conn.execute("DELETE FROM task_submissions WHERE intern_id=?", (iid,))
+            conn.execute("DELETE FROM post_applications WHERE intern_id=?", (iid,))
+            conn.execute("DELETE FROM tutor_progress WHERE intern_id=?", (iid,))
+            conn.execute("DELETE FROM cvs WHERE intern_id=?", (iid,))
+            conn.execute("DELETE FROM mentor_session_bookings WHERE intern_id=?", (iid,))
+            conn.execute("DELETE FROM course_enrollments WHERE intern_id=?", (iid,))
+            conn.execute("DELETE FROM project_submissions WHERE intern_id=?", (iid,))
+        conn.execute("DELETE FROM user_sessions WHERE email=?", (email,))
+        conn.execute("DELETE FROM enrollments WHERE email=?", (email,))
+        conn.execute("DELETE FROM intern_accounts WHERE email=?", (email,))
+        conn.execute("DELETE FROM applications WHERE email=?", (email,))
+
     def test_seeded_domain_courses(self):
         """Verify all 4 domain foundational courses exist in database with chapters and quizzes."""
+        from app import PLATFORM_DOMAIN_COURSES
         with get_db() as conn:
-            courses = conn.execute("SELECT id, title, domain, is_active FROM courses WHERE domain IS NOT NULL").fetchall()
+            courses = conn.execute("SELECT id, title, domain, is_active FROM courses WHERE domain IS NOT NULL AND domain != 'Test'").fetchall()
             domains_found = {c["domain"] for c in courses if c["is_active"]}
-            for domain in VALID_DOMAINS:
-                self.assertIn(domain, domains_found, f"Missing seeded course for domain: {domain}")
+            for dc in PLATFORM_DOMAIN_COURSES:
+                self.assertIn(dc["domain"], domains_found, f"Missing seeded course for domain: {dc['domain']}")
 
             # Check that each course has chapters and quizzes
             for c in courses:
@@ -66,11 +85,7 @@ class Test5StageLifecycle(unittest.TestCase):
         email = self.email_base.format("candidate_full")
         with get_db() as conn:
             # 1. Simulate Sign Up (Account created, no application yet)
-            conn.execute("DELETE FROM course_enrollments WHERE intern_id IN (SELECT id FROM intern_accounts WHERE email=?)", (email,))
-            conn.execute("DELETE FROM user_sessions WHERE email=?", (email,))
-            conn.execute("DELETE FROM enrollments WHERE email=?", (email,))
-            conn.execute("DELETE FROM intern_accounts WHERE email=?", (email,))
-            conn.execute("DELETE FROM applications WHERE email=?", (email,))
+            self._cleanup_intern(conn, email)
             conn.execute("""
                 INSERT INTO intern_accounts (name, email, password_hash, domain, college, course, is_active, created_at)
                 VALUES (?, ?, 'fakehash', 'AI Agent Development', 'IIT Delhi', 'B.Tech CS', 1, datetime('now'))
@@ -201,11 +216,7 @@ class Test5StageLifecycle(unittest.TestCase):
 
         with get_db() as conn:
             for em in (email_py, email_ai):
-                conn.execute("DELETE FROM course_enrollments WHERE intern_id IN (SELECT id FROM intern_accounts WHERE email=?)", (em,))
-                conn.execute("DELETE FROM enrollments WHERE email=?", (em,))
-                conn.execute("DELETE FROM user_sessions WHERE email=?", (em,))
-                conn.execute("DELETE FROM intern_accounts WHERE email=?", (em,))
-                conn.execute("DELETE FROM applications WHERE email=?", (em,))
+                self._cleanup_intern(conn, em)
 
             # Create Python intern
             conn.execute("""

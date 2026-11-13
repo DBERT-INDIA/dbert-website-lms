@@ -41,7 +41,22 @@ class WebAggregatorScraper(BaseScraper):
             # Full Stack Development
             ("Full Stack Development", "site:internshala.com \"Full Stack\" internship 2026"),
             ("Full Stack Development", "site:linkedin.com/jobs \"Full Stack Developer Intern\" India"),
-            ("Full Stack Development", "site:indeed.com \"Web Development Intern\" India")
+            ("Full Stack Development", "site:indeed.com \"Web Development Intern\" India"),
+            # UI/UX Design
+            ("UI/UX Design", "site:internshala.com \"UI/UX\" internship 2026"),
+            ("UI/UX Design", "site:linkedin.com/jobs \"UI UX Design Intern\" India"),
+            # DevOps & Cloud
+            ("DevOps & Cloud", "site:internshala.com \"DevOps\" internship 2026"),
+            ("DevOps & Cloud", "site:linkedin.com/jobs \"Cloud DevOps Intern\" India"),
+            # Mobile App Development
+            ("Mobile App Development", "site:internshala.com \"Mobile App\" internship 2026"),
+            ("Mobile App Development", "site:linkedin.com/jobs \"Flutter React Native Intern\" India"),
+            # Cybersecurity
+            ("Cybersecurity", "site:internshala.com \"Cybersecurity\" internship 2026"),
+            ("Cybersecurity", "site:linkedin.com/jobs \"Cyber Security Intern\" India"),
+            # Digital Marketing
+            ("Digital Marketing", "site:internshala.com \"Digital Marketing\" internship 2026"),
+            ("Digital Marketing", "site:linkedin.com/jobs \"Growth Marketing SEO Intern\" India")
         ]
 
         with DDGS() as ddgs:

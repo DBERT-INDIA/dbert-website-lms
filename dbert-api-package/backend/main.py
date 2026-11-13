@@ -1,7 +1,8 @@
 from contextlib import asynccontextmanager
-from fastapi import FastAPI, Depends, status
+from fastapi import FastAPI, Depends, status, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, HTMLResponse
+from backend.api.docs_landing import get_developer_hub_html, get_api_manifest_json
 from backend.core.config import settings
 from backend.core.middleware import RequestContextMiddleware, logger
 from backend.core.database import engine
@@ -50,15 +51,54 @@ async def lifespan(app: FastAPI):
     logger.info(f"Shutting down {settings.PROJECT_NAME}")
     await engine.dispose()
 
+API_DESCRIPTION = """
+## Welcome to DBERT Sovereign REST API (`api.dbert.in`)
+
+Official high-performance REST API powering DBERT's sovereign digital credentials, internship tracking, course learning management, pedagogical AI tutor dialogs, and 6,600+ curated tech marketplace opportunities.
+
+### 🚀 Developer Quickstart
+- **Base URL**: `https://api.dbert.in/api/v1`
+- **Interactive Documentation**: [`https://api.dbert.in/docs`](https://api.dbert.in/docs) (Swagger UI)
+- **Technical Specification**: [`https://api.dbert.in/redoc`](https://api.dbert.in/redoc) (ReDoc)
+- **OpenAPI Schema**: [`https://api.dbert.in/openapi.json`](https://api.dbert.in/openapi.json)
+- **Service Probes**: [`/health`](https://api.dbert.in/health), [`/ready`](https://api.dbert.in/ready), [`/status`](https://api.dbert.in/status)
+
+### 🔑 Authentication Guide
+Include your signed JWT bearer token in the `Authorization` header for all protected endpoints:
+```http
+Authorization: Bearer <your_jwt_access_token>
+Content-Type: application/json
+```
+To obtain tokens:
+- **Interns / Candidates**: `POST /api/v1/auth/intern/login`
+- **Hiring Companies**: `POST /api/v1/auth/company/login`
+- **Mentors & Faculty**: `POST /api/v1/auth/mentor/login`
+- **Staff Operations**: `POST /api/v1/auth/staff/login`
+"""
+
 app = FastAPI(
-    title=settings.PROJECT_NAME,
-    description="DBERT Internship Portal & Ecosystem High-Performance REST API",
+    title="DBERT Ecosystem REST API",
+    summary="Sovereign REST API for DBERT Credentials, LMS, Marketplace, and AI Learning",
+    description=API_DESCRIPTION,
     version=settings.VERSION,
     openapi_tags=openapi_tags,
     lifespan=lifespan,
     docs_url="/docs",
     redoc_url="/redoc",
-    openapi_url="/openapi.json"
+    openapi_url="/openapi.json",
+    contact={
+        "name": "DBERT Engineering & Developer Platform",
+        "url": "https://dbert.in",
+        "email": "engineering@dbert.in"
+    },
+    license_info={
+        "name": "Proprietary Developer Access",
+        "url": "https://dbert.in/terms"
+    },
+    servers=[
+        {"url": "https://api.dbert.in", "description": "Production Sovereign API Server"},
+        {"url": "http://127.0.0.1:8000", "description": "Local Development Server"}
+    ]
 )
 
 # Middleware: Request Context & Tracing
@@ -96,6 +136,33 @@ app.include_router(public_router, prefix=settings.API_V1_STR)
 
 # Top-level /uploads route for direct image/PDF rendering
 app.add_api_route("/uploads/{filename}", get_uploaded_file, methods=["GET"], tags=["File Storage"])
+
+
+@app.get("/", tags=["Developer Platform"], summary="Developer Portal & API Instructions")
+async def developer_landing(request: Request):
+    """
+    Developer Platform Hub & Instructions for api.dbert.in.
+    Renders an interactive developer portal with complete API instructions,
+    or returns structured JSON if Accept: application/json or ?format=json.
+    """
+    accept = request.headers.get("accept", "")
+    format_arg = request.query_params.get("format", "").lower()
+    if "application/json" in accept or format_arg == "json":
+        return JSONResponse(content=get_api_manifest_json(settings.VERSION, settings.ENVIRONMENT))
+    return HTMLResponse(content=get_developer_hub_html(settings.VERSION, settings.ENVIRONMENT))
+
+
+@app.get("/instructions", tags=["Developer Platform"], summary="Full API Instructions")
+async def developer_instructions():
+    """Renders the comprehensive API Instructions guide for developers building on DBERT."""
+    return HTMLResponse(content=get_developer_hub_html(settings.VERSION, settings.ENVIRONMENT))
+
+
+@app.get("/api", tags=["Developer Platform"], summary="API Version Index")
+@app.get("/api/v1", tags=["Developer Platform"], summary="API v1 Manifest")
+async def api_manifest_index():
+    """Returns the API discovery manifest and core modules directory."""
+    return JSONResponse(content=get_api_manifest_json(settings.VERSION, settings.ENVIRONMENT))
 
 @app.get("/health", tags=["Health & Probes"], summary="Liveness Health Check")
 async def health_check():

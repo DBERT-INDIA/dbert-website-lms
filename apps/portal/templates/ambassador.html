@@ -1,254 +1,809 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-{% set page_title = "College Ambassador" %}
+{% set page_title = "College Ambassador Program — DBERT LMS" %}
 {% set page_robots = "noindex, nofollow" %}
 {% include "_head.html" %}
+
+<style nonce="{{ csp_nonce() }}">
+  /* ==========================================================================
+     DBERT LMS — COLLEGE AMBASSADOR & REFERRAL SYSTEM
+     Self-contained, CSP Nonce Compliant, Strict Sidebar Clearance
+     ========================================================================== */
+  .ambassador-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 1.5rem 0.5rem 4rem;
+  }
+
+  /* 1. Hero Header Banner */
+  .amb-hero {
+    background: linear-gradient(135deg, #0A0D17 0%, #171E36 50%, #0F172A 100%);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 20px;
+    padding: 2.25rem;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5), 0 0 25px rgba(212, 175, 55, 0.1);
+  }
+
+  .amb-hero::after {
+    content: '';
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 220px;
+    height: 220px;
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .amb-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.85rem;
+    border-radius: 9999px;
+    background: rgba(212, 175, 55, 0.15);
+    border: 1px solid rgba(212, 175, 55, 0.35);
+    color: #F5E096;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    margin-bottom: 0.75rem;
+  }
+
+  .amb-title {
+    font-size: 1.85rem;
+    font-weight: 850;
+    color: #FFFFFF;
+    letter-spacing: -0.5px;
+    line-height: 1.25;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .amb-desc {
+    font-size: 0.9375rem;
+    color: #94A3B8;
+    max-width: 650px;
+    line-height: 1.6;
+    margin: 0 0 1.5rem 0;
+  }
+
+  /* Referral Link Box */
+  .ref-link-card {
+    background: rgba(7, 9, 14, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 14px;
+    padding: 0.65rem 0.75rem 0.65rem 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    max-width: 620px;
+    flex-wrap: wrap;
+  }
+
+  .ref-link-text {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 0.875rem;
+    color: #F5E096;
+    word-break: break-all;
+    flex: 1;
+  }
+
+  .btn-copy-ref {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1.25rem;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #D4AF37 0%, #F5E096 100%);
+    color: #07090E;
+    font-size: 0.8125rem;
+    font-weight: 800;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(212, 175, 55, 0.3);
+    transition: all 0.15s ease;
+    white-space: nowrap;
+  }
+  .btn-copy-ref:hover {
+    transform: translateY(-1px);
+    filter: brightness(1.08);
+  }
+
+  /* Funnel 3-Card Strip */
+  .funnel-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+  }
+
+  .funnel-card {
+    background: rgba(14, 19, 31, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 1.25rem 1.5rem;
+    text-align: center;
+    transition: border-color 0.15s ease;
+  }
+  .funnel-card:hover {
+    border-color: rgba(212, 175, 55, 0.3);
+  }
+
+  .funnel-num {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #FFFFFF;
+    margin-bottom: 0.25rem;
+    line-height: 1;
+  }
+
+  .funnel-lbl {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: #94A3B8;
+    font-weight: 700;
+  }
+
+  /* 2. Main Two-Column Dashboard Cards */
+  .hero-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .dash-card {
+    background: #0E131F;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .card-head-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .card-icon-badge {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: rgba(212, 175, 55, 0.15);
+    border: 1px solid rgba(212, 175, 55, 0.35);
+    color: #F5E096;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+
+  .card-title {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #FFFFFF;
+    margin: 0;
+  }
+
+  .balance-big {
+    font-size: 2.75rem;
+    font-weight: 900;
+    color: #FFFFFF;
+    line-height: 1;
+    margin-bottom: 0.35rem;
+    display: block;
+    letter-spacing: -0.5px;
+  }
+
+  .balance-sub {
+    font-size: 0.8125rem;
+    color: #94A3B8;
+    margin-bottom: 1.25rem;
+    display: block;
+  }
+
+  /* Form Elements */
+  .field {
+    margin-bottom: 1.25rem;
+  }
+
+  .field label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #94A3B8;
+    margin-bottom: 0.5rem;
+  }
+
+  .field input {
+    width: 100%;
+    background: #07090E;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    color: #FFFFFF;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.15s ease;
+    box-sizing: border-box;
+  }
+  .field input:focus {
+    border-color: #D4AF37;
+    box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
+  }
+
+  .field-hint {
+    font-size: 0.75rem;
+    color: #94A3B8;
+    margin-top: 0.45rem;
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  .btn-withdraw {
+    width: 100%;
+    padding: 0.85rem 1.25rem;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #10B981 0%, #34D399 100%);
+    color: #022C22;
+    font-size: 0.9rem;
+    font-weight: 850;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+    transition: all 0.15s ease;
+  }
+  .btn-withdraw:hover:not(:disabled) {
+    transform: translateY(-1px);
+    filter: brightness(1.08);
+  }
+  .btn-withdraw:disabled {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #64748B;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+
+  .btn-save-upi {
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #F8FAFC;
+    font-size: 0.85rem;
+    font-weight: 750;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .btn-save-upi:hover {
+    background: rgba(212, 175, 55, 0.15);
+    border-color: #D4AF37;
+    color: #F5E096;
+  }
+
+  .onfile-pill {
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.25);
+    border-radius: 8px;
+    padding: 0.45rem 0.85rem;
+    color: #34D399;
+    font-size: 0.8125rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .pending-pill {
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.3);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    color: #FBBF24;
+    font-size: 0.8125rem;
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .msg-banner {
+    margin-top: 0.85rem;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    min-height: 1.2em;
+  }
+  .msg-banner.ok { color: #34D399; }
+  .msg-banner.err { color: #FB7185; }
+
+  /* 3. History & Tables Cards */
+  .ledger-row {
+    padding: 1.15rem 1.35rem;
+    background: #07090E;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    margin-bottom: 0.85rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    transition: border-color 0.15s ease;
+  }
+  .ledger-row:hover {
+    border-color: rgba(212, 175, 55, 0.3);
+  }
+
+  .badge-status {
+    padding: 0.25rem 0.65rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 800;
+  }
+  .badge-status.b-green {
+    background: rgba(16, 185, 129, 0.15);
+    color: #34D399;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+  }
+  .badge-status.b-amber {
+    background: rgba(245, 158, 11, 0.15);
+    color: #FBBF24;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+  }
+  .badge-status.b-blue {
+    background: rgba(59, 130, 246, 0.15);
+    color: #60A5FA;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+  }
+  .badge-status.b-red {
+    background: rgba(244, 63, 94, 0.15);
+    color: #FB7185;
+    border: 1px solid rgba(244, 63, 94, 0.3);
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 2.5rem 1rem;
+    color: #94A3B8;
+  }
+  .empty-state i {
+    font-size: 2rem;
+    color: #475569;
+    margin-bottom: 0.75rem;
+  }
+  .empty-state-title {
+    font-weight: 750;
+    color: #FFFFFF;
+    font-size: 0.95rem;
+    margin-bottom: 0.25rem;
+  }
+  .empty-state-sub {
+    font-size: 0.8125rem;
+    color: #64748B;
+  }
+</style>
 </head>
 <body class="has-sidebar">
 {% set active_page = 'ambassador' %}
 {% include '_intern_sidebar.html' %}
 
-<div class="main">
+<!-- Main layout wrapper ensures strict 240px sidebar clearance -->
+<div class="main" id="main-content">
   <div class="content">
+    <div class="ambassador-wrap">
 
-    <div class="page-head">
-      <div class="eyebrow">Earn · New</div>
-      <h1>College Ambassador</h1>
-      <p>Share your link. When someone you refer enrols, you earn 10% of their fee as
-         real cash — withdrawable to your bank.</p>
-    </div>
+      <!-- HERO BANNER -->
+      <div class="amb-hero">
+        <div class="amb-pill">
+          <i class="fa-solid fa-award"></i> College Ambassador Program &middot; Earn ₹200 Cash per Conversion
+        </div>
+        <h1 class="amb-title">College Ambassador & Technical Advocate</h1>
+        <p class="amb-desc">
+          Share your referral link with classmates, college groups, and fellow learners. When someone enrolls in the Fellowship with your link, you earn a <strong>flat ₹200 cash reward</strong> — withdrawable directly to your UPI bank account within 24 hours.
+        </p>
 
-    <div id="ambErr" class="alert alert-err" style="display:none"></div>
-
-    <!-- Referral link + funnel -->
-    <div class="ref-hero">
-      <h2>Your referral link</h2>
-      <p>Send this to friends and classmates. Every click, signup and conversion is
-         tracked automatically.</p>
-      <div class="ref-link-box">
-        <code id="refLink">Loading…</code>
-        <button class="btn btn-primary btn-sm" id="copyBtn" data-act-click="copyRefLink">
-          <i class="fa-solid fa-copy"></i> Copy
-        </button>
-      </div>
-      <div class="ref-funnel">
-        <div class="funnel-step"><b id="fClicks">0</b><span>Clicks</span></div>
-        <div class="funnel-step"><b id="fSignups">0</b><span>Signed up</span></div>
-        <div class="funnel-step"><b id="fConverted">0</b><span>Converted</span></div>
-      </div>
-    </div>
-
-    <div class="hero-row">
-      <!-- Balance + withdraw -->
-      <div class="card">
-        <div class="card-head"><i class="fa-solid fa-wallet"></i><h3>Commission balance</h3></div>
-        <b style="font-family:var(--f-display);font-size:36px;color:var(--tx-head);display:block">
-          ₹<span id="refBalance">0</span></b>
-        <small class="t-muted t-sm" id="refBalanceSub">From 0 converted referrals</small>
-
-        <div id="pendingRow" class="alert alert-warn mt-16" style="display:none">
-          <i class="fa-solid fa-hourglass-half"></i>
-          <div>₹<span id="pendingAmt">0</span> already requested and awaiting review.</div>
+        <!-- Referral Link Box -->
+        <div class="ref-link-card">
+          <code class="ref-link-text" id="refLink">Loading link…</code>
+          <button class="btn-copy-ref" id="copyBtn" onclick="copyRefLink()">
+            <i class="fa-solid fa-copy"></i> Copy Link
+          </button>
         </div>
 
-        <div class="field mt-16">
-          <label for="wdAmount">Amount to withdraw</label>
-          <input type="number" id="wdAmount" min="1" placeholder="e.g. 500">
-          <div class="hint">Available: ₹<span id="availAmt">0</span></div>
-        </div>
-        <button class="btn btn-primary btn-block" id="wdBtn" data-act-click="requestWithdrawal" disabled>
-          Request withdrawal
-        </button>
-        <div class="msg" id="wdMsg"></div>
-      </div>
-
-      <!-- Payout details -->
-      <div class="card">
-        <div class="card-head"><i class="fa-solid fa-building-columns"></i><h3>Payout details</h3></div>
-        <div class="field">
-          <label for="upiInput">Your UPI ID</label>
-          <input type="text" id="upiInput" placeholder="name@bank" autocomplete="off">
-          <div class="hint">
-            <i class="fa-solid fa-lock" style="color:var(--green)"></i>
-            Stored encrypted. Only shown to an admin when they process your payout.
+        <!-- Funnel Strip -->
+        <div class="funnel-grid">
+          <div class="funnel-card">
+            <div class="funnel-num" id="fClicks" style="color: #38BDF8;">0</div>
+            <div class="funnel-lbl">Referral Clicks</div>
+          </div>
+          <div class="funnel-card">
+            <div class="funnel-num" id="fSignups" style="color: #FBBF24;">0</div>
+            <div class="funnel-lbl">Signed Up</div>
+          </div>
+          <div class="funnel-card">
+            <div class="funnel-num" id="fConverted" style="color: #34D399;">0</div>
+            <div class="funnel-lbl">Enrolled & Converted</div>
           </div>
         </div>
-        <div class="t-sm t-muted mb-16" id="upiCurrent" style="display:none">
-          On file: <b class="t-mono t-head" id="upiMasked"></b>
-        </div>
-        <button class="btn btn-ghost btn-sm" data-act-click="saveUpi">Save UPI ID</button>
-        <div class="msg" id="upiMsg"></div>
       </div>
-    </div>
 
-    <!-- Referrals -->
-    <div class="card mb-24">
-      <div class="card-head"><i class="fa-solid fa-users"></i><h3>Your referrals</h3></div>
-      <div id="refList"><p class="t-sm t-muted">Loading…</p></div>
-    </div>
+      <!-- MAIN DASHBOARD ROW -->
+      <div class="hero-row">
+        
+        <!-- CARD 1: COMMISSION WALLET -->
+        <div class="dash-card">
+          <div>
+            <div class="card-head-row">
+              <div class="card-icon-badge">
+                <i class="fa-solid fa-wallet"></i>
+              </div>
+              <h2 class="card-title">Commission Balance</h2>
+            </div>
 
-    <!-- Withdrawal history -->
-    <div class="card">
-      <div class="card-head"><i class="fa-solid fa-receipt"></i><h3>Withdrawal history</h3></div>
-      <div id="wdList"><p class="t-sm t-muted">Loading…</p></div>
-    </div>
+            <span class="balance-big">₹<span id="refBalance">0</span></span>
+            <span class="balance-sub" id="refBalanceSub">From 0 converted referrals</span>
 
+            <!-- Pending Review Banner (Hidden cleanly by default) -->
+            <div id="pendingRow" class="pending-pill" style="display: none;">
+              <i class="fa-solid fa-hourglass-half"></i>
+              <div>₹<span id="pendingAmt">0</span> requested and awaiting review.</div>
+            </div>
+
+            <div class="field">
+              <label for="wdAmount">Amount to Withdraw</label>
+              <input type="number" id="wdAmount" min="1" placeholder="e.g. 500">
+              <div class="field-hint">
+                <i class="fa-solid fa-circle-info" style="color: #D4AF37;"></i>
+                Available to withdraw: <strong>₹<span id="availAmt">0</span></strong>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <button class="btn-withdraw" id="wdBtn" data-act-click="requestWithdrawal" disabled>
+              <i class="fa-solid fa-money-bill-transfer"></i> Request UPI Withdrawal
+            </button>
+            <div class="msg-banner" id="wdMsg"></div>
+          </div>
+        </div>
+
+        <!-- CARD 2: PAYOUT DETAILS -->
+        <div class="dash-card">
+          <div>
+            <div class="card-head-row">
+              <div class="card-icon-badge">
+                <i class="fa-solid fa-building-columns"></i>
+              </div>
+              <h2 class="card-title">Payout Account Details</h2>
+            </div>
+
+            <div class="field">
+              <label for="upiInput">Your Active UPI ID</label>
+              <input type="text" id="upiInput" placeholder="name@bank (e.g. yourname@oksbi)" autocomplete="off">
+              <div class="field-hint">
+                <i class="fa-solid fa-shield-halved" style="color: #34D399;"></i>
+                Stored encrypted with Fernet (AES-128). Never exposed publicly.
+              </div>
+            </div>
+
+            <div id="upiCurrent" style="display: none;">
+              <div class="onfile-pill">
+                <i class="fa-solid fa-circle-check"></i>
+                <span>Active on file: <strong id="upiMasked" style="font-family: monospace;">—</strong></span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <button type="button" class="btn-save-upi" id="btnSaveUpi" data-act-click="saveUpi">
+              <i class="fa-solid fa-floppy-disk"></i> Save UPI ID
+            </button>
+            <div class="msg-banner" id="upiMsg"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- REFERRALS TABLE -->
+      <div class="dash-card" style="margin-bottom: 2rem;">
+        <div class="card-head-row">
+          <div class="card-icon-badge">
+            <i class="fa-solid fa-users"></i>
+          </div>
+          <h2 class="card-title">Your Attributed Referrals</h2>
+        </div>
+        <div id="refList">
+          <div class="empty-state">
+            <i class="fa-solid fa-user-plus"></i>
+            <div class="empty-state-title">No Referrals Yet</div>
+            <div class="empty-state-sub">Share your referral link above with fellow learners to earn commissions.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WITHDRAWAL HISTORY -->
+      <div class="dash-card">
+        <div class="card-head-row">
+          <div class="card-icon-badge">
+            <i class="fa-solid fa-receipt"></i>
+          </div>
+          <h2 class="card-title">Withdrawal & Payout History</h2>
+        </div>
+        <div id="wdList">
+          <div class="empty-state">
+            <i class="fa-solid fa-receipt"></i>
+            <div class="empty-state-title">No Withdrawals Requested Yet</div>
+            <div class="empty-state-sub">Once you request a withdrawal, its review and payout status will appear here.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
 </div>
 
 <script nonce="{{ csp_nonce() }}">
   var AMB = null;
 
-  function esc(s){ return (s===null||s===undefined?'':s).toString()
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
-    .replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+  function esc(s) {
+    return (s === null || s === undefined ? '' : s).toString()
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+  }
 
-  function showErr(m){ var e=document.getElementById('ambErr');
-    e.textContent=m; e.style.display='flex'; }
-
-  async function loadAmbassador(){
+  async function loadAmbassador() {
     try {
-      const r = await fetch('/intern/ambassador', {credentials:'include'});
+      const r = await fetch('/intern/ambassador', { credentials: 'include' });
       const d = await r.json();
-      if (d.status !== 'success') { showErr(d.message || 'Could not load your ambassador data.'); return; }
+      if (d.status !== 'success') {
+        console.warn('Ambassador load warning:', d.message);
+        return;
+      }
       AMB = d;
 
       document.getElementById('refLink').textContent = d.link;
-      document.getElementById('fClicks').textContent    = d.funnel.clicked   || 0;
-      document.getElementById('fSignups').textContent   = d.funnel.signed_up || 0;
+      document.getElementById('fClicks').textContent = d.funnel.clicked || 0;
+      document.getElementById('fSignups').textContent = d.funnel.signed_up || 0;
       document.getElementById('fConverted').textContent = d.funnel.converted || 0;
 
-      document.getElementById('refBalance').textContent = d.referral_balance;
+      document.getElementById('refBalance').textContent = d.referral_balance || 0;
       document.getElementById('refBalanceSub').textContent =
         'From ' + (d.funnel.converted || 0) + ' converted referral' +
         ((d.funnel.converted === 1) ? '' : 's');
-      document.getElementById('availAmt').textContent = d.available;
+      document.getElementById('availAmt').textContent = d.available || 0;
 
+      var pendingRow = document.getElementById('pendingRow');
       if (d.pending_withdrawal > 0) {
         document.getElementById('pendingAmt').textContent = d.pending_withdrawal;
-        document.getElementById('pendingRow').style.display = 'flex';
+        pendingRow.style.display = 'flex';
+      } else {
+        pendingRow.style.display = 'none';
       }
 
-      if (d.has_upi) {
+      if (d.has_upi && d.upi_masked) {
         document.getElementById('upiMasked').textContent = d.upi_masked;
         document.getElementById('upiCurrent').style.display = 'block';
+      } else {
+        document.getElementById('upiCurrent').style.display = 'none';
       }
-      /* §6.6 — withdrawal stays disabled until a UPI id is on file */
+
+      // Withdrawal button enabled ONLY when UPI is configured and available balance > 0
       document.getElementById('wdBtn').disabled = !(d.has_upi && d.available > 0);
 
       renderReferrals(d.referrals || []);
       renderWithdrawals(d.withdrawals || []);
     } catch (e) {
-      showErr('Network error while loading your ambassador data.');
+      console.warn('Ambassador network load notice:', e);
     }
   }
 
-  function renderReferrals(rows){
+  function renderReferrals(rows) {
     var box = document.getElementById('refList');
     if (!rows.length) {
-      box.innerHTML = '<div class="empty"><i class="fa-solid fa-user-plus"></i>' +
-        '<h4>No referrals yet</h4><p>Share your link to get started.</p></div>';
+      box.innerHTML = `
+        <div class="empty-state">
+          <i class="fa-solid fa-user-plus"></i>
+          <div class="empty-state-title">No Referrals Yet</div>
+          <div class="empty-state-sub">Share your referral link above with fellow learners to earn commissions.</div>
+        </div>
+      `;
       return;
     }
-    box.innerHTML = rows.map(function(r){
+    box.innerHTML = rows.map(function(r) {
       var badge = r.status === 'converted'
-        ? '<span class="badge b-green">Converted</span>'
-        : '<span class="badge b-amber">Signed up</span>';
+        ? '<span class="badge-status b-green"><i class="fa-solid fa-check"></i> Converted</span>'
+        : '<span class="badge-status b-amber"><i class="fa-solid fa-user-check"></i> Signed up</span>';
       var flag = r.flagged
-        ? ' <span class="badge b-muted" title="Under review">flagged</span>' : '';
-      return '<div class="ledger-row"><i class="fa-solid fa-circle-check" style="color:var(--green)"></i>' +
-        esc(r.referred_name || 'A student') +
-        '<span class="lr-amt">' + badge + flag + '</span></div>';
+        ? ' <span class="badge-status b-red" title="Under Review">Under Review</span>' : '';
+      return `
+        <div class="ledger-row">
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <i class="fa-solid fa-user-graduate" style="color: #D4AF37;"></i>
+            <span style="font-weight: 700; color: #FFF;">${esc(r.referred_name || 'Enrolled Student')}</span>
+          </div>
+          <div>${badge}${flag}</div>
+        </div>
+      `;
     }).join('');
   }
 
-  function renderWithdrawals(rows){
+  function renderWithdrawals(rows) {
     var box = document.getElementById('wdList');
     if (!rows.length) {
-      box.innerHTML = '<p class="t-sm t-muted">No withdrawals requested yet.</p>';
+      box.innerHTML = `
+        <div class="empty-state">
+          <i class="fa-solid fa-receipt"></i>
+          <div class="empty-state-title">No Withdrawals Requested Yet</div>
+          <div class="empty-state-sub">Once you request a withdrawal, its review and payout status will appear here.</div>
+        </div>
+      `;
       return;
     }
-    var cls = {pending:'b-amber', approved:'b-blue', paid:'b-green', rejected:'b-red'};
-    box.innerHTML = rows.map(function(w){
-      return '<div class="ledger-row"><i class="fa-solid fa-indian-rupee-sign"></i>' +
-        '₹' + esc(w.amount) +
-        '<span class="t-muted t-sm" style="margin-left:10px">' + esc(w.requested_at || '') + '</span>' +
-        '<span class="lr-amt"><span class="badge ' + (cls[w.status] || 'b-muted') + '">' +
-        esc(w.status) + '</span></span></div>' +
-        (w.admin_note ? '<div class="t-sm t-muted" style="margin:-6px 0 10px 26px">' +
-          esc(w.admin_note) + '</div>' : '');
+    var cls = { pending: 'b-amber', approved: 'b-blue', paid: 'b-green', rejected: 'b-red' };
+    box.innerHTML = rows.map(function(w) {
+      return `
+        <div class="ledger-row">
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <i class="fa-solid fa-indian-rupee-sign" style="color: #34D399;"></i>
+            <strong style="font-size: 1.1rem; color: #FFF;">₹${esc(w.amount)}</strong>
+            <span style="color: #94A3B8; font-size: 0.8125rem; margin-left: 0.5rem;">${esc(w.requested_at || '')}</span>
+          </div>
+          <div>
+            <span class="badge-status ${cls[w.status] || 'b-amber'}">
+              ${esc(w.status).toUpperCase()}
+            </span>
+          </div>
+          ${w.admin_note ? `<div style="width: 100%; font-size: 0.78rem; color: #94A3B8; margin-top: 0.35rem; padding-left: 1.5rem;">Note: ${esc(w.admin_note)}</div>` : ''}
+        </div>
+      `;
     }).join('');
   }
 
-  function copyRefLink(){
-    var link = AMB && AMB.link; if (!link) return;
+  function copyRefLink() {
+    var link = AMB && AMB.link;
+    if (!link) return;
     var btn = document.getElementById('copyBtn');
-    var done = function(){
+    var done = function() {
       var orig = btn.innerHTML;
-      btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied';
-      setTimeout(function(){ btn.innerHTML = orig; }, 1400);
-      dbertGA('referral_link_copied', {code: AMB.code});      /* §8 */
+      btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+      setTimeout(function() { btn.innerHTML = orig; }, 1500);
+      if (typeof dbertGA === 'function') {
+        dbertGA('referral_link_copied', { code: AMB.code });
+      }
     };
-    if (navigator.clipboard) navigator.clipboard.writeText(link).then(done).catch(done);
-    else done();
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(link).then(done).catch(done);
+    } else {
+      done();
+    }
   }
 
-  async function saveUpi(){
+  async function saveUpi() {
+    var btn = document.getElementById('btnSaveUpi');
     var msg = document.getElementById('upiMsg');
-    var upi = document.getElementById('upiInput').value.trim();
-    msg.className = 'msg'; msg.textContent = 'Saving…';
+    var inp = document.getElementById('upiInput');
+    var upi = (inp ? inp.value : '').trim().toLowerCase();
+    if (!upi) {
+      msg.className = 'msg-banner err';
+      msg.textContent = 'Please enter your UPI ID.';
+      return;
+    }
+    if (!upi.includes('@') || upi.length < 5) {
+      msg.className = 'msg-banner err';
+      msg.textContent = 'Please enter a valid UPI ID (e.g. yourname@bank or 9876543210@paytm).';
+      return;
+    }
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+    }
+    msg.className = 'msg-banner';
+    msg.textContent = 'Saving encrypted UPI...';
+
     try {
       const r = await fetch('/intern/ambassador/upi', {
-        method:'POST', headers:{'Content-Type':'application/json'},
-        credentials:'include', body: JSON.stringify({upi_id: upi})
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': '{{ csrf_token() }}'
+        },
+        credentials: 'include',
+        body: JSON.stringify({ upi_id: upi })
       });
       const d = await r.json();
       if (d.status === 'success') {
-        msg.className = 'msg ok'; msg.textContent = d.message;
-        document.getElementById('upiInput').value = '';
-        document.getElementById('upiMasked').textContent = d.upi_masked;
-        document.getElementById('upiCurrent').style.display = 'block';
+        msg.className = 'msg-banner ok';
+        msg.textContent = d.message || 'UPI ID saved successfully.';
+        if (inp) inp.value = '';
+        if (d.upi_masked) {
+          document.getElementById('upiMasked').textContent = d.upi_masked;
+          document.getElementById('upiCurrent').style.display = 'block';
+        }
         loadAmbassador();
       } else {
-        msg.className = 'msg err'; msg.textContent = d.message || 'Could not save.';
+        msg.className = 'msg-banner err';
+        msg.textContent = d.message || 'Could not save UPI ID.';
       }
-    } catch (e) { msg.className = 'msg err'; msg.textContent = 'Network error.'; }
+    } catch (e) {
+      msg.className = 'msg-banner err';
+      msg.textContent = 'Server communication error. Please try again.';
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Save UPI ID';
+      }
+    }
   }
 
-  async function requestWithdrawal(){
+  document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('btnSaveUpi')?.addEventListener('click', saveUpi);
+    document.getElementById('wdBtn')?.addEventListener('click', requestWithdrawal);
+    document.getElementById('btnCopyRef')?.addEventListener('click', copyRefLink);
+    document.getElementById('upiInput')?.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') saveUpi();
+    });
+  });
+
+  async function requestWithdrawal() {
     var msg = document.getElementById('wdMsg');
     var amt = parseInt(document.getElementById('wdAmount').value, 10);
-    if (!amt || amt <= 0) { msg.className='msg err'; msg.textContent='Enter an amount.'; return; }
-    msg.className = 'msg'; msg.textContent = 'Requesting…';
+    if (!amt || amt <= 0) {
+      msg.className = 'msg-banner err';
+      msg.textContent = 'Please enter a valid withdrawal amount.';
+      return;
+    }
+    msg.className = 'msg-banner';
+    msg.textContent = 'Submitting withdrawal request...';
+
     try {
       const r = await fetch('/intern/ambassador/withdraw', {
-        method:'POST', headers:{'Content-Type':'application/json'},
-        credentials:'include', body: JSON.stringify({amount: amt})
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': '{{ csrf_token() }}'
+        },
+        credentials: 'include',
+        body: JSON.stringify({ amount: amt })
       });
       const d = await r.json();
       if (d.status === 'success') {
-        msg.className = 'msg ok'; msg.textContent = d.message;
+        msg.className = 'msg-banner ok';
+        msg.textContent = d.message || 'Withdrawal requested successfully!';
         document.getElementById('wdAmount').value = '';
-        dbertGA('withdrawal_requested', {amount: amt});        /* §8 */
+        if (typeof dbertGA === 'function') {
+          dbertGA('withdrawal_requested', { amount: amt });
+        }
         loadAmbassador();
       } else {
-        msg.className = 'msg err'; msg.textContent = d.message || 'Could not request.';
+        msg.className = 'msg-banner err';
+        msg.textContent = d.message || 'Withdrawal request failed.';
       }
-    } catch (e) { msg.className = 'msg err'; msg.textContent = 'Network error.'; }
+    } catch (e) {
+      msg.className = 'msg-banner err';
+      msg.textContent = 'Server communication error.';
+    }
   }
 
   document.addEventListener('DOMContentLoaded', loadAmbassador);
-  // Auto-refresh metrics whenever ambassador returns to this tab
-  window.addEventListener('focus', function() {
-    loadAmbassador();
-  });
-  // Light 45-second heartbeat refresh while page is actively open
-  setInterval(function() {
-    if (document.visibilityState === 'visible') {
-      loadAmbassador();
-    }
-  }, 45000);
+  window.addEventListener('focus', loadAmbassador);
   window.copyRefLink = copyRefLink;
   window.saveUpi = saveUpi;
   window.requestWithdrawal = requestWithdrawal;

@@ -1,0 +1,245 @@
+/* Standard Markdown Renderer - High-Contrast Editorial Design System */
+
+.articleRoot {
+  color: #1e293b;
+  font-family: inherit;
+  font-size: 1.0625rem;
+  line-height: 1.85;
+  letter-spacing: -0.003em;
+  max-width: 100%;
+}
+
+/* Headings with crisp, dark slate contrast and clear hierarchy */
+.articleH1,
+.articleH2 {
+  font-family: var(--font-d, 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif);
+  color: #0f172a !important;
+  font-size: 1.65rem;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+  margin-top: 2.25rem;
+  margin-bottom: 0.85rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.articleH3 {
+  font-family: var(--font-d, 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif);
+  color: #1e293b !important;
+  font-size: 1.3rem;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  margin-top: 1.75rem;
+  margin-bottom: 0.65rem;
+}
+
+.articleH4 {
+  font-family: var(--font-d, 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif);
+  color: #334155 !important;
+  font-size: 1.1rem;
+  font-weight: 600;
+  line-height: 1.45;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Body Paragraphs */
+.articleP {
+  color: #334155 !important;
+  font-size: 1.0625rem;
+  line-height: 1.85;
+  margin-top: 0;
+  margin-bottom: 1.25rem;
+  word-break: break-word;
+}
+
+/* Strong / Bold Text */
+.articleStrong {
+  color: #0f172a !important;
+  font-weight: 700;
+}
+
+/* Italic / Emphasis */
+.articleEm {
+  font-style: italic;
+  color: #334155;
+}
+
+/* Inline Links */
+.articleLink {
+  color: #2563eb !important;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  font-weight: 600;
+  transition: color 0.15s ease, text-decoration-color 0.15s ease;
+}
+
+.articleLink:hover {
+  color: #1d4ed8 !important;
+  text-decoration-thickness: 2px;
+}
+
+/* Inline Code */
+.articleInlineCode {
+  font-family: var(--font-m, 'JetBrains Mono', 'Fira Code', monospace);
+  font-size: 0.875em;
+  color: #1e293b !important;
+  background-color: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 4px;
+  padding: 0.15rem 0.4rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Lists */
+.articleUl,
+.articleOl {
+  margin-top: 0.25rem;
+  margin-bottom: 1.35rem;
+  padding-left: 1.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.articleLi {
+  color: #334155 !important;
+  line-height: 1.75;
+}
+
+.articleUl .articleLi::marker {
+  color: #2563eb;
+}
+
+.articleOl .articleLi::marker {
+  color: #2563eb;
+  font-weight: 700;
+}
+
+/* Blockquotes */
+.articleBlockquote {
+  margin: 1.5rem 0;
+  padding: 1rem 1.25rem;
+  background-color: #f8fafc;
+  border-left: 4px solid #2563eb;
+  border-radius: 0 8px 8px 0;
+  color: #475569 !important;
+  font-style: italic;
+  line-height: 1.75;
+}
+
+/* Horizontal Rule */
+.articleHr {
+  border: none;
+  border-top: 1px solid #e2e8f0;
+  margin: 2.25rem 0;
+}
+
+/* Code Blocks with Terminal Header & Copy Button */
+.codeBlockWrap {
+  margin: 1.5rem 0;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid #334155;
+  background: #0f172a;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.15);
+}
+
+.codeHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #1e293b;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid #334155;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.codeLang {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: #94a3b8;
+  letter-spacing: 0.05em;
+  font-family: var(--font-m, monospace);
+}
+
+.codeIcon {
+  color: #38bdf8;
+}
+
+.copyBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #e2e8f0;
+  border-radius: 4px;
+  padding: 0.25rem 0.6rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.copyBtn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
+}
+
+.codePre {
+  margin: 0;
+  padding: 1.15rem 1.25rem;
+  background: #0f172a;
+  overflow-x: auto;
+  line-height: 1.6;
+}
+
+.codeText {
+  font-family: var(--font-m, 'JetBrains Mono', 'Fira Code', monospace);
+  font-size: 0.875rem;
+  color: #f1f5f9;
+  tab-size: 2;
+}
+
+/* Tables */
+.tableWrap {
+  overflow-x: auto;
+  margin: 1.75rem 0;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+}
+
+.articleTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+  text-align: left;
+}
+
+.articleTable th {
+  background: #f8fafc;
+  color: #0f172a;
+  font-weight: 700;
+  padding: 0.75rem 1rem;
+  border-bottom: 2px solid #cbd5e1;
+}
+
+.articleTable td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #e2e8f0;
+  color: #334155;
+}
+
+.articleTable tr:last-child td {
+  border-bottom: none;
+}
+
+.articleTable tr:nth-child(even) td {
+  background: #fbfcfe;
+}

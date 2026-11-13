@@ -34,7 +34,7 @@
             </div>
         </div>
 
-        <script>
+        <script nonce="{{ csp_nonce() }}">
         function checkStipendHealth() {
             fetch('/admin/api/stipend-health')
                 .then(r => r.json())
@@ -90,6 +90,23 @@
                         <div style="margin-top: 4px; margin-bottom: 6px;">
                             {% if sub.task_type == 'stipend_milestone' or sub.task_category == 'stipend_milestone' %}
                             <span class="badge-type" style="background: rgba(16, 185, 129, 0.2); color: #10B981; border: 1px solid #10B981; font-weight: bold;">🎓 STIPEND CAPSTONE (₹5,000)</span>
+                            {% if sub.article_status == 'PUBLISHED' %}
+                            <a href="https://dbert.in/blog/{{ sub.article_url|default('')|replace('https://dbert.in/blog/', '') or sub.article_title|lower|replace(' ', '-') }}" target="_blank" rel="noopener" class="badge-type" style="background: rgba(16, 185, 129, 0.2); color: #34D399; border: 1px solid #34D399; font-weight: bold; text-decoration: none;">
+                                ✓ Case Study Published ↗
+                            </a>
+                            {% elif sub.article_status == 'PENDING_REVIEW' %}
+                            <a href="/admin/articles" class="badge-type" style="background: rgba(245, 158, 11, 0.2); color: #F59E0B; border: 1px solid #F59E0B; font-weight: bold; text-decoration: none;">
+                                ⏳ Case Study In Editorial Review &rarr;
+                            </a>
+                            {% elif sub.article_status == 'DRAFT' %}
+                            <span class="badge-type" style="background: rgba(148, 163, 184, 0.2); color: #94A3B8; border: 1px solid #94A3B8;">
+                                ✎ Case Study Drafted (Unsubmitted)
+                            </span>
+                            {% else %}
+                            <span class="badge-type" style="background: rgba(239, 68, 68, 0.15); color: #EF4444; border: 1px solid rgba(239, 68, 68, 0.4);">
+                                ⚠ No Case Study Yet
+                            </span>
+                            {% endif %}
                             {% elif sub.task_type == 'domain_specific' %}
                             <span class="badge-type badge-domain">🎯 Domain: {{ sub.target_domain or 'Specific' }}</span>
                             {% else %}

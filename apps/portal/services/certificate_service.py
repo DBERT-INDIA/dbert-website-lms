@@ -102,11 +102,10 @@ class CertificateService:
                     """
                     SELECT id, cert_id, course_title, issued_at, tier, email
                     FROM intern_certificates
-                    WHERE (tier = 'verified' OR tier = 'completed')
-                      AND (
+                    WHERE (
                         (email IS NOT NULL AND LOWER(email) = LOWER(?))
                         OR (? IS NOT NULL AND intern_id = ?)
-                      )
+                    )
                     ORDER BY id DESC LIMIT 1
                     """,
                     (clean_email or "", intern_id, intern_id)
@@ -127,10 +126,13 @@ class CertificateService:
                             "source": "database_verified"
                         }
                     else:
+                        tier_clean = (row["tier"] or "").strip().lower()
+                        is_prov = tier_clean in ("provisional", "pending")
+                        is_ver = tier_clean in ("verified", "completed", "dbert_verified")
                         return {
-                            "verified": True,
-                            "is_provisional": False,
-                            "status": "VERIFIED",
+                            "verified": is_ver,
+                            "is_provisional": is_prov,
+                            "status": "VERIFIED" if is_ver else ("PROVISIONAL" if is_prov else "UNVERIFIED"),
                             "cert_id": cert_id,
                             "domain": row["course_title"],
                             "holder_name": "",
@@ -226,14 +228,18 @@ class CertificateService:
         # 1. Check Enrollment joining_date
         if conn and (clean_email or intern_id):
             try:
+                if not clean_email and intern_id:
+                    acct = conn.execute("SELECT email FROM intern_accounts WHERE id = ?", (intern_id,)).fetchone()
+                    if acct and acct["email"]:
+                        clean_email = acct["email"].strip().lower()
+
                 row = conn.execute(
                     """
                     SELECT joining_date FROM enrollments
-                    WHERE (email IS NOT NULL AND LOWER(email) = LOWER(?))
-                       OR (? IS NOT NULL AND intern_id = ?)
+                    WHERE email IS NOT NULL AND LOWER(email) = LOWER(?)
                     ORDER BY id DESC LIMIT 1
                     """,
-                    (clean_email or "", intern_id, intern_id)
+                    (clean_email or "",)
                 ).fetchone()
                 if row and row["joining_date"]:
                     jd = CertificateService.parse_flexible_date(row["joining_date"])
@@ -253,7 +259,19 @@ class CertificateService:
                 pass
 
         # 2. Fallback to Certificate Registry
-        reg = CertificateService.load_registry_record(email=clean_email)
+        cert_id = None
+        if conn and (clean_email or intern_id):
+            try:
+                cert_row = conn.execute(
+                    "SELECT cert_id FROM intern_certificates WHERE (email IS NOT NULL AND LOWER(email) = LOWER(?)) ORDER BY id DESC LIMIT 1",
+                    (clean_email or "",)
+                ).fetchone()
+                if cert_row and cert_row["cert_id"]:
+                    cert_id = cert_row["cert_id"]
+            except Exception:
+                pass
+
+        reg = CertificateService.load_registry_record(email=clean_email, cert_id=cert_id)
         if reg:
             end_str = reg.get("endDate")
             start_str = reg.get("startDate")
@@ -271,14 +289,15 @@ class CertificateService:
                     "source": "certificate_registry"
                 }
 
-        # Default fallback
+        # Default fallback: Strictly fail closed if dates cannot be verified
         return {
             "joining_date": "",
             "completion_date": "",
-            "completion_date_display": "Upon Verification",
-            "is_completed": True,
-            "days_remaining": 0,
-            "source": "none"
+            "completion_date_display": "Pending Date Verification",
+            "is_completed": False,
+            "days_remaining": 999,
+            "source": "none",
+            "requires_manual_review": True
         }
 
     @staticmethod

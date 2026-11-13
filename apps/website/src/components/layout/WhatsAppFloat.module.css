@@ -1,47 +1,380 @@
-.whatsappFloat {
+.widgetWrapper {
   position: fixed;
-  bottom: var(--space-4);
-  right: var(--space-4);
-  background-color: #25D366;
-  /* White on WhatsApp green measures 1.98:1 — well under WCAG AA. Dark ink on
-     the same brand green is 10.05:1 and keeps the button recognisable. */
-  color: #050811;
-  border-radius: 50px;
-  padding: 10px 18px;
+  bottom: 24px;
+  right: 24px;
+  z-index: 999999;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Floating Bubble */
+.whatsappBubble {
+  position: relative;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #25D366, #128C7E);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.45);
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+  outline: none;
+}
+
+.whatsappBubble:hover {
+  transform: scale(1.08);
+  box-shadow: 0 8px 26px rgba(37, 211, 102, 0.6);
+}
+
+.bubbleActive {
+  transform: scale(0.95);
+}
+
+.bubbleIcon {
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.whatsappBubble:hover .bubbleIcon {
+  transform: rotate(-8deg) scale(1.05);
+}
+
+/* Pulse Ring Animation */
+.pulseRing {
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  border-radius: 50%;
+  border: 2px solid #25D366;
+  opacity: 0;
+  animation: waPulse 2.4s infinite cubic-bezier(0.24, 0, 0.38, 1);
+  pointer-events: none;
+}
+
+@keyframes waPulse {
+  0% {
+    transform: scale(0.95);
+    opacity: 0.8;
+  }
+  70% {
+    transform: scale(1.45);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+/* Tooltip on Hover */
+.bubbleTooltip {
+  position: absolute;
+  right: 68px;
+  top: 50%;
+  transform: translateY(-50%) translateX(6px);
+  background: rgba(15, 23, 42, 0.95);
+  color: #ffffff;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  pointer-events: none;
+}
+
+.whatsappBubble:hover .bubbleTooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-50%) translateX(0);
+}
+
+/* Interactive Popover Card */
+.popoverCard {
+  position: absolute;
+  bottom: 72px;
+  right: 0;
+  width: 350px;
+  max-width: calc(100vw - 32px);
+  background: #0B1120;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 18px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65), 0 0 1px rgba(255, 255, 255, 0.2);
+  overflow: hidden;
+  animation: popoverFadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transform-origin: bottom right;
+}
+
+@keyframes popoverFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.popoverHeader {
+  background: linear-gradient(135deg, #064E3B 0%, #065F46 100%);
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.headerInfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatarWrap {
+  position: relative;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #25D366;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.onlineDot {
+  position: absolute;
+  bottom: -1px;
+  right: -1px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #10B981;
+  border: 2px solid #064E3B;
+}
+
+.headerTitle {
+  margin: 0;
+  color: #ffffff;
+  font-size: 13.5px;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.headerSubtitle {
+  margin: 2px 0 0;
+  color: #A7F3D0;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.closeBtn {
+  background: transparent;
+  border: none;
+  color: #D1FAE5;
+  font-size: 22px;
+  cursor: pointer;
+  padding: 0 4px;
+  line-height: 1;
+  opacity: 0.8;
+  transition: opacity 0.15s, transform 0.15s;
+}
+
+.closeBtn:hover {
+  opacity: 1;
+  transform: scale(1.15);
+}
+
+.popoverBody {
+  padding: 16px;
+}
+
+.sectionLabel {
+  color: #94A3B8;
+  font-size: 11.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+
+.topicChips {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.topicChip {
   display: flex;
   align-items: center;
   gap: 8px;
-  box-shadow: 0 4px 20px rgba(37, 211, 102, 0.35);
-  z-index: 95;
-  text-decoration: none;
-  font-family: var(--font-tech);
-  font-weight: 700;
-  font-size: 0.85rem;
-  transition: transform 0.2s, background-color 0.2s;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  color: #CBD5E1;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s ease;
 }
 
-.whatsappFloat:hover {
-  transform: scale(1.05);
-  /* Stays light enough for the dark label to keep passing AA. */
-  background-color: #1FBA5A;
+.topicChip:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
 }
 
-.whatsappIcon {
+.topicChipActive {
+  background: rgba(37, 211, 102, 0.12) !important;
+  border-color: #25D366 !important;
+  color: #4ADE80 !important;
+  font-weight: 600;
+}
+
+.chipIcon {
+  font-size: 14px;
   flex-shrink: 0;
 }
 
-.whatsappLabel {
-  display: inline-block;
+.inputWrap {
+  margin-bottom: 12px;
 }
 
-@media (max-width: 500px) {
-  .whatsappLabel {
-    display: none;
+.fieldLabel {
+  display: block;
+  color: #94A3B8;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+
+.queryTextarea {
+  width: 100%;
+  box-sizing: border-box;
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  color: #F8FAFC;
+  padding: 10px 12px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  resize: vertical;
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.queryTextarea:focus {
+  border-color: #25D366;
+  box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.2);
+}
+
+.pageContextPill {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 11px;
+  color: #94A3B8;
+  margin-bottom: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.contextIcon {
+  flex-shrink: 0;
+}
+
+.contextText {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.contextText strong {
+  color: #E2E8F0;
+}
+
+.sendBtn {
+  width: 100%;
+  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 11px 16px;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 14px rgba(37, 211, 102, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.sendBtn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.06);
+  box-shadow: 0 6px 18px rgba(37, 211, 102, 0.5);
+}
+
+.sendBtn:active {
+  transform: translateY(1px);
+}
+
+.secureNote {
+  text-align: center;
+  font-size: 10px;
+  color: #64748B;
+  margin-top: 10px;
+  letter-spacing: 0.3px;
+}
+
+@media (max-width: 480px) {
+  .widgetWrapper {
+    bottom: 20px;
+    right: 20px;
   }
-  .whatsappFloat {
-    padding: 12px;
-    border-radius: 50%;
-    bottom: var(--space-3);
-    right: var(--space-3);
+  .whatsappBubble {
+    width: 54px;
+    height: 54px;
   }
+  .popoverCard {
+    bottom: 66px;
+    right: 0;
+    width: calc(100vw - 32px);
+  }
+}
+
+/* Keep the support affordance legible without a neon pulse competing with the page. */
+.whatsappBubble {
+  background: var(--accent);
+  box-shadow: 0 5px 16px rgba(36, 90, 124, .2);
+}
+
+.whatsappBubble:hover {
+  box-shadow: 0 7px 20px rgba(36, 90, 124, .28);
+}
+
+.pulseRing {
+  display: none;
 }

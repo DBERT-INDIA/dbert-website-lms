@@ -41,7 +41,7 @@
         </div>
     </div>
 
-    <script>
+    <script nonce="{{ csp_nonce() }}">
     function checkPayoutTelemetry() {
         fetch('/admin/api/stipend-health')
             .then(r => r.json())

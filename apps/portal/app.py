@@ -25,7 +25,7 @@ from datetime import datetime, date, timedelta, timezone, time as dtime
 
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-from email.utils import formatdate, make_msgid
+from email.utils import formatdate, make_msgid, formataddr
 from werkzeug.utils import secure_filename
 from werkzeug.middleware.proxy_fix import ProxyFix
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -275,7 +275,7 @@ def csp_policy_for(nonce):
     style_src = (
         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com"
         if not nonce else
-        f"style-src 'self' 'nonce-{nonce}' https://fonts.googleapis.com https://cdnjs.cloudflare.com"
+        f"style-src 'self' 'unsafe-inline' 'nonce-{nonce}' https://fonts.googleapis.com https://cdnjs.cloudflare.com"
     )
     
     return (
@@ -324,7 +324,7 @@ SMTP_BACKUP_PASS = os.environ.get("SMTP_BACKUP_PASS", "")
 EMAIL_PROVIDER = os.environ.get("EMAIL_PROVIDER", "smtp").lower()
 AWS_SES_REGION = os.environ.get("AWS_SES_REGION", os.environ.get("AWS_REGION", "us-east-1"))
 # DBERT Mailer microservice relay endpoint (https://mailer.aivaratech.online/send)
-CPANEL_EMAIL_API_URL = os.environ.get("CPANEL_EMAIL_API_URL", "https://mailer.aivaratech.online/send")
+CPANEL_EMAIL_API_URL = os.environ.get("CPANEL_EMAIL_API_URL", "")
 CPANEL_EMAIL_API_KEY = os.environ.get("CPANEL_EMAIL_API_KEY", "")
 # Master switch: when false, NO emails are sent (logged as SKIPPED). Push notifications are
 # unaffected â€” they are sent independently via send_push_notification(). Flip to true to resume.
@@ -387,7 +387,7 @@ if AMBASSADOR_ENABLED and os.environ.get("FLASK_DEBUG", "false").lower() != "tru
         "with: python -c \"from cryptography.fernet import Fernet; "
         "print(Fernet.generate_key().decode())\""
     )
-UPI_ID           = os.environ.get("UPI_ID", "Q681021429@ybl")
+UPI_ID           = os.environ.get("UPI_ID", "Q652429146@ybl")
 UPI_AMOUNT       = int(os.environ.get("UPI_AMOUNT", "499"))
 # Phase 12 â€” paid program (parallel product to the â‚¹499 free-track deposit).
 PAID_PROGRAM_AMOUNT = int(os.environ.get("PAID_PROGRAM_AMOUNT", "1999"))
@@ -492,10 +492,23 @@ VALID_DOMAINS = [
     "Data Analyst",
     "Full Stack Development",
     "Python Automation",
+    "UI/UX Design",
+    "DevOps & Cloud",
+    "Mobile App Development",
+    "Cybersecurity",
+    "Digital Marketing",
 ]
 
 DOMAIN_SLUGS = {
-    d: d.lower().replace(" ", "-") for d in VALID_DOMAINS
+    "AI Agent Development": "ai-agent-development",
+    "Data Analyst": "data-analyst",
+    "Full Stack Development": "full-stack-development",
+    "Python Automation": "python-automation",
+    "UI/UX Design": "ui-ux-design",
+    "DevOps & Cloud": "devops-cloud",
+    "Mobile App Development": "mobile-app-development",
+    "Cybersecurity": "cybersecurity",
+    "Digital Marketing": "digital-marketing",
 }
 
 _LIVE_SQL = "status='published' AND (expires_at IS NULL OR expires_at > datetime('now','localtime')) AND EXISTS (SELECT 1 FROM companies comp_live WHERE comp_live.id=company_id AND comp_live.is_approved=1 AND comp_live.is_active=1)"
@@ -545,6 +558,41 @@ JOB_DESCRIPTIONS = {
                  "Create scheduled data pipelines", "Integrate third-party APIs"],
         "stipend": "â‚¹5,000 â€“ â‚¹12,000/month", "duration": "2 months",
     },
+    "UI/UX Design": {
+        "icon": "🎨", "type": "Remote / Part-time",
+        "skills": ["Figma", "User Research", "Wireframing", "Design Systems", "Prototyping"],
+        "work": ["Design high-fidelity UI components", "Conduct user research & usability testing",
+                 "Build scalable Figma design tokens", "Deliver production design specs"],
+        "stipend": "₹6,000 – ₹15,000/month", "duration": "2 months",
+    },
+    "DevOps & Cloud": {
+        "icon": "☁️", "type": "Remote / Part-time",
+        "skills": ["Docker", "Kubernetes", "AWS/GCP", "CI/CD Actions", "Terraform"],
+        "work": ["Automate deployment pipelines", "Containerize distributed microservices",
+                 "Configure cloud infrastructure & monitoring", "Enforce security compliance"],
+        "stipend": "₹8,000 – ₹18,000/month", "duration": "2 months",
+    },
+    "Mobile App Development": {
+        "icon": "📱", "type": "Remote / Part-time",
+        "skills": ["React Native", "Flutter", "Android/iOS", "REST APIs", "State Management"],
+        "work": ["Develop cross-platform mobile apps", "Integrate native device APIs & notifications",
+                 "Optimize mobile UI performance & caching", "Deploy apps to Play Store / App Store"],
+        "stipend": "₹7,000 – ₹16,000/month", "duration": "2 months",
+    },
+    "Cybersecurity": {
+        "icon": "🛡️", "type": "Remote / Part-time",
+        "skills": ["Network Security", "OWASP Top 10", "SOC Analysis", "Penetration Testing", "SIEM"],
+        "work": ["Perform vulnerability assessments", "Analyze security event logs & alerts",
+                 "Audit web applications against OWASP", "Draft incident remediation reports"],
+        "stipend": "₹7,500 – ₹18,000/month", "duration": "2 months",
+    },
+    "Digital Marketing": {
+        "icon": "📈", "type": "Remote / Part-time",
+        "skills": ["SEO/SEM", "Google Analytics 4", "Meta Ads", "Content Marketing", "Funnel Analytics"],
+        "work": ["Execute multi-channel growth campaigns", "Optimize SEO rankings & technical audits",
+                 "Manage performance ad budgets & attribution", "Build lead conversion funnels"],
+        "stipend": "₹5,000 – ₹14,000/month", "duration": "2 months",
+    },
 }
 
 DISPOSABLE_DOMAINS = {
@@ -556,11 +604,24 @@ DISPOSABLE_DOMAINS = {
 
 DOMAIN_ALIASES = {
     "ai agent": "AI Agent Development", "ai agent development": "AI Agent Development", "ai": "AI Agent Development",
-    "data analyst": "Data Analyst", "data analysis": "Data Analyst", "data": "Data Analyst",
+    "artificial intelligence": "AI Agent Development", "machine learning": "AI Agent Development", "aiml": "AI Agent Development",
+    "data analyst": "Data Analyst", "data analysis": "Data Analyst", "data": "Data Analyst", "data analytics": "Data Analyst",
     "full stack": "Full Stack Development", "full stack development": "Full Stack Development",
-    "fullstack": "Full Stack Development", "web": "Full Stack Development",
+    "fullstack": "Full Stack Development", "web": "Full Stack Development", "full stack web development": "Full Stack Development",
     "python": "Python Automation", "python automation": "Python Automation",
-    "python automantion": "Python Automation",
+    "python automantion": "Python Automation", "automation": "Python Automation",
+    "ui/ux": "UI/UX Design", "ui/ux design": "UI/UX Design", "ui & ux": "UI/UX Design", "ui & ux design": "UI/UX Design",
+    "ui and ux": "UI/UX Design", "ui/ux development": "UI/UX Design", "product design": "UI/UX Design", "ux design": "UI/UX Design",
+    "devops": "DevOps & Cloud", "cloud": "DevOps & Cloud", "devops & cloud": "DevOps & Cloud",
+    "cloud engineering": "DevOps & Cloud", "cloud & devops": "DevOps & Cloud", "aws": "DevOps & Cloud",
+    "mobile app": "Mobile App Development", "mobile app development": "Mobile App Development",
+    "android": "Mobile App Development", "ios": "Mobile App Development", "react native": "Mobile App Development",
+    "flutter": "Mobile App Development", "mobile": "Mobile App Development",
+    "cybersecurity": "Cybersecurity", "cyber security": "Cybersecurity", "information security": "Cybersecurity",
+    "network security": "Cybersecurity", "ethical hacking": "Cybersecurity", "infosec": "Cybersecurity",
+    "digital marketing": "Digital Marketing", "digital brand building": "Digital Marketing",
+    "digital branding": "Digital Marketing", "marketing": "Digital Marketing", "growth marketing": "Digital Marketing",
+    "seo": "Digital Marketing",
 }
 
 
@@ -1382,6 +1443,243 @@ PLATFORM_DOMAIN_COURSES = [
 ]
 
 
+
+DOMAIN_COURSES_METADATA = [
+    {
+        "domain": "UI/UX Design",
+        "title": "UI/UX Design Systems, Figma Prototyping & Design Tokens",
+        "slug": "ui-ux-design",
+        "level": "Beginner",
+        "estimated_hours": 10,
+        "banner_gradient": "linear-gradient(135deg, #4c1d95 0%, #6d28d9 50%, #7c3aed 100%)",
+        "chapters": [
+            {
+                "day_number": 1,
+                "title": "Design Principles & User Experience Architecture",
+                "subtopics": [
+                    ("User Research, Personas & Information Architecture", "Conduct user interviews, map customer journeys, and design sitemaps.", ["Qualitative user research & empathy maps", "Information architecture & card sorting", "User flow diagramming"]),
+                    ("Wireframing & Low-Fidelity Prototyping", "Translate user needs into rapid grayscale wireframes and layout structures.", ["Visual hierarchy & Gutenberg diagram", "Mobile-first wireframing in Figma", "Rapid interactive feedback loops"])
+                ],
+                "quiz": [
+                    {"id": 1, "question": "What is the primary purpose of low-fidelity wireframing?", "options": ["Focus on layout structure and user flows without visual distraction", "Pick final color palettes", "Generate CSS code automatically", "Test backend database performance"], "correct_index": 0},
+                    {"id": 2, "question": "Why is user research conducted before visual design begins?", "options": ["To validate user problems and prevent designing features nobody needs", "To satisfy project management requirements only", "To reduce font rendering latency", "To decide server hosting providers"], "correct_index": 0}
+                ]
+            },
+            {
+                "day_number": 2,
+                "title": "Figma Mastery, Design Systems & Auto-Layout",
+                "subtopics": [
+                    ("Advanced Figma Auto-Layout & Component Variants", "Build responsive UI components that adapt dynamically to viewport sizes.", ["Auto-layout properties & constraints", "Component properties & variant matrix", "Interactive component state animations"]),
+                    ("Design Tokens, Typography & Color Systems", "Establish scalable design tokens across typography, color, spacing, and elevation.", ["Accessible contrast ratios (WCAG AAA)", "Modular type scales & vertical rhythm", "Design token handoff for developers"])
+                ],
+                "quiz": [
+                    {"id": 1, "question": "What advantage does Figma Auto-Layout provide over static positioning?", "options": ["Components automatically resize and reflow like real web flexbox containers", "It compiles vector shapes into C++ binaries", "It reduces image file sizes to zero bytes", "It eliminates the need for user testing"], "correct_index": 0},
+                    {"id": 2, "question": "What minimum contrast ratio does WCAG AA require for normal body text?", "options": ["4.5:1", "1.5:1", "10:1", "2.0:1"], "correct_index": 0}
+                ]
+            },
+            {
+                "day_number": 3,
+                "title": "Usability Audits, Developer Handoff & Capstone",
+                "subtopics": [
+                    ("Heuristic Evaluation & Usability Testing", "Audit digital interfaces using Nielsen Norman heuristics and task completion tests.", ["10 usability heuristics applied to SaaS", "Conducting moderated usability walkthroughs", "Quantifying usability test metrics"]),
+                    ("Capstone Design System & Interactive Prototype", "Deliver an end-to-end clickable mobile or web application prototype.", ["Full clickable user journey in Figma", "Developer handoff documentation & redlines", "Case study presentation deck"])
+                ],
+                "quiz": [
+                    {"id": 1, "question": "What does Nielsen's 'Visibility of system status' heuristic recommend?", "options": ["The system should always keep users informed about what is going on through timely feedback", "All database tables must be publicly visible", "The user interface should never show loading bars", "The source code must be open source"], "correct_index": 0},
+                    {"id": 2, "question": "What should a complete developer handoff package include?", "options": ["Design tokens, component states, spacing specs, and interactive prototypes", "Only a static JPEG screenshot of the homepage", "The designer's personal computer backup", "Raw unorganized layer groups"], "correct_index": 0}
+                ]
+            }
+        ]
+    },
+    {
+        "domain": "DevOps & Cloud",
+        "title": "Cloud Infrastructure, Docker, Kubernetes & CI/CD Pipelines",
+        "slug": "devops-cloud",
+        "level": "Intermediate",
+        "estimated_hours": 14,
+        "banner_gradient": "linear-gradient(135deg, #0f172a 0%, #0369a1 50%, #0284c7 100%)",
+        "chapters": [
+            {
+                "day_number": 1,
+                "title": "Linux Systems, Networking & Cloud Foundations",
+                "subtopics": [
+                    ("Production Linux Administration & Bash Automation", "Master Linux file permissions, systemd service management, and shell automation.", ["POSIX permissions, users & group policies", "Systemd daemon configuration & logging", "Bash scripting for system administration"]),
+                    ("Cloud Architecture & Virtual Private Clouds (VPC)", "Architect resilient cloud networks with subnets, security groups, and routing.", ["Cloud VPC topology & CIDR blocks", "Public vs private subnet isolation", "IAM security & least-privilege policies"])
+                ],
+                "quiz": [
+                    {"id": 1, "question": "Why should production cloud databases reside in private subnets without public IPs?", "options": ["To eliminate direct public internet attack vectors and prevent unauthorized access", "Because private subnets have faster CPU execution", "Private subnets do not require database passwords", "Public subnets reject SQL connections"], "correct_index": 0},
+                    {"id": 2, "question": "Which Linux tool inspects systemd service status and journal logs?", "options": ["systemctl and journalctl", "grep and cat /etc/passwd", "ping and traceroute", "chmod and chown"], "correct_index": 0}
+                ]
+            },
+            {
+                "day_number": 2,
+                "title": "Containerization & Kubernetes Orchestration",
+                "subtopics": [
+                    ("Multi-Stage Dockerfiles & Image Hardening", "Build minimal, secure container images using multi-stage builds and non-root users.", ["Docker layer caching optimization", "Non-root user security enforcement", "Docker Compose multi-service architecture"]),
+                    ("Kubernetes Deployments, Services & Ingress", "Orchestrate containerized services with Kubernetes manifests and self-healing pods.", ["Pods, Deployments & ReplicaSets", "ClusterIP, NodePort & Ingress routing", "ConfigMaps, Secrets & rolling updates"])
+                ],
+                "quiz": [
+                    {"id": 1, "question": "What is the primary benefit of multi-stage Docker builds?", "options": ["Dramatically reduces final image size by discarding build-time SDKs and dependencies", "Increases image build speed on every run without cache", "Allows running Windows apps on Linux kernels natively", "Eliminates the need for container registries"], "correct_index": 0},
+                    {"id": 2, "question": "In Kubernetes, which object ensures a specified number of pod replicas are running at all times?", "options": ["Deployment / ReplicaSet", "PersistentVolumeClaim", "ClusterRoleBinding", "ConfigMap"], "correct_index": 0}
+                ]
+            },
+            {
+                "day_number": 3,
+                "title": "CI/CD Pipelines, Monitoring & Capstone",
+                "subtopics": [
+                    ("Automated CI/CD with GitHub Actions", "Build automated build, test, and zero-downtime deployment workflows.", ["Trigger events, secrets & runner matrices", "Automated linting, testing & container build", "Blue/green or rolling deployment strategies"]),
+                    ("Observability, Prometheus, Grafana & Capstone", "Instrument cloud services with metrics, centralized logs, and uptime alerts.", ["Prometheus metrics collection & alerting", "Grafana infrastructure dashboards", "Deploying a complete automated production pipeline"])
+                ],
+                "quiz": [
+                    {"id": 1, "question": "What is the key principle behind Continuous Integration (CI)?", "options": ["Frequently merging code into shared branches with automated testing to catch errors early", "Deploying unreviewed code directly to production hourly", "Storing all code in zip archives on cloud storage", "Running builds only once a quarter"], "correct_index": 0},
+                    {"id": 2, "question": "What is Prometheus primarily designed for in DevOps monitoring?", "options": ["Time-series metric scraping and rule-based alerting", "Relational SQL querying", "Transcoding video streams", "Sending marketing email campaigns"], "correct_index": 0}
+                ]
+            }
+        ]
+    },
+    {
+        "domain": "Mobile App Development",
+        "title": "Cross-Platform Mobile App Engineering with React Native",
+        "slug": "mobile-app-development",
+        "level": "Intermediate",
+        "estimated_hours": 14,
+        "banner_gradient": "linear-gradient(135deg, #1e1b4b 0%, #4338ca 50%, #6366f1 100%)",
+        "chapters": [
+            {
+                "day_number": 1,
+                "title": "Mobile UI Architecture & Navigation",
+                "subtopics": [
+                    ("React Native / Flutter UI Components & Styling", "Build native-feeling touch interfaces, adaptive layouts, and device styling.", ["Core mobile components (View, Text, ScrollView)", "Flexbox layout on mobile screens", "Safe area insets & platform-specific styles"]),
+                    ("Stack, Tab & Drawer Navigation Systems", "Architect seamless multi-screen mobile navigation flows and deep linking.", ["Native stack navigation patterns", "Bottom tab bar configuration", "Deep linking & routing state management"])
+                ],
+                "quiz": [
+                    {"id": 1, "question": "Why is SafeAreaView or safe-area insets essential on modern mobile devices?", "options": ["Prevents UI elements from being obscured by camera notches, home indicators, and status bars", "Increases battery recharge speed", "Enables Bluetooth scanning by default", "Renders text in 3D perspective"], "correct_index": 0},
+                    {"id": 2, "question": "Which navigation pattern is standard for primary top-level app destinations on mobile?", "options": ["Bottom Tab Navigation", "Horizontal Modal Slides only", "Command-line terminal input", "Pop-up alerts only"], "correct_index": 0}
+                ]
+            },
+            {
+                "day_number": 2,
+                "title": "Device APIs, Local Storage & State Management",
+                "subtopics": [
+                    ("Mobile State Management & Offline Storage", "Manage asynchronous app state, caching, and offline data persistence.", ["Context API / Redux Toolkit / Zustand", "AsyncStorage & SQLite local caching", "Optimistic UI updates for slow connections"]),
+                    ("Native Hardware APIs & Camera/Location", "Access device capabilities including geolocation, camera, and push notifications.", ["Camera & image picker integrations", "Geolocation & map rendering", "Push notification token lifecycle"])
+                ],
+                "quiz": [
+                    {"id": 1, "question": "What is an optimistic UI update in a mobile application?", "options": ["Updating the local UI immediately before server confirmation, rolling back only on error", "Waiting 10 seconds before displaying user input", "Hiding all network error messages permanently", "Assuming all network requests will time out"], "correct_index": 0},
+                    {"id": 2, "question": "Why must mobile apps request runtime permissions before accessing the camera or GPS?", "options": ["To protect user privacy and comply with iOS and Android platform security sandboxes", "To allocate extra RAM from the GPU", "To reduce battery consumption to zero", "Because camera drivers require root access"], "correct_index": 0}
+                ]
+            },
+            {
+                "day_number": 3,
+                "title": "App Optimization, Release Builds & Capstone",
+                "subtopics": [
+                    ("Performance Profiling & List Virtualization", "Optimize frame rates, memory usage, and smooth 60fps scrolling lists.", ["FlatList & FlashList virtualization", "Image caching & memory leak prevention", "Native Hermes JavaScript engine optimization"]),
+                    ("Production App Bundles & Store Deployment", "Generate release APKs, iOS IPAs, and configure store signing keys.", ["Android keystore signing & App Bundles (AAB)", "iOS provisioning profiles & Xcode archives", "Deploying a complete mobile app capstone"])
+                ],
+                "quiz": [
+                    {"id": 1, "question": "Why is FlatList preferred over ScrollView for long dynamic datasets in mobile apps?", "options": ["FlatList only renders items currently visible on screen, conserving memory", "ScrollView cannot render text elements", "FlatList automatically translates text into 10 languages", "ScrollView crashes on screens wider than 300px"], "correct_index": 0},
+                    {"id": 2, "question": "What is an Android App Bundle (AAB) compared to a monolithic APK?", "options": ["A publishing format that generates optimized APKs tailored for each user device configuration", "A raw source code archive for developers", "An uncompressed backup of the user database", "A simulator-only build artifact"], "correct_index": 0}
+                ]
+            }
+        ]
+    },
+    {
+        "domain": "Cybersecurity",
+        "title": "Offensive & Defensive Cybersecurity, SOC Analysis & Threat Modeling",
+        "slug": "cybersecurity",
+        "level": "Intermediate",
+        "estimated_hours": 14,
+        "banner_gradient": "linear-gradient(135deg, #450a0a 0%, #7f1d1d 50%, #991b1b 100%)",
+        "chapters": [
+            {
+                "day_number": 1,
+                "title": "Threat Modeling, Network Defense & Cryptography",
+                "subtopics": [
+                    ("Security Foundations, STRIDE & Attack Surfaces", "Model adversary threats, decompose attack surfaces, and evaluate risk posture.", ["STRIDE threat modeling methodology", "Defense-in-depth security architecture", "Asset classification & vulnerability metrics (CVSS)"]),
+                    ("Network Protocols, Packet Analysis & Cryptography", "Analyze network traffic with Wireshark and master applied cryptographic protocols.", ["TCP/IP handshakes, DNS & TLS mechanics", "Wireshark packet inspection & anomaly detection", "Symmetric vs asymmetric encryption & PKI"])
+                ],
+                "quiz": [
+                    {"id": 1, "question": "What does STRIDE threat modeling help security engineers identify?", "options": ["Spoofing, Tampering, Repudiation, Information Disclosure, Denial of Service, Elevation of Privilege", "Storage, Transmission, Routing, Indexing, Decryption, Execution", "Speed, Throughput, Resilience, Integrity, Density, Efficiency", "Scanning, Tracing, Resolving, Ingress, Egress, Deploying"], "correct_index": 0},
+                    {"id": 2, "question": "Why is TLS critical for web applications even if passwords are encrypted client-side?", "options": ["Encrypts all HTTP headers, cookies, and payloads to prevent eavesdropping and tampering", "Speeds up page rendering in the browser", "Enables web servers to run without electricity", "Replaces the need for any database authorization checks"], "correct_index": 0}
+                ]
+            },
+            {
+                "day_number": 2,
+                "title": "Web Application Penetration Testing & OWASP Top 10",
+                "subtopics": [
+                    ("OWASP Top 10 Vulnerabilities & Exploitation", "Audit web applications for injection, broken authentication, and SSRF flaws.", ["SQL Injection (SQLi) & Cross-Site Scripting (XSS)", "Broken Object Level Authorization (BOLA)", "Server-Side Request Forgery (SSRF) & remediation"]),
+                    ("Security Testing Tools (Burp Suite, Nmap, OWASP ZAP)", "Perform structured penetration testing workflows and automated vulnerability scans.", ["Burp Suite proxy intercept & repeater workflows", "Port scanning & banner grabbing with Nmap", "Fuzzing input fields & parameter tampering"])
+                ],
+                "quiz": [
+                    {"id": 1, "question": "What is the most effective defense against SQL Injection?", "options": ["Parameterized queries (prepared statements) with input validation", "Blacklisting single quotes only", "Hiding the database port number", "Running web servers on non-standard ports"], "correct_index": 0},
+                    {"id": 2, "question": "What vulnerability occurs when an API endpoint uses user-supplied IDs without checking authorization?", "options": ["Broken Object Level Authorization (BOLA / IDOR)", "Cross-Site Scripting (XSS)", "XML External Entity (XXE)", "DNS Cache Poisoning"], "correct_index": 0}
+                ]
+            },
+            {
+                "day_number": 3,
+                "title": "SOC Analysis, Incident Response & Capstone Audit",
+                "subtopics": [
+                    ("SIEM Log Analysis & Incident Response Playbooks", "Triage security events, correlate alerts, and follow NIST incident response stages.", ["Splunk / Elastic SIEM log correlation", "Detecting brute-force & credential stuffing attacks", "Incident containment, eradication & recovery"]),
+                    ("Capstone Security Assessment & Remediation Report", "Conduct a comprehensive security audit of a sample infrastructure and draft remediation advice.", ["Full application penetration test walkthrough", "Risk-ranked vulnerability report with CVSS scores", "Executive summary & technical remediation plan"])
+                ],
+                "quiz": [
+                    {"id": 1, "question": "What are the four core phases of the NIST Incident Response lifecycle?", "options": ["Preparation; Detection and Analysis; Containment, Eradication and Recovery; Post-Incident Activity", "Planning, Coding, Testing, Deploying", "Scanning, Exploiting, Exfiltrating, Erasing", "Alerting, Ignoring, Rebooting, Archiving"], "correct_index": 0},
+                    {"id": 2, "question": "Why should vulnerability remediation reports include executive summaries in addition to technical details?", "options": ["To communicate business risk and justify security budget/priorities to leadership", "Because executives write the remediation code", "To increase the report file size", "Because technical details are illegal to share"], "correct_index": 0}
+                ]
+            }
+        ]
+    },
+    {
+        "domain": "Digital Marketing",
+        "title": "Growth Engineering, Performance Marketing, SEO & Funnel Analytics",
+        "slug": "digital-marketing",
+        "level": "Beginner",
+        "estimated_hours": 10,
+        "banner_gradient": "linear-gradient(135deg, #1e1b4b 0%, #3b0764 50%, #581c87 100%)",
+        "chapters": [
+            {
+                "day_number": 1,
+                "title": "SEO Foundations & Technical Optimization",
+                "subtopics": [
+                    ("Keyword Research, Search Intent & On-Page SEO", "Identify high-value keywords, map search intent, and optimize page content.", ["Keyword difficulty, search volume & intent classification", "On-page metadata, title tags & heading hierarchy", "Content briefs & semantic entity optimization"]),
+                    ("Technical SEO, Core Web Vitals & Structured Data", "Audit web performance, crawlability, and schema markup for search engines.", ["Google Core Web Vitals (LCP, INP, CLS)", "Crawl budgets, XML sitemaps & robots.txt", "Schema.org JSON-LD structured data implementation"])
+                ],
+                "quiz": [
+                    {"id": 1, "question": "What is search intent in modern SEO?", "options": ["The underlying goal or reason a user searches for a specific query (informational, transactional, etc.)", "The number of words in a search query", "The speed at which Google crawls a website", "The font family used on the search results page"], "correct_index": 0},
+                    {"id": 2, "question": "Why is JSON-LD structured data valuable for search visibility?", "options": ["Helps search engines understand page context and enables rich snippets in search results", "Reduces server hosting bills by 50%", "Guarantees ranking #1 for any keyword instantly", "Replaces the need for HTML content entirely"], "correct_index": 0}
+                ]
+            },
+            {
+                "day_number": 2,
+                "title": "Performance Marketing & Paid Acquisition Channels",
+                "subtopics": [
+                    ("Google Ads, Search Campaigns & Quality Score", "Structure high-ROI search campaigns with keyword match types and ad copy.", ["Campaign hierarchy, ad groups & match types", "Ad Quality Score mechanics & bid strategies", "Landing page relevance & conversion rate optimization"]),
+                    ("Meta Ads, Audience Segmentation & Retargeting", "Target prospective customers with Meta pixel tracking, lookalike audiences, and creative hooks.", ["Meta Ads Manager & campaign objectives", "Custom and Lookalike audience modeling", "Dynamic creative testing & retargeting funnels"])
+                ],
+                "quiz": [
+                    {"id": 1, "question": "In Google Ads, how does a high Quality Score affect your advertising costs?", "options": ["Lowers your cost-per-click (CPC) and earns higher ad positions", "Increases your ad spend without increasing clicks", "Forces your ads to only show at midnight", "Requires you to spend a minimum of $10,000 per month"], "correct_index": 0},
+                    {"id": 2, "question": "What is the primary role of a Meta Pixel or conversion API in performance marketing?", "options": ["Track user actions on a website to measure ad performance and build retargeting audiences", "Increase the resolution of images on social media", "Automatically write ad copy without human input", "Delete spam comments on social media posts"], "correct_index": 0}
+                ]
+            },
+            {
+                "day_number": 3,
+                "title": "Analytics, Attribution & Growth Funnels Capstone",
+                "subtopics": [
+                    ("Google Analytics 4 (GA4) & Funnel Metrics", "Track conversion funnels, custom events, and understand attribution models.", ["GA4 custom event setup & conversion tracking", "LTV, CAC, ROAS and cohort retention metrics", "Multi-touch attribution models"]),
+                    ("Capstone Growth Strategy & Campaign Blueprint", "Design a complete acquisition funnel and performance marketing launch plan.", ["End-to-end customer acquisition strategy", "Budget allocation & forecasted ROAS model", "Executive presentation deck"])
+                ],
+                "quiz": [
+                    {"id": 1, "question": "What is the formula for calculating Return on Ad Spend (ROAS)?", "options": ["Revenue generated from ads divided by total ad spend", "Total ad clicks divided by impressions", "Total company revenue minus all employee salaries", "Ad spend multiplied by total website visitors"], "correct_index": 0},
+                    {"id": 2, "question": "Why is the Customer Lifetime Value (LTV) to Customer Acquisition Cost (CAC) ratio critical?", "options": ["Determines the long-term profitability and sustainable growth efficiency of customer acquisition", "Measures the number of emails sent per minute", "Calculates database query execution time", "Predicts the exact weather for outdoor marketing events"], "correct_index": 0}
+                ]
+            }
+        ]
+    }
+]
+
+ALL_DOMAIN_COURSES = PLATFORM_DOMAIN_COURSES + DOMAIN_COURSES_METADATA
+
+
 def get_canonical_intern(conn, email: str):
     """Return the single authoritative intern_accounts row for email, or None.
 
@@ -1630,7 +1928,11 @@ def ensure_application_record(conn, acct, chosen_domain=None, status=STATUS_UNDE
             VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)
         """, (name, email, phone, city, college, course, semester, year_of_passing,
               domain, sop, status or STATUS_UNDER_REVIEW, "portal_onboarding", now_str(), now_str()))
-        app_id = cur.lastrowid
+        app_id = getattr(cur, "lastrowid", None)
+        if not app_id or app_id == 0:
+            created_app = conn.execute("SELECT id FROM applications WHERE LOWER(email)=LOWER(?) ORDER BY id DESC LIMIT 1", (email,)).fetchone()
+            if created_app:
+                app_id = created_app["id"]
 
     conn.execute("UPDATE intern_accounts SET application_id=?, domain=?, updated_at=? WHERE id=?", (app_id, domain, now_str(), acct["id"]))
     conn.execute("UPDATE enrollments SET application_id=?, domain=?, updated_at=? WHERE LOWER(email)=?", (app_id, domain, now_str(), email))
@@ -2650,6 +2952,23 @@ def init_db():
             CREATE INDEX IF NOT EXISTS idx_attendance_intern_week ON attendance(intern_id, week_start DESC);
             CREATE INDEX IF NOT EXISTS idx_course_day_quizzes_course ON course_day_quizzes(course_id, day_number);
             CREATE INDEX IF NOT EXISTS idx_posts_expires ON posts(expires_at);
+
+            -- Phase P5: Free AI Resume / ATS Checker audits and lead capture
+            CREATE TABLE IF NOT EXISTS resume_ats_audits (
+                id              INTEGER PRIMARY KEY AUTOINCREMENT,
+                intern_id       INTEGER,
+                email           TEXT,
+                name            TEXT,
+                phone           TEXT,
+                domain          TEXT NOT NULL,
+                target_role     TEXT,
+                ats_score       INTEGER NOT NULL,
+                breakdown_json  TEXT NOT NULL,
+                created_at      TEXT DEFAULT (datetime('now','localtime')),
+                FOREIGN KEY(intern_id) REFERENCES intern_accounts(id)
+            );
+            CREATE INDEX IF NOT EXISTS idx_ats_audits_email ON resume_ats_audits(email);
+            CREATE INDEX IF NOT EXISTS idx_ats_audits_created ON resume_ats_audits(created_at DESC);
             
             -- Ecosystem Spotlight & Technical Publishing
             CREATE TABLE IF NOT EXISTS ecosystem_spotlights (
@@ -3714,7 +4033,7 @@ CSRF_SAFE_METHODS = {"GET", "HEAD", "OPTIONS", "TRACE"}
 # Endpoints that legitimately cannot carry a token. Keep this list empty unless
 # there is a genuine server-to-server caller — every browser-originated POST
 # must be protected. RFC 8058 one-click unsubscribe is authenticated via HMAC signature.
-CSRF_EXEMPT_ENDPOINTS = {"scraped_lead_click_track", "unsubscribe"}
+CSRF_EXEMPT_ENDPOINTS = {"scraped_lead_click_track", "unsubscribe", "api_tools_ats_checker"}
 
 
 def _csrf_token():
@@ -3746,7 +4065,7 @@ def _enforce_csrf():
         return None
     ep = request.endpoint or ""
     ep_short = ep.split(".")[-1]
-    if request.path.startswith("/api/payment/razorpay/webhook") or ep in CSRF_EXEMPT_ENDPOINTS or ep_short in CSRF_EXEMPT_ENDPOINTS:
+    if request.path.startswith("/api/payment/razorpay/webhook") or request.path.startswith("/api/tools/ats-checker") or ep in CSRF_EXEMPT_ENDPOINTS or ep_short in CSRF_EXEMPT_ENDPOINTS:
         return None
 
     # P0-7: Server-to-server CSRF exemption with strong auth
@@ -3755,11 +4074,18 @@ def _enforce_csrf():
         return None
 
     expected = session.get("_csrf")
-    supplied = request.headers.get(CSRF_HEADER) or request.form.get(CSRF_FIELD)
+    supplied = (
+        request.headers.get(CSRF_HEADER)
+        or request.headers.get("X-CSRFToken")
+        or request.headers.get("X-CSRF-TOKEN")
+        or request.form.get(CSRF_FIELD)
+        or request.form.get("_csrf")
+        or request.form.get("csrf_token")
+    )
     if not supplied and request.is_json:
         body = request.get_json(silent=True)
         if isinstance(body, dict):
-            supplied = body.get(CSRF_FIELD)
+            supplied = body.get(CSRF_FIELD) or body.get("_csrf") or body.get("csrf_token")
 
     if expected and supplied and secrets.compare_digest(str(supplied), str(expected)):
         return None
@@ -4036,6 +4362,41 @@ def _send_smtp_single(host, port, user, passwd, from_addr, to_addr, raw_msg):
     log_info("SMTP_SENT", f"Successfully dispatched email to {to_addr} via {host}:{port}")
 
 def _smtp_send_raw(msg, to_email):
+    # Multi-Account Google Workspace SMTP Pool with random selection & failover
+    accounts_json = os.environ.get("SMTP_ACCOUNTS_JSON", "").strip()
+    if accounts_json.startswith("'") and accounts_json.endswith("'"):
+        accounts_json = accounts_json[1:-1].strip()
+    elif accounts_json.startswith('"') and accounts_json.endswith('"'):
+        accounts_json = accounts_json[1:-1].strip()
+    if accounts_json:
+        try:
+            import json, random
+            accounts = json.loads(accounts_json)
+            if isinstance(accounts, list) and accounts:
+                shuffled = list(accounts)
+                random.shuffle(shuffled)
+                for acc in shuffled:
+                    em = acc.get("email", "").strip()
+                    pw = acc.get("app_password", "").strip()
+                    fn = acc.get("from_name", "DBERT Support")
+                    if not em or not pw:
+                        continue
+                    try:
+                        if msg.get("From"):
+                            msg.replace_header("From", formataddr((fn, em)))
+                        else:
+                            msg.add_header("From", formataddr((fn, em)))
+                        if msg.get("Reply-To"):
+                            msg.replace_header("Reply-To", em)
+                        else:
+                            msg.add_header("Reply-To", em)
+                        _send_smtp_single(SMTP_HOST, SMTP_PORT, em, pw, em, to_email, msg.as_string())
+                        return
+                    except Exception as err:
+                        log_error(f"SMTP_POOL_{em}_FAIL", err)
+        except Exception as e:
+            log_error("SMTP_POOL_EXEC_FAIL", e)
+
     raw_str = msg.as_string()
     try:
         _send_smtp_single(SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, FROM_EMAIL, to_email, raw_str)
@@ -4136,17 +4497,29 @@ def send_email_async(to_email, subject, html_body, name="", campaign="transactio
             if provider == "ses":
                 provider_used = "ses"
                 _ses_send_raw(msg, to_email)
-            elif provider == "smtp":
-                provider_used = "smtp"
-                _smtp_send_raw(msg, to_email)
-            elif provider == "delivery_service":
+            elif provider in ("smtp", "delivery_service"):
                 provider_used = "delivery_service"
-                from services.delivery_service import get_delivery_service
-                res = get_delivery_service().send_email(to_email, subject, html_body)
-                sent = "YES" if res.success else "NO"
-                provider_used = res.provider
-                msg_id = res.message_id
-                err_msg = res.error
+                try:
+                    from services.delivery_service import get_delivery_service
+                    res = get_delivery_service().send_email(to_email, subject, html_body)
+                    sent = "YES" if res.success else "NO"
+                    provider_used = res.provider
+                    msg_id = res.message_id
+                    err_msg = res.error
+                    if not res.success:
+                        # Fallback to direct raw SMTP if delivery service encountered limit
+                        try:
+                            _smtp_send_raw(msg, to_email)
+                            sent = "YES"
+                            provider_used = "smtp_fallback"
+                            err_msg = None
+                        except Exception as fb_err:
+                            err_msg = f"{res.error} | fallback error: {fb_err}"
+                except Exception as ds_err:
+                    _smtp_send_raw(msg, to_email)
+                    sent = "YES"
+                    provider_used = "smtp"
+                    err_msg = None
             else:
                 provider_used = "cpanel_api"
                 # Default to DBERT Mailer microservice (https://mailer.aivaratech.online/send)
@@ -4765,14 +5138,46 @@ def send_otp_verification_email(to_email, otp):
 # PAGE ROUTES
 # â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
+def _next_cohort_monday():
+    """Returns next Monday at 18:00 IST as datetime, auto-rolling every Monday after 18:00 IST."""
+    IST = timezone(timedelta(hours=5, minutes=30))
+    now = datetime.now(IST)
+    days_ahead = (0 - now.weekday()) % 7
+    if days_ahead == 0 and now.hour >= 18:
+        days_ahead = 7
+    next_mon = (now + timedelta(days=days_ahead)).replace(hour=18, minute=0, second=0, microsecond=0)
+    return next_mon
+
+
 @app.route("/")
 def index():
     try:
+        next_monday = _next_cohort_monday()
+        now = datetime.now(timezone(timedelta(hours=5, minutes=30)))
+        delta = next_monday - now
+        total_seconds = max(0, int(delta.total_seconds()))
+        init_days = f"{total_seconds // 86400:02d}"
+        init_hours = f"{(total_seconds % 86400) // 3600:02d}"
+        init_mins = f"{(total_seconds % 3600) // 60:02d}"
+        init_secs = f"{total_seconds % 60:02d}"
+        tiles = _domain_tile_counts()
+        domain_tiles_map = {t["domain"]: t for t in tiles}
         return render_template(
             "index.html",
             job_openings=live_openings_total(),
-            domain_tiles=_domain_tile_counts(),
+            domain_tiles=tiles,
+            domain_tiles_map=domain_tiles_map,
+            domain_slugs=DOMAIN_SLUGS,
             trust_stats=_trust_stats(),
+            cohort_monday=next_monday,
+            cohort_display=next_monday.strftime("%A, %d %b %Y"),
+            cohort_date_short=next_monday.strftime("%d %b %Y"),
+            cohort_month=next_monday.strftime("%B %Y"),
+            cohort_iso=next_monday.isoformat(),
+            init_days=init_days,
+            init_hours=init_hours,
+            init_mins=init_mins,
+            init_secs=init_secs,
         )
     except Exception as e:
         log_error("/index", e)
@@ -4856,6 +5261,11 @@ def sitemap_xml():
     # (loc, lastmod, changefreq, priority)
     pages = [
         (f"{SITE_ORIGIN}/",        today, "weekly",  "1.0"),
+        (f"{SITE_ORIGIN}/apply",   today, "daily",   "0.95"),
+        (f"{SITE_ORIGIN}/internships/november-2026", today, "daily", "0.9"),
+        (f"{SITE_ORIGIN}/internships/december-2026", today, "daily", "0.9"),
+        (f"{SITE_ORIGIN}/internships/cohort-2026",   today, "daily", "0.9"),
+        (f"{SITE_ORIGIN}/internships/cohort-november-2026", today, "daily", "0.9"),
         (f"{SITE_ORIGIN}/program", today, "weekly",  "0.9"),
         (f"{SITE_ORIGIN}/jobs",        today, "daily",   "0.8"),
         (f"{SITE_ORIGIN}/internships", today, "daily",   "0.8"),
@@ -4874,6 +5284,8 @@ def sitemap_xml():
         pages.append((f"{SITE_ORIGIN}/jobs/work-from-home/{_slug}", today, "daily", "0.9"))
         pages.append((f"{SITE_ORIGIN}/internships/paid/{_slug}", today, "daily", "0.9"))
         pages.append((f"{SITE_ORIGIN}/jobs/paid/{_slug}", today, "daily", "0.9"))
+        pages.append((f"{SITE_ORIGIN}/internships/remote/{_slug}", today, "daily", "0.9"))
+        pages.append((f"{SITE_ORIGIN}/jobs/remote/{_slug}", today, "daily", "0.9"))
 
         # Programmatic tech hub combinations
         for _hub in ["bangalore", "pune", "hyderabad", "delhi", "mumbai", "chennai", "remote"]:
@@ -4901,7 +5313,7 @@ def sitemap_xml():
         # Scraped internship lead pages — one URL per active job for Google Jobs indexing
         for r in conn.execute(
             "SELECT id, Role, Company, End_Date FROM scraped_internships "
-            "WHERE End_Date >= date('now') OR End_Date IS NULL"
+            "WHERE End_Date >= ? OR End_Date IS NULL", (today,)
         ).fetchall():
             seo_slug = re.sub(r"[^a-z0-9]+", "-",
                               f"{r['Role']} {r['Company']}".lower()).strip("-")[:70]
@@ -4913,7 +5325,7 @@ def sitemap_xml():
         try:
             for r in conn.execute(
                 "SELECT id, Role, Company, End_Date FROM scraped_jobs "
-                "WHERE End_Date >= date('now') OR End_Date IS NULL"
+                "WHERE End_Date >= ? OR End_Date IS NULL", (today,)
             ).fetchall():
                 seo_slug = re.sub(r"[^a-z0-9]+", "-",
                                   f"{r['Role']} {r['Company']}".lower()).strip("-")[:70]
@@ -4947,10 +5359,72 @@ def signin_page():
 @app.route("/signup")
 def signup_page():
     nxt = _safe_portal_next(request.args.get("next"))
+    domain = clean_text(request.args.get("domain", ""))
+    ref = clean_text(request.args.get("ref", ""))
+    plan = clean_text(request.args.get("plan", ""))
     if nxt:
         session["next"] = nxt
-    suffix = f"?next={quote(nxt)}" if nxt else ""
+    params = []
+    if nxt:
+        params.append(f"next={quote(nxt)}")
+    if domain:
+        params.append(f"domain={quote(domain)}")
+    if ref:
+        params.append(f"ref={quote(ref)}")
+    if plan:
+        params.append(f"plan={quote(plan)}")
+    suffix = ("?" + "&".join(params)) if params else ""
     return redirect(f"/#signup{suffix}")
+
+@app.route("/activate")
+@app.route("/auth/activate")
+def auth_activate():
+    """
+    1-Click secure onboarding link for verified certificate candidates.
+    Auto-authenticates session and directs to /stipend/tasks or next URL.
+    """
+    email = clean_text(request.args.get("e") or request.args.get("email") or "").lower().strip()
+    token = clean_text(request.args.get("t") or request.args.get("token") or "").strip()
+    nxt = _safe_portal_next(request.args.get("next") or "/stipend/tasks")
+    
+    ok = bool(email) and hmac.compare_digest(token, _email_sig("activate", email))
+    if not ok:
+        flash("Activation link is invalid or expired. Please sign in or use Forgot Password.", "warning")
+        return redirect(f"/#signin?next={quote(nxt)}")
+        
+    try:
+        from services.certificate_service import CertificateService
+        reg = CertificateService.load_registry_record(email=email)
+        with get_db() as conn:
+            user = conn.execute("SELECT * FROM intern_accounts WHERE LOWER(email)=LOWER(?) LIMIT 1", (email,)).fetchone()
+            if not user:
+                conn.execute(
+                    """
+                    INSERT INTO intern_accounts 
+                    (name, email, phone, domain, college, password_hash, password_set, is_active, signup_stage, created_at, updated_at)
+                    VALUES (?, ?, ?, ?, ?, '', 0, 1, 3, datetime('now','localtime'), datetime('now','localtime'))
+                    """,
+                    (
+                        reg.get("holderName", "Intern") if reg else "Intern",
+                        email,
+                        reg.get("phone", "") if reg else "",
+                        reg.get("domain", "General") if reg else "General",
+                        reg.get("college", "") if reg else ""
+                    )
+                )
+                conn.commit()
+                user = conn.execute("SELECT * FROM intern_accounts WHERE LOWER(email)=LOWER(?) LIMIT 1", (email,)).fetchone()
+                
+        sess_token = create_session(email, "intern")
+        resp = make_response(redirect(nxt))
+        _set_session_cookie(resp, sess_token)
+        flash(f"Welcome back, {user['name'] if user else 'Candidate'}! Your verified internship account is active.", "success")
+        return resp
+    except Exception as e:
+        log_error("auth_activate", e)
+        flash("Unable to complete activation. Please sign in.", "error")
+        return redirect("/#signin")
+
 
 
 @app.route("/terms")
@@ -5371,7 +5845,7 @@ def course_enroll(course_id):
         return redirect("/#signin")
 
     if not is_enrolled_or_accepted(intern["email"]):
-        msg = "Internship enrollment required. Please confirm your seat via the ₹499 refundable deposit to unlock course learning."
+        msg = "Internship enrollment required. Please confirm your seat to unlock course learning."
         if request.headers.get("X-Requested-With") == "XMLHttpRequest" or request.is_json:
             return jsonify({"status": "enrollment_required", "message": msg, "redirect": "/portal"}), 403
         flash(msg, "warning")
@@ -6063,10 +6537,23 @@ def api_learning_v2_concept_tree(course_id):
 def admin_articles_list():
     user = require_admin() or require_role(["admin", "mentor"])
     if not user:
+        if request.accept_mimetypes.accept_html and not request.is_json:
+            return redirect("/admin/login")
         return jsonify({"status": "error", "message": "Unauthorized"}), 401
     with get_db() as conn:
         rows = conn.execute("SELECT a.*, i.name as intern_name, i.email as intern_email FROM intern_articles a JOIN intern_accounts i ON a.intern_id = i.id ORDER BY a.updated_at DESC").fetchall()
-        return jsonify({"status": "success", "articles": [row_to_dict(r) for r in rows]})
+        articles = [row_to_dict(r) for r in rows]
+
+        is_json_request = (
+            request.is_json
+            or request.args.get("format") == "json"
+            or request.headers.get("X-Requested-With") == "XMLHttpRequest"
+            or "application/json" in (request.headers.get("Accept") or "")
+            or not request.accept_mimetypes.accept_html
+        )
+        if not is_json_request:
+            return render_template("admin_articles.html", admin=user, staff=user, user=user, articles=articles, active_page="admin_articles")
+        return jsonify({"status": "success", "articles": articles})
 
 @app.route("/admin/articles/review", methods=["POST"])
 def admin_articles_review():
@@ -6107,6 +6594,39 @@ def admin_articles_review():
             "UPDATE intern_articles SET title=?, domain=?, content_markdown=?, status=?, mentor_feedback=?, published_url=?, updated_at=? WHERE id=?",
             (new_title, new_domain, new_content, new_status, new_feedback, assigned_url, now_ts, article_id)
         )
+
+        # Automated congratulatory publication email + 1-Click LinkedIn share kit
+        if new_status == "PUBLISHED" and cur["status"] != "PUBLISHED":
+            try:
+                author = conn.execute("SELECT name, email FROM intern_accounts WHERE id=?", (cur["intern_id"],)).fetchone()
+                if author and author["email"]:
+                    author_name = author["name"] or "DBERT Fellow"
+                    subject = "Your Capstone Case Study is Officially Published on dbert.in! 🚀"
+                    share_url = assigned_url or f"https://dbert.in/blog/{slug}"
+                    linkedin_url = f"https://www.linkedin.com/sharing/share-offsite/?url={quote(share_url)}"
+
+                    email_html = f"""
+                    <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;color:#333;line-height:1.6;">
+                      <div style="background:#0F172A;padding:28px;border-radius:14px;color:#fff;">
+                        <h2 style="color:#38BDF8;margin-top:0;">DBERT Engineering Journal · Publication Confirmation</h2>
+                        <p>Dear <strong>{author_name}</strong>,</p>
+                        <p>Congratulations! Your technical engineering case study, <strong>"{new_title}"</strong>, has officially cleared editorial review and is live on our sovereign domain:</p>
+                        <p style="text-align:center;margin:24px 0;">
+                          <a href="{share_url}" style="background:linear-gradient(135deg, #6366F1, #4F46E5);color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:bold;display:inline-block;">View Live Case Study on dbert.in ↗</a>
+                        </p>
+                        <div style="background:rgba(255,255,255,0.06);padding:18px;border-radius:10px;border:1px solid rgba(255,255,255,0.12);margin-top:20px;">
+                          <h4 style="color:#A5B4FC;margin:0 0 8px;font-size:15px;">🚀 Amplify Your Milestone on LinkedIn</h4>
+                          <p style="font-size:13px;color:#CBD5E1;margin:0 0 12px;line-height:1.5;">Show recruiters and peers your production codebase, live deployment, and DBERT evaluation with 1 click:</p>
+                          <a href="{linkedin_url}" target="_blank" style="background:#0A66C2;color:#fff;padding:9px 18px;border-radius:6px;text-decoration:none;font-size:13px;font-weight:bold;display:inline-block;">Share on LinkedIn ↗</a>
+                        </div>
+                        <p style="font-size:12px;color:#94A3B8;margin-top:24px;">Your Step 3 Capstone Case Study prerequisite is now complete. Program staff has been notified for your ₹5,000 stipend release.</p>
+                      </div>
+                    </div>
+                    """
+                    send_email_async(author["email"], subject, email_html)
+            except Exception as e:
+                log_error("admin-article-publish-email", e)
+
         conn.commit()
     return jsonify({"status": "success", "article_id": article_id, "article_status": new_status, "published_url": assigned_url})
 
@@ -6180,6 +6700,58 @@ def admin_articles_publish():
     return jsonify({"status": "success"})
 
 
+# ── Admin Stipend & Growth Funnel Dashboard ──────────────────────────────
+@app.route("/admin/stipend-funnel", methods=["GET"])
+def admin_stipend_funnel():
+    user = require_admin() or require_role(["admin", "staff", "mentor"])
+    if not user:
+        return redirect("/admin/login")
+
+    with get_db() as conn:
+        from services.stipend_nudge_service import StipendNudgeService
+        candidates = StipendNudgeService.get_eligible_candidates(conn, limit=500)
+        stats = StipendNudgeService.get_funnel_stats(conn)
+
+    if request.headers.get("Accept") == "application/json" or request.args.get("format") == "json":
+        return jsonify({"status": "success", "candidates": candidates, "stats": stats, "count": len(candidates)})
+
+    return render_template("admin_stipend_funnel.html", candidates=candidates, stats=stats, user=user)
+
+
+@app.route("/admin/stipend-funnel/nudge", methods=["POST"])
+def admin_stipend_funnel_nudge():
+    user = require_admin() or require_role(["admin", "staff", "mentor"])
+    if not user:
+        return jsonify({"status": "error", "message": "Unauthorized"}), 401
+
+    data = request.json or request.form or {}
+    intern_id = _int_or_none(data.get("intern_id"))
+    if not intern_id:
+        return jsonify({"status": "error", "message": "Missing intern ID"}), 400
+
+    with get_db() as conn:
+        from services.stipend_nudge_service import StipendNudgeService
+        from services.certificate_service import CertificateService
+        acct = conn.execute("SELECT id, name, email, domain FROM intern_accounts WHERE id=?", (intern_id,)).fetchone()
+        if not acct:
+            return jsonify({"status": "error", "message": "Intern account not found"}), 404
+
+        email = (acct["email"] or "").strip().lower()
+        ver_info = CertificateService.is_intern_verified(conn, intern_id=intern_id, email=email)
+        cand_data = {
+            "intern_id": intern_id,
+            "email": email,
+            "name": acct["name"] or "DBERT Fellow",
+            "domain": acct["domain"] or ver_info.get("domain", "Engineering"),
+            "cert_id": ver_info.get("cert_id", "")
+        }
+        ok = StipendNudgeService.send_eligibility_nudge(cand_data, send_fn=send_email_async)
+        if ok:
+            return jsonify({"status": "success", "message": f"Nudge dispatched to {email}."})
+        else:
+            return jsonify({"status": "error", "message": "Could not dispatch email."}), 500
+
+
 # ── Canonical Blog Redirection to dbert.in ────────────────────────────────
 @app.route("/articles/<int:article_id>")
 @app.route("/articles/<slug>-<int:article_id>")
@@ -6211,7 +6783,9 @@ def public_blog_posts():
         _ensure_articles_table(conn)
         rows = conn.execute(
             "SELECT a.id, a.title, a.domain, a.content_markdown, a.status, a.published_url, "
-            "a.created_at, a.updated_at, i.name AS author_name, i.email AS author_email "
+            "a.created_at, a.updated_at, a.task_submission_id, a.cert_id, a.github_repo_url, "
+            "a.live_demo_url, a.rubric_score, a.stipend_status, a.views_count, "
+            "i.name AS author_name, i.email AS author_email "
             "FROM intern_articles a "
             "JOIN intern_accounts i ON a.intern_id = i.id "
             "WHERE a.status IN ('APPROVED', 'PUBLISHED') "
@@ -6240,7 +6814,13 @@ def public_blog_posts():
             "readTime": read_time,
             "tags": [d.get("domain", "Engineering"), "Research", "FastAPI"] if "fastapi" in d.get("title", "").lower() else [d.get("domain", "Engineering"), "Technical Guide"],
             "canonicalUrl": f"https://dbert.in/blog/{slug}",
-            "status": d["status"]
+            "status": d["status"],
+            "certId": d.get("cert_id") or "",
+            "githubRepoUrl": d.get("github_repo_url") or "",
+            "liveDemoUrl": d.get("live_demo_url") or "",
+            "rubricScore": d.get("rubric_score") or None,
+            "stipendStatus": d.get("stipend_status") or "PENDING",
+            "viewsCount": d.get("views_count") or 0
         })
 
     resp = jsonify({"status": "success", "posts": posts})
@@ -6257,7 +6837,9 @@ def public_blog_post_detail(slug):
         _ensure_articles_table(conn)
         rows = conn.execute(
             "SELECT a.id, a.title, a.domain, a.content_markdown, a.status, a.published_url, "
-            "a.created_at, a.updated_at, i.name AS author_name, i.email AS author_email "
+            "a.created_at, a.updated_at, a.task_submission_id, a.cert_id, a.github_repo_url, "
+            "a.live_demo_url, a.rubric_score, a.stipend_status, a.views_count, "
+            "i.name AS author_name, i.email AS author_email "
             "FROM intern_articles a "
             "JOIN intern_accounts i ON a.intern_id = i.id "
             "WHERE a.status IN ('APPROVED', 'PUBLISHED')"
@@ -6272,6 +6854,14 @@ def public_blog_post_detail(slug):
 
     if not matched:
         return jsonify({"status": "error", "message": "Post not found"}), 404
+
+    # Increment view count safely
+    try:
+        with get_db() as conn:
+            conn.execute("UPDATE intern_articles SET views_count = COALESCE(views_count, 0) + 1 WHERE id = ?", (matched["id"],))
+            conn.commit()
+    except Exception:
+        pass
 
     content = matched.get("content_markdown") or ""
     lines = [line.strip() for line in content.splitlines() if line.strip() and not line.startswith("#")]
@@ -6288,12 +6878,19 @@ def public_blog_post_detail(slug):
         "domain": matched.get("domain") or "General",
         "author": matched.get("author_name") or "DBERT Fellow",
         "authorRole": f"{matched.get('domain') or 'AI Engineering'} Fellow",
-        "authorBio": f"Engineering contributor at DBERT Labs focusing on {matched.get('domain') or 'distributed systems'}.",
+        "authorBio": f"Engineering contributor at DBERT focusing on {matched.get('domain') or 'distributed systems'}.",
         "date": (matched.get("updated_at") or matched.get("created_at") or "")[:10],
         "readTime": read_time,
         "tags": [matched.get("domain", "Engineering"), "Technical Guide"],
         "canonicalUrl": f"https://dbert.in/blog/{post_slug}",
-        "content_markdown": content
+        "content_markdown": content,
+        "status": matched["status"],
+        "certId": matched.get("cert_id") or "",
+        "githubRepoUrl": matched.get("github_repo_url") or "",
+        "liveDemoUrl": matched.get("live_demo_url") or "",
+        "rubricScore": matched.get("rubric_score") or None,
+        "stipendStatus": matched.get("stipend_status") or "PENDING",
+        "viewsCount": (matched.get("views_count") or 0) + 1
     }
 
     resp = jsonify({"status": "success", "post": data})
@@ -6924,7 +7521,15 @@ def staff_dashboard():
         ).fetchall()
         
         queue_names = [r["queue_name"] for r in roles]
-        tables = [r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()]
+        if hasattr(conn, "table_exists"):
+            has_project_subs = conn.table_exists("project_submissions")
+        else:
+            dialect_attr = getattr(conn, "dialect", "sqlite")
+            dialect = dialect_attr() if callable(dialect_attr) else dialect_attr
+            if str(dialect).lower() == "postgres" or "postgres" in str(type(conn)).lower():
+                has_project_subs = bool(conn.execute("SELECT 1 FROM information_schema.tables WHERE table_name = 'project_submissions'").fetchone())
+            else:
+                has_project_subs = bool(conn.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='project_submissions'").fetchone())
         
         queues_summary = []
         
@@ -6943,7 +7548,7 @@ def staff_dashboard():
         if "projects" in queue_names:
             pr_row = conn.execute(
                 "SELECT COUNT(*) as count, MIN(created_at) as oldest FROM project_submissions WHERE status = 'pending'"
-            ).fetchone() if "project_submissions" in tables else {"count": 0, "oldest": None}
+            ).fetchone() if has_project_subs else {"count": 0, "oldest": None}
             queues_summary.append({"name": "projects", "title": "Capstone Projects", "count": pr_row["count"], "oldest": pr_row["oldest"], "url": "/staff/projects"})
 
         if "tasks" in queue_names:
@@ -7371,27 +7976,77 @@ def encrypt_upi(upi_plain):
 
 
 def decrypt_upi(upi_cipher):
-    """Server-side only, and only at admin payout review (Â§5.4)."""
-    f = _fernet()
-    if not f or not upi_cipher:
+    """Server-side only, and only at admin payout review (§5.4)."""
+    if not upi_cipher:
         return None
+    raw = upi_cipher.strip()
+    if "@" in raw and not raw.startswith("gAAAAA"):
+        return raw
+    f = _fernet()
+    if not f:
+        return raw if "@" in raw else None
     try:
-        return f.decrypt(upi_cipher.encode()).decode()
+        return f.decrypt(raw.encode()).decode()
     except Exception as e:
         log_error("fernet-decrypt", e)
-        return None
+        return raw if "@" in raw else None
 
 
 def mask_upi(upi_plain):
-    """priâ€¢â€¢â€¢â€¢â€¢@okhdfc â€” the ONLY form that may reach a browser outside the
+    """pri•••••@okhdfc — the ONLY form that may reach a browser outside the
     admin payout screen."""
     if not upi_plain or "@" in upi_plain[:1]:
         return ""
     if "@" not in upi_plain:
-        return (upi_plain[:2] + "â€¢â€¢â€¢") if len(upi_plain) > 2 else "â€¢â€¢â€¢"
+        return (upi_plain[:2] + "•••") if len(upi_plain) > 2 else "•••"
     user, _, bank = upi_plain.partition("@")
     head = user[:3] if len(user) > 3 else user[:1]
-    return f"{head}{'â€¢' * max(3, len(user) - len(head))}@{bank}"
+    return f"{head}{'•' * max(3, len(user) - len(head))}@{bank}"
+
+
+def encrypt_gemini_key(plain_key: str):
+    """Encrypts an intern-provided Gemini API key with Fernet cipher."""
+    if not plain_key:
+        return None
+    f = _fernet()
+    if not f:
+        import base64
+        return "b64:" + base64.b64encode(plain_key.strip().encode()).decode()
+    return f.encrypt(plain_key.strip().encode()).decode()
+
+
+def decrypt_gemini_key(cipher_key: str):
+    """Decrypts an intern-provided Gemini API key in-memory for active AI synthesis."""
+    if not cipher_key:
+        return None
+    raw = cipher_key.strip()
+    if raw.startswith("AIzaSy"):
+        return raw
+    if raw.startswith("b64:"):
+        import base64
+        try:
+            return base64.b64decode(raw[4:]).decode()
+        except Exception:
+            return None
+    f = _fernet()
+    if not f:
+        return raw if raw.startswith("AIzaSy") else None
+    try:
+        return f.decrypt(raw.encode()).decode()
+    except Exception as e:
+        log_error("fernet-decrypt-gemini", e)
+        return raw if raw.startswith("AIzaSy") else None
+
+
+def mask_gemini_key(key: str) -> str:
+    """Masks a Gemini API key for safe display (e.g. AIzaSy...4xK9)."""
+    if not key:
+        return ""
+    clean = key.strip()
+    if len(clean) <= 10:
+        return clean[:3] + "..." + clean[-2:]
+    return clean[:6] + "..." + clean[-4:]
+
 
 
 def is_valid_upi(upi):
@@ -7485,7 +8140,7 @@ def attach_referral_on_signup(conn, new_intern_id, new_email, code, visitor_id=N
 
 
 def credit_referral_commission(conn, payer_intern_id, amount_inr, source, ref_payment_id):
-    """Â§6.3 â€” on a VERIFIED payment, pay the referrer 10% of the gross.
+    """§6.3 — on a VERIFIED payment, pay the referrer guaranteed flat ₹200 for fellowship or 10% gross.
 
     Called from the existing verification hooks, not a parallel system.
     Idempotent on ref_payment_id (enforced by credit_referral_coins' UNIQUE
@@ -7499,13 +8154,19 @@ def credit_referral_commission(conn, payer_intern_id, amount_inr, source, ref_pa
     if not payer or not payer["referred_by_intern_id"]:
         return 0
     referrer_id = payer["referred_by_intern_id"]
-    commission = int(round(float(amount_inr) * REFERRAL_COMMISSION_RATE))
+    
+    # Flat ₹200 guaranteed cash bounty for fellowship/incubation conversion, otherwise 10%
+    src_lower = str(source).lower()
+    if "fellowship" in src_lower or "incubation" in src_lower or "program1999" in src_lower or float(amount_inr) in (1500.0, 1999.0):
+        commission = 200
+    else:
+        commission = max(200, int(round(float(amount_inr) * REFERRAL_COMMISSION_RATE)))
     if commission <= 0:
         return 0
 
     new_bal = credit_referral_coins(
         conn, referrer_id, commission,
-        f"Referral commission â€” {source}", ref_payment_id=ref_payment_id)
+        f"Referral cash bounty (₹200) — {source}", ref_payment_id=ref_payment_id)
     if new_bal is None:
         return 0      # already commissioned for this payment
 
@@ -7513,7 +8174,7 @@ def credit_referral_commission(conn, payer_intern_id, amount_inr, source, ref_pa
         "UPDATE referrals SET status='converted', updated_at=? "
         "WHERE referred_intern_id=? AND status!='converted'",
         (now_str(), payer_intern_id))
-    # Â§8 â€” emitted here so every commission path reports it exactly once.
+    # §8 — emitted here so every commission path reports it exactly once.
     ga4_server_event("referral_conversion",
                      {"commission": commission, "amount": int(amount_inr), "source": source})
     return commission
@@ -7595,10 +8256,13 @@ def staff_task_queue():
     with get_db() as conn:
         status_filter = request.args.get("status", "pending")
         submissions = conn.execute(
-            "SELECT ts.*, t.title AS task_title, t.coin_reward, t.task_type, t.target_domain, t.payment_type, t.submission_type, a.name AS intern_name, a.email AS intern_email "
+            "SELECT ts.*, t.title AS task_title, t.coin_reward, t.task_type, t.target_domain, t.payment_type, t.submission_type, "
+            "a.name AS intern_name, a.email AS intern_email, "
+            "art.status AS article_status, art.title AS article_title, art.published_url AS article_url "
             "FROM task_submissions ts "
             "JOIN tasks t ON ts.task_id = t.id "
             "JOIN intern_accounts a ON (ts.intern_id = a.id OR (ts.email IS NOT NULL AND LOWER(ts.email) = LOWER(a.email))) "
+            "LEFT JOIN intern_articles art ON (art.task_submission_id = ts.id OR (art.intern_id = ts.intern_id AND art.status = 'PUBLISHED')) "
             "WHERE ts.status = ? "
             "ORDER BY ts.created_at ASC",
             (status_filter,)
@@ -8758,7 +9422,12 @@ def _tutor_progress_live(intern_id):
     return None
 
 
+_ARTICLES_TABLE_ENSURED = False
+
 def _ensure_articles_table(conn):
+    global _ARTICLES_TABLE_ENSURED
+    if _ARTICLES_TABLE_ENSURED:
+        return
     try:
         is_pg = getattr(conn, "dialect", "") == "postgres"
         pk = "SERIAL PRIMARY KEY" if is_pg else "INTEGER PRIMARY KEY AUTOINCREMENT"
@@ -8778,31 +9447,80 @@ def _ensure_articles_table(conn):
             )
         """)
         conn.execute("CREATE INDEX IF NOT EXISTS idx_intern_articles_intern ON intern_articles(intern_id, status)")
+        
+        # Ensure interconnected growth flywheel columns exist
+        extra_cols = [
+            ("task_submission_id", "INTEGER"),
+            ("cert_id", "TEXT"),
+            ("github_repo_url", "TEXT"),
+            ("live_demo_url", "TEXT"),
+            ("rubric_score", "INTEGER"),
+            ("stipend_status", "TEXT DEFAULT 'PENDING'"),
+            ("views_count", "INTEGER DEFAULT 0")
+        ]
+        for cname, ctype in extra_cols:
+            try:
+                conn.execute(f"ALTER TABLE intern_articles ADD COLUMN IF NOT EXISTS {cname} {ctype}")
+            except Exception:
+                try:
+                    conn.execute(f"ALTER TABLE intern_articles ADD COLUMN {cname} {ctype}")
+                except Exception:
+                    pass
+        try:
+            conn.execute("CREATE INDEX IF NOT EXISTS idx_intern_articles_submission ON intern_articles(task_submission_id)")
+        except Exception:
+            pass
+
         if hasattr(conn, "commit"):
             conn.commit()
+        _ARTICLES_TABLE_ENSURED = True
     except Exception as e:
         log_error("ensure_articles_table", e)
 
 
 @app.route("/intern/articles", methods=["GET"])
 def intern_articles_list():
-    user = require_role("intern")
-    if not user:
+    intern = current_intern()
+    if not intern:
+        if request.accept_mimetypes.accept_html and not request.is_json:
+            return redirect("/#signin")
         return jsonify({"status": "error", "message": "Unauthorized"}), 401
     with get_db() as conn:
         _ensure_articles_table(conn)
-        rows = conn.execute("SELECT * FROM intern_articles WHERE intern_id = ? ORDER BY updated_at DESC", (user["id"],)).fetchall()
-        return jsonify({"status": "success", "articles": [row_to_dict(r) for r in rows]})
+        rows = conn.execute("SELECT * FROM intern_articles WHERE intern_id = ? ORDER BY updated_at DESC", (intern["id"],)).fetchall()
+        articles = [row_to_dict(r) for r in rows]
+
+        # Handle browser rendering vs API JSON
+        if request.accept_mimetypes.accept_html and not request.is_json and request.args.get("format") != "json":
+            edit_id = request.args.get("edit", type=int)
+            active_article = None
+            if edit_id:
+                active_article = next((a for a in articles if a["id"] == edit_id), None)
+            elif articles:
+                active_article = articles[0]
+            return render_template(
+                "intern_articles.html",
+                intern=intern,
+                user=intern,
+                articles=articles,
+                active_article=active_article,
+                active_page="articles"
+            )
+
+        return jsonify({"status": "success", "articles": articles})
 
 @app.route("/intern/articles/save", methods=["POST"])
 def intern_articles_save():
-    user = require_role("intern")
-    if not user:
+    intern = current_intern()
+    if not intern:
         return jsonify({"status": "error", "message": "Unauthorized"}), 401
-    data = request.json or {}
+    data = request.json or request.form or {}
     article_id = _int_or_none(data.get("id"))
     title = (data.get("title") or "").strip()
     content_markdown = (data.get("content_markdown") or "").strip()
+    github_repo_url = (data.get("github_repo_url") or "").strip()
+    live_demo_url = (data.get("live_demo_url") or "").strip()
+    cert_id = (data.get("cert_id") or "").strip()
     action = (data.get("action") or "").lower() # 'draft' or 'submit'
     
     if not title:
@@ -8815,19 +9533,26 @@ def intern_articles_save():
         _ensure_articles_table(conn)
         if article_id:
             # Check ownership
-            owner = conn.execute("SELECT id, status FROM intern_articles WHERE id=? AND intern_id=?", (article_id, user["id"])).fetchone()
+            owner = conn.execute("SELECT id, status FROM intern_articles WHERE id=? AND intern_id=?", (article_id, intern["id"])).fetchone()
             if not owner:
                 return jsonify({"status": "error", "message": "Article not found."}), 404
             if owner["status"] in ("APPROVED", "PUBLISHED"):
                 return jsonify({"status": "error", "message": "Cannot edit an approved article."}), 400
                 
-            conn.execute("UPDATE intern_articles SET title=?, content_markdown=?, status=?, updated_at=? WHERE id=?", 
-                         (title, content_markdown, status, now_ts, article_id))
+            conn.execute(
+                "UPDATE intern_articles SET title=?, content_markdown=?, github_repo_url=?, live_demo_url=?, cert_id=?, status=?, updated_at=? WHERE id=?", 
+                (title, content_markdown, github_repo_url, live_demo_url, cert_id, status, now_ts, article_id)
+            )
         else:
-            conn.execute("INSERT INTO intern_articles (intern_id, domain, title, content_markdown, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
-                         (user["id"], user.get("domain", "General"), title, content_markdown, status, now_ts, now_ts))
+            conn.execute(
+                "INSERT INTO intern_articles (intern_id, domain, title, content_markdown, github_repo_url, live_demo_url, cert_id, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                (intern["id"], intern.get("domain", "General"), title, content_markdown, github_repo_url, live_demo_url, cert_id, status, now_ts, now_ts)
+            )
         conn.commit()
-    return jsonify({"status": "success"})
+    return jsonify({
+        "status": "success", 
+        "message": "Article submitted for editorial review!" if status == 'PENDING_REVIEW' else "Draft saved successfully!"
+    })
 
 @app.route("/intern/ecosystem-spotlights")
 def intern_ecosystem_spotlights():
@@ -9137,7 +9862,9 @@ def apply():
     GET/HEAD requests gracefully redirect to the public program overview.
     """
     if request.method in ("GET", "HEAD"):
-        return redirect("/program", 302)
+        domain = clean_text(request.args.get("domain", ""))
+        suffix = f"?domain={quote(domain)}" if domain else ""
+        return redirect(f"/#signup{suffix}", 302)
     try:
         data = request.get_json(force=True)
         ip = get_client_ip()
@@ -9618,11 +10345,14 @@ def signup_stage2():
         if domain and domain not in VALID_DOMAINS:
             return jsonify({"status": "error", "message": "Invalid domain."}), 400
         with get_db() as conn:
+            acct_row = conn.execute("SELECT signup_stage FROM intern_accounts WHERE LOWER(email)=LOWER(?) LIMIT 1", (email,)).fetchone()
+            curr_stage = int(acct_row["signup_stage"]) if (acct_row and acct_row["signup_stage"] is not None) else 0
+            new_stage = max(curr_stage, 2)
             conn.execute("""
                 UPDATE intern_accounts SET city=?,college=?,course=?,semester=?,year_of_passing=?,
                     domain=COALESCE(NULLIF(?,''), domain),
-                    signup_stage=MAX(IFNULL(signup_stage,0),2),updated_at=? WHERE email=?
-            """, (city, college, course, semester, year, domain, now_str(), email))
+                    signup_stage=?,updated_at=? WHERE LOWER(email)=LOWER(?)
+            """, (city, college, course, semester, year, domain, new_stage, now_str(), email))
 
             # Sync applications table so the intern's actual college and domain are reflected immediately
             conn.execute("""
@@ -9784,6 +10514,37 @@ def intern_login():
             log_abuse(ip, "/intern/login", _login_fail_bucket(email), "login_lockout", email)
             return jsonify({"status": "error", "message": "Invalid credentials."}), 401
         if not user or int(user["password_set"] or 0) != 1 or not verify_password(user["password_hash"], password):
+            # Check if this email belongs to a verified certificate candidate in certificates_registry.json
+            from services.certificate_service import CertificateService
+            reg = CertificateService.load_registry_record(email=email)
+            if reg and reg.get("verified") and not reg.get("isProvisional"):
+                try:
+                    with get_db() as conn:
+                        p_hash = hash_password(password)
+                        if not user:
+                            conn.execute(
+                                """
+                                INSERT INTO intern_accounts 
+                                (name, email, phone, domain, college, password_hash, password_set, is_active, signup_stage, created_at, updated_at)
+                                VALUES (?, ?, ?, ?, ?, ?, 1, 1, 3, datetime('now','localtime'), datetime('now','localtime'))
+                                """,
+                                (reg.get("holderName", "Intern"), email, reg.get("phone", ""), reg.get("domain", "General"), reg.get("college", ""), p_hash)
+                            )
+                            conn.commit()
+                            user = conn.execute("SELECT * FROM intern_accounts WHERE email=? LIMIT 1", (email,)).fetchone()
+                        else:
+                            conn.execute(
+                                """
+                                UPDATE intern_accounts 
+                                SET password_hash=?, password_set=1, is_active=1, signup_stage=3, updated_at=datetime('now','localtime')
+                                WHERE id=?
+                                """,
+                                (p_hash, user["id"])
+                            )
+                            conn.commit()
+                            user = conn.execute("SELECT * FROM intern_accounts WHERE id=?", (user["id"],)).fetchone()
+                except Exception as e:
+                    log_error("intern_login_autoprovision", e)
             record_login_fail(email)
             return jsonify({"status": "error", "message": "Invalid credentials. (If you have a legacy account without a password, use Forgot Password)"}), 401
         if is_legacy_hash(user["password_hash"]):
@@ -10845,18 +11606,33 @@ def _trust_stats():
 
 
 def _domain_tile_counts():
-    """Live post counts per domain Ã— post_type, for the homepage domain tiles."""
+    """Live post counts per domain × post_type, for the homepage domain tiles."""
     with get_db() as conn:
         rows = conn.execute(
             f"SELECT domain, post_type, COUNT(*) AS n FROM posts WHERE {_LIVE_SQL} "  # nosec B608
             "GROUP BY domain, post_type"
         ).fetchall()
-    counts = {d: {"internship": 0, "job": 0} for d in VALID_DOMAINS}
+        try:
+            scraped_rows = conn.execute(
+                "SELECT domain, COUNT(*) AS n FROM scraped_internships WHERE End_Date >= date('now') OR End_Date IS NULL GROUP BY domain"
+            ).fetchall()
+            scraped_counts = {r["domain"]: r["n"] for r in scraped_rows if r["domain"]}
+        except Exception:
+            scraped_counts = {}
+    counts = {d: {"internship": 0, "job": 0, "total": 0} for d in VALID_DOMAINS}
     for r in rows:
         if r["domain"] in counts and r["post_type"] in ("internship", "job"):
             counts[r["domain"]][r["post_type"]] = r["n"]
+    for d in VALID_DOMAINS:
+        counts[d]["total"] = counts[d]["internship"] + counts[d]["job"] + scraped_counts.get(d, 0)
     return [
-        {"domain": d, "internship_count": counts[d]["internship"], "job_count": counts[d]["job"]}
+        {
+            "domain": d,
+            "internship_count": counts[d]["internship"],
+            "job_count": counts[d]["job"],
+            "total_openings": counts[d]["total"],
+            "slug": DOMAIN_SLUGS.get(d, "")
+        }
         for d in VALID_DOMAINS
     ]
 
@@ -11136,6 +11912,77 @@ DOMAIN_SEO = {
             "sub": "Full-time roles building web frontends, high-performance APIs, and cloud microservices.",
         }
     },
+    "UI/UX Design": {
+        "internship": {
+            "title": "Remote UI/UX Design Internships 2026 (Figma, Systems, Prototyping) | DBERT",
+            "h1": "Remote UI/UX Design & Product Design Internships",
+            "desc": "Apply for remote UI/UX Design internships in India. Design responsive interfaces, build Figma design systems, and conduct usability research.",
+            "sub": "Design production-ready components, design tokens, and user journeys with modern product teams."
+        },
+        "job": {
+            "title": "Remote UI/UX Designer Jobs 2026 – Product Design & Figma | DBERT",
+            "h1": "Remote UI/UX & Product Design Jobs",
+            "desc": "Explore verified remote UI/UX Design jobs. Lead product design systems, user research, and wireframe prototypes for modern web and mobile apps.",
+            "sub": "Full-time product design and user experience roles across modern tech ecosystems."
+        }
+    },
+    "DevOps & Cloud": {
+        "internship": {
+            "title": "Remote DevOps & Cloud Internships 2026 (Docker, Kubernetes, AWS) | DBERT",
+            "h1": "Remote DevOps & Cloud Infrastructure Internships",
+            "desc": "Browse verified remote DevOps & Cloud internships. Master Docker containerization, Kubernetes clusters, CI/CD pipelines, and cloud automation.",
+            "sub": "Containerize microservices, build automated deployment pipelines, and configure scalable cloud infrastructure."
+        },
+        "job": {
+            "title": "Remote DevOps & Cloud Engineer Jobs 2026 – AWS, Docker & K8s | DBERT",
+            "h1": "Remote DevOps & Cloud Infrastructure Jobs",
+            "desc": "Discover verified remote DevOps and Cloud Engineer roles. Manage cloud infrastructure, CI/CD automation, and site reliability.",
+            "sub": "Production infrastructure roles in cloud architecture, container orchestration, and observability."
+        }
+    },
+    "Mobile App Development": {
+        "internship": {
+            "title": "Remote Mobile App Developer Internships 2026 (React Native, Flutter) | DBERT",
+            "h1": "Remote Mobile App Development Internships",
+            "desc": "Apply for remote Mobile App Development internships in India. Build cross-platform iOS and Android apps with React Native and Flutter.",
+            "sub": "Develop responsive native touch interfaces, integrate hardware APIs, and deploy mobile apps."
+        },
+        "job": {
+            "title": "Remote Mobile App Developer Jobs 2026 – React Native & Flutter | DBERT",
+            "h1": "Remote Mobile Application Engineering Jobs",
+            "desc": "Find verified remote Mobile App Developer jobs. Build, optimize, and ship high-performance mobile apps for iOS and Android.",
+            "sub": "Full-time mobile engineering roles building scalable consumer and enterprise mobile applications."
+        }
+    },
+    "Cybersecurity": {
+        "internship": {
+            "title": "Remote Cybersecurity Internships 2026 (SOC, Penetration Testing, OWASP) | DBERT",
+            "h1": "Remote Cybersecurity & SOC Analyst Internships",
+            "desc": "Explore remote Cybersecurity internships in India. Master vulnerability assessment, OWASP Top 10 security audits, and SIEM monitoring.",
+            "sub": "Conduct security assessments, analyze network telemetry, and triage security vulnerabilities with defense-in-depth methodologies."
+        },
+        "job": {
+            "title": "Remote Cybersecurity Jobs 2026 – SOC, Pen Testing & InfoSec | DBERT",
+            "h1": "Remote Cybersecurity & Information Security Jobs",
+            "desc": "Explore verified remote Cybersecurity jobs. Protect cloud systems, lead incident response, and enforce enterprise information security.",
+            "sub": "Full-time security operations, penetration testing, and governance engineering roles."
+        }
+    },
+    "Digital Marketing": {
+        "internship": {
+            "title": "Remote Digital Marketing Internships 2026 (SEO, Performance Ads, GA4) | DBERT",
+            "h1": "Remote Digital Marketing & Growth Internships",
+            "desc": "Apply for remote Digital Marketing internships in India. Execute SEO strategies, manage Meta/Google ad campaigns, and analyze conversion funnels.",
+            "sub": "Drive high-impact user acquisition, content distribution, and data-driven marketing campaigns."
+        },
+        "job": {
+            "title": "Remote Digital Marketing Jobs 2026 – Growth Marketing, SEO & Ads | DBERT",
+            "h1": "Remote Digital Marketing & Growth Engineering Jobs",
+            "desc": "Find high-impact remote Digital Marketing jobs. Lead performance ad campaigns, organic SEO growth, and conversion funnel optimization.",
+            "sub": "Full-time growth marketing, performance advertising, and technical SEO roles."
+        }
+    },
+
 }
 
 DEFAULT_LISTING_SEO = {
@@ -11178,7 +12025,7 @@ def _render_listings(post_type, location_page=False, city=None, city_slug=None, 
             params.extend([location, f"%{location}%"])
     if stipend_override == "paid" or request.args.get("stipend") == "paid":
         where += " AND (p.stipend_min > 0 OR p.stipend_max > 0)"
-    _PAGE_SIZE = 21  # 21 per page (7x3 grid)
+    _PAGE_SIZE = 18  # 18 per page (6x3 grid)
     with get_db() as conn:
         rows = conn.execute(
             f"SELECT p.*, c.name AS company_name, "  # nosec B608
@@ -11384,6 +12231,7 @@ def _render_listings(post_type, location_page=False, city=None, city_slug=None, 
         hide_applied = is_intern  # On by default for logged-in interns
 
     search_q = clean_text(request.args.get("q") or request.args.get("search") or "")
+    source_filter = ""  # Unify all sources (direct company + curated) with zero filtering distinction
     region_filter = clean_text(request.args.get("region") or "").lower()
     work_mode_filter = clean_text(request.args.get("work_mode") or request.args.get("wm") or "").lower()
     duration_filter = clean_text(request.args.get("duration") or request.args.get("dur") or "")
@@ -11395,7 +12243,7 @@ def _render_listings(post_type, location_page=False, city=None, city_slug=None, 
         freshness_filter = int(request.args.get("freshness") or request.args.get("age") or 0)
     except (ValueError, TypeError):
         freshness_filter = 0
-    _PAGE_SIZE = 21  # 21 per page (7x3 grid)
+    _PAGE_SIZE = 18  # 18 per page (6x3 grid)
 
     # Canonical posts
     canonical_list = []
@@ -11425,6 +12273,7 @@ def _render_listings(post_type, location_page=False, city=None, city_slug=None, 
         duration=duration_filter,
         min_stipend=stipend_filter,
         max_age_days=freshness_filter,
+        source_filter=source_filter,
     )
 
     # Paginate across interleaved items
@@ -11567,6 +12416,7 @@ def _render_listings(post_type, location_page=False, city=None, city_slug=None, 
         page_size=_PAGE_SIZE, q=search_q, region_filter=region_filter,
         work_mode_filter=work_mode_filter, duration_filter=duration_filter,
         stipend_filter=stipend_filter, freshness_filter=freshness_filter,
+        source_filter=source_filter,
         is_intern=is_intern, intern=intern, intern_domain=intern_domain,
         is_logged_in=is_logged_in, logged_in_url=logged_in_url, logged_in_label=logged_in_label,
         current_user=current_user, is_admin=is_admin,
@@ -11637,6 +12487,14 @@ def jobs_by_city(slug):
     return _render_listings("job", location_page=True, city=city, city_slug=slug)
 
 
+@app.route("/internships/november-2026")
+@app.route("/internships/december-2026")
+@app.route("/internships/cohort-2026")
+@app.route("/internships/cohort-november-2026")
+def internships_monthly_cohort():
+    return _render_listings("internship", location_page=True, city="Remote", city_slug="remote")
+
+
 @app.route("/internships/<slug>")
 def internships_by_city(slug):
     slug_domains = {s: d for d, s in DOMAIN_SLUGS.items()}
@@ -11650,6 +12508,8 @@ def internships_by_city(slug):
         return _render_listings("internship", domain_override="Data Analyst", domain_slug="data-analyst", location_page=True, city="Remote", city_slug=slug)
     if slug == "ai-automation-internship":
         return _render_listings("internship", domain_override="AI Agent Development", domain_slug="ai-agent-development", location_page=False, city_slug=slug)
+    if slug in ("november-2026", "december-2026", "cohort-2026", "cohort-november-2026", "remote-internships-2026"):
+        return _render_listings("internship", location_page=True, city="Remote", city_slug=slug)
     city = _resolve_city_slug(slug)
     if not city:
         abort(404)
@@ -11757,8 +12617,8 @@ def _render_post_detail(post_type, slug, post_id):
         # T4: public thread, NOT the private post_applications.comment interest note.
         comments = [row_to_dict(r) for r in conn.execute(
             "SELECT a.name AS intern_name, pc.body, pc.created_at "
-            "FROM post_comments pc JOIN intern_accounts a ON a.id=pc.intern_id "
-            "WHERE pc.post_id=? ORDER BY pc.id DESC", (post_id,)).fetchall()]
+            "FROM post_comments pc JOIN intern_accounts a ON CAST(a.id AS TEXT)=CAST(pc.intern_id AS TEXT) "
+            "WHERE CAST(pc.post_id AS TEXT)=? ORDER BY pc.id DESC", (str(post_id),)).fetchall()]
         # UAT #13: render the already-applied state server-side so a revisit shows
         # "Applied ✓ — View in My Applications", not a fresh "Apply Now".
         if intern and intern.get("id"):
@@ -12075,9 +12935,9 @@ def post_comments(post_id):
     with get_db() as conn:
         rows = conn.execute(
             "SELECT a.name AS intern_name, pc.body, pc.created_at "
-            "FROM post_comments pc JOIN intern_accounts a ON a.id = pc.intern_id "
-            "WHERE pc.post_id=? ORDER BY pc.id DESC",
-            (post_id,),
+            "FROM post_comments pc JOIN intern_accounts a ON CAST(a.id AS TEXT) = CAST(pc.intern_id AS TEXT) "
+            "WHERE CAST(pc.post_id AS TEXT)=? ORDER BY pc.id DESC",
+            (str(post_id),),
         ).fetchall()
     return jsonify({"comments": [row_to_dict(r) for r in rows]})
 
@@ -12883,6 +13743,209 @@ def intern_cv_meta():
         "public_url": f"/cv/{slug}", "pdf_url": f"/cv/{slug}.pdf",
         "edit_url": "/portal/cv", "updated_at": row["updated_at"],
     })
+
+
+# ── Phase P5: Free AI Resume & ATS Checker Engine ─────────────────────────────
+
+@app.route("/resume-checker")
+def resume_checker_page():
+    """Standalone Free AI Resume & ATS Scanner landing page on LMS."""
+    return render_template("resume_checker.html")
+
+
+@app.route("/portal/cv/ats-check", methods=["POST"])
+def portal_cv_ats_check():
+    """In-editor AI ATS health audit for logged-in interns on /portal/cv."""
+    intern = current_intern()
+    if not intern:
+        return jsonify({"status": "error", "message": "Unauthorized"}), 401
+    data = request.get_json(force=True, silent=True) or {}
+    headline = clean_text(data.get("headline") or "")
+    summary = clean_text(data.get("summary") or "")
+    skills = clean_text(data.get("skills") or "")
+    projects = clean_text(data.get("projects") or "")
+    experience = clean_text(data.get("experience") or "")
+
+    combined_cv_text = f"""
+    Name: {intern.get('name', 'Candidate')}
+    Email: {intern.get('email', '')}
+    Domain: {intern.get('domain', 'Full Stack Development')}
+    Headline: {headline}
+    Summary: {summary}
+    Skills: {skills}
+    Experience: {experience}
+    Projects: {projects}
+    """
+
+    from services.ai.ats_engine import evaluate_resume_deterministic, enhance_with_gemini
+    domain_to_eval = intern.get("domain") or "Full Stack Development"
+    eval_res = evaluate_resume_deterministic(combined_cv_text, domain_to_eval)
+    eval_res = enhance_with_gemini(combined_cv_text, domain_to_eval, eval_res)
+    eval_res["locked"] = False
+
+    valid_intern_id = intern["id"] if (intern and intern.get("id") and int(intern["id"]) > 0) else None
+
+    with get_db() as conn:
+        try:
+            conn.execute(
+                "INSERT INTO resume_ats_audits (intern_id, email, name, phone, domain, ats_score, breakdown_json) "
+                "VALUES (?, ?, ?, ?, ?, ?, ?)",
+                (valid_intern_id, intern.get("email"), intern.get("name"), intern.get("phone", ""), domain_to_eval, eval_res["score"], json.dumps(eval_res))
+            )
+            conn.commit()
+        except Exception as e:
+            log_error("ats_engine", f"Failed to record cv ats audit: {e}")
+
+    return jsonify({"status": "success", "audit": eval_res})
+
+
+@app.route("/api/tools/ats-checker", methods=["POST", "OPTIONS"])
+def api_tools_ats_checker():
+    """
+    Public AI Resume / ATS evaluation API.
+    Supports guest preview (locked) and unlocked detailed audit + automatic LMS lead capture.
+    """
+    if request.method == "OPTIONS":
+        resp = Response("", status=204)
+        resp.headers["Access-Control-Allow-Origin"] = "*"
+        resp.headers["Access-Control-Allow-Methods"] = "POST, OPTIONS"
+        resp.headers["Access-Control-Allow-Headers"] = "Content-Type, X-CSRFToken, Authorization"
+        return resp
+
+    from services.ai.ats_engine import (
+        evaluate_resume_deterministic,
+        enhance_with_gemini,
+        extract_text_from_pdf_bytes,
+        canonical_domain
+    )
+
+    resume_text = ""
+    domain = "Full Stack Development"
+    name = ""
+    email = ""
+    phone = ""
+
+    if request.content_type and "multipart/form-data" in request.content_type:
+        domain = request.form.get("domain", "Full Stack Development")
+        name = clean_text(request.form.get("name") or "")
+        email = clean_text(request.form.get("email") or "").strip().lower()
+        phone = clean_text(request.form.get("phone") or "").strip()
+
+        file = request.files.get("file")
+        if file and file.filename:
+            pdf_bytes = file.read()
+            extracted, err = extract_text_from_pdf_bytes(pdf_bytes)
+            if err:
+                resp = jsonify({"status": "error", "message": err})
+                resp.headers["Access-Control-Allow-Origin"] = "*"
+                return resp, 400
+            resume_text = extracted
+        else:
+            resume_text = clean_text(request.form.get("text") or "")
+    else:
+        data = request.get_json(force=True, silent=True) or {}
+        domain = data.get("domain", "Full Stack Development")
+        name = clean_text(data.get("name") or "")
+        email = clean_text(data.get("email") or "").strip().lower()
+        phone = clean_text(data.get("phone") or "").strip()
+        resume_text = clean_text(data.get("text") or "")
+
+    if not resume_text or len(resume_text.strip()) < 30:
+        resp = jsonify({"status": "error", "message": "Resume text is too short. Please provide at least 30 characters of text or upload a valid PDF."})
+        resp.headers["Access-Control-Allow-Origin"] = "*"
+        return resp, 400
+
+    canonical_dom = canonical_domain(domain)
+    eval_res = evaluate_resume_deterministic(resume_text, canonical_dom)
+
+    # Check if user is logged in or provided lead contact info
+    intern = current_intern()
+    if intern:
+        email = intern.get("email", "").strip().lower()
+        name = intern.get("name", "")
+        phone = intern.get("phone", "")
+
+    is_unlocked = bool(email and "@" in email)
+
+    if is_unlocked:
+        intern_gemini_key = None
+        if intern:
+            try:
+                with get_db() as conn:
+                    from services.ai.stipend_evaluator import get_intern_gemini_key
+                    intern_gemini_key = get_intern_gemini_key(conn, intern["id"])
+            except Exception:
+                pass
+        eval_res = enhance_with_gemini(resume_text, canonical_dom, eval_res, api_key=intern_gemini_key)
+        eval_res["locked"] = False
+
+        intern_id = None
+        matched_jobs = []
+        with get_db() as conn:
+            # Check or provision intern account
+            existing_intern = conn.execute(
+                "SELECT id, name, domain FROM intern_accounts WHERE LOWER(email)=LOWER(?)",
+                (email,)
+            ).fetchone()
+
+            if existing_intern:
+                intern_id = existing_intern["id"]
+            else:
+                try:
+                    import hashlib
+                    temp_pwd = hashlib.sha256(os.urandom(16)).hexdigest()[:12]
+                    cur = conn.execute(
+                        "INSERT INTO intern_accounts (name, email, phone, domain, password_hash, is_active, signup_stage) "
+                        "VALUES (?, ?, ?, ?, ?, 1, 1)",
+                        (name or email.split("@")[0].title(), email, phone, canonical_dom, hash_password(temp_pwd))
+                    )
+                    intern_id = cur.lastrowid
+                except Exception as e:
+                    log_error("ats_engine", f"Auto-provision intern notice: {e}")
+                    check_again = conn.execute("SELECT id FROM intern_accounts WHERE LOWER(email)=LOWER(?)", (email,)).fetchone()
+                    intern_id = check_again["id"] if check_again else None
+
+            valid_intern_id = intern_id if (intern_id and int(intern_id) > 0) else None
+
+            # Record scan audit
+            try:
+                conn.execute(
+                    "INSERT INTO resume_ats_audits (intern_id, email, name, phone, domain, ats_score, breakdown_json) "
+                    "VALUES (?, ?, ?, ?, ?, ?, ?)",
+                    (valid_intern_id, email, name, phone, canonical_dom, eval_res["score"], json.dumps(eval_res))
+                )
+                conn.commit()
+            except Exception as e:
+                log_error("ats_engine", f"Failed to record public ats audit: {e}")
+
+            # Fetch matching live partner roles
+            try:
+                job_rows = conn.execute(
+                    "SELECT p.id, p.title, p.domain, p.location, p.work_mode, p.stipend_min, p.stipend_max, c.name as company_name "
+                    "FROM posts p JOIN companies c ON c.id=p.company_id "
+                    "WHERE p.status='published' AND (p.domain=? OR p.domain LIKE ?) ORDER BY p.id DESC LIMIT 4",
+                    (canonical_dom, f"%{canonical_dom}%")
+                ).fetchall()
+                for j in job_rows:
+                    matched_jobs.append(row_to_dict(j))
+            except Exception as e:
+                log_error("ats_engine", f"Failed to query matched jobs: {e}")
+
+        eval_res["matched_jobs"] = matched_jobs
+        eval_res["lms_signup_url"] = f"https://lms.dbert.in/#signup?email={email}&domain={canonical_dom}&next=/portal/cv"
+    else:
+        eval_res["locked"] = True
+        # Keep teaser counts but hide actual sensitive recommendations
+        eval_res["critical_missing_count"] = len(eval_res.get("critical_missing_keywords", []))
+        eval_res["critical_missing_keywords"] = []
+        eval_res["recommendations"]["bullet_rewrites"] = []
+        eval_res["matched_jobs"] = []
+
+    eval_res["status"] = "success"
+    resp = jsonify(eval_res)
+    resp.headers["Access-Control-Allow-Origin"] = "*"
+    resp.headers["Access-Control-Allow-Methods"] = "POST, OPTIONS"
+    return resp
 
 
 @app.route("/mentor/login", methods=["POST"])
@@ -14117,6 +15180,8 @@ def enroll():
         if chosen_domain and chosen_domain not in VALID_DOMAINS:
             return jsonify({"status": "error", "message": "Invalid domain."}), 400
 
+        utr_val = clean_text(request.form.get("utr_number") or request.form.get("utr"))
+
         if "payment_screenshot" not in request.files:
             return jsonify({"status": "error", "message": "Payment screenshot required."}), 400
         file = request.files["payment_screenshot"]
@@ -14168,19 +15233,19 @@ def enroll():
                 conn.execute("""
                     UPDATE enrollments SET application_id=?,timestamp=?,name=?,phone=?,city=?,college=?,course=?,
                     semester=?,year_of_passing=?,domain=?,joining_date=?,batch_label=?,payment_screenshot=?,
-                    payment_status='Pending Verification',updated_at=? WHERE email=?
+                    utr=COALESCE(?, utr),payment_status='Pending Verification',updated_at=? WHERE email=?
                 """, (app_row["id"], now_str(), acct["name"], acct["phone"], acct["city"], acct["college"],
                       acct["course"], acct["semester"], acct["year_of_passing"], domain_to_save,
-                      joining_date, batch_label, filename, now_str(), email))
+                      joining_date, batch_label, filename, utr_val, now_str(), email))
             else:
                 conn.execute("""
                     INSERT INTO enrollments
                     (application_id,timestamp,name,email,phone,city,college,course,semester,
-                    year_of_passing,domain,joining_date,batch_label,payment_screenshot,payment_status,created_at,updated_at)
-                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                    year_of_passing,domain,joining_date,batch_label,payment_screenshot,utr,payment_status,created_at,updated_at)
+                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
                 """, (app_row["id"], now_str(), acct["name"], email, acct["phone"], acct["city"], acct["college"],
                       acct["course"], acct["semester"], acct["year_of_passing"], domain_to_save,
-                      joining_date, batch_label, filename, "Pending Verification", now_str(), now_str()))
+                      joining_date, batch_label, filename, utr_val, "Pending Verification", now_str(), now_str()))
 
             old_status = app_row["status"]
             # SEC-007: Do not advance to STATUS_ENROLLED until payment is verified by admin.
@@ -14367,35 +15432,60 @@ def intern_wizard_status():
                         "options": VALID_DOMAINS
                     })
 
-                enr_joining = (enr["joining_date"] or "").strip() if enr else ""
-                if not enr_joining:
-                    selectable = get_selectable_mondays()
+                # Check if academic profile is missing or placeholder
+                college = (acct["college"] or "").strip()
+                course = (acct["course"] or "").strip()
+                bad_college_terms = ("n/a", "none", "unknown", "pending profile", "not specified", "")
+                bad_course_terms = ("n/a", "none", "not specified", "")
+                if not college or college.lower() in bad_college_terms or not course or course.lower() in bad_course_terms:
                     missing_steps.append({
-                        "key": "joining_date",
-                        "title": "Choose Batch Joining Date",
-                        "subtitle": "Select your batch start date. You can select either of the last 2 Mondays (for immediate access) or an upcoming Monday.",
-                        "type": "joining_date_select",
-                        "current_value": enr_joining,
-                        "options": selectable,
-                        "labels": {
-                            selectable[0]: f"{make_batch_label(selectable[0])} (2 Weeks Ago - Instant Unlock)",
-                            selectable[1]: f"{make_batch_label(selectable[1])} (Last Monday - Instant Unlock)",
-                            selectable[2]: f"{make_batch_label(selectable[2])} (Next Batch)",
-                            selectable[3]: f"{make_batch_label(selectable[3])} (Upcoming Batch)",
-                            selectable[4]: f"{make_batch_label(selectable[4])} (Upcoming Batch)" if len(selectable) > 4 else ""
+                        "key": "academic_profile",
+                        "title": "Complete Academic Details",
+                        "subtitle": "Enter your college and degree course to complete your application profile.",
+                        "type": "profile_form",
+                        "fields": {
+                            "college": college if college.lower() not in bad_college_terms else "",
+                            "course": course if course.lower() not in bad_course_terms else "",
+                            "year_of_passing": (acct["year_of_passing"] or "").strip(),
+                            "city": (acct["city"] or "").strip()
                         }
                     })
 
+                # Check if statement of purpose is missing or placeholder
+                why_join = ((app_row["why_join"] if app_row else "") or "").strip()
+                is_placeholder_sop = (why_join == "Enrolled via DBERT portal direct registration.")
+                if not why_join or len(why_join) < 80 or is_placeholder_sop:
+                    missing_steps.append({
+                        "key": "application_sop",
+                        "title": "Statement of Purpose",
+                        "subtitle": "Briefly describe why you want to join this internship track (min 80 characters).",
+                        "type": "textarea",
+                        "placeholder": "Explain your background, interest in this domain, and what you aim to achieve during this internship...",
+                        "current_value": "" if is_placeholder_sop else why_join
+                    })
+
                 is_rejected_receipt = bool(enr and enr["payment_status"] == "Rejected")
+                selectable = get_selectable_mondays()
+                enr_joining = (enr["joining_date"] or "").strip() if enr else (selectable[2] if len(selectable) > 2 else selectable[0])
                 missing_steps.append({
                     "key": "payment_screenshot",
-                    "title": "Upload ₹499 Refundable Deposit Proof",
-                    "subtitle": "Your application is approved! Secure your confirmed seat with a refundable deposit.",
+                    "title": "Select Batch Date & Upload Payment Proof",
+                    "subtitle": "Your application is selected! Choose your batch kickoff date and attach payment proof to confirm your enrollment.",
                     "type": "file_upload",
                     "upi_id": UPI_ID,
                     "amount": 499,
-                    "is_rejected": is_rejected_receipt
+                    "is_rejected": is_rejected_receipt,
+                    "joining_date": enr_joining,
+                    "joining_options": selectable,
+                    "joining_labels": {
+                        selectable[0]: f"{make_batch_label(selectable[0])} (2 Weeks Ago - Instant Unlock)",
+                        selectable[1]: f"{make_batch_label(selectable[1])} (Last Monday - Instant Unlock)",
+                        selectable[2]: f"{make_batch_label(selectable[2])} (Next Batch Kickoff)",
+                        selectable[3]: f"{make_batch_label(selectable[3])} (Upcoming Batch)",
+                        selectable[4]: f"{make_batch_label(selectable[4])} (Upcoming Batch)" if len(selectable) > 4 else ""
+                    }
                 })
+
 
                 return jsonify({
                     "status": "success",
@@ -14476,9 +15566,12 @@ def intern_save_wizard_step():
                 if not why_join or len(why_join) < 80:
                     return jsonify({"status": "error", "message": "Statement of purpose must be at least 80 characters."}), 400
                 domain = (acct["domain"] if acct["domain"] and acct["domain"] in VALID_DOMAINS else "AI Agent Development")
-                ensure_application_record(conn, acct, chosen_domain=domain, status=STATUS_UNDER_REVIEW, why_join=why_join)
+                target_status = app_row["status"] if app_row and app_row["status"] in (STATUS_SELECTED, STATUS_ENROLLMENT_PENDING) else STATUS_UNDER_REVIEW
+                ensure_application_record(conn, acct, chosen_domain=domain, status=target_status, why_join=why_join)
                 conn.commit()
-                return jsonify({"status": "success", "message": "Application submitted for admissions review.", "stage": STAGE_UNDER_REVIEW})
+                msg = "Statement of purpose saved successfully." if target_status in (STATUS_SELECTED, STATUS_ENROLLMENT_PENDING) else "Application submitted for admissions review."
+                stage_val = STAGE_SELECTED if target_status in (STATUS_SELECTED, STATUS_ENROLLMENT_PENDING) else STAGE_UNDER_REVIEW
+                return jsonify({"status": "success", "message": msg, "stage": stage_val})
 
             elif step_key == "academic_profile":
                 payload = request.get_json(silent=True) if request.is_json else request.form
@@ -14522,30 +15615,18 @@ def intern_save_wizard_step():
                     return jsonify({"status": "error", "message": err}), 400
 
                 batch_label = make_batch_label(val)
-                domain = (acct["domain"] if acct["domain"] and acct["domain"] in VALID_DOMAINS else None) or \
-                         (app_row["domain"] if app_row and app_row["domain"] and app_row["domain"] in VALID_DOMAINS else "AI Agent Development")
-
+                # Defensive: Do NOT insert unverified enrollment record without screenshot.
+                # Only update joining_date if an enrollment already exists.
                 if enr:
                     conn.execute("""
                         UPDATE enrollments
                         SET joining_date=?, batch_label=?, updated_at=?
                         WHERE id=?
                     """, (val, batch_label, now_str(), enr["id"]))
-                else:
-                    app_id = app_row["id"] if app_row else None
-                    conn.execute("""
-                        INSERT INTO enrollments
-                        (application_id, timestamp, name, email, phone, city, college, course, semester,
-                         year_of_passing, domain, joining_date, batch_label, payment_screenshot,
-                         payment_status, created_at, updated_at)
-                        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
-                    """, (app_id, now_str(), acct["name"], email, acct["phone"], acct["city"], acct["college"],
-                          acct["course"], acct["semester"], acct["year_of_passing"], domain,
-                          val, batch_label, "", "Pending Verification", now_str(), now_str()))
                 conn.commit()
                 return jsonify({"status": "success", "message": "Joining date updated successfully.", "joining_date": val, "batch_label": batch_label})
 
-            elif step_key == "payment_screenshot":
+            elif step_key in ("payment_screenshot", "enrollment_confirmation"):
                 flow_state = get_intern_flow_state(conn, email)
                 if not flow_state["can_upload_payment"]:
                     return jsonify({
@@ -14565,6 +15646,15 @@ def intern_save_wizard_step():
                     log_abuse(ip, "/intern/save-wizard-step", "wizard:upload", "bad_magic", email)
                     return jsonify({"status": "error", "message": "File must be a real PNG, JPEG, or PDF."}), 400
 
+                # Atomic joining date & UTR verification
+                raw_jd = clean_text(request.form.get("joining_date") or request.form.get("value") or "")
+                valid_jd, _ = validate_joining_date(raw_jd)
+                if not valid_jd:
+                    mondays = get_selectable_mondays()
+                    raw_jd = (enr["joining_date"] if enr and enr["joining_date"] else None) or (mondays[2] if len(mondays) > 2 else mondays[0])
+                batch_label = make_batch_label(raw_jd)
+                utr_val = clean_text(request.form.get("utr_number") or request.form.get("utr") or "")
+
                 filename = f"{uuid.uuid4().hex}.{sniffed}"
                 file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
 
@@ -14574,30 +15664,29 @@ def intern_save_wizard_step():
                 if enr:
                     conn.execute("""
                         UPDATE enrollments
-                        SET payment_screenshot=?, payment_status='Pending Verification', updated_at=?
+                        SET joining_date=?, batch_label=?, payment_screenshot=?, utr=COALESCE(NULLIF(?, ''), utr),
+                            payment_status='Pending Verification', updated_at=?
                         WHERE id=?
-                    """, (filename, now_str(), enr["id"]))
+                    """, (raw_jd, batch_label, filename, utr_val, now_str(), enr["id"]))
                 else:
-                    mondays = get_selectable_mondays()
-                    default_monday = mondays[1]
-                    batch_label = make_batch_label(default_monday)
                     app_id = app_row["id"] if app_row else None
                     conn.execute("""
                         INSERT INTO enrollments
                         (application_id, timestamp, name, email, phone, city, college, course, semester,
-                         year_of_passing, domain, joining_date, batch_label, payment_screenshot,
+                         year_of_passing, domain, joining_date, batch_label, payment_screenshot, utr,
                          payment_status, created_at, updated_at)
-                        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                        VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
                     """, (app_id, now_str(), acct["name"], email, acct["phone"], acct["city"], acct["college"],
                           acct["course"], acct["semester"], acct["year_of_passing"], domain,
-                          default_monday, batch_label, filename, "Pending Verification", now_str(), now_str()))
+                          raw_jd, batch_label, filename, utr_val, "Pending Verification", now_str(), now_str()))
 
                 if app_row and app_row["status"] in (STATUS_SELECTED, STATUS_ENROLLMENT_PENDING):
                     conn.execute("UPDATE applications SET status=?, updated_at=? WHERE id=?",
                                  (STATUS_ENROLLMENT_PENDING, now_str(), app_row["id"]))
 
                 conn.commit()
-                return jsonify({"status": "success", "message": "Receipt uploaded successfully.", "filename": filename})
+                return jsonify({"status": "success", "message": "Enrollment proof submitted for verification.", "filename": filename, "joining_date": raw_jd})
+
 
             else:
                 return jsonify({"status": "error", "message": f"Unknown step_key: {step_key}"}), 400
@@ -14614,34 +15703,56 @@ def intern_save_wizard_step():
 # â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 def paid_enroll_eligible(conn, email):
-    """Returns (eligible: bool, reason: str, app_row|None). See 12.0 availability rule."""
+    """Returns (eligible: bool, reason: str, app_row|None).
+    Anyone with an active intern account is eligible to join the ₹1,999 paid program,
+    unless they already have an approved/verified paid program enrollment.
+    """
+    clean_email = (email or "").strip().lower()
     app_row = conn.execute(
-        "SELECT * FROM applications WHERE email=? ORDER BY id DESC LIMIT 1", (email,)
+        "SELECT * FROM applications WHERE LOWER(email)=LOWER(?) ORDER BY id DESC LIMIT 1", (clean_email,)
     ).fetchone()
+
+    latest_enr = conn.execute(
+        "SELECT product, payment_status FROM enrollments WHERE LOWER(email)=LOWER(?) ORDER BY id DESC LIMIT 1",
+        (clean_email,),
+    ).fetchone()
+    if latest_enr and latest_enr["product"] == "paid_program" and latest_enr["payment_status"] in ("Verified", "Approved", "Accepted"):
+        return False, "already_paid_enrolled", app_row
+
     if not app_row:
-        return False, "no_application", None
-    status = app_row["status"]
-    # Already on the free success path â€” the paid track is not offered to them.
-    if status in (STATUS_ACCEPTED, STATUS_ENROLLED):
-        return False, "already_enrolled_free", app_row
-    # A paid enrollee whose payment was Rejected must be allowed to re-upload, even if
-    # they never sat an interview â€” the interview gate below must not trap them.
-    if status == STATUS_PAID_ENROLLED:
-        latest_enr = conn.execute(
-            "SELECT product, payment_status FROM enrollments WHERE email=? ORDER BY id DESC LIMIT 1",
-            (email,),
-        ).fetchone()
-        if (latest_enr and latest_enr["product"] == "paid_program"
-                and latest_enr["payment_status"] == "Rejected"):
-            return True, "ok", app_row
-    completed_iv = conn.execute(
-        "SELECT 1 FROM interviews WHERE email=? AND status='completed' LIMIT 1", (email,)
-    ).fetchone()
-    # F7: when interviews are disabled, don't trap paid-intent users behind a gate they
-    # cannot clear â€” allow paid enrol from any non-final state in that case.
-    if completed_iv or status == STATUS_REJECTED or not INTERVIEW_ENABLED:
-        return True, "ok", app_row
-    return False, "interview_required", app_row
+        try:
+            acct = conn.execute("SELECT * FROM intern_accounts WHERE LOWER(email)=LOWER(?) LIMIT 1", (clean_email,)).fetchone()
+            if acct:
+                domain = acct["domain"] if acct["domain"] in VALID_DOMAINS else "Full Stack Web Development"
+                mentor_email = assign_mentor_email(domain)
+                cur = conn.execute("""
+                    INSERT INTO applications
+                    (name,email,phone,city,college,course,semester,year_of_passing,domain,why_join,portfolio,
+                     status,mentor_email,source,created_at,updated_at)
+                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,datetime('now','localtime'),?)
+                """, (acct["name"], clean_email, acct.get("phone") or "", acct.get("city") or "Noida",
+                      acct.get("college") or "Registered Institution", acct.get("course") or "B.Tech",
+                      acct.get("semester") or "Semester 1", acct.get("year_of_passing") or "2026",
+                      domain, "Direct Paid Program Enrollment", "",
+                      STATUS_UNDER_REVIEW, mentor_email, "paid-program-direct", now_str()))
+                app_id = getattr(cur, "lastrowid", None)
+                if not app_id or app_id == 0:
+                    created_app = conn.execute(
+                        "SELECT id FROM applications WHERE LOWER(email)=LOWER(?) ORDER BY id DESC LIMIT 1",
+                        (clean_email,)
+                    ).fetchone()
+                    if created_app:
+                        app_id = created_app["id"]
+
+                if app_id and app_id > 0:
+                    conn.execute("UPDATE intern_accounts SET application_id=?, domain=?, signup_stage=3 WHERE LOWER(email)=LOWER(?)",
+                                 (app_id, domain, clean_email))
+                    conn.commit()
+                    app_row = conn.execute("SELECT * FROM applications WHERE id=?", (app_id,)).fetchone()
+        except Exception as ex_app:
+            logger.warning(f"[paid_enroll_eligible] Handled application sync: {ex_app}")
+
+    return True, "ok", app_row
 
 
 @app.route("/paid/enroll", methods=["POST"])
@@ -14650,7 +15761,7 @@ def paid_enroll():
         user = require_role("intern")
         if not user:
             return jsonify({"status": "error", "message": "Unauthorized"}), 401
-        email = user["email"]
+        email = user["email"].strip().lower()
 
         ip = get_client_ip()
         allowed, ra = rate_check(f"enroll:ip:{ip}", *RL_ENROLL_IP)
@@ -14662,6 +15773,12 @@ def paid_enroll():
         valid, err = validate_joining_date(joining_date)
         if not valid:
             return jsonify({"status": "error", "message": err}), 400
+
+        # Validate 12-digit UTR
+        utr_raw = clean_text(request.form.get("utr", ""))
+        utr = re.sub(r"\D", "", utr_raw)
+        if len(utr) != 12:
+            return jsonify({"status": "error", "message": "Please enter a valid 12-digit UPI UTR / Transaction Reference number."}), 400
 
         if "payment_screenshot" not in request.files:
             return jsonify({"status": "error", "message": "Payment screenshot required."}), 400
@@ -14677,54 +15794,69 @@ def paid_enroll():
         filename = f"{uuid.uuid4().hex}.{sniffed}"
 
         with get_db() as conn:
+            ensure_column(conn, "enrollments", "utr", "TEXT")
+            ensure_column(conn, "enrollments", "product", "TEXT")
+            ensure_column(conn, "enrollments", "amount", "INTEGER")
+
             acct = conn.execute(
-                "SELECT * FROM intern_accounts WHERE email=? AND is_active=1 LIMIT 1", (email,)
+                "SELECT * FROM intern_accounts WHERE LOWER(email)=LOWER(?) AND is_active=1 LIMIT 1", (email,)
             ).fetchone()
             if not acct:
                 return jsonify({"status": "error", "message": "Account not found."}), 404
             eligible, reason, app_row = paid_enroll_eligible(conn, email)
             if not eligible:
                 msg = {
-                    "no_application": "Please apply first.",
-                    "already_enrolled_free": "You're already enrolled through the standard track.",
-                    "interview_required": "The paid program opens after you complete your virtual interview.",
-                }.get(reason, "Not eligible for the paid program yet.")
+                    "already_paid_enrolled": "You are already enrolled and verified in the paid program.",
+                }.get(reason, "Not eligible for the paid program.")
                 return jsonify({"status": "error", "message": msg, "code": reason}), 400
 
-            # Save the screenshot only after eligibility passes.
+            # Duplicate UTR check across other candidate accounts
+            dup_utr = conn.execute(
+                "SELECT email FROM enrollments WHERE utr=? AND LOWER(email) != LOWER(?) LIMIT 1",
+                (utr, email)
+            ).fetchone()
+            if dup_utr:
+                return jsonify({"status": "error", "message": "This 12-digit UTR has already been submitted by another candidate. Please check and enter your correct UTR."}), 400
+
+            # Save the screenshot
             file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
             batch_label = make_batch_label(joining_date)
 
-            existing = conn.execute("SELECT * FROM enrollments WHERE email=? LIMIT 1", (email,)).fetchone()
+            existing = conn.execute("SELECT * FROM enrollments WHERE LOWER(email)=LOWER(?) LIMIT 1", (email,)).fetchone()
             if existing:
                 conn.execute("""
                     UPDATE enrollments SET application_id=?,timestamp=?,name=?,phone=?,city=?,college=?,course=?,
                     semester=?,year_of_passing=?,domain=?,joining_date=?,batch_label=?,payment_screenshot=?,
-                    payment_status='Pending Verification',admin_note='',product='paid_program',amount=?,updated_at=? WHERE email=?
+                    payment_status='Pending Verification',admin_note=?,utr=?,product='paid_program',amount=?,updated_at=? WHERE LOWER(email)=LOWER(?)
                 """, (app_row["id"], now_str(), acct["name"], acct["phone"], acct["city"], acct["college"],
                       acct["course"], acct["semester"], acct["year_of_passing"], app_row["domain"],
-                      joining_date, batch_label, filename, PAID_PROGRAM_AMOUNT, now_str(), email))
+                      joining_date, batch_label, filename, f"UTR: {utr}", utr, PAID_PROGRAM_AMOUNT, now_str(), email))
             else:
                 conn.execute("""
                     INSERT INTO enrollments
                     (application_id,timestamp,name,email,phone,city,college,course,semester,
                     year_of_passing,domain,joining_date,batch_label,payment_screenshot,payment_status,
-                    product,amount,created_at,updated_at)
-                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                    admin_note,utr,product,amount,created_at,updated_at)
+                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
                 """, (app_row["id"], now_str(), acct["name"], email, acct["phone"], acct["city"], acct["college"],
                       acct["course"], acct["semester"], acct["year_of_passing"], app_row["domain"],
                       joining_date, batch_label, filename, "Pending Verification",
-                      "paid_program", PAID_PROGRAM_AMOUNT, now_str(), now_str()))
+                      f"UTR: {utr}", utr, "paid_program", PAID_PROGRAM_AMOUNT, now_str(), now_str()))
 
             conn.execute("UPDATE applications SET status=?,updated_at=? WHERE id=?",
                          (STATUS_PAID_ENROLLED, now_str(), app_row["id"]))
             conn.commit()
 
-        send_status_update_email(acct["name"], email, app_row["domain"], STATUS_PAID_ENROLLED)
+        try:
+            send_status_update_email(acct["name"], email, app_row["domain"], STATUS_PAID_ENROLLED)
+        except Exception as em_err:
+            log_error("paid-enroll-email", em_err)
+
         return jsonify({"status": "success",
                         "message": "Paid program enrollment submitted. We'll verify your payment shortly.",
                         "amount": PAID_PROGRAM_AMOUNT,
-                        "redirect": "/profile"})
+                        "utr": utr,
+                        "redirect": "/program"})
     except Exception as e:
         log_error("paid-enroll", e)
         return jsonify({"status": "error", "message": "Error"}), 500
@@ -15715,7 +16847,7 @@ def admin_stats():
                 "free_enrollments":   cnt("SELECT COUNT(*) as c FROM enrollments WHERE product='free_deposit' OR product IS NULL"),
                 "paid_enrollments":   cnt("SELECT COUNT(*) as c FROM enrollments WHERE product='paid_program'"),
                 "paid_enrolled":      cnt("SELECT COUNT(*) as c FROM applications WHERE status=?", STATUS_PAID_ENROLLED),
-                "pending_payments":   cnt("SELECT COUNT(*) as c FROM enrollments WHERE payment_status='Pending Verification'"),
+                "pending_payments":   cnt("SELECT COUNT(*) as c FROM enrollments WHERE payment_status='Pending Verification' AND (payment_screenshot IS NOT NULL AND payment_screenshot != '')"),
                 "total_mentors":      cnt("SELECT COUNT(*) as c FROM mentors WHERE is_active=1"),
                 "total_visits":       cnt("SELECT COUNT(*) as c FROM device_profiles"),
                 "below_threshold_this_week": below_threshold,
@@ -15902,12 +17034,16 @@ def admin_sync_attendance():
     except Exception as e:
         import traceback
         return f"<pre>{traceback.format_exc()}</pre>"
+
+
+@app.route("/admin/job-applications", methods=["GET"])
 def admin_job_applications():
     """Admin-wide view of post_applications (job-board applications) across every
     company/post -- previously the admin dashboard only saw the legacy `applications`
     table and had no visibility into who applied to which posted job/internship."""
-    if not require_admin():
-        return redirect("/admin-login")
+    user = require_admin() or require_role(["admin", "staff", "mentor"])
+    if not user:
+        return redirect("/admin/login")
     with get_db() as conn:
         rows = conn.execute(
             "SELECT pa.id, pa.status, pa.created_at, "
@@ -16246,7 +17382,7 @@ def admin_enrollments():
             """
             where_sql = ""
             if sf == "pending":
-                where_sql = " WHERE e.payment_status='Pending Verification'"
+                where_sql = " WHERE e.payment_status='Pending Verification' AND (e.payment_screenshot IS NOT NULL AND e.payment_screenshot != '')"
             elif sf == "accepted":
                 where_sql = " WHERE e.payment_status='Accepted'"
             elif sf == "rejected":
@@ -16265,7 +17401,8 @@ def admin_enrollments():
                 ).fetchall()
 
             total_apps     = conn.execute("SELECT COUNT(*) as c FROM applications").fetchone()["c"]
-            pending_pay    = conn.execute("SELECT COUNT(*) as c FROM enrollments WHERE payment_status='Pending Verification'").fetchone()["c"]
+            pending_pay    = conn.execute("SELECT COUNT(*) as c FROM enrollments WHERE payment_status='Pending Verification' AND (payment_screenshot IS NOT NULL AND payment_screenshot != '')").fetchone()["c"]
+
             total_accepted = conn.execute("SELECT COUNT(*) as c FROM enrollments WHERE payment_status='Accepted'").fetchone()["c"]
             total_visits   = conn.execute("SELECT COUNT(*) as c FROM device_profiles").fetchone()["c"]
             free_count     = conn.execute("SELECT COUNT(*) as c FROM enrollments WHERE product='free_deposit' OR product IS NULL").fetchone()["c"]
@@ -17989,12 +19126,12 @@ def forgot_password():
             return neutral
         with get_db() as conn:
             acct = conn.execute(
-                "SELECT * FROM intern_accounts WHERE email=? AND is_active=1 LIMIT 1", (email,)
+                "SELECT * FROM intern_accounts WHERE LOWER(email)=LOWER(?) AND is_active=1 LIMIT 1", (email,)
             ).fetchone()
             comp = None
             if not acct:
                 comp = conn.execute(
-                    "SELECT * FROM companies WHERE email=? AND is_active=1 LIMIT 1", (email,)
+                    "SELECT * FROM companies WHERE LOWER(email)=LOWER(?) AND is_active=1 LIMIT 1", (email,)
                 ).fetchone()
 
             # Seamless Auto-Provisioning for Certified Interns
@@ -18015,7 +19152,7 @@ def forgot_password():
                             (holder_name, email, domain, college)
                         )
                         conn.commit()
-                        acct = conn.execute("SELECT * FROM intern_accounts WHERE email=? AND is_active=1", (email,)).fetchone()
+                        acct = conn.execute("SELECT * FROM intern_accounts WHERE LOWER(email)=LOWER(?) AND is_active=1", (email,)).fetchone()
                 except Exception as ap_err:
                     log_error("auto-provision-certified-intern", ap_err)
 
@@ -18040,7 +19177,7 @@ def forgot_password():
 
             # Invalidate any previous unused tokens for this account.
             conn.execute(
-                "UPDATE password_resets SET used=1, used_at=? WHERE email=? AND account_type=? AND used=0",
+                "UPDATE password_resets SET used=1, used_at=? WHERE LOWER(email)=LOWER(?) AND account_type=? AND used=0",
                 (now_str(), email, account_type)
             )
             # SEC-001: store account_type + account_id explicitly — no more email|role encoding.
@@ -18114,12 +19251,12 @@ def reset_password():
             new_hash = set_password_hash(password)
             if account_type == "intern":
                 updated = conn.execute(
-                    "UPDATE intern_accounts SET password_hash=?, password_set=1, updated_at=? WHERE email=?",
+                    "UPDATE intern_accounts SET password_hash=?, password_set=1, updated_at=? WHERE LOWER(email)=LOWER(?)",
                     (new_hash, now_str(), email)
                 ).rowcount
             else:  # company
                 updated = conn.execute(
-                    "UPDATE companies SET password_hash=?, updated_at=? WHERE email=?",
+                    "UPDATE companies SET password_hash=?, updated_at=? WHERE LOWER(email)=LOWER(?)",
                     (new_hash, now_str(), email)
                 ).rowcount
 
@@ -18128,12 +19265,12 @@ def reset_password():
                 fallback_table = "companies" if account_type == "intern" else "intern_accounts"
                 if fallback_table == "companies":
                     conn.execute(
-                        "UPDATE companies SET password_hash=?, updated_at=? WHERE email=?",
+                        "UPDATE companies SET password_hash=?, updated_at=? WHERE LOWER(email)=LOWER(?)",
                         (new_hash, now_str(), email)
                     )
                 else:
                     conn.execute(
-                        "UPDATE intern_accounts SET password_hash=?, password_set=1, updated_at=? WHERE email=?",
+                        "UPDATE intern_accounts SET password_hash=?, password_set=1, updated_at=? WHERE LOWER(email)=LOWER(?)",
                         (new_hash, now_str(), email)
                     )
 
@@ -18145,7 +19282,7 @@ def reset_password():
 
             # Revoke all existing sessions for this account (prevents session fixation
             # and forces re-authentication everywhere after a password change).
-            conn.execute("DELETE FROM user_sessions WHERE email=?", (email,))
+            conn.execute("DELETE FROM user_sessions WHERE LOWER(email)=LOWER(?)", (email,))
             conn.commit()
 
         # SEC-001: create session with the CORRECT role from the reset record.
@@ -18479,6 +19616,13 @@ def compress_response(response):
     response.headers['Content-Length'] = len(response.get_data())
     return response
 
+app.decrypt_upi = decrypt_upi
+app.encrypt_upi = encrypt_upi
+app.mask_upi = mask_upi
+app.encrypt_gemini_key = encrypt_gemini_key
+app.decrypt_gemini_key = decrypt_gemini_key
+app.mask_gemini_key = mask_gemini_key
+
 from routes import register_blueprints
 
 register_blueprints(app)
@@ -18702,6 +19846,33 @@ def _ensure_scraped_comments_table(conn, table_name="scraped_internship_comments
     conn.execute(
         f"CREATE INDEX IF NOT EXISTS idx_{safe_table}_job ON {safe_table}(job_id)"
     )
+
+
+def _ensure_scraped_leads_tables(conn):
+    """Idempotent table creation for scraped internships and jobs if not already present."""
+    for tbl in ["scraped_internships", "scraped_jobs"]:
+        conn.execute(f"""
+            CREATE TABLE IF NOT EXISTS {tbl} (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                Domain TEXT,
+                Company TEXT,
+                Role TEXT,
+                Location TEXT,
+                Is_Remote TEXT,
+                Start_Date TEXT,
+                End_Date TEXT,
+                Stipend TEXT,
+                URL TEXT,
+                Description TEXT,
+                Source TEXT,
+                Region TEXT,
+                Stipend_Normalized TEXT,
+                Work_Model TEXT,
+                City TEXT,
+                Clicks INTEGER DEFAULT 0
+            )
+        """)
+
 
 
 def _lead_seo_slug(job):
@@ -19140,4 +20311,187 @@ def scraped_lead_click_track(job_id):
         return jsonify({"status": "ok"})
     except Exception:
         return jsonify({"status": "ok"})  # Never fail the user's navigation
+
+
+@app.route("/company/<company_slug>/careers")
+@app.route("/company/<company_slug>/jobs")
+def company_careers_hub(company_slug):
+    """
+    Dedicated Company Careers SEO Landing Page.
+    Aggregates all open internships & jobs for a specific company,
+    targeting '{Company} Careers' / '{Company} Internships' search queries.
+    """
+    selected_type = request.args.get("type", "all").lower()
+    norm_slug = re.sub(r"[^a-z0-9]+", "-", company_slug.lower()).strip("-")
+    
+    with get_db() as conn:
+        _ensure_scraped_leads_tables(conn)
+        # 1. Search for matching company name in companies table or scraped tables
+        comp_name = None
+        comp_about = None
+        
+        c_row = conn.execute(
+            "SELECT name, about FROM companies WHERE LOWER(REPLACE(name, ' ', '-')) = ? OR LOWER(name) = ? LIMIT 1",
+            (norm_slug, norm_slug.replace("-", " "))
+        ).fetchone()
+        
+        if c_row:
+            comp_name = c_row[0]
+            comp_about = c_row[1]
+        
+        # Fallback to scraped tables
+        if not comp_name:
+            c_scraped = conn.execute(
+                "SELECT Company FROM scraped_internships WHERE LOWER(REPLACE(Company, ' ', '-')) = ? OR LOWER(Company) = ? LIMIT 1",
+                (norm_slug, norm_slug.replace("-", " "))
+            ).fetchone()
+            if not c_scraped:
+                c_scraped = conn.execute(
+                    "SELECT Company FROM scraped_jobs WHERE LOWER(REPLACE(Company, ' ', '-')) = ? OR LOWER(Company) = ? LIMIT 1",
+                    (norm_slug, norm_slug.replace("-", " "))
+                ).fetchone()
+            if c_scraped:
+                comp_name = c_scraped[0]
+                comp_about = f"{comp_name} is actively hiring early-career engineers, analysts, and developers through DBERT."
+            else:
+                abort(404)
+
+        if not comp_about:
+            comp_about = f"{comp_name} is actively hiring early-career engineers, analysts, and developers through DBERT."
+
+        # 2. Fetch all openings
+        intern_rows = conn.execute(
+            "SELECT id, Domain, Company, Role, Location, Work_Model, Start_Date, End_Date, Stipend, Stipend_Normalized, Source, Region, Description "
+            "FROM scraped_internships WHERE LOWER(TRIM(Company)) = LOWER(TRIM(?)) ORDER BY id DESC",
+            (comp_name,)
+        ).fetchall()
+
+        job_rows = conn.execute(
+            "SELECT id, Domain, Company, Role, Location, Work_Model, Start_Date, End_Date, Stipend, Stipend_Normalized, Source, Region, Description "
+            "FROM scraped_jobs WHERE LOWER(TRIM(Company)) = LOWER(TRIM(?)) ORDER BY id DESC",
+            (comp_name,)
+        ).fetchall()
+
+        all_openings = []
+        for r in intern_rows:
+            d = row_to_dict(r)
+            d["post_type"] = "internship"
+            d["domain"] = d.get("Domain", "")
+            d["role"] = d.get("Role", "")
+            d["location"] = d.get("Location", "Remote")
+            d["work_model"] = d.get("Work_Model", "Remote")
+            d["stipend"] = d.get("Stipend") or d.get("Stipend_Normalized") or "Competitive"
+            d["source"] = d.get("Source", "DBERT")
+            d["region"] = d.get("Region", "India")
+            d["slug"] = _lead_seo_slug(d)
+            d["detail_url"] = f"/internship/lead/{d['id']}/{d['slug']}"
+            all_openings.append(d)
+
+        for r in job_rows:
+            d = row_to_dict(r)
+            d["post_type"] = "job"
+            d["domain"] = d.get("Domain", "")
+            d["role"] = d.get("Role", "")
+            d["location"] = d.get("Location", "Remote")
+            d["work_model"] = d.get("Work_Model", "Remote")
+            d["stipend"] = d.get("Stipend") or d.get("Stipend_Normalized") or "Competitive"
+            d["source"] = d.get("Source", "DBERT")
+            d["region"] = d.get("Region", "India")
+            d["slug"] = _lead_seo_slug(d)
+            d["detail_url"] = f"/job/lead/{d['id']}/{d['slug']}"
+            all_openings.append(d)
+
+        if not all_openings:
+            abort(404)
+
+        total_openings = len(all_openings)
+        total_internships = sum(1 for op in all_openings if op["post_type"] == "internship")
+        total_jobs = sum(1 for op in all_openings if op["post_type"] == "job")
+
+        # Filtering by type
+        if selected_type == "internship":
+            filtered_openings = [op for op in all_openings if op["post_type"] == "internship"]
+        elif selected_type == "job":
+            filtered_openings = [op for op in all_openings if op["post_type"] == "job"]
+        else:
+            filtered_openings = all_openings
+
+        domains_set = sorted(list(set(op["domain"] for op in all_openings if op["domain"])))
+        work_models_set = sorted(list(set(op["work_model"] for op in all_openings if op["work_model"])))
+        regions_set = sorted(list(set(op["region"] for op in all_openings if op["region"])))
+
+        canonical_url = f"https://lms.dbert.in/company/{norm_slug}/careers"
+
+        # Schema.org JSON-LD
+        job_postings_ld = []
+        for op in all_openings:
+            job_postings_ld.append({
+                "@type": "JobPosting",
+                "title": op["role"],
+                "description": f"Verified {op['domain']} opening at {comp_name}. {op['work_model']} engagement with {op['stipend']}.",
+                "datePosted": op.get("Start_Date") or datetime.now().strftime("%Y-%m-%d"),
+                "validThrough": op.get("End_Date") or (datetime.now() + timedelta(days=90)).strftime("%Y-%m-%d"),
+                "employmentType": "INTERN" if op["post_type"] == "internship" else "FULL_TIME",
+                "hiringOrganization": {
+                    "@type": "Organization",
+                    "name": comp_name,
+                    "sameAs": canonical_url
+                },
+                "jobLocation": {
+                    "@type": "Place",
+                    "address": {
+                        "@type": "PostalAddress",
+                        "addressLocality": op["location"],
+                        "addressCountry": "IN" if op["region"] == "India" else "US"
+                    }
+                }
+            })
+
+        jsonld_data = {
+            "@context": "https://schema.org",
+            "@graph": [
+                {
+                    "@type": "Organization",
+                    "name": comp_name,
+                    "url": canonical_url,
+                    "description": comp_about
+                },
+                *job_postings_ld
+            ]
+        }
+        jsonld = json.dumps(jsonld_data).replace("</", "<\\/")
+
+        breadcrumb_jsonld = json.dumps({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                {"@type": "ListItem", "position": 1, "name": "DBERT Home", "item": "https://dbert.in"},
+                {"@type": "ListItem", "position": 2, "name": "Careers & Sourcing", "item": "https://lms.dbert.in/portal/sourcing"},
+                {"@type": "ListItem", "position": 3, "name": f"{comp_name} Careers", "item": canonical_url}
+            ]
+        }).replace("</", "<\\/")
+
+        page_title = f"{comp_name} Careers 2026 — Internships & Job Openings | DBERT"
+        meta_desc = f"Explore {total_openings} open positions at {comp_name}. Apply for verified tech roles across {', '.join(domains_set[:3])} on DBERT with pre-vetted mentorship."
+
+        return render_template(
+            "company_careers_hub.html",
+            company_name=comp_name,
+            company_slug=norm_slug,
+            company_about=comp_about,
+            total_openings=total_openings,
+            total_internships=total_internships,
+            total_jobs=total_jobs,
+            filtered_openings=filtered_openings,
+            selected_type=selected_type,
+            domains_str=", ".join(domains_set) or "Technical Engineering",
+            work_models_str=" · ".join(work_models_set) or "Remote & Hybrid",
+            regions_str=" · ".join(regions_set) or "Global & India",
+            canonical=canonical_url,
+            page_title=page_title,
+            meta_desc=meta_desc,
+            jsonld=jsonld,
+            breadcrumb_jsonld=breadcrumb_jsonld
+        )
+
 

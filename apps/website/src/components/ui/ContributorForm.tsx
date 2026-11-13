@@ -16,7 +16,15 @@ const DOMAIN_OPTIONS = [
 
 const MAX_COMMENT_LENGTH = 500;
 
-export default function ContributorForm() {
+interface ContributorFormProps {
+  projectSlug?: string;
+  projectName?: string;
+}
+
+export default function ContributorForm({
+  projectSlug = 'alkame',
+  projectName = 'Alkame',
+}: ContributorFormProps) {
   const [expanded, setExpanded] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
@@ -30,6 +38,7 @@ export default function ContributorForm() {
 
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [autoApproved, setAutoApproved] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -43,16 +52,24 @@ export default function ContributorForm() {
     setErrorMsg('');
 
     try {
-      const res = await fetch('/api/alkame/contributors', {
+      const endpoint =
+        projectSlug === 'alkame'
+          ? '/api/alkame/contributors'
+          : `/api/projects/${projectSlug}/contributors`;
+
+      const res = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
 
       if (res.ok) {
+        const data = await res.json();
+        setAutoApproved(Boolean(data.autoApproved));
         setSuccess(true);
         trackEvent('contributor_submit', {
           domain: formData.domain,
+          projectSlug,
         });
       } else {
         const data = await res.json();
@@ -79,9 +96,13 @@ export default function ContributorForm() {
     return (
       <div className={`card ${f.panel}`}>
         <span className="icon-chip"><CircleCheck aria-hidden="true" /></span>
-        <h2 className="card-title">Submitted for Review</h2>
+        <h2 className="card-title">
+          {autoApproved ? 'Profile Live & Verified' : 'Submitted for Review'}
+        </h2>
         <p className={f.mutedCopy}>
-          Thanks — your contribution will appear on this page once a DBERT admin reviews and approves it.
+          {autoApproved
+            ? `Welcome aboard! Your verified contribution card is now live on the ${projectName} research team.`
+            : `Thanks — your contribution will appear on this page once a DBERT admin reviews and approves it.`}
         </p>
       </div>
     );
@@ -92,8 +113,8 @@ export default function ContributorForm() {
       <form className="card" onSubmit={handleSubmit}>
         <h2 className={`${styles.stepTitle} ${f.field}`}>Join as a Contributor</h2>
         <p className={f.introCopySm}>
-          Currently interning on Alkame-Nifty50? Submit your details below — your card goes live after
-          a quick admin review. Your email is only used internally and is never shown publicly.
+          Currently interning on {projectName}? Submit your details below — your card goes live after
+          instant verification for registered interns. Your email is only used internally and is never shown publicly.
         </p>
 
         {errorMsg && <div className={styles.errorAlert}>{errorMsg}</div>}
@@ -134,7 +155,7 @@ export default function ContributorForm() {
             maxLength={MAX_COMMENT_LENGTH}
             value={formData.comment}
             onChange={handleInputChange}
-            placeholder="What are you working on for Alkame?"
+            placeholder={`What are you working on for ${projectName}?`}
             rows={4}
           />
         </div>

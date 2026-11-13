@@ -396,6 +396,138 @@ def load_next_batch(batch_size: int = TOTAL_TARGET_CANDIDATES):
         print()
 
 
+def load_sheet_1593_first_92(batch_size: int = 92):
+    """
+    Loads the first 92 uncontacted candidates from data/sheet_1593_provisional_registry.json.
+    Splits them evenly:
+      - Account 1 (Odd Serials): 46 candidates (account1_odd)
+      - Account 2 (Even Serials): 46 candidates (account2_even)
+    Populates whatsapp_dispatch in dbert_whatsapp.db and exports CSVs.
+    """
+    init_db()
+    conn = get_db_connection()
+
+    # 1. Sync any existing SENT records in whatsapp_dispatch into whatsapp_sent_log
+    sent_in_dispatch = conn.execute("""
+        SELECT candidate_id, holder_name, user_email, clean_phone, cert_id, domain_track, account_group, whatsapp_sent_at
+        FROM whatsapp_dispatch
+        WHERE whatsapp_status = 'SENT'
+    """).fetchall()
+
+    for r in sent_in_dispatch:
+        now_ts = r["whatsapp_sent_at"] or datetime.now().isoformat()
+        conn.execute("""
+            INSERT OR IGNORE INTO whatsapp_sent_log
+            (candidate_id, holder_name, user_email, clean_phone, cert_id, domain_track, account_group, whatsapp_sent_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        """, (r["candidate_id"], r["holder_name"], r["user_email"], r["clean_phone"], r["cert_id"], r["domain_track"], r["account_group"], now_ts))
+    conn.commit()
+
+    # 2. Get list of already sent candidate identifiers
+    sent_rows = conn.execute("SELECT candidate_id, user_email, clean_phone, cert_id FROM whatsapp_sent_log").fetchall()
+    sent_ids = set((r["candidate_id"] or "").strip() for r in sent_rows if r["candidate_id"])
+    sent_emails = set((r["user_email"] or "").strip().lower() for r in sent_rows if r["user_email"])
+    sent_phones = set((r["clean_phone"] or "").strip() for r in sent_rows if r["clean_phone"])
+    sent_certs = set((r["cert_id"] or "").strip() for r in sent_rows if r["cert_id"])
+    sent_phones_10 = set(p[-10:] for p in sent_phones if len(p) >= 10)
+
+    # 3. Load sheet 1593 registry
+    sheet_path = DATA_DIR / "sheet_1593_provisional_registry.json"
+    if not sheet_path.exists():
+        print(f"[ERROR] Sheet registry not found: {sheet_path}")
+        conn.close()
+        return
+
+    with open(sheet_path, "r", encoding="utf-8") as f:
+        all_sheet = json.load(f)
+
+    uncontacted = []
+    seen_phones = set(sent_phones)
+    seen_phones_10 = set(sent_phones_10)
+    seen_emails = set(sent_emails)
+    seen_certs = set(sent_certs)
+
+    for cand in all_sheet:
+        c_id = cand.get("internId") or cand.get("certId") or ""
+        clean_phone = clean_phone_number(cand.get("phone", ""))
+        clean_email = (cand.get("email") or "").strip().lower()
+        cert_id = (cand.get("certId") or "").strip()
+        p10 = clean_phone[-10:] if len(clean_phone) >= 10 else ""
+
+        if c_id in sent_ids or cert_id in sent_certs or clean_email in sent_emails:
+            continue
+        if clean_phone in sent_phones or (p10 and p10 in sent_phones_10):
+            continue
+        if not clean_phone or len(clean_phone) < 10:
+            continue
+        if clean_phone in seen_phones or (p10 and p10 in seen_phones_10) or clean_email in seen_emails or cert_id in seen_certs:
+            continue
+
+        seen_phones.add(clean_phone)
+        if p10:
+            seen_phones_10.add(p10)
+        seen_emails.add(clean_email)
+        seen_certs.add(cert_id)
+        uncontacted.append(cand)
+
+        if len(uncontacted) >= batch_size:
+            break
+
+    eligible_batch = uncontacted[:batch_size]
+
+    # 4. Clear active dispatch queue and insert the new batch
+    conn.execute("DELETE FROM whatsapp_dispatch")
+    conn.commit()
+
+    serial_no = 1
+    for cand in eligible_batch:
+        c_id = cand.get("internId") or cand.get("certId") or f"DBERT-INT-{serial_no}"
+        name = (cand.get("holderName") or "Candidate").strip()
+        email = (cand.get("email") or "").strip().lower()
+        clean_phone = clean_phone_number(cand.get("phone", ""))
+        domain = cand.get("domain") or "Technical Track"
+        project = cand.get("project") or "Capstone Incubation Development"
+        cert_id = cand.get("certId") or ""
+        score = cand.get("score") or 88
+        grade = cand.get("grade") or "Grade A (Very Good)"
+        verify_url = cand.get("verificationUrl") or f"https://dbert.in/verify?certid={cert_id}"
+        signup_ts = cand.get("signup_timestamp") or cand.get("batch") or ""
+
+        account_group = "account1_odd" if (serial_no % 2 != 0) else "account2_even"
+
+        conn.execute("""
+            INSERT OR REPLACE INTO whatsapp_dispatch
+            (serial_no, candidate_id, holder_name, user_email, clean_phone, raw_phone, domain_track, core_project, cert_id, score, grade, verification_url, signup_timestamp, account_group, whatsapp_status)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'PENDING')
+        """, (serial_no, c_id, name, email, clean_phone, cand.get("phone"), domain, project, cert_id, score, grade, verify_url, signup_ts, account_group))
+        serial_no += 1
+
+    conn.commit()
+    conn.execute("PRAGMA wal_checkpoint(TRUNCATE);")
+
+    acc1_count = conn.execute("SELECT count(*) as c FROM whatsapp_dispatch WHERE account_group = 'account1_odd'").fetchone()["c"]
+    acc2_count = conn.execute("SELECT count(*) as c FROM whatsapp_dispatch WHERE account_group = 'account2_even'").fetchone()["c"]
+    total_sent_so_far = len(sent_rows)
+
+    conn.close()
+    export_queues_csv()
+
+    print("\n" + "=" * 76)
+    print("  DBERT — SHEET 1593: FIRST 92 CANDIDATES LOADED FOR DUAL WHATSAPP DISPATCH")
+    print("=" * 76)
+    print(f"  Queued for This Run                : {len(eligible_batch)} candidates")
+    print(f"    - Account 1 (Odd Serials)        : {acc1_count} candidates (Capped at {MAX_MESSAGES_PER_ACCOUNT})")
+    print(f"    - Account 2 (Even Serials)       : {acc2_count} candidates (Capped at {MAX_MESSAGES_PER_ACCOUNT})")
+    print(f"  Total Sent in Prior Runs           : {total_sent_so_far} candidates (Excluded)")
+    print("=" * 76)
+
+    if eligible_batch:
+        print("\nFirst 3 candidates in queue:")
+        for cand in eligible_batch[:3]:
+            print(f"  - {cand.get('holderName')} | {cand.get('certId')} | +{clean_phone_number(cand.get('phone'))} | {cand.get('domain')}")
+        print()
+
+
 def export_queues_csv():
     """Exports master and per-account dispatch CSVs for operator tracking."""
     conn = get_db_connection()
@@ -488,23 +620,39 @@ _EMAIL_TRACKING_MAP = None
 
 
 def get_email_tracking_map() -> dict:
-    """Loads email tracking state from data/dispatch_tracking_409.json."""
+    """Loads email tracking state from data/dispatch_tracking_sheet_1593.json and data/dispatch_tracking_409.json."""
     global _EMAIL_TRACKING_MAP
     if _EMAIL_TRACKING_MAP is not None:
         return _EMAIL_TRACKING_MAP
     _EMAIL_TRACKING_MAP = {}
+    
+    # 1. Check Sheet 1593 tracking first
+    tracking_1593 = DATA_DIR / "dispatch_tracking_sheet_1593.json"
+    if tracking_1593.exists():
+        try:
+            with open(tracking_1593, "r", encoding="utf-8") as f:
+                for r in json.load(f):
+                    cid = (r.get("certId") or "").strip()
+                    em = (r.get("email") or "").strip().lower()
+                    if cid:
+                        _EMAIL_TRACKING_MAP[cid] = r
+                    if em:
+                        _EMAIL_TRACKING_MAP[f"em:{em}"] = r
+        except Exception as e:
+            print(f"[WARN] Failed loading sheet 1593 tracking map: {e}")
+
+    # 2. Check 409 tracking
     tracking_file = DATA_DIR / "dispatch_tracking_409.json"
     if tracking_file.exists():
         try:
             with open(tracking_file, "r", encoding="utf-8") as f:
-                records = json.load(f)
-            for r in records:
-                cid = (r.get("certId") or "").strip()
-                em = (r.get("email") or "").strip().lower()
-                if cid:
-                    _EMAIL_TRACKING_MAP[cid] = r
-                if em:
-                    _EMAIL_TRACKING_MAP[f"em:{em}"] = r
+                for r in json.load(f):
+                    cid = (r.get("certId") or "").strip()
+                    em = (r.get("email") or "").strip().lower()
+                    if cid and cid not in _EMAIL_TRACKING_MAP:
+                        _EMAIL_TRACKING_MAP[cid] = r
+                    if em and f"em:{em}" not in _EMAIL_TRACKING_MAP:
+                        _EMAIL_TRACKING_MAP[f"em:{em}"] = r
         except Exception as e:
             print(f"[WARN] Failed loading email tracking map: {e}")
     return _EMAIL_TRACKING_MAP
@@ -512,7 +660,7 @@ def get_email_tracking_map() -> dict:
 
 def format_email_dispatch_notice(cand: dict) -> str:
     """
-    Builds the official email notice citing abhinav.sharma@dbert.in and the dispatch timestamp.
+    Builds the official email notice citing sending account and dispatch timestamp.
     """
     cert_id = cand.get("cert_id") or cand.get("certId") or ""
     em = (cand.get("user_email") or cand.get("email") or "").strip().lower()
@@ -521,6 +669,7 @@ def format_email_dispatch_notice(cand: dict) -> str:
     e_info = email_map.get(cert_id) or email_map.get(f"em:{em}") or {}
     status = e_info.get("status")
     sent_at_raw = e_info.get("sent_at")
+    sent_from = e_info.get("sent_from") or "abhinav.sharma@dbert.in"
 
     if status == "SENT" and sent_at_raw:
         try:
@@ -528,9 +677,9 @@ def format_email_dispatch_notice(cand: dict) -> str:
             ts_display = dt.strftime("%d %b %Y at %I:%M %p IST")
         except Exception:
             ts_display = sent_at_raw
-        return f"An official credential email was sent to your inbox from *abhinav.sharma@dbert.in* on *{ts_display}*. Please check your inbox & spam folder."
+        return f"An official credential email was sent to your inbox from *{sent_from}* on *{ts_display}*. Please check your inbox & spam folder."
     else:
-        return f"An official credential email from *abhinav.sharma@dbert.in* is registered and queued for delivery to your inbox today. Please check your inbox & spam folder."
+        return f"An official credential email from *DBERT Directorate* is registered and queued for delivery to your inbox today. Please check your inbox & spam folder."
 
 
 def format_whatsapp_message(cand: dict) -> str:
@@ -1080,6 +1229,7 @@ def main():
     parser = argparse.ArgumentParser(description="DBERT Dual-Account WhatsApp Candidate Dispatcher")
     parser.add_argument("--init-db", action="store_true", help="Initialize database tables")
     parser.add_argument("--next-batch", action="store_true", help="Load next batch of remaining uncontacted candidates")
+    parser.add_argument("--load-sheet-92", "--load-sheet-1593", dest="load_sheet_92", action="store_true", help="Load first 92 candidates from sheet 1593 partitioned for Account 1 & 2")
     parser.add_argument("--status", action="store_true", help="Display overall campaign progress and counts")
     parser.add_argument("--dry-run", action="store_true", help="Display queue counts and sample message preview")
     parser.add_argument("--reset-failed", action="store_true", help="Reset FAILED records back to PENDING")
@@ -1098,6 +1248,8 @@ def main():
         print(f"[OK] Initialized database at {DB_PATH}")
     elif args.next_batch:
         load_next_batch()
+    elif args.load_sheet_92:
+        load_sheet_1593_first_92()
     elif args.status:
         print_overall_status()
     elif args.reset_failed:

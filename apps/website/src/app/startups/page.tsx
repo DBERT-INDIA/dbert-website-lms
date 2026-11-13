@@ -5,8 +5,7 @@ import FAQAccordion from '@/components/ui/FAQAccordion';
 import HandNote from '@/components/ui/HandNote';
 import HandDrawnArrow from '@/components/ui/HandDrawnArrow';
 import FastCalculator from '@/components/ui/FastCalculator';
-import StudioConsole, { type FeedLine } from '@/components/ui/StudioConsole';
-import FactTicker from '@/components/ui/FactTicker';
+import StudioInPractice from '@/components/ui/StudioInPractice';
 import AudienceDoors, { type Door } from '@/components/ui/AudienceDoors';
 import TrackedLink from '@/components/ui/TrackedLink';
 import Link from 'next/link';
@@ -78,50 +77,6 @@ export default function StartupsLandingPage() {
     ]
   };
 
-  const startupTelemetryFeed: FeedLine[] = [
-    {
-      time: '10:14:02',
-      tag: 'deploy',
-      message: 'alkame — quantitative risk models & time-series',
-      detail: '· v1.4 live in production',
-    },
-    {
-      time: '10:16:33',
-      tag: 'equity',
-      message: 'gayatri ai term sheet milestone 2 signed',
-      detail: '· 4% advisory equity locked',
-    },
-    {
-      time: '10:19:15',
-      tag: 'sprint',
-      message: 'squad deployed modular RAG pipeline to client VPC',
-      detail: '· 42 tests passed',
-    },
-    {
-      time: '10:22:40',
-      tag: 'audit',
-      message: 'new AI startup repository audited',
-      detail: '· 8 latency bottlenecks eliminated',
-    },
-    {
-      time: '10:25:12',
-      tag: 'grant',
-      message: '₹2,50,000 infrastructure compute grant allocated',
-      detail: '· vLLM GPU cluster active',
-    },
-  ];
-
-  const startupFacts = [
-    '4-8 week zero-to-MVP',
-    '100% IP ownership retained by founders',
-    '2% to 8% advisory equity',
-    '₹50k to ₹5L compute seed grant',
-    'rolling monthly cohorts',
-    'direct founder & partner code reviews',
-    'zero cash clawback if venture pivots',
-    'current stack: Next.js · Postgres · PyTorch · vLLM',
-  ];
-
   const founderDoors: Door[] = [
     {
       kind: 'founder',
@@ -159,13 +114,10 @@ export default function StartupsLandingPage() {
         <div className="wrap subpage-hero-grid">
           <div>
             <div className="doclabel">
-              § 01 — VENTURE STUDIO INCUBATION <span className="rev">rev: 2026.2</span>
+              01 / For founders · Venture studio
             </div>
             <h1 className="relative inline-block">
               An AI Startup Incubator That Builds With You, For Equity
-              <HandNote className="absolute -right-12 -top-6 text-lg hidden md:block" tone="blue">
-                Actual code!
-              </HandNote>
             </h1>
             <p className="intro-copy">
               From initial concept commits to validated production scaling — DBERT powers early-stage Indian AI founders with dedicated software engineering squads, sovereign infrastructure seed grants, and verified developer pipelines without early cash dilution.
@@ -185,32 +137,15 @@ export default function StartupsLandingPage() {
             </div>
           </div>
 
-          <div>
-            <StudioConsole
-              title="dbert-venture · active sprint telemetry"
-              lines={startupTelemetryFeed}
-              footLeft="sprint cycle · 14 days agile"
-              footRight="● 4 ventures in active build"
-              note={
-                <HandNote tone="amber">
-                  founders keep 100% of their IP ✎
-                </HandNote>
-              }
-            />
-          </div>
+          <StudioInPractice focus="founders" />
         </div>
       </section>
-
-      {/* ══════════ SECTION 2: FULL-BLEED AMBIENT FACT TICKER ══════════ */}
-      <div className="section-ticker-ribbon">
-        <FactTicker facts={startupFacts} />
-      </div>
 
       {/* ══════════ SECTION 3: FOUNDER STAGE DOORS ══════════ */}
       <section className="subpage-section">
         <div className="wrap">
           <div className="section-head-sub">
-            <div className="doclabel">§ 02 — CHOOSE YOUR INCUBATION TRACK</div>
+            <div className="doclabel">02 / Incubation pathways</div>
             <h2>Three Pathways From Concept to Production</h2>
             <p>Skip agency cash burn and trade engineering execution for aligned equity.</p>
           </div>
@@ -222,7 +157,7 @@ export default function StartupsLandingPage() {
       <section className="subpage-section band">
         <div className="wrap">
           <div className="section-head-sub">
-            <div className="doclabel">§ 03 — FAST EQUITY &amp; SQUAD CALCULATOR</div>
+            <div className="doclabel">03 / Equity &amp; squad calculator</div>
             <h2>Model Your Incubation Engineering Squad</h2>
             <p>
               Calculate your sprint duration, squad composition, estimated commercial agency equivalent, and founder equity allocation under standard Founder Advisor Standard Template (FAST) guidelines.
@@ -236,7 +171,7 @@ export default function StartupsLandingPage() {
       <section className="subpage-section">
         <div className="wrap">
           <div className="section-head-sub">
-            <div className="doclabel">§ 04 — HONEST DISCLOSURE: WHO THIS IS FOR (AND NOT FOR)</div>
+            <div className="doclabel">04 / Who this model is for</div>
             <h2>Incubation Eligibility &amp; Selection Criteria</h2>
           </div>
           <div className="grid gap-6 md:grid-cols-2 mb-10">
@@ -286,7 +221,7 @@ export default function StartupsLandingPage() {
       <section className="subpage-section band-alt">
         <div className="wrap">
           <div className="section-head-sub">
-            <div className="doclabel">§ 05 — SPECIALIZED INCUBATION SERVICES</div>
+            <div className="doclabel">05 / Working together</div>
             <h2>Comprehensive Operational Infrastructure</h2>
             <p>From architectural audit to corporate term sheets and GPU seed grants.</p>
           </div>
@@ -313,7 +248,7 @@ export default function StartupsLandingPage() {
       <section className="subpage-section">
         <div className="wrap">
           <div className="section-head-sub">
-            <div className="doclabel">§ 06 — ECONOMIC ARCHITECTURE</div>
+            <div className="doclabel">06 / Model economics</div>
             <h2>Why DBERT Venture Studio vs. Traditional Bootstrapping?</h2>
             <p>An objective comparison of capital preservation, execution latency, and technical debt risk across early startup stages.</p>
           </div>
@@ -361,7 +296,7 @@ export default function StartupsLandingPage() {
       <section className="subpage-section band">
         <div className="wrap">
           <div className="section-head-sub">
-            <div className="doclabel">§ 07 — PROVEN CASE STUDIES &amp; PORTFOLIO</div>
+            <div className="doclabel">07 / Work from the studio</div>
             <h2>Startups Co-Engineered in the DBERT Studio</h2>
             <p>Explore verified technical architecture case studies and production metrics from early-stage AI ventures built by our engineering squads.</p>
           </div>
@@ -386,7 +321,7 @@ export default function StartupsLandingPage() {
           <div className="section-divider"></div>
 
           <div className="section-head-sub text-center">
-            <div className="doclabel justify-center">§ 08 — EVALUATION PIPELINE</div>
+            <div className="doclabel justify-center">08 / How selection works</div>
             <h2>Four-Stage Incubation Onboarding</h2>
             <p className="mx-auto">A structured, deterministic selection process engineered to align operational culture before code execution.</p>
           </div>
@@ -400,7 +335,7 @@ export default function StartupsLandingPage() {
       <section className="subpage-section band-alt">
         <div className="wrap">
           <div className="section-head-sub">
-            <div className="doclabel">§ 09 — INCUBATION KNOWLEDGE BASE</div>
+            <div className="doclabel">09 / Founder questions</div>
             <h2>Founder Frequently Asked Questions</h2>
             <p>Transparent operational clarifications regarding equity agreements, intellectual property assignments, and seed grants.</p>
           </div>
@@ -414,7 +349,7 @@ export default function StartupsLandingPage() {
       <section className="subpage-section">
         <div className="wrap">
           <div className="section-head-sub text-center">
-            <div className="doclabel justify-center">§ 10 — PROPRIETARY SAAS ADVANTAGE</div>
+            <div className="doclabel justify-center">10 / Products founders can use</div>
             <h2>The DBERT Enterprise Technology Stack</h2>
             <p className="mx-auto">We do not just advise; we engineer production software. Incubated startup founders receive immediate enterprise access to our sovereign SaaS suites and fine-tuned local models.</p>
           </div>
@@ -443,7 +378,7 @@ export default function StartupsLandingPage() {
 
           {/* Primary Call to Action Card */}
           <div className={`card ${s.ctaCard} mt-12`}>
-            <div className="doclabel mb-2">§ 11 — SUBMIT VENTURE PROPOSAL</div>
+            <div className="doclabel mb-2">11 / Start a conversation</div>
             <h2 className="card-title">Turn Your AI Architecture into a Scalable Venture</h2>
             <p className={s.ctaCopy}>
               Evaluate your technical engineering bottlenecks, specify required GPU compute parameters, and submit your venture proposal directly to the DBERT engineering advisory board today.

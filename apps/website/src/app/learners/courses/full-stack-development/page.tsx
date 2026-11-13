@@ -336,9 +336,26 @@ export default function FullStackCoursePage() {
           <p className="page-lede text-sm text-muted max-w-xl mx-auto mb-6">
             Ready to architect interactive Next.js consoles, configure high-throughput PostgreSQL vector indexes, and deploy real-time RAG applications to verified public endpoints? Enrol in DBERT Industrial Training today.
           </p>
-          <div className="stack-h gap-4 justify-center">
-            <Link href="/learners/launchpad" className="btn btn-primary btn-lg">Choose Your Career Path &rarr;</Link>
-            <Link href="/blog/rag-pipeline-tutorial-from-scratch" className="btn btn-outline btn-lg">Read Tutorial on Production RAG</Link>
+          <div className="stack-h gap-4 justify-center flex-wrap">
+            <a
+              href="https://lms.dbert.in/#signup?domain=full-stack-development&next=/internships/full-stack-development"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-primary btn-lg"
+            >
+              Apply for Full Stack Sprints on LMS ↗
+            </a>
+            <a
+              href="https://lms.dbert.in/internships/full-stack-development"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-outline btn-lg"
+            >
+              View Live Full Stack Openings ↗
+            </a>
+            <Link href="/enroll/1999" className="btn btn-outline btn-lg">
+              Confirm Fellowship Seat (₹1,500 Balance) →
+            </Link>
           </div>
         </div>
       </div>

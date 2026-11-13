@@ -164,9 +164,8 @@ export default function MegaMenu() {
             </span>
             <span className={styles.brandContainer}>
               DBERT
-              <span className={styles.livePulse} title="NCR Studio Active" aria-label="NCR Studio Active" />
             </span>
-            <span className={styles.statusChip}>IND-NCR // ACTIVE</span>
+            <span className={styles.statusChip}>Delhi NCR</span>
           </Link>
 
           <nav className={styles.navLinks} aria-label="Primary">

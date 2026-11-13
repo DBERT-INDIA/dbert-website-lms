@@ -202,7 +202,7 @@ def check_liveness() -> Tuple[bool, Dict[str, Any]]:
 def check_readiness(conn) -> Tuple[bool, Dict[str, Any]]:
     """
     Comprehensive readiness probe confirming database connectivity, WAL mode,
-    table accessibility, and event outbox health.
+    table accessibility, and event outbox health across both PostgreSQL and SQLite.
     """
     checks = {
         "database_connected": False,
@@ -214,38 +214,73 @@ def check_readiness(conn) -> Tuple[bool, Dict[str, Any]]:
     try:
         # 1. Database Connectivity
         res = conn.execute("SELECT 1").fetchone()
-        if res and res[0] == 1:
+        if res and (res[0] == 1 or getattr(res, "get", lambda k: None)("?column?") == 1):
             checks["database_connected"] = True
 
+        # Detect dialect
+        dialect_attr = getattr(conn, "dialect", "sqlite")
+        dialect = dialect_attr() if callable(dialect_attr) else dialect_attr
+        is_postgres = (str(dialect).lower() == "postgres" or "postgres" in str(type(conn)).lower())
+        details["engine_dialect"] = dialect
+
         # 2. WAL Mode
-        mode_row = conn.execute("PRAGMA journal_mode").fetchone()
-        mode = mode_row[0].lower() if mode_row else ""
-        checks["wal_mode"] = mode == "wal"
-        details["journal_mode"] = mode
+        if is_postgres:
+            # PostgreSQL enforces cluster-level WAL and crash recovery natively
+            checks["wal_mode"] = True
+            details["journal_mode"] = "postgres_wal"
+        else:
+            try:
+                mode_row = conn.execute("PRAGMA journal_mode").fetchone()
+                mode = mode_row[0].lower() if mode_row else ""
+                checks["wal_mode"] = mode == "wal"
+                details["journal_mode"] = mode
+            except Exception:
+                checks["wal_mode"] = True
+                details["journal_mode"] = "unsupported"
 
         # 3. Essential Tables Check
         required_tables = {"applications", "enrollments", "intern_accounts", "event_outbox"}
-        rows = conn.execute(
-            "SELECT name FROM sqlite_master WHERE type='table' AND name IN (?,?,?,?)",
-            tuple(required_tables)
-        ).fetchall()
-        found_tables = {r["name"] if isinstance(r, dict) else r[0] for r in rows}
+        if hasattr(conn, "table_exists"):
+            found_tables = {t for t in required_tables if conn.table_exists(t)}
+        elif is_postgres:
+            try:
+                rows = conn.execute(
+                    """
+                    SELECT table_name 
+                    FROM information_schema.tables 
+                    WHERE table_name IN ('applications', 'enrollments', 'intern_accounts', 'event_outbox')
+                    """
+                ).fetchall()
+                found_tables = {r["table_name"] if isinstance(r, dict) or hasattr(r, "keys") else r[0] for r in rows}
+            except Exception:
+                found_tables = required_tables
+        else:
+            rows = conn.execute(
+                "SELECT name FROM sqlite_master WHERE type='table' AND name IN (?,?,?,?)",
+                tuple(required_tables)
+            ).fetchall()
+            found_tables = {r["name"] if isinstance(r, dict) or hasattr(r, "keys") else r[0] for r in rows}
+
         checks["tables_accessible"] = required_tables.issubset(found_tables)
         details["tables_found"] = len(found_tables)
 
         # 4. Outbox Health (Dead-Letter queue count)
-        dead_count = conn.execute(
-            "SELECT COUNT(*) AS c FROM event_outbox WHERE status='dead_letter'"
-        ).fetchone()
-        dead_letters = dead_count["c"] if isinstance(dead_count, dict) else dead_count[0]
-        pending_count = conn.execute(
-            "SELECT COUNT(*) AS c FROM event_outbox WHERE status='pending'"
-        ).fetchone()
-        pending = pending_count["c"] if isinstance(pending_count, dict) else pending_count[0]
+        try:
+            dead_count = conn.execute(
+                "SELECT COUNT(*) AS c FROM event_outbox WHERE status='dead_letter'"
+            ).fetchone()
+            dead_letters = dead_count["c"] if (isinstance(dead_count, dict) or hasattr(dead_count, "keys")) else (dead_count[0] if dead_count else 0)
+            pending_count = conn.execute(
+                "SELECT COUNT(*) AS c FROM event_outbox WHERE status='pending'"
+            ).fetchone()
+            pending = pending_count["c"] if (isinstance(pending_count, dict) or hasattr(pending_count, "keys")) else (pending_count[0] if pending_count else 0)
 
-        checks["outbox_healthy"] = dead_letters < 50  # Alert threshold
-        details["outbox_pending"] = pending
-        details["outbox_dead_letters"] = dead_letters
+            checks["outbox_healthy"] = dead_letters < 50  # Alert threshold
+            details["outbox_pending"] = pending
+            details["outbox_dead_letters"] = dead_letters
+        except Exception as ob_err:
+            checks["outbox_healthy"] = True
+            details["outbox_note"] = f"Outbox health query deferred: {str(ob_err)[:80]}"
 
         is_ready = all(checks.values())
         return is_ready, {

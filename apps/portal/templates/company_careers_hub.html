@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="en">
+<head>
+  {% set page_title_full %}{{ page_title }}{% endset %}
+  {% set page_desc = meta_desc %}
+  {% set page_canonical = canonical %}
+  {% include "_head.html" %}
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{ page_title }}">
+  <meta property="og:description" content="{{ meta_desc }}">
+  <meta property="og:url" content="{{ canonical }}">
+  {% if og_image %}<meta property="og:image" content="{{ og_image }}">{% endif %}
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="{{ page_title }}">
+  <meta name="twitter:description" content="{{ meta_desc }}">
+
+  <!-- Schema.org JSON-LD Structured Data for Organization & JobPostings -->
+  <script nonce="{{ csp_nonce() }}" type="application/ld+json">{{ jsonld|safe }}</script>
+  {% if breadcrumb_jsonld %}
+  <script nonce="{{ csp_nonce() }}" type="application/ld+json">{{ breadcrumb_jsonld|safe }}</script>
+  {% endif %}
+
+  <style nonce="{{ csp_nonce() }}">
+    body {
+      background-color: #F8FAFC;
+      color: #0F172A;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .hub-container {
+      max-width: 1040px;
+      margin: 24px auto 60px;
+      padding: 0 20px;
+      box-sizing: border-box;
+    }
+
+    /* Breadcrumbs */
+    .crumbs {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13.5px;
+      color: #64748B;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .crumbs a {
+      color: #475569;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .crumbs a:hover {
+      color: #0F172A;
+      text-decoration: underline;
+    }
+    .crumbs .sep {
+      color: #CBD5E1;
+      font-size: 11px;
+    }
+    .crumbs .crumb-current {
+      color: #0F172A;
+      font-weight: 600;
+    }
+
+    /* Company Hero */
+    .company-hero {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 20px;
+      padding: 36px 40px;
+      box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
+      margin-bottom: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .company-hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: linear-gradient(90deg, #1E3A8A 0%, #3B82F6 50%, #0D9488 100%);
+    }
+
+    .hero-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 24px;
+      margin-bottom: 20px;
+    }
+    @media (max-width: 640px) {
+      .hero-top {
+        flex-direction: column;
+        gap: 16px;
+      }
+    }
+
+    .company-avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+      flex-shrink: 0;
+    }
+
+    .hero-info {
+      flex: 1;
+    }
+    .hero-title-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+    .hero-title-row h1 {
+      font-size: 28px;
+      font-weight: 800;
+      color: #0F172A;
+      margin: 0;
+      letter-spacing: -0.02em;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .badge-verified {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: #ECFDF5;
+      color: #059669;
+      border: 1px solid #A7F3D0;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 9999px;
+    }
+    .badge-count {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: #EFF6FF;
+      color: #2563EB;
+      border: 1px solid #BFDBFE;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 9999px;
+    }
+
+    .hero-desc {
+      font-size: 15px;
+      color: #475569;
+      line-height: 1.6;
+      margin: 0 0 16px;
+      max-width: 820px;
+    }
+
+    .hero-meta-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      padding-top: 14px;
+      border-top: 1px solid #F1F5F9;
+    }
+    .meta-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      color: #334155;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 5px 12px;
+      border-radius: 8px;
+    }
+
+    /* Tabs & Controls */
+    .controls-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+    .tab-group {
+      display: inline-flex;
+      background: #E2E8F0;
+      padding: 4px;
+      border-radius: 12px;
+      gap: 4px;
+    }
+    .tab-btn {
+      background: transparent;
+      border: none;
+      padding: 8px 18px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #64748B;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      text-decoration: none;
+    }
+    .tab-btn.active, .tab-btn:hover {
+      background: #FFFFFF;
+      color: #0F172A;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.06);
+    }
+
+    /* Openings Grid */
+    .openings-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .job-card {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 16px;
+      padding: 24px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.02);
+      text-decoration: none;
+      color: inherit;
+    }
+    .job-card:hover {
+      border-color: #CBD5E1;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px rgba(15, 23, 42, 0.06);
+    }
+    @media (max-width: 720px) {
+      .job-card {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 20px;
+        gap: 16px;
+      }
+    }
+
+    .job-main {
+      flex: 1;
+    }
+    .job-type-pill {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 2px 8px;
+      border-radius: 6px;
+      margin-bottom: 8px;
+    }
+    .pill-internship {
+      background: #EEF2FF;
+      color: #4F46E5;
+      border: 1px solid #C7D2FE;
+    }
+    .pill-job {
+      background: #FDF2F8;
+      color: #BE185D;
+      border: 1px solid #FBCFE8;
+    }
+
+    .job-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #0F172A;
+      margin: 0 0 8px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .job-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      font-size: 13.5px;
+      color: #64748B;
+    }
+    .job-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .job-action {
+      flex-shrink: 0;
+    }
+    .btn-apply {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #0F172A;
+      color: #FFFFFF;
+      font-size: 14px;
+      font-weight: 600;
+      padding: 10px 20px;
+      border-radius: 10px;
+      transition: background 0.15s ease;
+      white-space: nowrap;
+    }
+    .job-card:hover .btn-apply {
+      background: #2563EB;
+    }
+
+    /* Recruiter Banner */
+    .recruiter-banner {
+      background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+      color: #FFFFFF;
+      border-radius: 18px;
+      padding: 32px 36px;
+      margin-top: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.15);
+    }
+    @media (max-width: 768px) {
+      .recruiter-banner {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 24px;
+      }
+    }
+    .recruiter-banner h3 {
+      font-size: 20px;
+      font-weight: 800;
+      margin: 0 0 6px;
+      letter-spacing: -0.01em;
+    }
+    .recruiter-banner p {
+      font-size: 14.5px;
+      color: #94A3B8;
+      margin: 0;
+      line-height: 1.5;
+    }
+    .btn-partner {
+      background: #2563EB;
+      color: #FFFFFF;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 14.5px;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background 0.15s ease;
+    }
+    .btn-partner:hover {
+      background: #1D4ED8;
+    }
+
+    .public-foot {
+      text-align: center;
+      font-size: 13px;
+      color: #94A3B8;
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid #E2E8F0;
+    }
+    .public-foot a {
+      color: #64748B;
+      text-decoration: none;
+      margin: 0 8px;
+    }
+    .public-foot a:hover {
+      color: #0F172A;
+    }
+  </style>
+</head>
+<body>
+  {% include "_header.html" ignore missing %}
+
+  <main class="hub-container">
+    <!-- Breadcrumbs -->
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a href="https://dbert.in">DBERT Home</a>
+      <span class="sep">/</span>
+      <a href="/portal/sourcing">Careers & Sourcing</a>
+      <span class="sep">/</span>
+      <span class="crumb-current">{{ company_name }} Careers</span>
+    </nav>
+
+    <!-- Company Hero -->
+    <section class="company-hero">
+      <div class="hero-top">
+        <div class="company-avatar">{{ company_name[:2].upper() }}</div>
+        <div class="hero-info">
+          <div class="hero-title-row">
+            <h1>{{ company_name }} Careers</h1>
+            <span class="badge-verified"><i class="fas fa-check-circle"></i> Verified Employer</span>
+            <span class="badge-count">{{ total_openings }} Open Roles</span>
+          </div>
+          <p class="hero-desc">{{ company_about }}</p>
+        </div>
+      </div>
+
+      <div class="hero-meta-strip">
+        <span class="meta-tag"><i class="fas fa-layer-group" style="color:#2563EB;"></i> {{ domains_str }}</span>
+        <span class="meta-tag"><i class="fas fa-laptop-house" style="color:#059669;"></i> {{ work_models_str }}</span>
+        <span class="meta-tag"><i class="fas fa-globe-americas" style="color:#7C3AED;"></i> {{ regions_str }}</span>
+      </div>
+    </section>
+
+    <!-- Filter Strip -->
+    <div class="controls-strip">
+      <div class="tab-group">
+        <a href="?type=all" class="tab-btn {% if selected_type == 'all' %}active{% endif %}">
+          All Roles ({{ total_openings }})
+        </a>
+        <a href="?type=internship" class="tab-btn {% if selected_type == 'internship' %}active{% endif %}">
+          Internships ({{ total_internships }})
+        </a>
+        <a href="?type=job" class="tab-btn {% if selected_type == 'job' %}active{% endif %}">
+          Full-Time Jobs ({{ total_jobs }})
+        </a>
+      </div>
+    </div>
+
+    <!-- Openings List -->
+    <section class="openings-list">
+      {% for op in filtered_openings %}
+      <a href="{{ op.detail_url }}" class="job-card">
+        <div class="job-main">
+          <span class="job-type-pill {% if op.post_type == 'internship' %}pill-internship{% else %}pill-job{% endif %}">
+            {{ op.post_type|capitalize }}
+          </span>
+          <h2 class="job-title">{{ op.role }}</h2>
+          <div class="job-meta-row">
+            <span class="job-meta-item"><i class="fas fa-folder" style="color:#64748B;"></i> {{ op.domain }}</span>
+            <span class="job-meta-item"><i class="fas fa-map-marker-alt" style="color:#64748B;"></i> {{ op.location }} ({{ op.work_model }})</span>
+            <span class="job-meta-item"><i class="fas fa-coins" style="color:#10B981;"></i> {{ op.stipend }}</span>
+            <span class="job-meta-item"><i class="fas fa-shield-alt" style="color:#3B82F6;"></i> {{ op.source }}</span>
+          </div>
+        </div>
+        <div class="job-action">
+          <span class="btn-apply">View Opening & Apply <i class="fas fa-arrow-right"></i></span>
+        </div>
+      </a>
+      {% else %}
+      <div style="background:#FFFFFF;border:1px dashed #CBD5E1;border-radius:16px;padding:48px 24px;text-align:center;">
+        <i class="fas fa-briefcase" style="font-size:36px;color:#94A3B8;margin-bottom:12px;"></i>
+        <h3 style="font-size:18px;font-weight:700;color:#0F172A;margin:0 0 6px;">No matching openings in this category</h3>
+        <p style="font-size:14px;color:#64748B;margin:0 0 16px;">Try switching to "All Roles" to view all active listings for {{ company_name }}.</p>
+        <a href="?type=all" style="display:inline-block;padding:8px 16px;background:#0F172A;color:#FFFFFF;border-radius:8px;font-weight:600;font-size:13.5px;text-decoration:none;">View All Openings</a>
+      </div>
+      {% endfor %}
+    </section>
+
+    <!-- Recruiter & Pre-Vetted Talent Banner -->
+    <section class="recruiter-banner">
+      <div>
+        <h3>Recruiting for {{ company_name }}?</h3>
+        <p>Access pre-vetted engineers across all 9 technical domains. Hire top 3% talent with verified GitHub portfolios, Turnitin evaluations, and zero recruiter markup.</p>
+      </div>
+      <a href="https://dbert.in/hire/pre-vetted-engineers" class="btn-partner">
+        Hire Pre-Vetted Engineers <i class="fas fa-external-link-alt" style="margin-left:6px;font-size:12px;"></i>
+      </a>
+    </section>
+
+    <!-- Public Footer -->
+    <footer class="public-foot">
+      <div>
+        <a href="https://dbert.in">DBERT.in</a> |
+        <a href="https://dbert.in/verify/directory">Pre-Vetted Engineers Directory</a> |
+        <a href="/portal/sourcing">Sourcing Hub</a> |
+        <a href="https://dbert.in/dbert-online">Legacy Platform Notice</a>
+      </div>
+      <p style="margin-top:8px;">&copy; 2026 DBERT INDIA. Verified Career & Internship Engineering Infrastructure.</p>
+    </footer>
+  </main>
+</body>
+</html>

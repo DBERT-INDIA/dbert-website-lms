@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { pageMetadata } from '@/lib/seo';
-import { getAllPosts } from '@/lib/blog';
+import { getAllBlogPostsWithDynamic } from '@/lib/blog';
 import HandNote from '@/components/ui/HandNote';
 import StudioConsole, { type FeedLine } from '@/components/ui/StudioConsole';
 import FactTicker from '@/components/ui/FactTicker';
@@ -11,8 +11,8 @@ import BlogClientView from '@/components/blog/BlogClientView';
 
 export const metadata = pageMetadata('/blog');
 
-export default function BlogIndexPage() {
-  const articles = getAllPosts();
+export default async function BlogIndexPage() {
+  const articles = await getAllBlogPostsWithDynamic();
 
   const blogTelemetryFeed: FeedLine[] = [
     {

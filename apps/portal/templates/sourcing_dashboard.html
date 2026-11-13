@@ -15,8 +15,10 @@
 </style>
 </head>
 <body class="has-staff-sidebar bg-gray-50 antialiased font-sans">
+{% set active_page = 'admin_sourcing' %}
+{% include '_staff_sidebar.html' %}
 
-<div class="max-w-7xl mx-auto p-6 md:p-10">
+<div class="content-wrap max-w-7xl mx-auto p-6 md:p-10">
     
     <!-- Header & Back Button -->
     <div class="flex justify-between items-center mb-6">

@@ -9,6 +9,7 @@
 {% set active_page = 'admin_cohorts' %}
 {% include '_staff_sidebar.html' %}
 
+  <main class="main content-wrap">
   <div class="wrap">
     <div class="top-row">
       <div>
@@ -54,6 +55,7 @@
       </table>
     </div>
   </div>
+  </main>
   <script nonce="{{ csp_nonce() }}">
     async function review(id, decision){
       if(decision==='reject' && !confirm('Reject this cohort?'))return;

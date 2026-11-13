@@ -107,3 +107,24 @@
   gap: 8px;
   flex-wrap: wrap;
 }
+
+@media (max-width: 640px) {
+  .tierGrid {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+  .tierCard {
+    padding: var(--space-4);
+  }
+  .customCard {
+    padding: var(--space-4);
+  }
+  .customActions {
+    flex-direction: column;
+  }
+  .customActions .btn,
+  .customActions a {
+    width: 100%;
+    justify-content: center;
+  }
+}

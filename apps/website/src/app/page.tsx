@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import type { Metadata } from 'next';
 import {
+  ArrowRight,
   MessageSquare,
   FileText,
   ShieldCheck,
@@ -11,9 +12,8 @@ import {
 } from 'lucide-react';
 
 import styles from './page.module.css';
-import StudioConsole, { type FeedLine } from '@/components/ui/StudioConsole';
-import FactTicker from '@/components/ui/FactTicker';
 import AudienceDoors, { type Door } from '@/components/ui/AudienceDoors';
+import StudioInPractice from '@/components/ui/StudioInPractice';
 import ProcessSteps, { type ProcessStep } from '@/components/ui/ProcessSteps';
 import ProductCard, { ProductGrid } from '@/components/ui/ProductCard';
 import CareerLadder, { type LadderStep } from '@/components/ui/CareerLadder';
@@ -46,55 +46,6 @@ export const metadata: Metadata = {
    The § 04 case study now carries a DBERT-founder statement about the build
    instead, which is not a testimonial.
    ───────────────────────────────────────────────────────────── */
-
-const feed: FeedLine[] = [
-  {
-    time: '09:41:07',
-    tag: 'build',
-    message: 'alkame — quantitative time-series & risk engine',
-    detail: '· sprint 14',
-  },
-  {
-    time: '09:41:22',
-    tag: 'ship',
-    message: 'aivara insight lite → automated csv analytics',
-    detail: '· v1.2 deployed',
-  },
-  {
-    time: '09:42:03',
-    tag: 'cohort',
-    message: 'dbert internship squad merged rag pipeline',
-    detail: '· 42 tests passed',
-  },
-  {
-    time: '09:42:48',
-    tag: 'build',
-    message: 'gayatri ai — local offline education agents',
-    detail: '· 10+ schools live',
-  },
-  {
-    time: '09:43:15',
-    tag: 'ship',
-    message: 'dbert certificate api — 1,204 credentials verified',
-    detail: '· /verify active',
-  },
-  {
-    time: '09:43:59',
-    tag: 'cohort',
-    message: 'startup incubation sprint kickoff',
-    detail: '· 4 ventures in active build',
-  },
-];
-
-const facts = [
-  'est. Delhi, India',
-  'chai consumed this sprint: 214 cups',
-  'every application gets a human reply',
-  'fellows write real production code, not todo apps',
-  'founders keep 100% of their codebase',
-  'we say no to most applications — and tell you why',
-  'current stack: Next.js · Postgres · PyTorch · stubbornness',
-];
 
 const doors: Door[] = [
   {
@@ -203,7 +154,7 @@ export default function HomePage() {
           <div>
             <div className={styles.badge}>
               <span className={styles.pulse} aria-hidden="true" />
-              studio status // 4 ventures in active build
+              An independent venture studio in Delhi NCR
             </div>
 
             <h1 className={styles.heroTitle}>
@@ -250,22 +201,12 @@ export default function HomePage() {
               </span>
               <span className={styles.heroTelemetryItem}>
                 <span className={styles.heroTelemetryDot} />
-                214 cups chai this sprint
-              </span>
-              <span className={styles.heroTelemetryItem}>
-                <span className={styles.heroTelemetryDot} />
                 100% IP ownership retained
               </span>
             </div>
           </div>
 
-          <StudioConsole
-            title="dbert-studio · live telemetry"
-            lines={feed}
-            footLeft="uptime 99.98%"
-            footRight="● connected"
-            note={<HandNote>this is our actual day →</HandNote>}
-          />
+          <StudioInPractice focus="founders" />
         </div>
       </section>
 
@@ -274,22 +215,22 @@ export default function HomePage() {
         <div className="wrap">
           <div className={`${styles.statBar} stagger-grid`}>
             <Reveal className={styles.statItem}>
-              <span className={styles.statHud}>[SYS_METRIC_01]</span>
+              <span className={styles.statHud}>The studio</span>
               <CountUp as="span" end={4} className={styles.statNum} />
               <span className={styles.statLabel}>ventures incubated</span>
             </Reveal>
             <Reveal className={styles.statItem}>
-              <span className={styles.statHud}>[SYS_METRIC_02]</span>
+              <span className={styles.statHud}>Products</span>
               <CountUp as="span" end={5} className={styles.statNum} />
               <span className={styles.statLabel}>SaaS products live</span>
             </Reveal>
             <Reveal className={styles.statItem}>
-              <span className={styles.statHud}>[SYS_METRIC_03]</span>
+              <span className={styles.statHud}>Learning</span>
               <CountUp as="span" end={120} suffix="+" className={styles.statNum} />
               <span className={styles.statLabel}>fellows trained</span>
             </Reveal>
             <Reveal className={styles.statItem}>
-              <span className={styles.statHud}>[SYS_METRIC_04]</span>
+              <span className={styles.statHud}>Time to market</span>
               <CountUp as="span" end={6} prefix="~" suffix=" mo" className={styles.statNum} />
               <span className={styles.statLabel}>faster to market*</span>
             </Reveal>
@@ -299,9 +240,6 @@ export default function HomePage() {
           </p>
         </div>
       </section>
-
-      {/* ══════════ FACT TICKER ══════════ */}
-      <FactTicker facts={facts} />
 
       {/* ══════════ AUDIENCE DOORS ══════════ */}
       <section className={styles.doorsSection} aria-labelledby="audience-heading">
@@ -320,7 +258,7 @@ export default function HomePage() {
         <div className="wrap">
           <Reveal className="section-head">
             <div className="doclabel">
-              § 01 — Incubation <span className="rev">rev 2.4 · updated Jul 2026</span>
+              01 / Incubation
             </div>
             <h2>Application to first sprint in four steps</h2>
             <p>
@@ -344,7 +282,7 @@ export default function HomePage() {
         <div className="wrap">
           <Reveal className="section-head">
             <div className={`doclabel ${styles.labelOk}`}>
-              § 02 — Products <span className="rev">5 live · 1 in beta</span>
+              02 / Products
             </div>
             <h2>Software we run in production, sold as a product</h2>
             <p>
@@ -416,7 +354,7 @@ export default function HomePage() {
         <div className="wrap">
           <Reveal className="section-head">
             <div className={`doclabel ${styles.labelSignal}`}>
-              § 03 — For learners <span className="rev">cohort 7 now enrolling</span>
+              03 / For learners
             </div>
             <h2>
               Four rungs from <span className="hl-swipe">zero to hired</span>
@@ -440,7 +378,7 @@ export default function HomePage() {
         <div className="wrap">
           <Reveal className="section-head">
             <div className="doclabel">
-              § 04 — Portfolio proof <span className="rev">case file: alkame</span>
+              04 / Portfolio proof
             </div>
             <h2>What incubation looks like in numbers</h2>
           </Reveal>
@@ -541,30 +479,29 @@ export default function HomePage() {
       <section className={styles.cta}>
         <Reveal as="h2">Bring the idea. We bring the engineering.</Reveal>
         <Reveal as="p">
-          Applications for the next incubation cohort are open. Every submission gets a reply from a
-          real engineer.
+          Applications for the 2026 venture incubation cohort are open. Every submission undergoes a structured technical evaluation by our engineering team.
         </Reveal>
-        <Reveal as="div" className="relative inline-block mt-4 mx-auto">
+        <Reveal as="div" className={styles.ctaActionWrap}>
           <TrackedLink
             href="/startups/register"
             eventName="cta_click"
             eventParams={{ location: 'homepage_bottom_cta', target: 'apply_incubation' }}
-            className="btn btn-primary btn-lg relative z-10"
+            className={`btn btn-primary ${styles.ctaButton}`}
           >
-            Apply for incubation{' '}
-            <span className="arr" aria-hidden="true">
-              →
-            </span>
+            <span>Apply for Incubation</span>
+            <ArrowRight className={styles.ctaArrow} size={18} aria-hidden="true" />
           </TrackedLink>
-          <div className="absolute -right-12 -top-10 z-20 pointer-events-none transform rotate-12 hidden md:block">
-            <HandDrawnArrow color="var(--signal)" width={55} height={55} className="transform rotate-90" />
-          </div>
-          <HandNote className="absolute -bottom-8 -right-8 whitespace-nowrap text-sm hidden md:block" tone="blue">
-            We reply to every single one!
-          </HandNote>
         </Reveal>
-        <Reveal className={styles.fine}>
-          avg. response time: 5 working days · no application fee · yes, a human reads it
+        <Reveal className={styles.ctaTrustRow}>
+          <span className={styles.trustBadge}>
+            <span className={styles.statusDot} aria-hidden="true"></span> Batch 2026 Open
+          </span>
+          <span className={styles.trustDivider} aria-hidden="true">·</span>
+          <span>5 Working Days Review Window</span>
+          <span className={styles.trustDivider} aria-hidden="true">·</span>
+          <span>Zero Application Fee</span>
+          <span className={styles.trustDivider} aria-hidden="true">·</span>
+          <span>Partner-Level Engineering Review</span>
         </Reveal>
       </section>
     </>

@@ -2,6 +2,8 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import HandNote from '../ui/HandNote';
+import ContributorCards from '../ui/ContributorCards';
+import ContributorForm from '../ui/ContributorForm';
 import f from '../ui/forms.module.css';
 import s from './CaseStudyTemplate.module.css';
 
@@ -14,6 +16,7 @@ interface CaseStudyTemplateProps {
   contribution: string;
   outcome: string;
   metrics?: string;
+  slug?: string;
 }
 
 export default function CaseStudyTemplate({
@@ -24,7 +27,8 @@ export default function CaseStudyTemplate({
   challenge,
   contribution,
   outcome,
-  metrics
+  metrics,
+  slug,
 }: CaseStudyTemplateProps) {
   return (
     <div className="container pad-block">
@@ -70,6 +74,23 @@ export default function CaseStudyTemplate({
           <section className={`card ${s.metricsCard}`}>
             <h2 className={s.metricsTitle}>Key Metrics</h2>
             <p className={s.metricsValue}>{metrics}</p>
+          </section>
+        )}
+
+        {/* Contributing Research & Engineering Team */}
+        {slug && (
+          <section id="team" className="card" style={{ padding: '2rem' }}>
+            <div className="doclabel mb-2">§ 05 — CONTRIBUTING RESEARCH TEAM</div>
+            <h2 className="card-title" style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>
+              Interns Currently Working on {name}
+            </h2>
+            <p className={f.cardCopy} style={{ marginBottom: '1.75rem' }}>
+              Meet the DBERT interns actively contributing to this research and engineering track.
+            </p>
+            <ContributorCards projectSlug={slug} projectName={name} />
+            <div style={{ marginTop: '2rem' }}>
+              <ContributorForm projectSlug={slug} projectName={name} />
+            </div>
           </section>
         )}
 

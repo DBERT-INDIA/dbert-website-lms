@@ -357,8 +357,8 @@ export default function AlkameCaseStudyContent() {
               Meet the DBERT interns actively contributing to this research program.
             </p>
           </div>
-          <ContributorCards />
-          <ContributorForm />
+          <ContributorCards projectSlug="alkame" projectName="Alkame" />
+          <ContributorForm projectSlug="alkame" projectName="Alkame" />
         </div>
       </div>
 

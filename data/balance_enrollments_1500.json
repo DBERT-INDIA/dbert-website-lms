@@ -34,7 +34,9 @@
     "amountPaid": 1500,
     "utrNumber": "431589777888",
     "remarks": "Completed balance payment via GPay",
-    "status": "SUBMITTED",
+    "status": "REJECTED",
+    "rejectedAt": "2026-11-11T01:45:00.000Z",
+    "rejectionReason": "UTR verification failed: Reference 431589777888 could not be reconciled as a verified ₹1,500 transfer on the UPI settlement ledger. Please resubmit valid payment proof.",
     "ipAddress": "106.67.187.246",
     "userAgent": "python-requests/2.34.2"
   },
@@ -52,7 +54,9 @@
     "amountPaid": 1500,
     "utrNumber": "431589123456",
     "remarks": "Completed balance payment via PhonePe",
-    "status": "SUBMITTED",
+    "status": "REJECTED",
+    "rejectedAt": "2026-11-11T01:45:00.000Z",
+    "rejectionReason": "UTR verification failed: Reference 431589123456 could not be reconciled as a verified ₹1,500 transfer on the UPI settlement ledger. Please resubmit valid payment proof.",
     "ipAddress": "106.67.187.246",
     "userAgent": "python-requests/2.34.2"
   }

@@ -9,6 +9,7 @@
 {% set active_page = 'admin_payments' %}
 {% include '_staff_sidebar.html' %}
 
+  <main class="main content-wrap">
   <div class="wrap">
     <h1>Course Payments</h1>
     <p class="muted" style="font-size:13px;">Verify a payment to unlock the course for the intern on the AI Tutor.</p>
@@ -43,6 +44,7 @@
       </table>
     </div>
   </div>
+  </main>
   <script nonce="{{ csp_nonce() }}">
     async function review(id, decision){
       if(decision==='reject' && !confirm('Reject this payment?'))return;

@@ -1,6 +1,5 @@
 /* ═══════════════════════════════════════════════════════════
-   DBERT DESIGN SYSTEM v2.1 — "The Studio Console"
-   Source of truth: design/dbert-redesign-v2.html
+   DBERT design system — studio journal
 
    Structure of this file:
      1. v2 tokens              — final, copied from the reference
@@ -18,14 +17,13 @@
    which is why there is no @import url(...) at the top of this file.
    ═══════════════════════════════════════════════════════════ */
 
-/* ── 1. Design tokens (Option A: Cyber-Industrial Foundry) ─── */
+/* ── 1. Design tokens (DBERT studio — slate, porcelain and copper) ── */
 :root {
-  /* Surface Hierarchy (Solid #050811 Canvas) */
-  --surface-base: #050811;
-  --surface-raised: #080D18;
-  --surface-card: #090E1A;
-  --surface-card-hover: #0E1626;
-  --surface-overlay: rgba(5, 8, 17, 0.92);
+  --surface-base: #f6f8fa;
+  --surface-raised: #edf2f6;
+  --surface-card: #ffffff;
+  --surface-card-hover: #f5f8fb;
+  --surface-overlay: rgba(246, 248, 250, 0.97);
 
   /* Legacy base aliases */
   --ink: var(--surface-base);
@@ -36,41 +34,40 @@
   --surface: var(--surface-card);
   --fg: var(--text-primary);
 
-  /* Lines & Borders — Razor Cyan */
-  --border-subtle: rgba(0, 242, 254, 0.16);
-  --border-strong: rgba(0, 242, 254, 0.32);
-  --border-focus: #00F2FE;
+  --border-subtle: #dce4eb;
+  --border-strong: #bccbd6;
+  --border-focus: #245a7c;
   --line: var(--border-subtle);
   --line-strong: var(--border-strong);
 
-  /* Accents & Brand Signals */
-  --accent: #00F2FE;
-  --accent-soft: rgba(0, 242, 254, 0.12);
-  --signal: #FFB454;
-  --ok: #10B981;
-  --err: #E07A5F;
+  --accent: #245a7c;
+  --accent-soft: rgba(36, 90, 124, 0.08);
+  --signal: #bd6948;
+  --ok: #3d765c;
+  --err: #a9473d;
 
   /* Typography & Foreground Contrast Hierarchy */
-  --text-primary: #E8F4FF;
-  --text-secondary: #CBD5E1;
-  --text-muted: #94A3B8;
-  --text-faint: #64748B;
-  --text-on-accent: #050811;
+  --text-primary: #192b39;
+  --text-secondary: #405362;
+  --text-muted: #586b79;
+  --text-faint: #74828d;
+  --text-on-accent: #ffffff;
   --text: var(--text-primary);
   --muted: var(--text-muted);
   --faint: var(--text-faint);
 
-  /* Font Families (next/font supplies the --font-*-src variables from layout.tsx) */
-  --font-d: var(--font-bricolage-src), 'Bricolage Grotesque', sans-serif;
-  --font-b: var(--font-inter-src), 'Inter', sans-serif;
-  --font-tech: var(--font-space-src), 'Space Grotesk', sans-serif;
-  --font-m: var(--font-jetbrains-src), 'JetBrains Mono', monospace;
-  --font-h: var(--font-space-src), 'Space Grotesk', sans-serif; /* Human Craftsmanship Italic */
+  /* A bookish display face against the clean interface sans gives the site a
+     more authored, studio-journal voice without relying on remote font files. */
+  --font-d: 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Georgia, 'Times New Roman', serif;
+  --font-b: var(--font-inter-src), Inter, Arial, sans-serif;
+  --font-tech: var(--font-inter-src), Inter, Arial, sans-serif;
+  --font-m: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+  --font-h: var(--font-d);
 
   --max: 1200px;
-  --r-sm: 8px;
-  --r-md: 14px;
-  --r-lg: 20px;
+  --r-sm: 4px;
+  --r-md: 7px;
+  --r-lg: 10px;
   --ease: cubic-bezier(.22, 1, .36, 1);
 
   /* 8px spacing scale */
@@ -87,26 +84,42 @@
   --space-16: 128px;
 }
 
-[data-theme="enterprise"] .glow-spot {
-  opacity: .15;
-  filter: blur(100px);
+body[data-theme="enterprise"],
+body[data-theme="learner"] {
+  --surface-base: #f6f8fa;
+  --surface-raised: #edf2f6;
+  --surface-card: #ffffff;
+  --surface-card-hover: #f5f8fb;
+  --accent: #245a7c;
+  --accent-soft: rgba(36, 90, 124, 0.08);
+  --signal: #bd6948;
+  --text-primary: #192b39;
+  --text-secondary: #405362;
+  --text-muted: #586b79;
+  --text-faint: #74828d;
+  --border-subtle: #dce4eb;
+  --border-strong: #bccbd6;
+  --line: var(--border-subtle);
+  --line-strong: var(--border-strong);
 }
 
-/* ── 3. Reset, base, atmosphere (Solid 1-Colour Canvas) ────── */
+.glow-spot { opacity: .08; filter: blur(90px); }
+
+/* ── 3. Reset and base ─────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
 
 body {
   background: var(--surface-base);
   color: var(--text);
-  font-family: var(--font-tech);
+  font-family: var(--font-b);
   font-size: 16px;
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
 
-/* ZERO blueprint grids, ZERO check lines, ZERO noise grain */
+/* Let the page feel like a calm printed studio journal. */
 
 ::selection { background: var(--signal); color: #1A1206; }
 
@@ -118,14 +131,14 @@ button, input, select, textarea { font-family: inherit; }
 /* ── 4. Typography ─────────────────────────── */
 h1, h2, h3 {
   font-family: var(--font-d);
-  line-height: 1.08;
-  letter-spacing: -.02em;
-  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -.025em;
+  font-weight: 500;
   color: var(--text);
 }
-h1 { font-size: clamp(2.6rem, 5.6vw, 4.3rem); }
-h2 { font-size: clamp(1.9rem, 3.4vw, 2.7rem); }
-h3 { font-size: 1.22rem; line-height: 1.3; }
+h1 { font-size: clamp(2.55rem, 5.1vw, 4.6rem); }
+h2 { font-size: clamp(1.8rem, 3vw, 2.55rem); }
+h3 { font-size: 1.18rem; line-height: 1.3; }
 p { color: var(--muted); }
 li { color: var(--muted); font-size: 1rem; }
 code { font-family: var(--font-m); font-size: .9em; }
@@ -192,7 +205,7 @@ code { font-family: var(--font-m); font-size: .9em; }
 
 /* Handwritten margin notes (Human Craftsmanship Italic) */
 .handnote {
-  font-family: var(--font-tech);
+  font-family: var(--font-b);
   font-style: italic;
   font-size: 1.15rem;
   color: var(--signal);
@@ -207,33 +220,35 @@ code { font-family: var(--font-m); font-size: .9em; }
   background: var(--surface-card);
   border: 1px solid var(--border-subtle);
   border-radius: var(--r-md);
-  transition: all 0.25s var(--ease);
+  box-shadow: 0 5px 18px rgba(36, 42, 33, 0.035);
+  transition: border-color 0.25s var(--ease), background 0.25s var(--ease), transform 0.25s var(--ease);
 }
 .cyber-panel:hover {
-  border-color: rgba(0, 242, 254, 0.40);
-  box-shadow: 0 8px 30px rgba(0, 242, 254, 0.08);
+  border-color: var(--border-strong);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(36, 42, 33, 0.07);
 }
 
 /* Human Field Note Annotation */
 .field-note {
-  background: rgba(255, 180, 84, 0.04);
+  background: rgba(183, 102, 75, 0.06);
   border-left: 3px solid var(--signal);
   font-family: var(--font-tech);
   font-style: italic;
-  color: #E2E8F0;
+  color: var(--text-secondary);
   padding: 14px 18px;
   border-radius: 0 var(--r-sm) var(--r-sm) 0;
 }
 
 /* Tactile Stamped Seal */
 .stamp-seal {
-  border: 1.5px dashed var(--signal);
+  border: 1px solid var(--signal);
   color: var(--signal);
   font-family: var(--font-m);
   font-size: 0.72rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  transform: rotate(-1.5deg);
+  transform: rotate(-1deg);
   display: inline-block;
   padding: 4px 10px;
   border-radius: 4px;
@@ -248,16 +263,16 @@ code { font-family: var(--font-m); font-size: .9em; }
   color: var(--accent);
 }
 
-/* Buttons — Option A Cyber Precision */
+/* Buttons — sturdy, readable and quiet. */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  font-family: var(--font-tech);
-  font-weight: 700;
+  font-family: var(--font-b);
+  font-weight: 600;
   font-size: .92rem;
-  padding: 13px 26px;
+  padding: 13px 22px;
   border-radius: var(--r-sm);
   border: 1px solid transparent;
   transition: all .25s var(--ease);
@@ -266,38 +281,43 @@ code { font-family: var(--font-m); font-size: .9em; }
 }
 .btn-primary {
   background: var(--accent);
-  color: #050811;
+  color: var(--text-on-accent);
   border-color: var(--accent);
 }
 .btn-primary:hover {
-  background: #7CF6FF;
-  transform: translateY(-2px);
-  box-shadow: 0 0 24px rgba(0, 242, 254, 0.45);
+  background: #244b3b;
+  transform: translateY(-1px);
+  box-shadow: 0 5px 14px rgba(36, 75, 59, 0.15);
 }
 .btn-ghost, .btn-outline {
   background: transparent;
   color: var(--accent);
-  border-color: rgba(0, 242, 254, 0.28);
+  border-color: var(--border-strong);
 }
 .btn-ghost:hover, .btn-outline:hover {
   border-color: var(--accent);
   color: var(--accent);
-  background: rgba(0, 242, 254, 0.08);
-  transform: translateY(-2px);
-  box-shadow: 0 0 18px rgba(0, 242, 254, 0.20);
+  background: var(--accent-soft);
+  transform: translateY(-1px);
 }
 .btn .arr { transition: transform .25s var(--ease); }
 .btn:hover .arr { transform: translateX(3px); }
 
 /* Sections. .section keeps position:relative from v1 — unmigrated pages
    position .glow-spot against it. */
-.section { padding: 104px 0; position: relative; }
+.section { padding: clamp(68px, 8vw, 104px) 0; position: relative; }
 .section-head { max-width: 640px; margin-bottom: 56px; position: relative; }
 .section-head p { font-size: 1.05rem; margin-top: 14px; }
 .band {
   background: var(--raise);
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
+}
+
+/* Accessible focus and motion preferences. */
+:focus-visible { outline: 3px solid var(--border-focus); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
 
 /* Scroll reveal — driven by components/ui/Reveal.tsx. */
@@ -847,17 +867,44 @@ code { font-family: var(--font-m); font-size: .9em; }
   border-radius: var(--r-md);
 }
 
-.bento-grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--space-3); }
-.bento-grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: var(--space-4); }
+.bento-grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: var(--space-3); }
+.bento-grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: var(--space-4); }
 
 /* ── 7. Responsive + accessibility ─────────── */
 @media (max-width: 768px) {
   .section { padding: var(--space-8) 0; }
   .container { padding: 0 var(--space-2); }
+
+  /* iOS Safari auto-zoom prevention on mobile */
+  input:not([type="checkbox"]):not([type="radio"]),
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+
+  /* Table horizontal scroll safety */
+  .table-wrap,
+  .overflow-x-auto {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
 }
 
-@media (max-width: 620px) {
-  .section { padding: 72px 0; }
+@media (max-width: 640px) {
+  .section { padding: 56px 0; }
+  .bento-grid-2 { grid-template-columns: 1fr; }
+  .bento-grid-3 { grid-template-columns: 1fr; }
+  .section-head { max-width: 100%; margin-bottom: 32px; }
+  .callout, .callout-plain { padding: var(--space-4); }
+  .cta-panel { padding: var(--space-4); }
+  .timeline-stepper { padding-left: 0; }
+  .timeline-stepper::before { left: 17px; }
+  .timeline-step-item { gap: 12px; }
+  .timeline-step-content { padding: 14px 16px; }
+}
+
+@media (max-width: 400px) {
+  .wrap, .container, .container-sm { padding-left: 14px; padding-right: 14px; }
 }
 
 :focus-visible {
@@ -1726,6 +1773,85 @@ code { font-family: var(--font-m); font-size: .9em; }
   background: var(--line);
   margin: var(--space-12) 0;
 }
+
+/* ── Shared finishing rules ─────────────────────────────────── */
+.card,
+.bento-card,
+.timeline-step-content {
+  background: var(--surface-card);
+  border-color: var(--border-subtle);
+  box-shadow: 0 5px 18px rgba(31, 52, 69, 0.055);
+}
+
+.card:hover,
+.bento-card:hover {
+  background: var(--surface-card-hover);
+  border-color: var(--border-strong);
+  box-shadow: 0 9px 24px rgba(31, 52, 69, 0.09);
+}
+
+.bento-card:hover { transform: translateY(-2px); }
+
+.timeline-stepper::before {
+  background: linear-gradient(to bottom, var(--accent), var(--border-subtle));
+}
+
+.timeline-step-number { box-shadow: none; }
+
+.section-tag,
+.pill { border-color: var(--border-subtle); }
+
+.callout { background: var(--accent-soft); }
+
+.skip-link {
+  background: var(--surface-card);
+  color: var(--text-primary);
+  box-shadow: 0 4px 14px rgba(31, 52, 69, 0.12);
+}
+
+.glow-spot {
+  display: none;
+}
+
+.section-ticker-ribbon {
+  background: var(--surface-raised);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.subpage-section.band-alt { background: var(--surface-raised); }
+
+.badge-blue {
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.proof-mark {
+  background: rgba(61, 118, 92, .08);
+  border-color: rgba(61, 118, 92, .25);
+}
+
+.proof-mark-signal {
+  background: rgba(189, 105, 72, .08);
+  border-color: rgba(189, 105, 72, .25);
+}
+
+::selection { background: rgba(189, 105, 72, .24); color: var(--text-primary); }
+
+.doclabel,
+.doclabel .rev,
+.section-tag,
+.hud-label {
+  font-family: var(--font-b);
+  letter-spacing: .035em;
+}
+
+.section-subpage-hero {
+  background: var(--surface-base);
+}
+
+.subpage-section.band-alt,
+.section.band { background: var(--surface-raised); }
 
 
 

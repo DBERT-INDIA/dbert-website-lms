@@ -23,7 +23,15 @@ interface ApiResponse {
   totalCount: number;
 }
 
-export default function ContributorCards() {
+interface ContributorCardsProps {
+  projectSlug?: string;
+  projectName?: string;
+}
+
+export default function ContributorCards({
+  projectSlug = 'alkame',
+  projectName = 'Alkame',
+}: ContributorCardsProps) {
   const [data, setData] = useState<ApiResponse | null>(null);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
@@ -33,7 +41,11 @@ export default function ContributorCards() {
     setLoading(true);
     setErrorMsg('');
     try {
-      const res = await fetch(`/api/alkame/contributors?page=${pageNum}`);
+      const endpoint =
+        projectSlug === 'alkame'
+          ? `/api/alkame/contributors?page=${pageNum}`
+          : `/api/projects/${projectSlug}/contributors?page=${pageNum}`;
+      const res = await fetch(endpoint);
       if (!res.ok) throw new Error('Failed to load contributors');
       const json: ApiResponse = await res.json();
       setData(json);
@@ -42,13 +54,9 @@ export default function ContributorCards() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [projectSlug]);
 
-  // Fetching the current page on mount and on page change is a genuine
-  // external-system subscription; the flagged setState is the loading flag
-  // inside fetchPage, which has to be set before the request goes out.
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchPage(page);
   }, [page, fetchPage]);
 
@@ -63,7 +71,7 @@ export default function ContributorCards() {
   if (!data || data.contributors.length === 0) {
     return (
       <p className={f.emptyState}>
-        No contributors have been published yet. Be the first to add yourself below.
+        No contributors have been published yet for {projectName}. Be the first to add yourself below.
       </p>
     );
   }

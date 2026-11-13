@@ -14,21 +14,21 @@ export const metadata = pageMetadata('/learners/fellowship');
 const steps = [
   {
     number: '01',
-    title: 'Technical onboarding and squad assignment',
+    title: 'Technical Onboarding & Architecture Setup (Weeks 1–2)',
     description:
-      'You are assigned to a development squad under an engineering mentor, given repository access, and set up locally against the real database schema. Week one is environment, codebase tour, and your first reviewed pull request.',
+      'You are assigned to an active venture squad under a senior engineer, granted direct repository access, and set up locally against production database schemas. Weeks 1–2 focus on architecture orientation, CI/CD pipelines, and your first reviewed pull request.',
   },
   {
     number: '02',
-    title: 'Active contribution sprints',
+    title: 'Active Contribution Sprints & Senior Code Reviews (Weeks 3–6)',
     description:
-      'You design interfaces, configure vector indexes, build API routes, and take part in code review — on the client repository, not a fork. Every pull request is reviewed and graded by a senior engineer before it merges.',
+      'You build REST and streaming API routes, configure vector indexes, write migrations, and submit pull requests directly to live venture repositories. Every PR is rigorously reviewed, commented, and graded by senior engineering staff before merging.',
   },
   {
     number: '03',
-    title: 'Evaluation and career handoff',
+    title: 'System Hardening, Verifiable Credentials & Stipend Handoff (Weeks 7–8)',
     description:
-      'Final module hardening, then the paperwork that makes the work legible to a recruiter: an experience letter tied to a verifiable certificate ID, your performance-based stipend, and introductions where a partner startup is hiring.',
+      'Final system hardening, integration tests, and documentation. You receive your official 3-document credential packet (verifiable on /verify and directory), audited performance stipend disbursement, and referrals to hiring partner startups.',
   },
 ];
 
@@ -36,42 +36,42 @@ const faqs = [
   {
     question: 'Is the DBERT fellowship really a paid AI internship?',
     answer:
-      'Yes, with a specific structure worth understanding before you apply. The stipend is performance-based and ranges from ₹5,000 to ₹18,000, paid against delivery milestones and code quality rather than hours logged. It is not a salary and it is not guaranteed at the top of the band — a fellow who ships reviewed, merged work across the full programme earns more than one who does not.',
+      'Yes, with an audited performance structure. The stipend ranges from ₹5,000 to ₹18,000 across milestone deliverables, evaluated against 4 objective engineering criteria: code quality, architecture & security, test coverage, and documentation. Approved stipends are credited atomically and disbursed directly to the fellow\'s verified UPI ID via the LMS portal.',
   },
   {
     question: 'Do I have to complete DBERT Accelerate first?',
     answer:
-      'No. There are two routes in. The first is completing DBERT Accelerate, which is how most fellows arrive. The second is passing our external code screening challenge, which is open to anyone regardless of where they learned to code. The screening exists precisely so that self-taught engineers and graduates of other programmes are not locked out.',
+      'No. There are two entry routes. The first is completing DBERT Accelerate, where mentors have evaluated your foundational code. The second is passing our external code screening challenge, open to any engineer regardless of academic background. Technical screening is 100% free with zero application fees.',
   },
   {
-    question: 'Do you guarantee placement at the end?',
+    question: 'Do you guarantee permanent corporate employment or jobs at the end?',
     answer:
-      'No, and you should be sceptical of any programme in India that does. What we actually provide is a verifiable record: an experience letter signed by the engineers who reviewed your code, a certificate ID anyone can check at dbert.in/verify, and commits on a real client repository. Partner startups review fellow performance logs when they hire, so the pipeline is real, but a referral is not an offer and we will not describe it as one.',
+      'No, and you should be sceptical of any programme in India that claims a 100% unconditional job guarantee. What we guarantee is real: guaranteed assignment to an active client repository, senior engineering code review on every PR, an independently verifiable Certificate UUID at dbert.in/verify, and an official experience letter. Partner startups review fellow performance logs when hiring, but a referral is an earned introduction, not an unconditional offer.',
   },
   {
     question: 'What kind of work do fellows actually do?',
     answer:
-      'Production work on systems that have users. That has meant REST and streaming API routes, database and vector-index configuration, retrieval pipelines, front-end interfaces, and deployment plumbing for incubated startups and enterprise clients. It does not mean tutorial rebuilds, sandbox exercises, or a capstone that nobody runs after you leave.',
+      'Production engineering on live venture codebases with active users. Recent fellows have built REST and token-streaming APIs, Postgres schema migrations, vector RAG retrieval pipelines, and responsive React interfaces across venture projects such as Alkame, Gayatri AI, Aivara Insight Lite, and DBERT Systems.',
   },
   {
-    question: 'How long is the fellowship and how much does it cost?',
+    question: 'How long is the fellowship and what does the ₹1,999 fee cover?',
     answer:
-      'The programme runs 2 months and the fee is ₹1,999 with guaranteed internship placement. The fee covers mentorship, code review, and the certification and letter issuance at the end; the stipend is separate and flows to you. Fees are reviewed each cohort, so treat the figure on this page as current rather than permanent.',
+      'The programme runs 2 months (8 weeks). The one-time fee of ₹1,999 covers 1-on-1 mentorship, senior code reviews, guaranteed assignment to an active production repository, and issuance of the 3-document verifiable credential packet. Performance stipends (₹5,000–₹18,000) are earned separately based on milestone deliverables.',
   },
   {
     question: 'Is this remote, and does it work alongside a degree or a job?',
     answer:
-      'It is remote and squad-based. Sprints are structured around delivery milestones rather than fixed office hours, which is what makes it workable alongside a final-year course load. It is still real client work with real deadlines, so it is not a zero-effort add-on — fellows who treat it as one tend to finish at the bottom of the stipend band.',
+      'It is fully remote and squad-based. Sprints are structured around delivery milestones rather than fixed office hours, making it workable alongside final-year college coursework. It involves real production deadlines, requiring approximately 12–15 focused hours per week.',
   },
   {
-    question: 'How is the experience letter different from a normal internship certificate?',
+    question: 'How is the credential verified by recruiters and employers?',
     answer:
-      'Two ways. It names the engineer who reviewed your work and the system you contributed to, rather than certifying attendance; and it carries a certificate ID that a recruiter can verify independently at dbert.in/verify without contacting us. A letter nobody can check is worth roughly what it costs to print.',
+      'Every graduate receives an official Certificate of Completion, Academic Project Evaluation, and Letter of Recommendation with a unique UUID. Recruiters can verify the credential instantly at dbert.in/verify or explore all graduates in our public Alphabetical Credential Directory at dbert.in/verify/directory.',
   },
   {
-    question: 'Where do I apply?',
+    question: 'Where do I apply, and are there any application fees?',
     answer:
-      'Applications run through the DBERT internship platform at lms.dbert.in. The application asks for your code — a repository, a deployed project, or your screening submission — rather than a CV of coursework, because that is what the selection is actually based on.',
+      'Applications run through the DBERT portal at lms.dbert.in. There is strictly ZERO application fee. Selection is based purely on technical code review of your GitHub repositories or screening task submission.',
   },
 ];
 
@@ -92,7 +92,7 @@ const jsonLd = {
       hasCourseInstance: {
         '@type': 'CourseInstance',
         courseMode: 'online',
-        courseWorkload: 'P3M',
+        courseWorkload: 'P2M',
       },
       offers: {
         '@type': 'Offer',
@@ -148,10 +148,13 @@ export default function FellowshipProgramPage() {
           <Link href="/verify" className="proof-mark">
             <span>✓ Verifiable Credential UUID</span>
           </Link>
+          <Link href="/verify/directory" className="proof-mark">
+            <span>✓ 465+ Certified Fellows Directory</span>
+          </Link>
           <span className="proof-mark proof-mark-signal">
-            <span>₹5,000–₹18,000 Monthly Performance Stipend</span>
+            <span>₹5,000–₹18,000 Performance Stipend</span>
           </span>
-          <Link href="/about" className="proof-mark">
+          <Link href="/about/credentials" className="proof-mark">
             <span>✓ MSME Registered Entity</span>
           </Link>
         </div>
@@ -227,7 +230,7 @@ export default function FellowshipProgramPage() {
 
           <h2>What the DBERT Fellowship actually is</h2>
           <p>
-            The fellowship is a three-month, selection-based programme that places you inside a
+            The fellowship is a 2-month (8-week), selection-based technical incubation programme that places you inside a
             development squad building software for DBERT&apos;s own incubated startups and enterprise
             clients. It sits at the top of the{' '}
             <Link href="/learners">AI career programs</Link> ladder, after{' '}
@@ -243,50 +246,47 @@ export default function FellowshipProgramPage() {
             someone is actually using the software.
           </p>
 
-          <h3>The work itself</h3>
+          <h3>Live venture repositories &amp; client deployments</h3>
           <p>
-            Squads are assigned to a system rather than a curriculum, so the exact stack depends on
-            the client. Across recent squads that has meant:
+            Fellows work directly on production codebases rather than sandboxes or tutorial rebuilds. Recent squads have contributed directly to:
           </p>
           <ul>
-            <li>REST and token-streaming API routes, including auth and rate limiting</li>
-            <li>Postgres schema design and migrations, plus vector-index configuration for retrieval</li>
-            <li>Retrieval-augmented generation pipelines — chunking, embedding, evaluation of answer quality</li>
-            <li>Front-end interfaces against those APIs, built to the client&apos;s design</li>
-            <li>Deployment, environment configuration, and the observability needed to debug it later</li>
+            <li><strong>Alkame:</strong> Quantitative financial market intelligence platform featuring real-time signal processing, streaming news feeds, and vector-similarity retrieval pipelines.</li>
+            <li><strong>Gayatri AI:</strong> Conversational AI and agent reasoning system with localized embeddings and specialized function-calling loops.</li>
+            <li><strong>Aivara Insight Lite:</strong> High-throughput document intelligence and automated pipeline extraction for enterprise records.</li>
+            <li><strong>DBERT Systems:</strong> Open-weights custom LLMs (e.g. <code>ollama run DBERT/DBERT_AI</code>) and developer infrastructure for reproducible agent workflows.</li>
           </ul>
-          <p>
-            You will not touch all of it. Squads specialise, and a fellow who spends three months
-            getting a retrieval pipeline genuinely good has a better story than one who touched
-            everything shallowly. Explore how these production vector components come together in our technical workshop on <Link href="/blog/rag-pipeline-tutorial-from-scratch">Production RAG Architecture from Scratch</Link>.
-          </p>
 
-          <h3>Selection: two ways in</h3>
+          <h3>Selection: merit-based with zero application fees</h3>
           <p>
             The first route is completing{' '}
             <Link href="/learners/accelerate">DBERT Accelerate</Link>, which is how most fellows
-            arrive — by then we have seen months of their code and know what they can be trusted with.
-            The second is the external code screening challenge, open to anyone regardless of where
-            they learned. The screening exists so that self-taught engineers and graduates of other
-            programmes are not locked out of the pipeline by not having bought our course first.
+            arrive — by then we have evaluated weeks of their code.
+            The second is the external code screening challenge, open to anyone regardless of academic background.
+            There is strictly <strong>zero application fee</strong> for applying, screening, or interview evaluation.
           </p>
           <p>
-            Either way, the application asks for code — a repository, a deployed project, a screening
-            submission — rather than a list of coursework. That is what the decision is made on.
+            Either way, the application asks for code — a GitHub repository, a deployed application, or a screening
+            submission. That is what the selection decision is made on.
           </p>
 
-          <h3>The stipend, stated plainly</h3>
+          <h3>How the performance stipend works: 4-dimension engineering rubric</h3>
           <p>
-            The stipend ranges from <strong>₹5,000 to ₹18,000</strong> and is performance-based: it is
-            paid against delivery milestones and code quality, not hours logged. Nobody starts at the
-            top of the band. A fellow who ships reviewed, merged work across the full three months
-            earns materially more than one who does not, and we would rather say that here than have
-            you discover it in month two. To see how intermediate and advanced performance directly scales into full-time compensation across Indian technology hubs, inspect our analysis of <Link href="/blog/ai-agent-developer-salary-2026">2026 AI Developer Salaries in India</Link>.
+            The stipend ranges from <strong>₹5,000 to ₹18,000</strong> across delivery milestones. It is performance-based,
+            not an hourly wage. Submissions are made through our LMS technical task engine and audited by senior staff against 4 objective engineering dimensions:
+          </p>
+          <ul>
+            <li><strong>Code Quality &amp; Cleanliness:</strong> Adherence to strict linting (PEP8/ESLint), TypeScript or Python typing, modular architecture, and proper error boundaries.</li>
+            <li><strong>Architecture &amp; Security:</strong> Secure parameterization, database migrations, clean API route structures, and zero hardcoded secrets.</li>
+            <li><strong>Practical Feasibility &amp; Testing:</strong> Passing unit and integration tests, reproducible Docker/local setups, and live deployment verification.</li>
+            <li><strong>Technical Documentation:</strong> Clear READMEs, architecture decision records, and endpoint documentation.</li>
+          </ul>
+          <p>
+            Approved milestone stipends are released atomically and disbursed via UPI directly to the fellow&apos;s verified account.
           </p>
           <p>
-            The programme fee is <strong>₹1,999</strong> for the 2 months with guaranteed internship placement, covering mentorship,
-            code review, and certificate and letter issuance. Fees are reviewed each cohort, so treat
-            that as the current figure rather than a permanent one.
+            The programme fee is <strong>₹1,999</strong> for the 2 months of technical incubation, covering 1-on-1 mentorship,
+            senior pull request reviews, guaranteed assignment to an active client repository, and official verifiable credential issuance.
           </p>
 
           <h2>What you leave with</h2>
@@ -295,42 +295,35 @@ export default function FellowshipProgramPage() {
           </p>
           <ol>
             <li>
-              <strong>Merged commits on a system with users.</strong> Public where the client permits
-              it, describable in detail where they do not. This is the part that changes how the
-              interview goes.
+              <strong>Merged commits on a system with users.</strong> Public on GitHub where the client permits
+              it, describable in detail where they do not. This is the tangible evidence that transforms technical interviews.
             </li>
             <li>
-              <strong>An experience letter naming the engineer who reviewed your work</strong> and the
-              system you contributed to — not a certificate of attendance. It carries a certificate ID
-              a recruiter can check independently at{' '}
-              <Link href="/verify">the DBERT certificate verification page</Link> without contacting
-              us. A letter nobody can verify is worth what it costs to print.
+              <strong>An official 3-document credential packet:</strong> Certificate of Completion, Academic Project Evaluation, and Letter of Recommendation naming the engineer who reviewed your work. Each document carries a unique UUID that anyone can verify independently at{' '}
+              <Link href="/verify">dbert.in/verify</Link> or in our public{' '}
+              <Link href="/verify/directory">Alphabetical Credential Directory</Link>.
             </li>
             <li>
-              <strong>Visibility to partner startups.</strong> They review fellow performance logs
+              <strong>Visibility to partner startups.</strong> Hiring partners review fellow sprint logs
               when hiring, and{' '}
-              <Link href="/learners/jobs">the AI jobs board for verified builders</Link> is restricted
-              to people with that record.
+              <Link href="/learners/jobs">the AI jobs board for verified builders</Link> is reserved
+              for fellows with that verified record.
             </li>
           </ol>
 
-          <h2>What we do not claim</h2>
+          <h2>What we guarantee vs what we do not claim</h2>
           <div className="disclosure">
             <p>
-              <strong>We do not guarantee placement.</strong> Any programme in India promising a job
-              at the end is either selecting so hard that the guarantee is meaningless or is going to
-              disappoint someone. A referral is not an offer, and we will not describe it as one.
+              <strong>✓ What we guarantee:</strong> We guarantee active technical assignment to live venture repositories under senior engineer code review, 1-on-1 technical mentorship, and an independently verifiable credential packet upon milestone completion.
             </p>
             <p>
-              <strong>We do not publish a placement percentage or an acceptance rate.</strong> We
-              would rather publish nothing than publish a number we cannot substantiate to a
-              prospective fellow who asks how it was calculated. When the cohort history is long
-              enough to state honestly, it will appear on{' '}
-              <Link href="/learners/jobs">the jobs page</Link> with its method attached.
+              <strong>✗ We do not promise unconditional jobs or corporate hiring:</strong> Any programme in India claiming a 100% placement guarantee is either selecting so hard that the guarantee is meaningless or misleading applicants. A startup referral is an earned introduction, not an employment contract.
             </p>
             <p>
-              <strong>We do not promise the top of the stipend band.</strong> It is performance-based
-              and most fellows land in the middle of it.
+              <strong>✗ We do not promise the top of the stipend band:</strong> Stipends are earned against the 4-dimension engineering rubric. Fellows who consistently ship high-quality code across all milestones achieve the upper band.
+            </p>
+            <p>
+              <strong>✓ Zero application fees:</strong> DBERT never charges application, registration, or interview screening fees.
             </p>
           </div>
         </div>
@@ -340,7 +333,7 @@ export default function FellowshipProgramPage() {
       <div className="band-top">
         <div className="container-sm">
           <h2 className="subsection-title">
-            How three months are structured
+            How the 2-Month Incubation is Structured
           </h2>
           <StepTimeline steps={steps} />
         </div>
@@ -390,12 +383,12 @@ export default function FellowshipProgramPage() {
             screening challenge. Bring code, not a CV.
           </p>
           <a
-            href="https://lms.dbert.in/program"
+            href="https://lms.dbert.in"
             target="_blank"
             rel="noopener noreferrer"
             className="btn btn-primary btn-lg"
           >
-            Apply for the paid AI fellowship
+            Apply for the AI Fellowship
           </a>
         </div>
       </div>

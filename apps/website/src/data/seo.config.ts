@@ -54,15 +54,21 @@ export const seoConfig: Record<string, SeoEntry> = {
   },
   '/verify/directory': {
     keyword: 'DBERT candidate directory',
-    title: 'Alphabetical Credential Directory',
+    title: 'Pre-Vetted Engineers & Candidate Directory',
     description:
-      'Search the DBERT candidate directory of verified engineering credentials and provisional candidates. Verify student records and authenticity instantly.',
+      'Search the DBERT candidate directory for pre-vetted AI, Full Stack & Data engineers with verified Turnitin rubrics and code dossiers. Connect on LMS.',
   },
   '/enroll/1999': {
     keyword: 'DBERT incubation enrollment',
     title: 'Incubation Program Enrollment',
     description:
       'Complete your official DBERT incubation enrollment and remaining balance. Access instant UPI payments, QR code reconciliation, and secure your cohort seat.',
+  },
+  '/enroll/299': {
+    keyword: '',
+    title: 'Project Verification Enrollment',
+    description: '',
+    noindex: true,
   },
   '/enroll': {
     keyword: '',
@@ -73,6 +79,12 @@ export const seoConfig: Record<string, SeoEntry> = {
   '/eroll': {
     keyword: '',
     title: 'DBERT Incubation Enrollment Redirect',
+    description: '',
+    noindex: true,
+  },
+  '/verify/unlock': {
+    keyword: '',
+    title: 'Verify Deliverables & Unlock Career Dossier',
     description: '',
     noindex: true,
   },
@@ -276,9 +288,9 @@ export const seoConfig: Record<string, SeoEntry> = {
   },
   '/learners/launchpad': {
     keyword: 'AI course for beginners India 2 months',
-    title: '2-Month AI & Engineering Launchpad Across 6 Domains',
+    title: '2-Month AI & Engineering Launchpad Across 9 Domains',
     description:
-      'A 2-month AI and engineering launchpad in India across 6 domains with live GitHub repos: AI Agents, GenAI, Machine Learning, Automation & Analytics.',
+      'An intensive AI course for beginners India 2 months with live GitHub sprints across 9 technical tracks, code reviews, and certified projects. Enrol today.',
   },
   '/learners/accelerate': {
     keyword: 'AI engineering bootcamp India',
@@ -298,11 +310,23 @@ export const seoConfig: Record<string, SeoEntry> = {
     description:
       'AI engineer interview preparation with mock technical interviews, a question bank and feedback from working engineers. Start practising for your round.',
   },
+  '/learners/resume-checker': {
+    keyword: 'AI resume checker',
+    title: 'Free AI Resume Checker & ATS Scanner 2026',
+    description:
+      'Audit your resume with our free AI resume checker. Get instant keyword gap analysis, score ratings, and match with verified remote developer jobs today.',
+  },
   '/learners/jobs': {
     keyword: 'AI jobs India freshers',
     title: 'AI Jobs & Placement for Verified Builders',
     description:
       'AI jobs in India for freshers who can prove what they built. Direct referrals and portfolio reviews for verified DBERT builders. Browse open roles today.',
+  },
+  '/internships': {
+    keyword: 'remote internships India',
+    title: 'Remote Internships in India — Live AI & Web Tracks',
+    description:
+      'Find remote internships India in AI, Web & Data. Build production code under senior review, earn ₹5K–₹18K stipends and get verified MSME certs. Apply.',
   },
   '/learners/courses': {
     keyword: 'AI courses with certificate India',
@@ -346,6 +370,37 @@ export const seoConfig: Record<string, SeoEntry> = {
     description:
       'A data analytics course in India with a verifiable certificate, covering SQL, Python, Pandas and dashboards through real datasets. See the full plan.',
   },
+  '/learners/courses/ui-ux-design': {
+    keyword: 'UI UX design course India Figma',
+    title: 'UI/UX Design & Product Prototyping Course — India',
+    description:
+      'Master UI UX design course India Figma with auto-layout, design systems, UX research, wireframes, and interactive product prototypes. Inspect syllabus.',
+  },
+  '/learners/courses/devops-cloud': {
+    keyword: 'DevOps cloud engineering course India',
+    title: 'DevOps & Cloud Engineering Course — Docker, K8s, AWS',
+    description:
+      'A practical DevOps cloud engineering course India covering Docker, Kubernetes orchestration, CI/CD pipelines, and AWS deployments. Explore syllabus.',
+  },
+  '/learners/courses/mobile-app-development': {
+    keyword: 'mobile app development course India Flutter',
+    title: 'Mobile App Development Course — Flutter & React',
+    description:
+      'Build production cross-platform iOS and Android apps with Flutter, Dart, React Native, and mobile API backends. Complete syllabus and live projects.',
+  },
+  '/learners/courses/cybersecurity': {
+    keyword: 'cybersecurity course India ethical hacking certificate',
+    title: 'Cybersecurity & Ethical Hacking Course — India',
+    description:
+      'Learn practical cybersecurity in India: penetration testing, network defense, SOC analysis, SIEM log forensics, and compliance. See course details.',
+  },
+  '/learners/courses/digital-marketing': {
+    keyword: 'digital marketing course India SEO performance marketing',
+    title: 'Digital Marketing & Growth Course in India — SEO',
+    description:
+      'Master digital marketing in India: technical SEO, performance marketing with Google and Meta Ads, and funnel tracking with GA4. View live curriculum.',
+  },
+
 
   // ── Labs ────────────────────────────────────────────────────────────────
   '/labs': {

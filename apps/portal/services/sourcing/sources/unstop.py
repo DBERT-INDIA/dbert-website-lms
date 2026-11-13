@@ -19,7 +19,17 @@ KEYWORDS = [
     # Data Analyst Track
     "data analyst", "data science", "data analytics", "business analytics", "power bi",
     # Full Stack Track
-    "full stack", "web development", "react", "backend", "frontend", "node"
+    "full stack", "web development", "react", "backend", "frontend", "node",
+    # UI/UX Track
+    "ui/ux", "product design", "figma", "user experience", "ux design",
+    # DevOps & Cloud Track
+    "devops", "cloud engineer", "aws", "docker", "kubernetes",
+    # Mobile App Track
+    "mobile app", "react native", "flutter", "android", "ios",
+    # Cybersecurity Track
+    "cybersecurity", "soc analyst", "penetration testing", "information security",
+    # Digital Marketing Track
+    "digital marketing", "seo", "performance marketing", "growth marketing"
 ]
 
 class UnstopScraper(BaseScraper):

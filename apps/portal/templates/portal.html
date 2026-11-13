@@ -182,22 +182,42 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
 
         <!-- SELECTED: payment block -->
         <div class="glass-card hidden" id="ovSelected" style="margin-bottom:20px; max-width:640px;">
-          <h3 style="color:var(--tx-head);font-size:16px;font-weight:800;margin-bottom:16px;"><i class="fas fa-lock" style="color:var(--green);margin-right:8px;"></i>Secure Your Seat &mdash; &#8377;499 Refundable Deposit</h3>
+          <h3 style="color:var(--tx-head);font-size:16px;font-weight:800;margin-bottom:16px;"><i class="fas fa-lock" style="color:var(--green);margin-right:8px;"></i>Confirm Your Seat &mdash; Finalize Enrollment</h3>
           <ul class="perks">
             <li class="perks-title"><i class="fas fa-gift"></i> What you get when you enroll</li>
             <li><i class="fas fa-bolt"></i><span><strong>Offer letter within 2 hours</strong> of enrollment &mdash; delivered straight to your inbox.</span></li>
             <li><i class="fas fa-certificate"></i><span><strong>Certificate of Completion</strong> &mdash; verifiable for academic &amp; industry use.</span></li>
             <li><i class="fas fa-user-tie"></i><span><strong>Mentor-guided</strong>, hands-on internship in your chosen domain.</span></li>
             <li><i class="fas fa-laptop-code"></i><span>Work on <strong>real projects</strong> &mdash; practical experience, not just theory.</span></li>
-            <li><i class="fas fa-rotate-left"></i><span>Your <strong>&#8377;499 deposit is fully refundable</strong> on successful completion.</span></li>
+            <li><i class="fas fa-check-circle"></i><span>Direct onboarding to live sprint deliverables and technical mentorship.</span></li>
           </ul>
           <div class="upi-card">
             <div class="upi-qr"><img src="/static/img/qrcode.jpeg" alt="UPI QR" onerror="this.onerror=null;this.src='/static/qr.jpg';" /></div>
             <div class="upi-info">
               <p>Scan QR or pay to UPI ID:</p>
-              <div class="upi-id-box"><span id="upiIdDisplay">Q681021429@ybl</span><button data-act-click="copyUPI" aria-label="Copy UPI"><i class="fas fa-copy"></i></button></div>
-              <p class="amount-tag">Amount: &#8377;499 (Refundable on completion)</p>
+              <div class="upi-id-box"><span id="upiIdDisplay">Q652429146@ybl</span><button data-act-click="copyUPI" aria-label="Copy UPI"><i class="fas fa-copy"></i></button></div>
+              <p class="amount-tag">Committed Seat Confirmation</p>
               <p style="color:var(--tx-muted);font-size:11px;margin-top:4px;">Use PhonePe, GPay, Paytm or any UPI app</p>
+            </div>
+          </div>
+          <!-- 1-Tap Mobile UPI App Launchers -->
+          <div class="upi-apps-launcher" style="margin-top:12px;padding:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;">
+            <div style="font-size:12px;color:var(--tx-muted);margin-bottom:10px;font-weight:600;display:flex;align-items:center;gap:6px;">
+              <i class="fas fa-bolt" style="color:var(--gold);"></i> <span>1-Tap Fast Pay (₹499 Pre-filled):</span>
+            </div>
+            <div class="upi-apps-grid" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(110px, 1fr));gap:8px;">
+              <a href="intent://pay?pa=Q652429146@ybl&pn=DBERT%20Admissions&am=499&cu=INR&tn=DBERT-COHORT-ENROLL#Intent;scheme=upi;package=com.google.android.apps.nbu.paisa.user;end" class="btn-upi-app" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:9px 12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:8px;color:#fff;text-decoration:none;font-size:12.5px;font-weight:700;transition:.2s;">
+                <i class="fab fa-google-pay" style="font-size:18px;color:#4285F4;"></i> GPay
+              </a>
+              <a href="phonepe://pay?pa=Q652429146@ybl&pn=DBERT%20Admissions&am=499&cu=INR&tn=DBERT-COHORT-ENROLL" class="btn-upi-app" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:9px 12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:8px;color:#fff;text-decoration:none;font-size:12.5px;font-weight:700;transition:.2s;">
+                <i class="fas fa-mobile-screen" style="font-size:14px;color:#5f259f;"></i> PhonePe
+              </a>
+              <a href="paytmmp://pay?pa=Q652429146@ybl&pn=DBERT%20Admissions&am=499&cu=INR&tn=DBERT-COHORT-ENROLL" class="btn-upi-app" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:9px 12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:8px;color:#fff;text-decoration:none;font-size:12.5px;font-weight:700;transition:.2s;">
+                <i class="fas fa-wallet" style="font-size:14px;color:#00b9f5;"></i> Paytm
+              </a>
+              <a href="upi://pay?pa=Q652429146@ybl&pn=DBERT%20Admissions&am=499&cu=INR&tn=DBERT-COHORT-ENROLL" class="btn-upi-app" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:9px 12px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:8px;color:#fff;text-decoration:none;font-size:12.5px;font-weight:700;transition:.2s;">
+                <i class="fas fa-qrcode" style="font-size:14px;color:var(--gold);"></i> Other UPI
+              </a>
             </div>
           </div>
           <div class="joining-section" id="ovDomainSection">
@@ -242,6 +262,11 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
               <div class="file-name hidden" id="fileNameDisplay"></div>
             </div>
           </div>
+          <div class="joining-section" style="margin-top:14px;">
+            <label class="field-label" for="enrollUtr">12-Digit UPI Transaction ID / UTR <span style="color:var(--gold);font-size:11px;">(Recommended for instant auto-verification)</span></label>
+            <input type="text" id="enrollUtr" maxlength="12" class="field-input" placeholder="e.g. 432109876543 (from payment receipt)" style="width:100%;margin-top:6px;background:rgba(255,255,255,0.06);color:var(--tx-head);border:1px solid var(--border);border-radius:var(--r-sm);padding:10px 12px;font-size:14px;letter-spacing:1px;" />
+            <p style="color:var(--tx-muted);font-size:11px;margin-top:4px;">Enter the 12-digit UPI UTR from your payment confirmation screen for instant ledger reconciliation.</p>
+          </div>
 
           <div class="form-error" id="enrollError" role="alert"><i class="fa fa-circle-exclamation"></i><span id="enrollErrorText"></span></div>
           <button class="btn-enroll" id="enrollBtn" data-act-click="submitEnrollment">
@@ -254,14 +279,14 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
              legacy ovSelected card above -- no joining-date calendar here, since the
              company already sets its own start date). -->
         <div class="glass-card hidden" id="ovJobDeposit" style="margin-bottom:20px; max-width:640px;">
-          <h3 style="color:var(--tx-head);font-size:16px;font-weight:800;margin-bottom:16px;"><i class="fas fa-lock" style="color:var(--green);margin-right:8px;"></i>Secure Your Role &mdash; &#8377;499 Refundable Deposit</h3>
+          <h3 style="color:var(--tx-head);font-size:16px;font-weight:800;margin-bottom:16px;"><i class="fas fa-lock" style="color:var(--green);margin-right:8px;"></i>Confirm Your Role &mdash; Finalize Placement</h3>
           <p id="jdIntro" style="color:var(--tx-muted);font-size:13.5px;margin-bottom:14px;"></p>
           <div class="upi-card" id="jdUpiCard">
             <div class="upi-qr"><img src="/static/img/qrcode.jpeg" alt="UPI QR" onerror="this.onerror=null;this.src='/static/qr.jpg';" /></div>
             <div class="upi-info">
               <p>Scan QR or pay to UPI ID:</p>
-              <div class="upi-id-box"><span id="jdUpiIdDisplay">Q681021429@ybl</span><button data-act-click="copyUPI" aria-label="Copy UPI"><i class="fas fa-copy"></i></button></div>
-              <p class="amount-tag">Amount: &#8377;499 (Refundable on completion)</p>
+              <div class="upi-id-box"><span id="jdUpiIdDisplay">Q652429146@ybl</span><button data-act-click="copyUPI" aria-label="Copy UPI"><i class="fas fa-copy"></i></button></div>
+              <p class="amount-tag">Committed Seat Confirmation</p>
               <p style="color:var(--tx-muted);font-size:11px;margin-top:4px;">Use PhonePe, GPay, Paytm or any UPI app</p>
             </div>
           </div>
@@ -1199,6 +1224,23 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
       width: 100%;
     }
   }
+  @media (max-width: 640px) {
+    .portal-hero-banner {
+      padding: 18px 16px;
+      gap: 16px;
+    }
+    .portal-hero-left {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .portal-hero-info h1 {
+      font-size: 22px;
+    }
+    .portal-hero-info p {
+      font-size: 13.5px;
+    }
+  }
   .portal-hero-tags {
     display: flex;
     align-items: center;
@@ -1836,7 +1878,7 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
 
   /* ════ STATE ════ */
   let _intern=null,_apps=[],_jobApps=[],_enr=null,_status='',_flowState=null,_ivStatus=null,_reapplyInfo=null;
-  let _upiId='Q681021429@ybl',_upiAmount=499,_selectedFile=null,_paidEligible=false;
+  let _upiId='Q652429146@ybl',_upiAmount=499,_selectedFile=null,_paidEligible=false;
   let _currentJobAppId=null,_jobDepositFile=null;
   let _joiningDate=null,_joiningDateStr='',_internshipEndDate=null,_internshipEndDateStr='',_isUnlocked=false,_allWeeks=[];
   let _attSummary={},_courseEnrs=[],_tasksCount=0,_totalCoins=0,_learningProfile=null,_availableTasks=[];
@@ -2515,14 +2557,36 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
 
     } else if(step.type === 'file_upload'){
       _wizardSelectedFile = null;
-      const upi = step.upi_id || 'Q681021429@ybl';
+      const upi = step.upi_id || 'Q652429146@ybl';
       const amt = step.amount || 499;
       const rejNotice = step.is_rejected 
-        ? `<div style="background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);border-radius:var(--r-sm);padding:10px 14px;color:#fca5a5;font-size:12.5px;margin-bottom:14px;"><i class="fas fa-exclamation-triangle"></i> &nbsp;Your previous payment receipt could not be verified. Please upload a clear screenshot showing the UTR / Transaction ID.</div>`
+        ? `<div style="background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.3);border-radius:var(--r-sm);padding:12px 14px;color:#fca5a5;font-size:12.5px;margin-bottom:14px;line-height:1.4;"><i class="fas fa-exclamation-triangle"></i> &nbsp;<strong>Payment Verification Update:</strong> Your previous payment receipt could not be verified (missing or unclear screenshot). Please re-upload a clear screenshot showing the 12-digit UTR / Transaction ID below.</div>`
         : '';
+
+      let joiningSelectHtml = '';
+      if(step.joining_options && step.joining_options.length > 0){
+        const defaultJd = step.joining_date || step.joining_options[2] || step.joining_options[0];
+        const labels = step.joining_labels || {};
+        const optionsHtml = step.joining_options.map(opt => {
+          const lbl = labels[opt] || opt;
+          const sel = (opt === defaultJd) ? ' selected' : '';
+          return `<option value="${escHtml(opt)}"${sel}>${escHtml(lbl)}</option>`;
+        }).join('');
+        joiningSelectHtml = `
+          <div class="wiz-form-group" style="margin-bottom:14px;text-align:left;">
+            <label for="wizardJoiningSelect" style="display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;color:var(--tx-head);margin-bottom:6px;">
+              <i class="fas fa-calendar-alt" style="color:var(--gold);"></i> Select Batch Kickoff Date *
+            </label>
+            <select id="wizardJoiningSelect" class="wiz-form-input" style="width:100%;padding:10px 14px;border-radius:8px;background:rgba(0,0,0,0.3);color:var(--tx-head);border:1px solid var(--border);font-size:13px;">
+              ${optionsHtml}
+            </select>
+          </div>
+        `;
+      }
 
       body.innerHTML = `
         ${rejNotice}
+        ${joiningSelectHtml}
         <div style="background:rgba(226,185,111,0.06);border:1px solid rgba(226,185,111,0.2);border-radius:var(--r-sm);padding:14px 16px;margin-bottom:16px;">
           <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap;">
             <div style="background:#fff;padding:6px;border-radius:10px;display:flex;align-items:center;justify-content:center;width:120px;height:120px;flex-shrink:0;margin:0 auto;box-shadow:0 4px 14px rgba(0,0,0,0.3);border:1px solid rgba(226,185,111,0.3);">
@@ -2545,11 +2609,18 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
           </div>
         </div>
 
+        <div class="wiz-form-group" style="margin-bottom:14px;text-align:left;">
+          <label for="wizardUtrInput" style="display:flex;align-items:center;gap:6px;font-size:12.5px;font-weight:700;color:var(--tx-head);margin-bottom:6px;">
+            <i class="fas fa-receipt" style="color:var(--gold);"></i> 12-Digit UPI Transaction ID / UTR (Optional but recommended)
+          </label>
+          <input type="text" id="wizardUtrInput" class="wiz-form-input" placeholder="e.g. 679862090077" maxlength="24" style="width:100%;padding:10px 14px;border-radius:8px;background:rgba(0,0,0,0.3);color:var(--tx-head);border:1px solid var(--border);font-size:13px;">
+        </div>
+
         <div style="border:2px dashed var(--border);border-radius:var(--r-md);padding:24px 16px;text-align:center;cursor:pointer;background:rgba(255,255,255,0.02);transition:border-color .2s;" ${actAttr('click', 'triggerWizardFileInput', [])}>
           <input type="file" id="wizardFileInput" accept="image/png,image/jpeg,image/jpg,application/pdf" style="display:none;" ${actAttr('change', 'onWizardFileChange', ['$el'])}>
           <i class="fas fa-cloud-arrow-up" style="font-size:32px;color:var(--gold);margin-bottom:8px;"></i>
-          <div style="font-size:13.5px;font-weight:700;color:var(--tx-head);">Click or Drag to Upload Payment Screenshot</div>
-          <div style="font-size:11.5px;color:var(--tx-muted);margin-top:4px;">Supported: PNG, JPG, JPEG, PDF (Max 6MB)</div>
+          <div style="font-size:13.5px;font-weight:700;color:var(--tx-head);">Click or Drag to Upload Payment Screenshot *</div>
+          <div style="font-size:11.5px;color:var(--tx-muted);margin-top:4px;">Supported: PNG, JPG, JPEG, PDF (Max 6MB) - Required to proceed</div>
           <div id="wizardFileDisplay" class="hidden" style="margin-top:10px;display:inline-flex;align-items:center;gap:6px;background:rgba(74,222,128,0.15);color:#4ade80;border:1px solid rgba(74,222,128,0.3);padding:4px 12px;border-radius:99px;font-size:12px;font-weight:700;">
             <i class="fas fa-file-check"></i> <span id="wizardFileName"></span>
           </div>
@@ -2714,9 +2785,13 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
     try{
       let res;
       if(step.type === 'file_upload'){
+        const jdEl = document.getElementById('wizardJoiningSelect');
+        const utrEl = document.getElementById('wizardUtrInput');
         const fd = new FormData();
         fd.append('step_key', 'payment_screenshot');
         fd.append('payment_screenshot', _wizardSelectedFile);
+        if(jdEl && jdEl.value) fd.append('joining_date', jdEl.value.trim());
+        if(utrEl && utrEl.value) fd.append('utr_number', utrEl.value.trim());
         res = await fetch('/intern/save-wizard-step', { method: 'POST', credentials: 'include', body: fd });
       } else if(step.type === 'profile_form'){
         const colEl = document.getElementById('wizCollege');
@@ -2837,6 +2912,14 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
   window.onWizardTextareaInput = onWizardTextareaInput;
 
   /* ════ MAIN PORTAL BOOTSTRAP ════ */
+  // Failsafe: Hard safety timer to dismiss loading screen after 3.5s max
+  setTimeout(function() {
+    var ls = document.getElementById('loadingScreen');
+    if (ls && !ls.classList.contains('hidden')) {
+      ls.classList.add('hidden');
+      switchTab('overview');
+    }
+  }, 3500);
   async function loadPortal(){
     const loadScr = document.getElementById('loadingScreen');
     try{
@@ -3278,7 +3361,7 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
         if(!ds || ds==='rejected'){
           nsMsg.textContent=(ds==='rejected'
             ? 'Your previous deposit payment could not be verified — please re-upload below.'
-            : escHtml(latestJobApp.company_name||'The company')+' has hired you! Pay your refundable ₹499 security deposit to confirm.');
+            : escHtml(latestJobApp.company_name||'The company')+' has hired you! Confirm your acceptance to begin onboarding.');
           nsAction.innerHTML='';
           document.getElementById('ovJobDeposit').classList.remove('hidden');
           document.getElementById('jdIntro').textContent=(ds==='rejected'
@@ -3286,13 +3369,13 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
             : 'This fully refundable deposit is returned 100% once you successfully complete the internship.');
           document.getElementById('jdError').classList.remove('visible');
         }else if(ds==='pending'){
-          nsMsg.textContent='Your ₹499 deposit is submitted and under review. We verify within 24 hours.';
+          nsMsg.textContent='Your enrollment submission is under review. We verify within 24 hours.';
           nsAction.innerHTML='';
         }else if(ds==='verified'){
-          nsMsg.textContent='Your ₹499 deposit is confirmed — you\'re all set. It\'s fully refundable on successful completion.';
+          nsMsg.textContent='Your enrollment is confirmed — you\'re all set to begin your internship sprints.';
           nsAction.innerHTML=btnTab('myapplications','View in My Applications','fa-briefcase');
         }else if(ds==='refunded'){
-          nsMsg.textContent='Your ₹499 deposit has been refunded. Congratulations on completing the internship!';
+          nsMsg.textContent='Your internship is officially completed. Congratulations!';
           nsAction.innerHTML=btnTab('myapplications','View in My Applications','fa-briefcase');
         }
         stepBar.classList.add('hidden');
@@ -3337,8 +3420,8 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
     }else if(_status==='Selected'||_status==='Enrollment Pending'){
       const isPending=_status==='Enrollment Pending';
       nsIcon.innerHTML='&#127881;';
-      nsTitle.textContent=isPending?'Upload your payment proof to confirm enrollment':'You\'re selected! Pay your ₹499 deposit to confirm your seat';
-      nsMsg.textContent=isPending?'Complete the steps below to confirm your enrollment.':'Secure your seat with a refundable ₹499 deposit and choose your joining Monday below.';
+      nsTitle.textContent=isPending?'Upload your confirmation proof to confirm enrollment':'You\'re selected! Confirm your seat to get started';
+      nsMsg.textContent=isPending?'Complete the steps below to confirm your enrollment.':'Confirm your seat and choose your joining Monday below.';
       buildStepBar('overviewStepBar','Selected');
       showOvBlock('ovSelected');loadUpcomingMondays();
     }else if(_status==='Enrolled'){
@@ -3415,9 +3498,14 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
     if(!_enr){document.getElementById('enrolledDetails').innerHTML='';return;}
     const rejected=_enr.payment_status==='Rejected';
     let rows=`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);"><span>Joining Date</span><strong style="color:var(--gold);">${escHtml(_enr.joining_date||'TBD')}</strong></div>`;
-    if(paid){rows=`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);"><span>Program</span><strong style="color:#fff;">Paid Program</strong></div>`+rows;}
+    if(paid){rows=`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);"><span>Program</span><strong style="color:#fff;">Paid Program (₹1,999)</strong></div>`+rows;}
     else{rows+=`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);"><span>Batch</span><strong style="color:#fff;">${escHtml(_enr.batch_label||'')}</strong></div>`;}
+    if(_enr.utr){rows+=`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);"><span>12-Digit UTR</span><strong style="color:var(--gold);font-family:monospace;letter-spacing:1px;">${escHtml(_enr.utr)}</strong></div>`;}
     rows+=`<div style="display:flex;justify-content:space-between;padding:6px 0;"><span>Payment Status</span><strong style="color:${rejected?'var(--red)':'var(--amber)'};">${escHtml(_enr.payment_status||'Pending Verification')}</strong></div>`;
+    if(paid && !rejected){
+      const waMsg = encodeURIComponent(`Hi Admissions Team, I have enrolled in the DBERT Paid Program (UTR: ${_enr.utr||'-'}). Please confirm my verification!`);
+      rows+=`<div style="margin-top:14px;text-align:center;"><a href="https://wa.me/918192911360?text=${waMsg}" target="_blank" rel="noopener" class="btn-primary" style="background:#25D366;border-color:#25D366;color:#fff;font-size:12.5px;padding:8px 16px;border-radius:6px;text-decoration:none;display:inline-flex;align-items:center;gap:6px;justify-content:center;width:100%;font-weight:700;"><i class="fab fa-whatsapp"></i> Confirm on WhatsApp Admissions</a></div>`;
+    }
     document.getElementById('enrolledDetails').innerHTML=`<div style="background:rgba(226,185,111,.06);border:1px solid rgba(226,185,111,.15);border-radius:var(--r-sm);padding:14px 16px;font-size:13px;color:var(--tx-muted);text-align:left;max-width:420px;margin:8px auto 0;">${rows}</div>`;
   }
 
@@ -3487,6 +3575,9 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
     const btn=document.getElementById('enrollBtn');btn.disabled=true;btn.classList.add('loading');
     const fd=new FormData();fd.append('payment_screenshot',_selectedFile);fd.append('joining_date',joining);
     if(domain) fd.append('domain', domain);
+    const utrEl=document.getElementById('enrollUtr');
+    const utrVal=utrEl?utrEl.value.trim():'';
+    if(utrVal) fd.append('utr_number', utrVal);
     try{
       const res=await fetch('/enroll',{method:'POST',credentials:'include',body:fd});const data=await res.json();
       if(data.status==='success'){dbertGA('free_enroll_submitted',{});showToast('Enrollment submitted! Verifying within 24h.','green');setTimeout(()=>window.location.reload(),1500);}

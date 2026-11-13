@@ -321,8 +321,8 @@
     "organization": "DBERT",
     "verificationUrl": "https://dbert.in/verify?certid=CERT-DBERT-2026-DA-067",
     "previewUrl": "/certificates/previews/sample_certificate_locked.png",
-    "isProvisional": true,
-    "status": "PENDING_ACTIVATION"
+    "isProvisional": false,
+    "status": "VERIFIED"
   },
   {
     "certId": "CERT-DBERT-2026-DA-068",
@@ -1121,8 +1121,8 @@
     "organization": "DBERT",
     "verificationUrl": "https://dbert.in/verify?certid=CERT-DBERT-2026-DA-083",
     "previewUrl": "/certificates/previews/sample_certificate_locked.png",
-    "isProvisional": true,
-    "status": "PENDING_ACTIVATION"
+    "isProvisional": false,
+    "status": "VERIFIED"
   },
   {
     "certId": "CERT-DBERT-2026-AIML-070",
@@ -1371,8 +1371,8 @@
     "organization": "DBERT",
     "verificationUrl": "https://dbert.in/verify?certid=CERT-DBERT-2026-AIML-075",
     "previewUrl": "/certificates/previews/sample_certificate_locked.png",
-    "isProvisional": true,
-    "status": "PENDING_ACTIVATION"
+    "isProvisional": false,
+    "status": "VERIFIED"
   },
   {
     "certId": "CERT-DBERT-2026-DA-086",
@@ -1546,8 +1546,8 @@
     "organization": "DBERT",
     "verificationUrl": "https://dbert.in/verify?certid=CERT-DBERT-2026-AIML-079",
     "previewUrl": "/certificates/previews/sample_certificate_locked.png",
-    "isProvisional": true,
-    "status": "PENDING_ACTIVATION"
+    "isProvisional": false,
+    "status": "VERIFIED"
   },
   {
     "certId": "CERT-DBERT-2026-DA-089",
@@ -1646,8 +1646,8 @@
     "organization": "DBERT",
     "verificationUrl": "https://dbert.in/verify?certid=CERT-DBERT-2026-FSD-062",
     "previewUrl": "/certificates/previews/sample_certificate_locked.png",
-    "isProvisional": true,
-    "status": "PENDING_ACTIVATION"
+    "isProvisional": false,
+    "status": "VERIFIED"
   },
   {
     "certId": "CERT-DBERT-2026-AIML-081",
@@ -2971,8 +2971,8 @@
     "organization": "DBERT",
     "verificationUrl": "https://dbert.in/verify?certid=CERT-DBERT-2026-AIML-104",
     "previewUrl": "/certificates/previews/sample_certificate_locked.png",
-    "isProvisional": true,
-    "status": "PENDING_ACTIVATION"
+    "isProvisional": false,
+    "status": "VERIFIED"
   },
   {
     "certId": "CERT-DBERT-2026-DA-111",
@@ -3046,8 +3046,8 @@
     "organization": "DBERT",
     "verificationUrl": "https://dbert.in/verify?certid=CERT-DBERT-2026-DA-112",
     "previewUrl": "/certificates/previews/sample_certificate_locked.png",
-    "isProvisional": true,
-    "status": "PENDING_ACTIVATION"
+    "isProvisional": false,
+    "status": "VERIFIED"
   },
   {
     "certId": "CERT-DBERT-2026-DA-113",
@@ -3071,8 +3071,8 @@
     "organization": "DBERT",
     "verificationUrl": "https://dbert.in/verify?certid=CERT-DBERT-2026-DA-113",
     "previewUrl": "/certificates/previews/sample_certificate_locked.png",
-    "isProvisional": true,
-    "status": "PENDING_ACTIVATION"
+    "isProvisional": false,
+    "status": "VERIFIED"
   },
   {
     "certId": "CERT-DBERT-2026-DA-114",
@@ -4321,8 +4321,8 @@
     "organization": "DBERT",
     "verificationUrl": "https://dbert.in/verify?certid=CERT-DBERT-2026-FSD-084",
     "previewUrl": "/certificates/previews/sample_certificate_locked.png",
-    "isProvisional": true,
-    "status": "PENDING_ACTIVATION"
+    "isProvisional": false,
+    "status": "VERIFIED"
   },
   {
     "certId": "CERT-DBERT-2026-FSD-085",
@@ -5871,8 +5871,8 @@
     "organization": "DBERT",
     "verificationUrl": "https://dbert.in/verify?certid=CERT-DBERT-2026-FSD-117",
     "previewUrl": "/certificates/previews/sample_certificate_locked.png",
-    "isProvisional": true,
-    "status": "PENDING_ACTIVATION"
+    "isProvisional": false,
+    "status": "VERIFIED"
   },
   {
     "certId": "CERT-DBERT-2026-FSD-118",
@@ -8646,8 +8646,8 @@
     "organization": "DBERT",
     "verificationUrl": "https://dbert.in/verify?certid=CERT-DBERT-2026-AIML-169",
     "previewUrl": "/certificates/previews/sample_certificate_locked.png",
-    "isProvisional": true,
-    "status": "PENDING_ACTIVATION"
+    "isProvisional": false,
+    "status": "VERIFIED"
   },
   {
     "certId": "CERT-DBERT-2026-DA-171",
@@ -10279,5 +10279,61 @@
     "doc2Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\65_janhvi_singh\\2_Academic_Project_Evaluation_CERT-DBERT-2026-DA-184.pdf",
     "doc3Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\65_janhvi_singh\\3_Letter_of_Recommendation_CERT-DBERT-2026-DA-184.pdf",
     "previewUrl": "/certificates/previews/CERT-DBERT-2026-DA-184.png"
+  },
+  {
+    "certId": "CERT-DBERT-2026-DA-185",
+    "internId": "DBERT-2026-INT-1413",
+    "holderName": "Sakthi P",
+    "email": "sakthifriendofgowtham@gmail.com",
+    "college": "Indian Institute of Technology Indore",
+    "domain": "Data Analyst",
+    "project": "Cognitive Solutions — Enterprise Business Intelligence & Analytics Suite",
+    "batch": "Aug to Oct 2026",
+    "duration": "15 August 2026 – 15 October 2026 (2 Months)",
+    "startDate": "15 August 2026",
+    "endDate": "15 October 2026",
+    "issueDate": "2026-11-01",
+    "evalDate": "01 November 2026",
+    "score": 86,
+    "grade": "Grade: A+ (Outstanding Performance)",
+    "signatory": "Mr. Abhinav Sharma",
+    "signatoryTitle": "Program Head & Project Mentor",
+    "organization": "DBERT (Digital Blinc Education Research and Technology)",
+    "verificationUrl": "https://dbert.in/verify?certid=CERT-DBERT-2026-DA-185",
+    "verified": true,
+    "isProvisional": false,
+    "status": "Verified",
+    "doc1Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\69_sakthi_p\\1_Certificate_of_Completion_CERT-DBERT-2026-DA-185.pdf",
+    "doc2Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\69_sakthi_p\\2_Academic_Project_Evaluation_CERT-DBERT-2026-DA-185.pdf",
+    "doc3Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\69_sakthi_p\\3_Letter_of_Recommendation_CERT-DBERT-2026-DA-185.pdf",
+    "previewUrl": "/certificates/previews/CERT-DBERT-2026-DA-185.png"
+  },
+  {
+    "certId": "CERT-DBERT-2026-UIUX-041",
+    "internId": "DBERT-2026-INT-1414",
+    "holderName": "Devanshi Yadac",
+    "email": "devu004066@gmail.com",
+    "college": "South Asian University",
+    "domain": "UI/UX Prototyping & Design",
+    "project": "DBERT Sovereign Interface System & Design Tokens",
+    "batch": "May to July 2026",
+    "duration": "15 May 2026 – 15 July 2026 (2 Months)",
+    "startDate": "15 May 2026",
+    "endDate": "15 July 2026",
+    "issueDate": "2026-08-01",
+    "evalDate": "01 August 2026",
+    "score": 87,
+    "grade": "Grade: A+ (Outstanding Performance)",
+    "signatory": "Mr. Abhinav Sharma",
+    "signatoryTitle": "Program Head & Project Mentor",
+    "organization": "DBERT (Digital Blinc Education Research and Technology)",
+    "verificationUrl": "https://dbert.in/verify?certid=CERT-DBERT-2026-UIUX-041",
+    "verified": true,
+    "isProvisional": false,
+    "status": "Verified",
+    "doc1Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\77_devanshi_yadac\\1_Certificate_of_Completion_CERT-DBERT-2026-UIUX-041.pdf",
+    "doc2Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\77_devanshi_yadac\\2_Academic_Project_Evaluation_CERT-DBERT-2026-UIUX-041.pdf",
+    "doc3Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\77_devanshi_yadac\\3_Letter_of_Recommendation_CERT-DBERT-2026-UIUX-041.pdf",
+    "previewUrl": "/certificates/previews/CERT-DBERT-2026-UIUX-041.png"
   }
 ]

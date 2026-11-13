@@ -62,6 +62,46 @@ const jsonLd = {
           url: 'https://dbert.in/learners/courses/data-analytics',
           provider: { '@type': 'Organization', name: 'DBERT', url: 'https://dbert.in' },
         },
+        {
+          '@type': 'Course',
+          position: 7,
+          name: 'UI/UX Design & Product Prototyping',
+          description: 'Figma auto-layout, design systems, user flows, and interactive prototyping.',
+          url: 'https://dbert.in/learners/courses/ui-ux-design',
+          provider: { '@type': 'Organization', name: 'DBERT', url: 'https://dbert.in' },
+        },
+        {
+          '@type': 'Course',
+          position: 8,
+          name: 'DevOps & Cloud Infrastructure',
+          description: 'Docker containerization, Kubernetes orchestration, CI/CD pipelines, and AWS deployment.',
+          url: 'https://dbert.in/learners/courses/devops-cloud',
+          provider: { '@type': 'Organization', name: 'DBERT', url: 'https://dbert.in' },
+        },
+        {
+          '@type': 'Course',
+          position: 9,
+          name: 'Mobile App Development',
+          description: 'Cross-platform iOS and Android app engineering with Flutter, Dart, and React Native.',
+          url: 'https://dbert.in/learners/courses/mobile-app-development',
+          provider: { '@type': 'Organization', name: 'DBERT', url: 'https://dbert.in' },
+        },
+        {
+          '@type': 'Course',
+          position: 10,
+          name: 'Cybersecurity & Threat Defense',
+          description: 'Ethical hacking, OWASP Top 10 vulnerabilities, Wireshark, SOC analysis, and SIEM monitoring.',
+          url: 'https://dbert.in/learners/courses/cybersecurity',
+          provider: { '@type': 'Organization', name: 'DBERT', url: 'https://dbert.in' },
+        },
+        {
+          '@type': 'Course',
+          position: 11,
+          name: 'Digital Marketing & Growth Engineering',
+          description: 'Technical SEO, Google & Meta Ads performance marketing, conversion optimization, and GA4 analytics.',
+          url: 'https://dbert.in/learners/courses/digital-marketing',
+          provider: { '@type': 'Organization', name: 'DBERT', url: 'https://dbert.in' },
+        },
       ],
     },
   ],
@@ -121,6 +161,51 @@ const courses = [
     tech: 'Pandas, SQL, Metabase',
     description:
       'SQL query optimization, Python Pandas ETL pipelines, automated reporting dashboards, and statistical signal extraction.',
+  },
+  {
+    href: '/learners/courses/ui-ux-design',
+    title: 'UI/UX Design & Prototyping',
+    badge: 'Design Track',
+    duration: '2 Months • 8 Sprints',
+    tech: 'Figma, Auto-Layout, Design Systems',
+    description:
+      'User journey mapping, wireframing, component design tokens, and interactive mobile/web prototypes built in Figma.',
+  },
+  {
+    href: '/learners/courses/devops-cloud',
+    title: 'DevOps & Cloud Engineering',
+    badge: 'High Demand',
+    duration: '2 Months • 8 Sprints',
+    tech: 'Docker, Kubernetes, AWS, CI/CD',
+    description:
+      'Containerization, cluster orchestration, automated GitHub Actions pipelines, and scalable cloud deployment architectures.',
+  },
+  {
+    href: '/learners/courses/mobile-app-development',
+    title: 'Mobile App Development',
+    badge: 'Mobile Track',
+    duration: '2 Months • 8 Sprints',
+    tech: 'Flutter, Dart, React Native',
+    description:
+      'Cross-platform native iOS & Android applications, reactive state management, offline persistence, and mobile APIs.',
+  },
+  {
+    href: '/learners/courses/cybersecurity',
+    title: 'Cybersecurity & Defense',
+    badge: 'Security Track',
+    duration: '2 Months • 8 Sprints',
+    tech: 'Wireshark, Burp Suite, SOC, SIEM',
+    description:
+      'Ethical hacking methodologies, OWASP web application auditing, network packet analysis, and security telemetry monitoring.',
+  },
+  {
+    href: '/learners/courses/digital-marketing',
+    title: 'Digital Marketing & Growth',
+    badge: 'Growth Track',
+    duration: '2 Months • 8 Sprints',
+    tech: 'GA4, Google Ads, Meta Ads, SEO',
+    description:
+      'Technical SEO architecture, performance acquisition funnels, conversion rate optimization (CRO), and growth analytics.',
   },
 ];
 

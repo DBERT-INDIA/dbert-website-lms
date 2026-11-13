@@ -197,6 +197,29 @@ export default function EnrollmentClient() {
           return;
         }
 
+        // Check if previous balance submission was rejected
+        if (data.enrollmentStatus === 'REJECTED') {
+          setApprovedRecord(null);
+          setSubmissionResult(null);
+          setFullName(c.holderName || '');
+          if (c.email) setEmail(c.email);
+          if (c.phone) setPhone(c.phone);
+          if (c.college) setCollege(c.college);
+          if (c.domain) {
+            const matchOpt = DOMAIN_OPTIONS.find(d => d.toLowerCase() === c.domain?.toLowerCase());
+            setDomain(matchOpt || c.domain);
+          }
+          setCertId(c.certId || '');
+          setInternId(c.internId || '');
+          setIsAutofilled(true);
+          const reason = data.rejectionReason || 'Previous UTR could not be reconciled on the UPI settlement ledger.';
+          setLookupAlert({
+            type: 'error',
+            text: `⚠️ Previous submission unverified: ${reason} Please complete the ₹1,500 balance via QR code or 1-Tap UPI and enter your valid 12-digit UTR below.`
+          });
+          return;
+        }
+
         // Unenrolled candidate: autofill form
         setApprovedRecord(null);
         setFullName(c.holderName || '');
@@ -212,7 +235,7 @@ export default function EnrollmentClient() {
         setIsAutofilled(true);
         setLookupAlert({
           type: 'success',
-          text: `✓ Verified record loaded for ${c.holderName} (${c.certId}). Remaining balance: ₹1,500.`
+          text: `✓ Verified record loaded for ${c.holderName} (${c.certId}). Program Fee: ₹1,999.`
         });
       } else {
         setIsAutofilled(false);
@@ -264,7 +287,7 @@ export default function EnrollmentClient() {
 
   // UPI deep links
   const noteParam = certId ? `DBERT-${certId}` : 'DBERT-BALANCE-1500';
-  const upiQuery = `pa=${merchantVpa}&pn=DBERT%20Admissions&am=1500&cu=INR&tn=${encodeURIComponent(noteParam)}`;
+  const upiQuery = `pa=${merchantVpa}&pn=DBERT%20Admissions&am=1999&cu=INR&tn=${encodeURIComponent(noteParam)}`;
   const genericUpiUri = `upi://pay?${upiQuery}`;
 
   const gpayUri = deviceType === 'android'
@@ -346,16 +369,16 @@ export default function EnrollmentClient() {
   const generateWhatsAppProofUrl = () => {
     if (!submissionResult) return '#';
     const text = [
-      `*Official DBERT Balance Payment Proof (₹1,500)*`,
+      `*Official DBERT Incubation Program Payment Proof (₹1,999)*`,
       ``,
-      `Hello DBERT Admissions, I have completed the remaining balance payment of *₹1,500* for my technical internship & incubation program:`,
+      `Hello DBERT Admissions, I have completed the program enrollment payment of *₹1,999* for my technical internship & incubation program:`,
       ``,
       `• *Candidate Name:* ${submissionResult.candidateName}`,
       `• *Certificate ID:* ${submissionResult.certId || 'N/A'}`,
       `• *Domain Track:* ${submissionResult.domain}`,
       `• *12-Digit UTR:* ${submissionResult.utrNumber}`,
       `• *Submission Ref:* ${submissionResult.submissionId}`,
-      `• *Amount Paid:* ₹1,500 (Balance of ₹1,999 Total Program)`,
+      `• *Amount Paid:* ₹1,999 (Incubation Program Fee Paid in Full)`,
       ``,
       `I am attaching my payment transaction screenshot below for instant verification & credential unlock.`
     ].join('\n');
@@ -392,7 +415,7 @@ export default function EnrollmentClient() {
             Welcome to DBERT Technical Incubation, {approvedRecord.candidateName}!
           </h1>
           <p className={s.approvedSubtitle}>
-            Your ₹1,500 balance payment has been verified and your seat is officially confirmed in the{' '}
+            Your ₹1,999 program payment has been verified and your seat is officially confirmed in the{' '}
             <strong style={{ color: '#F0F4F8' }}>{approvedRecord.domain}</strong> production engineering cohort.
           </p>
 
@@ -458,7 +481,7 @@ export default function EnrollmentClient() {
             <div className={s.receiptRow}>
               <span className={s.receiptLabel}>Program Fee Settlement</span>
               <span className={s.receiptVal} style={{ color: '#10B981' }}>
-                ₹1,999 Paid in Full (₹499 Deposit + ₹1,500 Balance Cleared)
+                ₹1,999 Paid in Full (Incubation Program Fee Reconciled)
               </span>
             </div>
             <div className={s.receiptRow}>
@@ -559,7 +582,7 @@ export default function EnrollmentClient() {
           <div className={s.successIcon}>✓</div>
           <h1 className={s.successTitle}>Balance Payment Submitted Successfully</h1>
           <p className={s.successDesc}>
-            Your ₹1,500 balance payment submission has been securely recorded. The admissions council is validating your 12-digit UTR with bank records.
+            Your ₹1,999 program payment submission has been securely recorded. The admissions council is validating your 12-digit UTR with bank records.
           </p>
 
           <div className={s.receiptDetails}>
@@ -583,7 +606,7 @@ export default function EnrollmentClient() {
             </div>
             <div className={s.receiptRow}>
               <span className={s.receiptLabel}>Amount Paid (Balance)</span>
-              <span className={s.receiptVal} style={{ color: '#10B981' }}>₹1,500 (₹1,999 Total Program)</span>
+              <span className={s.receiptVal} style={{ color: '#10B981' }}>₹1,999 Paid in Full</span>
             </div>
             <div className={s.receiptRow}>
               <span className={s.receiptLabel}>12-Digit UTR / Ref ID</span>
@@ -645,19 +668,15 @@ export default function EnrollmentClient() {
         {/* Financial Transparency Ledger */}
         <div className={s.ledgerBox}>
           <div className={s.ledgerItem}>
-            <span className={s.ledgerLabel}>Total Incubation Fee:</span>
-            <span className={s.ledgerValue}>₹1,999</span>
+            <span className={s.ledgerLabel}>Technical Incubation Program Fee:</span>
+            <span className={`${s.ledgerValue} ${s.ledgerPayable}`}>₹1,999</span>
           </div>
           <div className={s.ledgerItem}>
-            <span className={s.ledgerLabel}>Caution Deposit Paid:</span>
-            <span className={`${s.ledgerValue} ${s.ledgerDeduction}`}>- ₹499 (Credited in Full)</span>
-          </div>
-          <div className={s.ledgerItem}>
-            <span className={s.ledgerLabel}>Net Remaining Balance Payable:</span>
-            <span className={`${s.ledgerValue} ${s.ledgerPayable}`}>₹1,500</span>
+            <span className={s.ledgerLabel}>Screening &amp; Assessment Fees:</span>
+            <span className={s.ledgerValue}>100% Free (Zero Fees)</span>
           </div>
           <p className={s.ledgerNote}>
-            💡 <strong>Notice for Registered Candidates:</strong> If you have already paid the initial ₹499 caution deposit, your advance is credited in full. You only need to pay the remaining <strong>₹1,500 balance</strong> to finalize your production enrollment and unlock your official credentials.
+            💡 <strong>Committed Program Enrollment:</strong> Covers 2 months of intensive engineering sprints, client repository assignments, 1:1 mentor code reviews, Turnitin originality evaluation, and verified credential issuance.
           </p>
         </div>
       </div>
@@ -794,7 +813,7 @@ export default function EnrollmentClient() {
             <div className={s.utrBox}>
               <div className={s.utrTitle}>Payment Confirmation · 12-Digit UPI UTR</div>
               <p className={s.utrDesc}>
-                Complete the ₹1,500 balance payment using the QR code or 1-tap launchers on the right, then enter the 12-digit UTR transaction reference number below.
+                Complete the ₹1,999 program payment using the QR code or 1-tap launchers on the right, then enter the 12-digit UTR transaction reference number below.
               </p>
               <div className={s.formGroup} style={{ marginBottom: 0 }}>
                 <label className={s.formLabel}>
@@ -833,7 +852,7 @@ export default function EnrollmentClient() {
               className={s.btnSubmit}
               disabled={submitting}
             >
-              {submitting ? 'Recording Submission...' : 'Complete Enrollment & Verify Balance Payment (₹1,500) →'}
+              {submitting ? 'Recording Submission...' : 'Complete Enrollment & Verify Program Payment (₹1,999) →'}
             </button>
           </form>
         </div>
@@ -843,7 +862,7 @@ export default function EnrollmentClient() {
           <div className={s.sectionHeader}>
             <div className={`${s.sectionIcon} ${s.iconAmber}`}>02</div>
             <div>
-              <div className={s.sectionTitle}>Balance Settlement Gateway (₹1,500)</div>
+              <div className={s.sectionTitle}>Incubation Enrollment Gateway (₹1,999)</div>
               <div className={s.sectionSubtitle}>Official DBERT UPI Merchant QR & Direct Deep-Launchers</div>
             </div>
           </div>
@@ -885,7 +904,7 @@ export default function EnrollmentClient() {
 
             {/* Mobile 1-Tap UPI Launchers */}
             <div className={s.intentTitle}>
-              {deviceType === 'desktop' ? 'Mobile UPI Deep Launchers' : '1-Tap Mobile UPI Payment (₹1,500 Pre-Filled)'}
+              {deviceType === 'desktop' ? 'Mobile UPI Deep Launchers' : '1-Tap Mobile UPI Payment (₹1,999 Pre-Filled)'}
             </div>
 
             <div className={s.intentGrid}>

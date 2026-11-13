@@ -27,6 +27,26 @@ DOMAIN_SKILLS = {
     'Python Automation': [
         'Python', 'Selenium', 'Playwright', 'BeautifulSoup', 'PyTest', 'Asyncio',
         'REST APIs', 'Bash Scripting', 'Task Automation', 'Git', 'Docker', 'Linux CLI'
+    ],
+    'UI/UX Design': [
+        'Figma', 'FigJam', 'Wireframing', 'User Research', 'Design Systems', 'Prototyping',
+        'Mobile & Web UI', 'Information Architecture', 'Usability Testing', 'Responsive Design'
+    ],
+    'DevOps & Cloud': [
+        'Docker', 'Kubernetes', 'AWS', 'Linux CLI', 'CI/CD Pipelines', 'GitHub Actions',
+        'Terraform', 'Prometheus & Grafana', 'Bash Scripting', 'Nginx Reverse Proxy'
+    ],
+    'Mobile App Development': [
+        'Flutter', 'React Native', 'Dart', 'TypeScript', 'Android Studio', 'iOS Development',
+        'REST API Integration', 'Mobile State Management', 'Firebase', 'App Store / Play Store'
+    ],
+    'Cybersecurity': [
+        'Vulnerability Assessment', 'Penetration Testing', 'OWASP Top 10', 'Burp Suite',
+        'Wireshark', 'Network Security', 'SOC Analysis', 'Linux Hardening', 'Cryptography'
+    ],
+    'Digital Marketing': [
+        'SEO Optimization', 'Meta Ads Manager', 'Google Ads', 'Content Strategy',
+        'Social Media Marketing', 'Google Analytics 4', 'Email Marketing', 'Copywriting', 'Growth Funnels'
     ]
 }
 
@@ -62,6 +82,46 @@ RESPONSIBILITIES_TEMPLATES = {
         'Write robust error-handling, automated retry mechanisms, and structured logging routines.',
         'Create CI/CD test automation scripts and validation checks to improve software deployment reliability.',
         'Document script usage, environment variable setups, and scheduled cron executions.'
+    ],
+    'UI/UX Design': [
+        'Design intuitive user interfaces, user journey flows, and high-fidelity wireframes in Figma.',
+        'Conduct user research, competitor benchmarking, and usability testing to validate interface assumptions.',
+        'Maintain and expand design systems with standardized UI components, typography, and color tokens.',
+        'Collaborate closely with frontend engineering teams to ensure pixel-perfect design handoffs.',
+        'Create engaging visual assets, iconography, and responsive layouts across desktop and mobile screens.',
+        'Iterate rapidly based on user behavioral feedback, conversion drop-offs, and usability insights.'
+    ],
+    'DevOps & Cloud': [
+        'Deploy, configure, and monitor scalable cloud infrastructure on AWS, Azure, or GCP.',
+        'Maintain automated CI/CD deployment pipelines using GitHub Actions, GitLab CI, or Jenkins.',
+        'Containerize multi-tier microservices and web applications using Docker and Docker Compose.',
+        'Configure Kubernetes clusters, pod scaling policies, and ingress traffic routing.',
+        'Implement infrastructure-as-code (IaC) templates using Terraform or CloudFormation.',
+        'Set up centralized logging, telemetry dashboards, and alerting systems using Prometheus and Grafana.'
+    ],
+    'Mobile App Development': [
+        'Develop responsive, fluid, and cross-platform mobile applications using Flutter, React Native, or native Android/iOS.',
+        'Integrate mobile apps with backend RESTful APIs, GraphQL services, and third-party SDKs.',
+        'Optimize mobile app performance, memory consumption, battery usage, and offline caching.',
+        'Implement secure user authentication (OAuth2, biometric login) and local storage encryption.',
+        'Build interactive mobile UI components following Material Design and iOS Human Interface guidelines.',
+        'Test across physical devices, emulators, and prepare release builds for Google Play and App Store.'
+    ],
+    'Cybersecurity': [
+        'Perform vulnerability assessments, penetration testing, and security scans on web apps and networks.',
+        'Analyze security alerts, firewall logs, and intrusion detection system (IDS/IPS) events.',
+        'Identify OWASP Top 10 vulnerabilities (SQLi, XSS, CSRF, auth bypass) and propose remediation steps.',
+        'Assist in designing zero-trust access controls, secret management policies, and identity workflows.',
+        'Formulate incident response playbooks and participate in threat-hunting drills.',
+        'Conduct security compliance audits and document remediation status for development teams.'
+    ],
+    'Digital Marketing': [
+        'Plan, execute, and monitor multi-channel digital campaigns across Google, Meta, and social platforms.',
+        'Conduct keyword research, on-page search engine optimization (SEO), and technical content indexing.',
+        'Create engaging social media content calendars, copy variants, and audience outreach strategies.',
+        'Track funnel conversion metrics, CPC/CPA analytics, and campaign ROI using GA4 and analytics tools.',
+        'Collaborate with graphic design and product teams to produce high-converting ad creatives and landing pages.',
+        'Assist in influencer discovery, community engagement, and organic brand building initiatives.'
     ]
 }
 
@@ -93,6 +153,41 @@ REQUIREMENTS_TEMPLATES = {
         'Comfortable working with REST APIs, JSON data formats, and authentication tokens.',
         'Strong problem-solving instincts, debugging capabilities, and familiarity with Git and Linux environments.',
         'Pursuing or completed a Degree in IT, Computer Science, Engineering, or demonstrable personal automation scripts.'
+    ],
+    'UI/UX Design': [
+        'Proficiency in Figma, FigJam, and modern interface design tools.',
+        'Strong portfolio showcasing UX case studies, wireframing, component libraries, or interactive prototypes.',
+        'Solid grasp of typography, layout hierarchy, accessibility (WCAG), and responsive design principles.',
+        'Empathetic design mindset with a passion for simplifying complex software workflows.',
+        'Pursuing or completed a Degree in Design, Human-Computer Interaction, Fine Arts, or demonstrable portfolio.'
+    ],
+    'DevOps & Cloud': [
+        'Strong foundational Linux systems administration and shell scripting (Bash) skills.',
+        'Practical experience or coursework with Docker, cloud providers (AWS/GCP/Azure), and Git workflows.',
+        'Understanding of networking fundamentals (DNS, TCP/IP, load balancers, reverse proxies, and SSL/TLS).',
+        'Curiosity to explore site reliability engineering (SRE) and zero-downtime deployment patterns.',
+        'Pursuing or completed a Degree in Computer Science, IT, Cloud Computing, or practical cloud certifications.'
+    ],
+    'Mobile App Development': [
+        'Hands-on coding experience with Dart/Flutter, React Native (TypeScript), Kotlin, or Swift.',
+        'Familiarity with mobile state management patterns (Provider, Riverpod, Redux, or Bloc).',
+        'Understanding of REST API integration, JSON serialization, and asynchronous event loops.',
+        'Eye for smooth mobile UI animations, touch gestures, and responsive screen scaling.',
+        'Pursuing or completed a Degree in Computer Science, Software Engineering, or portfolio of published/repo apps.'
+    ],
+    'Cybersecurity': [
+        'Solid grasp of core cybersecurity concepts, network protocols, cryptography, and OS security.',
+        'Familiarity with security tools (Burp Suite, Wireshark, Nmap, Metasploit, or Nessus).',
+        'Basic scripting proficiency in Python or Bash for security automation and log parsing.',
+        'Ethical mindset and deep passion for software defense, ethical hacking, and vulnerability research.',
+        'Pursuing or completed a Degree in Cybersecurity, Information Security, CS, or CEH/CompTIA Security+ preparation.'
+    ],
+    'Digital Marketing': [
+        'Strong understanding of digital marketing fundamentals, SEO/SEM strategies, and social media dynamics.',
+        'Hands-on familiarity with tools such as Google Analytics, Meta Ads Manager, Canva, or Ahrefs/SEMrush.',
+        'Excellent written communication, storytelling instincts, and persuasive copywriting skills.',
+        'Analytical ability to interpret campaign performance data and suggest actionable optimizations.',
+        'Pursuing or completed a Degree in Marketing, Communications, Business, or verifiable portfolio of campaigns.'
     ]
 }
 

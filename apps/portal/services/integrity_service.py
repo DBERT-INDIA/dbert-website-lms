@@ -20,11 +20,36 @@ class IntegrityService:
 
     @staticmethod
     def _table_exists(conn: Any, table_name: str) -> bool:
+        if hasattr(conn, "table_exists"):
+            return conn.table_exists(table_name)
+        dialect_attr = getattr(conn, "dialect", "sqlite")
+        dialect = dialect_attr() if callable(dialect_attr) else dialect_attr
+        if str(dialect).lower() == "postgres" or "postgres" in str(type(conn)).lower():
+            row = conn.execute(
+                "SELECT 1 FROM information_schema.tables WHERE table_name = ?",
+                (table_name.lower(),),
+            ).fetchone()
+            return row is not None
         cur = conn.execute(
             "SELECT 1 FROM sqlite_master WHERE type='table' AND name = ?",
             (table_name,),
         )
         return cur.fetchone() is not None
+
+    @staticmethod
+    def _get_columns(conn: Any, table_name: str) -> List[str]:
+        if hasattr(conn, "get_column_names"):
+            return conn.get_column_names(table_name)
+        dialect_attr = getattr(conn, "dialect", "sqlite")
+        dialect = dialect_attr() if callable(dialect_attr) else dialect_attr
+        if str(dialect).lower() == "postgres" or "postgres" in str(type(conn)).lower():
+            rows = conn.execute(
+                "SELECT column_name FROM information_schema.columns WHERE table_name = ?",
+                (table_name.lower(),)
+            ).fetchall()
+            return [r[0] for r in rows]
+        rows = conn.execute(f"PRAGMA table_info({table_name})").fetchall()
+        return [r["name"] if isinstance(r, dict) or hasattr(r, "keys") else r[1] for r in rows]
 
     @staticmethod
     def get_platform_metrics(conn: Any) -> Dict[str, Any]:
@@ -100,7 +125,7 @@ class IntegrityService:
 
         # Legacy payments table (if present)
         if IntegrityService._table_exists(conn, "payments"):
-            p_cols = [r["name"] if isinstance(r, dict) or hasattr(r, "keys") else r[1] for r in conn.execute("PRAGMA table_info(payments)").fetchall()]
+            p_cols = IntegrityService._get_columns(conn, "payments")
             p_count = conn.execute("SELECT COUNT(*) FROM payments").fetchone()[0]
             total_payments += p_count
             if "status" in p_cols:
@@ -115,7 +140,7 @@ class IntegrityService:
                 verified_volume += (p_vol_row[0] if p_vol_row else 0)
 
         # Enrollments payments
-        enr_cols = [r["name"] for r in conn.execute("PRAGMA table_info(enrollments)").fetchall()]
+        enr_cols = IntegrityService._get_columns(conn, "enrollments")
         if "amount_paid" in enr_cols:
             enr_vol_row = conn.execute(
                 "SELECT COALESCE(SUM(amount_paid), 0) FROM enrollments WHERE payment_status IN ('Verified', 'Accepted')"

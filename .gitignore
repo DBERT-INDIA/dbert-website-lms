@@ -49,11 +49,17 @@ dbert-api-package/.env
 apps/portal/bin/
 
 # Large binary archives & test scratches
+archive/
 scratch/
 outputs/
 scripts/sig_previews/
 scripts/sig_tests/
 scripts/test_stamps/
+.agents/teamwork/
+apps/portal/vendor/
+apps/portal/cgi-bin/
+data/*.png
+data/scraped_sync_payload.json
 *.zip
 *.tar.gz
 *.tgz

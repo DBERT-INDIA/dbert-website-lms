@@ -100,7 +100,12 @@ class SourcingPipeline:
             "AI Agent Development": 0,
             "Data Analyst": 0,
             "Full Stack Development": 0,
-            "Python Automation": 0
+            "Python Automation": 0,
+            "UI/UX Design": 0,
+            "DevOps & Cloud": 0,
+            "Mobile App Development": 0,
+            "Cybersecurity": 0,
+            "Digital Marketing": 0,
         }
 
         for scraper in scrapers:

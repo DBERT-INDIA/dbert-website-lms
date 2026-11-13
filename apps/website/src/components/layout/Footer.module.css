@@ -251,9 +251,22 @@
 }
 
 .domainNoticeLink:hover {
-  color: var(--gold-light, #fbbf24);
+  color: var(--signal);
   text-decoration: underline;
 }
+
+/* The footer reads as a quiet index, not a second navigation dashboard. */
+.footer { padding: 60px 0 28px; border-top-color: var(--border-strong); }
+.logo { font-family: var(--font-b); font-size: 1.2rem; }
+.logoMark { color: var(--text-on-accent); border-radius: 6px; box-shadow: none; }
+.blurb { color: var(--text-secondary); }
+.contact, .social, .base, .domainNoticeBar { font-family: var(--font-b); }
+.colLabel, .seoMeshTitle { font-family: var(--font-b); letter-spacing: .035em; color: var(--accent); }
+.footerLink { color: var(--text-secondary); }
+.footerLink:hover { color: var(--accent); }
+.seoMeshBar { border-top-color: var(--border-subtle); }
+.domainNoticeBar { border-top: 1px solid var(--border-subtle); }
+.domainNoticeLink:hover { color: var(--signal); }
 
 @media (max-width: 1200px) {
   .grid {
@@ -265,18 +278,31 @@
 @media (max-width: 768px) {
   .grid {
     grid-template-columns: 1fr 1fr;
-    gap: 28px;
+    gap: 24px;
+  }
+  .brandCol {
+    grid-column: 1 / -1;
+  }
+  .footerLink {
+    padding: 6px 0;
+    min-height: 36px;
   }
 }
 
 @media (max-width: 540px) {
   .grid {
     grid-template-columns: 1fr;
-    gap: 24px;
+    gap: 22px;
   }
   .base {
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
+  }
+  .legal {
+    gap: 12px;
+  }
+  .legal a {
+    padding: 4px 0;
   }
 }

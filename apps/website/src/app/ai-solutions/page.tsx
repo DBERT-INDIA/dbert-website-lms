@@ -1,10 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
-import StudioConsole, { type FeedLine } from '@/components/ui/StudioConsole';
-import FactTicker from '@/components/ui/FactTicker';
+import StudioInPractice from '@/components/ui/StudioInPractice';
 import AudienceDoors, { type Door } from '@/components/ui/AudienceDoors';
 import FAQAccordion from '@/components/ui/FAQAccordion';
-import HandNote from '@/components/ui/HandNote';
 import TrackedLink from '@/components/ui/TrackedLink';
 import { pageMetadata } from '@/lib/seo';
 import s from './ai-solutions.module.css';
@@ -73,49 +71,6 @@ export default function AISolutionsLandingPage() {
     ]
   };
 
-  const enterpriseTelemetryFeed: FeedLine[] = [
-    {
-      time: '11:02:14',
-      tag: 'infer',
-      message: 'dbert-chat vLLM cluster',
-      detail: '· 42ms p99 token latency',
-    },
-    {
-      time: '11:04:30',
-      tag: 'parse',
-      message: 'document-ai parsed 1,420 invoice PDFs',
-      detail: '· 99.4% schema accuracy',
-    },
-    {
-      time: '11:07:05',
-      tag: 'vpc',
-      message: 'air-gapped AWS GovCloud cluster deployed',
-      detail: '· 0 external API calls',
-    },
-    {
-      time: '11:09:50',
-      tag: 'verify',
-      message: 'credential API answered 82 verification queries',
-      detail: '· SLA 18ms',
-    },
-    {
-      time: '11:12:22',
-      tag: 'deploy',
-      message: 'custom fine-tuned LLaMA-3.3 70B quantized for Indian banking',
-      detail: '· 4x lower vCPU cost',
-    },
-  ];
-
-  const enterpriseFacts = [
-    '100% VPC air-gapped deployment',
-    'zero third-party API token dependencies or recurring egress fees',
-    'deterministic JSON schema outputs with strict Pydantic validation',
-    'complete corporate ownership of fine-tuned weights & embeddings',
-    '99.98% production uptime SLA guaranteed in enterprise MSAs',
-    'Delhi NCR dedicated systems architects & on-site integration support',
-    'audited compliance with RBI data localisation & MeitY standards',
-  ];
-
   const enterpriseDoors: Door[] = [
     {
       kind: 'enterprise',
@@ -152,13 +107,10 @@ export default function AISolutionsLandingPage() {
         <div className="wrap subpage-hero-grid">
           <div>
             <div className="doclabel">
-              § 01 — ENTERPRISE AI SOLUTIONS <span className="rev">rev: 2026.2</span>
+              01 / Enterprise AI · Product studio
             </div>
             <h1 className="relative inline-block">
               Production-Grade AI That Powers Sovereign Business Scale
-              <HandNote className="absolute -right-12 -top-6 text-lg hidden md:block" tone="blue">
-                zero third-party token leaks ✎
-              </HandNote>
             </h1>
             <p className="intro-copy">
               From experimental lab prototypes to deterministic enterprise deployment. We engineer custom-tuned model parameter weights, zero-leakage document ingestion pipelines, and resilient VPC hosting architectures that transform industrial operations across India.
@@ -173,32 +125,15 @@ export default function AISolutionsLandingPage() {
             </div>
           </div>
 
-          <div>
-            <StudioConsole
-              title="dbert-vpc · sovereign inference cluster telemetry"
-              lines={enterpriseTelemetryFeed}
-              footLeft="model: dbert-ai-7b · vLLM backend"
-              footRight="● 99.98% uptime SLA"
-              note={
-                <HandNote tone="blue">
-                  zero third-party token leaks ✎
-                </HandNote>
-              }
-            />
-          </div>
+          <StudioInPractice focus="products" />
         </div>
       </section>
-
-      {/* ══════════ SECTION 2: FULL-BLEED AMBIENT FACT TICKER ══════════ */}
-      <div className="section-ticker-ribbon">
-        <FactTicker facts={enterpriseFacts} />
-      </div>
 
       {/* ══════════ SECTION 3: ENTERPRISE SAAS GATEWAY DOORS ══════════ */}
       <section className="subpage-section">
         <div className="wrap">
           <div className="section-head-sub">
-            <div className="doclabel">§ 02 — BROWSE PRODUCTION SAAS SUITES</div>
+            <div className="doclabel">02 / Products we run</div>
             <h2>Sovereign Enterprise Products</h2>
             <p>Pre-built, auditable SaaS modules ready for private VPC deployment with zero third-party API dependencies.</p>
           </div>
@@ -210,7 +145,7 @@ export default function AISolutionsLandingPage() {
       <section className="subpage-section band" id="products">
         <div className="wrap">
           <div className="section-head-sub">
-            <div className="doclabel">§ 03 — THE PRODUCTION GAP &amp; SOVEREIGN ARCHITECTURE</div>
+            <div className="doclabel">03 / Inside a private deployment</div>
             <h2>Moving Beyond Generic API Wrappers</h2>
             <p>
               Most commercial AI initiatives hit a hard operational ceiling when scaling: unpredictable per-token pricing, network latency spikes, and severe third-party compliance exposure (RBI, MeitY, GDPR).
@@ -289,7 +224,7 @@ export default function AISolutionsLandingPage() {
       <section className="subpage-section">
         <div className="wrap">
           <div className="section-head-sub">
-            <div className="doclabel">§ 04 — CAPABILITY PILLARS</div>
+            <div className="doclabel">04 / How we work with engineering teams</div>
             <h2>How We Partner With Engineering Teams</h2>
             <p>Direct architectural engagement from lead systems builders.</p>
           </div>
@@ -336,7 +271,7 @@ export default function AISolutionsLandingPage() {
       <section className="subpage-section band-alt">
         <div className="wrap">
           <div className="card callout">
-            <div className="doclabel mb-1">§ 05 — OPEN-WEIGHTS DEPLOYMENT</div>
+            <div className="doclabel mb-1">05 / An open model, hosted your way</div>
             <h2 className="card-title">The DBERT_AI Sovereign Open-Weights Model</h2>
             <p className="page-lede mb-4">
               We publish custom fine-tuned parameter weights directly onto the verified global Ollama model registry. Download, run local low-latency inference queries, and host private customized models within your corporate datacenter to achieve total enterprise data privacy while eliminating ongoing API token expenditure.
@@ -360,7 +295,7 @@ export default function AISolutionsLandingPage() {
       <section className="subpage-section">
         <div className="wrap">
           <div className="section-head-sub text-center">
-            <div className="doclabel justify-center">§ 06 — ENTERPRISE KNOWLEDGE BASE</div>
+            <div className="doclabel justify-center">06 / Answers for security teams</div>
             <h2>Enterprise Architecture &amp; Security FAQ</h2>
             <p className="mx-auto">Detailed architectural clarifications on VPC hosting, compliance certifications, and air-gapped deployments.</p>
           </div>

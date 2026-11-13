@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, Suspense, useCallback } from 'react';
+import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import s from './verify.module.css';
 import CertificatePreviewFrame from './CertificatePreviewFrame';
@@ -168,19 +169,17 @@ function VerifyFormContent() {
               </div>
               <div className={s.provisionalBannerBody}>
                 <div className={s.provisionalBannerTitle}>
-                  Action Required: Credential Authentication &amp; Stipend Release on Hold
+                  Action Required: Project Verification &amp; Credential Authentication Pending
                 </div>
                 <p className={s.provisionalBannerDesc}>
-                  Action Required: Your credential authentication and stipend release are currently on hold pending submission of your final project verification form.
+                  Your credential authentication and stipend eligibility are currently provisional pending project verification (₹299). Complete verification to unlock your official 3-document credential dossier and activate public verification.
                 </p>
-                <a
-                  href="https://docs.google.com/forms/d/e/1FAIpQLSeHCTK_HO5ZbNHNcPiyW-04Y4bBeZ0RvQP7I4koQnW91d6phA/viewform?usp=header"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  href={`/verify/unlock?certid=${encodeURIComponent(result.certId)}`}
                   className={s.provisionalFormBtn}
                 >
-                  Complete Verification Form to Activate Certificate &amp; Release Stipend &rarr;
-                </a>
+                  Complete Verification &amp; Unlock Official Credentials (₹299) &rarr;
+                </Link>
               </div>
             </div>
           )}
@@ -317,14 +316,12 @@ function VerifyFormContent() {
                 {/* Action Suite */}
                 <div className={s.actionSuite}>
                   {result.isProvisional ? (
-                    <a
-                      href="https://docs.google.com/forms/d/e/1FAIpQLSeHCTK_HO5ZbNHNcPiyW-04Y4bBeZ0RvQP7I4koQnW91d6phA/viewform?usp=header"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <Link
+                      href={`/verify/unlock?certid=${encodeURIComponent(result.certId)}`}
                       className={s.btnActivateForm}
                     >
-                      🔒 Complete Form to Unlock Official Credentials &rarr;
-                    </a>
+                      🔒 Unlock Official Credentials (₹299) &rarr;
+                    </Link>
                   ) : (
                     <>
                       <a

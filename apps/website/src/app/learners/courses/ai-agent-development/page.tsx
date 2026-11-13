@@ -336,9 +336,26 @@ export default function AIAgentCoursePage() {
           <p className="page-lede text-sm text-muted max-w-xl mx-auto mb-6">
             Ready to design resilient multi-agent state machines, serve open-weights models locally, and deploy auditable software to your personal Git repository? Enrol in DBERT Industrial Training today.
           </p>
-          <div className="stack-h gap-4 justify-center">
-            <Link href="/learners/launchpad" className="btn btn-primary btn-lg">Choose Your Career Path &rarr;</Link>
-            <Link href="/blog/paid-ai-internship-india-guide-2026" className="btn btn-outline btn-lg">Read Guide to Paid AI Internships</Link>
+          <div className="stack-h gap-4 justify-center flex-wrap">
+            <a
+              href="https://lms.dbert.in/#signup?domain=ai-agent-development&next=/internships/ai-agent-development"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-primary btn-lg"
+            >
+              Apply for AI Agent Sprints on LMS ↗
+            </a>
+            <a
+              href="https://lms.dbert.in/internships/ai-agent-development"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-outline btn-lg"
+            >
+              View Live AI Agent Openings ↗
+            </a>
+            <Link href="/enroll/1999" className="btn btn-outline btn-lg">
+              Confirm Fellowship Seat (₹1,500 Balance) →
+            </Link>
           </div>
         </div>
       </div>

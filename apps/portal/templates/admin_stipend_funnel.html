@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% set page_title_full = "Stipend & Growth Funnel — Admin Portal" %}
+{% include "_head.html" %}
+<style nonce="{{ csp_nonce() }}">
+  .funnel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .funnel-header h1 {
+    margin: 0;
+    font-size: 1.65rem;
+    font-weight: 800;
+    color: var(--tx-head);
+  }
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .kpi-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    padding: 1.1rem 1.25rem;
+    transition: transform var(--ease), border-color var(--ease);
+  }
+  .kpi-card:hover {
+    border-color: var(--border-strong);
+  }
+  .kpi-val {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--tx-head);
+    line-height: 1.1;
+  }
+  .kpi-lbl {
+    font-size: 0.775rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--tx-muted);
+    font-weight: 700;
+    margin-top: 0.35rem;
+  }
+  .filter-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    flex-wrap: wrap;
+  }
+  .search-box {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    padding: 0.6rem 1rem;
+    color: var(--tx-head);
+    font-size: 0.875rem;
+    min-width: 280px;
+    outline: none;
+  }
+  .search-box:focus {
+    border-color: var(--gold);
+  }
+  .tab-filters {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .tab-btn {
+    padding: 0.5rem 1rem;
+    border-radius: var(--r-sm);
+    font-size: 0.825rem;
+    font-weight: 600;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    color: var(--tx-body);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all var(--ease);
+  }
+  .tab-btn.active, .tab-btn:hover {
+    background: var(--bg-raised);
+    border-color: var(--gold);
+    color: var(--tx-head);
+  }
+  .table-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    overflow-x: auto;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.875rem;
+  }
+  th {
+    background: var(--bg-raised);
+    color: var(--tx-muted);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.725rem;
+    letter-spacing: 0.05em;
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 0.95rem 1rem;
+    border-bottom: 1px solid var(--border-soft);
+    vertical-align: middle;
+  }
+  tr:hover td {
+    background: rgba(255, 255, 255, 0.02);
+  }
+  .cand-info {
+    display: flex;
+    flex-direction: column;
+  }
+  .cand-name {
+    font-weight: 700;
+    color: var(--tx-head);
+  }
+  .cand-email {
+    font-size: 0.8rem;
+    color: var(--tx-muted);
+  }
+  .gate-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: 999px;
+    font-size: 0.725rem;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .gate-unlocked { background: rgba(16, 185, 129, 0.15); color: #34D399; border: 1px solid rgba(16, 185, 129, 0.3); }
+  .gate-locked { background: rgba(148, 163, 184, 0.12); color: #94A3B8; border: 1px solid rgba(148, 163, 184, 0.25); }
+  .gate-warning { background: rgba(245, 158, 11, 0.15); color: #FBBF24; border: 1px solid rgba(245, 158, 11, 0.3); }
+  .nudge-btn {
+    padding: 5px 12px;
+    font-size: 0.775rem;
+    font-weight: 700;
+    border-radius: var(--r-sm);
+    background: rgba(99, 102, 241, 0.15);
+    color: #818CF8;
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    cursor: pointer;
+    transition: all var(--ease);
+  }
+  .nudge-btn:hover {
+    background: #6366F1;
+    color: #fff;
+  }
+</style>
+</head>
+<body class="pg-admin-stipend-funnel has-staff-sidebar">
+  {% set active_page = 'admin_stipend_funnel' %}
+  {% include "_staff_sidebar.html" %}
+
+  <main class="content-wrap container" style="padding-top: 1.5rem; padding-bottom: 3.5rem;">
+    <div class="funnel-header">
+      <div>
+        <div class="doclabel mb-2">§ FELLOWSHIP ADVANCEMENT ENGINE</div>
+        <h1>Stipend &amp; Growth Funnel Progression</h1>
+        <p class="page-sub" style="margin: 0.25rem 0 0; color: var(--tx-muted); font-size: 0.9rem;">
+          Track all 4 progression gates (LinkedIn &rarr; Case Study &rarr; ₹299 Verification &rarr; GitHub) toward release of the ₹5,000 stipend.
+        </p>
+      </div>
+      <div>
+        <a href="/admin" class="btn btn-ghost btn-sm">
+          <i class="fa-solid fa-arrow-left"></i> Back to Admin Master
+        </a>
+      </div>
+    </div>
+
+    <!-- KPI Grid -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-val">{{ stats.total_candidates or candidates|length }}</div>
+        <div class="kpi-lbl">Total Enrolled Cohort</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-val" style="color: #60A5FA;">{{ stats.linkedin_verified }}</div>
+        <div class="kpi-lbl">LinkedIn Connected</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-val" style="color: #FBBF24;">{{ stats.articles_published }}</div>
+        <div class="kpi-lbl">Articles Published</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-val" style="color: #34D399;">{{ stats.credentials_verified }}</div>
+        <div class="kpi-lbl">Verified Credentials</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-val" style="color: #A78BFA;">{{ stats.github_linked }}</div>
+        <div class="kpi-lbl">Active GitHub Submissions</div>
+      </div>
+    </div>
+
+    <!-- Filters & Search -->
+    <div class="filter-bar">
+      <input type="text" id="candSearch" class="search-box" placeholder="Search by name, email, domain, or cert ID..." 
+             data-act-input="filterCandidates" data-act-keyup="filterCandidates">
+      <div class="tab-filters">
+        <button type="button" class="tab-btn active" data-gate="ALL" data-act-click="filterGate" data-arg-click='["ALL"]'>All ({{ candidates|length }})</button>
+        <button type="button" class="tab-btn" data-gate="NEED_LINKEDIN" data-act-click="filterGate" data-arg-click='["NEED_LINKEDIN"]'>Needs LinkedIn</button>
+        <button type="button" class="tab-btn" data-gate="NEED_ARTICLE" data-act-click="filterGate" data-arg-click='["NEED_ARTICLE"]'>Needs Case Study</button>
+        <button type="button" class="tab-btn" data-gate="NEED_CERT" data-act-click="filterGate" data-arg-click='["NEED_CERT"]'>Needs Verification</button>
+        <button type="button" class="tab-btn" data-gate="STIPEND_READY" data-act-click="filterGate" data-arg-click='["STIPEND_READY"]'>Stipend Ready</button>
+      </div>
+    </div>
+
+    <!-- Candidate Table -->
+    <div class="table-card">
+      <table id="funnelTable">
+        <thead>
+          <tr>
+            <th>Candidate Details</th>
+            <th>Domain &amp; Credential</th>
+            <th>Gate 1: LinkedIn</th>
+            <th>Gate 2: Case Study</th>
+            <th>Gate 3: ₹299 Verified</th>
+            <th>Gate 4: GitHub</th>
+            <th>Next Action</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for c in candidates %}
+          <tr data-gates="{{ c.unlocked_count }}" data-g1="{{ c.g1_linkedin }}" data-g2="{{ c.g2_article }}" data-g3="{{ c.g3_certified }}" data-g4="{{ c.g4_github }}">
+            <td>
+              <div class="cand-info">
+                <span class="cand-name">{{ c.name }}</span>
+                <span class="cand-email">{{ c.email }}</span>
+                <span class="cand-email" style="color:var(--gold);"><i class="fa-solid fa-calendar-days" style="font-size:10px;"></i> {{ c.batch_label }}</span>
+              </div>
+            </td>
+            <td>
+              <div class="cand-info">
+                <span style="font-weight:600; color:var(--tx-head);">{{ c.domain }}</span>
+                {% if c.cert_id %}
+                <code style="color:var(--gold); font-size:0.75rem;">{{ c.cert_id }}</code>
+                {% else %}
+                <span style="color:var(--tx-muted); font-size:0.75rem;">Provisioning</span>
+                {% endif %}
+              </div>
+            </td>
+            <td>
+              {% if c.g1_linkedin %}
+              <span class="gate-pill gate-unlocked"><i class="fa-solid fa-circle-check"></i> Linked</span>
+              {% else %}
+              <span class="gate-pill gate-locked"><i class="fa-solid fa-circle"></i> Missing</span>
+              {% endif %}
+            </td>
+            <td>
+              {% if c.g2_article %}
+              <span class="gate-pill gate-unlocked"><i class="fa-solid fa-circle-check"></i> Published</span>
+              {% elif c.article_status == 'PENDING_REVIEW' %}
+              <span class="gate-pill gate-warning" style="background:rgba(245,158,11,0.2);color:#FBBF24;border:1px solid rgba(245,158,11,0.4);"><i class="fa-solid fa-hourglass-half"></i> In Review</span>
+              {% elif c.has_article %}
+              <span class="gate-pill gate-warning"><i class="fa-solid fa-pen-nib"></i> Draft</span>
+              {% else %}
+              <span class="gate-pill gate-locked"><i class="fa-solid fa-circle"></i> Pending</span>
+              {% endif %}
+            </td>
+            <td>
+              {% if c.g3_certified %}
+              <span class="gate-pill gate-unlocked"><i class="fa-solid fa-shield-halved"></i> Verified</span>
+              {% else %}
+              <span class="gate-pill gate-warning"><i class="fa-solid fa-lock"></i> Provisional</span>
+              {% endif %}
+            </td>
+            <td>
+              {% if c.g4_github %}
+              <span class="gate-pill gate-unlocked"><i class="fa-solid fa-circle-check"></i> Active</span>
+              {% else %}
+              <span class="gate-pill gate-locked"><i class="fa-solid fa-circle"></i> Missing</span>
+              {% endif %}
+            </td>
+            <td>
+              <span style="font-size:0.8rem; font-weight:700; color:var(--tx-head);">{{ c.next_step }}</span>
+            </td>
+            <td>
+              <button type="button" class="nudge-btn" 
+                      data-intern-id="{{ c.intern_id or '' }}" 
+                      data-email="{{ c.email }}"
+                      data-act-click="sendNudge" 
+                      data-arg-click='[{{ (c.intern_id or "")|tojson }}, {{ c.email|tojson }}]'>
+                <i class="fa-solid fa-paper-plane"></i> Nudge
+              </button>
+            </td>
+          </tr>
+          {% else %}
+          <tr>
+            <td colspan="8" style="text-align:center; padding:3rem; color:var(--tx-muted);">
+              No candidates found in stipend funnel queue.
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script nonce="{{ csp_nonce() }}">
+    var currentGateFilter = 'ALL';
+
+    function filterGate(filter) {
+      currentGateFilter = filter;
+      document.querySelectorAll('.tab-btn').forEach(function(b) {
+        b.classList.remove('active');
+        if (b.getAttribute('data-gate') === filter) {
+          b.classList.add('active');
+        }
+      });
+      filterCandidates();
+    }
+
+    function filterCandidates() {
+      var searchEl = document.getElementById('candSearch');
+      var q = (searchEl ? searchEl.value : '').toLowerCase().trim();
+      var rows = document.querySelectorAll('#funnelTable tbody tr');
+      rows.forEach(function(row) {
+        var g1 = row.getAttribute('data-g1') === 'True';
+        var g2 = row.getAttribute('data-g2') === 'True';
+        var g3 = row.getAttribute('data-g3') === 'True';
+        var g4 = row.getAttribute('data-g4') === 'True';
+        var text = row.innerText.toLowerCase();
+
+        var matchesFilter = false;
+        if (currentGateFilter === 'ALL') matchesFilter = true;
+        else if (currentGateFilter === 'NEED_LINKEDIN' && !g1) matchesFilter = true;
+        else if (currentGateFilter === 'NEED_ARTICLE' && !g2) matchesFilter = true;
+        else if (currentGateFilter === 'NEED_CERT' && !g3) matchesFilter = true;
+        else if (currentGateFilter === 'STIPEND_READY' && g1 && g2 && g3 && g4) matchesFilter = true;
+
+        var matchesSearch = !q || text.indexOf(q) !== -1;
+        if (matchesFilter && matchesSearch) {
+          row.style.display = '';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+    }
+
+    function sendNudge(internId, email) {
+      if (!confirm('Dispatch milestone guidance nudge to ' + email + '?')) return;
+      var csrfTok = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}';
+      fetch('/admin/stipend-funnel/nudge', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'X-CSRF-Token': csrfTok
+        },
+        body: JSON.stringify({ intern_id: internId, email: email })
+      })
+      .then(function(r) { return r.json(); })
+      .then(function(d) {
+        if (d.status === 'success') alert('Nudge email dispatched successfully to ' + email);
+        else alert(d.message || 'Error sending nudge');
+      })
+      .catch(function() { alert('Network error while dispatching nudge.'); });
+    }
+
+    // Bind globally for csp-actions.js delegation
+    window.filterGate = filterGate;
+    window.filterCandidates = filterCandidates;
+    window.sendNudge = sendNudge;
+
+    // Direct DOM listeners fallback
+    document.addEventListener('DOMContentLoaded', function() {
+      var searchInput = document.getElementById('candSearch');
+      if (searchInput) {
+        searchInput.addEventListener('input', filterCandidates);
+        searchInput.addEventListener('keyup', filterCandidates);
+      }
+      document.querySelectorAll('.tab-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          var gate = this.getAttribute('data-gate');
+          if (gate) filterGate(gate);
+        });
+      });
+    });
+
+    document.addEventListener('click', function(e) {
+      var btn = e.target.closest('.nudge-btn');
+      if (btn && btn.hasAttribute('data-email')) {
+        var internId = btn.getAttribute('data-intern-id') || '';
+        var email = btn.getAttribute('data-email');
+        sendNudge(internId, email);
+      }
+    });
+  </script>
+</body>
+</html>

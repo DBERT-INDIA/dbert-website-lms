@@ -157,3 +157,24 @@
   width: 100%;
   margin-top: var(--space-3);
 }
+
+@media (max-width: 640px) {
+  .hubGrid {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+  .cardItem,
+  .preprintSection,
+  .ctaCard {
+    padding: var(--space-4);
+  }
+  .preprintHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+  .preprintMeta {
+    flex-wrap: wrap;
+    gap: 8px 12px;
+  }
+}

@@ -55,7 +55,7 @@
         "name": "What domains are covered in the program?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "The program covers four domains: AI Agent Development, Data Analyst, Full Stack Development, and Python Automation."
+          "text": "The program covers 9 specialized domains: AI Agent Development, Data Analyst, Full Stack Development, Python Automation, UI/UX Design, DevOps & Cloud, Mobile App Development, Cybersecurity, and Digital Marketing."
         }
       },
       {
@@ -102,12 +102,17 @@
       <div class="price-row"><span class="price">&#8377;{{ paid_amount | formatINR }}</span><span class="price-sub">one-time &middot; all taxes included</span></div>
       <p style="color:var(--tx-muted);font-size:13.5px;line-height:1.7;">No selection lottery, no waiting to be shortlisted — your place is confirmed the moment you enrol.</p>
       <div style="margin-top:16px;">
-        <div class="field-label">Open to all four DBERT domains</div>
+        <div class="field-label">Open across all 9 DBERT technical &amp; growth tracks</div>
         <div class="domains">
           <span class="domain-tag">&#129302; AI Agent Development</span>
           <span class="domain-tag">&#128202; Data Analyst</span>
           <span class="domain-tag">&#128187; Full Stack Development</span>
           <span class="domain-tag">&#9881;&#65039; Python Automation</span>
+          <span class="domain-tag">&#127912; UI/UX Design</span>
+          <span class="domain-tag">&#9729;&#65039; DevOps &amp; Cloud</span>
+          <span class="domain-tag">&#128241; Mobile App Development</span>
+          <span class="domain-tag">&#128737;&#65039; Cybersecurity</span>
+          <span class="domain-tag">&#128227; Digital Marketing</span>
         </div>
       </div>
     </div>
@@ -117,7 +122,7 @@
       <div class="card-h" style="font-size:15px;color:var(--amber);"><i class="fas fa-circle-info"></i> Good to know before you enrol</div>
       <p>Your placement, Offer Letter, and Certificate are <strong>guaranteed when you successfully complete the 2-month program</strong> — finish the program and your placement is assured.</p>
       <p>Enrolment is a committed seat, so the <strong>&#8377;{{ paid_amount | formatINR }} fee is non-refundable</strong>.</p>
-      <p>Open to all four DBERT domains: AI Agent Development, Data Analyst, Full Stack Development, and Python Automation.</p>
+      <p>Open across all 9 DBERT domains: AI Agent Development, Data Analyst, Full Stack Development, Python Automation, UI/UX Design, DevOps &amp; Cloud, Mobile App Development, Cybersecurity, and Digital Marketing.</p>
       <p style="color:var(--tx-muted);">By enrolling you confirm you've read and accepted these terms.</p>
     </div>
 
@@ -129,35 +134,102 @@
       <div class="hidden" id="ctaAnon" style="text-align:center;">
         <div class="card-h" style="justify-content:center;">Ready to secure your seat?</div>
         <p style="color:var(--tx-muted);font-size:13.5px;margin-bottom:18px;">Create your account to enrol in the paid program.</p>
-        <a class="btn-primary" id="anonCta" href="/#signup"><i class="fas fa-rocket"></i> Sign up &amp; enrol</a>
+        <a class="btn-primary" id="anonCta" href="/#signup?plan=program1999"><i class="fas fa-rocket"></i> Sign up &amp; enrol</a>
       </div>
 
-      <!-- not eligible: interview required -->
+      <!-- fallback interview notice (deprecated for paid program) -->
       <div class="hidden" id="ctaInterview">
         <div class="info-banner"><i class="fas fa-robot"></i><span>The paid program opens right after you complete your short virtual interview. It only takes a few minutes.</span></div>
         <div style="text-align:center;margin-top:16px;"><a class="btn-primary" href="/interview"><i class="fas fa-play"></i> Take my interview</a></div>
       </div>
 
-      <!-- already on free track / paid-enrolled -->
-      <div class="hidden" id="ctaInfo"><div class="info-banner"><i class="fas fa-circle-check"></i><span id="ctaInfoText"></span></div>
-        <div style="text-align:center;margin-top:16px;"><a class="btn-primary" href="/profile"><i class="fas fa-user"></i> Go to my portal</a></div>
+      <!-- paid-enrolled under verification -->
+      <div class="hidden" id="ctaInfo">
+        <div style="background:rgba(217, 119, 6, 0.08);border:1px solid rgba(217, 119, 6, 0.3);border-radius:12px;padding:22px;text-align:left;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+            <div style="width:40px;height:40px;border-radius:50%;background:rgba(217,119,6,0.15);display:flex;align-items:center;justify-content:center;color:var(--amber);font-size:18px;"><i class="fas fa-clock"></i></div>
+            <div>
+              <h3 style="margin:0;font-size:16.5px;font-weight:700;color:var(--tx-head);">Payment Received &middot; Under Verification</h3>
+              <p style="margin:2px 0 0;font-size:12.5px;color:var(--tx-muted);">Your &#8377;{{ paid_amount | formatINR }} seat enrollment is being confirmed</p>
+            </div>
+          </div>
+          <p id="ctaInfoText" style="color:var(--tx-muted);font-size:13.5px;line-height:1.6;margin-bottom:16px;">
+            We have received your &#8377;{{ paid_amount | formatINR }} payment submission. Admissions verifies transactions within business hours. Keep your UTR handy.
+          </p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:12.5px;background:rgba(0,0,0,0.2);padding:14px;border-radius:10px;margin-bottom:18px;border:1px solid rgba(255,255,255,0.06);">
+            <div><span style="color:var(--tx-muted);display:block;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;">Track</span><strong id="ctaInfoDomain" style="color:var(--tx-head);font-size:13px;">-</strong></div>
+            <div><span style="color:var(--tx-muted);display:block;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;">Batch Kickoff</span><strong id="ctaInfoBatch" style="color:var(--tx-head);font-size:13px;">-</strong></div>
+            <div style="grid-column:1/-1;"><span style="color:var(--tx-muted);display:block;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;">12-Digit UPI UTR</span><code id="ctaInfoUtr" style="color:var(--gold);font-family:monospace;font-size:14px;font-weight:700;letter-spacing:1px;">-</code></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <a id="ctaWhatsAppBtn" class="btn-primary" style="background:#25D366;border-color:#25D366;color:#ffffff;text-align:center;text-decoration:none;font-weight:700;justify-content:center;" href="#" target="_blank" rel="noopener">
+              <i class="fab fa-whatsapp" style="font-size:17px;margin-right:6px;"></i> Confirm on WhatsApp Admissions Concierge
+            </a>
+            <a class="btn-primary" href="/portal" style="background:transparent;border:1px solid var(--border);color:var(--tx-head);text-align:center;text-decoration:none;justify-content:center;">
+              <i class="fas fa-user" style="margin-right:6px;"></i> Launch My LMS Portal
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- paid-enrolled verified / accepted -->
+      <div class="hidden" id="ctaApproved">
+        <div style="background:rgba(16, 185, 129, 0.08);border:1px solid rgba(16, 185, 129, 0.3);border-radius:12px;padding:22px;text-align:left;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+            <div style="width:40px;height:40px;border-radius:50%;background:rgba(16,185,129,0.15);display:flex;align-items:center;justify-content:center;color:var(--green);font-size:18px;"><i class="fas fa-shield-check"></i></div>
+            <div>
+              <h3 style="margin:0;font-size:16.5px;font-weight:700;color:var(--tx-head);">Seat Confirmed &middot; Incubation Fellow</h3>
+              <p style="margin:2px 0 0;font-size:12.5px;color:var(--tx-muted);">&#8377;{{ paid_amount | formatINR }} Paid in Full &middot; Placement Guaranteed</p>
+            </div>
+          </div>
+          <p style="color:var(--tx-muted);font-size:13.5px;line-height:1.6;margin-bottom:16px;">
+            Your enrollment is verified! Your sprint tasks, production repositories, and 1:1 mentor roadmap are unlocked on your portal.
+          </p>
+          <a class="btn-primary" href="/portal" style="width:100%;text-align:center;text-decoration:none;justify-content:center;">
+            <i class="fas fa-rocket" style="margin-right:6px;"></i> Go to My Sprint Dashboard &rarr;
+          </a>
+        </div>
       </div>
 
       <!-- eligible: enrol form -->
       <div class="hidden" id="ctaForm">
         <div class="card-h"><i class="fas fa-lock" style="color:var(--green);"></i> Confirm your seat &mdash; &#8377;{{ paid_amount | formatINR }}</div>
         <div class="hidden" id="paidRejectNote"><div class="info-banner" style="color:var(--amber);"><i class="fas fa-circle-exclamation"></i><span>We couldn't verify your previous payment &mdash; please re-upload your payment proof to continue.</span></div></div>
-        <div class="field-label">Pay to UPI ID</div>
-        <div class="upi-id-box"><span id="upiId">{{ upi_id }}</span><button type="button" data-act-click="copyUpi" aria-label="Copy UPI"><i class="fas fa-copy"></i></button></div>
-        <p style="color:var(--tx-muted);font-size:12px;margin-bottom:14px;">Amount: <strong style="color:var(--gold);">&#8377;{{ paid_amount | formatINR }}</strong> (all taxes included, non-refundable) &middot; use any UPI app.</p>
+        
+        <!-- UPI QR & Details Card -->
+        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:16px;text-align:center;margin-bottom:18px;">
+          <div style="margin-bottom:8px;font-size:12px;color:var(--tx-muted);text-transform:uppercase;letter-spacing:0.5px;font-weight:600;">Scan with GPay, PhonePe, Paytm, or any UPI App</div>
+          <div style="display:inline-block;padding:8px;background:#ffffff;border-radius:12px;box-shadow:0 4px 14px rgba(0,0,0,0.3);margin-bottom:12px;">
+            <img src="/static/img/qrcode.jpeg" alt="DBERT Admissions UPI QR" style="width:160px;height:160px;display:block;border-radius:8px;" onerror="this.onerror=null;this.src='/static/qr.jpg';" />
+          </div>
+          <div class="field-label" style="text-align:center;">Official Admissions UPI ID</div>
+          <div class="upi-id-box" style="justify-content:center;max-width:320px;margin:0 auto 10px;"><span id="upiId">{{ upi_id }}</span><button type="button" data-act-click="copyUpi" aria-label="Copy UPI"><i class="fas fa-copy"></i></button></div>
+          <div style="font-size:13px;color:var(--tx-muted);">
+            Amount: <strong style="color:var(--gold);font-size:15px;">&#8377;{{ paid_amount | formatINR }}</strong> <span style="font-size:11px;">(one-time &middot; all taxes included)</span>
+          </div>
+          <div style="margin-top:10px;">
+            <a href="upi://pay?pa={{ upi_id }}&pn=DBERT%20Admissions&am={{ paid_amount }}&cu=INR&tn=DBERT%20Paid%20Program%20Seat" class="btn-secondary" style="display:inline-flex;align-items:center;gap:6px;font-size:12px;padding:6px 14px;border-radius:20px;text-decoration:none;border-color:rgba(226,185,111,0.4);color:var(--gold);">
+              <i class="fas fa-mobile-screen-button"></i> 1-Tap Mobile UPI App
+            </a>
+          </div>
+        </div>
+
         <div style="margin-bottom:14px;">
           <label class="field-label" for="paidJoining">Choose your joining Monday *</label>
           <select id="paidJoining" class="field-select"><option value="">-- Select --</option></select>
         </div>
-        <div style="margin-bottom:6px;">
+
+        <div style="margin-bottom:14px;">
+          <label class="field-label" for="paidUtr">12-Digit UPI UTR / Transaction Reference Number *</label>
+          <input type="text" id="paidUtr" class="field-select" style="font-family:monospace;letter-spacing:1.5px;font-weight:700;font-size:14px;" placeholder="e.g. 431589777888" maxlength="12" pattern="\d{12}" required/>
+          <span style="font-size:11.5px;color:var(--tx-muted);margin-top:4px;display:block;">Found in your UPI receipt (Google Pay, PhonePe, Paytm, BHIM) as UTR or Ref No.</span>
+        </div>
+
+        <div style="margin-bottom:14px;">
           <label class="field-label">Upload payment screenshot *</label>
           <div class="file-wrap"><input type="file" id="paidFile" accept=".png,.jpg,.jpeg,.pdf" data-act-change="onPaidFile" data-arg-change='["$el"]'/><i class="fas fa-cloud-upload-alt"></i> <span id="paidFileName">Click or drop your payment proof (PNG, JPG, PDF · max 6MB)</span></div>
         </div>
+
         <label class="chk-row"><input type="checkbox" id="paidAgree"/><span>I confirm I've read and accepted the terms above, including that the &#8377;{{ paid_amount | formatINR }} fee is non-refundable and my placement is guaranteed on successful completion of the program.</span></label>
         <div class="err" id="paidErr"><i class="fas fa-circle-exclamation"></i><span></span></div>
         <button class="btn-primary" id="paidSubmit" data-act-click="submitPaid" style="width:100%;"><i class="fas fa-check-circle"></i> Confirm enrolment</button>
@@ -174,8 +246,13 @@
   dbertGA('paid_program_view', {});
   const PAID_AMOUNT = {{ paid_amount }};
   let _paidFile = null, _enrollShown = false;
-  function show(id){['ctaLoading','ctaAnon','ctaInterview','ctaInfo','ctaForm'].forEach(x=>document.getElementById(x).classList.toggle('hidden', x!==id));}
-  function copyUpi(){const v=document.getElementById('upiId').textContent;navigator.clipboard.writeText(v).then(()=>{}).catch(()=>{});}
+  function show(id){
+    ['ctaLoading','ctaAnon','ctaInterview','ctaInfo','ctaApproved','ctaForm'].forEach(x=>{
+      const el = document.getElementById(x);
+      if(el) el.classList.toggle('hidden', x!==id);
+    });
+  }
+  function copyUpi(){const v=document.getElementById('upiId').textContent;navigator.clipboard.writeText(v).then(()=>{showToast('UPI ID copied: '+v,'gold');}).catch(()=>{});}
   function onPaidFile(inp){const f=inp.files[0];_paidFile=f||null;document.getElementById('paidFileName').textContent=f?f.name:'Click or drop your payment proof (PNG, JPG, PDF · max 6MB)';}
 
   async function init(){
@@ -186,49 +263,98 @@
       me=await r.json();
     }catch(e){ show('ctaAnon'); return; }
     if(!me||me.status!=='success'){ show('ctaAnon'); return; }
-    const apps=me.applications||[]; const latest=apps[0]||null;
+
     const enr=me.enrollment;
-    const isRejectedPaid = !!(enr && enr.product==='paid_program' && enr.payment_status==='Rejected');
-    // A paid enrollment that is still pending/verifying shows the info card; a Rejected
-    // paid enrollment must fall through to the re-upload form instead.
-    if(enr && enr.product==='paid_program' && !isRejectedPaid){
-      document.getElementById('ctaInfoText').textContent='You\'re enrolled in the paid program — we\'re verifying your payment. Check your portal for updates.';
-      show('ctaInfo'); return;
-    }
-    if(me.paid_eligible){
-      // populate joining mondays then reveal the enrol form
-      try{const mr=await fetch('/upcoming-mondays',{credentials:'include'});const md=await mr.json();
-        const sel=document.getElementById('paidJoining');
-        (md.mondays||[]).forEach(d=>{const o=document.createElement('option');o.value=d;o.textContent=d;sel.appendChild(o);});
-      }catch(e){}
-      document.getElementById('paidRejectNote').classList.toggle('hidden', !isRejectedPaid);
-      show('ctaForm');
-      if(!_enrollShown){ dbertGA('paid_enroll_started',{}); _enrollShown=true; }
+    const isPaidProgram = !!(enr && (enr.product==='paid_program' || enr.amount===PAID_AMOUNT || (enr.admin_note && enr.admin_note.includes('UTR'))));
+    const isRejectedPaid = !!(isPaidProgram && enr.payment_status==='Rejected');
+    const isApprovedPaid = !!(isPaidProgram && (enr.payment_status==='Accepted' || enr.payment_status==='Verified' || enr.payment_status==='Approved'));
+
+    if(isApprovedPaid){
+      show('ctaApproved');
       return;
     }
-    // not eligible — explain why
-    if(me.paid_reason==='already_enrolled_free'){
-      document.getElementById('ctaInfoText').textContent='You\'re already enrolled through the standard track. Reach out to us if you\'d like to discuss the paid program.';
-      show('ctaInfo'); return;
+
+    if(isPaidProgram && !isRejectedPaid){
+      const internName = (me.intern && me.intern.name) || 'Fellow';
+      const internEmail = (me.intern && me.intern.email) || '';
+      const domain = (me.intern && me.intern.domain) || (enr && enr.domain) || 'Applied Tech';
+      const batch = (enr && (enr.batch_label || enr.joining_date)) || 'Upcoming Monday';
+      const utr = (enr && (enr.utr || (enr.admin_note ? enr.admin_note.replace('UTR: ', '') : ''))) || '-';
+
+      document.getElementById('ctaInfoDomain').textContent = domain;
+      document.getElementById('ctaInfoBatch').textContent = batch;
+      document.getElementById('ctaInfoUtr').textContent = utr;
+
+      const waMsg = encodeURIComponent(
+        `Hi Admissions Team, I have submitted my ₹1,999 payment for the DBERT Paid Program.\n\n` +
+        `• Name: ${internName}\n` +
+        `• Email: ${internEmail}\n` +
+        `• Track: ${domain}\n` +
+        `• UTR: ${utr}\n` +
+        `• Batch: ${batch}\n\n` +
+        `Please confirm my seat!`
+      );
+      document.getElementById('ctaWhatsAppBtn').href = `https://wa.me/918192911360?text=${waMsg}`;
+      show('ctaInfo');
+      return;
     }
-    show('ctaInterview');
+
+    // Populate upcoming Mondays
+    try{
+      const mr=await fetch('/upcoming-mondays',{credentials:'include'});
+      const md=await mr.json();
+      const sel=document.getElementById('paidJoining');
+      sel.innerHTML = '<option value="">-- Select --</option>';
+      (md.mondays||[]).forEach(d=>{
+        const o=document.createElement('option');
+        o.value=d;
+        o.textContent=d;
+        sel.appendChild(o);
+      });
+    }catch(e){}
+
+    document.getElementById('paidRejectNote').classList.toggle('hidden', !isRejectedPaid);
+    show('ctaForm');
+    if(!_enrollShown){ dbertGA('paid_enroll_started',{}); _enrollShown=true; }
   }
 
   async function submitPaid(){
     const err=document.getElementById('paidErr');err.classList.remove('show');
     const jd=document.getElementById('paidJoining').value;
     if(!jd){err.querySelector('span').textContent='Please choose your joining Monday.';err.classList.add('show');return;}
+
+    const utrInput=document.getElementById('paidUtr');
+    const utrVal=(utrInput ? utrInput.value : '').trim().replace(/\D/g, '');
+    if(!utrVal || utrVal.length !== 12){
+      err.querySelector('span').textContent='Please enter a valid 12-digit UPI UTR / Transaction Reference number.';
+      err.classList.add('show');
+      if(utrInput) utrInput.focus();
+      return;
+    }
+
     if(!_paidFile){err.querySelector('span').textContent='Please upload your payment screenshot.';err.classList.add('show');return;}
     if(!document.getElementById('paidAgree').checked){err.querySelector('span').textContent='Please confirm you accept the terms.';err.classList.add('show');return;}
+
     const btn=document.getElementById('paidSubmit');btn.disabled=true;btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Submitting…';
-    const fd=new FormData();fd.append('joining_date',jd);fd.append('payment_screenshot',_paidFile);
+    const fd=new FormData();
+    fd.append('joining_date',jd);
+    fd.append('utr', utrVal);
+    fd.append('payment_screenshot',_paidFile);
+
     try{
       const r=await fetch('/paid/enroll',{method:'POST',credentials:'include',body:fd});
       const d=await r.json();
-      if(d.status==='success'){ dbertGA('paid_enroll_submitted',{amount:PAID_AMOUNT}); window.location.href=d.redirect||'/profile'; return; }
+      if(d.status==='success'){
+        dbertGA('paid_enroll_submitted',{amount:PAID_AMOUNT, utr: utrVal});
+        await init();
+        return;
+      }
       err.querySelector('span').textContent=d.message||'Could not submit. Please try again.';err.classList.add('show');
       btn.disabled=false;btn.innerHTML='<i class="fas fa-check-circle"></i> Confirm enrolment';
-    }catch(e){err.querySelector('span').textContent='Network error. Please try again.';err.classList.add('show');btn.disabled=false;btn.innerHTML='<i class="fas fa-check-circle"></i> Confirm enrolment';}
+    }catch(e){
+      err.querySelector('span').textContent='Network error. Please try again.';err.classList.add('show');
+      btn.disabled=false;btn.innerHTML='<i class="fas fa-check-circle"></i> Confirm enrolment';
+    }
   }
 
   document.querySelectorAll('#anonCta').forEach(a=>a.addEventListener('click',()=>dbertGA('paid_program_cta_click',{source:'program_anon'})));

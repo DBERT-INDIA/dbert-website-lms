@@ -173,3 +173,9 @@
     padding: 28px;
   }
 }
+
+.case { border-radius: 4px 13px 4px 10px; box-shadow: 0 5px 20px rgba(36, 42, 33, .04); }
+.case:hover { border-color: var(--border-strong); box-shadow: 0 12px 28px rgba(36, 42, 33, .08); }
+.stamp { mask-image: none; -webkit-mask-image: none; border-width: 1px; font-family: var(--font-b); letter-spacing: .1em; }
+.kicker, .k { font-family: var(--font-b); letter-spacing: .03em; }
+.av { background: var(--accent); color: var(--text-on-accent); }

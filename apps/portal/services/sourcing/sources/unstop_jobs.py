@@ -19,7 +19,17 @@ JOB_KEYWORDS = [
     # Data Analyst Track
     "data analyst", "business analyst", "data analytics", "power bi developer", "sql analyst",
     # Full Stack Track
-    "software engineer", "full stack developer", "frontend developer", "backend developer", "react developer", "node developer"
+    "software engineer", "full stack developer", "frontend developer", "backend developer", "react developer", "node developer",
+    # UI/UX Track
+    "ui/ux designer", "product designer", "ui designer", "ux designer", "figma designer",
+    # DevOps & Cloud Track
+    "devops engineer", "cloud engineer", "aws engineer", "site reliability engineer", "sre",
+    # Mobile App Track
+    "mobile app developer", "react native developer", "flutter developer", "android developer", "ios developer",
+    # Cybersecurity Track
+    "cybersecurity analyst", "soc analyst", "information security engineer", "security analyst",
+    # Digital Marketing Track
+    "digital marketing specialist", "growth marketer", "seo specialist", "performance marketing manager"
 ]
 
 class UnstopJobsScraper(BaseScraper):

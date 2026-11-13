@@ -97,7 +97,7 @@ def seo_internship_landing(page_slug):
         },
         "virtual-remote-internships": {
             "title": "Virtual Remote Internships — Software & AI Development",
-            "meta_desc": "Gain verified software engineering experience through virtual remote internships at DBERT Labs. Real code reviews & GitHub contributions.",
+            "meta_desc": "Gain verified software engineering experience through virtual remote internships at DBERT. Real code reviews & GitHub contributions.",
             "keyword": "Virtual Remote Internships",
             "domain": "Software Engineering & Web Development"
         },

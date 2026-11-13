@@ -178,3 +178,30 @@
   align-items: center;
   margin-top: 8px;
 }
+
+@media (max-width: 640px) {
+  .domainGrid {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+  .nextGrid {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+  .jobTop {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .jobFoot {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  .jobFoot .btn,
+  .jobFoot a {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+  }
+}

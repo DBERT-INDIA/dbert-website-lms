@@ -20,6 +20,11 @@ INTERVIEW_DOMAIN_LABELS = {
     "Data Analyst": "data analysis",
     "Full Stack Development": "web development",
     "Python Automation": "Python and automation",
+    "UI/UX Design": "UI/UX and product design",
+    "DevOps & Cloud": "DevOps and cloud infrastructure",
+    "Mobile App Development": "mobile application development",
+    "Cybersecurity": "cybersecurity and information security",
+    "Digital Marketing": "digital marketing and growth",
 }
 
 INTERVIEW_DOMAIN_BANK = {
@@ -105,6 +110,111 @@ INTERVIEW_DOMAIN_BANK = {
             {"key": "py_comm_01", "text": "Explain what a 'function' is and why we use them, as if teaching someone writing their first script."},
             {"key": "py_comm_02", "text": "Explain why hard-coding a password directly in a script is a bad idea, in plain terms."},
             {"key": "py_comm_03", "text": "How would you explain to a non-technical manager what 'automating a task' actually means?"},
+        ],
+    },
+    "UI/UX Design": {
+        "technical": [
+            {"key": "ux_tech_01", "text": "What is the difference between UI and UX, and how do they collaborate in product development?"},
+            {"key": "ux_tech_02", "text": "What are Figma Auto-Layout and Component Variants, and why are they essential for design systems?"},
+            {"key": "ux_tech_03", "text": "What are WCAG accessibility guidelines, and what is the standard contrast ratio for normal text?"},
+            {"key": "ux_tech_04", "text": "What is visual hierarchy, and what techniques do you use to guide user attention?"},
+            {"key": "ux_tech_05", "text": "What are design tokens, and how do they bridge the gap between design and development?"},
+            {"key": "ux_tech_06", "text": "What is the difference between low-fidelity wireframing and high-fidelity prototyping?"},
+        ],
+        "applied": [
+            {"key": "ux_app_01", "text": "A client says their signup drop-off rate is 60%. Walk through how you would audit and redesign the onboarding flow."},
+            {"key": "ux_app_02", "text": "How do you prepare design specs and assets in Figma for a frontend developer to minimize back-and-forth?"},
+            {"key": "ux_app_03", "text": "You receive conflicting design feedback from two stakeholders. How do you resolve it objectively?"},
+            {"key": "ux_app_04", "text": "How would you conduct a rapid 5-user usability test on a new prototype with zero budget?"},
+        ],
+        "communication": [
+            {"key": "ux_comm_01", "text": "Explain what 'information architecture' means to a non-technical stakeholder."},
+            {"key": "ux_comm_02", "text": "How would you advocate for user research when management wants to jump straight to visual design?"},
+            {"key": "ux_comm_03", "text": "Explain why accessibility is important for business growth, not just compliance."},
+        ],
+    },
+    "DevOps & Cloud": {
+        "technical": [
+            {"key": "do_tech_01", "text": "What is containerization, and how does Docker differ from a traditional virtual machine?"},
+            {"key": "do_tech_02", "text": "What is a CI/CD pipeline, and what are the main stages from code commit to production release?"},
+            {"key": "do_tech_03", "text": "What is the difference between a public and private subnet in AWS VPC architecture?"},
+            {"key": "do_tech_04", "text": "What are Kubernetes Pods, Deployments, and Services, and how do they relate to each other?"},
+            {"key": "do_tech_05", "text": "What is Infrastructure as Code (IaC), and what problems does Terraform solve?"},
+            {"key": "do_tech_06", "text": "Why should secrets and credentials never be stored directly inside Docker images?"},
+        ],
+        "applied": [
+            {"key": "do_app_01", "text": "A web service crashes under sudden traffic spikes. How would you diagnose CPU/memory bottlenecks and scale it?"},
+            {"key": "do_app_02", "text": "Design a zero-downtime deployment strategy for a Flask/Node.js app behind Nginx."},
+            {"key": "do_app_03", "text": "How would you set up automated alerts in Prometheus/Grafana if error rates exceed 5%?"},
+            {"key": "do_app_04", "text": "You need to reduce Docker build times in GitHub Actions. What caching techniques would you apply?"},
+        ],
+        "communication": [
+            {"key": "do_comm_01", "text": "Explain what 'the cloud' actually means to someone who has never worked in IT."},
+            {"key": "do_comm_02", "text": "Explain why automated testing in CI pipelines saves developer time in the long run."},
+            {"key": "do_comm_03", "text": "How would you explain the business impact of server uptime and SLA guarantees to leadership?"},
+        ],
+    },
+    "Mobile App Development": {
+        "technical": [
+            {"key": "mob_tech_01", "text": "What is the difference between native development and cross-platform frameworks like React Native or Flutter?"},
+            {"key": "mob_tech_02", "text": "How does React Native bridge or TurboModules communicate with native iOS/Android APIs?"},
+            {"key": "mob_tech_03", "text": "Why is FlatList or virtualized list rendering essential for long lists on mobile devices?"},
+            {"key": "mob_tech_04", "text": "What are safe area insets, and why must mobile layouts account for notches and home indicators?"},
+            {"key": "mob_tech_05", "text": "How do you handle persistent offline state and local caching in a mobile app?"},
+            {"key": "mob_tech_06", "text": "What is the difference between an Android APK and an Android App Bundle (AAB)?"},
+        ],
+        "applied": [
+            {"key": "mob_app_01", "text": "A mobile screen stutters and drops below 60fps when scrolling. Walk through how you would profile and fix it."},
+            {"key": "mob_app_02", "text": "Describe how you would implement optimistic updates for a social 'like' button on poor 3G network conditions."},
+            {"key": "mob_app_03", "text": "How would you configure push notifications with Firebase Cloud Messaging (FCM) on both iOS and Android?"},
+            {"key": "mob_app_04", "text": "An app crashes immediately upon launch on Android 14 only. How would you troubleshoot and resolve it?"},
+        ],
+        "communication": [
+            {"key": "mob_comm_01", "text": "Explain to a client why Apple App Store review takes longer and has stricter rules than Google Play."},
+            {"key": "mob_comm_02", "text": "Explain what 'offline-first' means and how it benefits mobile users with intermittent connectivity."},
+            {"key": "mob_comm_03", "text": "How would you explain why an app cannot automatically access user location without explicit permission?"},
+        ],
+    },
+    "Cybersecurity": {
+        "technical": [
+            {"key": "sec_tech_01", "text": "What is the CIA triad in information security, and what does each pillar represent?"},
+            {"key": "sec_tech_02", "text": "Explain SQL Injection (SQLi) and Cross-Site Scripting (XSS), and how developers remediate each."},
+            {"key": "sec_tech_03", "text": "What is the difference between symmetric and asymmetric encryption? Give an example of each."},
+            {"key": "sec_tech_04", "text": "What does a Security Operations Center (SOC) analyst do when triaging a SIEM alert?"},
+            {"key": "sec_tech_05", "text": "What is Broken Object Level Authorization (BOLA/IDOR), and why is it so prevalent in modern APIs?"},
+            {"key": "sec_tech_06", "text": "What is defense-in-depth, and why is relying solely on a network firewall insufficient?"},
+        ],
+        "applied": [
+            {"key": "sec_app_01", "text": "You discover an unauthenticated API endpoint exposing customer phone numbers. What immediate steps do you take?"},
+            {"key": "sec_app_02", "text": "How would you conduct an internal phishing awareness simulation and measure organizational resilience?"},
+            {"key": "sec_app_03", "text": "Describe the steps you would take during an active brute-force attack on a company's login endpoint."},
+            {"key": "sec_app_04", "text": "You are auditing a web application with Burp Suite. Walk through your methodology for testing authentication flows."},
+        ],
+        "communication": [
+            {"key": "sec_comm_01", "text": "Explain what multi-factor authentication (MFA) is and why SMS-based 2FA is less secure than authenticator apps."},
+            {"key": "sec_comm_02", "text": "How would you explain a zero-day vulnerability to non-technical executive leadership?"},
+            {"key": "sec_comm_03", "text": "Explain why security is a shared responsibility rather than solely the IT department's job."},
+        ],
+    },
+    "Digital Marketing": {
+        "technical": [
+            {"key": "mkt_tech_01", "text": "What is the difference between on-page, off-page, and technical SEO?"},
+            {"key": "mkt_tech_02", "text": "What are Google Core Web Vitals (LCP, INP, CLS), and how do they influence search engine rankings?"},
+            {"key": "mkt_tech_03", "text": "In paid search campaigns, what is Quality Score, and how does it determine your actual cost-per-click?"},
+            {"key": "mkt_tech_04", "text": "What is the Meta Pixel or Conversion API, and how does event deduplication work?"},
+            {"key": "mkt_tech_05", "text": "What is the difference between first-touch, last-touch, and data-driven multi-touch attribution models?"},
+            {"key": "mkt_tech_06", "text": "What are canonical tags in SEO, and how do they resolve duplicate content issues across URL parameters?"},
+        ],
+        "applied": [
+            {"key": "mkt_app_01", "text": "A landing page has high traffic but only a 1.2% conversion rate. Walk through your strategy to optimize the funnel."},
+            {"key": "mkt_app_02", "text": "You have a ₹50,000 monthly ad budget to launch a new B2B tech course. How do you allocate it across channels?"},
+            {"key": "mkt_app_03", "text": "Describe how you would perform a competitor SEO gap analysis to discover untapped high-intent keywords."},
+            {"key": "mkt_app_04", "text": "Your cost-per-acquisition (CPA) on Meta Ads doubled over two weeks. How do you diagnose ad fatigue and fix it?"},
+        ],
+        "communication": [
+            {"key": "mkt_comm_01", "text": "Explain the difference between CAC (Customer Acquisition Cost) and LTV (Lifetime Value) to a founder."},
+            {"key": "mkt_comm_02", "text": "Explain why SEO is a long-term compounding investment compared to paid ads which stop when budget ends."},
+            {"key": "mkt_comm_03", "text": "How would you present a monthly marketing performance report showing ROI to a skeptical executive?"},
         ],
     },
 }

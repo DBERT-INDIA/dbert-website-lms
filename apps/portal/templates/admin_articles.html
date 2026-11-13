@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% set page_title_full = "Editorial Article Review — Admin Portal" %}
+{% include "_head.html" %}
+
+<style nonce="{{ csp_nonce() }}">
+  .admin-articles-wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem 3.5rem;
+  }
+  .admin-header-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .admin-header-bar h1 {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #fff;
+    margin: 0;
+  }
+  .article-card {
+    background: #0B0F19;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    transition: border-color 0.2s;
+  }
+  .article-card:hover {
+    border-color: rgba(99, 102, 241, 0.35);
+  }
+  .article-card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+  .article-title {
+    font-size: 1.25rem;
+    color: #fff;
+    font-weight: 700;
+    margin: 0 0 0.35rem;
+  }
+  .article-meta {
+    font-size: 0.8125rem;
+    color: #94A3B8;
+  }
+  .badge-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+  .status-published { background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.4); color: #34D399; }
+  .status-pending { background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.4); color: #FBBF24; }
+  .status-draft { background: rgba(148, 163, 184, 0.15); border: 1px solid rgba(148, 163, 184, 0.3); color: #94A3B8; }
+  .status-revision { background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #F87171; }
+
+  .proof-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    margin: 1rem 0;
+  }
+  .proof-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.75rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    font-size: 0.8125rem;
+    color: #CBD5E1;
+    text-decoration: none;
+  }
+  .proof-chip:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+  }
+
+  .content-preview {
+    max-height: 200px;
+    overflow-y: auto;
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    padding: 1rem;
+    color: #CBD5E1;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    margin: 1rem 0;
+    white-space: pre-wrap;
+  }
+
+  .action-row {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+    padding-top: 1rem;
+    flex-wrap: wrap;
+  }
+  .btn-approve-pub {
+    background: linear-gradient(135deg, #10B981, #059669);
+    border: none;
+    color: #fff;
+    padding: 0.6rem 1.25rem;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  }
+  .btn-req-revision {
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.35);
+    color: #F87171;
+    padding: 0.6rem 1.25rem;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+</style>
+</head>
+
+<body class="has-staff-sidebar">
+{% set active_page = 'admin_articles' %}
+{% include '_staff_sidebar.html' %}
+
+<main class="main-content">
+  <div class="admin-articles-wrap">
+
+    <div class="admin-header-bar">
+      <div>
+        <h1>Editorial Review &amp; Publication Queue</h1>
+        <div style="color:#94A3B8;font-size:0.875rem;margin-top:4px;">
+          Review and approve intern technical case studies for live publication on <strong>dbert.in/blog</strong>.
+        </div>
+      </div>
+      <div>
+        <a href="/staff/tasks" style="color:#94A3B8;text-decoration:none;font-size:0.875rem;margin-right:1rem;">
+          &larr; Staff Task Queue
+        </a>
+        <a href="https://dbert.in/blog" target="_blank" rel="noopener" style="color:#38BDF8;font-weight:700;font-size:0.875rem;text-decoration:underline;">
+          View Live dbert.in/blog ↗
+        </a>
+      </div>
+    </div>
+
+    {% if articles and articles|length > 0 %}
+      {% for a in articles %}
+        <div class="article-card" id="articleCard_{{ a.id }}">
+          <div class="article-card-head">
+            <div>
+              <h2 class="article-title">{{ a.title }}</h2>
+              <div class="article-meta">
+                Author: <strong style="color:#fff;">{{ a.intern_name or 'DBERT Fellow' }}</strong> ({{ a.intern_email or 'no email' }}) &bull; 
+                Track: <span style="color:#A5B4FC;">{{ a.domain or 'Engineering' }}</span> &bull; 
+                Updated: {{ a.updated_at[:10] if a.updated_at else '' }}
+              </div>
+            </div>
+            <div>
+              {% if a.status == 'PUBLISHED' %}
+                <span class="badge-status status-published">
+                  <i class="fa-solid fa-circle-check"></i> Published Live
+                </span>
+              {% elif a.status == 'PENDING_REVIEW' %}
+                <span class="badge-status status-pending">
+                  <i class="fa-solid fa-hourglass-half"></i> In Review
+                </span>
+              {% elif a.status == 'NEEDS_REVISION' %}
+                <span class="badge-status status-revision">
+                  <i class="fa-solid fa-circle-exclamation"></i> Revision Requested
+                </span>
+              {% else %}
+                <span class="badge-status status-draft">Draft</span>
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- Proof-of-Work Artifact Chips -->
+          <div class="proof-chips">
+            {% if a.github_repo_url %}
+              <a href="{{ a.github_repo_url }}" target="_blank" rel="noopener" class="proof-chip">
+                <i class="fa-brands fa-github"></i> GitHub Repo ↗
+              </a>
+            {% endif %}
+
+            {% if a.live_demo_url %}
+              <a href="{{ a.live_demo_url }}" target="_blank" rel="noopener" class="proof-chip" style="color:#38BDF8;border-color:rgba(56,189,248,0.3);">
+                <i class="fa-solid fa-globe"></i> Live Cloud Demo ↗
+              </a>
+            {% endif %}
+
+            {% if a.cert_id %}
+              <a href="https://dbert.in/verify/{{ a.cert_id }}" target="_blank" rel="noopener" class="proof-chip" style="color:#34D399;border-color:rgba(16,185,129,0.3);">
+                <i class="fa-solid fa-certificate"></i> Credential: {{ a.cert_id }} ↗
+              </a>
+            {% endif %}
+
+            {% if a.rubric_score %}
+              <span class="proof-chip" style="color:#FBBF24;border-color:rgba(245,158,11,0.3);">
+                <i class="fa-solid fa-award"></i> Rubric Score: {{ a.rubric_score }}/100
+              </span>
+            {% endif %}
+          </div>
+
+          <!-- Content Excerpt Preview -->
+          <div class="content-preview">{{ a.content_markdown[:600] }}...</div>
+
+          {% if a.mentor_feedback %}
+            <div style="background:rgba(239,68,68,0.08);border-left:3px solid #EF4444;padding:8px 12px;font-size:0.8125rem;color:#FCA5A5;margin-bottom:1rem;">
+              <strong>Feedback on record:</strong> {{ a.mentor_feedback }}
+            </div>
+          {% endif %}
+
+          <div class="action-row">
+            {% if a.status != 'PUBLISHED' %}
+              <button type="button" class="btn-req-revision" 
+                      data-article-id="{{ a.id }}"
+                      data-act-click="requestArticleRevision" 
+                      data-arg-click='[{{ a.id }}]'>
+                <i class="fa-solid fa-rotate-left"></i> Request Revision
+              </button>
+              <button type="button" class="btn-approve-pub" 
+                      data-article-id="{{ a.id }}"
+                      data-act-click="approveAndPublishArticle" 
+                      data-arg-click='[{{ a.id }}]'>
+                <i class="fa-solid fa-check"></i> Approve &amp; Publish to dbert.in
+              </button>
+            {% else %}
+              <a href="https://dbert.in/blog/{{ a.slug or a.title|lower|replace(' ', '-') }}" target="_blank" rel="noopener" class="btn-approve-pub" style="text-decoration:none;">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Live on dbert.in/blog
+              </a>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <div style="text-align:center;padding:3rem 1rem;background:#0B0F19;border:1px solid rgba(255,255,255,0.08);border-radius:12px;color:#94A3B8;">
+        <i class="fa-solid fa-newspaper" style="font-size:2rem;color:#6366F1;margin-bottom:1rem;"></i>
+        <p>No articles submitted for review currently.</p>
+      </div>
+    {% endif %}
+
+  </div>
+</main>
+
+<script nonce="{{ csp_nonce() }}">
+  async function approveAndPublishArticle(id) {
+    if (!confirm('Publish this technical case study live to dbert.in/blog? This will notify the author and unlock their stipend review.')) return;
+
+    var csrfTok = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}';
+    try {
+      const res = await fetch('/admin/articles/review', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'X-CSRF-Token': csrfTok
+        },
+        body: JSON.stringify({
+          id: id,
+          status: 'PUBLISHED'
+        })
+      });
+      const data = await res.json();
+      if (res.ok && data.status === 'success') {
+        alert('Article published successfully! Author has been notified.');
+        window.location.reload();
+      } else {
+        alert('Failed to publish: ' + (data.message || 'Unknown error'));
+      }
+    } catch (e) {
+      alert('Network error connecting to platform.');
+    }
+  }
+
+  async function requestArticleRevision(id) {
+    const feedback = prompt('Enter editorial feedback notes for the author:');
+    if (!feedback) return;
+
+    var csrfTok = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}';
+    try {
+      const res = await fetch('/admin/articles/review', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+          'X-CSRF-Token': csrfTok
+        },
+        body: JSON.stringify({
+          id: id,
+          status: 'NEEDS_REVISION',
+          feedback: feedback
+        })
+      });
+      const data = await res.json();
+      if (res.ok && data.status === 'success') {
+        alert('Revision requested. Author will see your feedback.');
+        window.location.reload();
+      } else {
+        alert('Failed: ' + (data.message || 'Unknown error'));
+      }
+    } catch (e) {
+      alert('Network error connecting to platform.');
+    }
+  }
+
+  // Bind to window for csp-actions.js delegation
+  window.approveAndPublishArticle = approveAndPublishArticle;
+  window.requestArticleRevision = requestArticleRevision;
+
+  // Direct DOM delegation fallback
+  document.addEventListener('click', function(e) {
+    var approveBtn = e.target.closest('.btn-approve-pub');
+    if (approveBtn && approveBtn.hasAttribute('data-article-id')) {
+      var id = parseInt(approveBtn.getAttribute('data-article-id'), 10);
+      if (id) approveAndPublishArticle(id);
+      return;
+    }
+    var revBtn = e.target.closest('.btn-req-revision');
+    if (revBtn && revBtn.hasAttribute('data-article-id')) {
+      var id = parseInt(revBtn.getAttribute('data-article-id'), 10);
+      if (id) requestArticleRevision(id);
+      return;
+    }
+  });
+</script>
+
+</body>
+</html>

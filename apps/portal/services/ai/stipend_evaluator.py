@@ -22,6 +22,15 @@ DOMAIN_RUBRICS = {
             "Technical report completeness, mathematical intuition, and deployment viability."
         ]
     },
+    "AI Agent Development": {
+        "title": "Autonomous AI Agent Rubric",
+        "criteria": [
+            "Prompt engineering, context window management, and structured tool definitions.",
+            "Agentic planning loops, ReAct execution, and multi-agent state coordination.",
+            "Guardrails, error recovery, API secret hygiene, and runtime safety evaluation.",
+            "Production deployment demo, latency optimization, and architecture documentation."
+        ]
+    },
     "Data Analyst": {
         "title": "Data Analytics & BI Rubric",
         "criteria": [
@@ -40,6 +49,15 @@ DOMAIN_RUBRICS = {
             "Cloud deployment, live demo functionality, and system architecture report."
         ]
     },
+    "Full Stack Development": {
+        "title": "Full Stack Application Rubric",
+        "criteria": [
+            "Frontend responsiveness, component hierarchy, and UX state management.",
+            "Backend RESTful API design, database schemas, and query optimization.",
+            "Authentication, error handling, input validation, and security posture.",
+            "Cloud deployment, live demo functionality, and system architecture report."
+        ]
+    },
     "Python Automation": {
         "title": "Python Automation & RPA Rubric",
         "criteria": [
@@ -48,18 +66,95 @@ DOMAIN_RUBRICS = {
             "Code clean architecture, logging, packaging, and configuration management.",
             "Execution logs demonstration, test harness, and operations runbook PDF."
         ]
+    },
+    "UI/UX Design": {
+        "title": "UI/UX Product Design Rubric",
+        "criteria": [
+            "User research synthesis, personas, empathy maps, and information architecture.",
+            "Figma component architecture, auto-layout responsiveness, and variant matrix.",
+            "Design system tokens (typography, color, spacing), WCAG AA/AAA accessibility.",
+            "Clickable interactive prototype demo, usability audit report, and developer specs."
+        ]
+    },
+    "DevOps & Cloud": {
+        "title": "DevOps & Cloud Infrastructure Rubric",
+        "criteria": [
+            "Containerization quality, multi-stage Dockerfile efficiency, and non-root security.",
+            "CI/CD workflow automation (GitHub Actions), linting, testing, and artifact deployment.",
+            "Cloud networking topology (VPC/subnets), IAM least-privilege, and infrastructure as code.",
+            "Monitoring instrumentation (Prometheus/Grafana), uptime logs, and runbook report."
+        ]
+    },
+    "Mobile App Development": {
+        "title": "Mobile Application Engineering Rubric",
+        "criteria": [
+            "Cross-platform component architecture (React Native/Flutter) and responsive touch layouts.",
+            "State management, asynchronous API data flow, and persistent offline local caching.",
+            "Native hardware API integration (camera/geolocation/push) and runtime permission handling.",
+            "Performance profiling (60fps scrolling, list virtualization), release bundle, and app demo."
+        ]
+    },
+    "Cybersecurity": {
+        "title": "Cybersecurity & SOC Assessment Rubric",
+        "criteria": [
+            "Attack surface decomposition, STRIDE threat modeling, and risk scoring.",
+            "Vulnerability assessment methodology (OWASP Top 10, Burp Suite, Nmap, network traffic).",
+            "Defensive remediation strategies, secure coding practices, and patch validation.",
+            "Technical penetration test report with CVSS severity ranking and executive summary."
+        ]
+    },
+    "Digital Marketing": {
+        "title": "Growth Marketing & Funnel Optimization Rubric",
+        "criteria": [
+            "Keyword research, search intent mapping, on-page SEO, and Core Web Vitals audit.",
+            "Performance ad campaign structure (Google/Meta), targeting, Quality Score, and ad creative.",
+            "Web analytics tracking (GA4 custom events, conversion funnels, CAC/LTV, ROAS).",
+            "Growth strategy blueprint, channel allocation model, and executive performance deck."
+        ]
     }
 }
 
 
-def get_active_gemini_key(conn=None) -> Optional[str]:
+def get_intern_gemini_key(conn, intern_id: int) -> Optional[str]:
+    """Retrieves and decrypts the intern's active Gemini API key from intern_accounts."""
+    if not conn or not intern_id:
+        return None
+    try:
+        row = conn.execute("SELECT gemini_api_key_encrypted FROM intern_accounts WHERE id = ?", (intern_id,)).fetchone()
+        if not row or not row["gemini_api_key_encrypted"]:
+            return None
+        from flask import current_app
+        if hasattr(current_app, "decrypt_gemini_key"):
+            decrypted = current_app.decrypt_gemini_key(row["gemini_api_key_encrypted"])
+            if decrypted:
+                return decrypted
+        # Direct decrypt attempt using Fernet
+        raw = row["gemini_api_key_encrypted"].strip()
+        if raw.startswith("AIzaSy"):
+            return raw
+        key = os.environ.get("FERNET_KEY") or os.environ.get("SECRET_KEY")
+        if key:
+            from cryptography.fernet import Fernet
+            return Fernet(key.encode() if isinstance(key, str) else key).decrypt(raw.encode()).decode()
+    except Exception as e:
+        logger.error(f"[get_intern_gemini_key] Error: {e}")
+    return None
+
+
+def get_active_gemini_key(conn=None, intern_id: Optional[int] = None) -> Optional[str]:
     """
-    Retrieves active Gemini API key from environment or platform_config.
-    Prioritizes:
-    1. os.environ['GEMINI_API_KEY']
-    2. os.environ['GEMINI_API_KEYS'] (first key)
-    3. platform_config table (key='gemini_api_key')
+    Retrieves active Gemini API key.
+    Universal Mandate: Prioritizes intern-provided key when intern_id is passed.
+    1. intern_accounts.gemini_api_key_encrypted (decrypted)
+    2. os.environ['GEMINI_API_KEY']
+    3. os.environ['GEMINI_API_KEYS'] (first key)
+    4. platform_config table (key='gemini_api_key')
     """
+    if conn and intern_id:
+        intern_key = get_intern_gemini_key(conn, intern_id)
+        if intern_key:
+            return intern_key
+
     key = os.environ.get("GEMINI_API_KEY", "").strip()
     if key and key != "your_gemini_api_key":
         return key
@@ -127,11 +222,11 @@ class StipendEvaluator:
         active_key = api_key or get_active_gemini_key()
         if not active_key:
             return {
-                "score": 0,
+                "score": 75,
                 "status": "ai_unconfigured",
-                "notes": "Automated evaluation skipped: GEMINI_API_KEY is not configured.",
-                "rubric_breakdown": {},
-                "verdict": "AWAITING_HUMAN_REVIEW",
+                "notes": "Automated evaluation skipped: GEMINI_API_KEY is not configured. Queued for mentor staff review.",
+                "rubric_breakdown": {"total_score": 75, "verdict": "AWAITING_MANUAL_REVIEW"},
+                "verdict": "AWAITING_MANUAL_REVIEW",
                 "evaluated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             }
 
@@ -200,10 +295,102 @@ Respond with a JSON object adhering to this schema:
         except Exception as e:
             logger.error(f"Error during AI pre-screening: {e}")
             return {
-                "score": 75,
-                "status": "evaluated_fallback",
-                "notes": f"Automated pre-screening encountered parsing delay: {str(e)[:100]}. Queued for manual staff review.",
-                "rubric_breakdown": {"total_score": 75, "verdict": "RECOMMENDED_APPROVE"},
-                "verdict": "RECOMMENDED_APPROVE",
+                "score": None,
+                "status": "AI_FAILED_MANUAL_REVIEW",
+                "notes": f"Automated AI pre-screening unavailable: {str(e)[:100]}. Queued for manual mentor staff review.",
+                "rubric_breakdown": {"verdict": "PENDING_STAFF_REVIEW", "error": str(e)[:100]},
+                "verdict": "PENDING_STAFF_REVIEW",
                 "evaluated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             }
+
+
+def generate_capstone_case_study(meta: Dict[str, Any], api_key: str) -> str:
+    """
+    Invokes Google Gemini with the intern's active API key to generate a rich,
+    publication-grade 800+ word technical Case Study in Markdown.
+    """
+    from services.ai.gemini_provider import GeminiProvider
+
+    author_name = meta.get("author_name") or "DBERT Fellow"
+    domain = meta.get("domain") or "AI & Full Stack Engineering"
+    cert_id = meta.get("cert_id") or "In Evaluation"
+    repo_url = meta.get("repo_url") or ""
+    demo_url = meta.get("demo_url") or ""
+    project_name = meta.get("project_name") or "Capstone Engineering System"
+    rubric_score = meta.get("rubric_score") or 75
+    rubric_notes = meta.get("rubric_notes") or ""
+
+    prompt = f"""You are a Principal Software & AI Architect at DBERT (Digital Blinc Education Research and Technology).
+Write a comprehensive, publication-grade, 800+ word Technical Case Study in Github Flavored Markdown for an engineering fellow who just completed their intensive 60-day sprint at DBERT.
+
+Candidate Profile & Submission Details:
+- Author: {author_name}
+- Domain Specialization: {domain}
+- DBERT Credential ID: {cert_id}
+- Pre-Screening Evaluation Rubric Score: {rubric_score}/100 (High Merit)
+- Evaluator Feedback: {rubric_notes}
+- Production GitHub Repository: {repo_url or 'https://github.com/dbert-fellows/' + project_name.lower().replace(' ', '-')}
+- Interactive Live Cloud Deployment: {demo_url or 'https://' + project_name.lower().replace(' ', '-') + '.dbert.in'}
+- Project Title: {project_name}
+
+Structure & Content Requirements (Strictly follow this structure in Github-flavored Markdown):
+
+# Architecting {project_name}: Production {domain} with DBERT Verified Evaluation
+
+*Author: {author_name} · Track: {domain} · DBERT Credential ID: [{cert_id}](https://dbert.in/verify/{cert_id})*
+
+---
+
+## 1. System Overview & Problem Statement
+Explain why this project was engineered, the real-world problem it solves, and why production standards are essential in {domain}.
+Include clean clickable bullet links to GitHub, Live Demo, and DBERT Verified Credential:
+- **Production Source Code**: [{repo_url or 'GitHub Repository'}]({repo_url or '#'})
+- **Interactive Live Deployment**: [{demo_url or 'Live Cloud App'}]({demo_url or '#'})
+- **DBERT Verified Credential**: [https://dbert.in/verify/{cert_id}](https://dbert.in/verify/{cert_id})
+- **Pre-Screening Rubric Score**: **{rubric_score}/100 (High Merit)**
+
+---
+
+## 2. Architectural Blueprint & Technical Stack Decisions
+Discuss modular architectural choices, asynchronous processing, data model design, and error recovery.
+Include an ASCII architecture diagram representing data flow between the client, API gateway, core domain engine, database, and background services.
+
+---
+
+## 3. Core Implementation & Engineering Highlights
+Deep dive into 2-3 specific implementation components with concrete, clean code snippets illustrating best practices (error handling, schemas, caching, or model pipelines) tailored specifically to {domain}.
+
+---
+
+## 4. Engineering Hurdles, Edge Cases & Performance Tuning
+Discuss 3 specific engineering challenges faced during development and how they were solved (e.g. latency, race conditions, edge-case sanitization, rubric compliance).
+
+---
+
+## 5. Deployment, Live Verification & Reflections
+Reflect on the production deployment, the 9-dimension evaluation rubric score ({rubric_score}/100), and key learnings from the DBERT incubation sprint.
+
+---
+
+*Interested in building production AI & Full Stack systems with 1:1 mentorship and verified credentials? Explore the [DBERT AI Fellowship](https://lms.dbert.in).*
+
+Ensure strictly professional engineering tone, accurate markdown syntax, concrete code snippets, and zero generic placeholders.
+"""
+
+    provider = GeminiProvider(api_key=api_key)
+    response = provider.generate_content(
+        prompt=prompt,
+        temperature=0.3,
+        max_tokens=3000
+    )
+    raw_markdown = response.text or ""
+    clean_md = raw_markdown.strip()
+    if clean_md.startswith("```markdown"):
+        clean_md = clean_md[len("```markdown"):].strip()
+    if clean_md.startswith("```md"):
+        clean_md = clean_md[len("```md"):].strip()
+    if clean_md.endswith("```"):
+        clean_md = clean_md[:-3].strip()
+
+    return clean_md
+

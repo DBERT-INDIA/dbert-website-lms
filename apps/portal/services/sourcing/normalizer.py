@@ -9,12 +9,17 @@ import datetime
 from datetime import timedelta
 from typing import Tuple, Optional
 
-# The 4 Canonical DBERT LMS Career Tracks
+# The 9 Canonical DBERT LMS Career Tracks
 CANONICAL_DOMAINS = [
     "AI Agent Development",
     "Data Analyst",
     "Full Stack Development",
-    "Python Automation"
+    "Python Automation",
+    "UI/UX Design",
+    "DevOps & Cloud",
+    "Mobile App Development",
+    "Cybersecurity",
+    "Digital Marketing",
 ]
 
 def clean_text(text: Optional[str]) -> str:
@@ -26,42 +31,99 @@ def clean_text(text: Optional[str]) -> str:
     return " ".join(clean.split()).strip()
 
 def normalize_domain(title: str, description: str = "") -> str:
-    """Classifies a job role into one of DBERT's 4 core career tracks."""
-    t = (title or "").lower()
-    d = (description or "").lower()
-    combined = f"{t} {d}"
+    """Classifies a job role into one of DBERT's 9 core career tracks with high precision."""
+    t = (title or "").lower().strip()
+    d = (description or "").lower().strip()
 
-    # 1. AI Agent Development (Generative AI, LLMs, LangChain, Agents, Machine Learning, Deep Learning)
+    # 1. UI/UX Design (visual, figma, design, graphics, video editing)
     if any(k in t for k in [
-        "ai ", "artificial intelligence", "genai", "generative ai", "agent", "llm", "prompt",
-        "machine learning", "ml ", "deep learning", "nlp", "computer vision", "neural",
-        "langchain", "llama", "rag", "pytorch", "hugging face"
+        "ui/ux", "ui & ux", "ui and ux", "ux design", "ui design", "product design",
+        "figma", "user experience", "user interface", "ux researcher", "interaction design",
+        "graphic design", "graphic designer", "visual design", "visual designer", "motion graphic",
+        "web design", "web designer", "illustrator", "creative design", "3d design", "animat",
+        "video edit", "video creator", "video specialist", "design intern", "kreation/grafik"
     ]):
-        return "AI Agent Development"
+        return "UI/UX Design"
 
-    # 2. Python Automation (Python dev, automation, scripts, scraping, QA, testing, RPA)
+    # 2. Digital Marketing (SEO, social media, content writing, campaigns, ads, brand)
     if any(k in t for k in [
-        "python", "automation", "rpa", "selenium", "playwright", "scraping",
-        "crawler", "scripting", "bot", "qa automation", "sdet", "airflow"
+        "digital marketing", "marketing", "seo", "sem", "social media", "content writ",
+        "copywrit", "growth market", "performance market", "meta ads", "google ads",
+        "adwords", "brand market", "influencer", "email market", "lead generation",
+        "market research", "creative writ", "pr & communication", "public relation",
+        "growth & operations", "content creator", "content strategy", "brand & visual design",
+        "social media automation", "marketing automation", "community promoter", "organic growth"
     ]):
-        return "Python Automation"
+        return "Digital Marketing"
 
-    # 3. Data Analyst (Data science, analytics, BI, Tableau, SQL, data engineer)
+    # 3. Mobile App Development (Flutter, React Native, Android, iOS, Swift, Kotlin)
     if any(k in t for k in [
-        "data analyst", "data analytics", "business analyst", "data science",
-        "data engineer", "bi analyst", "tableau", "power bi", "analytics intern", "sql analyst"
+        "mobile app", "mobile application", "android", "ios", "flutter", "react native",
+        "swift", "kotlin", "mobile developer", "app developer", "mobile engineering"
+    ]):
+        return "Mobile App Development"
+
+    # 4. Cybersecurity (Security, SOC, pen test, ethical hacking, infosec)
+    if any(k in t for k in [
+        "cybersecurity", "cyber security", "infosec", "information security", "soc analyst",
+        "penetration", "pen test", "ethical hack", "vulnerability", "network security",
+        "security analyst", "security engineer", "incident response", "security operations"
+    ]):
+        return "Cybersecurity"
+
+    # 5. DevOps & Cloud (Docker, K8s, AWS, GCP, Azure, CI/CD, Terraform, SRE, SysAdmin)
+    if any(k in t for k in [
+        "devops", "cloud engineer", "cloud architect", "cloud computing", "aws", "azure", "gcp",
+        "kubernetes", "k8s", "docker", "ci/cd", "terraform", "sre", "site reliability",
+        "infrastructure engineer", "cloud infrastructure", "platform engineer", "system administrator",
+        "sysadmin", "linux engineer", "network engineer", "systems engineer"
+    ]):
+        return "DevOps & Cloud"
+
+    # 6. Data Analyst / Data Science (Analytics, BI, Tableau, SQL, data engineering)
+    if any(k in t for k in [
+        "data analyst", "data analytics", "business analyst", "bi analyst", "data science",
+        "data scientist", "tableau", "power bi", "sql analyst", "data engineer", "data platform",
+        "analytics intern", "data annotat", "data entry", "quantitative", "statistician"
     ]):
         return "Data Analyst"
 
-    # 4. Full Stack Development (Web, React, Node, Next.js, Django, Frontend, Backend, Software Engineer)
+    # 7. AI Agent Development (Generative AI, LLMs, Agents, ML, Computer Vision, Prompt)
+    if any(k in t for k in [
+        "ai agent", "artificial intelligence", "genai", "generative ai", "llm",
+        "prompt engineer", "machine learning", "ml ", "ai/ml", "ai & ml", "deep learning",
+        "nlp", "computer vision", "neural", "langchain", "llama", "rag", "pytorch",
+        "hugging face", "reinforcement learning", "ai developer", "ai engineer", "ai research",
+        "ai magician", "ai video", "ai tech trainer"
+    ]):
+        return "AI Agent Development"
+
+    # 8. Python Automation (Automation, Selenium, Playwright, Scraping, RPA, SDET)
+    if any(k in t for k in [
+        "python", "automation", "rpa", "selenium", "playwright", "scraping",
+        "crawler", "scripting", "bot developer", "qa automation", "sdet", "test automation"
+    ]):
+        return "Python Automation"
+
+    # 9. Full Stack Development (Web, React, Node, Frontend, Backend, Software Engineer)
     if any(k in t for k in [
         "full stack", "fullstack", "web dev", "frontend", "front end", "backend", "back end",
         "react", "angular", "vue", "next.js", "node", "mern", "django", "flask", "fastapi",
-        "software engineer", "software developer", "developer intern"
+        "software engineer", "software developer", "developer intern", "golang", "java", "php"
     ]):
         return "Full Stack Development"
 
     # Secondary fallback check in description
+    if "figma" in d or "ui/ux" in d or "user experience" in d:
+        return "UI/UX Design"
+    if "marketing" in d or "seo" in d or "social media" in d:
+        return "Digital Marketing"
+    if "docker" in d or "kubernetes" in d or "devops" in d or "aws" in d:
+        return "DevOps & Cloud"
+    if "react native" in d or "flutter" in d or "mobile app" in d:
+        return "Mobile App Development"
+    if "cybersecurity" in d or "penetration testing" in d or "soc" in d:
+        return "Cybersecurity"
     if "agent" in d or "llm" in d or "generative ai" in d:
         return "AI Agent Development"
     if "data analyst" in d or "business analytics" in d:

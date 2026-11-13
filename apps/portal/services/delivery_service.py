@@ -15,12 +15,15 @@ import hmac
 import hashlib
 import logging
 import smtplib
+import random
+import json
 import threading
 from dataclasses import dataclass, field
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from email.mime.application import MIMEApplication
 from email.utils import formatdate, formataddr
-from typing import Optional, Dict, Any, List, Union
+from typing import Optional, Dict, Any, List, Union, Tuple
 from urllib.parse import quote
 
 logger = logging.getLogger("dbert.delivery")
@@ -76,6 +79,76 @@ class DeliveryResult:
 
 
 # -----------------------------------------------------------------------------
+
+# -----------------------------------------------------------------------------
+# Multi-Account Google Workspace SMTP Pool
+# -----------------------------------------------------------------------------
+@dataclass
+class SMTPAccount:
+    email: str
+    app_password: str
+    from_name: str
+    role: str = ""
+    is_active: bool = True
+    cooldown_until: float = 0.0
+
+    def is_available(self) -> bool:
+        return self.is_active and time.time() >= self.cooldown_until
+
+
+class SMTPAccountPool:
+    """
+    Thread-safe pool of Google Workspace SMTP accounts.
+    Supports dynamic random selection, load distribution, and automated failover
+    upon daily sending limits (550 5.4.5) or authentication errors.
+    """
+    def __init__(self, accounts_json: Optional[str] = None):
+        self.accounts: List[SMTPAccount] = []
+        self._lock = threading.Lock()
+        self._load_accounts(accounts_json)
+
+    def _load_accounts(self, accounts_json: Optional[str] = None):
+        raw = accounts_json or os.environ.get("SMTP_ACCOUNTS_JSON", "")
+        if raw:
+            try:
+                data = json.loads(raw)
+                if isinstance(data, list):
+                    for item in data:
+                        em = item.get("email", "").strip()
+                        pw = item.get("app_password", "").strip()
+                        if em and pw:
+                            self.accounts.append(SMTPAccount(
+                                email=em,
+                                app_password=pw,
+                                from_name=item.get("from_name", "DBERT Support"),
+                                role=item.get("role", "")
+                            ))
+            except Exception as e:
+                logger.error(f"Failed to parse SMTP_ACCOUNTS_JSON: {e}")
+
+    def get_shuffled_accounts(self) -> List[SMTPAccount]:
+        """Return available accounts shuffled randomly for uniform load distribution."""
+        with self._lock:
+            avail = [a for a in self.accounts if a.is_available()]
+            if not avail and self.accounts:
+                # If all are in cooldown, pick the ones closest to recovery
+                avail = sorted(self.accounts, key=lambda a: a.cooldown_until)
+        shuffled = list(avail)
+        random.shuffle(shuffled)
+        return shuffled
+
+    def mark_limited(self, email: str, cooldown_hours: float = 24.0):
+        """Place account into cooldown upon detecting Google quota or sending limit."""
+        with self._lock:
+            for a in self.accounts:
+                if a.email.lower() == email.lower():
+                    a.cooldown_until = time.time() + (cooldown_hours * 3600)
+                    logger.warning(
+                        f"SMTP Account [{email}] marked limited (550 sending limit). "
+                        f"Cooldown active until {time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(a.cooldown_until))}."
+                    )
+
+
 # Velocity / Pacing Limiter
 # -----------------------------------------------------------------------------
 class EmailPacer:
@@ -211,10 +284,11 @@ def build_mime_message(
     email_site: str = DEFAULT_EMAIL_SITE,
     secret_key: Optional[str] = None,
     tags: Optional[Dict[str, str]] = None,
-    include_footer: bool = True
+    include_footer: bool = True,
+    attachments: Optional[List[Tuple[str, bytes, str]]] = None
 ) -> MIMEMultipart:
     """
-    Constructs an RFC 5322 & RFC 8058 compliant multipart/alternative MIME message.
+    Constructs an RFC 5322 & RFC 8058 compliant MIME message with optional attachments.
     Sanitizes content by excluding 1x1 tracking pixels and marketing UTM queries.
     """
     html_body = html_content or ""
@@ -228,7 +302,25 @@ def build_mime_message(
     plain_body = text_content if text_content is not None else html_to_plain_text(html_body, email_site)
 
     clean_subject = re.sub(r"[\r\n]+", " ", str(subject or "")).strip()
-    msg = MIMEMultipart("alternative")
+    alt_part = MIMEMultipart("alternative")
+    alt_part.attach(MIMEText(plain_body, "plain", "utf-8"))
+    alt_part.attach(MIMEText(html_body, "html", "utf-8"))
+
+    if attachments:
+        msg = MIMEMultipart("mixed")
+        msg.attach(alt_part)
+        for att in attachments:
+            fname = att[0]
+            data = att[1]
+            stype = att[2] if len(att) > 2 and att[2] else "pdf"
+            if "/" in stype:
+                stype = stype.split("/")[-1]
+            part = MIMEApplication(data, _subtype=stype)
+            part.add_header("Content-Disposition", "attachment", filename=fname)
+            msg.attach(part)
+    else:
+        msg = alt_part
+
     msg["Subject"] = clean_subject
     msg["From"] = formataddr((from_name or "", from_email or DEFAULT_FROM_EMAIL))
     msg["To"] = to_email.strip()
@@ -246,9 +338,6 @@ def build_mime_message(
             header_key = f"X-DBERT-{k.replace('_', '-').title()}" if not k.startswith("X-") else k
             msg[header_key] = str(v)
 
-    # Attach least rich first (plain text), then HTML
-    msg.attach(MIMEText(plain_body, "plain", "utf-8"))
-    msg.attach(MIMEText(html_body, "html", "utf-8"))
     return msg
 
 
@@ -302,6 +391,7 @@ class EmailDeliveryService:
         
         self.pacer = pacer or global_pacer
         self.secret_key = secret_key or os.environ.get("FLASK_SECRET_KEY", "")
+        self.pool = SMTPAccountPool(accounts_json=os.environ.get('SMTP_ACCOUNTS_JSON'))
 
     def is_dummy_domain(self, email: str) -> bool:
         if not isinstance(email, str):
@@ -321,15 +411,17 @@ class EmailDeliveryService:
                 return True
         return False
 
-    def _dispatch_smtp_ssl(self, host: str, port: int, user: str, passwd: str, to_email: str, raw_msg: str, timeout: int = 15):
+    def _dispatch_smtp_ssl(self, host: str, port: int, user: str, passwd: str, to_email: str, raw_msg: str, timeout: int = 30):
         context = ssl.create_default_context()
+        envelope_from = user or self.from_email
         with smtplib.SMTP_SSL(host, port, context=context, timeout=timeout) as s:
             if user and passwd:
                 s.login(user, passwd)
-            s.sendmail(self.from_email, [to_email], raw_msg)
+            s.sendmail(envelope_from, [to_email], raw_msg)
 
-    def _dispatch_smtp_starttls(self, host: str, port: int, user: str, passwd: str, to_email: str, raw_msg: str, timeout: int = 15):
+    def _dispatch_smtp_starttls(self, host: str, port: int, user: str, passwd: str, to_email: str, raw_msg: str, timeout: int = 30):
         context = ssl.create_default_context()
+        envelope_from = user or self.from_email
         with smtplib.SMTP(host, port, timeout=timeout) as s:
             s.ehlo()
             try:
@@ -339,7 +431,32 @@ class EmailDeliveryService:
                 pass
             if user and passwd:
                 s.login(user, passwd)
-            s.sendmail(self.from_email, [to_email], raw_msg)
+            s.sendmail(envelope_from, [to_email], raw_msg)
+
+    def _dispatch_smtp_with_account(self, acc: SMTPAccount, msg: MIMEMultipart, to_email: str) -> Dict[str, Any]:
+        """Dispatch email using a specific authenticated SMTPAccount from the pool."""
+        # Align From and Reply-To headers with the selected account
+        if msg.get("From"):
+            msg.replace_header("From", formataddr((acc.from_name, acc.email)))
+        else:
+            msg.add_header("From", formataddr((acc.from_name, acc.email)))
+
+        if not msg.get("Reply-To"):
+            msg.add_header("Reply-To", acc.email)
+            
+        raw_str = msg.as_string()
+        if self.smtp_port == 465:
+            self._dispatch_smtp_ssl(self.smtp_host, self.smtp_port, acc.email, acc.app_password, to_email, raw_str)
+        else:
+            self._dispatch_smtp_starttls(self.smtp_host, self.smtp_port, acc.email, acc.app_password, to_email, raw_str)
+            
+        return {
+            "primary_transport": "smtp_pool",
+            "host": self.smtp_host,
+            "port": self.smtp_port,
+            "auth_user": acc.email,
+            "from_name": acc.from_name,
+        }
 
     def _dispatch_primary_smtp(self, msg: MIMEMultipart, to_email: str) -> Dict[str, Any]:
         raw_str = msg.as_string()
@@ -417,7 +534,9 @@ class EmailDeliveryService:
         html_content: str,
         text_content: Optional[str] = None,
         tags: Optional[Dict[str, str]] = None,
-        dry_run: bool = False
+        dry_run: bool = False,
+        attachments: Optional[List[Tuple[str, bytes, str]]] = None,
+        preferred_account: Optional[str] = None
     ) -> DeliveryResult:
         """
         Public contract method for email transmission.
@@ -491,7 +610,8 @@ class EmailDeliveryService:
             from_email=self.from_email,
             reply_to=self.reply_to,
             secret_key=self.secret_key,
-            tags=tags
+            tags=tags,
+            attachments=attachments
         )
         msg_id = msg.get("Message-ID", "")
         diagnostics["message_id"] = msg_id
@@ -533,22 +653,48 @@ class EmailDeliveryService:
         delay_sec = self.pacer.wait_and_record(clean_to, dry_run=False)
         diagnostics["pacing_delay_sec"] = delay_sec
 
-        # 6. Attempt Primary Provider (Google Workspace SMTP)
+        # 6. Attempt Primary Provider (Google Workspace SMTP Pool with Random Selection & Failover)
         primary_err = None
-        try:
-            primary_info = self._dispatch_primary_smtp(msg, clean_to)
-            diagnostics.update(primary_info)
-            return DeliveryResult(
-                success=True,
-                provider="google_workspace_smtp",
-                message_id=msg_id,
-                error=None,
-                diagnostics=diagnostics
-            )
-        except Exception as e:
-            primary_err = e
-            logger.warning(f"Primary SMTP dispatch failed for {clean_to}: {e}")
-            diagnostics["primary_error"] = str(e)
+        shuffled_accounts = self.pool.get_shuffled_accounts()
+        if preferred_account and shuffled_accounts:
+            pref = [a for a in shuffled_accounts if a.email.lower() == preferred_account.lower()]
+            rest = [a for a in shuffled_accounts if a.email.lower() != preferred_account.lower()]
+            shuffled_accounts = pref + rest
+        if shuffled_accounts:
+            for acc in shuffled_accounts:
+                try:
+                    primary_info = self._dispatch_smtp_with_account(acc, msg, clean_to)
+                    diagnostics.update(primary_info)
+                    return DeliveryResult(
+                        success=True,
+                        provider=f"google_workspace_smtp_pool:{acc.email}",
+                        message_id=msg_id,
+                        error=None,
+                        diagnostics=diagnostics
+                    )
+                except Exception as e:
+                    err_str = str(e)
+                    logger.warning(f"SMTP pool dispatch failed via account [{acc.email}] for {clean_to}: {err_str}")
+                    if "550 5.4.5" in err_str or "daily user sending limit" in err_str.lower() or "quota" in err_str.lower():
+                        self.pool.mark_limited(acc.email)
+                    primary_err = e
+            diagnostics["primary_pool_exhausted"] = True
+            diagnostics["primary_error"] = str(primary_err)
+        else:
+            try:
+                primary_info = self._dispatch_primary_smtp(msg, clean_to)
+                diagnostics.update(primary_info)
+                return DeliveryResult(
+                    success=True,
+                    provider="google_workspace_smtp",
+                    message_id=msg_id,
+                    error=None,
+                    diagnostics=diagnostics
+                )
+            except Exception as e:
+                primary_err = e
+                logger.warning(f"Legacy primary SMTP dispatch failed for {clean_to}: {e}")
+                diagnostics["primary_error"] = str(e)
 
         # 7. Secondary Fallback Provider
         # Attempt fallback via cPanel API or secondary SMTP

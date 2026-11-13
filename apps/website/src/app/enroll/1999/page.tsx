@@ -5,14 +5,14 @@ import EnrollmentClient from './EnrollmentClient';
 export const metadata: Metadata = {
   title: 'Technical Incubation Enrollment (₹1,999 Program) | DBERT',
   description:
-    'Complete your technical incubation enrollment for the ₹1,999 program. Registered interns who paid ₹499 caution deposit only pay ₹1,500 balance to unlock verified credentials, academic rubrics, and project attributions.',
+    'Complete your technical incubation enrollment for the ₹1,999 program. Official DBERT admissions and technical incubation enrollment portal. Access production GitHub repositories, 1:1 mentor code reviews, and verified credentials.',
   alternates: {
     canonical: 'https://dbert.in/enroll/1999'
   },
   openGraph: {
     title: 'Technical Incubation Enrollment (₹1,999 Program) — DBERT',
     description:
-      'Official DBERT admissions and credential balance completion portal. Pay ₹1,500 remaining balance to unlock official credentials.',
+      'Official DBERT admissions and technical incubation enrollment portal. Complete program fee payment and UTR submission to confirm your seat.',
     url: 'https://dbert.in/enroll/1999',
     siteName: 'DBERT — Digital Blinc Education Research and Technology',
     images: [

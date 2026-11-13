@@ -75,6 +75,7 @@
 
         <div class="actions">
           <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Save CV</button>
+          <button type="button" class="btn btn-secondary" id="btnCvAts" data-act-click="runCvAts"><i class="fa-solid fa-wand-magic-sparkles"></i> AI ATS Audit</button>
           <button type="button" class="btn btn-ghost" data-act-click="saveThen" data-arg-click='["pdf"]'><i class="fa-solid fa-download"></i> Save &amp; download PDF</button>
           <button type="button" class="btn btn-ghost" data-act-click="saveThen" data-arg-click='["preview"]'><i class="fa-solid fa-eye"></i> Save &amp; preview</button>
         </div>
@@ -85,6 +86,21 @@
           <a id="pubLink" class="t-gold" href="/cv/{{ form.slug }}" target="_blank" rel="noopener">/cv/{{ form.slug }}</a>
           · <a id="pdfLink" class="t-gold" href="/cv/{{ form.slug }}.pdf" target="_blank" rel="noopener">PDF</a>
         </p>
+
+        <div id="cvAtsCard" class="card mt-16" style="display:none; background:#0B1120; border:1px solid #1E293B;">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div>
+              <div style="font-size:11px; text-transform:uppercase; letter-spacing:0.05em; color:#D97706; font-weight:700;">ATS Compatibility Audit</div>
+              <h3 id="atsScoreVal" style="font-size:24px; font-weight:800; margin:4px 0; color:#fff;">-- / 100</h3>
+            </div>
+            <span id="atsBadge" style="padding:4px 10px; border-radius:12px; font-size:12px; font-weight:700; background:#10B981; color:#fff;">--</span>
+          </div>
+          <p id="atsSummary" class="t-sm t-muted mt-8 mb-12"></p>
+          <div id="atsMissingWrap" style="margin-top:8px;">
+            <div style="font-size:11px; font-weight:700; color:#94A3B8; margin-bottom:6px;">RECOMMENDED KEYWORDS TO BOOST SCORE:</div>
+            <div id="atsMissingPills" style="display:flex; flex-wrap:wrap; gap:6px;"></div>
+          </div>
+        </div>
       </form>
     </div>
 
@@ -160,8 +176,42 @@
     function saveThen(what){
       doSave().then(function(d){ if(d){ window.open(what==='pdf' ? '/cv/'+d.slug+'.pdf' : '/cv/'+d.slug, '_blank'); } });
     }
+    function runCvAts() {
+      var btn = document.getElementById('btnCvAts');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Auditing...';
+      fetch('/portal/cv/ats-check', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(body())
+      })
+      .then(function(r){ return r.json(); })
+      .then(function(res){
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> AI ATS Audit';
+        if (res.status === 'success' && res.audit) {
+          var a = res.audit;
+          document.getElementById('cvAtsCard').style.display = 'block';
+          document.getElementById('atsScoreVal').innerText = a.score + " / 100";
+          document.getElementById('atsBadge').innerText = a.tier;
+          document.getElementById('atsBadge').style.backgroundColor = a.color;
+          document.getElementById('atsSummary').innerText = (a.recommendations && a.recommendations.summary) || a.pass_probability;
+          var phtml = "";
+          (a.critical_missing_keywords || []).forEach(function(k){
+            phtml += '<span style="background:rgba(217,119,6,0.15); color:#F59E0B; border:1px solid rgba(217,119,6,0.3); padding:3px 8px; border-radius:10px; font-size:11px; font-weight:700;">' + k + '</span>';
+          });
+          document.getElementById('atsMissingPills').innerHTML = phtml || '<span class="t-sm t-muted">Great coverage! No major missing keywords.</span>';
+        }
+      })
+      .catch(function(){
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> AI ATS Audit';
+        alert('Could not complete ATS audit. Please try again.');
+      });
+    }
     window.addEntry = addEntry;
     window.saveThen = saveThen;
+    window.runCvAts = runCvAts;
 </script>
 </body>
 </html>

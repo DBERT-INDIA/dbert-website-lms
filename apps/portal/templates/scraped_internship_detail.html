@@ -615,10 +615,10 @@
         {% if already_applied %}
           <div class="applied-box" id="appliedBox" style="background:#F0FDF4; border:1.5px solid #86EFAC; border-radius:14px; padding:20px 24px;">
             <div class="hd" style="font-size:16px; font-weight:800; color:#166534; margin-bottom:6px; display:flex; align-items:center; gap:8px;">
-              <i class="fas fa-circle-check" style="color:#22C55E; font-size:18px;"></i> Application Signal Recorded!
+              <i class="fas fa-circle-check" style="color:#22C55E; font-size:18px;"></i> Application Submitted!
             </div>
             <p style="font-size:14px; color:#374151; margin:0 0 16px; line-height:1.55;">
-              Your interest note has been submitted to the community discussion. You can apply directly on the hiring portal below.
+              Your application note has been recorded. You can continue to the official hiring portal below:
             </p>
             <div class="next-cta" style="display:flex; gap:12px; flex-wrap:wrap;">
               <a class="btn btn-primary" id="officialAppBtn" href="{{ job.URL }}" target="_blank" rel="noopener noreferrer" data-act-click="trackLeadClick" style="background:linear-gradient(135deg, #E2B96F, #C89945); color:#0F172A; font-weight:700; padding:10px 20px; border-radius:10px; text-decoration:none; display:inline-flex; align-items:center; gap:8px; font-size:13.5px;"><i class="fas fa-external-link-alt"></i> Continue to Official Application ↗</a>
@@ -785,45 +785,30 @@
     </div>
   </main>
 
-  <footer class="public-foot">
-    <div class="fl">
-      <a href="/jobs">Jobs</a>
-      <a href="/internships">Internships</a>
-      <a href="/">Home</a>
-      {% if is_logged_in or is_intern or current_user or is_admin %}
-      <a href="{{ logged_in_url or '/portal' }}">{{ logged_in_label or 'Portal' }}</a>
-      {% else %}
-      <a href="/#signin">Sign in</a>
-      {% endif %}
-    </div>
-    <div style="display:flex;align-items:center;gap:16px;">
-      <a class="wa" href="https://wa.me/917060372107" rel="noopener" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-      <span>© DBERT</span>
-    </div>
-  </footer>
+  {% include '_footer_seo.html' %}
 
-  <!-- Modal for Apply Now: Captures fit response, posts to discussion, and opens external URL in new window -->
+  <!-- Modal for Apply Now: Captures fit response, records application, and launches official destination -->
   {% if (is_logged_in or is_intern or current_user or is_admin) and not already_applied %}
-  <div class="modal" id="leadApplyModal" role="dialog" aria-modal="true" aria-labelledby="leadApplyModalTitle">
-    <div class="modal-box">
+  <div class="modal" id="leadApplyModal" role="dialog" aria-modal="true" aria-labelledby="leadApplyModalTitle" style="background:rgba(0,0,0,0.75); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); z-index:9999;">
+    <div class="modal-box" style="background:#0F172A; border:1px solid rgba(226,185,111,0.3); border-radius:16px; padding:28px 28px 24px; max-width:540px; width:92%; box-shadow:0 24px 48px rgba(0,0,0,0.6); color:#F8FAFC;">
       <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px;">
-        <h2 id="leadApplyModalTitle" style="margin:0; font-size:18px; font-weight:800; color:#0F172A; display:flex; align-items:center; gap:8px;">
-          <i class="fas fa-paper-plane" style="color:#C89945; font-size:16px;"></i> Apply — {{ job.Role }}
+        <h2 id="leadApplyModalTitle" style="margin:0; font-size:18px; font-weight:800; color:#FFFFFF; display:flex; align-items:center; gap:8px;">
+          <i class="fas fa-paper-plane" style="color:#E2B96F; font-size:16px;"></i> Apply — {{ job.Role }}
         </h2>
-        <button type="button" class="btn-modal-close-x" id="closeLeadModalX" aria-label="Close dialog"><i class="fas fa-times"></i></button>
+        <button type="button" class="btn btn-ghost btn-sm" id="closeLeadModalX" style="padding:4px 8px; border:none; color:#94A3B8; cursor:pointer; font-size:16px; background:transparent;" aria-label="Close dialog"><i class="fas fa-times"></i></button>
       </div>
-      <p style="font-size:13.5px; color:#475569; margin:0 0 18px; line-height:1.55;">
-        A brief note explaining why you're a great fit will be shared with the community. Once submitted, your official application link will open directly in a new window.
+      <p style="font-size:13px; color:#94A3B8; margin:0 0 18px; line-height:1.55;">
+        A short note is required. It’s shown as your interest signal to the hiring team; your profile details and pitch are attached automatically.
       </p>
-      <div class="modal-field" style="margin-bottom:16px;">
-        <label for="leadApplyComment">Why are you a great fit for this role? *</label>
-        <textarea id="leadApplyComment" class="modal-textarea" rows="4" placeholder="Highlight your relevant skills, past projects, or why you want to contribute to this role..."></textarea>
+      <div class="field" style="margin-bottom:16px;">
+        <label for="leadApplyComment" style="display:block; font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; color:#E2B96F; margin-bottom:8px;">Why are you a fit for this role? *</label>
+        <textarea id="leadApplyComment" rows="4" placeholder="Highlight relevant skills, portfolio links, or why this opening matches your career goals..." style="width:100%; box-sizing:border-box; background:#1E293B; border:1px solid #334155; color:#F8FAFC; font-family:inherit; font-size:13.5px; padding:12px 14px; border-radius:10px; outline:none; resize:vertical; min-height:100px; line-height:1.5;"></textarea>
       </div>
-      <div id="leadApplyMsg" style="min-height:20px; font-size:13px; margin-bottom:14px; color:#DC2626; font-weight:600;"></div>
+      <div id="leadApplyMsg" style="min-height:18px; font-size:12.5px; margin-bottom:12px; font-weight:600; color:#EF4444;"></div>
 
-      <div style="display:flex; gap:12px; justify-content:flex-end; align-items:center;">
-        <button type="button" id="closeLeadModalCancel" class="btn-modal-cancel">Cancel</button>
-        <button type="button" id="leadApplySubmitBtn" class="btn-modal-submit"><i class="fas fa-paper-plane"></i> Submit &amp; Open Application ↗</button>
+      <div style="display:flex; gap:10px; justify-content:flex-end; align-items:center;">
+        <button type="button" class="btn btn-ghost btn-sm" id="closeLeadModalCancel" style="padding:8px 16px; border:1px solid #334155; color:#94A3B8; border-radius:8px; background:transparent; cursor:pointer;">Cancel</button>
+        <button type="button" class="btn btn-primary" id="leadApplySubmitBtn" style="background:linear-gradient(135deg, #E2B96F, #C89945); color:#0F172A; font-weight:800; padding:10px 24px; border-radius:8px; border:none; cursor:pointer; font-size:14px; display:inline-flex; align-items:center; gap:8px;"><i class="fas fa-paper-plane"></i> Submit application</button>
       </div>
     </div>
   </div>
@@ -922,10 +907,10 @@
           if(az){
             az.innerHTML =
               '<div class="applied-box" style="background:#F0FDF4; border:1.5px solid #86EFAC; border-radius:14px; padding:20px 24px;">'
-            + '<div class="hd" style="font-size:16px; font-weight:800; color:#166534; margin-bottom:6px; display:flex; align-items:center; gap:8px;"><i class="fas fa-circle-check" style="color:#22C55E; font-size:18px;"></i> Application Opened in New Window!</div>'
-            + '<p style="font-size:14px; color:#374151; margin:0 0 16px; line-height:1.55;">Your interest has been recorded in the community discussion. If your browser blocked the popup, click below to open your application:</p>'
+            + '<div class="hd" style="font-size:16px; font-weight:800; color:#166534; margin-bottom:6px; display:flex; align-items:center; gap:8px;"><i class="fas fa-circle-check" style="color:#22C55E; font-size:18px;"></i> Application Submitted!</div>'
+            + '<p style="font-size:14px; color:#374151; margin:0 0 16px; line-height:1.55;">Your application note has been recorded and your official application window opened. If your browser blocked the window, click below to continue:</p>'
             + '<div class="next-cta" style="display:flex; gap:12px; flex-wrap:wrap;">'
-            + '<a class="btn btn-primary" href="' + TARGET_URL + '" target="_blank" rel="noopener noreferrer" style="background:linear-gradient(135deg, #E2B96F, #C89945); color:#0F172A; font-weight:700; padding:10px 20px; border-radius:10px; text-decoration:none; display:inline-flex; align-items:center; gap:8px; font-size:13.5px;"><i class="fas fa-external-link-alt"></i> Open Application Link ↗</a>'
+            + '<a class="btn btn-primary" href="' + TARGET_URL + '" target="_blank" rel="noopener noreferrer" style="background:linear-gradient(135deg, #E2B96F, #C89945); color:#0F172A; font-weight:700; padding:10px 20px; border-radius:10px; text-decoration:none; display:inline-flex; align-items:center; gap:8px; font-size:13.5px;"><i class="fas fa-external-link-alt"></i> Continue to Official Application ↗</a>'
             + '<a class="btn btn-ghost" href="/internships" style="background:#F8FAFC; border:1px solid #CBD5E1; color:#334155; font-weight:600; padding:10px 20px; border-radius:10px; text-decoration:none; display:inline-flex; align-items:center; gap:8px; font-size:13.5px;"><i class="fas fa-layer-group"></i> Browse more openings</a>'
             + '</div></div>';
           }

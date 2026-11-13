@@ -35,11 +35,13 @@ def referral_click():
     try:
         code = clean_text(request.args.get("ref"))
         if code:
+            cookie_domain = ".dbert.in" if "dbert.in" in (request.host or "") else None
             resp.set_cookie(
                 REFERRAL_COOKIE,
                 code,
                 max_age=REFERRAL_WINDOW_DAYS * 86400,
                 path="/",
+                domain=cookie_domain,
                 samesite="Lax",
                 secure=COOKIE_SECURE
             )
@@ -120,6 +122,57 @@ def intern_ambassador():
         })
     except Exception as e:
         log_error("intern-ambassador", e)
+        return jsonify({"status": "error", "message": "Error"}), 500
+
+
+@ambassador_bp.route("/intern/ambassador/leads")
+def intern_ambassador_leads():
+    """Full leads table and conversion status for the authenticated ambassador (§6.6)."""
+    try:
+        intern = current_intern()
+        if not intern:
+            return jsonify({"status": "error", "message": "Unauthorized"}), 401
+        with get_db() as conn:
+            acct = conn.execute(
+                "SELECT id, name, referral_code FROM intern_accounts WHERE id=?",
+                (intern["id"],)).fetchone()
+            if not acct:
+                return jsonify({"status": "error", "message": "Account not found"}), 404
+
+            leads = [row_to_dict(r) for r in conn.execute(
+                "SELECT r.id AS ref_id, r.status AS ref_status, r.created_at AS ref_date, "
+                "COALESCE(ia.name, '—') AS lead_name, COALESCE(ia.domain, '—') AS lead_domain, "
+                "ia.signup_stage AS lead_signup_stage, "
+                "CASE r.status "
+                "  WHEN 'clicked' THEN 'Link Opened – Awaiting Signup' "
+                "  WHEN 'signed_up' THEN 'Signed Up – Enrollment Pending' "
+                "  WHEN 'converted' THEN 'Enrolled ✅' "
+                "  ELSE r.status END AS status_label, "
+                "CASE r.status "
+                "  WHEN 'converted' THEN 250 "
+                "  ELSE 0 END AS coins_earned "
+                "FROM referrals r "
+                "LEFT JOIN intern_accounts ia ON ia.id = r.referred_intern_id "
+                "WHERE r.referrer_intern_id=? "
+                "ORDER BY r.created_at DESC", (acct["id"],)).fetchall()]
+
+            total_earned = sum(l.get("coins_earned", 0) for l in leads)
+            total_pending = sum(1 for l in leads if l.get("ref_status") == "signed_up")
+
+        return jsonify({
+            "status": "success",
+            "leads": leads,
+            "summary": {
+                "total": len(leads),
+                "clicked": sum(1 for l in leads if l.get("ref_status") == "clicked"),
+                "signed_up": sum(1 for l in leads if l.get("ref_status") == "signed_up"),
+                "converted": sum(1 for l in leads if l.get("ref_status") == "converted"),
+                "total_earned_coins": total_earned,
+                "pending_conversions": total_pending,
+            }
+        })
+    except Exception as e:
+        log_error("intern-ambassador-leads", e)
         return jsonify({"status": "error", "message": "Error"}), 500
 
 

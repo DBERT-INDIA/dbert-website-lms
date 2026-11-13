@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en">
+<head>
+{% set page_title = "Free AI Resume & ATS Scanner" %}
+{% set page_desc = "Audit your tech resume with our free AI ATS scanner. Get instant keyword gap analysis, score ratings, and match with verified remote developer jobs today." %}
+{% set page_canonical = "https://lms.dbert.in/resume-checker" %}
+{% include "_head.html" %}
+<style nonce="{{ csp_nonce() }}">
+  .checker-wrap { max-width: 900px; margin: 40px auto 80px; padding: 0 20px; }
+  .tool-card { background: #0F172A; border: 1px solid #1E293B; border-radius: 16px; padding: 32px; box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+  .domain-pills { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 24px; }
+  .domain-pill { padding: 8px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer; background: #1E293B; color: #94A3B8; border: 1px solid transparent; transition: all 0.2s ease; }
+  .domain-pill.active { background: #D97706; color: #fff; border-color: #F59E0B; }
+  .tab-nav { display: flex; gap: 12px; border-bottom: 1px solid #1E293B; padding-bottom: 12px; margin-bottom: 20px; }
+  .tab-btn { background: none; border: none; color: #94A3B8; font-size: 14px; font-weight: 600; cursor: pointer; padding: 6px 12px; border-radius: 6px; }
+  .tab-btn.active { color: #F59E0B; background: rgba(217,119,6,0.1); }
+  .drop-zone { border: 2px dashed #334155; border-radius: 12px; padding: 36px 20px; text-align: center; cursor: pointer; background: rgba(15,23,42,0.6); transition: border-color 0.2s; }
+  .drop-zone:hover { border-color: #D97706; }
+  .text-paste { width: 100%; min-height: 220px; background: #0A0F1D; border: 1px solid #334155; border-radius: 10px; color: #F8FAFC; padding: 16px; font-family: monospace; font-size: 13px; resize: vertical; box-sizing: border-box; }
+  .score-gauge { width: 120px; height: 120px; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 6px solid #10B981; margin: 0 auto; }
+  .bar-row { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; }
+  .bar-track { background: #1E293B; height: 8px; border-radius: 4px; overflow: hidden; margin-bottom: 14px; }
+  .bar-fill { height: 100%; border-radius: 4px; background: #D97706; }
+  .blurred-gate { position: relative; overflow: hidden; padding: 24px; border-radius: 12px; background: #0A0F1D; border: 1px dashed #334155; margin-top: 24px; }
+  .blur-overlay { filter: blur(5px); opacity: 0.35; user-select: none; pointer-events: none; }
+  .gate-cta-box { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(10,15,29,0.85); backdrop-filter: blur(4px); padding: 20px; text-align: center; }
+</style>
+</head>
+<body>
+
+<div class="checker-wrap">
+  <div class="t-center mb-32">
+    <a href="/portal" class="back-link mb-16" style="display:inline-block;"><i class="fa-solid fa-arrow-left"></i> Back to DBERT LMS</a>
+    <div style="font-size:12px; font-weight:700; color:#D97706; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:8px;">Free Engineering Tool · Powered by DBERT AI</div>
+    <h1 style="font-size:32px; font-weight:800; color:#F8FAFC; margin:0 0 12px;">Free AI Resume &amp; ATS Scanner</h1>
+    <p style="color:#94A3B8; max-width:640px; margin:0 auto; font-size:15px;">
+      Audit your tech resume against modern hiring filters. Discover critical missing keywords, power verb density, and calculate your automated screening pass probability.
+    </p>
+  </div>
+
+  <div class="tool-card">
+    <div style="font-size:13px; font-weight:700; color:#CBD5E1; margin-bottom:8px;">STEP 1: SELECT YOUR TARGET DOMAIN</div>
+    <div class="domain-pills" id="domainPills">
+      <div class="domain-pill active" data-domain="Full Stack Development">Full Stack Dev</div>
+      <div class="domain-pill" data-domain="AI Agent Development">AI Agent Dev</div>
+      <div class="domain-pill" data-domain="Data Analyst">Data Analyst</div>
+      <div class="domain-pill" data-domain="Python Automation">Python Automation</div>
+      <div class="domain-pill" data-domain="DevOps & Cloud">DevOps &amp; Cloud</div>
+      <div class="domain-pill" data-domain="Cybersecurity">Cybersecurity</div>
+      <div class="domain-pill" data-domain="UI/UX Design">UI/UX Design</div>
+    </div>
+
+    <div class="tab-nav">
+      <button type="button" class="tab-btn active" id="tabUploadBtn" onclick="switchTab('upload')"><i class="fa-solid fa-file-pdf"></i> Upload PDF Resume</button>
+      <button type="button" class="tab-btn" id="tabPasteBtn" onclick="switchTab('paste')"><i class="fa-solid fa-align-left"></i> Paste Resume Text</button>
+    </div>
+
+    <div id="uploadTab">
+      <div class="drop-zone" id="dropZone" onclick="document.getElementById('pdfInput').click()">
+        <input type="file" id="pdfInput" accept="application/pdf" style="display:none;" onchange="handleFileSelect(this)">
+        <i class="fa-solid fa-cloud-arrow-up" style="font-size:36px; color:#D97706; margin-bottom:12px;"></i>
+        <div style="font-weight:700; color:#F8FAFC; font-size:15px;" id="dropLabel">Click to upload or drag &amp; drop your PDF resume</div>
+        <div style="font-size:12px; color:#64748B; margin-top:6px;">Standard single or two-page tech resume (Max 5MB)</div>
+      </div>
+    </div>
+
+    <div id="pasteTab" style="display:none;">
+      <textarea id="resumeText" class="text-paste" placeholder="Paste your complete resume text here (Summary, Skills, Experience, Education)..."></textarea>
+    </div>
+
+    <div style="margin-top:24px; display:flex; justify-content:space-between; align-items:center;">
+      <div style="font-size:12px; color:#64748B;">
+        <i class="fa-solid fa-shield-halved"></i> 100% Private &amp; Secure · No data shared with third parties
+      </div>
+      <button type="button" class="btn btn-primary" id="btnScan" onclick="runAtsScan()" style="padding:12px 28px; font-size:15px;">
+        <i class="fa-solid fa-bolt"></i> Run Free AI ATS Audit
+      </button>
+    </div>
+
+    <!-- Live Results Section -->
+    <div id="resultsWrap" style="display:none; margin-top:36px; border-top:1px solid #1E293B; padding-top:32px;">
+      <div style="display:grid; grid-template-columns: 200px 1fr; gap:28px; align-items:center;">
+        <div class="t-center">
+          <div class="score-gauge" id="scoreGauge">
+            <div style="font-size:34px; font-weight:800; color:#F8FAFC; line-height:1;" id="scoreNum">--</div>
+            <div style="font-size:11px; text-transform:uppercase; color:#94A3B8; margin-top:4px;">ATS Score</div>
+          </div>
+          <div style="margin-top:12px;">
+            <span id="tierBadge" style="padding:4px 10px; border-radius:12px; font-size:12px; font-weight:700; background:#10B981; color:#fff;">--</span>
+          </div>
+          <div id="passProb" style="font-size:12px; color:#94A3B8; margin-top:6px; font-weight:600;">--</div>
+        </div>
+
+        <div>
+          <div class="bar-row"><span>Keyword &amp; Tech Stack Alignment</span><b id="kwPercent">--%</b></div>
+          <div class="bar-track"><div class="bar-fill" id="kwBar" style="width:0%;"></div></div>
+
+          <div class="bar-row"><span>Action Verbs &amp; Metric Density</span><b id="actPercent">--%</b></div>
+          <div class="bar-track"><div class="bar-fill" id="actBar" style="width:0%;"></div></div>
+
+          <div class="bar-row"><span>Section &amp; Contact ATS Hygiene</span><b id="structPercent">--%</b></div>
+          <div class="bar-track"><div class="bar-fill" id="structBar" style="width:0%;"></div></div>
+
+          <div class="bar-row"><span>Length &amp; Formatting Balance</span><b id="lenPercent">--%</b></div>
+          <div class="bar-track"><div class="bar-fill" id="lenBar" style="width:0%;"></div></div>
+        </div>
+      </div>
+
+      <div style="margin-top:28px;">
+        <div style="font-size:12px; font-weight:700; color:#10B981; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:8px;">
+          <i class="fa-solid fa-circle-check"></i> Key Strengths Identified
+        </div>
+        <ul id="strengthsList" style="margin:0; padding-left:20px; color:#CBD5E1; font-size:14px; line-height:1.7;"></ul>
+      </div>
+
+      <!-- Conversion Gate / Deep Unlocked Section -->
+      <div id="gateSection" class="blurred-gate">
+        <div class="blur-overlay">
+          <div style="font-size:14px; font-weight:700; color:#F59E0B;">CRITICAL MISSING TECH STACK KEYWORDS (5)</div>
+          <p>Docker, PostgreSQL indexing, Next.js App Router, Jest automated tests, CI/CD actions...</p>
+          <div style="font-size:14px; font-weight:700; color:#F59E0B; margin-top:12px;">AI BULLET POINT REWRITES WITH METRICS</div>
+          <p>Architected responsive Next.js frontend reducing latency by 32% for 5,000+ users...</p>
+        </div>
+
+        <div class="gate-cta-box" id="gateBox">
+          <div style="font-size:18px; font-weight:800; color:#F8FAFC; margin-bottom:6px;">
+            Unlock Complete ATS Breakdown &amp; Matched Internships
+          </div>
+          <p style="color:#94A3B8; font-size:13px; max-width:480px; margin:0 0 16px;">
+            Free for students. See your exact missing keywords, customized AI bullet point rewrites, and 1-click apply to verified partner openings.
+          </p>
+          <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center; max-width:440px; width:100%;">
+            <input type="text" id="leadName" placeholder="Full Name" style="flex:1; min-width:180px; padding:10px 14px; border-radius:8px; border:1px solid #334155; background:#0F172A; color:#fff; font-size:13px;">
+            <input type="email" id="leadEmail" placeholder="Email Address" style="flex:1; min-width:180px; padding:10px 14px; border-radius:8px; border:1px solid #334155; background:#0F172A; color:#fff; font-size:13px;">
+            <input type="tel" id="leadPhone" placeholder="WhatsApp Number" style="flex:1; min-width:180px; padding:10px 14px; border-radius:8px; border:1px solid #334155; background:#0F172A; color:#fff; font-size:13px;">
+            <button type="button" class="btn btn-primary" onclick="unlockFullReport()" style="width:100%; padding:10px; font-weight:700;">
+              Unlock Full Report &amp; Activate LMS Account →
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Unlocked Content (Shown after conversion) -->
+      <div id="unlockedContent" style="display:none; margin-top:28px;">
+        <div style="background:#0A0F1D; border:1px solid #1E293B; border-radius:12px; padding:20px; margin-bottom:20px;">
+          <div style="font-size:12px; font-weight:700; color:#EF4444; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:8px;">
+            <i class="fa-solid fa-triangle-exclamation"></i> Critical Missing Keywords
+          </div>
+          <div id="missingKeywordsList" style="display:flex; flex-wrap:wrap; gap:8px;"></div>
+        </div>
+
+        <div style="background:#0A0F1D; border:1px solid #1E293B; border-radius:12px; padding:20px; margin-bottom:20px;">
+          <div style="font-size:12px; font-weight:700; color:#D97706; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:12px;">
+            <i class="fa-solid fa-wand-magic-sparkles"></i> AI Bullet-Point Impact Rewrites
+          </div>
+          <div id="rewritesList"></div>
+        </div>
+
+        <div style="background:#0A0F1D; border:1px solid #1E293B; border-radius:12px; padding:20px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <div style="font-size:12px; font-weight:700; color:#10B981; text-transform:uppercase; letter-spacing:0.05em;">
+              <i class="fa-solid fa-briefcase"></i> Verified Open Roles Matching Your Profile
+            </div>
+            <a href="/jobs" class="t-gold t-sm" style="font-weight:700;">View All 10,000+ Openings →</a>
+          </div>
+          <div id="matchedJobsList"></div>
+        </div>
+
+        <div class="t-center mt-24">
+          <a id="lmsRedirectBtn" href="/portal/cv" class="btn btn-primary" style="padding:12px 28px; font-size:15px;">
+            <i class="fa-solid fa-arrow-right"></i> Open in DBERT CV Builder &amp; Optimize
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script nonce="{{ csp_nonce() }}">
+  var selectedDomain = "Full Stack Development";
+  var selectedFile = null;
+  var currentScanData = null;
+
+  document.querySelectorAll('.domain-pill').forEach(function(el) {
+    el.addEventListener('click', function() {
+      document.querySelectorAll('.domain-pill').forEach(function(p) { p.classList.remove('active'); });
+      el.classList.add('active');
+      selectedDomain = el.getAttribute('data-domain');
+    });
+  });
+
+  function switchTab(tab) {
+    if (tab === 'upload') {
+      document.getElementById('uploadTab').style.display = 'block';
+      document.getElementById('pasteTab').style.display = 'none';
+      document.getElementById('tabUploadBtn').classList.add('active');
+      document.getElementById('tabPasteBtn').classList.remove('active');
+    } else {
+      document.getElementById('uploadTab').style.display = 'none';
+      document.getElementById('pasteTab').style.display = 'block';
+      document.getElementById('tabUploadBtn').classList.remove('active');
+      document.getElementById('tabPasteBtn').classList.add('active');
+    }
+  }
+
+  function handleFileSelect(input) {
+    if (input.files && input.files[0]) {
+      selectedFile = input.files[0];
+      document.getElementById('dropLabel').innerText = "Selected: " + selectedFile.name + " (" + (selectedFile.size / 1024).toFixed(1) + " KB)";
+    }
+  }
+
+  async function runAtsScan() {
+    var btn = document.getElementById('btnScan');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Auditing Resume...';
+
+    var formData = new FormData();
+    formData.append('domain', selectedDomain);
+
+    if (document.getElementById('uploadTab').style.display !== 'none' && selectedFile) {
+      formData.append('file', selectedFile);
+    } else {
+      var txt = document.getElementById('resumeText').value.trim();
+      if (!txt) {
+        alert("Please paste your resume text or select a PDF file.");
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-bolt"></i> Run Free AI ATS Audit';
+        return;
+      }
+      formData.append('text', txt);
+    }
+
+    try {
+      var res = await fetch('/api/tools/ats-checker', {
+        method: 'POST',
+        body: formData
+      });
+      var data = await res.json();
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fa-solid fa-bolt"></i> Run Free AI ATS Audit';
+
+      if (data.status === 'error') {
+        alert(data.message || 'Error scanning resume');
+        return;
+      }
+
+      currentScanData = data;
+      renderScanResults(data);
+    } catch(err) {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fa-solid fa-bolt"></i> Run Free AI ATS Audit';
+      alert("Error reaching ATS scanner. Please try again.");
+    }
+  }
+
+  function renderScanResults(d) {
+    document.getElementById('resultsWrap').style.display = 'block';
+    document.getElementById('scoreNum').innerText = d.score;
+    document.getElementById('scoreGauge').style.borderColor = d.color;
+    document.getElementById('tierBadge').innerText = d.tier;
+    document.getElementById('tierBadge').style.backgroundColor = d.color;
+    document.getElementById('passProb').innerText = d.pass_probability;
+
+    document.getElementById('kwPercent').innerText = d.breakdown.keywords.percentage + "%";
+    document.getElementById('kwBar').style.width = d.breakdown.keywords.percentage + "%";
+    document.getElementById('actPercent').innerText = d.breakdown.impact_verbs.percentage + "%";
+    document.getElementById('actBar').style.width = d.breakdown.impact_verbs.percentage + "%";
+    document.getElementById('structPercent').innerText = d.breakdown.structure.percentage + "%";
+    document.getElementById('structBar').style.width = d.breakdown.structure.percentage + "%";
+    document.getElementById('lenPercent').innerText = d.breakdown.length_hygiene.percentage + "%";
+    document.getElementById('lenBar').style.width = d.breakdown.length_hygiene.percentage + "%";
+
+    var stHtml = "";
+    (d.strengths || []).forEach(function(s) {
+      stHtml += "<li>" + s + "</li>";
+    });
+    document.getElementById('strengthsList').innerHTML = stHtml;
+
+    if (d.locked) {
+      document.getElementById('gateSection').style.display = 'block';
+      document.getElementById('unlockedContent').style.display = 'none';
+    } else {
+      showUnlocked(d);
+    }
+
+    document.getElementById('resultsWrap').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  async function unlockFullReport() {
+    var name = document.getElementById('leadName').value.trim();
+    var email = document.getElementById('leadEmail').value.trim();
+    var phone = document.getElementById('leadPhone').value.trim();
+
+    if (!email || !name) {
+      alert("Please provide your Name and Email to unlock the full report.");
+      return;
+    }
+
+    var formData = new FormData();
+    formData.append('domain', selectedDomain);
+    formData.append('name', name);
+    formData.append('email', email);
+    formData.append('phone', phone);
+
+    if (document.getElementById('uploadTab').style.display !== 'none' && selectedFile) {
+      formData.append('file', selectedFile);
+    } else {
+      formData.append('text', document.getElementById('resumeText').value.trim());
+    }
+
+    try {
+      var res = await fetch('/api/tools/ats-checker', {
+        method: 'POST',
+        body: formData
+      });
+      var data = await res.json();
+      if (data.status === 'success') {
+        showUnlocked(data);
+      }
+    } catch(e) {
+      alert("Could not unlock report. Please try again.");
+    }
+  }
+
+  function showUnlocked(d) {
+    document.getElementById('gateSection').style.display = 'none';
+    document.getElementById('unlockedContent').style.display = 'block';
+
+    var kwHtml = "";
+    (d.critical_missing_keywords || []).forEach(function(kw) {
+      kwHtml += '<span style="background:rgba(239,68,68,0.15); color:#F87171; border:1px solid rgba(239,68,68,0.3); padding:4px 10px; border-radius:12px; font-size:12px; font-weight:700;">' + kw + '</span>';
+    });
+    document.getElementById('missingKeywordsList').innerHTML = kwHtml;
+
+    var rwHtml = "";
+    var rewrites = (d.recommendations && d.recommendations.bullet_rewrites) || [];
+    rewrites.forEach(function(r) {
+      rwHtml += '<div style="margin-bottom:12px; padding-bottom:12px; border-bottom:1px solid #1E293B;">';
+      rwHtml += '<div style="font-size:12px; color:#94A3B8; text-decoration:line-through; margin-bottom:4px;">Original: ' + r.original + '</div>';
+      rwHtml += '<div style="font-size:13px; color:#10B981; font-weight:600; margin-bottom:4px;">Improved: ' + r.improved + '</div>';
+      rwHtml += '<div style="font-size:11px; color:#CBD5E1; font-style:italic;">Why: ' + r.why + '</div>';
+      rwHtml += '</div>';
+    });
+    document.getElementById('rewritesList').innerHTML = rwHtml;
+
+    var jobHtml = "";
+    (d.matched_jobs || []).forEach(function(j) {
+      jobHtml += '<div style="display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid #1E293B;">';
+      jobHtml += '<div><div style="font-weight:700; color:#F8FAFC; font-size:14px;">' + j.title + '</div><div style="font-size:12px; color:#94A3B8;">' + j.company_name + ' · ' + (j.location || 'Remote') + '</div></div>';
+      jobHtml += '<a href="/apply/' + j.id + '" class="btn btn-secondary" style="padding:6px 14px; font-size:12px;">Apply Now</a>';
+      jobHtml += '</div>';
+    });
+    document.getElementById('matchedJobsList').innerHTML = jobHtml || '<p class="t-muted t-sm">No exact matches right now — check our live internship board for 10,000+ roles.</p>';
+
+    if (d.lms_signup_url) {
+      document.getElementById('lmsRedirectBtn').href = d.lms_signup_url;
+    }
+  }
+</script>
+
+</body>
+</html>

@@ -329,5 +329,221 @@ export const LAUNCHPAD_DOMAINS: Record<string, LaunchpadDomain> = {
         ]
       }
     ]
+  },
+
+  'ui-ux-design': {
+    id: 'ui-ux-design',
+    name: 'UI/UX Design & Product Experience Systems',
+    shortName: 'UI/UX Design',
+    tagline: 'Figma Auto-Layout, Design Tokens, User Research & Clickable Prototypes',
+    price: '₹7,999',
+    duration: '2 months',
+    audience: 'Aspiring UI/UX designers, product thinkers, and frontend engineers who want to master design systems, user flows, and Figma prototyping.',
+    outcome: 'Architect complete design systems in Figma, conduct user research, build interactive high-fidelity prototypes, and package specs for production engineering handoff.',
+    githubRepos: [
+      {
+        name: 'DBERT-Design / dbert-design-system',
+        url: 'https://github.com/DBERT-INDIA/dbert-design-tokens',
+        role: 'Lead UI/UX & Design Systems Engineer',
+        badgeText: 'DBERT Experience Lab',
+        description: 'Comprehensive Figma design tokens, WCAG AA/AAA accessible components, typography scales, and responsive interaction prototypes.',
+        keyModules: ['Figma Auto-Layout Matrices', 'Design Tokens Schema', 'WCAG Contrast Audits', 'Interactive Prototype Specs']
+      }
+    ],
+    curriculum: [
+      {
+        period: 'Month 1 (Weeks 1–4)',
+        title: 'User Research, Information Architecture & Figma Foundations',
+        topics: [
+          'Qualitative user research: conducting user interviews, building empathy maps, and drafting user personas.',
+          'Information architecture: card sorting, sitemap design, and user journey flow diagramming.',
+          'Figma interface mastery: vectors, constraints, Auto-Layout flex properties, and responsive resizing.',
+          'Low-fidelity wireframing: visual hierarchy, Gutenberg diagram, and rapid grayscale prototype testing.'
+        ]
+      },
+      {
+        period: 'Month 2 (Weeks 5–8)',
+        title: 'Design Systems, Tokens, Usability Testing & Developer Handoff',
+        topics: [
+          'Design tokens: establishing semantic color palettes, modular typography scales, and WCAG AA contrast compliance.',
+          'Component architecture: variant matrices, boolean properties, and interactive component state animations.',
+          'Usability audits: Nielsen Norman heuristics, moderated walkthroughs, and error recovery analysis.',
+          'Capstone Shipment: Delivering an end-to-end clickable mobile or web SaaS prototype with developer handoff specs.'
+        ]
+      }
+    ]
+  },
+
+  'devops-cloud': {
+    id: 'devops-cloud',
+    name: 'Cloud Infrastructure & DevOps Engineering',
+    shortName: 'DevOps & Cloud',
+    tagline: 'Docker Multi-Stage Builds, Kubernetes Clusters, AWS Architecture & CI/CD Pipelines',
+    price: '₹7,999',
+    duration: '2 months',
+    audience: 'Backend developers and systems engineers aiming to master container orchestration, automated cloud infrastructure, and CI/CD pipelines.',
+    outcome: 'Deploy resilient containerized microservices to cloud environments using Docker, Kubernetes, GitHub Actions, and Terraform with Prometheus observability.',
+    githubRepos: [
+      {
+        name: 'DBERT-Cloud / infrastructure-blueprints',
+        url: 'https://github.com/DBERT-INDIA/cloud-infra-blueprints',
+        role: 'DevOps & Site Reliability Engineer',
+        badgeText: 'DBERT Cloud Lab',
+        description: 'Production-ready Terraform configurations, Kubernetes deployment manifests, and GitHub Actions CI/CD workflows for containerized applications.',
+        keyModules: ['Multi-Stage Dockerfiles', 'Kubernetes Ingress & Secrets', 'GitHub Actions CI/CD', 'Prometheus & Grafana Monitoring']
+      }
+    ],
+    curriculum: [
+      {
+        period: 'Month 1 (Weeks 1–4)',
+        title: 'Linux Systems, Cloud Networks & Docker Containerization',
+        topics: [
+          'Linux systems administration: file permissions, systemd daemon management, and shell automation scripts.',
+          'Cloud networking: AWS VPC topology, CIDR subnets, security groups, and IAM least-privilege security.',
+          'Docker containerization: writing efficient multi-stage Dockerfiles, non-root user policies, and layer caching.',
+          'Multi-container environments: orchestration with Docker Compose, volume mounts, and network isolation.'
+        ]
+      },
+      {
+        period: 'Month 2 (Weeks 5–8)',
+        title: 'Kubernetes Orchestration, CI/CD Automation & Observability',
+        topics: [
+          'Kubernetes fundamentals: Pods, Deployments, ReplicaSets, ClusterIP, and Ingress routing controllers.',
+          'CI/CD automation: building automated build, test, and container release pipelines with GitHub Actions.',
+          'Infrastructure monitoring: metric collection with Prometheus, Grafana visualization dashboards, and alerting rules.',
+          'Capstone Shipment: Building and deploying a zero-downtime containerized application with automated CI/CD and metrics.'
+        ]
+      }
+    ]
+  },
+
+  'mobile-app-development': {
+    id: 'mobile-app-development',
+    name: 'Cross-Platform Mobile App Engineering',
+    shortName: 'Mobile Apps',
+    tagline: 'React Native & Flutter, Device Hardware APIs, Offline State & Store Deployment',
+    price: '₹7,999',
+    duration: '2 months',
+    audience: 'Frontend and full-stack developers looking to build high-performance native iOS and Android applications with modern cross-platform tech.',
+    outcome: 'Build, optimize, and ship production-ready mobile apps featuring offline caching, push notifications, native hardware integration, and store bundles.',
+    githubRepos: [
+      {
+        name: 'DBERT-Mobile / cross-platform-app-workbench',
+        url: 'https://github.com/DBERT-INDIA/mobile-app-workbench',
+        role: 'Mobile Application Engineer',
+        badgeText: 'DBERT Mobile Lab',
+        description: 'Full-featured cross-platform mobile application with offline-first synchronization, native camera integration, and background push notifications.',
+        keyModules: ['React Native Navigation', 'AsyncStorage Local Cache', 'Camera & Hardware APIs', 'AAB Release Builds']
+      }
+    ],
+    curriculum: [
+      {
+        period: 'Month 1 (Weeks 1–4)',
+        title: 'Mobile Architecture, Responsive Layouts & Navigation',
+        topics: [
+          'Mobile UI foundations: React Native core components (View, Text, ScrollView), flexbox styling, and safe-area insets.',
+          'Navigation patterns: configuring Native Stack, Bottom Tabs, and Drawer navigation with deep linking.',
+          'State management: managing asynchronous application state with Context API, Redux Toolkit, or Zustand.',
+          'Hardware integrations: camera capture, image picker, device geolocation, and runtime permission handling.'
+        ]
+      },
+      {
+        period: 'Month 2 (Weeks 5–8)',
+        title: 'Offline Storage, Performance Optimization & App Store Builds',
+        topics: [
+          'Offline-first architecture: local persistent storage with AsyncStorage/SQLite, optimistic UI updates, and synchronization.',
+          'Performance profiling: 60fps list virtualization with FlatList/FlashList, memory optimization, and Hermes engine tuning.',
+          'Push notifications: integrating Firebase Cloud Messaging (FCM) on iOS and Android devices.',
+          'Capstone Shipment: Generating production signed Android App Bundles (AAB) and deploying an interactive mobile app capstone.'
+        ]
+      }
+    ]
+  },
+
+  'cybersecurity': {
+    id: 'cybersecurity',
+    name: 'Cybersecurity, SOC Analysis & Ethical Hacking',
+    shortName: 'Cybersecurity',
+    tagline: 'STRIDE Threat Modeling, OWASP Top 10, Penetration Testing & SIEM Log Analysis',
+    price: '₹7,999',
+    duration: '2 months',
+    audience: 'Engineers, IT professionals, and security enthusiasts seeking practical skills in vulnerability assessment, threat analysis, and security operations.',
+    outcome: 'Execute structured web penetration tests, analyze SIEM security events, audit systems against OWASP Top 10, and draft executive remediation reports.',
+    githubRepos: [
+      {
+        name: 'DBERT-Security / secops-audit-suite',
+        url: 'https://github.com/DBERT-INDIA/secops-audit-suite',
+        role: 'Information Security & SOC Analyst',
+        badgeText: 'DBERT Security Operations',
+        description: 'Applied security assessment suite featuring automated vulnerability scanners, SIEM log analyzers, and OWASP remediation playbooks.',
+        keyModules: ['OWASP Top 10 Auditing', 'Wireshark Packet Analysis', 'Burp Suite Testing Playbooks', 'CVSS Risk Scoring Engine']
+      }
+    ],
+    curriculum: [
+      {
+        period: 'Month 1 (Weeks 1–4)',
+        title: 'Threat Modeling, Network Analysis & Cryptography',
+        topics: [
+          'Information security foundations: CIA triad, defense-in-depth architecture, and STRIDE threat modeling.',
+          'Network packet inspection: analyzing TCP/IP, DNS, and TLS handshakes with Wireshark to detect network anomalies.',
+          'Applied cryptography: symmetric/asymmetric ciphers, hashing algorithms, digital signatures, and public key infrastructure (PKI).',
+          'Vulnerability scanning: host discovery, port scanning, and service version enumeration using Nmap.'
+        ]
+      },
+      {
+        period: 'Month 2 (Weeks 5–8)',
+        title: 'Web Application Penetration Testing & SOC Operations',
+        topics: [
+          'OWASP Top 10: exploiting and remediating SQL Injection, Cross-Site Scripting (XSS), BOLA/IDOR, and SSRF flaws.',
+          'Proxy intercept tools: auditing HTTP traffic, fuzzing parameters, and testing authentication flows with Burp Suite.',
+          'SOC monitoring: triaging alerts, analyzing security logs in SIEM (Splunk/Elastic), and following incident response playbooks.',
+          'Capstone Shipment: Conducting a full-scope penetration test on a test environment and drafting a CVSS-scored remediation report.'
+        ]
+      }
+    ]
+  },
+
+  'digital-marketing': {
+    id: 'digital-marketing',
+    name: 'Growth Engineering & Digital Performance Marketing',
+    shortName: 'Digital Marketing',
+    tagline: 'Technical SEO, Meta & Google Ads, Google Analytics 4 & Conversion Funnels',
+    price: '₹7,999',
+    duration: '2 months',
+    audience: 'Marketers, founders, and growth enthusiasts looking to engineer scalable customer acquisition funnels using data-driven marketing tools.',
+    outcome: 'Execute technical SEO audits, manage high-ROI Google & Meta ad campaigns, instrument GA4 custom event tracking, and optimize conversion funnels.',
+    githubRepos: [
+      {
+        name: 'DBERT-Growth / performance-marketing-suite',
+        url: 'https://github.com/DBERT-INDIA/growth-marketing-suite',
+        role: 'Growth Marketing & Funnel Optimization Engineer',
+        badgeText: 'DBERT Growth Lab',
+        description: 'Comprehensive performance marketing toolkit: technical SEO audit scripts, conversion event tracking blueprints, and ad attribution models.',
+        keyModules: ['Technical SEO Auditing', 'GA4 Custom Event Setup', 'Google/Meta Campaign Blueprints', 'LTV/CAC Financial Modeling']
+      }
+    ],
+    curriculum: [
+      {
+        period: 'Month 1 (Weeks 1–4)',
+        title: 'SEO Foundations, Technical Auditing & On-Page Optimization',
+        topics: [
+          'Keyword research: search intent mapping, search volume analysis, and semantic content gap identification.',
+          'On-page SEO: optimizing title tags, meta descriptions, semantic heading hierarchies, and internal linking structures.',
+          'Technical SEO: Core Web Vitals (LCP, INP, CLS), crawl budgets, XML sitemaps, robots.txt, and Schema.org JSON-LD markup.',
+          'Content marketing: developing high-converting educational content briefs, distribution strategies, and lead magnets.'
+        ]
+      },
+      {
+        period: 'Month 2 (Weeks 5–8)',
+        title: 'Paid Acquisition, Conversion Analytics & Growth Funnels',
+        topics: [
+          'Google Ads: search campaign structure, keyword match types, Quality Score optimization, and negative keyword lists.',
+          'Meta Ads: audience segmentation, custom & lookalike audiences, Meta Pixel / CAPI setup, and creative testing frameworks.',
+          'Web analytics: Google Analytics 4 custom event tracking, conversion funnels, multi-touch attribution, and cohort retention.',
+          'Capstone Shipment: Building and presenting an end-to-end multi-channel acquisition funnel with forecasted ROAS and budget allocation.'
+        ]
+      }
+    ]
   }
+
 };

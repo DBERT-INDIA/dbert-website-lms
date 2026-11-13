@@ -9,8 +9,9 @@
     if (m) {
       var code = m[1];
       var d = new Date(); d.setTime(d.getTime() + DAYS * 864e5);
+      var domainPart = window.location.hostname.indexOf('dbert.in') !== -1 ? ';domain=.dbert.in' : '';
       document.cookie = REF_COOKIE + '=' + encodeURIComponent(code)
-        + ';expires=' + d.toUTCString() + ';path=/;SameSite=Lax';
+        + ';expires=' + d.toUTCString() + ';path=/' + domainPart + ';SameSite=Lax';
       try {
         if (window.localStorage) {
           localStorage.setItem(REF_COOKIE, code);

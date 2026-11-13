@@ -82,3 +82,17 @@
   background: rgba(91, 140, 255, .1);
   color: var(--accent);
 }
+
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+  .card {
+    padding: var(--space-3);
+  }
+  .pageBtn {
+    width: 40px;
+    height: 40px;
+  }
+}

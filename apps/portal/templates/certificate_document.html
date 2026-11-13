@@ -54,6 +54,21 @@
     background: rgba(255, 255, 255, 0.14);
     color: #fff;
   }
+  @media (max-width: 640px) {
+    .cert-actions {
+      flex-direction: column;
+      align-items: stretch;
+      padding: 0 16px;
+      gap: 10px;
+    }
+    .btn-print, .btn-verify-link {
+      width: 100%;
+      justify-content: center;
+    }
+    .doc-wrap {
+      padding: 16px 8px 48px;
+    }
+  }
 </style>
 </head>
 <body class="cert-page">

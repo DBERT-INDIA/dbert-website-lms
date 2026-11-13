@@ -124,10 +124,13 @@ export default function HirePreVettedEngineersPage() {
               Vetted through live system builds, code reviews, and production commit histories — not resume keywords. Onboard deployment-ready engineering squads without agency recruitment markups.
             </p>
             <div className="stack-h gap-4 mt-6 flex-wrap">
-              <a href="#contact-hiring" className="btn btn-primary">
-                Request Candidate Profiles <ArrowRight className="inline-icon" />
+              <Link href="/verify/directory" className="btn btn-primary">
+                Browse Pre-Vetted Directory <ArrowRight className="inline-icon" />
+              </Link>
+              <a href="#contact-hiring" className="btn btn-outline">
+                Request Candidate Profiles
               </a>
-              <a href="#vetting-process" className="btn btn-outline">
+              <a href="#vetting-process" className="btn btn-ghost">
                 Our Vetting Methodology
               </a>
             </div>
@@ -228,9 +231,14 @@ export default function HirePreVettedEngineersPage() {
           <p className="body-copy my-4 text-muted">
             Tell us about your technical requirements and timeline. Receive curated candidate profiles within 24 hours.
           </p>
-          <Link href="/startups/services/hiring" className="btn btn-primary btn-lg">
-            Schedule Talent Discovery Call
-          </Link>
+          <div className="stack-h gap-4 justify-center flex-wrap mt-4">
+            <Link href="/verify/directory" className="btn btn-primary btn-lg">
+              Explore Pre-Vetted Directory &rarr;
+            </Link>
+            <a href="https://lms.dbert.in/company/signup" target="_blank" rel="noopener noreferrer" className="btn btn-outline btn-lg">
+              Post a Role on LMS
+            </a>
+          </div>
         </div>
       </section>
 

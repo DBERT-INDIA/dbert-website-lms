@@ -567,6 +567,21 @@
       grid-template-columns: repeat(3, 1fr);
       gap: 20px;
     }
+    .silo-grid-4 {
+      display: grid !important;
+      grid-template-columns: repeat(4, 1fr) !important;
+      gap: 18px !important;
+    }
+    @media (max-width: 1200px) {
+      .silo-grid-4 {
+        grid-template-columns: repeat(2, 1fr) !important;
+      }
+    }
+    @media (max-width: 768px) {
+      .silo-grid-4 {
+        grid-template-columns: 1fr !important;
+      }
+    }
     @media (max-width: 960px) {
       .silo-grid {
         grid-template-columns: 1fr;
@@ -673,6 +688,183 @@
       color: #1D4ED8;
       transform: translateX(2px);
     }
+    .silo-bottom-legal-bar {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 28px auto 0 auto !important;
+      padding-top: 24px !important;
+      border-top: 1px solid #E2E8F0 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      text-align: center !important;
+      box-sizing: border-box !important;
+    }
+    .silo-legal-chips {
+      width: 100% !important;
+      display: flex !important;
+      flex-wrap: wrap !important;
+      justify-content: center !important;
+      align-items: center !important;
+      gap: 8px !important;
+      margin: 0 auto 12px auto !important;
+      text-align: center !important;
+    }
+    .silo-legal-chip {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      padding: 6px 14px !important;
+      border-radius: 8px !important;
+      background: #F1F5F9 !important;
+      color: #475569 !important;
+      text-decoration: none !important;
+      font-size: 12.5px !important;
+      font-weight: 600 !important;
+      transition: all 0.15s ease !important;
+    }
+    .silo-legal-chip:hover {
+      background: #E2E8F0 !important;
+      color: #0F172A !important;
+    }
+    .silo-legal-chip.chip-active {
+      background: #EFF6FF !important;
+      color: #1D4ED8 !important;
+      border: 1px solid #BFDBFE !important;
+      font-weight: 700 !important;
+    }
+
+    /* Modern DBERT Match Intelligence Modal */
+    .match-modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      background: rgba(15, 23, 42, 0.72);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      opacity: 0;
+      transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .match-modal-backdrop.open {
+      display: flex !important;
+      opacity: 1 !important;
+    }
+    .match-modal-card {
+      background: #FFFFFF;
+      border-radius: 20px;
+      max-width: 540px;
+      width: 100%;
+      box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.35), 0 0 0 1px rgba(226, 232, 240, 0.9);
+      overflow: hidden;
+      transform: scale(0.95) translateY(12px);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      box-sizing: border-box;
+    }
+    .match-modal-backdrop.open .match-modal-card {
+      transform: scale(1) translateY(0);
+    }
+    .match-modal-header {
+      background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+      color: #FFFFFF;
+      padding: 20px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .match-modal-body {
+      padding: 24px;
+    }
+    .match-score-band {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 18px;
+      margin-bottom: 18px;
+      border-bottom: 1px solid #F1F5F9;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .match-skills-block {
+      margin-bottom: 18px;
+    }
+    .match-skills-title {
+      font-size: 12.5px;
+      font-weight: 800;
+      color: #0F172A;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .match-chips-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+    .match-action-box {
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 22px;
+    }
+    .match-modal-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .match-btn-lms {
+      flex: 1;
+      text-align: center;
+      background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+      color: #FFFFFF !important;
+      font-weight: 700;
+      padding: 12px 18px;
+      border-radius: 12px;
+      text-decoration: none;
+      font-size: 14px;
+      box-shadow: 0 3px 12px rgba(37, 99, 235, 0.28);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.15s ease;
+    }
+    .match-btn-lms:hover {
+      background: linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%);
+      transform: translateY(-1px);
+      box-shadow: 0 5px 16px rgba(37, 99, 235, 0.38);
+    }
+    .match-btn-close {
+      background: #F1F5F9 !important;
+      border: 1.5px solid #CBD5E1 !important;
+      color: #1E293B !important;
+      font-weight: 700 !important;
+      padding: 12px 22px !important;
+      border-radius: 12px !important;
+      cursor: pointer !important;
+      font-size: 14px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 6px !important;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+      transition: all 0.15s ease !important;
+    }
+    .match-btn-close:hover {
+      background: #E2E8F0 !important;
+      border-color: #94A3B8 !important;
+      color: #0F172A !important;
+      transform: translateY(-1px) !important;
+    }
   </style>
 </head>
 <body class="public">
@@ -743,6 +935,15 @@
           </a>
         </div>
 
+        <!-- Recruiter Callout: Pre-Vetted Engineers -->
+        <div class="sidebar-edge-card" style="background:linear-gradient(135deg, #0F172A 0%, #1E293B 100%); border:1px solid #334155; color:#F8FAFC; margin-bottom:14px;">
+          <div class="edge-badge" style="background:rgba(200,153,69,0.22); color:#FBBF24; border:1px solid rgba(251,191,36,0.35);"><i class="fas fa-user-check"></i> Pre-Vetted Talent</div>
+          <h3 class="edge-title" style="color:#FFFFFF; font-size:15px; margin:6px 0 8px;">Hiring Verified Engineers?</h3>
+          <p class="edge-text" style="color:#CBD5E1; font-size:12px; line-height:1.45; margin-bottom:12px;">Access 65+ pre-vetted AI, Full Stack &amp; Data engineers with evaluated Turnitin rubrics and production PRs. Zero placement fee.</p>
+          <a href="https://dbert.in/verify/directory" target="_blank" rel="noopener" class="edge-cta-btn" style="background:#C89945; color:#0F172A; font-weight:700;">
+            <span>Browse Talent Directory</span> <i class="fas fa-external-link-alt"></i>
+          </a>
+        </div>
         <div class="sidebar-divider"></div>
 
         {% if is_intern %}
@@ -1023,9 +1224,11 @@
           </div>
         </nav>
         {% endif %}
+      </section><!-- /.listings-main -->
+    </div><!-- /.listings-body-grid -->
 
-        <!-- SEO Dynamic Silo Matrix & Cross-Linking Component -->
-        <section class="seo-silo-matrix" aria-label="Explore internships by tech tracks and locations">
+    <!-- SEO Dynamic Silo Matrix & Cross-Linking Component (Full-Width Breakout) -->
+    <section class="seo-silo-matrix" aria-label="Explore internships by tech tracks and locations">
           <div class="silo-header">
             <div class="silo-icon-wrap">
               <i class="fas fa-compass"></i>
@@ -1148,57 +1351,61 @@
               </nav>
             </div>
           </div>
-        </section>
-      </section>
-    </div>
+        </section><!-- /.seo-silo-matrix -->
 
-    <!-- Interactive Skill Gap & Match Insights Modal -->
-    <div id="matchInsightsModal" class="match-modal-backdrop" aria-hidden="true" tabindex="-1" role="dialog" style="display:none; position:fixed; inset:0; z-index:99999; background:rgba(15,23,42,0.65); backdrop-filter:blur(3px); align-items:center; justify-content:center; padding:16px;">
-      <div class="match-modal-card" style="background:#FFFFFF; border-radius:16px; max-width:520px; width:100%; box-shadow:0 20px 45px rgba(0,0,0,0.25); overflow:hidden; border:1px solid #E2E8F0; animation:modalPop 0.2s ease-out;">
-        <div style="background:#0F172A; color:#FFFFFF; padding:18px 22px; display:flex; justify-content:space-between; align-items:center;">
-          <div style="display:flex; align-items:center; gap:10px;">
-            <span style="font-size:20px;">🎯</span>
+    <!-- DBERT AI Match Intelligence Modal -->
+    <div id="matchInsightsModal" class="match-modal-backdrop" aria-hidden="true" tabindex="-1" role="dialog" onclick="if(event.target===this) closeMatchModal();">
+      <div class="match-modal-card" role="document">
+        <div class="match-modal-header">
+          <div style="display:flex; align-items:center; gap:12px;">
+            <span style="font-size:24px; line-height:1;">🎯</span>
             <div>
-              <h3 id="modalTitle" style="margin:0; font-size:16px; font-weight:800; color:#FFFFFF; line-height:1.2;">Fit Breakdown</h3>
-              <span id="modalCompany" style="font-size:12px; color:#94A3B8; font-weight:600;">DBERT Match Intelligence</span>
+              <h3 id="modalTitle" style="margin:0; font-size:17px; font-weight:800; color:#FFFFFF; line-height:1.2;">Fit Breakdown</h3>
+              <span id="modalCompany" style="font-size:12.5px; color:#94A3B8; font-weight:600;">DBERT Match Intelligence</span>
             </div>
           </div>
-          <button type="button" onclick="closeMatchModal()" style="background:transparent; border:none; color:#94A3B8; font-size:22px; cursor:pointer; padding:4px 8px; line-height:1;">&times;</button>
+          <button type="button" onclick="closeMatchModal()" aria-label="Close modal" style="background:rgba(255,255,255,0.15) !important; border:1px solid rgba(255,255,255,0.25) !important; color:#FFFFFF !important; font-size:18px !important; cursor:pointer !important; width:34px !important; height:34px !important; border-radius:50% !important; display:inline-flex !important; align-items:center !important; justify-content:center !important; transition:all 0.15s ease !important;">&times;</button>
         </div>
-        <div style="padding:22px;">
-          <div style="display:flex; align-items:center; justify-content:space-between; padding-bottom:14px; margin-bottom:16px; border-bottom:1px solid #F1F5F9;">
+        <div class="match-modal-body">
+          <div class="match-score-band">
             <div>
-              <span style="font-size:12px; font-weight:700; color:#64748B; text-transform:uppercase; letter-spacing:0.04em;">Overall Match</span>
-              <div id="modalScoreDisplay" style="font-size:26px; font-weight:900; color:#0F172A;">92% <span style="font-size:14px; font-weight:700; color:#059669;">Top Fit</span></div>
+              <span style="font-size:11.5px; font-weight:800; color:#64748B; text-transform:uppercase; letter-spacing:0.05em; display:block; margin-bottom:2px;">Candidate Match Score</span>
+              <div id="modalScoreDisplay" style="font-size:28px; font-weight:900; color:#0F172A; display:flex; align-items:center; gap:10px;">
+                92% <span style="font-size:13.5px; font-weight:800; color:#059669; background:#ECFDF5; border:1px solid #A7F3D0; padding:2px 10px; border-radius:999px;">Top Fit</span>
+              </div>
             </div>
             <div style="text-align:right;">
-              <span style="font-size:12px; font-weight:700; color:#64748B; text-transform:uppercase; letter-spacing:0.04em;">Target Domain</span>
-              <div id="modalTrackDisplay" style="font-size:14px; font-weight:700; color:#2563EB;">AI Agent Development</div>
+              <span style="font-size:11.5px; font-weight:800; color:#64748B; text-transform:uppercase; letter-spacing:0.05em; display:block; margin-bottom:2px;">Target Track</span>
+              <div id="modalTrackDisplay" style="font-size:14px; font-weight:800; color:#2563EB; background:#EFF6FF; border:1px solid #BFDBFE; padding:3px 12px; border-radius:8px;">AI Agent Development</div>
             </div>
           </div>
 
-          <div style="margin-bottom:16px;">
-            <span style="font-size:12px; font-weight:800; color:#0F172A; display:block; margin-bottom:6px;">✅ Matched Technical Competencies</span>
-            <div id="modalMatchedSkills" style="display:flex; flex-wrap:wrap; gap:6px;"></div>
-          </div>
-
-          <div style="margin-bottom:18px;">
-            <span style="font-size:12px; font-weight:800; color:#0F172A; display:block; margin-bottom:6px;">💡 Missing / Recommended Skills</span>
-            <div id="modalMissingSkills" style="display:flex; flex-wrap:wrap; gap:6px;"></div>
-          </div>
-
-          <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:14px; margin-bottom:20px;">
-            <span style="font-size:12.5px; font-weight:800; color:#2563EB; display:flex; align-items:center; gap:6px; margin-bottom:4px;">
-              <i class="fas fa-rocket"></i> Recommended LMS Action:
+          <div class="match-skills-block">
+            <span class="match-skills-title">
+              <i class="fas fa-check-circle" style="color:#059669;"></i> Matched Technical Competencies
             </span>
-            <p id="modalNudgeText" style="margin:0; font-size:13px; color:#334155; line-height:1.45;"></p>
+            <div id="modalMatchedSkills" class="match-chips-wrap"></div>
           </div>
 
-          <div style="display:flex; gap:10px;">
-            <a id="modalLmsBtn" href="/intern/tutor" style="flex:1; text-align:center; background:#2563EB; color:#FFFFFF; font-weight:700; padding:11px 16px; border-radius:10px; text-decoration:none; font-size:13.5px; box-shadow:0 2px 8px rgba(37,99,235,0.25);">
-              <i class="fas fa-graduation-cap"></i> Complete LMS Quiz to Boost Fit
+          <div class="match-skills-block">
+            <span class="match-skills-title">
+              <i class="fas fa-lightbulb" style="color:#D97706;"></i> Missing / Recommended Skills
+            </span>
+            <div id="modalMissingSkills" class="match-chips-wrap"></div>
+          </div>
+
+          <div class="match-action-box">
+            <span style="font-size:12.5px; font-weight:800; color:#2563EB; display:flex; align-items:center; gap:7px; margin-bottom:6px;">
+              <i class="fas fa-graduation-cap"></i> Recommended LMS Next Step:
+            </span>
+            <p id="modalNudgeText" style="margin:0; font-size:13.5px; color:#334155; line-height:1.5; font-weight:500;"></p>
+          </div>
+
+          <div class="match-modal-actions">
+            <a id="modalLmsBtn" href="/intern/tutor" class="match-btn-lms">
+              <i class="fas fa-play"></i> Complete LMS Quiz to Boost Fit
             </a>
-            <button type="button" onclick="closeMatchModal()" style="background:#F1F5F9; border:none; color:#475569; font-weight:700; padding:11px 16px; border-radius:10px; cursor:pointer; font-size:13.5px;">Close</button>
+            <button type="button" onclick="closeMatchModal()" class="match-btn-close" style="background:#F1F5F9 !important; border:1.5px solid #CBD5E1 !important; color:#1E293B !important; font-weight:700 !important; padding:12px 22px !important; border-radius:12px !important; cursor:pointer !important; font-size:14px !important; display:inline-flex !important; align-items:center !important; gap:6px !important;"><i class="fas fa-times"></i> Close</button>
           </div>
         </div>
       </div>
@@ -1213,6 +1420,7 @@
           stipend: document.getElementById('t2Stipend'),
           freshness: document.getElementById('t2Freshness'),
           region: document.getElementById('t2Region'),
+          
         };
 
         function updateFilter(param, val) {
@@ -1226,6 +1434,7 @@
           window.location.href = url.toString();
         }
 
+        
         if (els.region) {
           els.region.addEventListener('change', function() { updateFilter('region', this.value); });
         }
@@ -1294,41 +1503,53 @@
           });
         }
 
+        const DOMAIN_BENCHMARKS = {
+          'AI Agent Development': { matched: ['Python', 'Prompt Engineering', 'Git'], missing: ['LangChain', 'RAG Pipelines', 'Vector DBs'] },
+          'Data Analyst': { matched: ['SQL', 'Excel', 'Problem Solving'], missing: ['PowerBI', 'Pandas', 'ETL Pipelines'] },
+          'Full Stack Development': { matched: ['JavaScript', 'HTML5/CSS3', 'Git'], missing: ['React.js', 'Node.js', 'PostgreSQL'] },
+          'Python Automation': { matched: ['Python Core', 'Scripting', 'Linux CLI'], missing: ['Playwright', 'Selenium', 'Asyncio'] },
+          'UI/UX Design': { matched: ['Figma Basics', 'Wireframing', 'Color Theory'], missing: ['Design Systems', 'Usability Testing', 'Interactive Prototyping'] },
+          'DevOps & Cloud': { matched: ['Linux', 'Git', 'Networking Fundamentals'], missing: ['Docker', 'Kubernetes', 'CI/CD Pipelines'] },
+          'Mobile App Development': { matched: ['Mobile UI', 'OOP Principles', 'REST APIs'], missing: ['Flutter / React Native', 'State Management', 'App Lifecycle'] },
+          'Cybersecurity': { matched: ['Network Protocols', 'Linux Basics', 'Security Hygiene'], missing: ['Vulnerability Assessment', 'OWASP Top 10', 'Burp Suite'] },
+          'Digital Marketing': { matched: ['Content Creation', 'Social Media', 'Communication'], missing: ['SEO Auditing', 'Meta Ads Manager', 'GA4 Funnels'] }
+        };
+
         window.openMatchModal = function(id, title, company, domain, score, tier, color, matched, missing, nudge, day) {
           document.getElementById('modalTitle').textContent = title;
-          document.getElementById('modalCompany').textContent = company + ' • ' + domain;
+          document.getElementById('modalCompany').textContent = (company || 'Company') + ' • ' + (domain || 'Track');
           const scoreEl = document.getElementById('modalScoreDisplay');
-          const tierColor = color === 'emerald' ? '#059669' : (color === 'cyan' ? '#0891B2' : '#D97706');
-          scoreEl.innerHTML = score + '% <span style="font-size:14px; font-weight:700; color:' + tierColor + ';">' + tier + '</span>';
-          document.getElementById('modalTrackDisplay').textContent = domain;
+          const tierBg = color === 'emerald' ? '#ECFDF5' : (color === 'cyan' ? '#EFF6FF' : '#FFFBEB');
+          const tierBorder = color === 'emerald' ? '#A7F3D0' : (color === 'cyan' ? '#BFDBFE' : '#FDE68A');
+          const tierColor = color === 'emerald' ? '#059669' : (color === 'cyan' ? '#1D4ED8' : '#D97706');
+          scoreEl.innerHTML = score + '% <span style="font-size:13px; font-weight:800; color:' + tierColor + '; background:' + tierBg + '; border:1px solid ' + tierBorder + '; padding:3px 11px; border-radius:999px;">' + (tier || 'Verified Fit') + '</span>';
+          document.getElementById('modalTrackDisplay').textContent = domain || 'General';
           
+          const benchmark = DOMAIN_BENCHMARKS[domain] || { matched: ['Foundational Domain Knowledge', 'Core Problem Solving'], missing: ['Advanced Sprint Tooling', 'CI/CD Best Practices'] };
+          const finalMatched = (matched && matched.length) ? matched : benchmark.matched;
+          const finalMissing = (missing && missing.length) ? missing : benchmark.missing;
+
           const mBox = document.getElementById('modalMatchedSkills');
           mBox.innerHTML = '';
-          if (matched && matched.length) {
-            matched.forEach(function(s) {
-              const tag = document.createElement('span');
-              tag.style.cssText = 'background:#ECFDF5; color:#065F46; border:1px solid #A7F3D0; font-size:11.5px; font-weight:700; padding:3px 9px; border-radius:6px;';
-              tag.textContent = '✓ ' + s;
-              mBox.appendChild(tag);
-            });
-          } else {
-            mBox.innerHTML = '<span style="font-size:12px; color:#94A3B8;">Baseline track requirements apply</span>';
-          }
+          finalMatched.forEach(function(s) {
+            const tag = document.createElement('span');
+            tag.style.cssText = 'background:#ECFDF5; color:#065F46; border:1px solid #A7F3D0; font-size:12px; font-weight:700; padding:4px 10px; border-radius:8px; display:inline-flex; align-items:center; gap:5px;';
+            tag.innerHTML = '<i class="fas fa-check" style="font-size:10px; color:#059669;"></i> ' + s;
+            mBox.appendChild(tag);
+          });
 
           const missBox = document.getElementById('modalMissingSkills');
           missBox.innerHTML = '';
-          if (missing && missing.length) {
-            missing.forEach(function(s) {
-              const tag = document.createElement('span');
-              tag.style.cssText = 'background:#FFFBEB; color:#92400E; border:1px solid #FDE68A; font-size:11.5px; font-weight:700; padding:3px 9px; border-radius:6px;';
-              tag.textContent = '+ ' + s;
-              missBox.appendChild(tag);
-            });
-          } else {
-            missBox.innerHTML = '<span style="font-size:12px; color:#059669; font-weight:700;">Zero skill gaps detected! Ready to apply.</span>';
-          }
+          finalMissing.forEach(function(s) {
+            const tag = document.createElement('span');
+            tag.style.cssText = 'background:#FFFBEB; color:#92400E; border:1px solid #FDE68A; font-size:12px; font-weight:700; padding:4px 10px; border-radius:8px; display:inline-flex; align-items:center; gap:5px;';
+            tag.innerHTML = '<i class="fas fa-plus" style="font-size:10px; color:#D97706;"></i> ' + s;
+            missBox.appendChild(tag);
+          });
 
-          document.getElementById('modalNudgeText').textContent = nudge;
+          const defaultNudge = 'Complete today\'s ' + (domain || 'domain') + ' micro-quiz on the DBERT Tutor engine to unlock higher match visibility and fast-track employer shortlisting.';
+          document.getElementById('modalNudgeText').textContent = nudge || defaultNudge;
+
           const lmsBtn = document.getElementById('modalLmsBtn');
           if (lmsBtn) {
             lmsBtn.href = '/intern/tutor';
@@ -1337,6 +1558,7 @@
           const modal = document.getElementById('matchInsightsModal');
           if (modal) {
             modal.style.display = 'flex';
+            setTimeout(function() { modal.classList.add('open'); }, 10);
             modal.setAttribute('aria-hidden', 'false');
           }
         };
@@ -1344,10 +1566,17 @@
         window.closeMatchModal = function() {
           const modal = document.getElementById('matchInsightsModal');
           if (modal) {
-            modal.style.display = 'none';
-            modal.setAttribute('aria-hidden', 'true');
+            modal.classList.remove('open');
+            setTimeout(function() {
+              modal.style.display = 'none';
+              modal.setAttribute('aria-hidden', 'true');
+            }, 200);
           }
         };
+
+        document.addEventListener('keydown', function(e) {
+          if (e.key === 'Escape') closeMatchModal();
+        });
 
         // Client-side fallback: check auth cookie to ensure Portal button displays even with cached HTML
         try {
@@ -1373,21 +1602,6 @@
     </script>
   </main>
 
-  <footer class="public-foot">
-    <div class="fl">
-      <a href="/jobs">Jobs</a>
-      <a href="/internships">Internships</a>
-      <a href="/">Home</a>
-      {% if is_logged_in or is_intern or current_user or is_admin %}
-        <a href="{{ logged_in_url or '/portal' }}">{{ logged_in_label or 'Portal' }}</a>
-      {% else %}
-        <a href="/#signin">Sign in</a>
-      {% endif %}
-    </div>
-    <div style="display:flex;align-items:center;gap:16px;">
-      <a class="wa" href="https://wa.me/917060372107" rel="noopener" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-      <span>© DBERT</span>
-    </div>
-  </footer>
+  {% include '_footer_seo.html' %}
 </body>
 </html>

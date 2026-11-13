@@ -38,6 +38,7 @@
         {
           "title": "Resources",
           "links": [
+            { "label": "Pre-Vetted Engineers Directory", "href": "/verify/directory", "highlight": true },
             { "label": "Register Your Startup", "href": "/startups/register", "highlight": true },
             { "label": "Startup Portfolio", "href": "/startups/portfolio" }
           ]
@@ -100,7 +101,8 @@
           "links": [
             { "label": "DBERT Launchpad (0-to-1)", "href": "/learners/launchpad" },
             { "label": "DBERT Accelerate (Mid-Level)", "href": "/learners/accelerate" },
-            { "label": "DBERT Fellowship (Paid)", "href": "/learners/fellowship", "highlight": true }
+            { "label": "DBERT Fellowship (Paid)", "href": "/learners/fellowship", "highlight": true },
+            { "label": "Free AI Resume Checker", "href": "/learners/resume-checker", "highlight": true }
           ]
         },
         {
@@ -119,7 +121,7 @@
           "title": "External Portal",
           "links": [
             { "label": "Job Board", "href": "https://lms.dbert.in/jobs", "external": true },
-            { "label": "Apply for Fellowship", "href": "https://lms.dbert.in/program", "external": true, "highlight": true }
+            { "label": "Apply for Fellowship", "href": "https://lms.dbert.in", "external": true, "highlight": true }
           ]
         }
       ]
@@ -143,7 +145,7 @@
   ],
   "cta": {
     "label": "Apply for Fellowship",
-    "href": "https://lms.dbert.in/program",
+    "href": "https://lms.dbert.in",
     "external": true
   }
 }

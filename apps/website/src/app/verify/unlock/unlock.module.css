@@ -1,0 +1,932 @@
+/* ==========================================================================
+   DBERT ₹299 Project Verification & Credential Unlock CSS Module
+   ========================================================================== */
+
+.container {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 32px 16px 80px;
+}
+
+.breadcrumb {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: #8A9AB5;
+  text-decoration: none;
+  margin-bottom: 20px;
+  transition: color 0.15s ease;
+}
+
+.breadcrumb:hover {
+  color: #E2B96F;
+}
+
+.headerCard {
+  background: linear-gradient(135deg, #141A23 0%, #0D1527 100%);
+  border: 1px solid #1E2633;
+  border-radius: 14px;
+  padding: 32px 28px;
+  margin-bottom: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.badgeRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.portalBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  background: rgba(226, 185, 111, 0.12);
+  color: #E2B96F;
+  border: 1px solid rgba(226, 185, 111, 0.3);
+}
+
+.sovereignBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: rgba(56, 189, 248, 0.1);
+  color: #38BDF8;
+  border: 1px solid rgba(56, 189, 248, 0.25);
+}
+
+.pageTitle {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin: 0 0 10px 0;
+  line-height: 1.25;
+}
+
+.pageSubtitle {
+  font-size: 0.95rem;
+  color: #94A3B8;
+  line-height: 1.6;
+  margin: 0 0 20px 0;
+  max-width: 820px;
+}
+
+.ledgerBox {
+  background: rgba(15, 23, 42, 0.85);
+  border: 1px solid #334155;
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin-top: 18px;
+}
+
+.ledgerItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 0;
+  font-size: 0.92rem;
+  color: #CBD5E1;
+}
+
+.ledgerLabel {
+  font-weight: 500;
+}
+
+.ledgerValue {
+  font-family: var(--font-m, 'JetBrains Mono', monospace);
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.ledgerPayable {
+  color: #34D399;
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.ledgerNote {
+  font-size: 0.82rem;
+  color: #94A3B8;
+  margin: 10px 0 0 0;
+  line-height: 1.5;
+  border-top: 1px dashed #334155;
+  padding-top: 10px;
+}
+
+/* Lookup Section */
+.lookupSection {
+  background: #0E1626;
+  border: 1px solid #1E293B;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.lookupTitle {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 6px;
+}
+
+.lookupSubtitle {
+  font-size: 0.84rem;
+  color: #8A9AB5;
+  margin-bottom: 16px;
+  line-height: 1.4;
+}
+
+.lookupRow {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.lookupInput {
+  flex: 1;
+  min-width: 260px;
+  background: #090E17;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: #FFFFFF;
+  font-size: 0.92rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.lookupInput:focus {
+  border-color: #38BDF8;
+}
+
+.lookupBtn {
+  background: #38BDF8;
+  color: #0F172A;
+  font-weight: 700;
+  font-size: 0.92rem;
+  padding: 12px 22px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: opacity 0.15s ease, transform 0.1s ease;
+  white-space: nowrap;
+}
+
+.lookupBtn:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+.lookupBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Layout Grid */
+.layoutGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+@media (max-width: 860px) {
+  .layoutGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.card {
+  background: #0F172A;
+  border: 1px solid #1E293B;
+  border-radius: 14px;
+  padding: 28px 24px;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #1E293B;
+}
+
+.cardTitle {
+  font-size: 1.12rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin: 0;
+}
+
+.stepBadge {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 3px 10px;
+  border-radius: 6px;
+  background: rgba(56, 189, 248, 0.15);
+  color: #38BDF8;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+/* QR Card */
+.qrWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #090E17;
+  border: 1px solid #1E293B;
+  border-radius: 12px;
+  padding: 24px 20px;
+  margin-bottom: 20px;
+}
+
+.qrImageFrame {
+  background: #FFFFFF;
+  padding: 12px;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+  margin-bottom: 16px;
+}
+
+.qrImage {
+  display: block;
+  width: 220px;
+  height: 220px;
+  object-fit: contain;
+}
+
+.vpaBadge {
+  background: #131E31;
+  border: 1px solid #1E293B;
+  border-radius: 8px;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-m, 'JetBrains Mono', monospace);
+  font-size: 0.88rem;
+  color: #E2B96F;
+  margin-bottom: 12px;
+}
+
+.copyVpaBtn {
+  background: transparent;
+  border: 1px solid #334155;
+  color: #8A9AB5;
+  font-size: 0.75rem;
+  padding: 3px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.copyVpaBtn:hover {
+  color: #FFFFFF;
+  border-color: #38BDF8;
+}
+
+.upiDeepLinks {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+  margin-top: 12px;
+}
+
+.upiAppBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #1E293B;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: #FFFFFF;
+  text-decoration: none;
+  font-size: 0.84rem;
+  font-weight: 600;
+  transition: all 0.15s ease;
+}
+
+.upiAppBtn:hover {
+  background: #273549;
+  border-color: #38BDF8;
+  color: #38BDF8;
+}
+
+.downloadQrBtn {
+  width: 100%;
+  background: transparent;
+  border: 1px solid #334155;
+  color: #8A9AB5;
+  font-size: 0.82rem;
+  padding: 9px;
+  border-radius: 8px;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.downloadQrBtn:hover {
+  color: #FFFFFF;
+  border-color: #E2B96F;
+}
+
+/* Form Styles */
+.formGroup {
+  margin-bottom: 16px;
+}
+
+.formLabel {
+  display: block;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: #CBD5E1;
+  margin-bottom: 6px;
+}
+
+.formInput {
+  width: 100%;
+  background: #090E17;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: #FFFFFF;
+  font-size: 0.9rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.formInput:focus {
+  border-color: #38BDF8;
+}
+
+.formInputReadOnly {
+  background: #080D15;
+  color: #8A9AB5;
+  cursor: not-allowed;
+}
+
+.utrInput {
+  font-family: var(--font-m, 'JetBrains Mono', monospace);
+  font-size: 1.05rem;
+  letter-spacing: 0.1em;
+  color: #34D399;
+  border-color: #059669;
+}
+
+.utrInput:focus {
+  border-color: #34D399;
+  box-shadow: 0 0 0 2px rgba(52, 211, 153, 0.2);
+}
+
+.formHelper {
+  font-size: 0.78rem;
+  color: #8A9AB5;
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+.submitBtn {
+  width: 100%;
+  background: linear-gradient(135deg, #059669 0%, #10B981 100%);
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 0.98rem;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+  transition: opacity 0.15s ease, transform 0.1s ease;
+}
+
+.submitBtn:hover {
+  opacity: 0.94;
+  transform: translateY(-1px);
+}
+
+.submitBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Success Receipt */
+.receiptCard {
+  background: linear-gradient(135deg, #064E3B 0%, #062F24 100%);
+  border: 1px solid #059669;
+  border-radius: 14px;
+  padding: 32px 28px;
+  margin-bottom: 24px;
+  box-shadow: 0 8px 32px rgba(6, 78, 59, 0.4);
+}
+
+.receiptHead {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.receiptIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #10B981;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+.receiptTitle {
+  font-size: 1.35rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin: 0;
+}
+
+.receiptText {
+  font-size: 0.92rem;
+  color: #A7F3D0;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.receiptDetails {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+}
+
+.receiptRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 6px 0;
+  font-size: 0.88rem;
+  color: #E2E8F0;
+}
+
+.receiptVal {
+  font-family: var(--font-m, 'JetBrains Mono', monospace);
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.waBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #25D366;
+  color: #062F24;
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 12px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: opacity 0.15s ease, transform 0.1s ease;
+}
+
+.waBtn:hover {
+  opacity: 0.92;
+  transform: translateY(-1px);
+}
+
+.errorBanner {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid #EF4444;
+  color: #FCA5A5;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  margin-bottom: 16px;
+}
+
+/* Revenue & Conversion Value Showcase */
+.valueSection {
+  background: #0E1626;
+  border: 1px solid #1E293B;
+  border-radius: 14px;
+  padding: 28px 24px;
+  margin-bottom: 24px;
+}
+
+.valueSectionTitle {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin: 0 0 6px 0;
+}
+
+.valueSectionSubtitle {
+  font-size: 0.88rem;
+  color: #94A3B8;
+  margin: 0 0 20px 0;
+  line-height: 1.5;
+}
+
+.valueGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 860px) {
+  .valueGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.valueCard {
+  background: #090E17;
+  border: 1px solid #1E293B;
+  border-radius: 10px;
+  padding: 18px 16px;
+  transition: border-color 0.15s ease, transform 0.1s ease;
+}
+
+.valueCard:hover {
+  border-color: #38BDF8;
+  transform: translateY(-2px);
+}
+
+.valueCardTag {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 2px 8px;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.tagCert {
+  background: rgba(226, 185, 111, 0.15);
+  color: #E2B96F;
+  border: 1px solid rgba(226, 185, 111, 0.3);
+}
+
+.tagEval {
+  background: rgba(56, 189, 248, 0.15);
+  color: #38BDF8;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+.tagLor {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34D399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.tagDir {
+  background: rgba(168, 85, 247, 0.15);
+  color: #C084FC;
+  border: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+.tagStipend {
+  background: rgba(245, 158, 11, 0.15);
+  color: #FBBF24;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.tagLinkedIn {
+  background: rgba(14, 165, 233, 0.15);
+  color: #38BDF8;
+  border: 1px solid rgba(14, 165, 233, 0.3);
+}
+
+.valueCardTitle {
+  font-size: 0.96rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin: 0 0 8px 0;
+}
+
+.valueCardDesc {
+  font-size: 0.82rem;
+  color: #94A3B8;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.directoryCalloutBanner {
+  background: linear-gradient(135deg, #1E1B4B 0%, #0F172A 100%);
+  border: 1px solid #4338CA;
+  border-radius: 10px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.calloutText {
+  flex: 1;
+  min-width: 260px;
+}
+
+.calloutHeading {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #E0E7FF;
+  margin: 0 0 4px 0;
+}
+
+.calloutSub {
+  font-size: 0.82rem;
+  color: #A5B4FC;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.calloutBadge {
+  background: #4F46E5;
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+
+/* ==========================================================================
+   Pre-Vetted Engineers Showcase & Social Proof Section
+   ========================================================================== */
+
+.engineersSection {
+  background: #0E1626;
+  border: 1px solid #1E293B;
+  border-radius: 14px;
+  padding: 28px 24px;
+  margin-bottom: 24px;
+}
+
+.engineersHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #1E2633;
+}
+
+.engineersTitleGroup {
+  flex: 1;
+  min-width: 280px;
+}
+
+.engineersBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: rgba(16, 185, 129, 0.12);
+  color: #34D399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  margin-bottom: 8px;
+}
+
+.engineersTitle {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin: 0 0 6px 0;
+}
+
+.engineersSubtitle {
+  font-size: 0.84rem;
+  color: #8A9AB5;
+  margin: 0;
+  line-height: 1.45;
+}
+
+.directoryExploreBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #C89945 0%, #D4AF37 100%);
+  color: #0F172A;
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 10px 18px;
+  border-radius: 8px;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(200, 153, 69, 0.25);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  white-space: nowrap;
+}
+
+.directoryExploreBtn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(200, 153, 69, 0.35);
+}
+
+.engineersGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.engineerCard {
+  background: #141C2B;
+  border: 1px solid #243044;
+  border-radius: 10px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.engineerCard:hover {
+  border-color: #38BDF8;
+  transform: translateY(-2px);
+}
+
+.engineerCardTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.engineerDomainPill {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #38BDF8;
+  background: rgba(56, 189, 248, 0.1);
+  padding: 2px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(56, 189, 248, 0.2);
+}
+
+.engineerScoreBadge {
+  font-family: var(--font-m, 'JetBrains Mono', monospace);
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: #34D399;
+  background: rgba(16, 185, 129, 0.12);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.engineerName {
+  font-size: 0.96rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin: 0 0 4px 0;
+}
+
+.engineerCollege {
+  font-size: 0.75rem;
+  color: #8A9AB5;
+  margin: 0 0 10px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.engineerStack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 14px;
+}
+
+.engineerTechPill {
+  font-size: 0.68rem;
+  color: #CBD5E1;
+  background: #1E293B;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.engineerDossierLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #38BDF8;
+  text-decoration: none;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  padding: 6px 12px;
+  border-radius: 6px;
+  background: rgba(56, 189, 248, 0.05);
+  transition: all 0.15s ease;
+}
+
+.engineerDossierLink:hover {
+  background: #38BDF8;
+  color: #0F172A;
+}
+
+/* ==========================================================================
+   Provisional vs. Verified Value Comparison Matrix
+   ========================================================================== */
+
+.comparisonSection {
+  background: #0E1626;
+  border: 1px solid #1E293B;
+  border-radius: 14px;
+  padding: 28px 24px;
+  margin-bottom: 24px;
+}
+
+.comparisonTitle {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin: 0 0 6px 0;
+}
+
+.comparisonSubtitle {
+  font-size: 0.84rem;
+  color: #8A9AB5;
+  margin: 0 0 20px 0;
+}
+
+.comparisonTableWrap {
+  overflow-x: auto;
+}
+
+.comparisonTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.84rem;
+}
+
+.comparisonTable th,
+.comparisonTable td {
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 1px solid #1E2633;
+}
+
+.comparisonTable th {
+  color: #8A9AB5;
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: #141A23;
+}
+
+.featureCol {
+  color: #F0F4F8;
+  font-weight: 600;
+  width: 40%;
+}
+
+.provisionalCol {
+  color: #F59E0B;
+  background: rgba(245, 158, 11, 0.04);
+  width: 30%;
+}
+
+.verifiedCol {
+  color: #34D399;
+  background: rgba(16, 185, 129, 0.05);
+  font-weight: 600;
+  width: 30%;
+}
