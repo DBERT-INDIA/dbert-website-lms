@@ -29,6 +29,11 @@ const nextConfig = {
         destination: 'https://lms.dbert.in/company/:slug/careers',
         permanent: false,
       },
+      {
+        source: '/insights/:slug*',
+        destination: '/blog/:slug*',
+        permanent: true,
+      },
     ];
   },
 };

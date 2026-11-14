@@ -7,39 +7,60 @@ interface ArticleSchemaProps {
   authorName: string;
   authorUrl?: string;
   slug: string;
+  certId?: string;
+  domain?: string;
 }
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.in';
 
 /**
- * Server component injecting Google Rich Results compliant Article JSON-LD structured schema.
+ * Server component injecting Google Rich Results compliant Article & BreadcrumbList JSON-LD structured schema.
  */
 export default function ArticleSchema({
   title,
   description,
   datePublished,
   authorName,
-  authorUrl = `${SITE_URL}/about/team`,
+  authorUrl,
   slug,
+  certId,
+  domain,
 }: ArticleSchemaProps) {
   const articleUrl = `${SITE_URL}/blog/${slug}`;
+  const resolvedAuthorUrl = authorUrl || (certId ? `${SITE_URL}/verify/${certId}` : `${SITE_URL}/verify/directory`);
   
-  const json = {
+  const articleJson = {
     '@context': 'https://schema.org',
-    '@type': 'Article',
+    '@type': 'TechArticle',
     mainEntityOfPage: {
       '@type': 'WebPage',
       '@id': articleUrl,
     },
     headline: title,
     description: description,
-    image: `${SITE_URL}/alkame.png`, // Fallback high-res lab brand emblem
+    image: `${SITE_URL}/alkame.png`,
     datePublished: new Date(datePublished).toISOString(),
     dateModified: new Date(datePublished).toISOString(),
+    inLanguage: 'en-US',
+    proficiencyLevel: 'Professional',
+    about: domain || 'Software Engineering & Artificial Intelligence',
     author: {
       '@type': 'Person',
       name: authorName,
-      url: authorUrl,
+      url: resolvedAuthorUrl,
+      jobTitle: `${domain || 'AI & Full Stack'} Engineering Fellow`,
+      ...(certId ? {
+        hasCredential: {
+          '@type': 'EducationalOccupationalCredential',
+          name: 'DBERT Verified Engineering Credential',
+          credentialCategory: 'Professional Fellowship & Capstone Evaluation',
+          recognizedBy: {
+            '@type': 'Organization',
+            name: 'DBERT India',
+            url: SITE_URL,
+          },
+        },
+      } : {}),
     },
     publisher: {
       '@type': 'Organization',
@@ -49,13 +70,47 @@ export default function ArticleSchema({
         '@type': 'ImageObject',
         url: `${SITE_URL}/alkame.png`,
       },
+      sameAs: [
+        'https://www.linkedin.com/company/dbert-india/',
+      ],
     },
   };
 
+  const breadcrumbJson = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: SITE_URL,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Engineering Blog',
+        item: `${SITE_URL}/blog`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: title,
+        item: articleUrl,
+      },
+    ],
+  };
+
   return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(json) }}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJson) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJson) }}
+      />
+    </>
   );
 }

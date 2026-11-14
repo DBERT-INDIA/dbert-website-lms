@@ -8,6 +8,7 @@ import {
   normalizeDomainToSlug,
   type DomainMeta,
 } from '@/data/domains.config';
+import publishedArticles from '@/data/published_articles.json';
 
 export interface CandidateDirectoryItem {
   certId: string;
@@ -122,6 +123,14 @@ export default function DirectoryClient({
   const handleClearSkills = () => {
     setSelectedSkills([]);
   };
+
+  const certArticleMap = useMemo(() => {
+    const map: Record<string, string> = {};
+    (publishedArticles as Array<{ certId?: string; slug: string }>).forEach((a) => {
+      if (a.certId) map[a.certId.toLowerCase()] = a.slug;
+    });
+    return map;
+  }, []);
 
   // Filtered & Ranked Candidates
   const filteredCandidates = useMemo(() => {
@@ -495,6 +504,18 @@ export default function DirectoryClient({
                             {cand.linkedinVerified && <span className={s.linkedinCheck}>✓</span>}
                             <span className={s.externalArrow}>↗</span>
                           </a>
+                        )}
+                        {cand.certId && certArticleMap[cand.certId.toLowerCase()] && (
+                          <Link
+                            href={`/blog/${certArticleMap[cand.certId.toLowerCase()]}`}
+                            className={s.linkedinPill}
+                            style={{ borderColor: 'rgba(226, 185, 111, 0.4)', color: '#E2B96F', background: 'rgba(226, 185, 111, 0.1)' }}
+                            title="Read Fellow's Published Engineering Case Study"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <span>📝 Case Study</span>
+                            <span className={s.externalArrow}>↗</span>
+                          </Link>
                         )}
                       </div>
                     </div>

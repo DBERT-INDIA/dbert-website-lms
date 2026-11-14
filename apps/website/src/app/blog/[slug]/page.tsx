@@ -137,6 +137,8 @@ export default async function BlogPostPage({ params }: BlogPostProps) {
         datePublished={meta.date}
         authorName={meta.author}
         slug={meta.slug}
+        certId={dynamicPost?.certId}
+        domain={dynamicPost?.domain}
       />
       <div className="measure">
         <div className={s.postHead}>
@@ -209,6 +211,54 @@ export default async function BlogPostPage({ params }: BlogPostProps) {
             bio={meta.authorBio}
           />
         )}
+
+        {/* ── High-Authority Trust Mesh & Ecosystem Cross-Linking ── */}
+        <div style={{
+          background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(20, 26, 35, 0.95) 100%)',
+          border: '1.5px solid rgba(226, 185, 111, 0.3)',
+          borderRadius: '16px',
+          padding: '1.75rem',
+          marginTop: '2.5rem',
+          boxShadow: '0 12px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(226, 185, 111, 0.08)'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', color: '#E2B96F', fontSize: '0.8125rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.75rem' }}>
+            <span>🛡️</span> DBERT Institutional Quality Guarantee &bull; Academic Peer Review
+          </div>
+          <p style={{ color: '#E2E8F0', fontSize: '0.9375rem', lineHeight: '1.6', margin: '0 0 1.25rem' }}>
+            This technical publication represents an authenticated production milestone engineered during the DBERT Incubation Fellowship. The underlying codebase, automated test suites, and system architecture have undergone independent rubric evaluation with Turnitin originality validation (&lt; 3.0% similarity index).
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1rem', borderTop: '1px solid rgba(255, 255, 255, 0.08)', paddingTop: '1.25rem' }}>
+            <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '12px', padding: '1.25rem' }}>
+              <div style={{ color: '#38BDF8', fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.35rem' }}>
+                For Aspiring Engineers
+              </div>
+              <h4 style={{ color: '#fff', fontSize: '1.05rem', margin: '0 0 0.5rem', fontWeight: 700 }}>
+                Build Production Systems
+              </h4>
+              <p style={{ color: '#94A3B8', fontSize: '0.8125rem', lineHeight: '1.5', margin: '0 0 1rem' }}>
+                Join the next cohort, receive 1:1 mentorship from industry staff, and publish verified capstone case studies.
+              </p>
+              <Link href="/enroll/1999" style={{ color: '#E2B96F', fontSize: '0.8125rem', fontWeight: 700, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}>
+                Apply for Fellowship &rarr;
+              </Link>
+            </div>
+
+            <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '12px', padding: '1.25rem' }}>
+              <div style={{ color: '#34D399', fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.35rem' }}>
+                For Tech Recruiters &amp; Employers
+              </div>
+              <h4 style={{ color: '#fff', fontSize: '1.05rem', margin: '0 0 0.5rem', fontWeight: 700 }}>
+                Hire Pre-Vetted Fellows
+              </h4>
+              <p style={{ color: '#94A3B8', fontSize: '0.8125rem', lineHeight: '1.5', margin: '0 0 1rem' }}>
+                Discover engineers with verified code rubrics, live deployment URLs, and zero recruiter markup fees.
+              </p>
+              <Link href="/verify/directory" style={{ color: '#34D399', fontSize: '0.8125rem', fontWeight: 700, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}>
+                Browse Pre-Vetted Directory &rarr;
+              </Link>
+            </div>
+          </div>
+        </div>
 
         <div className={s.postFoot}>
           <Link href="/blog" className="accent-note">

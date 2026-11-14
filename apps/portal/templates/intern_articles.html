@@ -314,6 +314,11 @@
         </div>
       </div>
 
+      <div style="background:rgba(99, 102, 241, 0.1);border:1px solid rgba(99, 102, 241, 0.25);border-radius:10px;padding:0.75rem 1.25rem;margin-bottom:1.25rem;display:flex;align-items:center;gap:0.75rem;color:#C7D2FE;font-size:0.875rem;">
+        <i class="fa-solid fa-circle-info" style="color:#818CF8;"></i>
+        <span><strong>1 Article per Milestone</strong>: You can maintain one comprehensive case study per technical project. Saving updates your existing draft or submission automatically with zero duplicates.</span>
+      </div>
+
       <form id="articleForm">
         <input type="hidden" id="articleId" value="{{ active_article.id if active_article else '' }}">
 
@@ -535,6 +540,9 @@
       }
     }
 
+    const actionBtns = document.querySelectorAll('.btn-save-draft, .btn-submit-review');
+    actionBtns.forEach(b => { b.disabled = true; b.style.opacity = '0.6'; });
+
     if (feedback) {
       feedback.style.display = 'block';
       feedback.style.background = 'rgba(99, 102, 241, 0.15)';
@@ -566,6 +574,10 @@
 
       const data = await res.json();
       if (res.ok && data.status === 'success') {
+        if (data.article_id) {
+          const idInput = document.getElementById('articleId');
+          if (idInput) idInput.value = data.article_id;
+        }
         if (feedback) {
           feedback.style.background = 'rgba(16, 185, 129, 0.15)';
           feedback.style.border = '1px solid rgba(16, 185, 129, 0.4)';
@@ -576,6 +588,7 @@
           window.location.href = '/intern/articles';
         }, 1200);
       } else {
+        actionBtns.forEach(b => { b.disabled = false; b.style.opacity = '1'; });
         if (feedback) {
           feedback.style.background = 'rgba(239, 68, 68, 0.15)';
           feedback.style.border = '1px solid rgba(239, 68, 68, 0.4)';
@@ -584,6 +597,7 @@
         }
       }
     } catch (err) {
+      actionBtns.forEach(b => { b.disabled = false; b.style.opacity = '1'; });
       if (feedback) {
         feedback.style.background = 'rgba(239, 68, 68, 0.15)';
         feedback.style.border = '1px solid rgba(239, 68, 68, 0.4)';

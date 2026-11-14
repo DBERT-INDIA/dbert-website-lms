@@ -249,7 +249,7 @@
                 <i class="fa-solid fa-check"></i> Approve &amp; Publish to dbert.in
               </button>
             {% else %}
-              <a href="https://dbert.in/blog/{{ a.slug or a.title|lower|replace(' ', '-') }}" target="_blank" rel="noopener" class="btn-approve-pub" style="text-decoration:none;">
+              <a href="{{ a.published_url or 'https://dbert.in/blog/' ~ (a.slug or a.title|lower|replace(' ', '-')) }}" target="_blank" rel="noopener" class="btn-approve-pub" style="text-decoration:none;">
                 <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Live on dbert.in/blog
               </a>
             {% endif %}
@@ -268,7 +268,7 @@
 
 <script nonce="{{ csp_nonce() }}">
   async function approveAndPublishArticle(id) {
-    if (!confirm('Publish this technical case study live to dbert.in/blog? This will notify the author and unlock their stipend review.')) return;
+    if (!confirm('Publish this technical case study live to dbert.in/blog? This will notify the author and unlock their Gate 2 stipend milestone.')) return;
 
     var csrfTok = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}';
     try {

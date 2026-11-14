@@ -5339,6 +5339,17 @@ def sitemap_xml():
                 ))
         except Exception:
             pass
+
+        # Published Intern Technical Articles / Case Studies
+        try:
+            for r in conn.execute(
+                "SELECT id, title, updated_at FROM intern_articles WHERE status IN ('APPROVED', 'PUBLISHED')"
+            ).fetchall():
+                art_slug = _post_slugify(r["title"] or "")
+                lm = (r["updated_at"] or "")[:10] or today
+                pages.append((f"https://dbert.in/blog/{art_slug}", lm, "weekly", "0.85"))
+        except Exception:
+            pass
     items = "".join(
         f"<url><loc>{html.escape(loc)}</loc><lastmod>{lm}</lastmod>"
         f"<changefreq>{cf}</changefreq><priority>{pr}</priority></url>"
@@ -6537,6 +6548,56 @@ def api_learning_v2_concept_tree(course_id):
     return jsonify({"status": "success", "course_id": course_id, "domain": course["domain"], "concepts": tree_nodes})
 
 
+def _sync_published_articles_registry(conn):
+    """Synchronizes published articles to data/published_articles.json for website static sitemap and server components."""
+    try:
+        import os, json
+        rows = conn.execute(
+            "SELECT a.id, a.intern_id, a.title, a.domain, a.status, a.published_url, "
+            "a.cert_id, a.github_repo_url, a.live_demo_url, a.rubric_score, a.stipend_status, "
+            "a.created_at, a.updated_at, "
+            "i.name as author_name, i.email as author_email "
+            "FROM intern_articles a "
+            "LEFT JOIN intern_accounts i ON a.intern_id = i.id "
+            "WHERE a.status = 'PUBLISHED' "
+            "ORDER BY a.updated_at DESC"
+        ).fetchall()
+        
+        posts = []
+        for r in rows:
+            d = row_to_dict(r)
+            slug = _post_slugify(d.get("title") or "")
+            posts.append({
+                "id": d["id"],
+                "slug": slug,
+                "title": d["title"],
+                "domain": d.get("domain") or "General",
+                "author": d.get("author_name") or "DBERT Fellow",
+                "authorRole": f"{d.get('domain') or 'AI Engineering'} Fellow",
+                "authorEmail": d.get("author_email") or "",
+                "date": (d.get("updated_at") or d.get("created_at") or "")[:10],
+                "canonicalUrl": f"https://dbert.in/blog/{slug}",
+                "status": d["status"],
+                "certId": d.get("cert_id") or "",
+                "githubRepoUrl": d.get("github_repo_url") or "",
+                "liveDemoUrl": d.get("live_demo_url") or "",
+                "rubricScore": d.get("rubric_score") or None,
+                "stipendStatus": d.get("stipend_status") or "PENDING"
+            })
+            
+        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        paths = [
+            os.path.join(base_dir, "data", "published_articles.json"),
+            os.path.join(base_dir, "apps", "website", "src", "data", "published_articles.json")
+        ]
+        for p in paths:
+            os.makedirs(os.path.dirname(p), exist_ok=True)
+            with open(p, "w", encoding="utf-8") as f:
+                json.dump(posts, f, indent=2, ensure_ascii=False)
+    except Exception as e:
+        log_error("sync_published_articles_registry", e)
+
+
 @app.route("/admin/articles", methods=["GET"])
 def admin_articles_list():
     user = require_admin() or require_role(["admin", "mentor"])
@@ -6593,7 +6654,15 @@ def admin_articles_review():
         slug = _post_slugify(new_title)
         if new_status in ("APPROVED", "PUBLISHED"):
             new_status = "PUBLISHED"
-            assigned_url = cur["published_url"] if cur["published_url"] else f"https://dbert.in/insights/{slug}"
+            assigned_url = cur["published_url"].replace("/insights/", "/blog/") if cur["published_url"] else f"https://dbert.in/blog/{slug}"
+            # Automatically purge any duplicate drafts/pending reviews for this intern and topic
+            try:
+                conn.execute(
+                    "DELETE FROM intern_articles WHERE intern_id = ? AND id != ? AND (LOWER(TRIM(title)) = LOWER(?) OR published_url LIKE ? OR published_url LIKE ?)",
+                    (cur["intern_id"], article_id, new_title.strip(), f"%/blog/{slug}%", f"%/insights/{slug}%")
+                )
+            except Exception:
+                pass
         else:
             assigned_url = cur["published_url"]
 
@@ -6609,7 +6678,7 @@ def admin_articles_review():
                 if author and author["email"]:
                     author_name = author["name"] or "DBERT Fellow"
                     subject = "Your Capstone Case Study is Officially Published on dbert.in! 🚀"
-                    share_url = assigned_url or f"https://dbert.in/insights/{slug}"
+                    share_url = assigned_url or f"https://dbert.in/blog/{slug}"
                     linkedin_url = f"https://www.linkedin.com/sharing/share-offsite/?url={quote(share_url)}"
 
                     email_html = f"""
@@ -6635,6 +6704,8 @@ def admin_articles_review():
                 log_error("admin-article-publish-email", e)
 
         conn.commit()
+        if new_status == "PUBLISHED":
+            _sync_published_articles_registry(conn)
     return jsonify({"status": "success", "article_id": article_id, "article_status": new_status, "published_url": assigned_url})
 
 @app.route("/admin/articles/save", methods=["POST"])
@@ -9535,29 +9606,52 @@ def intern_articles_save():
         
     status = 'PENDING_REVIEW' if action == 'submit' else 'DRAFT'
     now_ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    slug = _post_slugify(title)
     
     with get_db() as conn:
         _ensure_articles_table(conn)
+        
+        # 1-Intern-1-Article-per-Topic deduplication check
+        existing = None
         if article_id:
-            # Check ownership
-            owner = conn.execute("SELECT id, status FROM intern_articles WHERE id=? AND intern_id=?", (article_id, intern["id"])).fetchone()
-            if not owner:
+            existing = conn.execute("SELECT id, status, title FROM intern_articles WHERE id=? AND intern_id=?", (article_id, intern["id"])).fetchone()
+            if not existing:
                 return jsonify({"status": "error", "message": "Article not found."}), 404
-            if owner["status"] in ("APPROVED", "PUBLISHED"):
-                return jsonify({"status": "error", "message": "Cannot edit an approved article."}), 400
+        else:
+            # Query existing article by exact title or slug to prevent duplicate insertions
+            existing = conn.execute(
+                "SELECT id, status, title FROM intern_articles WHERE intern_id=? AND (LOWER(TRIM(title)) = LOWER(?) OR published_url LIKE ? OR published_url LIKE ?)",
+                (intern["id"], title, f"%/blog/{slug}%", f"%/insights/{slug}%")
+            ).fetchone()
+
+        if existing:
+            if existing["status"] in ("APPROVED", "PUBLISHED"):
+                return jsonify({
+                    "status": "error", 
+                    "message": "You have already published an article for this milestone/topic. Only one article per topic is permitted."
+                }), 400
                 
             conn.execute(
                 "UPDATE intern_articles SET title=?, content_markdown=?, github_repo_url=?, live_demo_url=?, cert_id=?, status=?, updated_at=? WHERE id=?", 
-                (title, content_markdown, github_repo_url, live_demo_url, cert_id, status, now_ts, article_id)
+                (title, content_markdown, github_repo_url, live_demo_url, cert_id, status, now_ts, existing["id"])
             )
+            article_id = existing["id"]
         else:
             conn.execute(
                 "INSERT INTO intern_articles (intern_id, domain, title, content_markdown, github_repo_url, live_demo_url, cert_id, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
                 (intern["id"], intern.get("domain", "General"), title, content_markdown, github_repo_url, live_demo_url, cert_id, status, now_ts, now_ts)
             )
+            # Fetch inserted ID
+            try:
+                row = conn.execute("SELECT id FROM intern_articles WHERE intern_id=? ORDER BY id DESC LIMIT 1", (intern["id"],)).fetchone()
+                if row:
+                    article_id = row["id"]
+            except Exception:
+                pass
         conn.commit()
     return jsonify({
         "status": "success", 
+        "article_id": article_id,
         "message": "Article submitted for editorial review!" if status == 'PENDING_REVIEW' else "Draft saved successfully!"
     })
 

@@ -661,7 +661,7 @@ def intern_articles_scaffold():
                 "message": f"Error communicating with Google Gemini API: {str(ex_gem)[:150]}. Please verify your Gemini API key."
             }), 502
 
-        # 5. Insert or Update intern_articles
+        # 5. Insert or Update intern_articles (Enforcing 1 intern = 1 article per topic)
         if existing_art and force:
             conn.execute(
                 """
@@ -674,37 +674,38 @@ def intern_articles_scaffold():
             )
             art_id = existing_art["id"]
         else:
-            conn.execute(
-                """
-                INSERT INTO intern_articles (
-                    intern_id, domain, title, content_markdown, 
-                    task_submission_id, cert_id, github_repo_url, live_demo_url, 
-                    rubric_score, stipend_status, status, created_at, updated_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'PENDING', 'DRAFT', ?, ?)
-                """,
-                (
-                    intern_id, domain, article_title, md_content,
-                    sub["id"], cert_id, repo_url, demo_url,
-                    rubric_score, now_ts, now_ts
-                )
-            )
-            art_id = conn.execute("SELECT id FROM intern_articles WHERE intern_id = ? ORDER BY id DESC LIMIT 1", (intern_id,)).fetchone()["id"]
-
-        # Sync across Sakthi's linked accounts if applicable
-        sakthi_emails = ["sakthi220107@gmail.com", "sakthifriendofgowtham@gmail.com"]
-        if email in sakthi_emails:
-            other_email = "sakthifriendofgowtham@gmail.com" if email == "sakthi220107@gmail.com" else "sakthi220107@gmail.com"
-            other_acct = conn.execute("SELECT id FROM intern_accounts WHERE LOWER(email)=LOWER(?) LIMIT 1", (other_email,)).fetchone()
-            if other_acct:
-                other_id = other_acct["id"]
+            # Check by title to prevent duplicates
+            topic_match = conn.execute(
+                "SELECT id, status FROM intern_articles WHERE intern_id = ? AND LOWER(TRIM(title)) = LOWER(?)",
+                (intern_id, article_title.strip())
+            ).fetchone()
+            if topic_match:
+                art_id = topic_match["id"]
                 conn.execute(
                     """
-                    UPDATE intern_articles 
-                    SET title = ?, content_markdown = ?, domain = ?, updated_at = ?
-                    WHERE intern_id = ?
+                    UPDATE intern_articles SET 
+                        content_markdown = ?, domain = ?, cert_id = ?, 
+                        github_repo_url = ?, live_demo_url = ?, rubric_score = ?, updated_at = ?
+                    WHERE id = ?
                     """,
-                    (article_title, md_content, domain, now_ts, other_id)
+                    (md_content, domain, cert_id, repo_url, demo_url, rubric_score, now_ts, art_id)
                 )
+            else:
+                conn.execute(
+                    """
+                    INSERT INTO intern_articles (
+                        intern_id, domain, title, content_markdown, 
+                        task_submission_id, cert_id, github_repo_url, live_demo_url, 
+                        rubric_score, stipend_status, status, created_at, updated_at
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'PENDING', 'DRAFT', ?, ?)
+                    """,
+                    (
+                        intern_id, domain, article_title, md_content,
+                        sub["id"], cert_id, repo_url, demo_url,
+                        rubric_score, now_ts, now_ts
+                    )
+                )
+                art_id = conn.execute("SELECT id FROM intern_articles WHERE intern_id = ? ORDER BY id DESC LIMIT 1", (intern_id,)).fetchone()["id"]
 
         conn.commit()
 

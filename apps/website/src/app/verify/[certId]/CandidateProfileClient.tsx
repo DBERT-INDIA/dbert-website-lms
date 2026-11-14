@@ -6,6 +6,7 @@ import s from '../verify.module.css';
 import CertificatePreviewFrame from '../CertificatePreviewFrame';
 import { normalizeDomainToSlug, CANONICAL_DOMAINS } from '@/data/domains.config';
 import type { ProjectRepoInfo } from '@/lib/verification';
+import publishedArticles from '@/data/published_articles.json';
 
 export interface RegistryRecord {
   certId: string;
@@ -58,6 +59,11 @@ export default function CandidateProfileClient({
 
   const connectLmsUrl = `https://lms.dbert.in/company/signup?ref=profile&candidate=${encodeURIComponent(cert.certId)}`;
   const interviewRequestUrl = `https://wa.me/918192911360?text=${encodeURIComponent(`Hello DBERT Admissions & Talent Desk, I am interested in reviewing and interviewing candidate ${cert.holderName} (${cert.certId}) for a technical role in ${cert.domain || 'Engineering'}.`)}`;
+
+  const matchingArticle = (publishedArticles as Array<{ certId?: string; author?: string; slug: string; title: string }>).find(
+    (a) => (a.certId && a.certId.toLowerCase() === cert.certId.toLowerCase()) ||
+           (cert.holderName && a.author && a.author.toLowerCase().trim() === cert.holderName.toLowerCase().trim())
+  );
 
   return (
     <div className={s.shell}>
@@ -486,6 +492,50 @@ export default function CandidateProfileClient({
                 Verified zero unoriginal or copied code artifacts across project deliverables.
               </p>
             </div>
+
+            {matchingArticle && (
+              <div style={{
+                gridColumn: '1 / -1',
+                background: 'linear-gradient(135deg, rgba(226, 185, 111, 0.12) 0%, rgba(15, 23, 42, 0.95) 100%)',
+                border: '1.5px solid rgba(226, 185, 111, 0.4)',
+                borderRadius: '12px',
+                padding: '1.25rem 1.5rem',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                flexWrap: 'wrap',
+                gap: '1rem',
+              }}>
+                <div>
+                  <div style={{ color: '#E2B96F', fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.25rem' }}>
+                    ★ Published Peer-Reviewed Case Study
+                  </div>
+                  <div style={{ color: '#F8FAFC', fontSize: '1.05rem', fontWeight: 700 }}>
+                    {matchingArticle.title}
+                  </div>
+                  <div style={{ color: '#94A3B8', fontSize: '0.8125rem', marginTop: '0.2rem' }}>
+                    Published on DBERT Sovereign Engineering Journal &bull; Verified Turnitin Clearance
+                  </div>
+                </div>
+                <Link
+                  href={`/blog/${matchingArticle.slug}`}
+                  style={{
+                    background: '#E2B96F',
+                    color: '#0B0F17',
+                    padding: '0.65rem 1.25rem',
+                    borderRadius: '8px',
+                    fontWeight: 700,
+                    fontSize: '0.875rem',
+                    textDecoration: 'none',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.4rem',
+                  }}
+                >
+                  Read Architecture Case Study &rarr;
+                </Link>
+              </div>
+            )}
           </div>
         )}
 

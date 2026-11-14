@@ -1402,3 +1402,43 @@ When candidates submit unhandled questions or novel edge cases, agents must acti
 3. **Unhandled Inquiry Clustering**:
    - When 2 or more candidates submit inquiries classified with low confidence (`GENERAL_INQUIRY`), extract noun phrases and cluster them.
    - Synthesize a new scenario entry, draft response template adhering to the 600px single-card design system, and append the rule to `AGENTS.md` and `GEMINI.md`.
+---
+
+## 38. Article Publication Deduplication, Automated Sitemap Integration & Trust Mesh Architecture
+
+### 38.1. Operational Context & 1-Intern-1-Topic Rule
+To prevent database bloat, race-condition duplicates, and fragmented reading experiences, DBERT enforces a strict **Single-Article-Per-Topic** constraint for all technical capstones and case studies:
+1. **Deduplication Baseline**:
+   - Production PostgreSQL database (`dbert_internship.intern_articles`) on EC2 was audited and purged of 19 redundant duplicates (resulting from rapid multi-clicks or lingering drafts after approval).
+   - Exactly **22 canonical, unique articles** are retained (13 `PUBLISHED`, 9 `PENDING_REVIEW`).
+   - Safety backup table maintained at `dbert_internship.intern_articles_backup_20261114`.
+2. **Backend Submission Gating (`apps/portal/app.py` & `routes/stipend.py`)**:
+   - In `/intern/articles/save`, before inserting, the engine checks if an article for that `intern_id` and normalized title/slug already exists.
+   - If an unapproved draft or pending review exists, it automatically updates the existing record rather than creating a duplicate row.
+   - If an article on that topic is already `APPROVED` or `PUBLISHED`, new submissions for that topic are rejected with HTTP 400 (`"You have already published an article for this milestone/topic. Only one article per topic is permitted."`).
+   - In `/intern/articles/scaffold`, Gemini case study scaffolding checks existing drafts by submission ID and title, redirecting directly to the editor rather than duplicating.
+   - In `/admin/articles/review`, approving or publishing automatically cleans up any dangling drafts for that `(intern_id, topic)` and synchronizes `published_articles.json`.
+
+### 38.2. URL Normalization & Automated XML Sitemaps
+1. **Sovereign Blog URL Standard**:
+   - All articles live strictly on `https://dbert.in/blog/{slug}`.
+   - Legacy and accidental `/insights/{slug}` paths are normalized in the database and permanently redirected via Next.js (`apps/website/next.config.js` with HTTP 308 from `/insights/:slug*` to `/blog/:slug*`).
+2. **Synchronized Sitemaps**:
+   - **`dbert.in/sitemap.xml`**: Next.js `sitemap.ts` calls `getBlogSlugs()` which reads `apps/website/src/data/published_articles.json` plus static markdown files, assigning `priority: 0.85` and `changeFrequency: 'weekly'`.
+   - **`lms.dbert.in/sitemap.xml`**: Flask `sitemap_xml()` queries `intern_articles WHERE status IN ('APPROVED', 'PUBLISHED')` and dynamically emits all canonical `/blog/{slug}` entries.
+
+### 38.3. Bidirectional Trust Mesh Architecture
+The technical writing platform functions as an interconnected **Trust Mesh** designed to build institutional credibility for DBERT, prove candidate competency to recruiters, and drive high-intent fellowship enrollments:
+1. **Case Study &rarr; Credential Dossier**:
+   - `AuthorDossierBox` on `/blog/[slug]` features verified badges linking directly to `https://dbert.in/verify/{certId}`.
+   - Displays Turnitin originality validation score (< 3.0% similarity index) and GitHub repo / live deployment links.
+2. **Case Study &rarr; Incubation Program & Recruitment Mesh**:
+   - Every article includes an **Academic Peer-Review Seal** from the DBERT Academic Board.
+   - Features contextual **Fellowship Application CTA** (`/enroll/1999`) to convert organic search readers into candidates.
+   - Features direct **Talent Acquisition CTA** (`/verify/directory`) for tech recruiters seeking verified engineers.
+3. **Credential Dossier &rarr; Published Case Study**:
+   - On `https://dbert.in/verify/[certId]`, when a candidate has a published article, `CandidateProfileClient` renders a prominent gold banner: *"Published Peer-Reviewed Case Study: [Title] &rarr;"* deep-linking to `/blog/[slug]`.
+4. **Talent Directory &rarr; Case Study**:
+   - In `/verify/directory`, candidate cards render a `📝 Case Study ↗` pill linking to the candidate's published writing.
+5. **Schema.org Rich Results**:
+   - `ArticleSchema.tsx` injects both `TechArticle` (with `author.hasCredential` linked to `/verify/[certId]`, `publisher` as DBERT India) and `BreadcrumbList` (`Home` &rarr; `Blog` &rarr; `Article Title`).

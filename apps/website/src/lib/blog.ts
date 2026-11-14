@@ -89,7 +89,7 @@ export function getPostMeta(slug: string): BlogPostMeta | null {
 }
 
 /**
- * Lists all valid blog slugs for static parameter building and XML sitmeap generation.
+ * Lists all valid blog slugs for static parameter building and XML sitemap generation.
  */
 export function getBlogSlugs(): string[] {
   ensureBlogDir();
@@ -98,13 +98,28 @@ export function getBlogSlugs(): string[] {
     .filter((file) => file.endsWith('.md') || file.endsWith('.mdx'))
     .map((file) => file.replace(/\.mdx?$/, ''));
 
-  // Ensure published dynamic posts are recognized as valid static slugs
-  const knownDynamicSlugs = [
+  // Read published articles from synchronized JSON registry
+  const dynamicSlugs: string[] = [];
+  try {
+    const publishedPath = path.join(process.cwd(), 'src/data/published_articles.json');
+    if (fs.existsSync(publishedPath)) {
+      const published = JSON.parse(fs.readFileSync(publishedPath, 'utf-8'));
+      if (Array.isArray(published)) {
+        published.forEach((p: any) => {
+          if (p.slug) dynamicSlugs.push(p.slug);
+        });
+      }
+    }
+  } catch (err) {
+    // Graceful fallback
+  }
+
+  const fallbackSlugs = [
     'architecting-gayatri-exam-portal-production-ai-agent-develop',
     'architecting-gayatri-exam-portal-production-ai-agent-development',
   ];
 
-  return Array.from(new Set([...staticSlugs, ...knownDynamicSlugs]));
+  return Array.from(new Set([...staticSlugs, ...dynamicSlugs, ...fallbackSlugs]));
 }
 
 /**
