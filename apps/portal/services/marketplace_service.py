@@ -81,7 +81,11 @@ class MarketplaceService:
     @staticmethod
     def generate_google_jobs_json_ld(post: Dict[str, Any], base_url: str = "https://dbert.in") -> Dict[str, Any]:
         """Formats job posting according to Google-for-Jobs schema.org specs."""
-        return {
+        from services.seo_schema_service import get_postal_address_for_city, parse_base_salary_schema
+
+        is_remote = (post.get("work_mode") or "").lower() == "remote" or (post.get("location") or "").lower() == "remote"
+
+        ld: Dict[str, Any] = {
             "@context": "https://schema.org/",
             "@type": "JobPosting",
             "title": post.get("title", ""),
@@ -100,12 +104,35 @@ class MarketplaceService:
                 "sameAs": base_url,
                 "logo": post.get("company_logo")
             },
-            "jobLocation": {
-                "@type": "Place",
-                "address": {
-                    "@type": "PostalAddress",
-                    "addressLocality": post.get("location") or "Remote",
-                    "addressCountry": "IN"
-                }
-            }
+            "directApply": True
         }
+
+        if is_remote:
+            ld["jobLocationType"] = "TELECOMMUTE"
+            ld["applicantLocationRequirements"] = {
+                "@type": "Country",
+                "name": "IN"
+            }
+        else:
+            ld["jobLocation"] = {
+                "@type": "Place",
+                "address": get_postal_address_for_city(post.get("location"))
+            }
+
+        if post.get("stipend_min") or post.get("stipend_max"):
+            amt: Dict[str, Any] = {
+                "@type": "QuantitativeValue",
+                "unitText": (post.get("pay_period") or "MONTH").upper()
+            }
+            lo, hi = post.get("stipend_min"), post.get("stipend_max")
+            if lo and hi:
+                amt["minValue"], amt["maxValue"] = lo, hi
+            else:
+                amt["value"] = lo or hi
+            ld["baseSalary"] = {"@type": "MonetaryAmount", "currency": "INR", "value": amt}
+        elif post.get("stipend"):
+            parsed_sal = parse_base_salary_schema(post.get("stipend"), default_period=(post.get("pay_period") or "MONTH"))
+            if parsed_sal:
+                ld["baseSalary"] = parsed_sal
+
+        return ld

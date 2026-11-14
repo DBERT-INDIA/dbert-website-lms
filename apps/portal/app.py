@@ -62,6 +62,10 @@ from services.telemetry_service import (
     check_liveness,
     check_readiness
 )
+from services.seo_schema_service import (
+    get_postal_address_for_city,
+    parse_base_salary_schema,
+)
 
 
 try:
@@ -6587,8 +6591,11 @@ def admin_articles_review():
         now_ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         slug = _post_slugify(new_title)
-        auto_url = cur["published_url"] if cur["published_url"] else f"https://dbert.in/blog/{slug}"
-        assigned_url = auto_url if new_status in ("APPROVED", "PUBLISHED") else cur["published_url"]
+        if new_status in ("APPROVED", "PUBLISHED"):
+            new_status = "PUBLISHED"
+            assigned_url = cur["published_url"] if cur["published_url"] else f"https://dbert.in/insights/{slug}"
+        else:
+            assigned_url = cur["published_url"]
 
         conn.execute(
             "UPDATE intern_articles SET title=?, domain=?, content_markdown=?, status=?, mentor_feedback=?, published_url=?, updated_at=? WHERE id=?",
@@ -6602,7 +6609,7 @@ def admin_articles_review():
                 if author and author["email"]:
                     author_name = author["name"] or "DBERT Fellow"
                     subject = "Your Capstone Case Study is Officially Published on dbert.in! 🚀"
-                    share_url = assigned_url or f"https://dbert.in/blog/{slug}"
+                    share_url = assigned_url or f"https://dbert.in/insights/{slug}"
                     linkedin_url = f"https://www.linkedin.com/sharing/share-offsite/?url={quote(share_url)}"
 
                     email_html = f"""
@@ -11767,12 +11774,12 @@ def _job_posting_jsonld(post, company):
         ld["validThrough"] = through
     if (post.get("work_mode") or "").lower() == "remote":
         ld["jobLocationType"] = "TELECOMMUTE"
-        ld["applicantLocationRequirements"] = {"@type": "Country", "name": "India"}
+        ld["applicantLocationRequirements"] = {"@type": "Country", "name": "IN"}
     else:
-        addr = {"@type": "PostalAddress", "addressCountry": "IN"}
-        if post.get("location"):
-            addr["addressLocality"] = post["location"]
-        ld["jobLocation"] = {"@type": "Place", "address": addr}
+        ld["jobLocation"] = {
+            "@type": "Place",
+            "address": get_postal_address_for_city(post.get("location")),
+        }
     if post.get("stipend_min") or post.get("stipend_max"):
         amt = {"@type": "QuantitativeValue",
                "unitText": (post.get("pay_period") or "MONTH").upper()}
@@ -11782,6 +11789,10 @@ def _job_posting_jsonld(post, company):
         else:
             amt["value"] = lo or hi
         ld["baseSalary"] = {"@type": "MonetaryAmount", "currency": "INR", "value": amt}
+    elif post.get("stipend"):
+        parsed_sal = parse_base_salary_schema(post.get("stipend"), default_period=(post.get("pay_period") or "MONTH"))
+        if parsed_sal:
+            ld["baseSalary"] = parsed_sal
     return ld
 
 
@@ -15180,23 +15191,30 @@ def enroll():
         if chosen_domain and chosen_domain not in VALID_DOMAINS:
             return jsonify({"status": "error", "message": "Invalid domain."}), 400
 
-        utr_val = clean_text(request.form.get("utr_number") or request.form.get("utr"))
+        utr_val = clean_text(request.form.get("utr_number") or request.form.get("utr") or "")
+        if utr_val:
+            # Enforce 12-digit numeric constraint
+            if not re.match(r"^\d{12}$", utr_val):
+                return jsonify({"status": "error", "message": "UTR must be exactly 12 numeric digits from your payment receipt."}), 400
 
-        if "payment_screenshot" not in request.files:
-            return jsonify({"status": "error", "message": "Payment screenshot required."}), 400
-        file = request.files["payment_screenshot"]
-        if not file or not file.filename:
-            return jsonify({"status": "error", "message": "Payment screenshot required."}), 400
-        if not allowed_file(file.filename):
-            return jsonify({"status": "error", "message": "Allowed: png,jpg,jpeg,pdf"}), 400
-        # 8.5: verify real content type by magic bytes; reject extension/content mismatches.
-        sniffed = sniff_upload_type(file)
-        if sniffed is None:
-            log_abuse(ip, "/enroll", "enroll:upload", "bad_magic", email)
-            return jsonify({"status": "error", "message": "File must be a real PNG, JPEG, or PDF."}), 400
-        # 8.5: store under a random uuid name with the sniffed extension (never trust user name).
-        filename = f"{uuid.uuid4().hex}.{sniffed}"
-        file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+        file = request.files.get("payment_screenshot")
+        filename = None
+        if file and file.filename:
+            if not allowed_file(file.filename):
+                return jsonify({"status": "error", "message": "Allowed file types: png, jpg, jpeg, pdf"}), 400
+            # 8.5: verify real content type by magic bytes; reject extension/content mismatches.
+            sniffed = sniff_upload_type(file)
+            if sniffed is None:
+                log_abuse(ip, "/enroll", "enroll:upload", "bad_magic", email)
+                return jsonify({"status": "error", "message": "File must be a genuine PNG, JPEG, or PDF."}), 400
+            # 8.5: store under a random uuid name with the sniffed extension (never trust user name).
+            filename = f"{uuid.uuid4().hex}.{sniffed}"
+            file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+        elif not utr_val:
+            return jsonify({"status": "error", "message": "Either a payment screenshot or 12-digit UPI UTR is required."}), 400
+        else:
+            filename = f"utr_{utr_val}.receipt"
+
         batch_label = make_batch_label(joining_date)
 
         with get_db() as conn:
@@ -15210,6 +15228,18 @@ def enroll():
             ).fetchone()
             if not app_row:
                 return jsonify({"status": "error", "message": "Please submit your internship application first before enrolling."}), 400
+
+            # UTR Duplicate Collision Protection
+            if utr_val:
+                duplicate_utr = conn.execute(
+                    "SELECT id, email FROM enrollments WHERE utr=? AND LOWER(email) != LOWER(?) LIMIT 1",
+                    (utr_val, email)
+                ).fetchone()
+                if duplicate_utr:
+                    return jsonify({
+                        "status": "error",
+                        "message": f"This 12-digit UTR reference ({utr_val}) has already been recorded in the admissions ledger."
+                    }), 409
 
             if app_row["status"] in (STATUS_UNDER_REVIEW, STATUS_APPLY_PENDING, STATUS_ON_HOLD):
                 return jsonify({
@@ -15229,6 +15259,7 @@ def enroll():
                 conn.execute("UPDATE applications SET domain=?, updated_at=? WHERE id=?", (chosen_domain, now_str(), app_row["id"]))
 
             existing = conn.execute("SELECT * FROM enrollments WHERE email=? LIMIT 1", (email,)).fetchone()
+            saved_screenshot = filename or (existing["payment_screenshot"] if existing else f"utr_{utr_val}")
             if existing:
                 conn.execute("""
                     UPDATE enrollments SET application_id=?,timestamp=?,name=?,phone=?,city=?,college=?,course=?,
@@ -15236,16 +15267,16 @@ def enroll():
                     utr=COALESCE(?, utr),payment_status='Pending Verification',updated_at=? WHERE email=?
                 """, (app_row["id"], now_str(), acct["name"], acct["phone"], acct["city"], acct["college"],
                       acct["course"], acct["semester"], acct["year_of_passing"], domain_to_save,
-                      joining_date, batch_label, filename, utr_val, now_str(), email))
+                      joining_date, batch_label, saved_screenshot, utr_val, now_str(), email))
             else:
                 conn.execute("""
                     INSERT INTO enrollments
                     (application_id,timestamp,name,email,phone,city,college,course,semester,
-                    year_of_passing,domain,joining_date,batch_label,payment_screenshot,utr,payment_status,created_at,updated_at)
-                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                    year_of_passing,domain,joining_date,batch_label,payment_screenshot,utr,payment_status,product,amount,created_at,updated_at)
+                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,'free_deposit',499,?,?)
                 """, (app_row["id"], now_str(), acct["name"], email, acct["phone"], acct["city"], acct["college"],
                       acct["course"], acct["semester"], acct["year_of_passing"], domain_to_save,
-                      joining_date, batch_label, filename, utr_val, "Pending Verification", now_str(), now_str()))
+                      joining_date, batch_label, saved_screenshot, utr_val, "Pending Verification", now_str(), now_str()))
 
             old_status = app_row["status"]
             # SEC-007: Do not advance to STATUS_ENROLLED until payment is verified by admin.
@@ -15281,7 +15312,18 @@ def enroll():
                 send_status_update_email(acct["name"], email, domain_to_save, STATUS_ENROLLED, "", joining_date)
         except Exception as ee:
             log_error("email-enroll", ee)
-        return jsonify({"status": "success", "message": "Enrollment submitted successfully."})
+
+        ref_id = f"DBERT-DEP-{uuid.uuid4().hex[:6].upper()}"
+        wa_text = f"Hi DBERT Admissions, I have submitted my ₹499 caution deposit for {domain_to_save}. UTR: {utr_val or 'Receipt Attached'} (Ref: {ref_id})"
+        whatsapp_url = f"https://wa.me/918192911360?text={quote(wa_text)}"
+
+        return jsonify({
+            "status": "success",
+            "message": "Enrollment submitted successfully. Admissions verification in progress.",
+            "ref_id": ref_id,
+            "utr": utr_val,
+            "whatsapp_url": whatsapp_url
+        })
     except Exception as e:
         log_error("enroll", e)
         return jsonify({"status": "error", "message": "Error"}), 500
@@ -20150,37 +20192,46 @@ def scraped_internship_detail(job_id, slug=None):
     domain_slug = DOMAIN_SLUGS.get(job.get("Domain", ""), "")
     city_slug = re.sub(r"[^a-z0-9]+", "-", city_raw.lower()).strip("-") if city_raw else ""
 
+    # Determine if Remote or Physical
+    is_remote_job = (
+        (job.get("Work_Model") or "").lower() == "remote"
+        or (job.get("Is_Remote") or "").lower() in ("true", "1", "yes", "remote")
+        or (city_raw or "").lower() == "remote"
+    )
+
     # Google JobPosting JSON-LD for Rich Results
-    jsonld = json.dumps({
+    lead_ld = {
         "@context": "https://schema.org/",
         "@type": "JobPosting",
         "title": job.get("Role", ""),
         "description": raw_desc,
         "datePosted": job.get("Start_Date", ""),
         "validThrough": job.get("End_Date", ""),
-        "employmentType": "INTERN",
+        "employmentType": "FULL_TIME" if is_job else "INTERN",
         "hiringOrganization": {
             "@type": "Organization",
             "name": job.get("Company", ""),
         },
-        "jobLocation": {
+        "directApply": True,
+    }
+
+    if is_remote_job:
+        lead_ld["jobLocationType"] = "TELECOMMUTE"
+        lead_ld["applicantLocationRequirements"] = {
+            "@type": "Country",
+            "name": "IN",
+        }
+    else:
+        lead_ld["jobLocation"] = {
             "@type": "Place",
-            "address": {
-                "@type": "PostalAddress",
-                "addressLocality": city_raw or "Remote",
-                "addressRegion": job.get("Region", "India"),
-            },
-        },
-        "baseSalary": {
-            "@type": "MonetaryAmount",
-            "currency": "INR",
-            "value": {
-                "@type": "QuantitativeValue",
-                "unitText": "MONTH",
-                "description": stipend_display,
-            },
-        },
-    }).replace("</", "<\\/")
+            "address": get_postal_address_for_city(city_raw, job.get("Region")),
+        }
+
+    salary_ld = parse_base_salary_schema(actual_stipend or normalized_stipend or stipend_display)
+    if salary_ld:
+        lead_ld["baseSalary"] = salary_ld
+
+    jsonld = json.dumps(lead_ld).replace("</", "<\\/")
 
     breadcrumbs = [
         ("Home", "/"),
@@ -20475,7 +20526,8 @@ def company_careers_hub(company_slug):
         # Schema.org JSON-LD
         job_postings_ld = []
         for op in all_openings:
-            job_postings_ld.append({
+            op_is_remote = (op.get("work_model") or "").lower() == "remote" or (op.get("location") or "").lower() == "remote"
+            op_ld = {
                 "@type": "JobPosting",
                 "title": op["role"],
                 "description": f"Verified {op['domain']} opening at {comp_name}. {op['work_model']} engagement with {op['stipend']}.",
@@ -20485,17 +20537,25 @@ def company_careers_hub(company_slug):
                 "hiringOrganization": {
                     "@type": "Organization",
                     "name": comp_name,
-                    "sameAs": canonical_url
+                    "sameAs": canonical_url,
                 },
-                "jobLocation": {
-                    "@type": "Place",
-                    "address": {
-                        "@type": "PostalAddress",
-                        "addressLocality": op["location"],
-                        "addressCountry": "IN" if op["region"] == "India" else "US"
-                    }
+                "directApply": True,
+            }
+            if op_is_remote:
+                op_ld["jobLocationType"] = "TELECOMMUTE"
+                op_ld["applicantLocationRequirements"] = {
+                    "@type": "Country",
+                    "name": "IN" if op.get("region") == "India" else "US",
                 }
-            })
+            else:
+                op_ld["jobLocation"] = {
+                    "@type": "Place",
+                    "address": get_postal_address_for_city(op.get("location"), op.get("region")),
+                }
+            op_sal = parse_base_salary_schema(op.get("stipend"))
+            if op_sal:
+                op_ld["baseSalary"] = op_sal
+            job_postings_ld.append(op_ld)
 
         jsonld_data = {
             "@context": "https://schema.org",

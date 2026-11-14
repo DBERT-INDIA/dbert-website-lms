@@ -1178,3 +1178,36 @@ To resolve the discrepancy and modernize the intern experience:
    - **4-Gate Stipend Milestone Card**: Visual checklist (Gate 1: Credential, Gate 2: Tenure, Gate 3: UPI, Gate 4: Capstone) with progress percentage.
    - **Course Learning Progress Widget**: Dynamic progress bar showing enrolled modules, completed lessons, and next assignment.
    - **Fast Action Drawer**: Direct 1-click access to Book Mentor, View Tasks, and Withdraw Coins.
+
+---
+
+## 35. Google Search Console JobPosting Structured Data Remediation & Unified SEO Schema Service
+
+### 35.1. Problem Diagnosis & Google Search Console Trigger
+Google Search Console flagged 4 non-critical `JobPosting` structured data issues across `dbert.in` and `lms.dbert.in`:
+1. `Missing field 'addressCountry' (in 'jobLocation.address')`
+2. `Missing field 'streetAddress' (in 'jobLocation.address')`
+3. `Missing field 'postalCode' (in 'jobLocation.address')`
+4. `Missing field 'value' (in 'baseSalary.value')`
+
+**Root Cause**: The site exposes `https://dbert.in/sitemap-lms.xml` (proxied to `lms.dbert.in/sitemap.xml`) indexing 10,393 scraped internship and job lead pages (`/internship/lead/<id>/<slug>` and `/job/lead/<id>/<slug>`). The template in `apps/portal/app.py` emitted incomplete `PostalAddress` objects (lacking country, street address, and PIN code) and passed textual descriptions into `baseSalary.value` instead of numeric values.
+
+### 35.2. Architecture & Solution Principles
+1. **Zero Sitemap Disturbance**:
+   - Strictly preserved all 170 URLs in `apps/website/src/app/sitemap.ts` (`dbert.in/sitemap.xml`).
+   - Strictly preserved all 10,393 URLs in `apps/portal/app.py` (`lms.dbert.in/sitemap.xml` / `dbert.in/sitemap-lms.xml`).
+   - Corrected the JSON-LD schemas generated on the pages themselves.
+2. **Unified SEO Schema Service (`apps/portal/services/seo_schema_service.py`)**:
+   - `INDIAN_CITY_DIRECTORY`: Maps 30+ Indian tech hubs (Chennai, Bengaluru, Mumbai, Pune, Hyderabad, Delhi NCR, Gurgaon, Noida, etc.) to exact postal coordinates, street corridors, states, and PIN codes.
+   - `get_postal_address_for_city(city, region)`: Generates complete Schema.org `PostalAddress` with `streetAddress`, `addressLocality`, `addressRegion`, `postalCode`, and `addressCountry: "IN"`.
+   - `parse_base_salary_schema(stipend_text)`: Automatically extracts numeric compensation into valid `MonetaryAmount` with `QuantitativeValue` (`value: int` or `minValue: int, maxValue: int`, and `unitText: "MONTH"` / `"YEAR"`). For undisclosed or performance-based stipends, `baseSalary` is cleanly omitted per Google Search Central specifications to prevent "Missing field value" warnings.
+3. **Remote vs. Onsite Distinction**:
+   - **Remote Roles**: Emits `jobLocationType: "TELECOMMUTE"` and `applicantLocationRequirements: {"@type": "Country", "name": "IN"}` with `jobLocation: null`.
+   - **Onsite / Hybrid Roles**: Emits `jobLocation` containing complete 5-field `PostalAddress`.
+4. **Cross-Service Coverage**:
+   - Applied to dynamic lead details in `apps/portal/app.py`.
+   - Applied to canonical post details (`_job_posting_jsonld`).
+   - Applied to company careers hubs (`company_careers_hub`).
+   - Applied to marketplace generator (`MarketplaceService.generate_google_jobs_json_ld`).
+   - Applied to Next.js programmatic city pages in `apps/website/src/app/internships/[role]/[city]/page.tsx`.
+   - Deployed and live validated on EC2 (`3.26.237.171`).

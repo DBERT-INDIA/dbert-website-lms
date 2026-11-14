@@ -21,6 +21,22 @@ const CITY_NAMES: Record<string, string> = {
   'gurgaon': 'Gurgaon',
 };
 
+const CITY_POSTAL_DATA: Record<string, { street: string; locality: string; region: string; postalCode: string }> = {
+  'bengaluru': { street: 'Outer Ring Road, Manyata Tech Park', locality: 'Bengaluru', region: 'Karnataka', postalCode: '560001' },
+  'delhi-ncr': { street: 'Connaught Place / Barakhamba Road', locality: 'Delhi NCR', region: 'Delhi', postalCode: '110001' },
+  'mumbai': { street: 'Bandra Kurla Complex (BKC)', locality: 'Mumbai', region: 'Maharashtra', postalCode: '400051' },
+  'pune': { street: 'Hinjawadi Rajiv Gandhi Infotech Park', locality: 'Pune', region: 'Maharashtra', postalCode: '411057' },
+  'hyderabad': { street: 'HITEC City, Madhapur', locality: 'Hyderabad', region: 'Telangana', postalCode: '500081' },
+  'chennai': { street: 'Old Mahabalipuram Rd, Tech Corridor', locality: 'Chennai', region: 'Tamil Nadu', postalCode: '600001' },
+  'kolkata': { street: 'Sector V, Salt Lake City', locality: 'Kolkata', region: 'West Bengal', postalCode: '700091' },
+  'ahmedabad': { street: 'SG Highway, Prahlad Nagar', locality: 'Ahmedabad', region: 'Gujarat', postalCode: '380015' },
+  'jaipur': { street: 'Malviya Nagar Industrial Area', locality: 'Jaipur', region: 'Rajasthan', postalCode: '302017' },
+  'lucknow': { street: 'Vibhuti Khand, Gomti Nagar', locality: 'Lucknow', region: 'Uttar Pradesh', postalCode: '226010' },
+  'chandigarh': { street: 'Rajiv Gandhi Chandigarh Technology Park', locality: 'Chandigarh', region: 'Chandigarh', postalCode: '160019' },
+  'noida': { street: 'Sector 62, Electronic City', locality: 'Noida', region: 'Uttar Pradesh', postalCode: '201301' },
+  'gurgaon': { street: 'DLF Cyber City, Sector 24', locality: 'Gurugram', region: 'Haryana', postalCode: '122002' },
+};
+
 const ROLE_INFO: Record<string, { title: string; skills: string[]; stipend: string; desc: string }> = {
   'full-stack-development': {
     title: 'Full Stack Web Development',
@@ -142,11 +158,27 @@ export default async function ProgrammaticInternshipPage({ params }: PageProps) 
           sameAs: 'https://dbert.in',
           logo: 'https://dbert.in/logo.svg'
         },
-        jobLocationType: isRemote ? 'TELECOMMUTE' : undefined,
-        applicantLocationRequirements: {
-          '@type': 'Country',
-          name: 'IN'
-        },
+        ...(isRemote
+          ? {
+              jobLocationType: 'TELECOMMUTE',
+              applicantLocationRequirements: {
+                '@type': 'Country',
+                name: 'IN'
+              }
+            }
+          : {
+              jobLocation: {
+                '@type': 'Place',
+                address: {
+                  '@type': 'PostalAddress',
+                  streetAddress: CITY_POSTAL_DATA[city]?.street || 'Commercial Business District',
+                  addressLocality: CITY_POSTAL_DATA[city]?.locality || cityName,
+                  addressRegion: CITY_POSTAL_DATA[city]?.region || 'India',
+                  postalCode: CITY_POSTAL_DATA[city]?.postalCode || '110001',
+                  addressCountry: 'IN'
+                }
+              }
+            }),
         baseSalary: {
           '@type': 'MonetaryAmount',
           currency: 'INR',
