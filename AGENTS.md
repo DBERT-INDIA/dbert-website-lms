@@ -1248,3 +1248,157 @@ Autonomous triage and customer/candidate response system operating across active
 10. **Shanu Sri Gowtham** (`shanusrigowtham17@gmail.com`): Performance stipend milestone status explanation, 4-gate verification criteria, and `/stipend/tasks` portal.
 11. **Rosmi Reji** (`rosmireji556@gmail.com`): Official LOR, background verification contacts (`admissions@dbert.in`), and employer cryptographic verification dossier `CERT-DBERT-2026-FSD-103`.
 - **Administrative Telemetry**: Dispatched automated summary report to `ain.sharma.abhinav@gmail.com` and `ajnatechrpa@gmail.com`.
+---
+
+## 37. Universal Autonomous Email Response Skills & Operational Playbook
+
+### 37.1. Email Classification Taxonomy & Standard Business Policies
+Every incoming student, intern, and client inquiry received across DBERT inboxes is classified into one of eight standardized operational scenarios. Future agents must execute the exact governing business policy, response structure, and action links detailed below:
+
+| Inquiry Type | Typical Candidate Triggers | Governing Business Policy | Action & Response Strategy | Direct Action Links |
+| :--- | :--- | :--- | :--- | :--- |
+| **Type 1: ₹499 Seat Caution Deposit** | *"Why do I need to pay ₹499?", "Is ₹499 refundable?", "How to confirm seat?", "Payment receipt upload"* | **100% Credited / 100% Refundable**. Credited in full against the incubation program fee (net balance ₹1,500) or refunded upon milestone completion. Secures reserved cohort slot and provisions dedicated cloud compute sandbox. | Re-affirm selection, explain zero-loss credit/refund policy, provide UPI VPA, and offer instant WhatsApp receipt submission. | • UPI VPA: `Q652429146@ybl`<br/>• Portal: [`dbert.in/enroll/1999`](https://dbert.in/enroll/1999)<br/>• WhatsApp: [`+91 81929 11360`](https://wa.me/918192911360) |
+| **Type 2: Milestone Fee Clarification (₹299 vs Free)** | *"I am unable to pay ₹299", "Do I need to pay for stipend?", "Is certificate free?", "Payment failed for certificate"* | **100% FREE Standard Evaluation**. Academic evaluation, LMS grading, cryptographic credential verification on `dbert.in/verify`, and ₹5,000 stipend eligibility are completely free. The ₹299 fee is strictly an optional courier and framing charge for physical hard-copy delivery. | Reassure candidate that zero payment is required for digital credentials or stipend eligibility. Provide direct digital verification link and LMS capstone submission portal. | • Verification: [`dbert.in/verify`](https://dbert.in/verify)<br/>• Tasks: [`lms.dbert.in/stipend/tasks`](https://lms.dbert.in/stipend/tasks) |
+| **Type 3: Portal Login & Onboarding Server Errors** | *"Cannot log in", "Server error during onboarding", "Form response not recording", "Account locked"* | **Zero-Friction Candidate Access**. Automated activation fallback; self-healing direct portal access. Candidates must never be blocked by credential or CSRF glitches. | Provide direct links to LMS portal, registration bypass, and 1-click password reset with registered email. Offer instant manual activation via WhatsApp Concierge. | • Portal: [`lms.dbert.in/portal`](https://lms.dbert.in/portal)<br/>• Apply: [`lms.dbert.in/apply`](https://lms.dbert.in/apply)<br/>• Tasks: [`lms.dbert.in/stipend/tasks`](https://lms.dbert.in/stipend/tasks) |
+| **Type 4: Performance Stipend Release (4-Gate Rule)** | *"Where is my stipend?", "When will I get paid?", "Stipend status update", "Completed tasks but no coins"* | **Strict 4-Gate Verification Rule**:<br/>1. **Verified Credential**: `status: "VERIFIED"`, `isProvisional: false`.<br/>2. **60-Day Maturity**: Intern completion date (`joining_date + 60 days`).<br/>3. **Encrypted UPI**: Verified VPA bound to profile.<br/>4. **Capstone Contribution**: Domain deliverables submitted on `/stipend/tasks` with AI rubric score and staff approval. | Detail the 4-gate status checklist, direct candidate to `/stipend/tasks` dashboard, explain 5,000 coins wallet credit, and provide Admissions helpline for expedited staff review. | • Tasks: [`lms.dbert.in/stipend/tasks`](https://lms.dbert.in/stipend/tasks)<br/>• Wallet: [`lms.dbert.in/intern/ambassador/withdraw`](https://lms.dbert.in/intern/ambassador/withdraw) |
+| **Type 5: Payout Setup & UPI Submission** | *"My UPI ID is...", "Unable to add payout method on profile", "Update payment details"* | **Idempotent Financial Ledger Recording**. Candidate payment VPA is recorded directly into `intern_accounts.upi_id` and synced to `balance_enrollments_1500.json`. Duplicate submissions are rejected idempotently. | Record and validate 12-character VPA/UTR, confirm wallet binding, and notify candidate that disbursement will route directly to their confirmed VPA upon capstone sign-off. | • Profile: [`lms.dbert.in/intern/profile`](https://lms.dbert.in/intern/profile) |
+| **Type 6: Official LOR & Employer Work References** | *"Need work reference for new job", "Employer background verification", "HR verification request", "LOR copy"* | **Institutional Verification Guarantee with 24h SLA**. Official employer background verification and signed Letter of Recommendation (LOR) from Program Head Mr. Abhinav Sharma. | Provide candidate's cryptographic proof dossier, official HR verification email, and mentor sign-off. | • Dossier: `https://dbert.in/verify?certid={certId}`<br/>• HR Email: `admissions@dbert.in`<br/>• Mentor: `abhinav.sharma@dbert.in` |
+| **Type 7: Domain Migration & Brand Queries** | *"Verification page not opening on gayatrieducation.info", "dbert.online inquiry", "Is DBERT legitimate?"* | **Active Sovereign Domain Mandate**. All services, portals, and cryptographic registries operate strictly under `https://dbert.in`. Legacy domains `gayatrieducation.info` and `dbert.online` are fully retired/redirected. | Explain domain migration, provide direct link to active verification engine, and re-issue updated 3-document credential packet with active `dbert.in` seals. | • Migration Notice: [`dbert.in/dbert-online`](https://dbert.in/dbert-online)<br/>• Verification: [`dbert.in/verify`](https://dbert.in/verify) |
+| **Type 8: Program Curriculum & Schedule Details** | *"What are the working hours?", "Is this compatible with college?", "Track syllabus", "Can I switch track?"* | **Flexible Asynchronous Execution**. 10 hours/week flexible, self-paced tasks designed specifically for university students, backed by weekend mentor code reviews. | Outline flexible format, practical GitHub deliverables, real-world tools (Wireshark, LangGraph, React, Power BI), and next cohort kickoff orientation details. | • Programs: [`dbert.in/programs`](https://dbert.in/programs)<br/>• LMS Portal: [`lms.dbert.in/portal`](https://lms.dbert.in/portal) |
+
+---
+
+### 37.2. Multi-Account Infrastructure & Routing Architecture
+DBERT operates a multi-account outbound communication pool. Any agent executing dispatch must route replies through the exact authenticated sender matching the candidate's thread or institutional domain:
+
+```mermaid
+flowchart TD
+    Inbound["Incoming Candidate Email"] --> IntentFilter{"Intent & Thread Analysis"}
+    
+    IntentFilter -->|"Program Head / Capstones / LOR"| Acc1["abhinav.sharma@dbert.in<br/>(Google Workspace SMTP:465)"]
+    IntentFilter -->|"Admissions / Caution Deposit / ₹499"| Acc2["manoj.kumar@dbert.in<br/>(Google Workspace SMTP:465)"]
+    IntentFilter -->|"Technical Ops / Onboarding / Sprints"| Acc3["sandeep.bannu@dbert.in<br/>(Google Workspace SMTP:465)"]
+    IntentFilter -->|"Verification / General / Support"| Acc4["contactus@dbert.in<br/>(Google Workspace SMTP:465)"]
+    IntentFilter -->|"Code Reviews / Rubric Scoring"| Acc5["pulkit.kunar@dbert.in<br/>(Google Workspace SMTP:465)"]
+    IntentFilter -->|"Outlook Desktop Local MAPI"| MAPI["win32com.client<br/>(Account Matching & Sent Items Sync)"]
+    
+    Acc1 --> SMTPRelay["Authenticated SMTP Relay<br/>(RFC 2822 Threading + Pacing)"]
+    Acc2 --> SMTPRelay
+    Acc3 --> SMTPRelay
+    Acc4 --> SMTPRelay
+    Acc5 --> SMTPRelay
+    
+    SMTPRelay --> Candidate["Candidate Inbox<br/>(Single-Card HTML + Plain Text Alternative)"]
+    MAPI --> Candidate
+```
+
+#### Multi-Account Credentials & Role Definitions:
+- `abhinav.sharma@dbert.in` (App Password: `rsupmvvvvwrsuxuh`): Program Head & Project Mentor. Owns high-level academic evaluations, capstone technical reviews, official LORs, and executive escalations.
+- `manoj.kumar@dbert.in` (App Password: `fnevtpseplwibckr`): Academic Lead & Admissions. Owns cohort selections, ₹499 caution deposit reconciliations, milestone evaluations, and initial onboarding.
+- `sandeep.bannu@dbert.in` (App Password: `qtqzlmrynbcxvyjy`): Technical Program Operations. Owns developer workspace setups, server access, batch orientation schedules, and sprint tasks.
+- `contactus@dbert.in` (App Password: `llvmaajmrljpcwru`): Admissions & Verification Concierge. Owns public verification queries, domain migration questions, and general student support.
+- `pulkit.kunar@dbert.in` (App Password: `vzefecwpggxuaztr`): Technical Mentorship & Verification. Owns AI/ML and Data Analytics code reviews and submission rubrics.
+
+#### Outlook Desktop Local MAPI Integration (`win32com.client`):
+When dispatching from a Windows desktop session where local Outlook accounts are loaded:
+```python
+import win32com.client
+
+outlook = win32com.client.Dispatch("Outlook.Application")
+namespace = outlook.GetNamespace("MAPI")
+
+def send_via_desktop_outlook(target_account_email, recipient, subject, html_body):
+    account_to_use = None
+    for acc in outlook.Session.Accounts:
+        if acc.SmtpAddress.lower() == target_account_email.lower():
+            account_to_use = acc
+            break
+    
+    mail = outlook.CreateItem(0)
+    mail.To = recipient
+    mail.Subject = subject
+    mail.HTMLBody = html_body
+    if account_to_use:
+        mail.SendUsingAccount = account_to_use
+    mail.Send()
+```
+
+---
+
+### 37.3. RFC 2822 Deliverability & Design System
+All automated email dispatches must strictly comply with deliverability best practices to guarantee inbox placement and zero white-text contrast traps:
+
+1. **Thread Continuity & Header Alignment**:
+   - `In-Reply-To` and `References` headers MUST be set to the inbound email's `Message-ID`.
+   - Outbound `Message-ID` must be generated using `make_msgid(domain="dbert.in")`.
+   - `Reply-To` MUST match the authenticated sender email exactly.
+
+2. **Single-Card Responsive HTML Container**:
+   - Centered container constrained to `max-width: 600px; margin: 0 auto;`.
+   - Outer container background: `#0B0F17` (Luxury Deep Obsidian).
+   - Inner card background: `#141A23` (Dark Navy Slate) with subtle border `1px solid #232D3F; border-radius: 8px;`.
+   - Header accent: Top stripe `border-top: 4px solid #E2B96F;` (DBERT Gold).
+   - Primary text: Clean, high-contrast `#E0E6ED` (Never `#ffffff` on white, preventing Outlook/Gmail dark mode inversion contrast traps).
+   - Secondary text: `#94A3B8` (Muted Slate).
+   - CTA buttons: Inline styled with high contrast (`background: #E2B96F; color: #0B0F17; font-weight: 700; text-decoration: none; padding: 12px 24px; border-radius: 6px; display: inline-block;`).
+
+3. **Multipart UTF-8 Plain Text Parity**:
+   - Every outbound MIME transmission MUST be `multipart/alternative`.
+   - The `text/plain` part must be attached first, followed by `text/html`.
+   - Plain text must contain identical actionable URLs and WhatsApp numbers to satisfy SpamAssassin / Barracuda anti-spam heuristics.
+
+4. **Dual 1-Tap WhatsApp Concierge Footer**:
+   - Every email footer must feature direct WhatsApp links to:
+     - Admissions Concierge: `https://wa.me/918192911360` (`+91 81929 11360`)
+     - Technical Mentorship: `https://wa.me/918958006294` (`+91 89580 06294`)
+
+---
+
+### 37.4. Outbound Safeguards & Suppression Protocol
+To safeguard domain reputation and prevent bot loops, agents must enforce strict suppression filters:
+
+1. **Internal Domain Suppression**:
+   - NEVER send automated replies to `@dbert.in` addresses.
+2. **Job Board Relay Suppression**:
+   - NEVER send automated replies to proxy relay masks (e.g. `@indeedemail.com`, LinkedIn messaging relays).
+3. **Automated Daemon Suppression**:
+   - Skip all messages originating from `mailer-daemon@`, `postmaster@`, `no-reply@`, or containing header `Auto-Submitted: auto-generated`.
+4. **Anti-Spam Pacing**:
+   - Enforce a strict delay of 15 to 30 seconds between consecutive dispatches.
+5. **Administrative Milestone Telemetry**:
+   - Dispatches automatically send audit reports to `ain.sharma.abhinav@gmail.com` and `ajnatechrpa@gmail.com` at startup, every 100 messages, and upon batch completion.
+
+---
+
+### 37.5. Universal AI Agent Self-Evolution Protocol
+When candidates submit unhandled questions or novel edge cases, agents must actively evolve the knowledge base rather than failing silently:
+
+1. **Candidate Quote-Stripping Algorithm**:
+   - Extract only the candidate's latest message before classification:
+   ```python
+   def extract_latest_candidate_message(body: str) -> str:
+       lines = body.splitlines()
+       clean_lines = []
+       for line in lines:
+           stripped = line.strip()
+           if stripped.startswith(">") or stripped.startswith("-----Original Message-----") or " wrote:" in stripped:
+               break
+           clean_lines.append(line)
+       return "\n".join(clean_lines).strip()
+   ```
+
+2. **Dynamic Scenario Registry Pattern**:
+   - Avoid long, fragile `if/elif` ladders. Register new intent scenarios dynamically:
+   ```python
+   SCENARIO_REGISTRY = {}
+
+   def register_scenario(name, intent_keywords, policy_fn):
+       SCENARIO_REGISTRY[name] = {
+           "keywords": intent_keywords,
+           "handler": policy_fn
+       }
+   ```
+
+3. **Unhandled Inquiry Clustering**:
+   - When 2 or more candidates submit inquiries classified with low confidence (`GENERAL_INQUIRY`), extract noun phrases and cluster them.
+   - Synthesize a new scenario entry, draft response template adhering to the 600px single-card design system, and append the rule to `AGENTS.md` and `GEMINI.md`.

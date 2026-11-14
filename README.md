@@ -133,3 +133,24 @@ ssh -i "C:\Users\user\.ssh\dbert-production-server.pem" ubuntu@3.26.237.171 "sud
 - **Domain Sovereign Rule**: All active URLs, canonical tags, API routes, and emails MUST use `https://dbert.in` (legacy `dbert.online` is retired).
 - **Google Workspace SMTP**: Authenticated sender is strictly `abhinav.sharma@dbert.in`.
 - **Database Security**: Production database runs PostgreSQL 15. All SQLite files are strictly for local/offline testing and never committed to Git.
+---
+
+## 6. Autonomous Multi-Inbox Triage & Candidate Response Systems
+
+### 6.1. Triage Architecture & Inboxes
+DBERT incorporates an autonomous email triage and response system operating across 5 Google Workspace accounts (`abhinav.sharma`, `manoj.kumar`, `sandeep.bannu`, `contactus`, `pulkit.kunar`) and local Windows Outlook MAPI stores.
+- **RFC 2822 Thread Alignment**: Dispatches preserve `In-Reply-To` and `References` headers to maintain seamless candidate conversation threads.
+- **Deliverability-First Design**: Single-card 600px responsive HTML (`#0B0F17` dark canvas, `#141A23` inner card, `#E2B96F` gold typography) paired with identical UTF-8 plain text to eliminate white-text contrast traps and maintain 100% spam-filter clearance.
+- **Dual WhatsApp Concierge**: Instant 1-tap escalations to Admissions (`+91 81929 11360`) and Mentorship (`+91 89580 06294`).
+
+### 6.2. 8-Scenario Candidate Inquiry Taxonomy
+1. **₹499 Caution Deposit**: 100% credited against program fee (net balance ₹1,500) or refunded upon milestone completion.
+2. **Milestone Fee Clarification (₹299 vs Free)**: Academic evaluation, LMS grading, and ₹5,000 stipend eligibility are 100% free; ₹299 is strictly an optional courier fee for physical certificates.
+3. **Portal Login & Onboarding Server Errors**: Self-healing access links, 1-click password reset, and WhatsApp manual onboarding assistance.
+4. **Performance Stipend Release (4-Gate Rule)**: 1) Verified credential, 2) 60-day tenure gate, 3) Encrypted UPI ID, 4) Capstone technical contribution on `/stipend/tasks`.
+5. **Payout Setup & UPI Submission**: Idempotent financial ledger recording into `intern_accounts.upi_id` / `balance_enrollments_1500.json`.
+6. **Official LOR & Work References**: Signed letter from Mr. Abhinav Sharma, official HR background verification via `admissions@dbert.in`, and cryptographic dossier on `dbert.in/verify`.
+7. **Domain Migration**: Official active sovereign domain is `https://dbert.in` (legacy `dbert.online` retired).
+8. **Curriculum & Schedule**: 10 hrs/week flexible asynchronous format with weekend mentor code reviews.
+
+For complete operational playbooks, routing code, and self-evolution protocols, see Section 37 of [`AGENTS.md`](./AGENTS.md) and [`GEMINI.md`](./GEMINI.md).
