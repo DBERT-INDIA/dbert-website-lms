@@ -1211,3 +1211,40 @@ Google Search Console flagged 4 non-critical `JobPosting` structured data issues
    - Applied to marketplace generator (`MarketplaceService.generate_google_jobs_json_ld`).
    - Applied to Next.js programmatic city pages in `apps/website/src/app/internships/[role]/[city]/page.tsx`.
    - Deployed and live validated on EC2 (`3.26.237.171`).
+
+---
+
+## 36. Autonomous Multi-Inbox Triage, Inquiry Classification, & Threaded Dispatch Engine
+
+### 36.1. Operational Purpose & Mailbox Inventory
+Autonomous triage and customer/candidate response system operating across active project inboxes.
+- **Google Workspace Inboxes via IMAP (`imap.gmail.com:993`)**:
+  - `abhinav.sharma@dbert.in`: Program Head & Project Mentor.
+  - `manoj.kumar@dbert.in`: Academic Lead & Admissions.
+  - `sandeep.bannu@dbert.in`: Technical Program Operations.
+  - `contactus@dbert.in`: Admissions & Verification Concierge.
+  - `pulkit.kunar@dbert.in`: Technical Mentorship & Verification.
+- **Outlook Desktop MAPI Stores**:
+  - `manpreet@vayanai.in.net`: Vayan AI / November interview inquiry store.
+  - `contactus@gayatrieducation.info`, `support@...`, `connect@...`: Legacy credential packets and domain migration notices.
+
+### 36.2. Dispatch Architecture (`scripts/dispatch_inbox_action_replies.py`)
+- **Multi-Account SMTP Routing**: Sends directly from the authenticated Google Workspace account owning the thread or student relationship.
+- **Thread Header Preservation**: Injects standard RFC 2822 `In-Reply-To` and `References` headers matching the candidate's existing conversation.
+- **Deliverability-First Templates**: Single-card responsive HTML (max 600px width, `#0B0F17` background, `#141A23` inner card, `#E2B96F` gold typography, zero white-text contrast traps) paired with matching UTF-8 plain text and 1-tap WhatsApp concierge routing (`+91 81929 11360`).
+- **Pacing & Safety Controls**: Strict 15-second rate-limiting between consecutive candidate deliveries.
+- **Persistent State**: Full delivery audit logged to `data/inbox_action_dispatch.log` and idempotent state tracked in `data/inbox_action_dispatch_tracking.json`.
+
+### 36.3. Executed Actions & Candidates Resolved (11/11 Dispatched)
+1. **Suraj Upadhyay** (`surajup5756@gmail.com`): AI Agent Development portal login, direct activation link, and 16 Nov sprint orientation brief.
+2. **Gundeti Vaishnavi** (`gundetivaishnavi634@gmail.com`): Full Stack Development ₹499 caution deposit clarification (100% credited/refundable) and 1-tap UPI details.
+3. **C S Kavana** (`kavana200518@gmail.com`): SOC Analysis & Threat Defense 10h/wk flexible schedule, Wireshark/SIEM curriculum, and seat lock procedure.
+4. **Chinnamgari Sumanjali** (`chinnamgarisumanjali13@gmail.com`): Remote Internship ₹499 caution deposit credit breakdown and WhatsApp verification.
+5. **Nishant Makwane** (`nishantmakwane04@gmail.com`): Data Analyst Milestone form fix, providing native LMS submission portal (`/stipend/tasks`) and direct Google Form.
+6. **Hariom Yadav** (`imhariom25@gmail.com`): Clarification that ₹299 is strictly optional for physical framed courier dispatch; standard academic evaluation and ₹5,000 stipend eligibility are 100% free.
+7. **Prakash A** (`prakash.a2878@gmail.com`): AI & Machine Learning onboarding verification and Week 1 sprint task guidance.
+8. **Astha Arya** (`asthaarya42@gmail.com`): Data Analytics onboarding server connectivity resolution and direct portal verification.
+9. **Gurka Vinay Kumar Reddy** (`gurkavinay22@gmail.com`): Recorded UPI ID `9014147134@upi` into ledger, confirmed Capstone submission, and verified dossier `CERT-DBERT-2026-AIML-169`.
+10. **Shanu Sri Gowtham** (`shanusrigowtham17@gmail.com`): Performance stipend milestone status explanation, 4-gate verification criteria, and `/stipend/tasks` portal.
+11. **Rosmi Reji** (`rosmireji556@gmail.com`): Official LOR, background verification contacts (`admissions@dbert.in`), and employer cryptographic verification dossier `CERT-DBERT-2026-FSD-103`.
+- **Administrative Telemetry**: Dispatched automated summary report to `ain.sharma.abhinav@gmail.com` and `ajnatechrpa@gmail.com`.
