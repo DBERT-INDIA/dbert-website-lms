@@ -239,13 +239,13 @@ class StipendEvaluator:
         Executes real-time pre-screening evaluation.
         Returns detailed evaluation dictionary with 0-100 score and rubric breakdown.
         """
-        active_key = api_key or get_active_gemini_key()
+        active_key = api_key if api_key is not None else get_active_gemini_key()
         if not active_key:
             return {
-                "score": 75,
-                "status": "ai_unconfigured",
-                "notes": "Automated evaluation skipped: GEMINI_API_KEY is not configured. Queued for mentor staff review.",
-                "rubric_breakdown": {"total_score": 75, "verdict": "AWAITING_MANUAL_REVIEW"},
+                "score": None,
+                "status": "AI_UNCONFIGURED_MANUAL_REVIEW",
+                "notes": "Automated AI evaluation deferred: GEMINI_API_KEY is not configured. Queued for mentor staff manual evaluation.",
+                "rubric_breakdown": {"total_score": None, "verdict": "AWAITING_MANUAL_REVIEW"},
                 "verdict": "AWAITING_MANUAL_REVIEW",
                 "evaluated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             }

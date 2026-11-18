@@ -140,11 +140,16 @@ export async function POST(request: NextRequest) {
     }
 
     // Real-Time Convergence: Synchronize atomically to LMS PostgreSQL
+    let lmsSynced = false;
+    let lmsSyncError: string | null = null;
     try {
       const syncEndpoint = process.env.INTERNAL_LMS_SYNC_URL || 'https://lms.dbert.in/api/internal/enrollment-sync';
-      const syncSecret = process.env.INTERNAL_SYNC_SECRET || 'dbert-secure-sync-token-2026';
+      const syncSecret = process.env.INTERNAL_SYNC_SECRET || (process.env.NODE_ENV !== 'production' ? 'dbert-secure-sync-token-2026' : '');
+      if (!syncSecret) {
+        throw new Error('INTERNAL_SYNC_SECRET environment variable is required in production.');
+      }
       
-      await fetch(syncEndpoint, {
+      const syncRes = await fetch(syncEndpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -161,10 +166,26 @@ export async function POST(request: NextRequest) {
           utr: cleanUtr,
           submission_id: submissionId
         }),
-        signal: AbortSignal.timeout(4000)
+        signal: AbortSignal.timeout(5000)
       });
+
+      if (!syncRes.ok) {
+        const errJson = await syncRes.json().catch(() => ({}));
+        lmsSyncError = errJson.message || `LMS sync returned HTTP ${syncRes.status}`;
+        console.error('[Data Convergence Sync Error]', lmsSyncError);
+        // If client submitted invalid data rejected by LMS validation
+        if (syncRes.status >= 400 && syncRes.status < 500) {
+          return NextResponse.json({
+            success: false,
+            error: errJson.message || 'Enrollment data rejected by verification service. Please verify your details.'
+          }, { status: 400 });
+        }
+      } else {
+        lmsSynced = true;
+      }
     } catch (syncErr) {
-      console.error('[Data Convergence Sync Warning - Handled]', syncErr instanceof Error ? syncErr.message : syncErr);
+      lmsSyncError = syncErr instanceof Error ? syncErr.message : String(syncErr);
+      console.error('[Data Convergence Sync Network Error]', lmsSyncError);
     }
 
     return NextResponse.json({
@@ -175,7 +196,9 @@ export async function POST(request: NextRequest) {
       certId: cleanCertId,
       domain: domain.trim(),
       utrNumber: cleanUtr,
-      amount: PRICING_CONFIG.balancePayable
+      amount: PRICING_CONFIG.balancePayable,
+      syncStatus: lmsSynced ? 'SYNCHRONIZED' : 'QUEUED_FOR_RECONCILIATION',
+      message: 'Your payment submission has been recorded and submitted for admissions reconciliation.'
     });
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err.message || 'Internal server error' }, { status: 500 });

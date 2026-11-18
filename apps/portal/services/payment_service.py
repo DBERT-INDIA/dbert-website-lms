@@ -103,22 +103,55 @@ class PaymentService:
         if not payment_id:
             return False
         row = conn.execute(
-            "SELECT id FROM payment_events WHERE payment_id=? AND status='processed' LIMIT 1",
-            (payment_id,)
+            """
+            SELECT id FROM payment_events 
+            WHERE (event_id=? OR event_id=? OR payload LIKE ?) AND status='processed' 
+            LIMIT 1
+            """,
+            (payment_id, f"pay_{payment_id}", f'%"payment_id": "{payment_id}"%')
         ).fetchone()
         return bool(row)
 
     @staticmethod
     def record_payment_event(conn, event_id: str, event_type: str, order_id: str, payment_id: str, payload: dict, status: str = "processed") -> int:
-        """Atomically inserts payment event record."""
+        """Atomically inserts or updates payment event record in a dialect-portable manner."""
         now = time.strftime("%Y-%m-%d %H:%M:%S")
-        cursor = conn.execute(
-            """
-            INSERT OR REPLACE INTO payment_events 
-            (event_id, event_type, order_id, payment_id, payload_json, status, created_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-            """,
-            (event_id, event_type, order_id, payment_id, json.dumps(payload or {}), status, now)
-        )
-        conn.commit()
-        return cursor.lastrowid
+        full_payload = dict(payload or {})
+        if order_id:
+            full_payload["order_id"] = order_id
+        if payment_id:
+            full_payload["payment_id"] = payment_id
+
+        payload_str = json.dumps(full_payload)
+        existing = conn.execute("SELECT id FROM payment_events WHERE event_id = ?", (event_id,)).fetchone()
+        if existing:
+            conn.execute(
+                """
+                UPDATE payment_events 
+                SET event_type = ?, payload = ?, status = ?, processed_at = ?
+                WHERE event_id = ?
+                """,
+                (event_type, payload_str, status, now, event_id)
+            )
+            conn.commit()
+            try:
+                return existing["id"]
+            except Exception:
+                return existing[0] if existing else 0
+        else:
+            conn.execute(
+                """
+                INSERT INTO payment_events 
+                (event_id, event_type, payload, processed_at, status)
+                VALUES (?, ?, ?, ?, ?)
+                """,
+                (event_id, event_type, payload_str, now, status)
+            )
+            conn.commit()
+            row = conn.execute("SELECT id FROM payment_events WHERE event_id = ?", (event_id,)).fetchone()
+            if row:
+                try:
+                    return row["id"]
+                except Exception:
+                    return row[0]
+            return 0

@@ -362,9 +362,10 @@ def _convert_format_to_qmark(sql: str) -> str:
 class CursorAdapter:
     """Standardized cursor interface wrapping DB-API cursor results in RowWrapper."""
 
-    def __init__(self, raw_cursor: Any, columns: Optional[List[str]] = None):
+    def __init__(self, raw_cursor: Any, columns: Optional[List[str]] = None, lastrowid: Optional[int] = None):
         self._raw_cursor = raw_cursor
         self._columns = columns
+        self._lastrowid = lastrowid
 
     @property
     def description(self) -> Any:
@@ -372,6 +373,8 @@ class CursorAdapter:
 
     @property
     def lastrowid(self) -> Optional[int]:
+        if self._lastrowid is not None:
+            return self._lastrowid
         return getattr(self._raw_cursor, "lastrowid", None)
 
     @property
@@ -562,7 +565,7 @@ class SQLiteAdapter(DatabaseAdapter):
             else:
                 cur = self._conn.execute(query)
             self._last_cursor = cur
-            return CursorAdapter(cur)
+            return CursorAdapter(cur, lastrowid=getattr(cur, "lastrowid", None))
         except sqlite3.IntegrityError as e:
             raise IntegrityError(str(e)) from e
         except sqlite3.OperationalError as e:
@@ -576,7 +579,7 @@ class SQLiteAdapter(DatabaseAdapter):
         try:
             cur = self._conn.executemany(query, seq_of_params)
             self._last_cursor = cur
-            return CursorAdapter(cur)
+            return CursorAdapter(cur, lastrowid=getattr(cur, "lastrowid", None))
         except sqlite3.IntegrityError as e:
             raise IntegrityError(str(e)) from e
         except sqlite3.OperationalError as e:
@@ -715,9 +718,7 @@ class PostgreSQLAdapter(DatabaseAdapter):
             self._last_rowcount = getattr(cur, "rowcount", -1)
 
             # Check if RETURNING id was requested or if lastrowid is available
-            if hasattr(cur, "lastrowid") and cur.lastrowid is not None:
-                self._last_rowid = cur.lastrowid
-            elif "RETURNING" in pg_query.upper():
+            if "RETURNING" in pg_query.upper():
                 try:
                     row = cur.fetchone()
                     if row:
@@ -726,10 +727,12 @@ class PostgreSQLAdapter(DatabaseAdapter):
                         self._last_rowid = None
                 except Exception:
                     self._last_rowid = None
+            elif hasattr(cur, "lastrowid") and cur.lastrowid is not None and cur.lastrowid > 0:
+                self._last_rowid = cur.lastrowid
             else:
                 self._last_rowid = None
 
-            return CursorAdapter(cur)
+            return CursorAdapter(cur, lastrowid=self._last_rowid)
         except Exception as e:
             self._handle_pg_error(e)
 
@@ -740,7 +743,7 @@ class PostgreSQLAdapter(DatabaseAdapter):
             cur.executemany(pg_query, seq_of_params)
             self._last_cursor = cur
             self._last_rowcount = getattr(cur, "rowcount", -1)
-            return CursorAdapter(cur)
+            return CursorAdapter(cur, lastrowid=self._last_rowid)
         except Exception as e:
             self._handle_pg_error(e)
 

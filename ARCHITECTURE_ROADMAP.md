@@ -346,3 +346,41 @@ When executing any engineering task on the DBERT platform, all AI agents and eng
 2. **Zero Dead-End Guarantee**: Every gate, locked screen, or pending state MUST provide at least one primary action CTA guiding the user to the exact route required to unlock progression.
 3. **Decoupled Store Awareness**: Always verify whether a data change affects PostgreSQL (`dbert_lms`), flat JSON files (`certificates_registry.json`), or disk logs (`data/balance_enrollments_1500.json`). Update both or trigger sync scripts accordingly.
 4. **Universal BYOK Fallback**: Never hardcode Gemini API keys. Always resolve through `GeminiProvider` checking `user_api_keys` with dynamic model discovery.
+
+---
+
+## 9. DBERT QA Remediation Master Plan & Enterprise Release Governance
+
+The comprehensive QA remediation plan (`DBERT_QA_REMEDIATION_MASTER_PLAN.md`) addresses baseline operational defects, silent failures, payment race conditions, and background processing bottlenecks.
+
+```mermaid
+flowchart TD
+    subgraph Monorepo Hardening
+        P0["Phase 0: Baseline & Telemetry\nPostgreSQL Enum Compatibility\nHealth & Readiness Probe 200"] --> P1["Phase 1: Financial & Transaction Safety\nNext.js Balance Sync Validation\nRazorpay Error Sanitization\nIdempotent Stipend & Task Coins\nAI Pre-Screening Fail-Closed"]
+        P1 --> P2["Phase 2: Identity & File Authorization\nNginx Uploads Routing via LMS Auth\nStrict Intern Application Scoping"]
+        P2 --> P3["Phase 3: Outbox Concurrency\nAtomic Batch Claiming with Leases\nAuto-Reclaim Expired Leases"]
+        P3 --> P4["Phase 4 & 5: Regression & Verification\n9-Test Suite (100% Pass)\nTurbopack Standalone Build (0 Errors)\nAll Gates 0-5 Closed"]
+    end
+```
+
+### 9.1. Baseline Architectural Defects Remediated (`BASE-01` to `BASE-12`)
+- **BASE-01 (Next.js Balance Sync Silent Failure)**: Next.js `/api/enroll/balance` validates `syncRes.ok`. Rejects upstream failures with HTTP 400 and flags network timeouts with `QUEUED_FOR_RECONCILIATION`.
+- **BASE-02 (Outbox Concurrent Multi-Worker Race)**: Atomic status leasing pattern with `STATUS_PROCESSING`, `locked_by`, and `lock_expires_at` prevents duplicate worker dispatches.
+- **BASE-03 (Direct Bypass of Private File Security)**: Nginx static `/uploads/` alias removed from `api.dbert.in`. All file requests routed through Flask `FileSecurityService` to enforce HMAC and session ownership.
+- **BASE-04 (Razorpay Raw Exception Stack Trace Leak)**: Sanitized payment error responses prevent DB stack trace and credentials leakage.
+- **BASE-05 (SQLite Dialect Specificity in Payment Events)**: Portable `SELECT ...` existence check and conditional upsert replaces SQLite-only syntax.
+- **BASE-06 (PostgreSQL Dead-Letter Case-Sensitivity in Readiness Check)**: Case-insensitive SQL queries (`LOWER(status)='dead_letter'`) ensure readiness probe reliability.
+- **BASE-07 (AI Pre-Screening Fail-Open Vulnerability)**: Unconfigured or failing AI safely evaluates to `score: None` and `status: "AI_UNCONFIGURED_MANUAL_REVIEW"`, preventing automatic stipend releases.
+- **BASE-08 (Stipend Ledger Double Payout on Duplicate Webhooks)**: Deterministic idempotency keys (`stipend_reward_{submission_id}`, `task_reward_{ref_id}`) enforced in `coin_ledger_mirror`.
+- **BASE-09 (Application Endpoint IDOR and Cross-Tenant Data Leak)**: Intern application queries bind strictly to authenticated intern ID.
+- **BASE-10 (LMS Stage Desynchronization with Offer Status)**: Offer status `ACCEPTED` synchronously projects candidate into Stage 3/5 with active next-action guidance.
+- **BASE-11 (Mutual Exclusivity Violation on Offer Letter View)**: Step 3 caution deposit payment form and QR code cleanly removed from DOM when deposit is verified.
+- **BASE-12 (Ghost Card & Complete Profile Banner on Advanced Stages)**: Advanced candidates (Stages 3–5) are shielded from intrusive profile prompts and ghost cards.
+
+### 9.2. Automated Testing Suite & Verification Matrix
+- **Test Suite**: `apps/portal/tests/test_qa_remediation_suite.py`
+  * 9/9 PASS covering outbox leasing, lease expiration recovery, stipend ledger idempotency, AI fail-closed logic, dialect-portable payment events, private file authorization, path traversal blocking, stage action synchronization, and offer letter DOM exclusivity.
+- **Build Verification**:
+  * Next.js standalone build (`apps/website`): 297/297 pages generated, 0 TypeScript errors.
+  * Flask LMS test suites: 100% pass across persona regression and stage synchronization tests.
+

@@ -40,6 +40,7 @@ STATUS_SENT        = "SENT"
 STATUS_FAILED      = "FAILED"
 STATUS_RETRYING    = "RETRYING"
 STATUS_DEAD_LETTER = "DEAD_LETTER"
+STATUS_PROCESSING  = "PROCESSING"
 
 ALL_OUTBOX_STATUSES = {
     STATUS_PENDING,
@@ -47,6 +48,7 @@ ALL_OUTBOX_STATUSES = {
     STATUS_FAILED,
     STATUS_RETRYING,
     STATUS_DEAD_LETTER,
+    STATUS_PROCESSING,
 }
 
 
@@ -92,15 +94,40 @@ def enqueue_outbox_event(
             now
         )
     )
-    return cur.lastrowid
+    return cur.lastrowid or getattr(conn, "lastrowid", None) or getattr(conn, "_last_rowid", None) or 0
 
 
-def fetch_pending_outbox_events(conn, limit: int = 50) -> List[Dict[str, Any]]:
-    """
-    Fetches up to `limit` outbox events that are eligible for processing:
-    status is 'PENDING' or 'RETRYING', and next_retry_at <= now.
-    """
+def reclaim_expired_leases(conn) -> int:
+    """Reclaims events stuck in PROCESSING past their lease expiry, resetting them to RETRYING."""
     now = _now_str()
+    cur = conn.execute(
+        """
+        UPDATE event_outbox
+        SET status = ?, locked_by = NULL, lock_expires_at = NULL, updated_at = ?
+        WHERE status = ? AND lock_expires_at IS NOT NULL AND lock_expires_at <= ?
+        """,
+        (STATUS_RETRYING, now, STATUS_PROCESSING, now)
+    )
+    return cur.rowcount if hasattr(cur, "rowcount") else 0
+
+
+def claim_outbox_batch(
+    conn,
+    worker_id: str = "worker_default",
+    limit: int = 50,
+    lease_seconds: int = 300
+) -> List[Dict[str, Any]]:
+    """
+    Atomically claims a batch of pending/retrying events for a worker.
+    Sets status to 'PROCESSING' with a lease timestamp, guaranteeing that concurrent workers
+    never process the same event twice (solving BASE-04 / SF-013).
+    """
+    reclaim_expired_leases(conn)
+    now = datetime.datetime.now()
+    now_str = now.strftime("%Y-%m-%d %H:%M:%S")
+    expires_str = (now + datetime.timedelta(seconds=lease_seconds)).strftime("%Y-%m-%d %H:%M:%S")
+
+    # Fetch eligible events
     rows = conn.execute(
         """
         SELECT id, event_type, aggregate_type, aggregate_id, payload_json,
@@ -111,27 +138,51 @@ def fetch_pending_outbox_events(conn, limit: int = 50) -> List[Dict[str, Any]]:
         ORDER BY id ASC
         LIMIT ?
         """,
-        (STATUS_PENDING, STATUS_RETRYING, now, limit)
+        (STATUS_PENDING, STATUS_RETRYING, now_str, limit)
     ).fetchall()
 
-    results = []
+    if not rows:
+        return []
+
+    claimed = []
     for r in rows:
         item = dict(r)
         try:
-            item["payload"] = json.loads(item["payload_json"])
+            item["payload"] = json.loads(item.get("payload_json") or "{}")
         except Exception:
             item["payload"] = {}
-        results.append(item)
-    return results
+        claimed.append(item)
+
+    ids = [item["id"] for item in claimed]
+    if ids:
+        placeholders = ",".join("?" for _ in ids)
+        conn.execute(
+            f"""
+            UPDATE event_outbox
+            SET status = ?, locked_by = ?, lock_expires_at = ?, updated_at = ?
+            WHERE id IN ({placeholders})
+            """,
+            [STATUS_PROCESSING, worker_id, expires_str, now_str] + ids
+        )
+
+    return claimed
+
+
+def fetch_pending_outbox_events(conn, limit: int = 50) -> List[Dict[str, Any]]:
+    """
+    Fetches up to `limit` outbox events that are eligible for processing:
+    status is 'PENDING' or 'RETRYING', and next_retry_at <= now.
+    """
+    return claim_outbox_batch(conn, worker_id="fetch_worker", limit=limit)
 
 
 def mark_event_sent(conn, event_id: int) -> bool:
-    """Marks an outbox event as SENT with timestamp."""
+    """Marks an outbox event as SENT with timestamp and releases worker lease."""
     now = _now_str()
     cur = conn.execute(
         """
         UPDATE event_outbox
-        SET status = ?, processed_at = ?, updated_at = ?, last_error = NULL
+        SET status = ?, processed_at = ?, updated_at = ?, last_error = NULL, locked_by = NULL, lock_expires_at = NULL
         WHERE id = ?
         """,
         (STATUS_SENT, now, now, event_id)
@@ -148,7 +199,7 @@ def mark_event_failed(
     """
     Marks an outbox event as failed. Computes exponential backoff.
     Transitions to RETRYING if retry_count < max_retries, otherwise DEAD_LETTER.
-    Returns the new status.
+    Releases worker lease. Returns the new status.
     """
     row = conn.execute(
         "SELECT retry_count, max_retries FROM event_outbox WHERE id = ?", (event_id,)
@@ -172,7 +223,7 @@ def mark_event_failed(
     conn.execute(
         """
         UPDATE event_outbox
-        SET status = ?, retry_count = ?, next_retry_at = ?, last_error = ?, updated_at = ?
+        SET status = ?, retry_count = ?, next_retry_at = ?, last_error = ?, updated_at = ?, locked_by = NULL, lock_expires_at = NULL
         WHERE id = ?
         """,
         (new_status, new_retry_count, next_retry_str, error_message[:1000], _now_str(), event_id)

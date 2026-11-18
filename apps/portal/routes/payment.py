@@ -71,7 +71,7 @@ def api_razorpay_create_order():
         })
     except Exception as e:
         log_error("razorpay_create_order", e)
-        return jsonify({"status": "error", "message": str(e)}), 500
+        return jsonify({"status": "error", "message": "Unable to initialize payment order. Please refresh and try again or contact admissions support."}), 500
 
 
 @payment_bp.route("/api/payment/razorpay/verify-payment", methods=["POST"])

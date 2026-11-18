@@ -33,8 +33,9 @@ def intern_my_applications():
                 "p.post_type, p.slug, co.id AS company_id, co.name AS company_name "
                 "FROM post_applications pa JOIN posts p ON p.id = pa.post_id "
                 "JOIN companies co ON co.id = p.company_id "
-                "WHERE (pa.intern_id=? OR (pa.email IS NOT NULL AND LOWER(pa.email)=LOWER(?))) ORDER BY pa.id DESC",
-                (intern["id"], intern_email),
+                "WHERE (pa.intern_id=? AND (pa.email IS NULL OR LOWER(pa.email)=LOWER(?))) "
+                "   OR (pa.intern_id IS NULL AND LOWER(pa.email)=LOWER(?)) ORDER BY pa.id DESC",
+                (intern["id"], intern_email, intern_email),
             ).fetchall()
             out = []
             for r in rows:

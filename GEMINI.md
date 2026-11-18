@@ -1946,3 +1946,93 @@ Prior to this remediation, candidates who were formally Selected, Signed, and Co
   - MIME builder unit test -> `MIMEMultipart('mixed')` with `alternative` text/html and `application/octet-stream` SVG attachment.
 - **Persona Regression Probe (`scripts/test_persona_routes_on_ec2.py`)**:
   - 100% PASS across all 8 seeded personas (`mentor_staff`, `dbert_admin`, `fellow_enrolled`, `stipend_ready`, `stipend_wallet`, `stipend_gate1_locked`, `stage3_selected`, `offer_pending`).
+
+---
+
+## 48. DBERT QA Remediation Master Plan (Phases 0–5) & Production Hardening Governance
+
+### 48.1. Architectural Overview & Problem Context
+To eliminate critical operational bottlenecks, silent failures, payment edge cases, and background race conditions across the DBERT monorepo, the comprehensive QA Remediation Master Plan (`DBERT_QA_REMEDIATION_MASTER_PLAN.md`) was executed across six sequential execution phases (Phases 0 through 5).
+
+The remediation resolved 12 baseline architectural defects (`BASE-01` to `BASE-12`) without breaking existing workflows across Next.js (`apps/website`) and Flask LMS (`apps/portal`):
+1. **BASE-01 (Next.js Balance Sync Silent Failure)**: Next.js balance submission route `/api/enroll/balance` silently swallowed HTTP errors from the LMS sync endpoint, resulting in unrecorded candidate balances.
+2. **BASE-02 (Outbox Concurrent Multi-Worker Race)**: `event_outbox` status query allowed concurrent Celery/Gunicorn workers to claim identical pending events simultaneously, triggering duplicate email and WhatsApp dispatches.
+3. **BASE-03 (Direct Bypass of Private File Security via Nginx)**: Nginx configuration on `api.dbert.in` directly routed `/uploads/` to static disk, completely bypassing Flask LMS `FileSecurityService` access controls and HMAC validation.
+4. **BASE-04 (Razorpay Raw Exception Stack Trace Leak)**: LMS `/api/payment/razorpay/create-order` returned raw exception strings to the browser on API or database failure.
+5. **BASE-05 (SQLite Dialect Specificity in Payment Events)**: `payment_service.py` utilized SQLite-specific `INSERT OR REPLACE` syntax that failed on PostgreSQL deployments.
+6. **BASE-06 (PostgreSQL Dead-Letter Case-Sensitivity in Readiness Check)**: `TelemetryService.check_readiness()` executed case-sensitive SQL status checks (`status = 'DEAD_LETTER'`), failing under lowercase PostgreSQL enum strings.
+7. **BASE-07 (AI Pre-Screening Fail-Open Vulnerability)**: `stipend_evaluator.py` returned an auto-approved high score (85/100) when `GEMINI_API_KEY` was missing or empty, introducing financial risk.
+8. **BASE-08 (Stipend Ledger Double Payout on Duplicate Webhooks)**: `coin_ledger_mirror` lacked idempotent transaction keys during stipend approval, allowing replay attacks or duplicate submissions to mint double rewards.
+9. **BASE-09 (Application Endpoint IDOR and Cross-Tenant Data Leak)**: Intern application queries matched on unverified email strings, potentially exposing cross-tenant application data.
+10. **BASE-10 (LMS Stage Desynchronization with Offer Status)**: Interns with accepted offers were incorrectly displayed Stage 1 ("Application Under Evaluation") on `/portal`.
+11. **BASE-11 (Mutual Exclusivity Violation on Offer Letter View)**: Candidates who had already completed their caution deposit still saw the deposit payment form and QR code on `/portal/offer`.
+12. **BASE-12 (Ghost Card & Complete Profile Banner on Advanced Stages)**: Advanced sprint fellows (Stages 3–5) were shown intrusive "Complete Academic Profile" banners and empty ghost cards.
+
+---
+
+### 48.2. Engineering Remediations & Technical Implementation
+
+#### Phase 0: Baseline & Infrastructure Readiness
+- **File**: `apps/portal/services/telemetry_service.py`
+- Replaced dialect-sensitive status checks with `LOWER(status) = 'dead_letter'` and `LOWER(status) = 'pending'`.
+- Validated that `/health` and `/ready` endpoints consistently return HTTP 200 on both SQLite and PostgreSQL.
+
+#### Phase 1: Financial Integrity & Transaction Safety
+- **Next.js Balance Sync Route (`apps/website/src/app/api/enroll/balance/route.ts`)**:
+  * Implemented explicit validation of `syncRes.ok`.
+  * If upstream LMS returns HTTP 4xx/5xx, the API immediately halts and returns HTTP 400 with actionable error payload: `{ error: 'LMS internal synchronization failed', upstreamStatus }`.
+  * In case of upstream network timeout, safely flags the submission as `syncStatus: 'QUEUED_FOR_RECONCILIATION'` to prevent user transaction loss while alerting admins.
+  * Enforced authorization header `Authorization: Bearer <INTERNAL_SYNC_SECRET>` with production environment validation.
+- **Razorpay Order Creation (`apps/portal/routes/payment.py`)**:
+  * Wrapped order generation in sanitized error handler returning generic user message: `"Unable to initiate payment transaction. Please contact admissions."`.
+  * Retains detailed error logging server-side with structured error contexts.
+- **Dialect-Portable Payment Events (`apps/portal/services/payment_service.py`)**:
+  * Replaced `INSERT OR REPLACE` with portable existence check and conditional upsert:
+    `SELECT id FROM payment_events WHERE event_id = ?`.
+  * Updated `is_payment_processed()` to search both top-level `event_id` and payload JSON `order_id` / `payment_id`.
+- **AI Pre-Screening Fail-Closed Policy (`apps/portal/services/ai/stipend_evaluator.py`)**:
+  * Fixed fail-open bug. When `GEMINI_API_KEY` is missing, unconfigured, or throws API exceptions, the evaluator returns:
+    `score: None`, `status: "AI_UNCONFIGURED_MANUAL_REVIEW"`, `verdict: "AWAITING_MANUAL_REVIEW"`, `reason: "AI evaluation unavailable; routed to human staff review queue"`.
+  * Halts automatic coin credit or stipend release until verified by an authorized human staff member.
+- **Stipend Ledger Idempotency Keying (`apps/portal/app.py`)**:
+  * Introduced deterministic idempotency key for stipend milestone credits:
+    `idem = f"stipend_reward_{submission_id}"`
+  * Introduced deterministic idempotency key for task review credits:
+    `idem_key = f"task_reward_{ref_id}"`
+  * Checks existing ledger entries via `SELECT 1 FROM coin_ledger_mirror WHERE idem_key = ?` before any balance insertion, preventing duplicate payouts.
+
+#### Phase 2: Identity, Authorization & Private File Access
+- **Nginx Private File Security (`deploy/dbert-unified-nginx.conf`)**:
+  * Removed static alias `location /uploads/ { alias ...; }` from `api.dbert.in`.
+  * Proxied all `/uploads/` requests to `http://127.0.0.1:5001/uploads/` via Gunicorn.
+  * Enforces `FileSecurityService.authorize_file_access()`: requires valid HMAC signature (`?sig=...`), authenticated intern session ownership, or admin/staff role.
+- **Intern Application Scoping (`apps/portal/routes/applications.py`)**:
+  * Hardened query to strictly bind to authenticated session `intern_id`:
+    `WHERE (pa.intern_id = ? AND (pa.email IS NULL OR LOWER(pa.email) = LOWER(?))) OR (pa.intern_id IS NULL AND LOWER(pa.email) = LOWER(?))`
+  * Completely eliminates cross-account application visibility.
+
+#### Phase 3: Background Processing & Outbox Concurrency
+- **Atomic Batch Claiming (`apps/portal/services/outbox_service.py`)**:
+  * Added `STATUS_PROCESSING = "PROCESSING"`.
+  * Added schema columns `locked_by TEXT` and `lock_expires_at TEXT` to `event_outbox` with automated startup migration in `app.py`.
+  * Implemented `claim_outbox_batch(conn, worker_id, limit, lease_seconds)`: selects pending events and atomically claims them with an expiration lease, preventing double worker dispatch.
+  * Implemented `reclaim_expired_leases(conn)`: automatically resets orphaned events whose `lock_expires_at < current_timestamp` back to `PENDING`.
+  * Updated `mark_event_sent` and `mark_event_failed` to clear locks on completion.
+
+#### Phase 4 & 5: Automated Regression Testing & Verification Gates
+- **Automated Regression Suite (`apps/portal/tests/test_qa_remediation_suite.py`)**:
+  * 9 comprehensive regression test cases covering all remediation areas:
+    1. `test_outbox_atomic_worker_claim_and_recovery`: Validates worker isolation and lease recovery.
+    2. `test_stipend_ledger_idempotency_prevents_duplicate_credits`: Validates idempotency rejection.
+    3. `test_ai_evaluator_fail_closed_when_unconfigured`: Validates fail-closed behavior when AI key is missing.
+    4. `test_payment_event_portable_upsert`: Validates dialect-portable payment event storage and deduplication.
+    5. `test_private_file_access_requires_auth_or_hmac`: Validates 401 on unauthenticated private file access.
+    6. `test_private_file_path_traversal_blocked`: Validates that path traversal attacks (`../`) are safely rejected with 404/403.
+    7. `test_stage_next_action_synchronization_with_accepted_offer`: Validates that Stage 3+ interns see appropriate mission guidance.
+    8. `test_offer_letter_template_mutual_exclusivity`: Validates that verified caution deposit suppresses payment QR and UTR form.
+    9. `test_academic_profile_suppressed_for_advanced_stages`: Validates that advanced interns do not see profile completion warnings.
+  * Test execution result: **9/9 PASS (100%)** in 0.129s.
+- **Monorepo Build Verification**:
+  * Next.js standalone build: `npm --prefix apps/website run build` passed with 297/297 pages generated and 0 TypeScript errors.
+  * Master plan gates `Gate 0` through `Gate 5` marked **CLOSED**.
+

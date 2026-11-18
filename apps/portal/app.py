@@ -3469,6 +3469,11 @@ def init_db():
         ensure_column(conn, "task_submissions", "email", "TEXT")
         ensure_column(conn, "intern_certificates", "email", "TEXT")
 
+        # Phase 14 / QA Remediation: Outbox atomic worker leases & concurrency defense
+        ensure_column(conn, "event_outbox", "locked_by", "TEXT")
+        ensure_column(conn, "event_outbox", "lock_expires_at", "TEXT")
+        conn.execute("CREATE INDEX IF NOT EXISTS idx_outbox_lock ON event_outbox(status, lock_expires_at)")
+
         # Phase 3 / Phase 8: Razorpay online payments metadata
         for col, defn in [
             ("product", "TEXT DEFAULT 'free_deposit'"),
@@ -8833,7 +8838,13 @@ def credit_intern_coins(conn, intern_id, delta, reason, ref_id=None, email=None)
             email = (acc["email"] or "").strip().lower()
 
     new_bal = get_task_balance(conn, intern_id, email=email) + delta
-    idem_key = f"task_reward_{ref_id}_{uuid.uuid4().hex[:6]}" if ref_id else f"coin_credit_{uuid.uuid4().hex[:8]}"
+    if ref_id:
+        idem_key = f"task_reward_{ref_id}"
+        already = conn.execute("SELECT 1 FROM coin_ledger_mirror WHERE idem_key=?", (idem_key,)).fetchone()
+        if already:
+            return get_task_balance(conn, intern_id, email=email)
+    else:
+        idem_key = f"coin_credit_{uuid.uuid4().hex[:8]}"
     now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     conn.execute(
@@ -9336,18 +9347,22 @@ def staff_task_decision(submission_id):
         if decision == "approved" and coins_awarded > 0:
             is_stipend = (sub.get("task_type") == "stipend_milestone" or sub.get("task_category") == "stipend_milestone")
             if is_stipend:
-                # Award 5,000 withdrawable coins into referral ledger (§6.5)
-                idem = f"stipend_reward_{submission_id}_{uuid.uuid4().hex[:6]}"
-                conn.execute(
-                    """
-                    INSERT INTO coin_ledger_mirror 
-                    (intern_id, ledger_kind, delta, balance_after, reason, event_ts, idem_key, email)
-                    VALUES (?, 'referral', ?, 
-                        (SELECT COALESCE(SUM(delta), 0) + ? FROM coin_ledger_mirror WHERE intern_id = ? AND ledger_kind IN ('referral', 'withdrawal')),
-                        ?, datetime('now','localtime'), ?, ?)
-                    """,
-                    (sub["intern_id"], coins_awarded, coins_awarded, sub["intern_id"], f"Stipend Bounty: {sub['task_title']}", idem, sub["intern_email"])
-                )
+                # Award 5,000 withdrawable coins into referral ledger (§6.5) - strictly idempotent
+                idem = f"stipend_reward_{submission_id}"
+                already_credited = conn.execute(
+                    "SELECT 1 FROM coin_ledger_mirror WHERE idem_key=?", (idem,)
+                ).fetchone()
+                if not already_credited:
+                    conn.execute(
+                        """
+                        INSERT INTO coin_ledger_mirror 
+                        (intern_id, ledger_kind, delta, balance_after, reason, event_ts, idem_key, email)
+                        VALUES (?, 'referral', ?, 
+                            (SELECT COALESCE(SUM(delta), 0) + ? FROM coin_ledger_mirror WHERE intern_id = ? AND ledger_kind IN ('referral', 'withdrawal')),
+                            ?, datetime('now','localtime'), ?, ?)
+                        """,
+                        (sub["intern_id"], coins_awarded, coins_awarded, sub["intern_id"], f"Stipend Bounty: {sub['task_title']}", idem, sub["intern_email"])
+                    )
                 try:
                     student_name = sub.get("intern_name", "Intern")
                     email_html = f"""

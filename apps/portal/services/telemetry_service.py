@@ -267,11 +267,11 @@ def check_readiness(conn) -> Tuple[bool, Dict[str, Any]]:
         # 4. Outbox Health (Dead-Letter queue count)
         try:
             dead_count = conn.execute(
-                "SELECT COUNT(*) AS c FROM event_outbox WHERE status='dead_letter'"
+                "SELECT COUNT(*) AS c FROM event_outbox WHERE LOWER(status)='dead_letter'"
             ).fetchone()
             dead_letters = dead_count["c"] if (isinstance(dead_count, dict) or hasattr(dead_count, "keys")) else (dead_count[0] if dead_count else 0)
             pending_count = conn.execute(
-                "SELECT COUNT(*) AS c FROM event_outbox WHERE status='pending'"
+                "SELECT COUNT(*) AS c FROM event_outbox WHERE LOWER(status)='pending'"
             ).fetchone()
             pending = pending_count["c"] if (isinstance(pending_count, dict) or hasattr(pending_count, "keys")) else (pending_count[0] if pending_count else 0)
 
