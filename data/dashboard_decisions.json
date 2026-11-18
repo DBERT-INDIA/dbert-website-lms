@@ -1,0 +1,52 @@
+{
+  "policy_q1_sheet299": {
+    "action": "HOLD_MANUAL_REVIEW",
+    "notes": "Held for manual Google Drive payment transaction ID verification against bank records.",
+    "updated_at": "2026-11-17 22:13:00"
+  },
+  "policy_q2_stipend_submissions": {
+    "action": "HOLD_LIVE_CALL",
+    "notes": "Sub #53, #51, #52 held in pending review until a live mentor call is conducted with each candidate.",
+    "updated_at": "2026-11-17 22:13:00"
+  },
+  "aaditya": {
+    "action": "VERIFIED_UPGRADE",
+    "notes": "",
+    "updated_at": "2026-11-17 22:35:52"
+  },
+  "sakthi": {
+    "action": "VERIFIED_UPGRADE",
+    "notes": "",
+    "updated_at": "2026-11-17 22:36:01"
+  },
+  "gurveer": {
+    "action": "VERIFIED_UPGRADE",
+    "notes": "",
+    "updated_at": "2026-11-17 22:36:38"
+  },
+  "chandramahesh": {
+    "action": "VERIFIED_ISSUE",
+    "notes": "",
+    "updated_at": "2026-11-17 22:36:52"
+  },
+  "monika": {
+    "action": "VERIFIED_ISSUE",
+    "notes": "",
+    "updated_at": "2026-11-17 22:37:02"
+  },
+  "sub53": {
+    "action": "CALL_FAILED_REVISE",
+    "notes": "",
+    "updated_at": "2026-11-17 22:38:59"
+  },
+  "sub51": {
+    "action": "CALL_FAILED_REVISE",
+    "notes": "",
+    "updated_at": "2026-11-17 22:38:54"
+  },
+  "sub52": {
+    "action": "REQUEST_CHANGES_EMAIL",
+    "notes": "",
+    "updated_at": "2026-11-17 22:38:50"
+  }
+}

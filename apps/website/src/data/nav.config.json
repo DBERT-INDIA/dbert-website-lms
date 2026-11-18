@@ -102,6 +102,7 @@
             { "label": "DBERT Launchpad (0-to-1)", "href": "/learners/launchpad" },
             { "label": "DBERT Accelerate (Mid-Level)", "href": "/learners/accelerate" },
             { "label": "DBERT Fellowship (Paid)", "href": "/learners/fellowship", "highlight": true },
+            { "label": "Technical Q&A Hub", "href": "/qa", "highlight": true },
             { "label": "Free AI Resume Checker", "href": "/learners/resume-checker", "highlight": true }
           ]
         },

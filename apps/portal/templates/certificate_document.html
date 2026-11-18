@@ -4,7 +4,7 @@
 {% set page_title = "Official Certificate — " ~ (cert.recipient_name or cert.name or "Intern") %}
 {% set page_robots = "noindex, nofollow" %}
 {% include "_head.html" %}
-<style>
+<style nonce="{{ csp_nonce() }}">
   @media print {
     .public-topbar, .cert-actions, .no-print { display: none !important; }
     body { background: #0c1222 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; margin: 0 !important; padding: 0 !important; }
@@ -87,6 +87,9 @@
     <button type="button" class="btn-print" onclick="window.print()">
       <i class="fa-solid fa-print"></i> Print / Save as PDF
     </button>
+    <a href="/portal/certificate/{{ cert.cert_id }}/pdf" class="btn-print" style="text-decoration:none; background: linear-gradient(135deg, #10b981, #059669); color:#fff; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);">
+      <i class="fa-solid fa-file-pdf"></i> Download Official Master PDF (3 Pages)
+    </a>
     <a href="/portal/certificate/{{ cert.cert_id }}" class="btn-verify-link" target="_blank" rel="noopener">
       <i class="fa-solid fa-shield-check"></i> Verification Page
     </a>
@@ -128,10 +131,10 @@
 
       <div class="foot-row">
         <div class="sig">
-          <img src="/static/signature.png" alt="" data-act-error="$hide">
+          <img src="/static/certificates/sig_dark_edwardian.png" alt="Abhinav Sharma" style="height:36px; display:block; margin-bottom:4px;" onerror="this.onerror=null; this.src='/static/signature.png';">
           <div class="line">
-            <div class="nm">Sarita Bansal</div>
-            <div class="role">Program Head</div>
+            <div class="nm">Abhinav Sharma</div>
+            <div class="role">Founder & Managing Director</div>
           </div>
         </div>
         <div class="idblock">
@@ -139,10 +142,10 @@
           <small>Issued: {{ (cert.issued_at or '')[:10] }}</small>
         </div>
         <div class="qr">
-          <div class="ph">
-            <i class="fas fa-qrcode fa-2x"></i>
+          <div class="ph" style="padding:4px; display:inline-block; background:#fff; border-radius:4px;">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://dbert.in/verify?certid={{ cert.cert_id }}" alt="Verification QR" style="width:56px; height:56px; display:block;">
           </div>
-          <small>Verify: /portal/certificate/{{ cert.cert_id }}</small>
+          <small style="display:block; margin-top:4px;">Verify: https://dbert.in/verify?certid={{ cert.cert_id }}</small>
         </div>
       </div>
 

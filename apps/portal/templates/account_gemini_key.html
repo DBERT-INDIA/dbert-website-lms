@@ -110,14 +110,15 @@
                 return;
             }
 
+            const nextUrl = new URLSearchParams(window.location.search).get('next') || '{{ next_url or "" }}';
             msg.className = 'form-msg-box msg-loading';
             msg.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Verifying key live with Google Generative Language API...';
             if (btn) btn.disabled = true;
 
-            fetch('/account/gemini-key', {
+            fetch('/account/gemini-key' + (nextUrl ? '?next=' + encodeURIComponent(nextUrl) : ''), {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ api_key: raw })
+                body: JSON.stringify({ api_key: raw, next: nextUrl })
             })
             .then(r => r.json().then(data => ({ status: r.status, data })))
             .then(res => {
@@ -125,7 +126,9 @@
                 if (res.data.status === 'success') {
                     msg.className = 'form-msg-box msg-success';
                     msg.innerHTML = '<i class="fa-solid fa-circle-check"></i> ' + (res.data.message || 'Key validated successfully!');
-                    setTimeout(() => window.location.reload(), 1200);
+                    setTimeout(() => {
+                        window.location.href = res.data.redirect || nextUrl || '/portal';
+                    }, 1200);
                 } else {
                     msg.className = 'form-msg-box msg-error';
                     msg.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> ' + (res.data.message || 'Validation failed.');

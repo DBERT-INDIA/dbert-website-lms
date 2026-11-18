@@ -9,6 +9,7 @@ import logging
 import requests
 from datetime import datetime
 from typing import Dict, Any, Optional, Tuple
+from services.ai.gemini_discovery import discover_gemini_models
 
 logger = logging.getLogger("stipend_evaluator")
 
@@ -116,26 +117,59 @@ DOMAIN_RUBRICS = {
 
 
 def get_intern_gemini_key(conn, intern_id: int) -> Optional[str]:
-    """Retrieves and decrypts the intern's active Gemini API key from intern_accounts."""
+    """Retrieves and decrypts the intern's active Gemini API key from user_api_keys (fallback to intern_accounts)."""
     if not conn or not intern_id:
         return None
     try:
-        row = conn.execute("SELECT gemini_api_key_encrypted FROM intern_accounts WHERE id = ?", (intern_id,)).fetchone()
-        if not row or not row["gemini_api_key_encrypted"]:
+        enc_val = None
+        # 1. Primary source: user_api_keys table
+        try:
+            user_key_row = conn.execute(
+                "SELECT encrypted_key FROM user_api_keys WHERE intern_id = ? ORDER BY id DESC LIMIT 1",
+                (intern_id,)
+            ).fetchone()
+            if user_key_row and user_key_row["encrypted_key"]:
+                enc_val = user_key_row["encrypted_key"]
+        except Exception as e:
+            logger.debug(f"[get_intern_gemini_key] user_api_keys lookup failed: {e}")
+
+        # 2. Fallback: intern_accounts
+        if not enc_val:
+            try:
+                row = conn.execute("SELECT gemini_api_key_encrypted FROM intern_accounts WHERE id = ?", (intern_id,)).fetchone()
+                if row and row["gemini_api_key_encrypted"]:
+                    enc_val = row["gemini_api_key_encrypted"]
+            except Exception as e:
+                logger.debug(f"[get_intern_gemini_key] intern_accounts lookup failed: {e}")
+
+        if not enc_val:
             return None
+
+        # Check raw unencrypted prefix
+        raw = enc_val.strip()
+        if raw.startswith("AIzaSy") or (raw.startswith("AQ.") and len(raw) > 30):
+            return raw
+
         from flask import current_app
         if hasattr(current_app, "decrypt_gemini_key"):
-            decrypted = current_app.decrypt_gemini_key(row["gemini_api_key_encrypted"])
+            decrypted = current_app.decrypt_gemini_key(enc_val)
             if decrypted:
                 return decrypted
-        # Direct decrypt attempt using Fernet
-        raw = row["gemini_api_key_encrypted"].strip()
-        if raw.startswith("AIzaSy"):
-            return raw
+
+        # Direct decrypt attempt using Fernet / Secret Key
         key = os.environ.get("FERNET_KEY") or os.environ.get("SECRET_KEY")
         if key:
             from cryptography.fernet import Fernet
-            return Fernet(key.encode() if isinstance(key, str) else key).decrypt(raw.encode()).decode()
+            import base64
+            import hashlib
+            try:
+                return Fernet(key.encode() if isinstance(key, str) else key).decrypt(raw.encode()).decode()
+            except Exception:
+                try:
+                    dk = base64.urlsafe_b64encode(hashlib.sha256(key.encode()).digest())
+                    return Fernet(dk).decrypt(raw.encode()).decode()
+                except Exception:
+                    pass
     except Exception as e:
         logger.error(f"[get_intern_gemini_key] Error: {e}")
     return None
@@ -179,35 +213,21 @@ def get_active_gemini_key(conn=None, intern_id: Optional[int] = None) -> Optiona
 
 def probe_gemini_key(api_key: str) -> Tuple[bool, str]:
     """
-    Actively probes Google Gemini API using the provided key.
+    Actively probes Google Gemini API using the provided key via dynamic model discovery.
     Returns (is_valid: bool, status_message: str).
     """
     if not api_key:
         return False, "No Gemini API key provided."
 
     clean_key = api_key.strip()
-    if len(clean_key) < 20:
+    if len(clean_key) < 15:
         return False, "Invalid API key format (length too short)."
 
-    probe_url = f"https://generativelanguage.googleapis.com/v1beta/models?key={clean_key}"
-    try:
-        resp = requests.get(probe_url, timeout=10)
-        if resp.status_code == 200:
-            data = resp.json()
-            models = [m.get("name", "").replace("models/", "") for m in data.get("models", [])]
-            flash_models = [m for m in models if "flash" in m]
-            return True, f"Active and verified. Access to {len(models)} models ({', '.join(flash_models[:3])})."
-        elif resp.status_code in (400, 401, 403):
-            err_msg = resp.json().get("error", {}).get("message", "Authentication failed.")
-            return False, f"Google API authentication failed: {err_msg}"
-        elif resp.status_code == 429:
-            return True, "Key is valid, but currently rate-limited (HTTP 429)."
-        else:
-            return False, f"Google API returned unexpected status {resp.status_code}: {resp.text[:100]}"
-    except requests.Timeout:
-        return False, "Connection timed out while probing Google Gemini API."
-    except requests.RequestException as e:
-        return False, f"Network error connecting to Gemini API: {str(e)}"
+    best_default, models, err = discover_gemini_models(api_key=clean_key, force_refresh=True)
+    if err or not models:
+        return False, err or "Google Gemini verification failed."
+
+    return True, f"Active and verified. Default: {best_default} (Access to {len(models)} generation models)."
 
 
 class StipendEvaluator:

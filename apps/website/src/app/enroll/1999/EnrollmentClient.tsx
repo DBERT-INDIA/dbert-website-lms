@@ -4,6 +4,9 @@ import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import s from './enroll.module.css';
+import { PRICING_CONFIG, formatINR } from '@/config/pricing.config';
+import { getNextCohortStandup } from '@/lib/cohortCalendar';
+import { trackEvent } from '@/lib/analytics';
 
 interface CandidateData {
   certId: string;
@@ -121,7 +124,8 @@ export default function EnrollmentClient() {
   // Countdown timer hook when approvedRecord is set
   useEffect(() => {
     if (!approvedRecord) return;
-    const targetTime = new Date(approvedRecord.batchStartDate || '2026-11-09T18:00:00+05:30').getTime();
+    const defaultCohort = getNextCohortStandup();
+    const targetTime = new Date(approvedRecord.batchStartDate || defaultCohort.batchStartDate).getTime();
 
     const tick = () => {
       const now = Date.now();
@@ -159,9 +163,14 @@ export default function EnrollmentClient() {
 
       if (data.found && data.candidate) {
         const c: CandidateData = data.candidate;
+        trackEvent('enrollment_candidate_lookup', { found: true, domain: c.domain || 'Unknown', certId: c.certId });
 
         // Check if candidate already has an approved enrollment
         if (data.isApproved || data.enrollmentStatus === 'APPROVED') {
+          const defaultCohort = getNextCohortStandup();
+          const startDate = data.batchStartDate || defaultCohort.batchStartDate;
+          const displayDate = data.batchStartDisplay || defaultCohort.batchStartDisplay;
+
           setApprovedRecord({
             submissionId: c.submissionId || 'DBERT-ENR-CONFIRMED',
             candidateName: c.holderName,
@@ -172,13 +181,13 @@ export default function EnrollmentClient() {
             certId: c.certId,
             internId: c.internId,
             utrNumber: c.utrNumber || 'VERIFIED-UPI',
-            amountPaid: c.amountPaid || 1500,
-            batchStartDate: data.batchStartDate || '2026-11-09T18:00:00+05:30',
-            batchStartDisplay: data.batchStartDisplay || 'Monday, 9 Nov 2026'
+            amountPaid: c.amountPaid || PRICING_CONFIG.balancePayable,
+            batchStartDate: startDate,
+            batchStartDisplay: displayDate
           });
           setLookupAlert({
             type: 'success',
-            text: `✓ Official Enrollment Approved for ${c.holderName}! Batch commences Monday, 9 Nov 2026.`
+            text: `✓ Official Enrollment Approved for ${c.holderName}! Batch commences ${displayDate}.`
           });
           return;
         }
@@ -256,7 +265,7 @@ export default function EnrollmentClient() {
   };
 
   // Copy Merchant VPA
-  const merchantVpa = 'Q652429146@ybl';
+  const merchantVpa = PRICING_CONFIG.merchantVpa;
   const handleCopyVpa = () => {
     navigator.clipboard.writeText(merchantVpa);
     setCopiedVpa(true);
@@ -267,27 +276,28 @@ export default function EnrollmentClient() {
   const [downloadingQr, setDownloadingQr] = useState(false);
   const handleDownloadQr = async () => {
     setDownloadingQr(true);
+    trackEvent('qr_code_download', { certId: certId || 'UNKNOWN' });
     try {
-      const res = await fetch('/images/qrcode.jpeg');
+      const res = await fetch(PRICING_CONFIG.qrCodePath);
       const blob = await res.blob();
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = `DBERT-Payment-QR-${certId || '1500'}.jpeg`;
+      link.download = `DBERT-Payment-QR-${certId || PRICING_CONFIG.balancePayable}.jpeg`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
       setTimeout(() => window.URL.revokeObjectURL(url), 1000);
     } catch {
-      window.open('/images/qrcode.jpeg', '_blank');
+      window.open(PRICING_CONFIG.qrCodePath, '_blank');
     } finally {
       setDownloadingQr(false);
     }
   };
 
   // UPI deep links
-  const noteParam = certId ? `DBERT-${certId}` : 'DBERT-BALANCE-1500';
-  const upiQuery = `pa=${merchantVpa}&pn=DBERT%20Admissions&am=1999&cu=INR&tn=${encodeURIComponent(noteParam)}`;
+  const noteParam = certId ? `DBERT-${certId}` : `DBERT-BALANCE-${PRICING_CONFIG.balancePayable}`;
+  const upiQuery = `pa=${merchantVpa}&pn=${encodeURIComponent(PRICING_CONFIG.merchantName)}&am=${PRICING_CONFIG.balancePayable}&cu=INR&tn=${encodeURIComponent(noteParam)}`;
   const genericUpiUri = `upi://pay?${upiQuery}`;
 
   const gpayUri = deviceType === 'android'
@@ -346,6 +356,12 @@ export default function EnrollmentClient() {
 
       const data = await res.json();
       if (data.success) {
+        trackEvent('balance_utr_submitted', {
+          submissionId: data.submissionId,
+          certId: certId.trim(),
+          amount: 1500,
+          domain
+        });
         setSubmissionResult({
           submissionId: data.submissionId,
           submittedAt: data.submittedAt || new Date().toISOString(),
@@ -383,12 +399,12 @@ export default function EnrollmentClient() {
       `I am attaching my payment transaction screenshot below for instant verification & credential unlock.`
     ].join('\n');
 
-    return `https://wa.me/918192911360?text=${encodeURIComponent(text)}`;
+    return `https://wa.me/${PRICING_CONFIG.admissionsWhatsApp}?text=${encodeURIComponent(text)}`;
   };
 
   // ── Render: APPROVED ENROLLMENT & LIVE COUNTDOWN VIEW ─────────────────────────
   if (approvedRecord) {
-    const whatsappApprovedUrl = `https://wa.me/918192911360?text=${encodeURIComponent(
+    const whatsappApprovedUrl = `https://wa.me/${PRICING_CONFIG.admissionsWhatsApp}?text=${encodeURIComponent(
       `*DBERT Approved Incubation Enrollment Confirmation*\n\n` +
       `Hello DBERT Admissions, I checked my enrollment for *${approvedRecord.candidateName}* (Ref: ${approvedRecord.submissionId}).\n\n` +
       `• Candidate: ${approvedRecord.candidateName}\n` +
@@ -623,6 +639,7 @@ export default function EnrollmentClient() {
             target="_blank"
             rel="noopener noreferrer"
             className={s.whatsappProofBtn}
+            onClick={() => trackEvent('whatsapp_proof_routing_click', { certId: submissionResult?.certId, submissionId: submissionResult?.submissionId })}
           >
             <span>📲 Send Payment Screenshot via WhatsApp to Admissions</span>
           </a>
@@ -872,12 +889,12 @@ export default function EnrollmentClient() {
             <div className={s.qrImageWrapper}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/images/qrcode.jpeg"
+                src={PRICING_CONFIG.qrCodePath}
                 alt="DBERT Official UPI Payment QR Code"
                 className={s.qrImage}
                 onError={(e) => {
-                  // Fallback to root path if /images/ fails
-                  (e.target as HTMLImageElement).src = '/qrcode.jpeg';
+                  // Fallback if primary path fails
+                  (e.target as HTMLImageElement).src = PRICING_CONFIG.qrCodeFallback;
                 }}
               />
             </div>
@@ -908,16 +925,32 @@ export default function EnrollmentClient() {
             </div>
 
             <div className={s.intentGrid}>
-              <a href={gpayUri} className={`${s.intentBtn} ${s.intentGpay}`}>
+              <a
+                href={gpayUri}
+                className={`${s.intentBtn} ${s.intentGpay}`}
+                onClick={() => trackEvent('upi_launcher_click', { provider: 'gpay', amount: 1500 })}
+              >
                 Google Pay
               </a>
-              <a href={phonepeUri} className={`${s.intentBtn} ${s.intentPhonePe}`}>
+              <a
+                href={phonepeUri}
+                className={`${s.intentBtn} ${s.intentPhonePe}`}
+                onClick={() => trackEvent('upi_launcher_click', { provider: 'phonepe', amount: 1500 })}
+              >
                 PhonePe
               </a>
-              <a href={paytmUri} className={`${s.intentBtn} ${s.intentPaytm}`}>
+              <a
+                href={paytmUri}
+                className={`${s.intentBtn} ${s.intentPaytm}`}
+                onClick={() => trackEvent('upi_launcher_click', { provider: 'paytm', amount: 1500 })}
+              >
                 Paytm
               </a>
-              <a href={genericUpiUri} className={`${s.intentBtn} ${s.intentGeneric}`}>
+              <a
+                href={genericUpiUri}
+                className={`${s.intentBtn} ${s.intentGeneric}`}
+                onClick={() => trackEvent('upi_launcher_click', { provider: 'default_upi', amount: 1500 })}
+              >
                 Default UPI
               </a>
             </div>

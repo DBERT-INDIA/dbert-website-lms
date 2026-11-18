@@ -51,7 +51,7 @@ class GeminiProvider:
             
     def generate_content(self, prompt: str, temperature: float = 0.7, max_tokens: int = 2048, response_schema: Optional[Dict[str, Any]] = None) -> GeminiResponse:
         """Generates content trying the fallback chain until success."""
-        chain = get_fallback_chain(self.available_models)
+        chain = get_fallback_chain(self.available_models, api_key=self.api_key)
         
         gen_config = {
             "temperature": temperature,
@@ -100,7 +100,7 @@ class GeminiProvider:
         
     def stream_content(self, prompt: str, temperature: float = 0.7, max_tokens: int = 2048) -> Generator[str, None, None]:
         """Streams content yielding text chunks, using fallback chain."""
-        chain = get_fallback_chain(self.available_models)
+        chain = get_fallback_chain(self.available_models, api_key=self.api_key)
         
         body = {
             "contents": [{"parts": [{"text": prompt}]}],

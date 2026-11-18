@@ -798,11 +798,14 @@
         <button type="button" class="btn btn-ghost btn-sm" id="closeLeadModalX" style="padding:4px 8px; border:none; color:#94A3B8; cursor:pointer; font-size:16px; background:transparent;" aria-label="Close dialog"><i class="fas fa-times"></i></button>
       </div>
       <p style="font-size:13px; color:#94A3B8; margin:0 0 18px; line-height:1.55;">
-        A short note is required. It’s shown as your interest signal to the hiring team; your profile details and pitch are attached automatically.
+        A suitability note is required (minimum 15 characters). Once submitted, your pitch will be recorded and you will be directed to the official application portal.
       </p>
       <div class="field" style="margin-bottom:16px;">
-        <label for="leadApplyComment" style="display:block; font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; color:#E2B96F; margin-bottom:8px;">Why are you a fit for this role? *</label>
-        <textarea id="leadApplyComment" rows="4" placeholder="Highlight relevant skills, portfolio links, or why this opening matches your career goals..." style="width:100%; box-sizing:border-box; background:#1E293B; border:1px solid #334155; color:#F8FAFC; font-family:inherit; font-size:13.5px; padding:12px 14px; border-radius:10px; outline:none; resize:vertical; min-height:100px; line-height:1.5;"></textarea>
+        <label for="leadApplyComment" style="display:flex; justify-content:space-between; align-items:center; font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; color:#E2B96F; margin-bottom:8px;">
+          <span>Why are you suitable for this opportunity? *</span>
+          <span id="leadApplyCharCount" style="font-size:11px; color:#94A3B8; text-transform:none; font-weight:500;">0 / 15 min</span>
+        </label>
+        <textarea id="leadApplyComment" rows="4" placeholder="Explain why your skills, projects, and domain track make you a great fit for this role (minimum 15 characters)..." style="width:100%; box-sizing:border-box; background:#1E293B; border:1px solid #334155; color:#F8FAFC; font-family:inherit; font-size:13.5px; padding:12px 14px; border-radius:10px; outline:none; resize:vertical; min-height:100px; line-height:1.5;"></textarea>
       </div>
       <div id="leadApplyMsg" style="min-height:18px; font-size:12.5px; margin-bottom:12px; font-weight:600; color:#EF4444;"></div>
 
@@ -849,8 +852,8 @@
       var commentEl = document.getElementById('leadApplyComment');
       var comment = commentEl ? commentEl.value.trim() : '';
       var msg = document.getElementById('leadApplyMsg');
-      if(!comment || comment.length < 10){
-        if(msg) msg.textContent = 'Please write at least 10 characters explaining why you are a fit.';
+      if(!comment || comment.length < 15){
+        if(msg) msg.textContent = 'Please write at least 15 characters explaining why you are suitable for this opportunity.';
         return;
       }
 
@@ -898,17 +901,22 @@
           // Silent async click tracker
           trackLeadClick();
 
-          // Open target URL
-          window.open(TARGET_URL, '_blank', 'noopener,noreferrer');
+          // Attempt to open target URL in new window/tab
+          var opened = null;
+          try {
+            opened = window.open(TARGET_URL, '_blank', 'noopener,noreferrer');
+          } catch(err){}
 
-          // Update Apply Zone
+          // Update Apply Zone & Close Modal
           closeLeadModal();
           var az = document.getElementById('applyZone');
           if(az){
             az.innerHTML =
               '<div class="applied-box" style="background:#F0FDF4; border:1.5px solid #86EFAC; border-radius:14px; padding:20px 24px;">'
-            + '<div class="hd" style="font-size:16px; font-weight:800; color:#166534; margin-bottom:6px; display:flex; align-items:center; gap:8px;"><i class="fas fa-circle-check" style="color:#22C55E; font-size:18px;"></i> Application Submitted!</div>'
-            + '<p style="font-size:14px; color:#374151; margin:0 0 16px; line-height:1.55;">Your application note has been recorded and your official application window opened. If your browser blocked the window, click below to continue:</p>'
+            + '<div class="hd" style="font-size:16px; font-weight:800; color:#166534; margin-bottom:6px; display:flex; align-items:center; gap:8px;"><i class="fas fa-circle-check" style="color:#22C55E; font-size:18px;"></i> Application Note Recorded!</div>'
+            + '<p style="font-size:14px; color:#374151; margin:0 0 16px; line-height:1.55;">Your suitability pitch has been recorded. '
+            + (opened ? 'The official application window opened in a new tab. If it did not open or was blocked, continue below:' : 'Please click below to continue to the official employer application page:')
+            + '</p>'
             + '<div class="next-cta" style="display:flex; gap:12px; flex-wrap:wrap;">'
             + '<a class="btn btn-primary" href="' + TARGET_URL + '" target="_blank" rel="noopener noreferrer" style="background:linear-gradient(135deg, #E2B96F, #C89945); color:#0F172A; font-weight:700; padding:10px 20px; border-radius:10px; text-decoration:none; display:inline-flex; align-items:center; gap:8px; font-size:13.5px;"><i class="fas fa-external-link-alt"></i> Continue to Official Application ↗</a>'
             + '<a class="btn btn-ghost" href="/internships" style="background:#F8FAFC; border:1px solid #CBD5E1; color:#334155; font-weight:600; padding:10px 20px; border-radius:10px; text-decoration:none; display:inline-flex; align-items:center; gap:8px; font-size:13.5px;"><i class="fas fa-layer-group"></i> Browse more openings</a>'
@@ -939,10 +947,10 @@
       if(!input) return;
       var body = input.value.trim();
       if(msg) msg.textContent = '';
-      if(body.length < 10){
+      if(body.length < 15){
         if(msg){
           msg.style.color = '#EF4444';
-          msg.textContent = 'Comment must be at least 10 characters.';
+          msg.textContent = 'Please write at least 15 characters explaining why you are suitable for this opportunity.';
         }
         return;
       }
@@ -1017,6 +1025,19 @@
       var applyBtn = document.getElementById('applyBtn');
       if(applyBtn){
         applyBtn.addEventListener('click', openLeadModal);
+      }
+      var leadCommentEl = document.getElementById('leadApplyComment');
+      var leadCharCount = document.getElementById('leadApplyCharCount');
+      if(leadCommentEl && leadCharCount){
+        leadCommentEl.addEventListener('input', function(){
+          var len = this.value.trim().length;
+          leadCharCount.textContent = len + ' / 15 min';
+          if(len >= 15){
+            leadCharCount.style.color = '#22C55E';
+          } else {
+            leadCharCount.style.color = '#94A3B8';
+          }
+        });
       }
       var closeX = document.getElementById('closeLeadModalX');
       if(closeX){

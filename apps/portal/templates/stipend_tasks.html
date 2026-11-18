@@ -298,6 +298,87 @@
     text-decoration: underline;
   }
 
+  /* High-Impact 3D Glowing CTA Buttons */
+  .stipend-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    padding: 11px 22px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 850;
+    letter-spacing: 0.3px;
+    text-decoration: none !important;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    border: 1px solid transparent;
+    margin: 3px 2px;
+  }
+  .stipend-cta-btn:hover {
+    transform: translateY(-2px);
+  }
+  .stipend-cta-btn:active {
+    transform: translateY(0);
+  }
+  .stipend-cta-emerald {
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+    border-color: #34D399;
+    color: #FFFFFF !important;
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.45);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  }
+  .stipend-cta-emerald:hover {
+    box-shadow: 0 6px 22px rgba(16, 185, 129, 0.6);
+  }
+  .stipend-cta-gold {
+    background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+    border-color: #FCD34D;
+    color: #0F172A !important;
+    box-shadow: 0 4px 18px rgba(245, 158, 11, 0.5);
+    font-weight: 900;
+  }
+  .stipend-cta-gold:hover {
+    box-shadow: 0 6px 24px rgba(245, 158, 11, 0.65);
+  }
+  .stipend-cta-blue {
+    background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%);
+    border-color: #38BDF8;
+    color: #FFFFFF !important;
+    box-shadow: 0 4px 16px rgba(2, 132, 199, 0.45);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  }
+  .stipend-cta-blue:hover {
+    box-shadow: 0 6px 22px rgba(2, 132, 199, 0.6);
+  }
+  .stipend-cta-linkedin {
+    background: linear-gradient(135deg, #0A66C2 0%, #0077B5 100%);
+    border-color: #60A5FA;
+    color: #FFFFFF !important;
+    box-shadow: 0 4px 16px rgba(10, 102, 194, 0.45);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  }
+  .stipend-cta-linkedin:hover {
+    box-shadow: 0 6px 22px rgba(10, 102, 194, 0.6);
+  }
+  .stipend-cta-dark {
+    background: #1E293B;
+    border-color: rgba(255, 255, 255, 0.15);
+    color: #E2E8F0 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+  .stipend-cta-dark:hover {
+    background: #334155;
+    border-color: rgba(255, 255, 255, 0.3);
+  }
+  .stipend-btn-sm {
+    padding: 7px 15px;
+    font-size: 12px;
+    border-radius: 8px;
+    font-weight: 750;
+  }
+
   /* 3. System Guidance Notice */
   .system-notice {
     background: rgba(120, 53, 15, 0.25);
@@ -747,6 +828,48 @@
     background: #A855F7;
   }
 
+  /* High-Contrast Action Buttons for Gates 3 & 4 */
+  #btnSaveStipendUpi:hover {
+    background: linear-gradient(135deg, #34D399 0%, #10B981 100%) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(16, 185, 129, 0.55) !important;
+  }
+  #btnToggleStipendUpi:hover {
+    background: rgba(212, 175, 55, 0.25) !important;
+    color: #FDE68A !important;
+    border-color: #FBBF24 !important;
+    transform: translateY(-1px);
+  }
+  .btn-linkedin-add-cert:hover {
+    background: linear-gradient(135deg, #0284C7 0%, #0A66C2 100%) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(10, 102, 194, 0.55) !important;
+  }
+  #btnOpenSnippetModal:hover {
+    background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(245, 158, 11, 0.45) !important;
+  }
+  #btnSaveLinkedin:hover {
+    background: linear-gradient(135deg, #38BDF8 0%, #0284C7 100%) !important;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(2, 132, 199, 0.55) !important;
+  }
+  #btnShowUpdateLinkedin:hover {
+    background: rgba(99, 102, 241, 0.32) !important;
+    border-color: #818CF8 !important;
+    color: #FFFFFF !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35) !important;
+  }
+  #btnCheckLinkedinNow:hover {
+    background: rgba(56, 189, 248, 0.25) !important;
+    border-color: #38BDF8 !important;
+    color: #FFFFFF !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(56, 189, 248, 0.35) !important;
+  }
+
   /* Responsive Adjustments */
   @media (max-width: 860px) {
     .stipend-hero {
@@ -799,6 +922,27 @@
       text-align: center;
     }
   }
+
+  /* Universal Sidebar-Aware Modal Backdrops */
+  .portal-modal-backdrop {
+    display: none;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 100000;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    box-sizing: border-box;
+  }
+  @media (min-width: 769px) {
+    body.has-sidebar .portal-modal-backdrop {
+      left: var(--sidebar-w, 240px) !important;
+    }
+  }
 </style>
 </head>
 <body class="has-sidebar">
@@ -835,8 +979,137 @@
       </div>
 
       <!-- ====================================================================
-           2. 3-POINT ELIGIBILITY & PRE-FLIGHT CHECKLIST CARDS
+           1.5. DYNAMIC 4-SEGMENT PROGRESSION METER
            ==================================================================== -->
+      {% if stipend_verified %}
+        <div style="background:linear-gradient(90deg, rgba(16,185,129,0.18) 0%, rgba(15,23,42,0.95) 100%);border:1.5px solid rgba(52,211,153,0.5);border-radius:14px;padding:18px 22px;margin:20px 0 26px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+            <div>
+              <span style="font-size:11px;font-weight:800;letter-spacing:1px;color:#34D399;text-transform:uppercase;"><i class="fa-solid fa-check-double" style="margin-right:6px;"></i>ALL GATES VERIFIED &amp; APPROVED</span>
+              <h3 style="font-size:16px;font-weight:800;color:#FFFFFF;margin:4px 0 0;">
+                🎉 All 4 Gates Verified — Official Stipend Disbursement Scheduled!
+              </h3>
+            </div>
+            <div>
+              <span style="display:inline-block;padding:6px 16px;border-radius:20px;font-size:12px;font-weight:800;background:rgba(16,185,129,0.25);color:#34D399;border:1px solid #10B981;">
+                100% Complete · Approved
+              </span>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:8px;margin-top:12px;">
+            <div style="height:8px;border-radius:4px;background:#10B981;box-shadow:0 0 10px rgba(16,185,129,0.5);"></div>
+            <div style="height:8px;border-radius:4px;background:#10B981;box-shadow:0 0 10px rgba(16,185,129,0.5);"></div>
+            <div style="height:8px;border-radius:4px;background:#10B981;box-shadow:0 0 10px rgba(16,185,129,0.5);"></div>
+            <div style="height:8px;border-radius:4px;background:#10B981;box-shadow:0 0 10px rgba(16,185,129,0.5);"></div>
+          </div>
+        </div>
+      {% else %}
+        {% set completed_gates = (1 if ver_info.verified else 0) + (1 if comp_info.is_completed else 0) + (1 if has_upi else 0) + (1 if (linkedin_verified or has_linkedin) else 0) %}
+        <div style="background:rgba(15,23,42,0.85);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:18px 22px;margin:20px 0 26px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+            <div>
+              <span style="font-size:11px;font-weight:800;letter-spacing:1px;color:#A5B4FC;text-transform:uppercase;">STIPEND PROGRESSION STATUS</span>
+              <h3 style="font-size:16px;font-weight:800;color:#FFFFFF;margin:4px 0 0;">
+                {% if completed_gates == 4 %}
+                  🎉 All 4 Gates Complete — Eligible for ₹5,000 Stipend Release!
+                {% else %}
+                  {{ completed_gates }} of 4 Gates Unlocked — {{ 4 - completed_gates }} step{{ 's' if (4 - completed_gates) > 1 else '' }} away from ₹5,000 Stipend
+                {% endif %}
+              </h3>
+            </div>
+            <div>
+              <span style="display:inline-block;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:800;background:{% if completed_gates == 4 %}rgba(16,185,129,0.2);color:#34D399;border:1px solid #10B981;{% else %}rgba(245,158,11,0.2);color:#FBBF24;border:1px solid #F59E0B;{% endif %}">
+                {{ (completed_gates / 4 * 100) | int }}% Complete
+              </span>
+            </div>
+          </div>
+          <!-- 4-Segment Bar -->
+          <div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:8px;">
+            <div style="height:8px;border-radius:4px;background:{% if ver_info.verified %}#10B981;box-shadow:0 0 10px rgba(16,185,129,0.5);{% else %}rgba(255,255,255,0.1);{% endif %}"></div>
+            <div style="height:8px;border-radius:4px;background:{% if comp_info.is_completed %}#10B981;box-shadow:0 0 10px rgba(16,185,129,0.5);{% else %}rgba(255,255,255,0.1);{% endif %}"></div>
+            <div style="height:8px;border-radius:4px;background:{% if has_upi %}#10B981;box-shadow:0 0 10px rgba(16,185,129,0.5);{% else %}rgba(255,255,255,0.1);{% endif %}"></div>
+            <div style="height:8px;border-radius:4px;background:{% if (linkedin_verified or has_linkedin) %}#10B981;box-shadow:0 0 10px rgba(16,185,129,0.5);{% else %}rgba(255,255,255,0.1);{% endif %}"></div>
+          </div>
+        </div>
+      {% endif %}
+
+      <!-- ====================================================================
+           2. ALL GATES COMPLETED & SCHEDULED PAYOUT DOSSIER (IF STIPEND VERIFIED)
+              ELSE 4-POINT ELIGIBILITY & PRE-FLIGHT CHECKLIST CARDS
+           ==================================================================== -->
+      {% if stipend_verified %}
+      <div class="stipend-approved-dossier" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.08) 0%, rgba(14, 19, 31, 0.98) 100%); border: 1.5px solid rgba(52, 211, 153, 0.45); border-radius: 20px; padding: 2.25rem 2rem; margin-bottom: 2.5rem; box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px; margin-bottom: 1.5rem;">
+          <div style="display: flex; align-items: center; gap: 14px;">
+            <div style="width: 54px; height: 54px; border-radius: 14px; background: rgba(52, 211, 153, 0.15); border: 1.5px solid rgba(52, 211, 153, 0.4); display: flex; align-items: center; justify-content: center; color: #34D399; font-size: 26px;">
+              <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <div>
+              <div style="display: inline-flex; align-items: center; gap: 8px; background: rgba(52, 211, 153, 0.18); border: 1px solid rgba(52, 211, 153, 0.35); padding: 4px 12px; border-radius: 9999px; font-size: 11px; font-weight: 700; color: #34D399; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 6px;">
+                <i class="fa-solid fa-shield-halved"></i> All 4 Gates Verified &amp; Approved
+              </div>
+              <h2 style="font-size: 1.6rem; font-weight: 800; color: #F8FAFC; margin: 0; letter-spacing: -0.02em;">
+                All Gates Completed — Stipend Disbursement Scheduled
+              </h2>
+            </div>
+          </div>
+          <div style="text-align: right; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); padding: 12px 18px; border-radius: 12px;">
+            <div style="font-size: 11px; color: #94A3B8; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">Approved Total Credit</div>
+            <div style="font-size: 1.75rem; font-weight: 800; color: #34D399; line-height: 1.2;">₹{{ stipend_amount }} /-</div>
+            <div style="font-size: 11px; color: #64748B;">₹5,000 Milestone + ₹499 Deposit Refund</div>
+          </div>
+        </div>
+
+        <p style="color: #CBD5E1; font-size: 14px; line-height: 1.6; margin-bottom: 1.75rem; max-width: 900px;">
+          Congratulations! All eligibility gates have been verified. The DBERT Engineering Evaluation Committee has confirmed your <strong>public LinkedIn experience credential</strong> and validated your open-source technical contribution on GitHub to the authorized repository <strong>{{ verified_github_repo or verified_github_org }}</strong> under organization <strong>{{ verified_github_org }}</strong>.
+        </p>
+
+        <!-- Details Grid -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-bottom: 1.75rem;">
+          <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 14px 16px;">
+            <div style="font-size: 11px; color: #64748B; font-weight: 600; text-transform: uppercase;">Scheduled Payout Date</div>
+            <div style="font-size: 15px; font-weight: 700; color: #38BDF8; margin-top: 4px;">
+              <i class="fa-regular fa-calendar-check" style="margin-right: 6px;"></i>{{ stipend_release_date_display }}
+            </div>
+            <div style="font-size: 11px; color: #94A3B8; margin-top: 2px;">60 days after official internship end date</div>
+          </div>
+
+          <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 14px 16px;">
+            <div style="font-size: 11px; color: #64748B; font-weight: 600; text-transform: uppercase;">Beneficiary Payout UPI ID</div>
+            <div style="font-size: 15px; font-weight: 700; color: #F8FAFC; margin-top: 4px; font-family: monospace;">
+              <i class="fa-solid fa-wallet" style="margin-right: 6px; color: #A78BFA;"></i>{{ masked_upi }}
+            </div>
+            <div style="font-size: 11px; color: #94A3B8; margin-top: 2px;">Direct bank transfer via UPI</div>
+          </div>
+
+          <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 14px 16px;">
+            <div style="font-size: 11px; color: #64748B; font-weight: 600; text-transform: uppercase;">Verified GitHub Organization</div>
+            <div style="font-size: 15px; font-weight: 700; color: #FCD34D; margin-top: 4px;">
+              <i class="fa-brands fa-github" style="margin-right: 6px;"></i>{{ verified_github_org }}
+            </div>
+            <div style="font-size: 11px; color: #94A3B8; margin-top: 2px;">Repository contribution validated</div>
+          </div>
+
+          <div style="background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 14px 16px;">
+            <div style="font-size: 11px; color: #64748B; font-weight: 600; text-transform: uppercase;">Credential Reference</div>
+            <div style="font-size: 15px; font-weight: 700; color: #34D399; margin-top: 4px; font-family: monospace;">
+              <i class="fa-solid fa-certificate" style="margin-right: 6px;"></i>{{ ver_info.cert_id or 'DBERT-VERIFIED' }}
+            </div>
+            <div style="font-size: 11px; color: #94A3B8; margin-top: 2px;">Cryptographically sealed &amp; verified</div>
+          </div>
+        </div>
+
+        <div style="background: rgba(56, 189, 248, 0.08); border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 12px; padding: 12px 18px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+          <div style="display: flex; align-items: center; gap: 10px; font-size: 13px; color: #E2E8F0;">
+            <i class="fa-solid fa-shield-heart" style="color: #38BDF8; font-size: 16px;"></i>
+            <span>No further action required. The automated disbursement engine will credit <strong>₹{{ stipend_amount }}/-</strong> directly to your linked UPI on <strong>{{ stipend_release_date_display }}</strong>.</span>
+          </div>
+          <a href="https://wa.me/918192911360?text=Hi%20Admissions%20Team,%20my%20stipend%20is%20approved%20for%20release%20on%20{{ stipend_release_date }}%20(Ref:%20{{ ver_info.cert_id }})" target="_blank" rel="noopener" class="stipend-cta-btn stipend-cta-emerald stipend-btn-sm">
+            <i class="fa-brands fa-whatsapp"></i> Admissions Support &rarr;
+          </a>
+        </div>
+      </div>
+      {% else %}
       <div>
         <h2 class="section-title">
           <i class="fa-solid fa-list-check"></i> Eligibility & Pre-flight Checklist
@@ -857,31 +1130,58 @@
                 {{ ver_info.status }}
               </span>
             </div>
-            <h3 class="gate-title">Step 1: Certificate Verification</h3>
+            <h3 class="gate-title">Step 1: Course Certificate &amp; Verification</h3>
             <p class="gate-text">
               {% if ver_info.verified %}
-                Official credential verified: <code>{{ ver_info.cert_id }}</code>. Certification complete. Full stipend eligibility unlocked.
+                Official credential verified: <code>{{ ver_info.cert_id }}</code>. Domain curriculum, capstone evaluation, and verified credential complete. Full stipend eligibility unlocked.
               {% elif ver_info.is_provisional %}
-                Your credential is currently Provisional. Please submit the official Google Form verification to unlock official verification and stipend rights.
+                Course completed! Your credential is currently <strong>Provisional (<code>{{ ver_info.cert_id }}</code>)</strong>. You have already paid the ₹499 caution deposit. Complete your remaining <strong>₹1,500 balance</strong> to unlock your Official 3-Document Verified Dossier &amp; enable the ₹5,000 stipend release.
               {% else %}
-                No certified internship record found for your account. Please complete verification.
+                Complete your domain curriculum &amp; quizzes on LMS to earn your Certificate of Completion, then finalize your incubation balance to unlock stipend rights.
               {% endif %}
             </p>
-            {% if not ver_info.verified %}
-              <div class="gate-footer">
-                {% if ver_info.is_provisional %}
-                  <a href="https://docs.google.com/forms/d/e/1FAIpQLSeHCTK_HO5ZbNHNcPiyW-04Y4bBeZ0RvQP7I4koQnW91d6phA/viewform?usp=header" target="_blank" rel="noopener" class="gate-link gate-link-gold">
-                    <span>Submit Verification Form</span>
-                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            <div class="gate-footer" style="display:flex; flex-direction:column; gap:12px; margin-top:16px;">
+              {% if ver_info.verified %}
+                <a href="/portal/certificate/{{ ver_info.cert_id }}/print" target="_blank" rel="noopener" class="stipend-cta-btn stipend-cta-emerald" style="width:100%; justify-content:center; text-decoration:none;">
+                  <i class="fa-solid fa-file-shield"></i>
+                  <span>View Verified Dossier &rarr;</span>
+                </a>
+              {% elif ver_info.is_provisional %}
+                <div style="background:rgba(245,158,11,0.12); border:1.5px solid #d97706; border-radius:12px; padding:14px; width:100%; box-sizing:border-box;">
+                  <div style="font-size:11px; font-weight:800; color:#fbbf24; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px;">
+                    <i class="fa-solid fa-bolt"></i> OPTION A: UPGRADE CREDENTIAL &amp; UNLOCK STIPEND
+                  </div>
+                  <div style="font-size:12.5px; color:#FDE68A; margin-bottom:10px; line-height:1.4;">
+                    Pay remaining <strong>₹1,500 balance</strong> (net of ₹499 credit) to unlock official 3-doc credential packet and earn ₹5,000 stipend.
+                  </div>
+                  <a href="https://dbert.in/enroll/1999?email={{ intern.email }}" target="_blank" rel="noopener" class="stipend-cta-btn stipend-cta-gold" style="width:100%; justify-content:center; text-decoration:none;">
+                    <i class="fa-solid fa-unlock"></i>
+                    <span>Complete ₹1,500 Balance &amp; Unlock Stipend &rarr;</span>
                   </a>
-                {% else %}
-                  <a href="https://dbert.in/enroll/1999?email={{ intern.email }}" target="_blank" rel="noopener" class="gate-link gate-link-gold">
-                    <span>Complete Verification to Unlock</span>
-                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </div>
+
+                <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:12px 14px; width:100%; box-sizing:border-box;">
+                  <div style="font-size:11px; font-weight:700; color:#94A3B8; text-transform:uppercase; margin-bottom:2px;">
+                    OPTION B: RE-TAKE SPRINT EVALUATION (FREE)
+                  </div>
+                  <div style="font-size:12px; color:#64748B; margin-bottom:8px;">
+                    Re-enroll in next cohort without mentor review or stipend rights.
+                  </div>
+                  <a href="/tasks" class="stipend-cta-btn stipend-cta-dark" style="width:100%; justify-content:center; text-decoration:none;">
+                    <span>Continue Sprint Practice &rarr;</span>
                   </a>
-                {% endif %}
-              </div>
-            {% endif %}
+                </div>
+              {% else %}
+                <a href="https://dbert.in/enroll/1999?email={{ intern.email }}" target="_blank" rel="noopener" class="stipend-cta-btn stipend-cta-gold" style="width:100%; justify-content:center; text-decoration:none;">
+                  <i class="fa-solid fa-bolt"></i>
+                  <span>Complete Incubation Verification &rarr;</span>
+                </a>
+                <a href="/courses" class="stipend-cta-btn stipend-cta-emerald" style="width:100%; justify-content:center; text-decoration:none;">
+                  <i class="fa-solid fa-graduation-cap"></i>
+                  <span>Resume Course Curriculum &rarr;</span>
+                </a>
+              {% endif %}
+            </div>
           </div>
 
           <!-- Gate 2: Completion Date -->
@@ -902,14 +1202,28 @@
             <p class="gate-text">
               {% if comp_info.is_completed %}
                 Official duration completed on <strong>{{ comp_info.completion_date_display }}</strong>. Submissions are open.
-              {% else %}
+              {% elif comp_info.days_remaining is not none and comp_info.days_remaining < 900 %}
                 Internship is active. Stipend application unlocks upon completion date: <strong>{{ comp_info.completion_date_display }}</strong> ({{ comp_info.days_remaining }} days remaining).
+              {% else %}
+                Internship tenure is active. Completion milestone establishes 60 days from sprint enrollment.
               {% endif %}
             </p>
             {% if not comp_info.is_completed %}
               <div class="gate-footer">
-                <span class="gate-link" style="color:#38BDF8;">
-                  <i class="fa-regular fa-clock"></i> Live countdown active
+                <span class="gate-link" style="color:#38BDF8; font-weight:700; font-size:12px; display:inline-flex; align-items:center; gap:6px;">
+                  <i class="fa-regular fa-clock"></i>
+                  {% if comp_info.days_remaining is not none and comp_info.days_remaining < 900 %}
+                    Live countdown: {{ comp_info.days_remaining }} days to maturity
+                  {% else %}
+                    60-Day Sprint Tenure Active
+                  {% endif %}
+                </span>
+              </div>
+            {% else %}
+              <div class="gate-footer">
+                <span class="gate-link" style="color:#34D399; font-weight:700; font-size:12px; display:inline-flex; align-items:center; gap:6px;">
+                  <i class="fa-solid fa-circle-check"></i>
+                  Duration Milestone Met
                 </span>
               </div>
             {% endif %}
@@ -935,22 +1249,20 @@
             </p>
 
             <div id="stipendUpiInputWrap" style="margin-top:12px; {% if has_upi %}display:none;{% endif %}">
-              <div style="display:flex;gap:8px;align-items:center;">
-                <input type="text" id="stipendUpiInput" placeholder="name@bank (e.g. 9603742553@ybl)" style="flex:1;background:rgba(15,23,42,0.8);border:1px solid rgba(255,255,255,0.15);border-radius:8px;color:#fff;padding:8px 12px;font-family:monospace;font-size:13px;outline:none;" />
-                <button type="button" id="btnSaveStipendUpi" style="padding:8px 16px;font-size:12px;font-weight:700;border-radius:8px;cursor:pointer;background:linear-gradient(135deg, #10B981, #059669);border:none;color:#fff;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;">
-                  <i class="fa-solid fa-floppy-disk"></i> Link UPI
+              <div style="display:flex;gap:12px;align-items:center;">
+                <input type="text" id="stipendUpiInput" placeholder="name@bank (e.g. 9603742553@ybl)" style="flex:1;background:#07090E;border:1px solid rgba(255,255,255,0.22);border-radius:8px;color:#fff;padding:9px 12px;font-family:monospace;font-size:13px;outline:none;" />
+                <button type="button" id="btnSaveStipendUpi" class="stipend-cta-btn stipend-cta-emerald stipend-btn-sm">
+                  <i class="fa-solid fa-wallet"></i> Link Payout UPI
                 </button>
               </div>
               <div id="stipendUpiMsg" style="font-size:12px;margin-top:6px;display:none;"></div>
             </div>
 
-            {% if has_upi %}
-              <div id="stipendUpiToggleWrap" style="margin-top:10px;">
-                <button type="button" id="btnToggleStipendUpi" style="background:transparent;border:none;color:#D4AF37;font-size:12px;font-weight:600;cursor:pointer;text-decoration:underline;padding:0;">
-                  <i class="fa-solid fa-pen-to-square"></i> Change Payout UPI ID
-                </button>
-              </div>
-            {% endif %}
+            <div id="stipendUpiToggleWrap" style="margin-top:14px; {% if not has_upi %}display:none;{% endif %}">
+              <button type="button" id="btnToggleStipendUpi" class="stipend-cta-btn stipend-cta-dark stipend-btn-sm" style="color:#FBBF24 !important;">
+                <i class="fa-solid fa-pen-to-square"></i> Change Payout UPI ID
+              </button>
+            </div>
           </div>
 
           <!-- Gate 4: Public LinkedIn Verification -->
@@ -966,52 +1278,49 @@
             <h3 class="gate-title">Step 4: Public LinkedIn Experience</h3>
             <p class="gate-text" id="stipendGateLinkedinText">
               {% if linkedin_verified %}
-                Public profile verified: <a href="{{ linkedin_url }}" target="_blank" rel="noopener" style="color:#38BDF8;word-break:break-all;">{{ linkedin_url }}</a>. DBERT credentials detected and verified. Your profile is featured with a verified badge on the Pre-Vetted Engineers Directory.
+                Public profile verified: <a href="{{ linkedin_url }}" target="_blank" rel="noopener" style="color:#38BDF8;word-break:break-all;font-weight:700;background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.35);padding:3px 9px;border-radius:6px;text-decoration:none;display:inline-block;margin:2px 0;">{{ linkedin_url }}</a>. DBERT credentials detected and verified. Your profile is featured with a verified badge on the Pre-Vetted Engineers Directory.
               {% elif has_linkedin %}
-                LinkedIn profile linked: <a href="{{ linkedin_url }}" target="_blank" rel="noopener" style="color:#38BDF8;word-break:break-all;">{{ linkedin_url }}</a>. 
+                LinkedIn profile linked: <a href="{{ linkedin_url }}" target="_blank" rel="noopener" style="color:#38BDF8;word-break:break-all;font-weight:700;background:rgba(56,189,248,0.12);border:1px solid rgba(56,189,248,0.35);padding:3px 9px;border-radius:6px;text-decoration:none;display:inline-block;margin:2px 0;">{{ linkedin_url }}</a>. 
                 {% if linkedin_status == 'PENDING_SCRAPE' %}
                   Queued for automated public verification scan.
                 {% else %}
-                  Ensure you have added <strong>DBERT</strong> to your Experience or Licenses &amp; Certifications, then click "Re-verify".
+                  Ensure you have added <strong>DBERT</strong> to your Experience or Licenses &amp; Certifications, then click "Re-scan".
                 {% endif %}
               {% else %}
                 Link your public LinkedIn profile and add DBERT under Experience or Certifications to unlock full directory placement and recruiter visibility.
               {% endif %}
             </p>
 
-            <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px;">
-              <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+            <div style="margin-top:14px;display:flex;flex-direction:column;gap:12px;">
+              <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-bottom:2px;">
                 {% if add_to_linkedin_url %}
-                  <a href="{{ add_to_linkedin_url }}" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#38BDF8;background:rgba(10,102,194,0.15);border:1px solid rgba(10,102,194,0.35);padding:6px 12px;border-radius:8px;text-decoration:none;width:fit-content;">
+                  <a href="{{ add_to_linkedin_url }}" target="_blank" rel="noopener" class="stipend-cta-btn stipend-cta-linkedin stipend-btn-sm">
                     <i class="fa-brands fa-linkedin"></i> 1-Click: Add Cert to LinkedIn &rarr;
                   </a>
                 {% endif %}
-                <button type="button" id="btnOpenSnippetModal" data-act-click="openExperienceSnippetModal" style="display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;color:#FBBF24;background:rgba(245,158,11,0.15);border:1px solid rgba(245,158,11,0.35);padding:6px 12px;border-radius:8px;cursor:pointer;width:fit-content;">
+                <button type="button" id="btnOpenSnippetModal" data-act-click="openExperienceSnippetModal" class="stipend-cta-btn stipend-cta-gold stipend-btn-sm">
                   <i class="fa-solid fa-copy"></i> Copy Experience Snippet &rarr;
                 </button>
               </div>
 
-              <div id="stipendLinkedinInputWrap" style="{% if linkedin_verified %}display:none;{% endif %}">
-                <div style="display:flex;gap:8px;align-items:center;">
-                  <input type="url" id="stipendLinkedinInput" value="{{ linkedin_url or '' }}" placeholder="https://www.linkedin.com/in/username" style="flex:1;background:rgba(15,23,42,0.8);border:1px solid rgba(255,255,255,0.15);border-radius:8px;color:#fff;padding:8px 12px;font-size:13px;outline:none;" />
-                  <button type="button" id="btnSaveLinkedin" data-act-click="submitLinkedInProfile" style="padding:8px 16px;font-size:12px;font-weight:700;border-radius:8px;cursor:pointer;background:linear-gradient(135deg, #0A66C2, #004182);border:none;color:#fff;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;">
-                    <i class="fa-solid fa-shield-check"></i> Save &amp; Verify
+              <div id="stipendLinkedinInputWrap" style="{% if has_linkedin or linkedin_verified %}display:none;{% endif %}">
+                <div style="display:flex;gap:12px;align-items:center;">
+                  <input type="url" id="stipendLinkedinInput" value="{{ linkedin_url or '' }}" placeholder="https://www.linkedin.com/in/username" style="flex:1;background:#07090E;border:1px solid rgba(255,255,255,0.22);border-radius:8px;color:#fff;padding:9px 12px;font-size:13px;outline:none;" />
+                  <button type="button" id="btnSaveLinkedin" data-act-click="submitLinkedInProfile" class="stipend-cta-btn stipend-cta-blue stipend-btn-sm">
+                    <i class="fa-solid fa-shield-check"></i> Save &amp; Verify Profile
                   </button>
                 </div>
               </div>
 
-              {% if has_linkedin and not linkedin_verified %}
-                <div style="display:flex;gap:8px;align-items:center;margin-top:4px;">
-                  <button type="button" id="btnCheckLinkedinNow" data-act-click="checkLinkedInNow" style="background:transparent;border:none;color:#38BDF8;font-size:12px;font-weight:600;cursor:pointer;text-decoration:underline;padding:0;display:inline-flex;align-items:center;gap:4px;">
-                    <i class="fa-solid fa-arrows-rotate"></i> Re-scan Public LinkedIn Now
-                  </button>
-                </div>
-              {% endif %}
-
-              {% if linkedin_verified %}
-                <div style="display:flex;gap:8px;align-items:center;margin-top:4px;">
-                  <button type="button" id="btnShowUpdateLinkedin" data-act-click="showUpdateLinkedin" style="background:transparent;border:none;color:#94A3B8;font-size:12px;font-weight:600;cursor:pointer;text-decoration:underline;padding:0;">
-                    <i class="fa-solid fa-pen-to-square"></i> Update LinkedIn Profile URL
+              {% if has_linkedin or linkedin_verified %}
+                <div style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:4px;">
+                  {% if not linkedin_verified %}
+                    <button type="button" id="btnCheckLinkedinNow" data-act-click="checkLinkedInNow" class="stipend-cta-btn stipend-cta-blue stipend-btn-sm">
+                      <i class="fa-solid fa-arrows-rotate"></i> Re-scan Public LinkedIn Now
+                    </button>
+                  {% endif %}
+                  <button type="button" id="btnShowUpdateLinkedin" data-act-click="showUpdateLinkedin" class="stipend-cta-btn stipend-cta-dark stipend-btn-sm" style="color:#C7D2FE !important;">
+                    <i class="fa-solid fa-pen-to-square"></i> Change LinkedIn URL
                   </button>
                 </div>
               {% endif %}
@@ -1022,6 +1331,7 @@
 
         </div>
       </div>
+      {% endif %}
 
       <!-- ====================================================================
            3. SYSTEM GUIDANCE NOTICE (IF GEMINI AI OFFLINE)
@@ -1057,9 +1367,9 @@
                   <span class="gate-status-pill status-passed" style="font-size: 0.8125rem; padding: 0.4rem 0.95rem;">
                     <i class="fa-solid fa-circle-check"></i> Approved & Credited (+5,000 Coins)
                   </span>
-                {% elif existing_submission.status == 'rejected' %}
-                  <span class="gate-status-pill status-warning" style="font-size: 0.8125rem; padding: 0.4rem 0.95rem;">
-                    <i class="fa-solid fa-circle-xmark"></i> Revision Requested
+                {% elif existing_submission.status in ('rejected', 'changes_requested') %}
+                  <span class="gate-status-pill status-warning" style="font-size: 0.8125rem; padding: 0.4rem 0.95rem; background: rgba(245, 158, 11, 0.2); color: #FBBF24; border: 1px solid #F59E0B;">
+                    <i class="fa-solid fa-triangle-exclamation"></i> Action Required: Revision Requested
                   </span>
                 {% else %}
                   <span class="gate-status-pill status-warning" style="font-size: 0.8125rem; padding: 0.4rem 0.95rem;">
@@ -1068,6 +1378,18 @@
                 {% endif %}
               </div>
             </div>
+
+            {% if existing_submission.status in ('rejected', 'changes_requested') and existing_submission.ai_evaluation_notes %}
+              <div style="background: rgba(245, 158, 11, 0.1); border-left: 4px solid #F59E0B; padding: 14px 18px; border-radius: 0 10px 10px 0; margin: 18px 0; font-size: 13px; color: #FEF3C7; line-height: 1.6;">
+                <div style="font-weight: 800; color: #FBBF24; margin-bottom: 6px; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px;">
+                  <i class="fa-solid fa-circle-exclamation"></i> Evaluation Mentor Review Notes &amp; Required Revisions
+                </div>
+                <div style="margin-bottom: 8px;">{{ existing_submission.ai_evaluation_notes }}</div>
+                <div style="font-weight: 700; color: #38BDF8; font-size: 12px;">
+                  Action: Please ensure your contribution is towards an authorized partner repository (<a href="https://github.com/Alkameinc" target="_blank" rel="noopener" style="color:#67E8F9;">Alkameinc</a>, <a href="https://github.com/Gayatri-Education" target="_blank" rel="noopener" style="color:#67E8F9;">Gayatri-Education</a>, <a href="https://github.com/Aivaratechinfomatics" target="_blank" rel="noopener" style="color:#67E8F9;">Aivaratechinfomatics</a>, <a href="https://github.com/DBERT-INDIA" target="_blank" rel="noopener" style="color:#67E8F9;">DBERT-INDIA</a>) or that DBERT experience is added on LinkedIn, then re-submit below.
+                </div>
+              </div>
+            {% endif %}
 
             <!-- 5-Step Review Timeline Visualizer -->
             <div class="timeline-grid" style="grid-template-columns: repeat(5, 1fr);">
@@ -1244,8 +1566,8 @@
           </div>
         {% endif %}
 
-        <!-- Capstone Submission Form (If not submitted or rejected) -->
-        {% if not existing_submission or existing_submission.status == 'rejected' %}
+        <!-- Capstone Submission Form (If not submitted or rejected/changes requested) -->
+        {% if not existing_submission or existing_submission.status in ('rejected', 'changes_requested') %}
           <div class="form-card">
             <div class="form-header">
               <div>
@@ -1328,26 +1650,15 @@
             To maintain academic integrity and financial compliance, all three prerequisite criteria in the checklist above must be completed before submitting your capstone contribution.
           </p>
 
-          <div class="locked-actions">
+          <div class="locked-actions" style="margin-top:20px; display:flex; gap:14px; flex-wrap:wrap; justify-content:center;">
             {% if not ver_info.verified %}
-              {% if ver_info.is_provisional %}
-                <a href="https://docs.google.com/forms/d/e/1FAIpQLSeHCTK_HO5ZbNHNcPiyW-04Y4bBeZ0RvQP7I4koQnW91d6phA/viewform?usp=header" target="_blank" rel="noopener" class="btn-verify-cta">
-                  <span>Submit Verification Form (Google Form)</span>
-                  <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                </a>
-                <a href="https://dbert.in/enroll/1999?email={{ intern.email }}" target="_blank" rel="noopener" class="btn-verify-cta" style="background:#4F46E5;color:#FFFFFF;">
-                  <span>Balance Completion Portal</span>
-                  <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                </a>
-              {% else %}
-                <a href="https://dbert.in/enroll/1999?email={{ intern.email }}" target="_blank" rel="noopener" class="btn-verify-cta">
-                  <span>Complete Verification Now</span>
-                  <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                </a>
-              {% endif %}
+              <a href="https://docs.google.com/forms/d/e/1FAIpQLSeHCTK_HO5ZbNHNcPiyW-04Y4bBeZ0RvQP7I4koQnW91d6phA/viewform?usp=header" target="_blank" rel="noopener" class="btn-verify-cta" style="background:linear-gradient(135deg, #fbbf24 0%, #d97706 100%); color:#0b1120 !important; font-weight:900; font-size:15px; padding:15px 30px; border-radius:10px; box-shadow:0 6px 22px rgba(245,158,11,0.5); text-transform:uppercase; letter-spacing:0.4px; display:inline-flex; align-items:center; gap:10px; text-decoration:none;">
+                <span>Complete Official ₹299 Verification Form</span>
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+              </a>
             {% endif %}
             {% if not has_upi %}
-              <a href="/ambassador" class="btn-upi-cta">
+              <a href="/ambassador" class="btn-upi-cta" style="background:linear-gradient(135deg, #a855f7 0%, #7c3aed 100%); color:#ffffff !important; font-weight:800; font-size:14px; padding:15px 26px; border-radius:10px; box-shadow:0 4px 16px rgba(168,85,247,0.4); display:inline-flex; align-items:center; gap:8px; text-decoration:none;">
                 <span>Configure Payout UPI ID</span>
                 <i class="fa-solid fa-arrow-right"></i>
               </a>
@@ -1840,8 +2151,22 @@
       });
     };
 
+    // Toggle LinkedIn Update Input
+    window.showUpdateLinkedin = function() {
+      const wrap = document.getElementById('stipendLinkedinInputWrap');
+      const input = document.getElementById('stipendLinkedinInput');
+      if (wrap) {
+        const isHidden = (wrap.style.display === 'none' || wrap.style.display === '');
+        wrap.style.display = isHidden ? 'block' : 'none';
+        if (isHidden && input) input.focus();
+      }
+    };
+
     // DOMContentLoaded Fallback Binding
     document.addEventListener('DOMContentLoaded', function() {
+      const btnShowUpdate = document.getElementById('btnShowUpdateLinkedin');
+      if (btnShowUpdate) btnShowUpdate.addEventListener('click', window.showUpdateLinkedin);
+
       const btnCloseExp = document.getElementById('btnCloseExpModal');
       if (btnCloseExp) btnCloseExp.addEventListener('click', window.closeExperienceSnippetModal);
 
@@ -1864,7 +2189,7 @@
 </script>
 
 <!-- Experience Snippet Modal -->
-<div id="experienceSnippetModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:9999;align-items:center;justify-content:center;padding:1rem;">
+<div id="experienceSnippetModal" class="portal-modal-backdrop">
   <div style="background:#0F172A;border:1px solid rgba(99,102,241,0.4);border-radius:16px;max-width:620px;width:100%;padding:1.75rem;box-shadow:0 20px 50px rgba(0,0,0,0.7);position:relative;">
     <button type="button" id="btnCloseExpModal" data-act-click="closeExperienceSnippetModal" style="position:absolute;top:1rem;right:1rem;background:none;border:none;color:#94A3B8;font-size:1.5rem;cursor:pointer;padding:0.25rem 0.5rem;">&times;</button>
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:0.75rem;">
@@ -1903,7 +2228,7 @@ Key Deliverables & Responsibilities:
 </div>
 
 <!-- Gemini Key Configuration Modal -->
-<div id="geminiKeyModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:9999;align-items:center;justify-content:center;padding:1rem;">
+<div id="geminiKeyModal" class="portal-modal-backdrop">
   <div style="background:#0F172A;border:1px solid rgba(99,102,241,0.4);border-radius:16px;max-width:580px;width:100%;padding:1.75rem;box-shadow:0 20px 50px rgba(0,0,0,0.7);position:relative;">
     <button type="button" id="btnCloseGeminiModal" data-act-click="closeGeminiKeyModal" style="position:absolute;top:1rem;right:1rem;background:none;border:none;color:#94A3B8;font-size:1.5rem;cursor:pointer;padding:0.25rem 0.5rem;">&times;</button>
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:0.75rem;">

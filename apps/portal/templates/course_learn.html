@@ -4,6 +4,86 @@
 {% set page_title = course.title ~ " — AI Classroom" %}
 {% set page_robots = "noindex, nofollow" %}
 {% include "_head.html" %}
+<style>
+    .chat-bubble.assistant {
+        white-space: normal;
+        word-break: break-word;
+        line-height: 1.65;
+    }
+    .chat-bubble.assistant p {
+        margin: 0 0 12px 0;
+    }
+    .chat-bubble.assistant p:last-child {
+        margin-bottom: 0;
+    }
+    .chat-bubble.assistant strong,
+    .chat-bubble.assistant b {
+        font-weight: 700;
+        color: #FFFFFF;
+        background: rgba(167, 139, 250, 0.12);
+        padding: 1px 5px;
+        border-radius: 4px;
+    }
+    .chat-bubble.assistant em,
+    .chat-bubble.assistant i {
+        font-style: italic;
+        color: #E2E8F0;
+    }
+    .chat-bubble.assistant .chat-heading {
+        margin: 16px 0 8px 0;
+        font-weight: 700;
+        color: #C084FC;
+        letter-spacing: -0.01em;
+    }
+    .chat-bubble.assistant h2.chat-heading { font-size: 17px; }
+    .chat-bubble.assistant h3.chat-heading { font-size: 15.5px; }
+    .chat-bubble.assistant h4.chat-heading { font-size: 14.5px; }
+    .chat-bubble.assistant .chat-list {
+        margin: 8px 0 14px 20px;
+        padding: 0;
+        list-style-type: disc;
+    }
+    .chat-bubble.assistant .chat-list li {
+        margin-bottom: 6px;
+        line-height: 1.6;
+    }
+    .chat-bubble.assistant .chat-inline-code {
+        font-family: 'Fira Code', Consolas, monospace;
+        font-size: 12.5px;
+        background: rgba(244, 63, 94, 0.12);
+        border: 1px solid rgba(244, 63, 94, 0.3);
+        padding: 2px 6px;
+        border-radius: 4px;
+        color: #FB7185;
+    }
+    .chat-bubble.assistant .chat-code-block {
+        background: #0B0F17;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 8px;
+        padding: 14px 16px;
+        margin: 14px 0;
+        overflow-x: auto;
+    }
+    .chat-bubble.assistant .chat-code-block code {
+        font-family: 'Fira Code', Consolas, monospace;
+        font-size: 13px;
+        line-height: 1.5;
+        color: #38BDF8;
+        white-space: pre;
+        background: transparent;
+        border: none;
+        padding: 0;
+    }
+    .chat-bubble.assistant blockquote {
+        border-left: 3px solid #8B5CF6;
+        background: rgba(139, 92, 246, 0.08);
+        padding: 8px 14px;
+        margin: 10px 0;
+        border-radius: 0 6px 6px 0;
+        color: #94A3B8;
+        font-style: italic;
+    }
+</style>
 </head>
 <body class="classroom">
 
@@ -110,13 +190,13 @@
                     Welcome to the AI Classroom. Select a subtopic from the sidebar or ask a question to begin.
                 </div>
             </div>
-            <form autocomplete="off" onsubmit="return false;" class="chat-input-bar" style="margin:0;">
+            <form autocomplete="off" onsubmit="return false;" class="chat-input-bar" style="margin:0;" data-act-submit="sendMessage" data-prevent-submit>
                 <label for="userMessage" class="sr-only">Message your AI tutor</label>
-                <input type="text" id="userMessage" name="chat_prompt_query"
+                <input type="text" id="userMessage"
                        autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
                        data-lpignore="true" data-1p-ignore="true" data-form-type="other"
                        placeholder="Ask your AI tutor a question or request code examples…"
-                       data-act-keypress="sendMessage" data-key-keypress="Enter">
+                       data-act-keydown="sendMessage" data-key-keydown="Enter" data-prevent-keydown>
                 <button class="btn btn-ai" type="button" data-act-click="sendMessage">
                     <i class="fa-solid fa-paper-plane"></i> Send
                 </button>
@@ -140,6 +220,109 @@
 <script nonce="{{ csp_nonce() }}">
     let currentCourseId = {{ course.id }};
     let activeSubtopicId = null;
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    function renderMarkdown(md) {
+        if (!md || typeof md !== 'string') return '';
+
+        // 1. Extract fenced code blocks (preserve indentation & prevent inner parsing)
+        const codeBlocks = [];
+        let text = md.replace(/```([a-zA-Z0-9_\+\-]*)\n?([\s\S]*?)```/g, function(match, lang, code) {
+            const idx = codeBlocks.length;
+            const langClass = lang ? ` language-${lang}` : '';
+            codeBlocks.push(`<pre class="chat-code-block"><code class="${langClass}">${escapeHtml(code.trim())}</code></pre>`);
+            return `@@CODEBLOCK_${idx}@@`;
+        });
+
+        // 2. Extract inline code (`code`)
+        const inlineCodes = [];
+        text = text.replace(/`([^`\n]+)`/g, function(match, code) {
+            const idx = inlineCodes.length;
+            inlineCodes.push(`<code class="chat-inline-code">${escapeHtml(code)}</code>`);
+            return `@@INLINECODE_${idx}@@`;
+        });
+
+        // 3. Escape HTML for safe rendering of general text
+        text = escapeHtml(text);
+
+        // 4. Headings (###, ##, #)
+        text = text.replace(/^### (.*$)/gim, '<h4 class="chat-heading">$1</h4>');
+        text = text.replace(/^## (.*$)/gim, '<h3 class="chat-heading">$1</h3>');
+        text = text.replace(/^# (.*$)/gim, '<h2 class="chat-heading">$1</h2>');
+
+        // 5. Bold & Italics
+        text = text.replace(/\*\*\*(.*?)\*\*\*/g, '<strong><em>$1</em></strong>');
+        text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        text = text.replace(/\*(.*?)\*/g, '<em>$1</em>');
+        text = text.replace(/___(.*?)___/g, '<strong><em>$1</em></strong>');
+        text = text.replace(/__(.*?)__/g, '<strong>$1</strong>');
+        text = text.replace(/_(.*?)_/g, '<em>$1</em>');
+
+        // 6. Blockquotes (> ...)
+        text = text.replace(/^&gt; (.*$)/gim, '<blockquote>$1</blockquote>');
+
+        // 7. Markdown links [text](url)
+        text = text.replace(/\[([^\]]+)\]\((https?:\/\/[^\s\)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" style="color:#A78BFA;text-decoration:underline;">$1</a>');
+
+        // 8. Bulleted / numbered lists
+        const lines = text.split('\n');
+        let inList = false;
+        const newLines = [];
+        for (let i = 0; i < lines.length; i++) {
+            const l = lines[i];
+            const bulletMatch = l.match(/^\s*[\*\-]\s+(.*)$/);
+            if (bulletMatch) {
+                if (!inList) {
+                    newLines.push('<ul class="chat-list">');
+                    inList = true;
+                }
+                newLines.push(`<li>${bulletMatch[1]}</li>`);
+            } else {
+                if (inList) {
+                    newLines.push('</ul>');
+                    inList = false;
+                }
+                newLines.push(l);
+            }
+        }
+        if (inList) {
+            newLines.push('</ul>');
+        }
+        text = newLines.join('\n');
+
+        // 9. Paragraphs and Linebreaks
+        const rawParas = text.split(/\n\s*\n/);
+        const parsedParas = [];
+        for (let j = 0; j < rawParas.length; j++) {
+            const p = rawParas[j].trim();
+            if (!p) continue;
+            if (p.startsWith('<h') || p.startsWith('<ul') || p.startsWith('<blockquote>') || p.startsWith('@@CODEBLOCK_')) {
+                parsedParas.push(p.replace(/\n/g, '<br>'));
+            } else {
+                parsedParas.push(`<p>${p.replace(/\n/g, '<br>')}</p>`);
+            }
+        }
+        text = parsedParas.join('');
+
+        // 10. Restore code blocks & inline codes
+        for (let k = 0; k < codeBlocks.length; k++) {
+            text = text.replace(new RegExp(`@@CODEBLOCK_${k}@@`, 'g'), codeBlocks[k]);
+        }
+        for (let m = 0; m < inlineCodes.length; m++) {
+            text = text.replace(new RegExp(`@@INLINECODE_${m}@@`, 'g'), inlineCodes[m]);
+        }
+
+        return text;
+    }
 
     /* Status message inside the Gemini modal. Was six repeated blocks of
        hardcoded rgba(); now one helper driving the theme's .alert variants. */
@@ -247,16 +430,29 @@
                         cleanChats.forEach(c => {
                             const div = document.createElement('div');
                             div.className = `chat-bubble ${c.role}`;
-                            div.textContent = c.message;
+                            if (c.role === 'assistant') {
+                                div.innerHTML = renderMarkdown(c.message);
+                            } else {
+                                div.textContent = c.message;
+                            }
                             history.appendChild(div);
                         });
                     } else {
                         const div = document.createElement('div');
                         div.className = 'chat-bubble assistant';
-                        div.textContent = `Hello! Let's dive into '${data.subtopic.title}'. ${data.subtopic.brief}. Ask me any questions or request code examples to get started!`;
+                        div.innerHTML = renderMarkdown(`Hello! Let's dive into **${data.subtopic.title}**.\n\n${data.subtopic.brief}\n\nAsk me any questions or request code examples to get started!`);
                         history.appendChild(div);
                     }
                     history.scrollTop = history.scrollHeight;
+
+                    // Auto-dispatch pending initial query if present
+                    if (window.pendingInitialQuery && window.pendingInitialQuery.trim()) {
+                        const q = window.pendingInitialQuery.trim();
+                        window.pendingInitialQuery = null;
+                        const input = document.getElementById('userMessage');
+                        if (input) input.value = q;
+                        setTimeout(() => { sendMessage(); }, 350);
+                    }
                 }
             }).catch(e => {
                 console.error('Error loading subtopic:', e);
@@ -305,8 +501,11 @@
 
         fetch(`/courses/${currentCourseId}/subtopic/${activeSubtopicId}/chat`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ message: msg })
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ message: msg, _csrf: '{{ csrf_token() }}' })
         })
         .then(async (r) => {
             const thinkEl = document.getElementById('aiThinking');
@@ -319,7 +518,7 @@
                 try { data = await r.json(); } catch (e) {}
                 const aiDiv = document.createElement('div');
                 aiDiv.className = 'chat-bubble assistant';
-                aiDiv.textContent = data.message || data.reply || 'Error generating AI response.';
+                aiDiv.innerHTML = renderMarkdown(data.message || data.reply || 'Error generating AI response.');
                 if (data.requires_key) {
                     const btn = document.createElement('button');
                     btn.style = 'display:inline-block;margin-top:8px;padding:6px 12px;background:var(--accent);color:#000;border:none;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;';
@@ -358,11 +557,11 @@
                             const parsed = JSON.parse(trimmed.slice(6));
                             if (parsed.chunk) {
                                 fullText += parsed.chunk;
-                                aiDiv.textContent = fullText;
+                                aiDiv.innerHTML = renderMarkdown(fullText);
                                 history.scrollTop = history.scrollHeight;
                             }
                             if (parsed.error) {
-                                aiDiv.textContent = parsed.error;
+                                aiDiv.innerHTML = renderMarkdown(parsed.error);
                                 if (parsed.requires_key) {
                                     const btn = document.createElement('button');
                                     btn.style = 'display:inline-block;margin-top:8px;padding:6px 12px;background:var(--accent);color:#000;border:none;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;';
@@ -488,6 +687,37 @@
     window.closeGeminiModal = closeGeminiModal;
     window.testAndSaveGeminiKey = testAndSaveGeminiKey;
     window.sendMessage = sendMessage;
+
+    // Read and stage initial query from URL parameter or server context
+    window.pendingInitialQuery = {{ (chat_prompt_query or "")|tojson }};
+    if (!window.pendingInitialQuery) {
+        const urlParams = new URLSearchParams(window.location.search);
+        window.pendingInitialQuery = urlParams.get('chat_prompt_query') || '';
+    }
+
+    // Clean up query param from URL so refresh won't re-trigger it
+    if (window.location.search.includes('chat_prompt_query')) {
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+
+    // Explicit listeners to block form submit GET reloads
+    const chatFormEl = document.querySelector('.chat-input-bar');
+    if (chatFormEl) {
+        chatFormEl.addEventListener('submit', function(e) {
+            e.preventDefault();
+            sendMessage();
+            return false;
+        });
+    }
+    const chatMsgInput = document.getElementById('userMessage');
+    if (chatMsgInput) {
+        chatMsgInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+    }
 
     // Sanitize chat input against browser autofill
     function sanitizeChatInput() {

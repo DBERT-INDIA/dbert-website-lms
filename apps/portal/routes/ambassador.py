@@ -214,13 +214,35 @@ def intern_ambassador_upi():
         return jsonify({"status": "error", "message": "Error"}), 500
 
 
-@ambassador_bp.route("/intern/ambassador/withdraw", methods=["POST"])
+@ambassador_bp.route("/intern/ambassador/withdraw", methods=["GET", "POST"])
 def intern_ambassador_withdraw():
-    """Request a payout. Draws ONLY on the referral ledger (§6.5)."""
+    """Request a payout or navigate to withdrawal dashboard. Draws ONLY on the referral ledger (§6.5)."""
     try:
         intern = current_intern()
         if not intern:
+            if request.method == "GET":
+                return redirect("/#signin")
             return jsonify({"status": "error", "message": "Unauthorized"}), 401
+
+        if request.method == "GET":
+            # If requested via JSON API or programmatic probe
+            if request.headers.get("Accept") == "application/json" or request.args.get("format") == "json":
+                with get_db() as conn:
+                    balances = get_coin_balances(conn, intern["id"])
+                    pending = conn.execute(
+                        "SELECT COALESCE(SUM(amount),0) v FROM ambassador_withdrawals "
+                        "WHERE intern_id=? AND status IN ('pending','approved')", (intern["id"],)
+                    ).fetchone()["v"]
+                    available = balances["referral"] - pending
+                    return jsonify({
+                        "status": "success",
+                        "balance": balances["referral"],
+                        "pending_withdrawal": pending,
+                        "available_to_withdraw": max(0, available)
+                    })
+            # Browser navigation: seamlessly direct to ambassador withdrawal card
+            return redirect("/ambassador#withdraw")
+
         ip = get_client_ip()
         allowed, retry_after = rate_check(f"wd:{intern['id']}", *RL_WITHDRAWAL)
         if not allowed:
@@ -228,8 +250,9 @@ def intern_ambassador_withdraw():
             return jsonify({"status": "error", "message": "Too many requests. Try again later.",
                             "retry_after": retry_after}), 429
 
+        data = request.get_json(silent=True) or {}
         try:
-            amount = int((request.get_json(silent=True) or {}).get("amount") or 0)
+            amount = int(data.get("amount") or request.form.get("amount") or 0)
         except (TypeError, ValueError):
             amount = 0
         if amount <= 0:
@@ -343,5 +366,17 @@ def admin_ambassador_decision(wid):
         conn.execute(
             "UPDATE ambassador_withdrawals SET status=?, reviewed_by_admin_id=?, reviewed_at=?, "
             "admin_note=? WHERE id=?", (decision, who, now_str(), note, wid))
+        
+        # Look up intern email for dispatching push notification
+        intern_acc = conn.execute("SELECT email, name FROM intern_accounts WHERE id=?", (w["intern_id"],)).fetchone()
         conn.commit()
+
+    if decision == "paid" and intern_acc and intern_acc["email"]:
+        try:
+            from services.notifications.web_push_service import notify_stipend_payout_dispatched_push
+            utr = note if note else f"PAYOUT-{wid}"
+            notify_stipend_payout_dispatched_push(intern_acc["email"], int(w["amount"]), utr)
+        except Exception as _p_err:
+            log_error("ambassador-payout-push", _p_err)
+
     return jsonify({"status": "success", "message": f"Marked {decision}."})

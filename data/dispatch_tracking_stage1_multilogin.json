@@ -1,0 +1,1415 @@
+{
+  "honeypreetham1@gmail.com": {
+    "name": "Preetham Visthri",
+    "cohort": "499",
+    "domain": "Full Stack Development",
+    "logins_7d": 11,
+    "status": "SENT",
+    "sent_at": "2026-11-18 09:39:11",
+    "message_id": "<9b64e04b-8bae-45c7-89a7-8bfd427b3d35@dbert.in>"
+  },
+  "sunilkumarsk2sf@gmail.com": {
+    "name": "Sunil Fagoriya",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 10,
+    "status": "SENT",
+    "sent_at": "2026-11-18 09:39:45",
+    "message_id": "<b2c731ea-d838-493d-9d8a-9698b05e5123@dbert.in>"
+  },
+  "marojuprincekarthik2007@gmail.com": {
+    "name": "Prince Karthik Maroju",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 9,
+    "status": "SENT",
+    "sent_at": "2026-11-18 09:40:18",
+    "message_id": "<36765d2f-2ca5-4660-87cb-cb8fa4104745@dbert.in>"
+  },
+  "gmbhavankumar@gmail.com": {
+    "name": "Bhavan Kumar G M",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 8,
+    "status": "SENT",
+    "sent_at": "2026-11-18 09:40:52",
+    "message_id": "<5ed372ea-a10a-4d7b-afab-6eb892c59862@dbert.in>"
+  },
+  "meenakshisubramanian82@gmail.com": {
+    "name": "meenakshi subramanian",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 8,
+    "status": "SENT",
+    "sent_at": "2026-11-18 09:41:25",
+    "message_id": "<dc0f00a5-8c99-4f22-b733-240541b0391e@dbert.in>"
+  },
+  "humerasache@gmail.com": {
+    "name": "Humera Mustafa Sache",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 8,
+    "status": "SENT",
+    "sent_at": "2026-11-18 09:41:59",
+    "message_id": "<84d1b042-9017-4b4f-995d-76ddf98edafd@dbert.in>"
+  },
+  "pathakananya053@gmail.com": {
+    "name": "Ananya Pathak",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 8,
+    "status": "SENT",
+    "sent_at": "2026-11-18 09:42:32",
+    "message_id": "<a255c5dd-c303-46ad-adbd-f7fe3b6d71d5@dbert.in>"
+  },
+  "prajwalaitawade@gmail.com": {
+    "name": "Prajwal Aitawade",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 7,
+    "status": "SENT",
+    "sent_at": "2026-11-18 09:43:06",
+    "message_id": "<625e7a5e-e726-4995-8592-14adf423dddd@dbert.in>"
+  },
+  "kavana200518@gmail.com": {
+    "name": "C S Kavana",
+    "cohort": "499",
+    "domain": "Cybersecurity",
+    "logins_7d": 6,
+    "status": "SENT",
+    "sent_at": "2026-11-18 09:43:39",
+    "message_id": "<4d5e904b-efcb-4167-9a45-554e31b4d492@dbert.in>"
+  },
+  "charithkale@gmail.com": {
+    "name": "CHARITH KALE",
+    "cohort": "499",
+    "domain": "Full Stack Development",
+    "logins_7d": 6,
+    "status": "SENT",
+    "sent_at": "2026-11-18 09:44:13",
+    "message_id": "<29f7da18-4844-4193-9acc-08b3b5ad4122@dbert.in>"
+  },
+  "aitechs2050@gmail.com": {
+    "name": "Yashraj Dnyaneshwar Kuyate",
+    "cohort": "499",
+    "domain": "Full Stack Development",
+    "logins_7d": 6,
+    "status": "SENT",
+    "sent_at": "2026-11-18 09:44:46",
+    "message_id": "<89541f7a-3196-4ddb-bf33-411a21749724@dbert.in>"
+  },
+  "mrg13050@gmail.com": {
+    "name": "KORRA VAMSHIKRISHNA",
+    "cohort": "499",
+    "domain": "Cybersecurity",
+    "logins_7d": 6,
+    "status": "SENT",
+    "sent_at": "2026-11-18 09:45:20",
+    "message_id": "<11073330-88ef-459c-9b9d-33f0d143fe90@dbert.in>"
+  },
+  "mansiagarwal166@gmail.com": {
+    "name": "Mansi Agrawal",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 6,
+    "status": "SENT",
+    "sent_at": "2026-11-18 09:45:54",
+    "message_id": "<53cefbc9-cb6e-411a-8115-3953853f5d7d@dbert.in>"
+  },
+  "kashishkashish21089@gmail.com": {
+    "name": "Kashish",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 6,
+    "status": "SENT",
+    "sent_at": "2026-11-18 09:46:27",
+    "message_id": "<ad1649f9-ec03-41dc-a76d-ba2717eb3f68@dbert.in>"
+  },
+  "vinaygollagopu@gmail.com": {
+    "name": "GOLLAGOPU VINAY",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 5,
+    "status": "SENT",
+    "sent_at": "2026-11-18 09:47:00",
+    "message_id": "<fd9c2670-f3f7-4af3-a98f-10d33c3144f4@dbert.in>"
+  },
+  "abubakkersiddq03@gmail.com": {
+    "name": "Abubakker Siddiq",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 5,
+    "status": "SENT",
+    "sent_at": "2026-11-18 09:47:33",
+    "message_id": "<ec151ac2-e88b-4f3c-b604-d6fecedd24ce@dbert.in>"
+  },
+  "arkakuilya79@gmail.com": {
+    "name": "Arka Kuilya",
+    "cohort": "499",
+    "domain": "Full Stack Development",
+    "logins_7d": 5,
+    "status": "SENT",
+    "sent_at": "2026-11-18 09:48:08",
+    "message_id": "<f02b1281-df9c-487c-9c25-6698d168992d@dbert.in>"
+  },
+  "lohithabalisetty25@gmail.com": {
+    "name": "Lohitha",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 5,
+    "status": "SENT",
+    "sent_at": "2026-11-18 09:48:41",
+    "message_id": "<3b3c9801-c8aa-4cab-9b68-54124656c39c@dbert.in>"
+  },
+  "pillianusha399@gmail.com": {
+    "name": "Pilli Anusha",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 5,
+    "status": "SENT",
+    "sent_at": "2026-11-18 09:49:15",
+    "message_id": "<3007a950-c653-4c8d-af07-13f1ec6efa8f@dbert.in>"
+  },
+  "chinnamgarisumanjali13@gmail.com": {
+    "name": "chinnamgari Sumanjali",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 5,
+    "status": "SENT",
+    "sent_at": "2026-11-18 09:49:48",
+    "message_id": "<4e847b70-9e2d-4265-b493-84f57403c70f@dbert.in>"
+  },
+  "santhoshnpoojary35@gmail.com": {
+    "name": "Santhosha V N",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 5,
+    "status": "SENT",
+    "sent_at": "2026-11-18 09:50:21",
+    "message_id": "<7b561b9c-7acc-48ef-8642-946ae46beb86@dbert.in>"
+  },
+  "shanisaini175@gmail.com": {
+    "name": "Shanikumar Saini",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 5,
+    "status": "SENT",
+    "sent_at": "2026-11-18 09:50:54",
+    "message_id": "<a43cd61b-f205-44d5-8864-4f063b87c486@dbert.in>"
+  },
+  "archusharma27248@gmail.com": {
+    "name": "Archana Sharma",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 5,
+    "status": "SENT",
+    "sent_at": "2026-11-18 09:51:28",
+    "message_id": "<6219eb0b-b0d4-4001-9a27-dc88ace04070@dbert.in>"
+  },
+  "mangaiofficial20@gmail.com": {
+    "name": "Mangai S",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 5,
+    "status": "SENT",
+    "sent_at": "2026-11-18 09:52:01",
+    "message_id": "<1334145c-a570-4803-b712-b6205fbc4273@dbert.in>"
+  },
+  "yharikareddy7@gmail.com": {
+    "name": "Y Harika",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 5,
+    "status": "SENT",
+    "sent_at": "2026-11-18 09:52:34",
+    "message_id": "<0da845c7-bb94-4ca6-a643-ba72a6b823dc@dbert.in>"
+  },
+  "pgkhairaw23@gmail.com": {
+    "name": "Priyanka khairaw",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 5,
+    "status": "SENT",
+    "sent_at": "2026-11-18 09:53:39",
+    "message_id": "<b85c9002-f100-4397-9934-f15d5e84eaaf@dbert.in>"
+  },
+  "chandramahesh736@gmail.com": {
+    "name": "Yarlagadda Chanandra Mahesh Goud",
+    "cohort": "499",
+    "domain": "Full Stack Development",
+    "logins_7d": 4,
+    "status": "SENT",
+    "sent_at": "2026-11-18 09:54:13",
+    "message_id": "<b4548e39-f95d-44d9-a85a-e7b6d5c269a3@dbert.in>"
+  },
+  "gurveer3057.beai25@chitkara.edu.in": {
+    "name": "Gurveer Singh",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 4,
+    "status": "SENT",
+    "sent_at": "2026-11-18 09:54:46",
+    "message_id": "<98da95bd-67b5-41c6-a028-b9fcf4c9fada@dbert.in>"
+  },
+  "vyshnavi052006@gmail.com": {
+    "name": "V vyshnavi",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 4,
+    "status": "SENT",
+    "sent_at": "2026-11-18 09:55:20",
+    "message_id": "<fd79ec66-417c-4d60-ab99-27a49bb6c4aa@dbert.in>"
+  },
+  "fathimahanna022@gmail.com": {
+    "name": "fathima hanna",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 4,
+    "status": "SENT",
+    "sent_at": "2026-11-18 09:55:54",
+    "message_id": "<4469e919-f81f-45ac-b9c1-1e76f8e8a7ac@dbert.in>"
+  },
+  "sainianirudh03march@gmail.com": {
+    "name": "Anirudh Saini",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 4,
+    "status": "SENT",
+    "sent_at": "2026-11-18 09:56:26",
+    "message_id": "<b893ec42-70ab-4617-ba2a-483c5b77751a@dbert.in>"
+  },
+  "piyush.mintoo@yahoo.com": {
+    "name": "Piyush Kumar",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 4,
+    "status": "SENT",
+    "sent_at": "2026-11-18 09:56:59",
+    "message_id": "<7adb82b0-a39b-4f05-a9b1-1a941ec9d280@dbert.in>"
+  },
+  "aryan123fgh@gmail.com": {
+    "name": "Aryan Thakur",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 4,
+    "status": "SENT",
+    "sent_at": "2026-11-18 09:57:33",
+    "message_id": "<7b64739d-06a8-4c69-b9a9-1f0c64559fcf@dbert.in>"
+  },
+  "asthaarya42@gmail.com": {
+    "name": "Astha Arya",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 4,
+    "status": "SENT",
+    "sent_at": "2026-11-18 09:58:07",
+    "message_id": "<98606d0b-5bb3-451e-95b3-0d92479ba238@dbert.in>"
+  },
+  "chanju777781@gmail.com": {
+    "name": "Chintalapally Anjali",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 4,
+    "status": "SENT",
+    "sent_at": "2026-11-18 09:58:42",
+    "message_id": "<6751ed5f-d74f-4c8b-98da-dfb8981f8a93@dbert.in>"
+  },
+  "mahalakshmi.mukku@gmail.com": {
+    "name": "Mukku Maha Lakshmi",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 4,
+    "status": "SENT",
+    "sent_at": "2026-11-18 09:59:15",
+    "message_id": "<142bdefb-d8c6-4cad-a1e9-d75f9a9433f6@dbert.in>"
+  },
+  "bhavyabalchandani23@gmail.com": {
+    "name": "Bhavya Balchandani",
+    "cohort": "499",
+    "domain": "Full Stack Development",
+    "logins_7d": 4,
+    "status": "SENT",
+    "sent_at": "2026-11-18 09:59:49",
+    "message_id": "<107fc0b4-15c1-4168-b84f-c089a84268a9@dbert.in>"
+  },
+  "gopiappikonda94@gmail.com": {
+    "name": "Gopi Appikonda",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 4,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:00:22",
+    "message_id": "<ddf9255e-041b-4c5e-a040-6a870e519b76@dbert.in>"
+  },
+  "lalitkumar88596244@gmail.com": {
+    "name": "Lalit Kumar",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 4,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:00:55",
+    "message_id": "<5d9fa322-efb2-451a-bd15-c03e90296fcb@dbert.in>"
+  },
+  "ganeshchatakonda@gmail.com": {
+    "name": "Chatakonda Ganesh",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 4,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:01:28",
+    "message_id": "<d040a18d-b418-4d7b-8230-58bfc793769c@dbert.in>"
+  },
+  "studypower2022@gmail.com": {
+    "name": "Nidhi Sharma",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 4,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:02:02",
+    "message_id": "<888f3c97-6d66-4c65-9c54-6ac006ef604e@dbert.in>"
+  },
+  "muguntharajank@gmail.com": {
+    "name": "Muguntharajan K",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 4,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:02:36",
+    "message_id": "<f7d5efd7-a8f1-4993-af30-be7443b87c11@dbert.in>"
+  },
+  "khushikumawatsk123@gmail.com": {
+    "name": "Khushboo Kumawat",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 4,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:03:09",
+    "message_id": "<7bc634cc-2b21-4739-86dd-f17f28ff0d06@dbert.in>"
+  },
+  "harshakorlepara04@gmail.com": {
+    "name": "Harshavardhan Korlepara",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 4,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:03:42",
+    "message_id": "<c262af2f-c560-4458-9002-3884c178fd41@dbert.in>"
+  },
+  "pavan010704@gmail.com": {
+    "name": "VANGA ESWAR NAGA VENKATA MANI PAVAN",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 4,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:04:16",
+    "message_id": "<ab3f5207-edb7-48e6-8724-271df5317435@dbert.in>"
+  },
+  "chaithramn565@gmail.com": {
+    "name": "Chaithra M N",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 4,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:04:50",
+    "message_id": "<d3a26d1b-abc9-4698-9d00-5bcbd0e32463@dbert.in>"
+  },
+  "sayonmana@gmail.com": {
+    "name": "Sayon Manna",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 4,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:05:24",
+    "message_id": "<b187bb5d-db38-43d2-817f-0d37960cc8e0@dbert.in>"
+  },
+  "riddhidapkosh@gmail.com": {
+    "name": "Riddhi Dapkosh",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 4,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:05:58",
+    "message_id": "<681f8688-5fa2-4e9b-abed-28f5e8d4b4eb@dbert.in>"
+  },
+  "narendarchennuri131@gmail.com": {
+    "name": "Chennuri Narendar",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 3,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:06:32",
+    "message_id": "<9f8ea504-8aab-432a-90b5-4a4b29c9ae65@dbert.in>"
+  },
+  "peerzadainamwork@gmail.com": {
+    "name": "Inam Ul Haq Baba",
+    "cohort": "499",
+    "domain": "Full Stack Development",
+    "logins_7d": 3,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:07:05",
+    "message_id": "<f046d63a-078c-4fc6-8694-db40064dbf0e@dbert.in>"
+  },
+  "vaishnavi1657@gmail.com": {
+    "name": "Vaishnavi",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 3,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:08:09",
+    "message_id": "<88985498-1e55-4b9e-bf87-89aa33c50f9b@dbert.in>"
+  },
+  "puvithasampath@gmail.com": {
+    "name": "Puvitha.S",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 3,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:08:44",
+    "message_id": "<d07e4c47-28ef-4e81-a533-c22025b8f053@dbert.in>"
+  },
+  "aayushhhth0327@gmail.com": {
+    "name": "Aayush Aryan",
+    "cohort": "499",
+    "domain": "Full Stack Development",
+    "logins_7d": 3,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:09:18",
+    "message_id": "<219e0b20-5697-460c-a319-aa1226deef98@dbert.in>"
+  },
+  "pritamtung03@gmail.com": {
+    "name": "Pritam Tung",
+    "cohort": "499",
+    "domain": "Full Stack Development",
+    "logins_7d": 3,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:09:51",
+    "message_id": "<def88ac6-f869-48eb-8ed8-f9a921647b72@dbert.in>"
+  },
+  "gundetivaishnavi634@gmail.com": {
+    "name": "Gundeti Vaishnavi",
+    "cohort": "499",
+    "domain": "Full Stack Development",
+    "logins_7d": 3,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:10:25",
+    "message_id": "<e6f08c89-f66b-4cbc-96a9-98b9b1410322@dbert.in>"
+  },
+  "suhanisaxena1603@gmail.com": {
+    "name": "suhani saxena",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 3,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:10:58",
+    "message_id": "<51515f18-0493-4107-b2ab-7ba6e126d32a@dbert.in>"
+  },
+  "harshlohar004@gmail.com": {
+    "name": "Harsh Lohar",
+    "cohort": "499",
+    "domain": "Full Stack Development",
+    "logins_7d": 3,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:11:31",
+    "message_id": "<57db0ebc-76ff-4c35-a4a9-ec78fee27ab8@dbert.in>"
+  },
+  "snehamallesh2004@gmail.com": {
+    "name": "VASPARI SNEHA",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 3,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:12:05",
+    "message_id": "<6d1260c0-02b4-4bf9-9307-226f5d9dad8b@dbert.in>"
+  },
+  "tharunreddy1607@gmail.com": {
+    "name": "SINGAM VENKATA THARUN REDDY",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 3,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:12:40",
+    "message_id": "<c5971b6f-0ceb-4a89-a51b-f486c00cd09c@dbert.in>"
+  },
+  "gautamjatin2004@gmail.com": {
+    "name": "Jatin Gautam",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 3,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:13:13",
+    "message_id": "<a04a689e-dc73-42dc-ad3c-d4b084e255e2@dbert.in>"
+  },
+  "charukeshwarans11@gmail.com": {
+    "name": "CHARUKESHWARAN S",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 3,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:13:47",
+    "message_id": "<215026bd-47b4-4014-92df-f4136c519423@dbert.in>"
+  },
+  "namraacharya112@gmail.com": {
+    "name": "Namra Acharya",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 3,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:14:20",
+    "message_id": "<178b8925-0d3a-468c-8363-a9db7e140828@dbert.in>"
+  },
+  "valivetimonish@gmail.com": {
+    "name": "Monish Valiveti",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 3,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:14:54",
+    "message_id": "<f08a8569-8274-4b62-98bb-acdb7d97ad64@dbert.in>"
+  },
+  "prathnakumari583@gmail.com": {
+    "name": "Prathna kumari",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 3,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:15:28",
+    "message_id": "<ab1a1b18-77c2-4ec9-8ef7-f5f5096f7c2a@dbert.in>"
+  },
+  "snehabobade231@gmail.com": {
+    "name": "Sneha Bobade",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 3,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:16:01",
+    "message_id": "<07acc06c-d779-460a-a138-b864cc70e7e5@dbert.in>"
+  },
+  "anuragprajapati911@gmail.com": {
+    "name": "Anurag Prajapati",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 3,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:16:34",
+    "message_id": "<98732609-d080-48b8-838a-0984078ceb1a@dbert.in>"
+  },
+  "bholushubhankaranokha@gmail.com": {
+    "name": "Bholu Shubhankar Anokha",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 3,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:17:07",
+    "message_id": "<c5638091-b5ec-48d8-82cd-6597c2c29e10@dbert.in>"
+  },
+  "guptaayush0545@gmail.com": {
+    "name": "Ayush Gupta",
+    "cohort": "499",
+    "domain": "Full Stack Development",
+    "logins_7d": 3,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:17:41",
+    "message_id": "<7b7bf7eb-28fe-4bbb-b73e-43938433dc03@dbert.in>"
+  },
+  "aswinimohan1611@gmail.com": {
+    "name": "Aswini M",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 3,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:18:14",
+    "message_id": "<7c07bc18-18ac-4f9b-8dcb-47ef6c70e0bc@dbert.in>"
+  },
+  "karthikaraja112008@gmail.com": {
+    "name": "Karthika Raja",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:18:47",
+    "message_id": "<615956f0-88af-4b3f-80a7-b18c88544bb5@dbert.in>"
+  },
+  "turlapatisantosh@gmail.com": {
+    "name": "Turlapati Naga Venkata Siva Sai Santosh .",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:19:21",
+    "message_id": "<95e486e5-ad8f-4a0f-876f-f8c0b4a86cda@dbert.in>"
+  },
+  "sahana.sainath@gmail.com": {
+    "name": "Sahana S",
+    "cohort": "499",
+    "domain": "Cybersecurity",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:19:54",
+    "message_id": "<eef7c76f-6b7e-4999-9cad-fbccebcdf3c9@dbert.in>"
+  },
+  "srgayathri0519@gmail.com": {
+    "name": "Gayathri S R",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:20:27",
+    "message_id": "<5debce81-83a1-4772-aea6-1fc2be0014a4@dbert.in>"
+  },
+  "mohammedhisham962@gmail.com": {
+    "name": "Mohammed Hisham",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:21:01",
+    "message_id": "<24e27cfc-9955-4977-8fc5-d9000aec217e@dbert.in>"
+  },
+  "swanics19@gmail.com": {
+    "name": "Swanish Mahajan",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:21:33",
+    "message_id": "<773afcc1-944d-4d95-8521-13de04f7e549@dbert.in>"
+  },
+  "rajeshbadugu67@gmail.com": {
+    "name": "badugu venkata rajesh",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:22:37",
+    "message_id": "<c6f97544-62f9-4b05-922f-9c451c3962ce@dbert.in>"
+  },
+  "itsanamta786@gmail.com": {
+    "name": "Anamta Ahmed",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:23:10",
+    "message_id": "<1306b12f-649c-4d89-8433-ecf748331e79@dbert.in>"
+  },
+  "harshita.shrivas29@gmail.com": {
+    "name": "Harshita Shrivas",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:23:43",
+    "message_id": "<38f0b0cc-f81a-4cf8-87e1-a767a9ec73fa@dbert.in>"
+  },
+  "joshuadevops1@gmail.com": {
+    "name": "Joshua",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:24:16",
+    "message_id": "<832abd5d-8853-4db0-99c1-60ffa9fab6d0@dbert.in>"
+  },
+  "ravipatikarthik7@gmail.com": {
+    "name": "Ravipati Karthik",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:24:50",
+    "message_id": "<1cc7a595-0412-41b9-9870-0f647dffc5d7@dbert.in>"
+  },
+  "chandanhuika361@gmail.com": {
+    "name": "Chandan Huika",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:25:23",
+    "message_id": "<fb212bb0-2925-4e97-bcc1-95860fc6c1a9@dbert.in>"
+  },
+  "sarfarajalamsh7323@gmail.com": {
+    "name": "Sarfaraj Alam",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:25:56",
+    "message_id": "<85d7a7a4-2a14-430b-a974-b0bcfe0c73e1@dbert.in>"
+  },
+  "s.sanjayshrish2005@gmail.com": {
+    "name": "Sanjay Shrish S",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:26:30",
+    "message_id": "<dd6e7005-0726-47f5-92b1-898d17a6e649@dbert.in>"
+  },
+  "ubhoysala@gmail.com": {
+    "name": "H A UDAY BHASKER",
+    "cohort": "499",
+    "domain": "Full Stack Development",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:27:04",
+    "message_id": "<dfd23926-eaeb-4116-94eb-952e3d62ddac@dbert.in>"
+  },
+  "gangolashivamsingh@gmail.com": {
+    "name": "Shivam Singh Gangola",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:27:37",
+    "message_id": "<88cf507e-cc4a-43d2-acab-e2f6e0090902@dbert.in>"
+  },
+  "giriprasath7806@gmail.com": {
+    "name": "GIRI PRASATH G A",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:28:10",
+    "message_id": "<e9f5f4c9-7e05-414d-a320-7b6064c22298@dbert.in>"
+  },
+  "panwar22sakshi@gmail.com": {
+    "name": "Sakshi Panwar",
+    "cohort": "499",
+    "domain": "Full Stack Development",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:28:43",
+    "message_id": "<f7b425dd-0f56-42f6-b8d2-f3cb857549b2@dbert.in>"
+  },
+  "saurabhbisht950@gmail.com": {
+    "name": "saurabh Singh Bisht",
+    "cohort": "499",
+    "domain": "Full Stack Development",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:29:18",
+    "message_id": "<c22d2039-b3f5-48d5-8195-116abe105ad9@dbert.in>"
+  },
+  "shubhibajpai2019@gmail.com": {
+    "name": "Shubhi Bajpai",
+    "cohort": "499",
+    "domain": "DevOps & Cloud",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:29:52",
+    "message_id": "<bb80d312-e404-411c-a051-f2985e339f9e@dbert.in>"
+  },
+  "sathyashree.r@msaic.christuniversity.in": {
+    "name": "SATHYASHREE R B",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:30:25",
+    "message_id": "<a9f189cc-3b06-476e-bcee-7c871ea89967@dbert.in>"
+  },
+  "ajaysawandkar05@gmail.com": {
+    "name": "Ajay Shankar Sawandkar",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:30:58",
+    "message_id": "<421fcb80-5dc8-4e84-8e2c-022388937d05@dbert.in>"
+  },
+  "gaytrishinde112@gmail.com": {
+    "name": "Gayatri Rajendra Shinde",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:31:31",
+    "message_id": "<a79423ca-2cd8-4abd-be0b-f2553f2b2e00@dbert.in>"
+  },
+  "prachi.vats2006@gmail.com": {
+    "name": "Prachi Sharma",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:32:04",
+    "message_id": "<d2989466-f9e6-4139-bacc-d523c81d50dd@dbert.in>"
+  },
+  "busalasyam71@gmail.com": {
+    "name": "Busala shyam",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:32:37",
+    "message_id": "<f0d282bd-174c-4a64-b1e1-cb3ba96fcaed@dbert.in>"
+  },
+  "dharshu33666@gmail.com": {
+    "name": "Muppidathi Dharshini S",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:33:10",
+    "message_id": "<ef972d62-0f61-4fd0-812f-ff6fae394e9d@dbert.in>"
+  },
+  "medany0001@gmail.com": {
+    "name": "Danish Ahmad Wani",
+    "cohort": "499",
+    "domain": "DevOps & Cloud",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:33:44",
+    "message_id": "<8181255c-7283-4536-b1b3-9d7cdc791058@dbert.in>"
+  },
+  "mrudulapatil7192@gmail.com": {
+    "name": "Mrudula Digambar Patil",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:34:17",
+    "message_id": "<82cb6c4c-deeb-4f57-8146-fa9edf31e5f1@dbert.in>"
+  },
+  "niteeshreddy4674@gmail.com": {
+    "name": "S.Niteesh Reddy",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:34:50",
+    "message_id": "<040c6eb2-d79b-4509-9d42-b2da0904f0d7@dbert.in>"
+  },
+  "apoorvamaheshwari315@gmail.com": {
+    "name": "Apoorva Maheshwari",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:35:25",
+    "message_id": "<9a5decf1-1bd7-4800-8527-0152aa9a8c39@dbert.in>"
+  },
+  "aayushmaan.jaiswal0308@gmail.com": {
+    "name": "Aayushmaan",
+    "cohort": "499",
+    "domain": "Full Stack Development",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:35:58",
+    "message_id": "<a362d86a-8dcf-42a4-b2ef-fa07fdf3553f@dbert.in>"
+  },
+  "rishabhkhanna500@gmail.com": {
+    "name": "Rishabh Khanna",
+    "cohort": "499",
+    "domain": "Full Stack Development",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:37:01",
+    "message_id": "<df2e3ad6-ea98-4aec-a7a2-92966abf4d76@dbert.in>"
+  },
+  "sriyansh3333gupta@gmail.com": {
+    "name": "Sriyansh Kumar Gupta",
+    "cohort": "499",
+    "domain": "Cybersecurity",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:37:34",
+    "message_id": "<ea4654de-6442-4dc1-ba8d-f1c88af13eb3@dbert.in>"
+  },
+  "skmehnazhassan@gmail.com": {
+    "name": "Shaik Mehnaz Hassan",
+    "cohort": "499",
+    "domain": "DevOps & Cloud",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:38:07",
+    "message_id": "<3731e8f7-6d4f-4818-89fd-09e21d2bbf61@dbert.in>"
+  },
+  "nisharokaya2006@gmail.com": {
+    "name": "Nisha Rokaya",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:38:40",
+    "message_id": "<bbdc1de4-39dd-4778-841b-1451b0842c15@dbert.in>"
+  },
+  "tanayjain1704@gmail.com": {
+    "name": "Tanay Jain",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:39:14",
+    "message_id": "<7a136e7d-e2e2-42f4-90d8-24b8b15d1be7@dbert.in>"
+  },
+  "srichandu2404@gmail.com": {
+    "name": "Alugolu Sai Sri Chandana",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:39:50",
+    "message_id": "<0469f944-68b6-40c3-aeee-79637ca58f0e@dbert.in>"
+  },
+  "savalgishashank@gmail.com": {
+    "name": "Shashank Mahesh Savalgi",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:40:24",
+    "message_id": "<c02bb839-f5d1-4207-b87f-a858027aa434@dbert.in>"
+  },
+  "archit.singhal1223@gmail.com": {
+    "name": "Archit Singhal",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:41:00",
+    "message_id": "<cf0b9a16-aca3-4d2f-b609-5a6d5fe92522@dbert.in>"
+  },
+  "harine514@gmail.com": {
+    "name": "Yeddula Harine",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:41:33",
+    "message_id": "<fa7688b0-2386-4a1c-b8c1-518671e1183d@dbert.in>"
+  },
+  "anugucharanteja30@gmail.com": {
+    "name": "Charan Teja Reddy Anugu",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:42:07",
+    "message_id": "<2e58c80f-a5c6-486a-b342-360a7d4fdb18@dbert.in>"
+  },
+  "kmanav653@gmail.com": {
+    "name": "Manav Abhishek",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:42:40",
+    "message_id": "<ad79cb88-a154-4978-b360-d092adbfa90b@dbert.in>"
+  },
+  "sdivyanshusingh11@gmail.com": {
+    "name": "Divyanshu Singh",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:43:13",
+    "message_id": "<2c9e3b5d-9dc7-4bfa-8787-9ed38765fee4@dbert.in>"
+  },
+  "goliakash710@gmail.com": {
+    "name": "Goli Akash",
+    "cohort": "499",
+    "domain": "DevOps & Cloud",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:43:46",
+    "message_id": "<4e19d6b2-868c-4b6b-b216-ebd77e9740b9@dbert.in>"
+  },
+  "devarajsenthilkumar026@gmail.com": {
+    "name": "Devaraj S",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:44:20",
+    "message_id": "<954074b3-cfe1-4181-aa8e-1cae4bdb8192@dbert.in>"
+  },
+  "veerasaimattapalli1406@gmail.com": {
+    "name": "Veerasai Mattapalli",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:44:53",
+    "message_id": "<9e04a7d7-43cf-4f33-b57b-971bc9662301@dbert.in>"
+  },
+  "srijitajanacs@gmail.com": {
+    "name": "Srijita Jana",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:45:26",
+    "message_id": "<ff703d49-f718-4fab-afc5-19b099dddaeb@dbert.in>"
+  },
+  "poojithakothakonda@gmail.com": {
+    "name": "Kothakonda Poojitha",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:45:59",
+    "message_id": "<9fb1017b-c0ff-45fa-a341-c71e5fb1c8b9@dbert.in>"
+  },
+  "priya.khaliyana@gmail.com": {
+    "name": "Priya",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:46:32",
+    "message_id": "<95eaf3f6-7297-4aa8-82cb-7713bb03d466@dbert.in>"
+  },
+  "piyaa.s297@gmail.com": {
+    "name": "Piya Sharma",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:47:06",
+    "message_id": "<e6f92f4a-7658-41fd-9734-40836822232f@dbert.in>"
+  },
+  "swathinarayandas8114@gmail.com": {
+    "name": "Narayandas Swathi",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:47:40",
+    "message_id": "<0781c3af-a8c1-472e-9a18-60b01a5c8f0d@dbert.in>"
+  },
+  "dillikarrohini27@gmail.com": {
+    "name": "Rohini Dillikar",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:48:13",
+    "message_id": "<d22c5a07-fa4f-44c4-beea-ecd942df0fc3@dbert.in>"
+  },
+  "kholasneha@gmail.com": {
+    "name": "Sneha Khola",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:48:46",
+    "message_id": "<17661331-5348-4e17-8dae-c0ff3ce5146a@dbert.in>"
+  },
+  "venkatatejabandaru@gmail.com": {
+    "name": "BANDARU VENKATATEJA",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:49:20",
+    "message_id": "<ecd1dc49-0e14-4668-af16-de5977eb4fc0@dbert.in>"
+  },
+  "shmehta109@gmail.com": {
+    "name": "Sagun Kumari",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:49:54",
+    "message_id": "<5e24530c-c0ab-4d21-9d25-acd8e5d80c9b@dbert.in>"
+  },
+  "harshithamergu59@gmail.com": {
+    "name": "Harshitha Mergu",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:50:27",
+    "message_id": "<1c7d19cf-7ea1-4a8c-8e6b-32e9ba186750@dbert.in>"
+  },
+  "loveleensingla7@gmail.com": {
+    "name": "Loveleen Singla",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:51:30",
+    "message_id": "<d3a8bbb5-9483-458d-8b2b-6624a1e12b12@dbert.in>"
+  },
+  "parthb935@gmail.com": {
+    "name": "Parth Bhardwaj",
+    "cohort": "499",
+    "domain": "DevOps & Cloud",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:52:04",
+    "message_id": "<492eaacb-2da2-419a-b361-5a974b189247@dbert.in>"
+  },
+  "sanikac735@gmail.com": {
+    "name": "Sanika Pradip Chougule",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:52:37",
+    "message_id": "<c89891b1-17dd-44ac-b7b7-f080ef137a82@dbert.in>"
+  },
+  "pranathisaiyadav@gmail.com": {
+    "name": "Yadav Pranathi sai",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:53:11",
+    "message_id": "<388ac63e-f739-4e78-8137-de888281f1f8@dbert.in>"
+  },
+  "rahulboppena872@gmail.com": {
+    "name": "Rahul Boppena",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:53:44",
+    "message_id": "<0be061a9-d609-475e-b0a0-a0df82580e6c@dbert.in>"
+  },
+  "kullayireddy374@gmail.com": {
+    "name": "Kullayi Reddy",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:54:17",
+    "message_id": "<cecaf42c-8906-4ba0-8506-037718a2f0f4@dbert.in>"
+  },
+  "sriharidasari365@gmail.com": {
+    "name": "Dasari Srihari",
+    "cohort": "499",
+    "domain": "Data Analyst",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:54:51",
+    "message_id": "<1e671536-d1b0-47a2-a3ed-c387f9af0bda@dbert.in>"
+  },
+  "rudrapal870@gmail.com": {
+    "name": "Rudra Pal",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:55:24",
+    "message_id": "<4b8fbf91-fc9d-4df2-8de7-c9b7a42ffb3e@dbert.in>"
+  },
+  "mastamardinaveen524@gmail.com": {
+    "name": "Naveen Mastamardi",
+    "cohort": "499",
+    "domain": "AI Agent Development",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:55:58",
+    "message_id": "<7b95ba67-9f79-46d2-825e-0b9ed7362f69@dbert.in>"
+  },
+  "gurkavinay22@gmail.com": {
+    "name": "GURKA VINAY KUMAR REDDY",
+    "cohort": "299",
+    "domain": "AI Agent Development",
+    "logins_7d": 20,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:56:31",
+    "message_id": "<427af352-9225-4295-a576-b174d8ceb13f@dbert.in>"
+  },
+  "nandayasovardhan@gmail.com": {
+    "name": "MOLUGU NANDA YASOVARDHAN",
+    "cohort": "299",
+    "domain": "Full Stack Development",
+    "logins_7d": 10,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:57:05",
+    "message_id": "<b462622f-32b1-44c5-b7a4-31e8c3a2bce1@dbert.in>"
+  },
+  "smitrshah86@gmail.com": {
+    "name": "Smit Ritesh Shah",
+    "cohort": "299",
+    "domain": "Data Analyst",
+    "logins_7d": 7,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:57:38",
+    "message_id": "<0895f908-feae-48f7-85cd-11811e0733f5@dbert.in>"
+  },
+  "sakthi220107@gmail.com": {
+    "name": "Sakthi P",
+    "cohort": "299",
+    "domain": "AI Agent Development",
+    "logins_7d": 5,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:58:11",
+    "message_id": "<b236517d-7d23-4052-af59-3f3a9e765ddb@dbert.in>"
+  },
+  "srivastavanaincy5@gmail.com": {
+    "name": "Naincy Srivastava",
+    "cohort": "299",
+    "domain": "Data Analyst",
+    "logins_7d": 4,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:58:44",
+    "message_id": "<8bfbd187-bfbc-415b-9bd1-eb198a0093c4@dbert.in>"
+  },
+  "subhradipd40@gmail.com": {
+    "name": "Subhradip Das",
+    "cohort": "299",
+    "domain": "Full Stack Development",
+    "logins_7d": 4,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:59:18",
+    "message_id": "<5305a26d-ef8f-4277-b467-23e47c8b12c3@dbert.in>"
+  },
+  "rm7104586@gmail.com": {
+    "name": "Rukanana Mounika",
+    "cohort": "299",
+    "domain": "AI Agent Development",
+    "logins_7d": 4,
+    "status": "SENT",
+    "sent_at": "2026-11-18 10:59:52",
+    "message_id": "<e466ab75-34b0-4a7e-9cd0-373744e6fd2d@dbert.in>"
+  },
+  "nagireddy5262@gmail.com": {
+    "name": "CHIRASANI NAGI REDDY",
+    "cohort": "299",
+    "domain": "Data Analyst",
+    "logins_7d": 3,
+    "status": "SENT",
+    "sent_at": "2026-11-18 11:00:26",
+    "message_id": "<6a6336d1-b504-42a3-85b6-9641108c9d33@dbert.in>"
+  },
+  "nishantmakwane04@gmail.com": {
+    "name": "Nishant Makwane",
+    "cohort": "299",
+    "domain": "Data Analyst",
+    "logins_7d": 3,
+    "status": "SENT",
+    "sent_at": "2026-11-18 11:01:00",
+    "message_id": "<4498928c-c24b-4869-a7c8-b05a3d1e49f9@dbert.in>"
+  },
+  "kommakesava1@gmail.com": {
+    "name": "Komma Hari Kesava",
+    "cohort": "299",
+    "domain": "Data Analyst",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 11:01:34",
+    "message_id": "<a70c9280-8007-4d63-a6a5-06148ac533ff@dbert.in>"
+  },
+  "nehachoudhary29337@gmail.com": {
+    "name": "Neha Choudhary",
+    "cohort": "299",
+    "domain": "Data Analyst",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 11:02:07",
+    "message_id": "<9c3fb9b5-6207-4dd3-82cf-cc745dec9966@dbert.in>"
+  },
+  "reachshruthiv@gmail.com": {
+    "name": "Shruthi Yuvnuv",
+    "cohort": "299",
+    "domain": "Full Stack Development",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 11:02:40",
+    "message_id": "<ad1d46d8-8d21-4f85-b89f-7c44dea46c17@dbert.in>"
+  },
+  "kundankumhar966@gmail.com": {
+    "name": "Kundan Kumhar",
+    "cohort": "299",
+    "domain": "Full Stack Development",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 11:03:13",
+    "message_id": "<42f51509-e39f-45b1-8699-18423177eed0@dbert.in>"
+  },
+  "iamvansh22@gmail.com": {
+    "name": "vansh choudhary",
+    "cohort": "299",
+    "domain": "Data Analyst",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 11:03:46",
+    "message_id": "<75eba420-4604-4ec0-a306-86984444f103@dbert.in>"
+  },
+  "sivasankar.t1606@gmail.com": {
+    "name": "Siva Sankar Thirumalasetty",
+    "cohort": "299",
+    "domain": "Data Analyst",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 11:04:20",
+    "message_id": "<a01528ec-281d-4fa5-b342-1b8148904ca8@dbert.in>"
+  },
+  "monikach575@gmail.com": {
+    "name": "Ch monika sai",
+    "cohort": "299",
+    "domain": "Data Analyst",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 11:04:53",
+    "message_id": "<497947f9-d5fd-4816-88d3-b2967184ce49@dbert.in>"
+  },
+  "thanveshburra@gmail.com": {
+    "name": "Thanvesh Burra",
+    "cohort": "299",
+    "domain": "AI Agent Development",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 11:05:56",
+    "message_id": "<72f9c02d-214c-4cc3-8e28-8fe3627f628b@dbert.in>"
+  },
+  "malavikasanthikrishna06@gmail.com": {
+    "name": "Malavika S",
+    "cohort": "299",
+    "domain": "Full Stack Development",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 11:06:29",
+    "message_id": "<c6e84899-69ca-4051-9f0b-12033550c9b9@dbert.in>"
+  },
+  "moodrajesh290@gmail.com": {
+    "name": "Mood Rajesh",
+    "cohort": "299",
+    "domain": "Full Stack Development",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 11:07:02",
+    "message_id": "<19b65b1c-8def-4cf6-8745-aef53c29ef82@dbert.in>"
+  },
+  "dsipun8484@gmail.com": {
+    "name": "SIPUN DAS",
+    "cohort": "299",
+    "domain": "Full Stack Development",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 11:07:37",
+    "message_id": "<67f25fd1-a352-4539-a7a9-9df51980df00@dbert.in>"
+  },
+  "anjidanisaram@gmail.com": {
+    "name": "DANISARAM ANJI",
+    "cohort": "299",
+    "domain": "Data Analyst",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 11:08:10",
+    "message_id": "<7adf43e6-f223-44ab-9541-b1c9fa2765e1@dbert.in>"
+  },
+  "radhabhamodkar@gmail.com": {
+    "name": "Radha Praful Bhamodkar",
+    "cohort": "299",
+    "domain": "Data Analyst",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 11:08:43",
+    "message_id": "<16d91384-a5c7-488f-94c9-0d6a45096035@dbert.in>"
+  },
+  "hey.deepanshu2006@gmail.com": {
+    "name": "Deepanshu",
+    "cohort": "299",
+    "domain": "Data Analyst",
+    "logins_7d": 2,
+    "status": "SENT",
+    "sent_at": "2026-11-18 11:09:17",
+    "message_id": "<d4431b37-96df-4500-bddf-65a815fe0408@dbert.in>"
+  }
+}

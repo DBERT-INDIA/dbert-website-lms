@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% set page_title = task.title ~ " — Guided Bounty Workflow" %}
+{% set page_robots = "noindex, nofollow" %}
+{% include "_head.html" %}
+<style nonce="{{ csp_nonce() }}">
+  .guide-container {
+    max-width: 980px;
+    margin: 0 auto;
+    padding-bottom: 60px;
+  }
+  .guide-header-hero {
+    background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+    border: 1px solid #334155;
+    border-radius: 20px;
+    padding: 28px 32px;
+    margin-bottom: 28px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.15);
+    color: #FFFFFF;
+  }
+  .guide-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #94A3B8;
+    margin-bottom: 14px;
+  }
+  .guide-breadcrumb a {
+    color: #60A5FA;
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
+  .guide-breadcrumb a:hover {
+    color: #93C5FD;
+    text-decoration: underline;
+  }
+  .guide-title {
+    font-size: 26px;
+    font-weight: 800;
+    color: #FFFFFF;
+    margin: 0 0 10px 0;
+    letter-spacing: -0.02em;
+    line-height: 1.3;
+  }
+  .guide-pills-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .guide-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .guide-pill-social {
+    background: #FEF3C7;
+    color: #92400E;
+    border: 1.5px solid #FCD34D;
+  }
+  .guide-pill-domain {
+    background: #EEF2FF;
+    color: #4338CA;
+    border: 1.5px solid #C7D2FE;
+  }
+  .guide-pill-coins {
+    background: linear-gradient(135deg, #F59E0B, #D97706);
+    color: #FFFFFF;
+    font-weight: 800;
+    box-shadow: 0 2px 8px rgba(217, 119, 6, 0.3);
+  }
+  .guide-step-card {
+    background: #FFFFFF;
+    border: 1.5px solid #E2E8F0;
+    border-radius: 18px;
+    padding: 26px 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.05);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .guide-step-card:hover {
+    border-color: #CBD5E1;
+  }
+  .guide-step-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 10px;
+    background: #2563EB;
+    color: #FFFFFF;
+    font-size: 14px;
+    font-weight: 800;
+    margin-right: 12px;
+    flex-shrink: 0;
+  }
+  .guide-step-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+  .guide-step-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: #0F172A;
+    margin: 0;
+  }
+  .guide-angle-box {
+    background: #F8FAFC;
+    border: 1.5px solid #E2E8F0;
+    border-radius: 14px;
+    padding: 20px;
+    margin-top: 12px;
+  }
+  .guide-angle-eyebrow {
+    font-size: 11.5px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #2563EB;
+    margin-bottom: 4px;
+  }
+  .guide-angle-title {
+    font-size: 17px;
+    font-weight: 800;
+    color: #0F172A;
+    margin: 0 0 8px 0;
+  }
+  .guide-angle-focus {
+    font-size: 14px;
+    color: #475569;
+    line-height: 1.6;
+    margin-bottom: 12px;
+  }
+  .guide-angle-takeaway {
+    background: #EFF6FF;
+    border-left: 4px solid #2563EB;
+    padding: 10px 14px;
+    border-radius: 0 8px 8px 0;
+    font-size: 13px;
+    color: #1E40AF;
+    line-height: 1.5;
+  }
+  .guide-textarea {
+    width: 100%;
+    border-radius: 12px;
+    border: 1.5px solid #CBD5E1;
+    padding: 14px;
+    font-size: 13.5px;
+    line-height: 1.6;
+    font-family: inherit;
+    resize: vertical;
+    background: #F8FAFC;
+    color: #0F172A;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+  .guide-textarea:focus {
+    outline: none;
+    border-color: #2563EB;
+    background: #FFFFFF;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+  }
+  .guide-btn-primary {
+    background: linear-gradient(135deg, #2563EB, #1D4ED8);
+    color: #FFFFFF;
+    border: none;
+    border-radius: 12px;
+    padding: 12px 26px;
+    font-size: 14px;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    text-decoration: none;
+  }
+  .guide-btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.45);
+    color: #FFFFFF;
+  }
+  .guide-btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+  .guide-btn-secondary {
+    background: #F1F5F9;
+    color: #334155;
+    border: 1.5px solid #CBD5E1;
+    border-radius: 12px;
+    padding: 11px 22px;
+    font-size: 13.5px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+  }
+  .guide-btn-secondary:hover {
+    background: #E2E8F0;
+    color: #0F172A;
+  }
+  .guide-submitted-box {
+    background: #F0FDF4;
+    border: 1.5px solid #86EFAC;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+</style>
+</head>
+<body class="has-sidebar portal portal-light">
+{% set active_page = 'tasks' %}
+{% include '_intern_sidebar.html' %}
+
+<div class="main">
+  <div class="content">
+    <div class="guide-container">
+
+      <!-- Breadcrumbs & Header Hero -->
+      <div class="guide-header-hero">
+        <div class="guide-breadcrumb">
+          <a href="/portal"><i class="fa-solid fa-house"></i> Dashboard</a>
+          <span>/</span>
+          <a href="/tasks">Open Bounty Tasks</a>
+          <span>/</span>
+          <span>Bounty #{{ task.id }}</span>
+        </div>
+
+        <input type="hidden" id="taskGuideCsrfToken" value="{{ csrf_token() }}">
+
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px;">
+          <div>
+            <h1 class="guide-title">{{ task.title }}</h1>
+            <p style="color:#CBD5E1; font-size:14px; line-height:1.6; margin:0; max-width:680px;">
+              {{ task.description }}
+            </p>
+          </div>
+          <a href="/tasks" class="guide-btn-secondary" style="background:rgba(255,255,255,0.1); color:#FFFFFF; border-color:rgba(255,255,255,0.25);">
+            <i class="fa-solid fa-arrow-left"></i> Back to Tasks
+          </a>
+        </div>
+
+        <div class="guide-pills-row">
+          {% if is_social_bounty %}
+            <span class="guide-pill guide-pill-social"><i class="fa-solid fa-bullhorn"></i> Social Media Bounty</span>
+          {% elif task.task_type == 'domain_specific' %}
+            <span class="guide-pill guide-pill-domain">🎯 {{ task.target_domain or 'Domain Specific' }}</span>
+          {% else %}
+            <span class="guide-pill" style="background:#F1F5F9; color:#334155; border:1.5px solid #CBD5E1;">🌐 General</span>
+          {% endif %}
+
+          <span class="guide-pill guide-pill-coins">🪙 +{{ task.coin_reward }} DBERT Coins</span>
+
+          {% if gemini_ctx and gemini_ctx.default_model %}
+            <span class="guide-pill" style="background:rgba(56,189,248,0.15); color:#38BDF8; border:1.5px solid rgba(56,189,248,0.3);">
+              <i class="fa-solid fa-bolt"></i> Model: {{ gemini_ctx.default_model }}
+            </span>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Submission Status Notice (if already submitted) -->
+      {% if my_submission %}
+      <div class="guide-submitted-box">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <i class="fa-solid fa-circle-check" style="color:#16A34A; font-size:20px;"></i>
+            <h3 style="font-size:17px; font-weight:800; color:#14532D; margin:0;">Submission Received</h3>
+          </div>
+          <span style="font-size:12px; font-weight:800; text-transform:uppercase; padding:4px 12px; border-radius:99px; background:{{ '#DCFCE7' if my_submission.status == 'approved' else '#FEF3C7' }}; color:{{ '#166534' if my_submission.status == 'approved' else '#92400E' }};">
+            {{ my_submission.status }}
+          </span>
+        </div>
+        <p style="font-size:13.5px; color:#166534; line-height:1.6; margin:0 0 10px 0;">
+          You submitted this task on <strong>{{ my_submission.submitted_at or my_submission.created_at }}</strong>. Reviewers evaluate submissions continuously.
+        </p>
+        <div style="background:#FFFFFF; border:1px solid #86EFAC; border-radius:10px; padding:10px 14px; font-size:13px; color:#0F172A; word-break:break-all;">
+          <strong>Submitted Link / Content:</strong> <a href="{{ my_submission.submission_content }}" target="_blank" rel="noopener" style="color:#2563EB;">{{ my_submission.submission_content }}</a>
+        </div>
+      </div>
+      {% endif %}
+
+      {% if is_social_bounty %}
+        <!-- ==================== SOCIAL MEDIA BOUNTY 4-STEP WORKFLOW ==================== -->
+
+        <!-- STEP 1: Assigned Case Study & Brand Angle -->
+        <div class="guide-step-card">
+          <div class="guide-step-header">
+            <span class="guide-step-badge">1</span>
+            <div>
+              <h2 class="guide-step-title">Review Your Assigned Angle &amp; Topic</h2>
+              <div style="font-size:13px; color:#64748B;">Each fellow receives a distinct case study angle to ensure authentic diversity across tech platforms.</div>
+            </div>
+          </div>
+
+          {% if assigned_angle %}
+          <div class="guide-angle-box">
+            <div class="guide-angle-eyebrow">{{ assigned_angle.category }} · Angle #{{ assigned_angle.id }}</div>
+            <h3 class="guide-angle-title">{{ assigned_angle.title }}</h3>
+            <p class="guide-angle-focus">{{ assigned_angle.focus }}</p>
+            <div class="guide-angle-takeaway">
+              <strong>💡 Core Takeaway:</strong> {{ assigned_angle.key_takeaway }}
+            </div>
+            {% if assigned_angle.case_study_url %}
+            <div style="margin-top:14px;">
+              <a href="{{ assigned_angle.case_study_url }}" target="_blank" rel="noopener" style="color:#2563EB; font-size:13px; font-weight:700; text-decoration:none;">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i> Read Production Case Study on dbert.in &rarr;
+              </a>
+            </div>
+            {% endif %}
+          </div>
+          {% endif %}
+        </div>
+
+        <!-- STEP 2: 1-Click AI Content Generator -->
+        <div class="guide-step-card">
+          <div class="guide-step-header">
+            <span class="guide-step-badge">2</span>
+            <div style="flex:1;">
+              <h2 class="guide-step-title">Generate Custom Post Copy (Google Gemini AI)</h2>
+              <div style="font-size:13px; color:#64748B;">Generated using your verified BYOK Gemini API key &amp; tuned for your career track.</div>
+            </div>
+          </div>
+
+          <div style="background:#F1F5F9; border-radius:12px; padding:16px; margin-bottom:18px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+              <div style="font-size:13px; color:#334155;">
+                <i class="fa-solid fa-shield-halved" style="color:#10B981;"></i> 
+                Connected Key: <strong>Active</strong> &bull; Engine: <strong>{{ gemini_ctx.default_model if gemini_ctx else 'Google Gemini' }}</strong>
+              </div>
+              <button type="button" id="btnGeneratePost" onclick="generateGuidePost()" class="guide-btn-primary">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> Generate Custom Post Copy
+              </button>
+            </div>
+          </div>
+
+          <!-- Output Preview Area -->
+          <div id="aiOutputContainer" style="display:none; margin-top:18px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <label for="guideGeneratedCopy" style="font-size:13px; font-weight:700; color:#0F172A; margin:0;">
+                <i class="fa-solid fa-file-lines" style="color:#2563EB;"></i> Ready-to-Publish Copy (Editable):
+              </label>
+              <div style="display:flex; align-items:center; gap:12px;">
+                <span id="charCountLabel" style="font-size:12px; font-weight:700; color:#64748B;">0 chars</span>
+                <button type="button" id="btnCopyPost" onclick="copyGuidePost()" class="guide-btn-secondary" style="padding:6px 14px; font-size:12px;">
+                  <i class="fa-regular fa-copy"></i> Copy to Clipboard
+                </button>
+              </div>
+            </div>
+
+            <textarea id="guideGeneratedCopy" class="guide-textarea" rows="9" oninput="updateCharCount()"></textarea>
+
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px; font-size:12px; color:#64748B;">
+              <span>✅ Includes direct steering to the ₹1,999 Incubation Fellowship &amp; sovereign verification.</span>
+              <span id="copySuccessMsg" style="display:none; color:#16A34A; font-weight:700;">Copied to clipboard!</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 3: Publish to Platform -->
+        <div class="guide-step-card">
+          <div class="guide-step-header">
+            <span class="guide-step-badge">3</span>
+            <div>
+              <h2 class="guide-step-title">Publish on Platform</h2>
+              <div style="font-size:13px; color:#64748B;">Launch the target platform directly and publish your post publicly.</div>
+            </div>
+          </div>
+
+          {% set platform_url = 'https://www.linkedin.com/feed/' %}
+          {% set platform_icon = 'fa-linkedin' %}
+          {% set platform_name = 'LinkedIn' %}
+          {% if task.id == 102 %}
+            {% set platform_url = 'https://x.com/compose/post' %}
+            {% set platform_icon = 'fa-x-twitter' %}
+            {% set platform_name = 'X / Twitter' %}
+          {% elif task.id == 103 %}
+            {% set platform_url = 'https://github.com/new' %}
+            {% set platform_icon = 'fa-github' %}
+            {% set platform_name = 'GitHub' %}
+          {% elif task.id == 104 %}
+            {% set platform_url = 'https://www.reddit.com/r/learnprogramming/submit' %}
+            {% set platform_icon = 'fa-reddit' %}
+            {% set platform_name = 'Reddit / Quora' %}
+          {% endif %}
+
+          <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; background:#F8FAFC; border:1.5px solid #E2E8F0; border-radius:14px; padding:18px 20px;">
+            <div>
+              <div style="font-size:14px; font-weight:800; color:#0F172A; margin-bottom:4px;">
+                Open {{ platform_name }} in a New Tab
+              </div>
+              <div style="font-size:12.5px; color:#64748B;">
+                Paste your copied text, add any personal touch or screenshot, and hit publish.
+              </div>
+            </div>
+            <a href="{{ platform_url }}" target="_blank" rel="noopener" class="guide-btn-secondary" style="background:#FFFFFF;">
+              <i class="fa-brands {{ platform_icon }}"></i> Launch {{ platform_name }} ↗
+            </a>
+          </div>
+        </div>
+
+        <!-- STEP 4: Submit Live Proof -->
+        <div class="guide-step-card">
+          <div class="guide-step-header">
+            <span class="guide-step-badge">4</span>
+            <div>
+              <h2 class="guide-step-title">Submit Live Published URL</h2>
+              <div style="font-size:13px; color:#64748B;">Paste the public link to your published post for review and instant 50 Coins reward.</div>
+            </div>
+          </div>
+
+          <form id="guideSubmitForm" onsubmit="submitGuideTask(event)">
+            {{ csrf_field() }}
+            <input type="hidden" id="guideTaskId" value="{{ task.id }}">
+
+            <div style="margin-bottom:16px;">
+              <label for="submissionUrl" style="display:block; font-size:13px; font-weight:700; color:#0F172A; margin-bottom:6px;">
+                Live Public URL *
+              </label>
+              <input type="url" id="submissionUrl" required placeholder="{{ 'https://www.linkedin.com/posts/...' if task.id == 101 else ('https://x.com/.../status/...' if task.id == 102 else 'https://github.com/...') }}" class="guide-textarea" style="padding:12px 14px;" value="{{ my_submission.submission_content if my_submission else '' }}">
+              <div style="font-size:11.5px; color:#64748B; margin-top:6px;">
+                Make sure the post visibility is set to <strong>Public</strong> so our automated audit daemon can verify it.
+              </div>
+            </div>
+
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+              <span id="guideSubmitMsg" style="font-size:13px; font-weight:700;"></span>
+              <button type="submit" id="btnSubmitGuide" class="guide-btn-primary" {% if my_submission and my_submission.status == 'approved' %}disabled{% endif %}>
+                <i class="fa-solid fa-paper-plane"></i> Submit for 50 Coins Reward
+              </button>
+            </div>
+          </form>
+        </div>
+
+      {% else %}
+        <!-- ==================== STANDARD DOMAIN / GENERAL MICRO-TASK ==================== -->
+
+        <!-- STEP 1: Technical Briefing & Requirements -->
+        <div class="guide-step-card">
+          <div class="guide-step-header">
+            <span class="guide-step-badge">1</span>
+            <div>
+              <h2 class="guide-step-title">Technical Briefing &amp; Requirements</h2>
+              <div style="font-size:13px; color:#64748B;">Carefully review the engineering goals and deliverables.</div>
+            </div>
+          </div>
+
+          <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:12px; padding:18px; line-height:1.6; font-size:14px; color:#334155;">
+            {{ version.instructions if version and version.instructions else task.description }}
+          </div>
+        </div>
+
+        <!-- STEP 2: Implementation & Starter Resources -->
+        <div class="guide-step-card">
+          <div class="guide-step-header">
+            <span class="guide-step-badge">2</span>
+            <div>
+              <h2 class="guide-step-title">Implementation Guidelines</h2>
+              <div style="font-size:13px; color:#64748B;">Best practices for code quality and evaluation rubrics.</div>
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:14px;">
+            <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:12px; padding:14px;">
+              <div style="font-size:13px; font-weight:700; color:#0F172A; margin-bottom:4px;"><i class="fa-solid fa-code" style="color:#2563EB;"></i> Clean Architecture</div>
+              <div style="font-size:12px; color:#64748B; line-height:1.5;">Write modular, commented code adhering to standard conventions and Git commits.</div>
+            </div>
+            <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:12px; padding:14px;">
+              <div style="font-size:13px; font-weight:700; color:#0F172A; margin-bottom:4px;"><i class="fa-solid fa-vial" style="color:#10B981;"></i> Tests &amp; Edge Cases</div>
+              <div style="font-size:12px; color:#64748B; line-height:1.5;">Ensure all unit tests pass with zero unhandled exceptions before final submission.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 3: Verification & Submission -->
+        <div class="guide-step-card">
+          <div class="guide-step-header">
+            <span class="guide-step-badge">3</span>
+            <div>
+              <h2 class="guide-step-title">Deliverable Submission</h2>
+              <div style="font-size:13px; color:#64748B;">Provide your live repository link or solution code below.</div>
+            </div>
+          </div>
+
+          <form id="guideSubmitForm" onsubmit="submitGuideTask(event)">
+            {{ csrf_field() }}
+            <input type="hidden" id="guideTaskId" value="{{ task.id }}">
+
+            {% if task.submission_type == 'text' %}
+              <div style="margin-bottom:16px;">
+                <label for="submissionText" style="display:block; font-size:13px; font-weight:700; color:#0F172A; margin-bottom:6px;">Your Code Solution / Explanation *</label>
+                <textarea id="submissionText" class="guide-textarea" rows="8" placeholder="Paste your detailed solution code here..." required>{{ my_submission.submission_content if my_submission else '' }}</textarea>
+              </div>
+            {% else %}
+              <div style="margin-bottom:16px;">
+                <label for="submissionUrl" style="display:block; font-size:13px; font-weight:700; color:#0F172A; margin-bottom:6px;">GitHub Repository or Live App URL *</label>
+                <input type="url" id="submissionUrl" class="guide-textarea" style="padding:12px 14px;" placeholder="https://github.com/your-username/repo" required value="{{ my_submission.submission_content if my_submission else '' }}">
+              </div>
+            {% endif %}
+
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+              <span id="guideSubmitMsg" style="font-size:13px; font-weight:700;"></span>
+              <button type="submit" id="btnSubmitGuide" class="guide-btn-primary" {% if my_submission and my_submission.status == 'approved' %}disabled{% endif %}>
+                <i class="fa-solid fa-paper-plane"></i> Submit Solution &amp; Claim Coins
+              </button>
+            </div>
+          </form>
+        </div>
+
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+
+<script nonce="{{ csp_nonce() }}">
+  function updateCharCount() {
+    const text = document.getElementById('guideGeneratedCopy').value;
+    const countEl = document.getElementById('charCountLabel');
+    if (countEl) {
+      countEl.textContent = `${text.length} chars (${text.trim().split(/\s+/).filter(Boolean).length} words)`;
+    }
+  }
+
+  function getGuideCsrfToken() {
+    const el = document.getElementById('taskGuideCsrfToken');
+    if (el && el.value) return el.value;
+    const input1 = document.querySelector('input[name="_csrf_token"]');
+    if (input1 && input1.value) return input1.value;
+    const input2 = document.querySelector('input[name="csrf_token"]');
+    if (input2 && input2.value) return input2.value;
+    return '';
+  }
+
+  function generateGuidePost() {
+    const taskId = document.getElementById('guideTaskId').value;
+    const btn = document.getElementById('btnGeneratePost');
+    const origHtml = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Generating with Gemini...';
+
+    const csrf = getGuideCsrfToken();
+
+    fetch(`/api/tasks/${taskId}/generate-content`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': csrf,
+        'X-CSRFToken': csrf
+      },
+      body: JSON.stringify({
+        _csrf_token: csrf,
+        csrf_token: csrf
+      })
+    })
+    .then(r => r.json())
+    .then(data => {
+      btn.disabled = false;
+      btn.innerHTML = origHtml;
+
+      if (data.status === 'success') {
+        const outContainer = document.getElementById('aiOutputContainer');
+        const txt = document.getElementById('guideGeneratedCopy');
+        if (outContainer) outContainer.style.display = 'block';
+        if (txt) {
+          txt.value = data.copy;
+          updateCharCount();
+        }
+      } else if (data.redirect) {
+        window.location.href = data.redirect;
+      } else {
+        alert(data.message || 'Error generating copy. Please ensure your Gemini API key is valid.');
+      }
+    })
+    .catch(err => {
+      btn.disabled = false;
+      btn.innerHTML = origHtml;
+      alert('Network error while generating content. Please try again.');
+    });
+  }
+
+  function copyGuidePost() {
+    const txt = document.getElementById('guideGeneratedCopy');
+    if (!txt) return;
+    txt.select();
+    txt.setSelectionRange(0, 99999);
+    navigator.clipboard.writeText(txt.value).then(() => {
+      const msg = document.getElementById('copySuccessMsg');
+      if (msg) {
+        msg.style.display = 'inline';
+        setTimeout(() => { msg.style.display = 'none'; }, 3000);
+      }
+    });
+  }
+
+  function submitGuideTask(e) {
+    e.preventDefault();
+    const taskId = document.getElementById('guideTaskId').value;
+    const btn = document.getElementById('btnSubmitGuide');
+    const msgEl = document.getElementById('guideSubmitMsg');
+    const csrf = getGuideCsrfToken();
+
+    const urlInput = document.getElementById('submissionUrl');
+    const textInput = document.getElementById('submissionText');
+    const content = urlInput ? urlInput.value.trim() : (textInput ? textInput.value.trim() : '');
+
+    if (!content) {
+      if (msgEl) {
+        msgEl.style.color = '#DC2626';
+        msgEl.textContent = 'Please provide your submission URL or solution.';
+      }
+      return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...';
+
+    fetch(`/tasks/${taskId}/submit`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': csrf,
+        'X-CSRFToken': csrf
+      },
+      body: JSON.stringify({
+        submission_url: content,
+        submission_content: content,
+        _csrf_token: csrf,
+        csrf_token: csrf
+      })
+    })
+    .then(r => r.json())
+    .then(data => {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Submit Work';
+
+      if (data.status === 'success') {
+        if (msgEl) {
+          msgEl.style.color = '#16A34A';
+          msgEl.textContent = '✓ Submission received! Redirecting...';
+        }
+        setTimeout(() => {
+          window.location.reload();
+        }, 1200);
+      } else {
+        if (msgEl) {
+          msgEl.style.color = '#DC2626';
+          msgEl.textContent = data.message || 'Submission failed.';
+        }
+      }
+    })
+    .catch(() => {
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Submit Work';
+      if (msgEl) {
+        msgEl.style.color = '#DC2626';
+        msgEl.textContent = 'Network error submitting task. Please retry.';
+      }
+    });
+  }
+</script>
+</body>
+</html>

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
+import { PRICING_CONFIG } from '@/config/pricing.config';
 
 interface BalanceSubmission {
   id: string;
@@ -87,8 +88,8 @@ export async function POST(request: NextRequest) {
       domain: domain.trim(),
       certId: cleanCertId || undefined,
       internId: cleanInternId || undefined,
-      amountExpected: 1500,
-      amountClaimed: 1500,
+      amountExpected: PRICING_CONFIG.balancePayable,
+      amountClaimed: PRICING_CONFIG.balancePayable,
       amountVerified: 0,
       amountPaid: 0, // Finding DBERT-013: Payment verified only after admin reconciliation
       utrNumber: cleanUtr,
@@ -138,6 +139,34 @@ export async function POST(request: NextRequest) {
       // non-blocking
     }
 
+    // Real-Time Convergence: Synchronize atomically to LMS PostgreSQL
+    try {
+      const syncEndpoint = process.env.INTERNAL_LMS_SYNC_URL || 'https://lms.dbert.in/api/internal/enrollment-sync';
+      const syncSecret = process.env.INTERNAL_SYNC_SECRET || 'dbert-secure-sync-token-2026';
+      
+      await fetch(syncEndpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-DBERT-Internal-Secret': syncSecret
+        },
+        body: JSON.stringify({
+          name: fullName.trim(),
+          email: email.trim().toLowerCase(),
+          phone: phone.trim(),
+          college: (college || '').trim(),
+          domain: domain.trim(),
+          amount: PRICING_CONFIG.balancePayable,
+          payment_type: 'balance',
+          utr: cleanUtr,
+          submission_id: submissionId
+        }),
+        signal: AbortSignal.timeout(4000)
+      });
+    } catch (syncErr) {
+      console.error('[Data Convergence Sync Warning - Handled]', syncErr instanceof Error ? syncErr.message : syncErr);
+    }
+
     return NextResponse.json({
       success: true,
       submissionId,
@@ -146,7 +175,7 @@ export async function POST(request: NextRequest) {
       certId: cleanCertId,
       domain: domain.trim(),
       utrNumber: cleanUtr,
-      amount: 1500
+      amount: PRICING_CONFIG.balancePayable
     });
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err.message || 'Internal server error' }, { status: 500 });

@@ -4,7 +4,7 @@
 {% set page_title_full = "DBERT — Guided Learning Analytics" %}
 {% include "_head.html" %}
 <meta name="robots" content="noindex,nofollow"/>
-<style>
+<style nonce="{{ csp_nonce() }}">
   .analytics-container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
   .metric-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
   .metric-card { background: #fff; border-radius: 8px; padding: 1.25rem; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }

@@ -3,96 +3,19 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import HandNote from '@/components/ui/HandNote';
+import { GEO_CITIES, GEO_ROLES } from '@/data/geo_domains.config';
 
-const CITY_NAMES: Record<string, string> = {
-  'remote': 'Remote / Work From Home',
-  'bengaluru': 'Bengaluru',
-  'delhi-ncr': 'Delhi NCR',
-  'mumbai': 'Mumbai',
-  'pune': 'Pune',
-  'hyderabad': 'Hyderabad',
-  'chennai': 'Chennai',
-  'kolkata': 'Kolkata',
-  'ahmedabad': 'Ahmedabad',
-  'jaipur': 'Jaipur',
-  'lucknow': 'Lucknow',
-  'chandigarh': 'Chandigarh',
-  'noida': 'Noida',
-  'gurgaon': 'Gurgaon',
-};
-
-const CITY_POSTAL_DATA: Record<string, { street: string; locality: string; region: string; postalCode: string }> = {
-  'bengaluru': { street: 'Outer Ring Road, Manyata Tech Park', locality: 'Bengaluru', region: 'Karnataka', postalCode: '560001' },
-  'delhi-ncr': { street: 'Connaught Place / Barakhamba Road', locality: 'Delhi NCR', region: 'Delhi', postalCode: '110001' },
-  'mumbai': { street: 'Bandra Kurla Complex (BKC)', locality: 'Mumbai', region: 'Maharashtra', postalCode: '400051' },
-  'pune': { street: 'Hinjawadi Rajiv Gandhi Infotech Park', locality: 'Pune', region: 'Maharashtra', postalCode: '411057' },
-  'hyderabad': { street: 'HITEC City, Madhapur', locality: 'Hyderabad', region: 'Telangana', postalCode: '500081' },
-  'chennai': { street: 'Old Mahabalipuram Rd, Tech Corridor', locality: 'Chennai', region: 'Tamil Nadu', postalCode: '600001' },
-  'kolkata': { street: 'Sector V, Salt Lake City', locality: 'Kolkata', region: 'West Bengal', postalCode: '700091' },
-  'ahmedabad': { street: 'SG Highway, Prahlad Nagar', locality: 'Ahmedabad', region: 'Gujarat', postalCode: '380015' },
-  'jaipur': { street: 'Malviya Nagar Industrial Area', locality: 'Jaipur', region: 'Rajasthan', postalCode: '302017' },
-  'lucknow': { street: 'Vibhuti Khand, Gomti Nagar', locality: 'Lucknow', region: 'Uttar Pradesh', postalCode: '226010' },
-  'chandigarh': { street: 'Rajiv Gandhi Chandigarh Technology Park', locality: 'Chandigarh', region: 'Chandigarh', postalCode: '160019' },
-  'noida': { street: 'Sector 62, Electronic City', locality: 'Noida', region: 'Uttar Pradesh', postalCode: '201301' },
-  'gurgaon': { street: 'DLF Cyber City, Sector 24', locality: 'Gurugram', region: 'Haryana', postalCode: '122002' },
-};
-
-const ROLE_INFO: Record<string, { title: string; skills: string[]; stipend: string; desc: string }> = {
-  'full-stack-development': {
-    title: 'Full Stack Web Development',
-    skills: ['Next.js App Router', 'React 19', 'TypeScript', 'Node.js', 'PostgreSQL', 'Tailwind CSS'],
-    stipend: '₹8,000 – ₹18,000 / month',
-    desc: 'Build full-stack web architectures, implement pgvector similarity search, and deploy production microservices with active users.'
-  },
-  'ai-agent-development': {
-    title: 'AI Agent & LLM Systems',
-    skills: ['LangGraph', 'CrewAI', 'Ollama', 'vLLM', 'Python', 'FastAPI', 'RAG'],
-    stipend: '₹10,000 – ₹18,000 / month',
-    desc: 'Construct autonomous agent state machines, tool-calling execution loops, and local open-weights foundation model deployments.'
-  },
-  'data-analytics': {
-    title: 'Data Analytics & Corporate BI',
-    skills: ['SQL', 'Python Pandas', 'Power BI', 'Metabase', 'Data Modeling', 'ETL'],
-    stipend: '₹6,000 – ₹15,000 / month',
-    desc: 'Transform raw corporate transaction records into structured analytical databases, variance decompositions, and executive BI dashboards.'
-  },
-  'python-automation': {
-    title: 'Python Automation & Scraping',
-    skills: ['Playwright', 'Scrapy', 'Celery', 'Redis', 'Python Async', 'PostgreSQL'],
-    stipend: '₹7,000 – ₹15,000 / month',
-    desc: 'Deploy resilient web extraction pipelines, headless browser testing harnesses, and automated data synchronization workflows.'
-  },
-  'devops-cloud': {
-    title: 'DevOps & Cloud Engineering',
-    skills: ['Docker', 'Kubernetes', 'AWS EC2', 'GitHub Actions', 'Terraform', 'CI/CD'],
-    stipend: '₹8,000 – ₹16,000 / month',
-    desc: 'Architect containerized clusters, automated CI/CD deployment pipelines, and secure cloud networking environments.'
-  },
-  'ui-ux-design': {
-    title: 'UI/UX Design & Prototyping',
-    skills: ['Figma', 'Auto-Layout', 'Design Systems', 'User Research', 'Wireframing'],
-    stipend: '₹6,000 – ₹14,000 / month',
-    desc: 'Design component tokens, user journey flows, and high-fidelity interactive product prototypes for venture applications.'
-  },
-  'cybersecurity': {
-    title: 'Cybersecurity & Threat Defense',
-    skills: ['OWASP Top 10', 'Wireshark', 'Burp Suite', 'SIEM Logs', 'SOC Analysis', 'Linux'],
-    stipend: '₹8,000 – ₹16,000 / month',
-    desc: 'Audit web applications for injection vulnerabilities, analyze network packet captures, and harden infrastructure against intrusion.'
-  },
-  'mobile-app-development': {
-    title: 'Mobile App Development',
-    skills: ['Flutter', 'Dart', 'React Native', 'Mobile APIs', 'Offline SQLite', 'State Management'],
-    stipend: '₹7,000 – ₹15,000 / month',
-    desc: 'Build cross-platform iOS and Android applications connected to cloud backends with offline local caching.'
-  },
-  'digital-marketing': {
-    title: 'Digital Marketing & Growth',
-    skills: ['Technical SEO', 'Google Analytics 4', 'Meta Ads', 'CRO', 'Content Marketing'],
-    stipend: '₹5,000 – ₹12,000 / month',
-    desc: 'Optimize organic search acquisition, analyze conversion funnels, and manage targeted growth campaigns across digital channels.'
+export async function generateStaticParams() {
+  const roles = Object.keys(GEO_ROLES);
+  const cities = Object.keys(GEO_CITIES);
+  const params: { role: string; city: string }[] = [];
+  for (const role of roles) {
+    for (const city of cities) {
+      params.push({ role, city });
+    }
   }
-};
+  return params;
+}
 
 interface PageProps {
   params: Promise<{
@@ -103,16 +26,17 @@ interface PageProps {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { role, city } = await params;
-  const roleData = ROLE_INFO[role];
-  const cityName = CITY_NAMES[city];
+  const roleData = GEO_ROLES[role];
+  const cityData = GEO_CITIES[city];
 
-  if (!roleData || !cityName) {
+  if (!roleData || !cityData) {
     return {
       title: 'Internship Not Found | DBERT',
       description: 'The requested internship category was not found.'
     };
   }
 
+  const cityName = cityData.name;
   const title = `${roleData.title} Internships in ${cityName} (2026 Batch)`;
   const description = `Apply for ${roleData.title} internships in ${cityName}. Build live client codebases under senior review, earn ${roleData.stipend} performance stipends, and earn verifiable MSME credentials.`;
 
@@ -133,13 +57,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function ProgrammaticInternshipPage({ params }: PageProps) {
   const { role, city } = await params;
-  const roleData = ROLE_INFO[role];
-  const cityName = CITY_NAMES[city];
+  const roleData = GEO_ROLES[role];
+  const cityData = GEO_CITIES[city];
 
-  if (!roleData || !cityName) {
+  if (!roleData || !cityData) {
     notFound();
   }
 
+  const cityName = cityData.name;
   const isRemote = city.toLowerCase() === 'remote';
 
   const jsonLd = {
@@ -154,7 +79,7 @@ export default async function ProgrammaticInternshipPage({ params }: PageProps) 
         employmentType: 'INTERN',
         hiringOrganization: {
           '@type': 'Organization',
-          name: 'DBERT Venture Network',
+          name: 'DBERT Technical Council',
           sameAs: 'https://dbert.in',
           logo: 'https://dbert.in/logo.svg'
         },
@@ -171,10 +96,10 @@ export default async function ProgrammaticInternshipPage({ params }: PageProps) 
                 '@type': 'Place',
                 address: {
                   '@type': 'PostalAddress',
-                  streetAddress: CITY_POSTAL_DATA[city]?.street || 'Commercial Business District',
-                  addressLocality: CITY_POSTAL_DATA[city]?.locality || cityName,
-                  addressRegion: CITY_POSTAL_DATA[city]?.region || 'India',
-                  postalCode: CITY_POSTAL_DATA[city]?.postalCode || '110001',
+                  streetAddress: cityData.street,
+                  addressLocality: cityData.locality,
+                  addressRegion: cityData.region,
+                  postalCode: cityData.postalCode,
                   addressCountry: 'IN'
                 }
               }
@@ -184,8 +109,9 @@ export default async function ProgrammaticInternshipPage({ params }: PageProps) 
           currency: 'INR',
           value: {
             '@type': 'QuantitativeValue',
+            value: 5000,
             minValue: 5000,
-            maxValue: 18000,
+            maxValue: 23000,
             unitText: 'MONTH'
           }
         },
@@ -362,13 +288,13 @@ export default async function ProgrammaticInternshipPage({ params }: PageProps) 
             Explore {roleData.title} opportunities across other major Indian tech corridors:
           </p>
           <div className="flex flex-wrap gap-2 mb-6">
-            {Object.entries(CITY_NAMES).map(([cSlug, cName]) => (
+            {Object.entries(GEO_CITIES).map(([cSlug, cMeta]) => (
               <Link
                 key={cSlug}
                 href={`/internships/${role}/${cSlug}`}
                 className={`tag-chip text-xs font-mono ${cSlug === city ? 'border-accent text-accent' : ''}`}
               >
-                {cName}
+                {cMeta.name}
               </Link>
             ))}
           </div>

@@ -108,5 +108,113 @@
     "status": "SENT",
     "message_id": "<179463086466.21216.617528031351848446@dbert.in>",
     "dispatched_at": "2026-11-14T10:04:28.122514"
+  },
+  "RESP-13-TRISHAM": {
+    "name": "Trisham Gupta",
+    "email": "trishamgupta43@gmail.com",
+    "sender": "manoj.kumar@dbert.in",
+    "subject": "Re: [URGENT] Action Required: Batch Kickoff — Review Offer Letter & Confirm Seat",
+    "topic": "Seat Confirmation & Payment Steps",
+    "status": "SENT",
+    "dispatched_at": "2026-11-17T17:53:26.874687"
+  },
+  "RESP-16-ARYAN": {
+    "name": "Aryan Bhakuni",
+    "email": "aryanbhakuni2006@gmail.com",
+    "sender": "manoj.kumar@dbert.in",
+    "subject": "Re: DBERT Milestone Roadmap: Technical Contribution Approved & Published — ₹5,000 Stipend Release",
+    "topic": "Article Published & Stipend Release Procedure",
+    "status": "SENT",
+    "dispatched_at": "2026-11-17T17:53:45.293465"
+  },
+  "RESP-18-BHARGAVI": {
+    "name": "Bhargavi Poola",
+    "email": "bhargavi13032007@gmail.com",
+    "sender": "abhinav.sharma@dbert.in",
+    "subject": "Re: Clarification Regarding LinkedIn Profile Linking and Domain Specialization – Cohort 2026",
+    "topic": "Domain Confirmation & Incubation Seat Confirmed",
+    "status": "SENT",
+    "dispatched_at": "2026-11-17T17:54:00.712491"
+  },
+  "RESP-19-OM": {
+    "name": "Om Vinayak",
+    "email": "omvinayak94@gmail.com",
+    "sender": "abhinav.sharma@dbert.in",
+    "subject": "Re: payment done - Certificate & LOR Application Form 299",
+    "topic": "₹299 Verification Payment Confirmed",
+    "status": "SENT",
+    "dispatched_at": "2026-11-17T17:54:14.412764"
+  },
+  "RESP-20-KUNDAN": {
+    "name": "Kundan Kumhar",
+    "email": "kundankumhar966@gmail.com",
+    "sender": "abhinav.sharma@dbert.in",
+    "subject": "Re: Official Internship Credential Packet: Session Materials & Curriculum Access [CERT-DBERT-2026-FSD-056]",
+    "topic": "Session PDF & Curriculum Materials",
+    "status": "SENT",
+    "dispatched_at": "2026-11-17T17:54:28.742055"
+  },
+  "RESP-21-ABHISHEK": {
+    "name": "Rapolu Abhishek",
+    "email": "abhirapolu08@gmail.com",
+    "sender": "abhinav.sharma@dbert.in",
+    "subject": "Re: Official Internship Credential Packet: Stipend Milestone Status [CERT-DBERT-2026-AIML-014]",
+    "topic": "Certificate ID Alignment & Stipend Milestone",
+    "status": "SENT",
+    "dispatched_at": "2026-11-17T17:54:43.488970"
+  },
+  "RESP-22-AMAN": {
+    "name": "Aman Garg",
+    "email": "aman.garg1861@gmail.com",
+    "sender": "abhinav.sharma@dbert.in",
+    "subject": "Re: DBERT Internship Verification: Next Steps for Verified Credential [CERT-DBERT-2026-FSD-117]",
+    "topic": "Certificate Next Steps & Recruiter Visibility",
+    "status": "SENT",
+    "dispatched_at": "2026-11-17T17:54:58.166082"
+  },
+  "RESP-23-GOUTHAMI": {
+    "name": "Gouthami N A",
+    "email": "gouthamigouthu06@gmail.com",
+    "sender": "manoj.kumar@dbert.in",
+    "subject": "Re: [URGENT] Action Required: Batch Kickoff — Program Structure & Caution Deposit Clarification",
+    "topic": "Caution Deposit vs Stipend Structure Clarification",
+    "status": "SENT",
+    "dispatched_at": "2026-11-17T17:55:11.504322"
+  },
+  "RESP-12-CHANCHAL": {
+    "name": "Chanchal Kumari",
+    "email": "chanchalkumari728@gmail.com",
+    "sender": "contactus@dbert.in",
+    "subject": "Re: [URGENT] Action Required: Batch Kickoff — Review Offer Letter & Confirm Seat",
+    "topic": "Offer Acceptance & Seat Confirmation",
+    "status": "SENT",
+    "dispatched_at": "2026-11-17T17:55:30.182835"
+  },
+  "RESP-14-SANJAI": {
+    "name": "Sanjai Kumar",
+    "email": "sanjaikumar.p.k2006@gmail.com",
+    "sender": "contactus@dbert.in",
+    "subject": "Re: Requesting info about the internship — Caution Deposit & Offer Letter Details",
+    "topic": "AI Agent Caution Deposit Clarification",
+    "status": "SENT",
+    "dispatched_at": "2026-11-17T17:55:43.524732"
+  },
+  "RESP-15-SIVA": {
+    "name": "Siva Mandapati",
+    "email": "svsk798@gmail.com",
+    "sender": "contactus@dbert.in",
+    "subject": "Re: DBERT Application Update: Full Stack Development Fellowship Selection & Offer Terms",
+    "topic": "Full Stack Caution Deposit & Offer Access",
+    "status": "SENT",
+    "dispatched_at": "2026-11-17T17:55:57.689042"
+  },
+  "RESP-17-VINAY": {
+    "name": "Gurka Vinay Kumar Reddy",
+    "email": "gurkavinay22@gmail.com",
+    "sender": "contactus@dbert.in",
+    "subject": "Re: Missing ₹5,000 Stipend Disbursement – Credential ID: CERT-DBERT-2026-AIML-169",
+    "topic": "₹5,000 Stipend Payout Reconciliation Update",
+    "status": "SENT",
+    "dispatched_at": "2026-11-17T17:56:10.955630"
   }
 }

@@ -51,7 +51,25 @@ def intern_book_slot(slot_id):
                 "INSERT INTO mentor_session_bookings (slot_id, intern_id, meeting_link, status) VALUES (?, ?, ?, 'booked')",
                 (slot_id, intern["id"], meeting_link)
             )
+
+            # Query mentor name and slot start time for notification push
+            slot_info = conn.execute(
+                "SELECT s.start_time, sa.name AS mentor_name "
+                "FROM mentor_availability_slots s "
+                "LEFT JOIN staff_accounts sa ON s.mentor_staff_id = sa.id "
+                "WHERE s.id = ?",
+                (slot_id,)
+            ).fetchone()
+
             conn.commit()
+
+        try:
+            from services.notifications.web_push_service import notify_mentor_booking_push
+            m_name = slot_info["mentor_name"] if slot_info and slot_info["mentor_name"] else "DBERT Engineering Mentor"
+            s_time = slot_info["start_time"] if slot_info and slot_info["start_time"] else "Upcoming Session"
+            notify_mentor_booking_push(intern["email"], m_name, str(s_time), meeting_link)
+        except Exception as _p_err:
+            log_error("intern-book-slot-push", _p_err)
 
         return jsonify({
             "status": "success",
@@ -89,6 +107,18 @@ def intern_cancel_slot(slot_id):
                 (slot_id,)
             )
             conn.commit()
+
+        try:
+            from services.notifications.web_push_service import dispatch_lifecycle_push
+            dispatch_lifecycle_push(
+                "mentor_cancelled",
+                target_email=intern["email"],
+                title="📅 Mentor Session Cancelled",
+                body="Your seat reservation was cancelled and released back to the cohort.",
+                url="/mentors/booking"
+            )
+        except Exception as _p_err:
+            log_error("intern-cancel-slot-push", _p_err)
 
         return jsonify({
             "status": "success",

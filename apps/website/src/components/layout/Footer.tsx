@@ -71,6 +71,7 @@ const columns: FooterColumn[] = [
       { label: 'Verify Credential ID', href: '/verify' },
       { label: 'Pre-Vetted Candidate Directory', href: '/verify/directory' },
       { label: 'MSME Statutory Audit', href: '/about/credentials' },
+      { label: 'Technical Q&A Hub', href: '/qa' },
       { label: 'Open Source Repositories', href: '/labs/opensource' },
       { label: 'Balance Enrollment Portal', href: '/enroll/1999' },
       { label: 'Engineering Team', href: '/about/team' },

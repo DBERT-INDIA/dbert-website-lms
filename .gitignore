@@ -64,6 +64,7 @@ data/scraped_sync_payload.json
 *.tar.gz
 *.tgz
 *.pptx
+*.pdf
 guaranteed_internship_program_*
 sample_certificate_*
 

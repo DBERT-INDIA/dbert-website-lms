@@ -14,7 +14,7 @@ print("=" * 80)
 print("\n[STEP 1/5] Correcting intern_certificates in PostgreSQL (dbert_internship)...")
 db_fix_code = """import psycopg2
 
-conn = psycopg2.connect("postgresql://dbert_user:19d0b2647ef39526fa3fafff9f594026639ec2865c73d753@localhost:5432/dbert_lms")
+conn = psycopg2.connect("postgresql://dbert_user:DBERT_SECURE_PASSWORD_123@localhost:5432/dbert_lms")
 cur = conn.cursor()
 cur.execute("SET search_path TO dbert_internship, public;")
 

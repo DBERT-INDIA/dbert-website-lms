@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Official Internship Offer &amp; Appointment Letter - {{ offer.offer_letter_id }} - DBERT</title>
+  <link rel="stylesheet" href="/static/css/portal-offer.css?v=20261115">
+  <style nonce="{{ csp_nonce() }}">
+    @page {
+      size: A4 portrait;
+      margin: 10mm 12mm 10mm 12mm;
+    }
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    html, body {
+      background: #ffffff !important;
+      color: #0f172a !important;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      margin: 0 !important;
+      padding: 0 !important;
+      line-height: 1.55;
+      font-size: 12px;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    .print-doc-container {
+      max-width: 820px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px;
+      box-sizing: border-box;
+    }
+
+    /* Top Action Bar (Screen Only) */
+    .no-print-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(135deg, #0b1120 0%, #1e293b 100%);
+      color: #ffffff;
+      padding: 14px 28px;
+      border-radius: 8px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .btn-gold {
+      background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+      color: #0b1120;
+      font-weight: 800;
+      font-size: 13px;
+      padding: 10px 20px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-secondary {
+      background: #334155;
+      color: #f8fafc;
+      font-weight: 600;
+      font-size: 13px;
+      padding: 10px 16px;
+      border-radius: 6px;
+      border: 1px solid #475569;
+      cursor: pointer;
+      margin-left: 8px;
+    }
+
+    /* Letterhead */
+    .letterhead-header {
+      text-align: center;
+      border-bottom: 2px solid #0f172a;
+      padding-bottom: 14px;
+      margin-bottom: 20px;
+    }
+    .letterhead-brand-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 4px;
+    }
+    .letterhead-title {
+      font-size: 32px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      color: #0f172a;
+      text-transform: uppercase;
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      line-height: 1;
+    }
+    .letterhead-fullform {
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: #475569;
+      margin-top: 4px;
+    }
+    .letterhead-subtitle {
+      font-size: 11.5px;
+      font-weight: 600;
+      letter-spacing: 0.8px;
+      color: #64748b;
+      text-transform: uppercase;
+      margin: 4px 0 5px;
+    }
+    .letterhead-meta {
+      font-size: 10px;
+      color: #64748b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .gold-divider-bar {
+      height: 2.5px;
+      background: linear-gradient(90deg, #d97706, #fbbf24, #d97706);
+      margin-top: 10px;
+      border-radius: 2px;
+    }
+
+    /* Appointment Dossier Grid */
+    .dossier-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 12px 16px;
+      margin-bottom: 18px;
+      box-sizing: border-box;
+    }
+    .dossier-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .dossier-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #64748b;
+    }
+    .dossier-value {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    /* Formal Subject */
+    .formal-subject-box {
+      background: #f1f5f9;
+      border-left: 4px solid #0f172a;
+      border-radius: 3px;
+      padding: 10px 14px;
+      font-size: 12.5px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 16px;
+      box-sizing: border-box;
+    }
+
+    /* Headings */
+    .doc-section-heading {
+      font-size: 12.5px;
+      font-weight: 800;
+      color: #0f172a;
+      border-bottom: 1px solid #cbd5e1;
+      padding-bottom: 4px;
+      margin: 18px 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      page-break-after: avoid;
+    }
+
+    /* Responsive Table Container & Tables */
+    .table-responsive-container {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: auto;
+      margin-bottom: 16px;
+      border-radius: 6px;
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      box-sizing: border-box;
+    }
+    .executive-table {
+      width: 100%;
+      max-width: 100%;
+      table-layout: auto;
+      border-collapse: collapse;
+      font-size: 11px;
+      line-height: 1.45;
+      box-sizing: border-box;
+      margin: 0;
+      border: none;
+    }
+    .executive-table th {
+      background: #f1f5f9;
+      padding: 6px 10px;
+      text-align: left;
+      font-weight: 800;
+      color: #0f172a;
+      border-bottom: 1px solid #cbd5e1;
+      font-size: 10.5px;
+      box-sizing: border-box;
+      white-space: nowrap;
+    }
+    .executive-table td {
+      padding: 6px 10px;
+      border-bottom: 1px solid #e2e8f0;
+      color: #1e293b;
+      vertical-align: middle;
+      box-sizing: border-box;
+      word-break: normal;
+      overflow-wrap: break-word;
+    }
+    .executive-table tr:last-child td {
+      border-bottom: none;
+    }
+    .executive-table td.col-label {
+      background: #f8fafc;
+      font-weight: 700;
+      color: #475569;
+      width: 28%;
+      min-width: 170px;
+      max-width: 220px;
+      white-space: nowrap;
+    }
+    .executive-table td:not(.col-label) {
+      width: 72%;
+    }
+
+    /* 4 Criteria Cards */
+    .stipend-criteria-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin: 10px 0 12px;
+    }
+    .criteria-card {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      padding: 8px 10px;
+      box-sizing: border-box;
+    }
+    .criteria-header {
+      font-size: 9.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: #0f172a;
+      margin-bottom: 3px;
+    }
+    .criteria-val {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #d97706;
+      margin-bottom: 3px;
+    }
+    .criteria-desc {
+      font-size: 10.5px;
+      color: #475569;
+      line-height: 1.4;
+    }
+
+    /* Notice Callouts */
+    .notice-box {
+      padding: 9px 12px;
+      border-radius: 4px;
+      margin: 10px 0 14px;
+      font-size: 11px;
+      font-weight: 600;
+      line-height: 1.5;
+      box-sizing: border-box;
+    }
+    .notice-box-emerald {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-left: 3px solid #16a34a;
+      color: #14532d;
+    }
+    .notice-box-gold {
+      background: #fefce8;
+      border: 1px solid #fef08a;
+      border-left: 3px solid #d97706;
+      color: #713f12;
+    }
+
+    /* Signatures Dossier */
+    .signatures-dossier-wrapper {
+      display: grid;
+      grid-template-columns: 1fr 120px 1fr;
+      gap: 14px;
+      align-items: stretch;
+      margin-top: 18px;
+      padding-top: 10px;
+      border-top: 1px solid #cbd5e1;
+      page-break-inside: avoid;
+      box-sizing: border-box;
+    }
+    .sig-block {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-sizing: border-box;
+    }
+    .sig-block-label {
+      font-size: 9.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #64748b;
+      margin-bottom: 6px;
+    }
+    .sig-handwritten-zone {
+      height: 40px;
+      display: flex;
+      align-items: center;
+      margin-bottom: 4px;
+    }
+    .sig-cursive-font {
+      font-family: "Brush Script MT", "Dancing Script", cursive, Georgia, serif;
+      font-size: 22px;
+      color: #0f172a;
+      line-height: 1;
+    }
+    .sig-meta-block {
+      border-top: 1px solid #cbd5e1;
+      padding-top: 4px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .sig-meta-name {
+      font-size: 11.5px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+    .sig-meta-role {
+      font-size: 10.5px;
+      color: #475569;
+      font-weight: 600;
+    }
+    .sig-meta-org {
+      font-size: 9.5px;
+      color: #64748b;
+    }
+
+    .qr-verification-seal {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      padding: 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 3px;
+      box-sizing: border-box;
+    }
+    .qr-verification-seal img {
+      width: 72px;
+      height: 72px;
+      display: block;
+    }
+    .qr-badge-text {
+      font-size: 8px;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: #0f172a;
+    }
+    .qr-code-id {
+      font-size: 7.5px;
+      font-family: ui-monospace, monospace;
+      color: #64748b;
+    }
+
+    @media print {
+      .no-print-bar {
+        display: none !important;
+      }
+      .print-doc-container {
+        padding: 0 !important;
+        max-width: 100% !important;
+      }
+      table, tr, td, th {
+        page-break-inside: avoid !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Screen Top Bar -->
+  <div class="no-print-bar">
+    <div>
+      <div style="font-size:11px; text-transform:uppercase; letter-spacing:1px; color:#fbbf24; font-weight:800;">
+        DBERT &bull; Executive Print View
+      </div>
+      <div style="font-size:16px; font-weight:800; margin-top:2px;">
+        Official Offer Letter: {{ offer.offer_letter_id }}
+      </div>
+    </div>
+    <div>
+      <button id="btnPrintAction" class="btn-gold">
+        📥 Print / Save as PDF
+      </button>
+      <button id="btnCloseAction" class="btn-secondary">
+        ✕ Close
+      </button>
+    </div>
+  </div>
+
+  <div class="print-doc-container">
+
+    <!-- LETTERHEAD HEADER -->
+    <div class="letterhead-header">
+      <div class="letterhead-brand-container">
+        <div class="letterhead-title">DBERT</div>
+        <div class="letterhead-fullform">Digital Blinc Education Research and Technology</div>
+      </div>
+      <div class="letterhead-subtitle">
+        Directorate of Applied Research &amp; Technology Incubation
+      </div>
+      <div class="letterhead-meta">
+        <span>Govt. of India MSME Registered: UDYAM-UP-29-0109046</span>
+        <span>&bull;</span>
+        <span>National Technology Incubation Initiative</span>
+        <span>&bull;</span>
+        <span>Official Portal: https://dbert.in</span>
+      </div>
+      <div class="gold-divider-bar"></div>
+    </div>
+
+    <!-- DOCUMENT TITLE -->
+    <div style="text-align:center; margin-bottom:16px;">
+      <h2 style="font-size:14.5px; font-weight:900; letter-spacing:1.2px; color:#0f172a; text-transform:uppercase; margin:0 0 3px; font-family:'Georgia', serif;">
+        OFFICIAL INTERNSHIP OFFER &amp; APPOINTMENT LETTER
+      </h2>
+      <div style="font-size:10.5px; color:#64748b; font-weight:600;">
+        National Technology Incubation Initiative &bull; Cohort 2026–2027
+      </div>
+    </div>
+
+    <!-- APPOINTMENT DOSSIER GRID -->
+    <div class="dossier-grid">
+      <div class="dossier-item">
+        <span class="dossier-label">Reference No.</span>
+        <span class="dossier-value" style="font-family:ui-monospace, monospace;">{{ offer.offer_letter_id }}</span>
+      </div>
+      <div class="dossier-item">
+        <span class="dossier-label">Date of Issue</span>
+        <span class="dossier-value">{{ (offer.created_at|string)[:10] if offer.created_at else '15 November 2026' }}</span>
+      </div>
+      <div class="dossier-item">
+        <span class="dossier-label">Intern Name</span>
+        <span class="dossier-value">{{ offer.name }} {% if offer.college %}<span style="color:#64748b; font-size:11px; font-weight:normal;">({{ offer.college }})</span>{% endif %}</span>
+      </div>
+      <div class="dossier-item">
+        <span class="dossier-label">Domain Track</span>
+        <span class="dossier-value" style="color:#d97706;">{{ offer.domain }}</span>
+      </div>
+      <div class="dossier-item">
+        <span class="dossier-label">Registered Email</span>
+        <span class="dossier-value">{{ offer.email }}</span>
+      </div>
+      <div class="dossier-item">
+        <span class="dossier-label">Intern Ref ID</span>
+        <span class="dossier-value" style="font-family:ui-monospace, monospace;">{{ offer.intern_id }}</span>
+      </div>
+    </div>
+
+    <!-- FORMAL SUBJECT -->
+    <div class="formal-subject-box">
+      SUBJECT: FORMAL OFFER OF TECHNICAL INTERNSHIP APPOINTMENT — {{ offer.domain | upper }}
+    </div>
+
+    <!-- PREAMBLE -->
+    <p style="margin:0 0 10px;">Dear <strong>{{ offer.name }}</strong>,</p>
+    <p style="margin:0 0 10px;">
+      On behalf of <strong>DBERT</strong> (Digital Blinc Education Research and Technology), operating through the DBERT Technical Council (“DBERT,” “the Council,” “we,” or “us”), we are pleased to extend this official offer of appointment as a <strong>{{ offer.domain }} Intern</strong> (“you” or “the Intern”). You distinguished yourself through our technical selection process, and we look forward to your contributions within our applied engineering and technology incubation ecosystem.
+    </p>
+    <p style="margin:0 0 14px;">
+      This internship is designed as an intensive, learning-first, and project-driven technical engagement. You will develop your technical capabilities through structured exercises, complete milestone certifications, and transition into live repository contributions.
+    </p>
+
+    <!-- SECTION 1: APPOINTMENT TERM SHEET -->
+    <div class="doc-section-heading">1. APPOINTMENT TERM SHEET AT A GLANCE</div>
+    <div class="table-responsive-container">
+      <table class="executive-table">
+        <tbody>
+          <tr>
+            <td class="col-label" style="width:28%; min-width:170px; max-width:220px; white-space:nowrap;">Internship Tenure</td>
+            <td style="width:72%; overflow-wrap:break-word; word-break:normal;"><strong>{{ offer.batch_start_date }} to {{ offer.batch_end_date }}</strong> (Two (2) Months)</td>
+          </tr>
+          <tr>
+            <td class="col-label" style="width:28%; min-width:170px; max-width:220px; white-space:nowrap;">Work Arrangement</td>
+            <td style="width:72%; overflow-wrap:break-word; word-break:normal;">Fully Remote (Applied Engineering Cloud Sandbox)</td>
+          </tr>
+          <tr>
+            <td class="col-label" style="width:28%; min-width:170px; max-width:220px; white-space:nowrap;">Weekly Commitment</td>
+            <td style="width:72%; overflow-wrap:break-word; word-break:normal;">Minimum <strong>10 hours per week</strong> logged platform engagement</td>
+          </tr>
+          <tr>
+            <td class="col-label" style="width:28%; min-width:170px; max-width:220px; white-space:nowrap;">Fixed Milestone Stipend</td>
+            <td style="width:72%; overflow-wrap:break-word; word-break:normal;"><strong>₹5,000</strong>, earned upon milestone achievements (Sec 3)</td>
+          </tr>
+          <tr>
+            <td class="col-label" style="width:28%; min-width:170px; max-width:220px; white-space:nowrap;">Variable Incentive</td>
+            <td style="width:72%; overflow-wrap:break-word; word-break:normal;"><strong style="color:#d97706;">Up to ₹18,000</strong>, performance-based incentive (Sec 3)</td>
+          </tr>
+          <tr>
+            <td class="col-label" style="width:28%; min-width:170px; max-width:220px; white-space:nowrap;">Total Potential</td>
+            <td style="width:72%; overflow-wrap:break-word; word-break:normal;"><strong style="color:#16a34a;">Up to ₹23,000</strong> (₹5,000 Fixed + up to ₹18,000 Performance Incentive)</td>
+          </tr>
+          <tr>
+            <td class="col-label" style="width:28%; min-width:170px; max-width:220px; white-space:nowrap;">Caution Deposit</td>
+            <td style="width:72%; overflow-wrap:break-word; word-break:normal;"><strong>₹499 (Verified &amp; Reconciled)</strong> &bull; 100% credited / refundable per Section 2</td>
+          </tr>
+          <tr>
+            <td class="col-label" style="width:28%; min-width:170px; max-width:220px; white-space:nowrap;">Incubation Fee</td>
+            <td style="width:72%; overflow-wrap:break-word; word-break:normal;"><strong>₹0 (Fully Sponsored)</strong> &bull; Covered in full by DBERT Technical Council</td>
+          </tr>
+          <tr>
+            <td class="col-label" style="width:28%; min-width:170px; max-width:220px; white-space:nowrap;">Disbursement Window</td>
+            <td style="width:72%; overflow-wrap:break-word; word-break:normal;">Directly to verified UPI ID via LMS Wallet within 30 days of completion</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- SECTION 2: SPONSORSHIP & CAUTION DEPOSIT -->
+    <div class="doc-section-heading">2. FOUR-STAGE PROGRESSION &amp; CAUTION DEPOSIT GUARANTEE</div>
+    <div class="table-responsive-container">
+      <table class="executive-table">
+        <thead>
+          <tr>
+            <th style="width:18%; min-width:100px; white-space:nowrap;">Stage</th>
+            <th style="width:82%;">Objective &amp; Deliverables</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-label" style="width:18%; min-width:100px; white-space:nowrap;">1. Learn</td>
+            <td style="width:82%; overflow-wrap:break-word; word-break:normal;">Orientation, architecture briefing, software fundamentals, and structured masterclasses.</td>
+          </tr>
+          <tr>
+            <td class="col-label" style="width:18%; min-width:100px; white-space:nowrap;">2. Practise</td>
+            <td style="width:82%; overflow-wrap:break-word; word-break:normal;">Curated assignments, code reviews, and milestone quizzes to build applied competency.</td>
+          </tr>
+          <tr>
+            <td class="col-label" style="width:18%; min-width:100px; white-space:nowrap;">3. Contribute</td>
+            <td style="width:82%; overflow-wrap:break-word; word-break:normal;">Execution of assigned sprint bounty tasks, bug fixes, and live repository pull requests.</td>
+          </tr>
+          <tr>
+            <td class="col-label" style="width:18%; min-width:100px; white-space:nowrap;">4. Complete</td>
+            <td style="width:82%; overflow-wrap:break-word; word-break:normal;">Final code review, comprehensive evaluation dossier, and cryptographic credential activation.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="notice-box notice-box-emerald">
+      <strong>100% Council Sponsorship:</strong> DBERT Technical Council fully sponsors all training modules, cloud sandboxes, and developer licenses. The ₹499 caution deposit is 100% credited against your ledger or fully refundable within 30 days of completing your 2-month tenure and required exit formalities.
+    </div>
+
+    <!-- SECTION 3: FIXED STIPEND & VARIABLE INCENTIVE -->
+    <div class="doc-section-heading">3. THE ₹5,000 FIXED STIPEND &amp; UP TO ₹18,000 PERFORMANCE INCENTIVE</div>
+    <p style="margin:0 0 8px;">
+      Your internship compensation includes a fixed milestone stipend of <strong>₹5,000</strong> plus an additional performance-based variable incentive of up to <strong>₹18,000</strong> (total potential up to <strong>₹23,000</strong>):
+    </p>
+    <div class="stipend-criteria-grid">
+      <div class="criteria-card">
+        <div class="criteria-header">Milestone 1</div>
+        <div class="criteria-val">10 Hrs / Wk</div>
+        <div class="criteria-desc">Maintain minimum 10 logged hours/week across the 2-month tenure on the LMS portal.</div>
+      </div>
+      <div class="criteria-card">
+        <div class="criteria-header">Milestone 2</div>
+        <div class="criteria-val">2 Certifications</div>
+        <div class="criteria-desc">Earn at least two (2) verified course certifications on the LMS platform.</div>
+      </div>
+      <div class="criteria-card">
+        <div class="criteria-header">Milestone 3</div>
+        <div class="criteria-val">75 Bounty Tasks</div>
+        <div class="criteria-desc">Complete and submit at least 75 bounty tasks reviewed and accepted by mentors.</div>
+      </div>
+      <div class="criteria-card" style="border-color:#fbbf24; background:#fffbeb;">
+        <div class="criteria-header" style="color:#b45309;">Incentive</div>
+        <div class="criteria-val" style="color:#b45309;">Up to ₹18,000</div>
+        <div class="criteria-desc">Performance-based variable incentive earned upon technical milestones and sprint reviews.</div>
+      </div>
+    </div>
+    <div class="notice-box notice-box-gold">
+      <strong>Variable Performance Terms:</strong> In addition to the fixed milestone stipend, interns are eligible to earn a performance-based variable incentive of up to ₹18,000, awarded by the evaluation committee based on sprint execution, repository contributions, and mentor assessments.
+    </div>
+
+    <!-- SECTION 4: CONFIDENTIALITY & GOVERNING LAW -->
+    <div class="doc-section-heading">4. CONFIDENTIALITY, IP &amp; GOVERNING LAW</div>
+    <p style="margin:0 0 14px;">
+      All code, documentation, and technical deliverables vest exclusively in DBERT Technical Council as work made for hire. Confidential information is protected under a 3-year survival obligation. DBERT maintains zero tolerance for harassment, plagiarism, or misuse of platform data. This agreement is governed by the laws of India, under exclusive jurisdiction in Ghaziabad, Uttar Pradesh.
+    </p>
+
+    <!-- SECTION 5: SIGNATURES & VERIFICATION -->
+    <div class="doc-section-heading">5. FORMAL SIGNATORY EXECUTION &amp; VERIFICATION</div>
+    <div class="signatures-dossier-wrapper">
+      <!-- 1. Council Signatory -->
+      <div class="sig-block">
+        <div>
+          <div class="sig-block-label">Issued on Behalf of DBERT Council</div>
+          <div class="sig-handwritten-zone">
+            <div class="sig-cursive-font">
+              Abhinav Sharma
+            </div>
+          </div>
+        </div>
+        <div class="sig-meta-block">
+          <div class="sig-meta-name">Mr. Abhinav Sharma</div>
+          <div class="sig-meta-role">Founder &amp; Executive Director</div>
+          <div class="sig-meta-org">DBERT &bull; DBERT Technical Council</div>
+        </div>
+      </div>
+
+      <!-- 2. Cryptographic QR Verification Seal -->
+      <div class="qr-verification-seal">
+        <img
+          src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&amp;data={{ ('https://dbert.in/verify?certid=' ~ offer.offer_letter_id) | urlencode }}"
+          alt="Cryptographic Verification QR"
+        />
+        <div class="qr-badge-text">VERIFIED CREDENTIAL</div>
+        <div class="qr-code-id">{{ offer.offer_letter_id }}</div>
+      </div>
+
+      <!-- 3. Candidate Digital Acceptance -->
+      <div class="sig-block">
+        <div>
+          <div class="sig-block-label">Accepted &amp; Digitally Signed</div>
+          <div class="sig-handwritten-zone">
+            {% if offer.signature_name %}
+            <div class="sig-cursive-font" style="color:#15803d;">
+              {{ offer.signature_name }}
+            </div>
+            {% else %}
+            <div style="font-size:11px; color:#94a3b8; font-style:italic;">
+              [ Awaiting Digital Acceptance ]
+            </div>
+            {% endif %}
+          </div>
+        </div>
+        <div class="sig-meta-block">
+          <div class="sig-meta-name">{{ offer.signature_name or offer.name }}</div>
+          <div class="sig-meta-role">{{ offer.domain }} Intern</div>
+          <div class="sig-meta-org" style="color:{% if offer.accepted_at %}#15803d; font-weight:700;{% else %}#64748b;{% endif %}">
+            {% if offer.accepted_at %}
+            Executed: {{ offer.accepted_at }}
+            {% else %}
+            Awaiting Signature
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <script nonce="{{ csp_nonce() }}">
+  document.addEventListener('DOMContentLoaded', function() {
+    var pBtn = document.getElementById('btnPrintAction');
+    if (pBtn) pBtn.addEventListener('click', function() { window.print(); });
+    var cBtn = document.getElementById('btnCloseAction');
+    if (cBtn) cBtn.addEventListener('click', function() { window.close(); });
+  });
+  </script>
+</body>
+</html>

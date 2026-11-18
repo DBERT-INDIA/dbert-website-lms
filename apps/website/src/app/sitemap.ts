@@ -1,8 +1,9 @@
 import { MetadataRoute } from 'next';
-export const dynamic = 'force-static';
+export const revalidate = 3600;
 import { seoConfig } from '@/data/seo.config';
 import { getBlogSlugs } from '@/lib/blog';
 import { getAllDomainSlugs } from '@/data/domains.config';
+import { getAllGeoInternshipRoutes } from '@/data/geo_domains.config';
 import certificatesRegistry from '@/data/certificates_registry.json';
 
 /**
@@ -19,6 +20,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     if (route.startsWith('/verify/directory/')) return 0.90;
     if (['/verify', '/about/careers'].includes(route)) return 0.9;
     if (route.startsWith('/learners/courses/')) return 0.9;
+    if (route.startsWith('/internships/')) return 0.85;
     if (route.startsWith('/ai-solutions/products/')) return 0.9;
     if (route.startsWith('/startups/services/')) return 0.85;
     if (['/enroll/1999', '/about/credentials', '/pricing'].includes(route)) return 0.85;
@@ -33,7 +35,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const getChangeFrequency = (route: string): 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' => {
     if (route === '') return 'daily';
     if (['/learners/jobs', '/cohorts/aivara', '/verify/directory', '/hire/pre-vetted-engineers'].includes(route) || route.startsWith('/verify/directory/')) return 'daily';
-    if (route.startsWith('/learners/courses') || route.startsWith('/blog/') || route.startsWith('/verify/')) return 'weekly';
+    if (route.startsWith('/learners/courses') || route.startsWith('/internships/') || route.startsWith('/blog/') || route.startsWith('/verify/')) return 'weekly';
     if (['/startups', '/ai-solutions', '/learners', '/verify', '/enroll/1999', '/about/careers'].includes(route)) return 'weekly';
     if (['/privacy', '/terms', '/refund'].includes(route)) return 'yearly';
     return 'monthly';
@@ -49,6 +51,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
     (slug) => `/verify/directory/${slug}`
   );
 
+  // Get programmatic geo-internship combinations (9 tracks x 18 cities = 162 routes)
+  const geoInternshipRoutes = getAllGeoInternshipRoutes();
+
   const routes = [
     '',
     ...Object.entries(seoConfig)
@@ -56,6 +61,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       .map(([route]) => route),
     ...getBlogSlugs().map((slug) => `/blog/${slug}`),
     ...domainDirectoryRoutes,
+    ...geoInternshipRoutes,
     ...verifiedCertRoutes,
   ];
 

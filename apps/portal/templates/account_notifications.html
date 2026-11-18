@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% set page_title_full = "Push Notification Settings — DBERT LMS" %}
+{% include "_head.html" %}
+
+<style nonce="{{ csp_nonce() }}">
+  .notif-settings-container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem;
+  }
+  .notif-header {
+    margin-bottom: 2rem;
+  }
+  .notif-header h1 {
+    font-size: 1.85rem;
+    font-weight: 800;
+    color: #fff;
+    margin: 0 0 0.5rem;
+    font-family: var(--f-display, 'Space Grotesk', sans-serif);
+  }
+  .notif-header p {
+    color: #94A3B8;
+    margin: 0;
+    font-size: 0.95rem;
+  }
+  .notif-status-card {
+    background: linear-gradient(135deg, rgba(30, 27, 75, 0.6) 0%, rgba(15, 23, 42, 0.8) 100%);
+    border: 1px solid rgba(99, 102, 241, 0.25);
+    border-radius: 16px;
+    padding: 1.5rem 1.75rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+  }
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.85rem;
+    border-radius: 9999px;
+    font-size: 0.8125rem;
+    font-weight: 700;
+  }
+  .status-granted {
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    color: #34D399;
+  }
+  .status-denied {
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    color: #F87171;
+  }
+  .status-default {
+    background: rgba(245, 158, 11, 0.15);
+    border: 1px solid rgba(245, 158, 11, 0.4);
+    color: #FBBF24;
+  }
+  .btn-push-action {
+    background: linear-gradient(135deg, #6366F1, #4F46E5);
+    color: #fff;
+    border: none;
+    padding: 0.65rem 1.35rem;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.875rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35);
+  }
+  .btn-push-action:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(79, 70, 229, 0.5);
+  }
+  .btn-push-secondary {
+    background: rgba(255, 255, 255, 0.08);
+    color: #CBD5E1;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 0.65rem 1.25rem;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.875rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background 0.2s;
+  }
+  .btn-push-secondary:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+  }
+  .section-card {
+    background: #0B0F19;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .section-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0 0 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .section-subtitle {
+    font-size: 0.875rem;
+    color: #94A3B8;
+    margin: 0 0 1.5rem;
+  }
+  .devices-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+  }
+  .devices-table th {
+    text-align: left;
+    padding: 0.75rem 1rem;
+    color: #94A3B8;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-weight: 600;
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .devices-table td {
+    padding: 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    color: #E2E8F0;
+    vertical-align: middle;
+  }
+  .devices-table tr:last-child td {
+    border-bottom: none;
+  }
+  .btn-revoke {
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.35);
+    color: #F87171;
+    padding: 0.4rem 0.85rem;
+    border-radius: 6px;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-revoke:hover {
+    background: rgba(239, 68, 68, 0.25);
+    color: #fff;
+  }
+  .pref-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  .pref-item {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+  .pref-info h4 {
+    margin: 0 0 0.25rem;
+    font-size: 0.9375rem;
+    color: #fff;
+    font-weight: 600;
+  }
+  .pref-info p {
+    margin: 0;
+    font-size: 0.8125rem;
+    color: #94A3B8;
+  }
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+    flex-shrink: 0;
+  }
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(255, 255, 255, 0.15);
+    transition: .3s;
+    border-radius: 24px;
+  }
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .3s;
+    border-radius: 50%;
+  }
+  input:checked + .slider {
+    background-color: #6366F1;
+  }
+  input:checked + .slider:before {
+    transform: translateX(20px);
+  }
+  .notif-history-item {
+    padding: 0.9rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  .notif-history-item:last-child {
+    border-bottom: none;
+  }
+  .notif-icon-box {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: rgba(99, 102, 241, 0.15);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    color: #818CF8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .toast-alert {
+    display: none;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    font-size: 0.875rem;
+  }
+  .toast-alert.show {
+    display: block;
+  }
+  .toast-success {
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    color: #34D399;
+  }
+  .toast-error {
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    color: #F87171;
+  }
+</style>
+</head>
+<body class="pg-account-notifications has-sidebar">
+{% set active_page = 'notifications' %}
+{% include '_intern_sidebar.html' %}
+
+<main class="main-content">
+  <div class="notif-settings-container">
+    <div class="notif-header">
+      <h1>Real-Time Push Notifications</h1>
+      <p>Configure device registrations, browser push permissions, and instant alert preferences across your fellowship usage cycle.</p>
+    </div>
+
+    <div id="toastMessage" class="toast-alert"></div>
+
+    <!-- Active Browser Status Banner -->
+    <div class="notif-status-card">
+      <div>
+        <div style="font-size: 0.8125rem; text-transform: uppercase; letter-spacing: 0.05em; color: #94A3B8; margin-bottom: 0.35rem;">
+          This Browser Status
+        </div>
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <h3 style="margin: 0; font-size: 1.35rem; color: #fff;" id="browserPushText">Checking...</h3>
+          <span id="browserPushBadge" class="status-badge status-default">Detecting</span>
+        </div>
+        <div style="font-size: 0.8125rem; color: #94A3B8; margin-top: 0.35rem;" id="browserPushSub">
+          Self-hosted native RFC 8292 NIST P-256 Web Push.
+        </div>
+      </div>
+      <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+        <button id="btnEnablePush" type="button" class="btn-push-action" style="display: none;">
+          <i class="fa-solid fa-bell"></i> Enable Browser Push
+        </button>
+        <button id="btnTestPush" type="button" class="btn-push-secondary">
+          <i class="fa-solid fa-paper-plane"></i> Send Test Alert
+        </button>
+      </div>
+    </div>
+
+    <!-- Registered Devices Table -->
+    <div class="section-card">
+      <div class="section-title">
+        <i class="fa-solid fa-mobile-screen" style="color: #6366F1;"></i> Your Registered Devices
+      </div>
+      <div class="section-subtitle">
+        Devices registered to receive authenticated cryptographic push messages for <strong>{{ intern.email }}</strong>.
+      </div>
+
+      {% if devices %}
+      <div style="overflow-x: auto;">
+        <table class="devices-table">
+          <thead>
+            <tr>
+              <th>Device &amp; OS</th>
+              <th>Browser</th>
+              <th>IP Address</th>
+              <th>Registered</th>
+              <th>Last Pushed</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for dev in devices %}
+            <tr id="dev-row-{{ dev.id }}">
+              <td>
+                <div style="font-weight: 600; color: #fff;">{{ dev.device_name or 'Web Browser' }}</div>
+                <div style="font-size: 0.75rem; color: #94A3B8;">{{ dev.os_name or 'Unknown OS' }}</div>
+              </td>
+              <td>{{ dev.browser_name or 'Browser' }}</td>
+              <td><code>{{ dev.ip_address or '—' }}</code></td>
+              <td style="font-size: 0.8125rem; color: #94A3B8;">{{ (dev.created_at|string or '')[:10] }}</td>
+              <td style="font-size: 0.8125rem; color: #94A3B8;">{{ (dev.last_pushed_at|string or 'Never')[:16] }}</td>
+              <td>
+                <button type="button" class="btn-revoke" data-device-id="{{ dev.id }}">
+                  <i class="fa-solid fa-trash-can"></i> Revoke
+                </button>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <div style="text-align: center; padding: 2rem 1rem; color: #94A3B8;">
+        <i class="fa-solid fa-bell-slash" style="font-size: 2rem; margin-bottom: 0.75rem; color: #64748B;"></i>
+        <p style="margin: 0;">No active devices registered yet. Click <strong>"Enable Browser Push"</strong> above to register this browser!</p>
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Lifecycle Category Preferences (Active by default) -->
+    <div class="section-card">
+      <div class="section-title">
+        <i class="fa-solid fa-sliders" style="color: #10B981;"></i> Notification Preferences
+      </div>
+      <div class="section-subtitle">
+        Fine-tune which events trigger push notifications. All core stages are active by default.
+      </div>
+
+      <div class="pref-grid">
+        <div class="pref-item">
+          <div class="pref-info">
+            <h4>Application &amp; Gates</h4>
+            <p>Status updates, offer letters, caution deposit &amp; balance confirmations.</p>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="pref_app" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="pref-item">
+          <div class="pref-info">
+            <h4>Course &amp; Quizzes</h4>
+            <p>Daily lessons passed, next module unlocked, and certificates issued.</p>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="pref_course" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="pref-item">
+          <div class="pref-info">
+            <h4>10-Hour Attendance</h4>
+            <p>Weekly 10-hour milestone achieved and inactivity protection warnings.</p>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="pref_att" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="pref-item">
+          <div class="pref-info">
+            <h4>1:1 Mentorship</h4>
+            <p>Slot bookings confirmed, meeting links, and schedule updates.</p>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="pref_mentor" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="pref-item">
+          <div class="pref-info">
+            <h4>Sprint Tasks &amp; Bounties</h4>
+            <p>New 50-coin bounties, task review approvals, and revision requests.</p>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="pref_tasks" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="pref-item">
+          <div class="pref-info">
+            <h4>Stipend &amp; Payouts</h4>
+            <p>Stipend gate clearances, 5,000 Coins approved, and UPI UTR receipts.</p>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="pref_stipend" checked>
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent In-App & Push Notification Feed -->
+    <div class="section-card">
+      <div class="section-title">
+        <i class="fa-solid fa-inbox" style="color: #F59E0B;"></i> Recent Account Alerts
+      </div>
+      <div class="section-subtitle">
+        Chronological audit of notifications delivered to your account and devices.
+      </div>
+
+      {% if notifications %}
+      <div style="max-height: 400px; overflow-y: auto;">
+        {% for n in notifications %}
+        <div class="notif-history-item">
+          <div class="notif-icon-box">
+            <i class="fa-solid fa-bell"></i>
+          </div>
+          <div style="flex-grow: 1;">
+            <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.25rem;">
+              <strong style="color: #fff; font-size: 0.9375rem;">{{ n.title or 'DBERT Alert' }}</strong>
+              <span style="color: #94A3B8; font-size: 0.75rem;">{{ (n.created_at|string or '')[:16] }}</span>
+            </div>
+            <p style="margin: 0; color: #CBD5E1; font-size: 0.85rem; line-height: 1.5;">{{ n.body or n.message or '' }}</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <div style="text-align: center; padding: 2rem 1rem; color: #94A3B8;">
+        <i class="fa-solid fa-check-double" style="font-size: 2rem; margin-bottom: 0.75rem; color: #64748B;"></i>
+        <p style="margin: 0;">You're all caught up! No recent notifications.</p>
+      </div>
+      {% endif %}
+    </div>
+
+  </div>
+</main>
+
+<script nonce="{{ csp_nonce() }}">
+  function showToast(msg, isError) {
+    const el = document.getElementById("toastMessage");
+    if (!el) return;
+    el.className = "toast-alert show " + (isError ? "toast-error" : "toast-success");
+    el.textContent = msg;
+    setTimeout(() => { el.className = "toast-alert"; }, 5000);
+  }
+
+  function updateBrowserPushUI() {
+    const badge = document.getElementById("browserPushBadge");
+    const text = document.getElementById("browserPushText");
+    const btnEnable = document.getElementById("btnEnablePush");
+    const sub = document.getElementById("browserPushSub");
+
+    if (!badge || !text || !btnEnable || !sub) return;
+
+    if (!('Notification' in window) || !('serviceWorker' in navigator)) {
+      badge.className = "status-badge status-denied";
+      badge.textContent = "Unsupported";
+      text.textContent = "Push Not Supported";
+      sub.textContent = "Your current browser does not support standard W3C Push API.";
+      btnEnable.style.display = "none";
+      return;
+    }
+
+    if (Notification.permission === 'granted') {
+      badge.className = "status-badge status-granted";
+      badge.textContent = "✓ Active & Subscribed";
+      text.textContent = "Push Notifications Active";
+      sub.textContent = "This browser is registered to receive instant real-time alerts.";
+      btnEnable.style.display = "none";
+    } else if (Notification.permission === 'denied') {
+      badge.className = "status-badge status-denied";
+      badge.textContent = "✕ Blocked";
+      text.textContent = "Notifications Blocked";
+      sub.textContent = "Permissions were blocked in your browser settings. Please allow notifications in site settings.";
+      btnEnable.style.display = "none";
+    } else {
+      badge.className = "status-badge status-default";
+      badge.textContent = "Action Needed";
+      text.textContent = "Permission Not Granted";
+      sub.textContent = "Enable push alerts to receive instant updates on submissions, tasks, and payouts.";
+      btnEnable.style.display = "inline-flex";
+    }
+  }
+
+  async function revokeDevice(deviceId) {
+    if (!confirm("Are you sure you want to revoke push notifications for this device?")) return;
+    try {
+      const res = await fetch(`/api/push/devices/${deviceId}/revoke`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" }
+      });
+      const data = await res.json();
+      if (data.status === "success") {
+        const row = document.getElementById(`dev-row-${deviceId}`);
+        if (row) row.remove();
+        showToast("Device revoked successfully.", false);
+      } else {
+        showToast(data.message || "Failed to revoke device.", true);
+      }
+    } catch (e) {
+      showToast("Network error revoking device.", true);
+    }
+  }
+
+  async function savePreferences() {
+    const prefs = {
+      application_status: document.getElementById("pref_app") ? document.getElementById("pref_app").checked : true,
+      courses: document.getElementById("pref_course") ? document.getElementById("pref_course").checked : true,
+      attendance: document.getElementById("pref_att") ? document.getElementById("pref_att").checked : true,
+      mentorship: document.getElementById("pref_mentor") ? document.getElementById("pref_mentor").checked : true,
+      tasks: document.getElementById("pref_tasks") ? document.getElementById("pref_tasks").checked : true,
+      stipend: document.getElementById("pref_stipend") ? document.getElementById("pref_stipend").checked : true
+    };
+
+    try {
+      const res = await fetch("/api/push/preferences", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ preferences: prefs })
+      });
+      const data = await res.json();
+      if (data.status === "success") {
+        showToast("Notification preferences updated.", false);
+      }
+    } catch (e) {
+      console.error("Preferences save error", e);
+    }
+  }
+
+  async function sendTestPush() {
+    if (!('Notification' in window)) {
+      alert("Push notifications are not supported on this browser.");
+      return;
+    }
+    if (Notification.permission !== "granted") {
+      alert("Please enable push notifications for this browser first!");
+      return;
+    }
+    showToast("Dispatching self-test push alert to this device...", false);
+    try {
+      const res = await fetch("/api/push/broadcast", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: "🔔 DBERT Push Test",
+          body: "Your device is connected and receiving real-time cryptographic notifications!",
+          url: "/account/notifications"
+        })
+      });
+      const data = await res.json();
+      if (data.status === "success") {
+        showToast("Push notification dispatched successfully!", false);
+      } else {
+        showToast(data.message || "Push server returned an error.", true);
+      }
+    } catch (e) {
+      // Local fallback in-browser notification
+      if (Notification.permission === "granted") {
+        new Notification("🔔 DBERT Push Test", {
+          body: "Your device is connected and receiving real-time notifications!",
+          icon: "/static/images/dbert_logo.png"
+        });
+      }
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    updateBrowserPushUI();
+    if (window.DBERTPush) {
+      window.DBERTPush.init();
+    }
+
+    // Attach event listeners (Strict Nonce CSP Compliant)
+    const btnEnable = document.getElementById("btnEnablePush");
+    if (btnEnable) {
+      btnEnable.addEventListener("click", async function() {
+        const btn = this;
+        const originalHtml = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Subscribing...';
+        try {
+          if (!window.DBERTPush) {
+            showToast("Push service initializing, please wait...", true);
+            return;
+          }
+          const sub = await window.DBERTPush.requestPermissionAndSubscribe();
+          if (sub) {
+            showToast("Browser Push Notifications Enabled Successfully!", false);
+            updateBrowserPushUI();
+            setTimeout(() => window.location.reload(), 1200);
+          } else if (Notification.permission === 'denied') {
+            showToast("Push permission was blocked in browser settings. Please allow notifications in site permissions.", true);
+            updateBrowserPushUI();
+          } else {
+            showToast("Permission not granted. Please allow notifications when prompted by your browser.", true);
+            updateBrowserPushUI();
+          }
+        } catch (err) {
+          console.error("Push enable error:", err);
+          showToast("Failed to enable push: " + (err.message || err), true);
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = originalHtml;
+        }
+      });
+    }
+
+    const btnTest = document.getElementById("btnTestPush");
+    if (btnTest) {
+      btnTest.addEventListener("click", sendTestPush);
+    }
+
+    ["pref_app", "pref_course", "pref_att", "pref_mentor", "pref_tasks", "pref_stipend"].forEach(function(id) {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener("change", savePreferences);
+      }
+    });
+
+    document.addEventListener("click", function(e) {
+      const btn = e.target.closest(".btn-revoke");
+      if (btn && btn.dataset.deviceId) {
+        revokeDevice(btn.dataset.deviceId);
+      }
+    });
+
+    window.addEventListener("dbert-push-updated", function() {
+      updateBrowserPushUI();
+    });
+  });
+</script>
+</body>
+</html>

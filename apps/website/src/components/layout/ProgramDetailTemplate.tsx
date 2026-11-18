@@ -1,32 +1,52 @@
 'use client';
 
 import React, { useState } from 'react';
-import Script from 'next/script';
-import { CircleCheck, GitBranch, ExternalLink, Calendar, Zap, GitPullRequest, Award } from 'lucide-react';
-import HandNote from '../ui/HandNote';
-import f from '../ui/forms.module.css';
+import Image from 'next/image';
+import Link from 'next/link';
+import HandNote from '@/components/ui/HandNote';
+import { 
+  CheckCircle2, 
+  CircleCheck, 
+  Calendar, 
+  Zap, 
+  GitPullRequest, 
+  Award, 
+  ShieldCheck, 
+  ExternalLink,
+  ArrowRight,
+  Smartphone,
+  Lock,
+  ArrowLeft
+} from 'lucide-react';
 import s from './ProgramDetailTemplate.module.css';
 
-export interface RepoReference {
-  name: string;
-  url: string;
-  role?: string;
-  badgeText?: string;
-  description?: string;
-  keyModules?: string[];
+export interface CurriculumBlock {
+  period: string;
+  title: string;
+  topics: string[];
 }
 
-interface ProgramDetailTemplateProps {
+export interface ProductionRepo {
+  name: string;
+  badgeText?: string;
+  description: string;
+  keyModules?: string[];
+  githubUrl?: string;
+  url?: string;
+  role?: string;
+}
+
+export interface ProgramDetailTemplateProps {
   title: string;
   subtitle?: string;
   price: string;
   duration: string;
   audience: string;
   outcome: string;
-  curriculum: { period: string; title: string; topics: string[] }[];
+  curriculum: CurriculumBlock[];
   headerSlot?: React.ReactNode;
-  repoReference?: RepoReference;
-  repoReferences?: RepoReference[];
+  repoReference?: ProductionRepo;
+  repoReferences?: ProductionRepo[];
 }
 
 export default function ProgramDetailTemplate({
@@ -41,9 +61,11 @@ export default function ProgramDetailTemplate({
   repoReference,
   repoReferences
 }: ProgramDetailTemplateProps) {
-  const [formData, setFormData] = useState({ name: '', email: '', phone: '' });
+  const [step, setStep] = useState<'details' | 'payment'>('details');
+  const [formData, setFormData] = useState({ name: '', email: '', phone: '', college: '', utr: '' });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [submissionId, setSubmissionId] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,102 +73,65 @@ export default function ProgramDetailTemplate({
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleCheckout = async (e: React.FormEvent) => {
+  const handleProceedToPayment = (e: React.FormEvent) => {
     e.preventDefault();
+    if (!formData.name.trim() || !formData.email.trim() || !formData.phone.trim()) {
+      setErrorMsg('Please enter your full name, email, and 10-digit WhatsApp number.');
+      return;
+    }
+    setErrorMsg('');
+    setStep('payment');
+  };
+
+  const handleFinalEnrollment = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const cleanUtr = formData.utr.trim().toUpperCase();
+    if (!cleanUtr || cleanUtr.length < 6) {
+      setErrorMsg('Please enter a valid 12-digit UPI UTR / Transaction Reference number.');
+      return;
+    }
+
     setLoading(true);
     setErrorMsg('');
 
     try {
-      const amountInPaise = parseInt(price.replace(/[^0-9]/g, ''), 10) * 100;
-      
-      const orderRes = await fetch('/api/payments/create-order', {
+      const res = await fetch('/api/courses/enroll', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          programName: title,
-          amount: amountInPaise,
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone
+          fullName: formData.name.trim(),
+          email: formData.email.trim().toLowerCase(),
+          phone: formData.phone.trim(),
+          college: formData.college.trim(),
+          domain: title,
+          courseTitle: title,
+          utrNumber: cleanUtr
         })
       });
 
-      const orderData = await orderRes.json();
-      
-      if (!orderRes.ok) {
-        throw new Error(orderData.error || 'Failed to create order');
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || 'Enrollment submission failed. Please try again.');
       }
 
-      const options = {
-        key: orderData.keyId,
-        amount: amountInPaise,
-        currency: 'INR',
-        name: 'DBERT',
-        description: `Enrollment: ${title}`,
-        order_id: orderData.orderId,
-        handler: async function (response: any) {
-          try {
-            const verifyRes = await fetch('/api/payments/verify', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                razorpay_order_id: response.razorpay_order_id,
-                razorpay_payment_id: response.razorpay_payment_id,
-                razorpay_signature: response.razorpay_signature,
-                enrollmentId: orderData.enrollmentId
-              })
-            });
-            const verifyData = await verifyRes.json();
-            if (verifyRes.ok) {
-              setSuccess(true);
-            } else {
-              setErrorMsg(verifyData.error || 'Payment verification failed');
-            }
-          } catch (err) {
-            setErrorMsg('Payment verification error');
-          }
-        },
-        prefill: {
-          name: formData.name,
-          email: formData.email,
-          contact: formData.phone
-        },
-        theme: {
-          color: '#5B8CFF'
-        },
-        modal: {
-          ondismiss: function () {
-            setErrorMsg('Payment cancelled. You can try again when ready.');
-          }
-        }
-      };
-
-      if (typeof window !== 'undefined' && !(window as any).Razorpay) {
-        throw new Error('Payment gateway SDK is loading. Please check your internet connection or allow checkout scripts.');
-      }
-
-      const razorpay = new (window as any).Razorpay(options);
-      razorpay.on('payment.failed', function (response: any) {
-        const reason = response?.error?.reason || 'Payment failed';
-        setErrorMsg(`${reason}. Please try again.`);
-      });
-      razorpay.open();
-
+      setSubmissionId(data.submissionId || '');
+      setSuccess(true);
     } catch (err: any) {
-      setErrorMsg(err.message || 'Error initiating checkout');
+      setErrorMsg(err.message || 'Network error while validating payment. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
+  const upiDeepLink = `upi://pay?pa=Q652429146@ybl&pn=DBERT%20Admissions&am=499&cu=INR&tn=DBERT%20Course%20Seat`;
+
   return (
-    <div className="container pad-block">
-      <Script src="https://checkout.razorpay.com/v1/checkout.js" strategy="lazyOnload" />
-      <Script id={`course-schema-${title.replace(/\s+/g, '-').toLowerCase()}`} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+    <div className="container py-xl">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
         "@context": "https://schema.org",
         "@type": "Course",
         "name": title,
-        "description": outcome,
+        "description": subtitle || `${duration} Guided Education Curriculum`,
         "provider": {
           "@type": "Organization",
           "name": "DBERT",
@@ -154,9 +139,9 @@ export default function ProgramDetailTemplate({
         },
         "offers": {
           "@type": "Offer",
-          "price": price.replace(/[^0-9]/g, ''),
+          "price": "499",
           "priceCurrency": "INR",
-          "category": "Paid"
+          "category": "Security Deposit"
         }
       }) }} />
       
@@ -196,9 +181,8 @@ export default function ProgramDetailTemplate({
       </div>
 
       <div className={s.layout}>
-        {/* Left Column: Course Content FIRST, followed by Active Production Repos */}
+        {/* Left Column: Course Content FIRST */}
         <div className="stack">
-          {/* 1. CURRICULUM CONTENT FIRST */}
           <section className={s.curriculumSection}>
             <div className={s.curriculumHead}>
               <div className="doclabel text-xs mb-1">§ CURRICULUM ARCHITECTURE</div>
@@ -229,7 +213,7 @@ export default function ProgramDetailTemplate({
             </div>
           </section>
 
-          {/* 2. ACTIVE OPPORTUNITIES / REPOSITORIES (AFTER CURRICULUM) */}
+          {/* ACTIVE OPPORTUNITIES / REPOSITORIES */}
           {((repoReferences && repoReferences.length > 0) || repoReference) && (
             <section className={s.squadSection}>
               <div className={s.squadHead}>
@@ -248,25 +232,25 @@ export default function ProgramDetailTemplate({
                         {repo.badgeText && (
                           <span className={s.squadCohortBadge}>{repo.badgeText}</span>
                         )}
-                        {repo.role && (
-                          <span className={s.squadRoleBadge}>Role: {repo.role}</span>
-                        )}
+                        <span className={s.squadVerifiedBadge}>
+                          <ShieldCheck size={12} className="inline mr-1 text-ok" />
+                          Production
+                        </span>
                       </div>
-                      <a
-                        href={repo.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="btn btn-outline btn-sm font-mono text-xs inline-flex items-center gap-1.5"
-                      >
-                        <GitBranch className="w-3.5 h-3.5" />
-                        <span>Inspect Codebase</span>
-                        <ExternalLink className="w-3 h-3 text-muted" />
-                      </a>
+                      {(repo.githubUrl || repo.url) && (
+                        <a
+                          href={repo.githubUrl || repo.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={s.repoLink}
+                          aria-label={`View ${repo.name} repository on GitHub`}
+                        >
+                          <ExternalLink size={14} />
+                        </a>
+                      )}
                     </div>
                     <h3 className={s.repoName}>{repo.name}</h3>
-                    {repo.description && (
-                      <p className={s.repoDesc}>{repo.description}</p>
-                    )}
+                    <p className={s.repoDesc}>{repo.description}</p>
                     {repo.keyModules && repo.keyModules.length > 0 && (
                       <div className={s.tagRow}>
                         {repo.keyModules.map((mod, idx) => (
@@ -286,12 +270,18 @@ export default function ProgramDetailTemplate({
         {/* Right Column: Sticky Sidebar with Details & Enrollment */}
         <aside className={s.stickySidebar} aria-label="Program Investment and Enrollment">
           <div className={s.sidebarCard}>
-            <span className={s.feeLabel}>Program Investment</span>
-            <strong className={s.feeValue}>{price}</strong>
-            <div className={s.feeMeta}>
-              <span>Duration: <strong>{duration}</strong></span>
-              <span>&bull;</span>
-              <span>8 Sprints</span>
+            <span className={s.feeLabel}>Total Program Fee</span>
+            <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
+              <strong className={s.feeValue} style={{ fontSize: '1.75rem', color: '#10B981' }}>₹1,999</strong>
+              <span style={{ fontSize: '12px', color: '#94A3B8' }}>(All inclusive)</span>
+            </div>
+            <div style={{ background: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.3)', borderRadius: '8px', padding: '10px 12px', marginTop: '10px' }}>
+              <div style={{ fontSize: '11px', fontWeight: 800, color: '#FBBF24', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                Pay in 2 Steps
+              </div>
+              <div style={{ fontSize: '12.5px', color: '#F1F5F9', marginTop: '2px', lineHeight: '1.4' }}>
+                <strong>₹499 Security Deposit</strong> today to secure seat · <strong>₹1,500</strong> balance payable after batch kickoff within 7 days.
+              </div>
             </div>
           </div>
 
@@ -305,18 +295,32 @@ export default function ProgramDetailTemplate({
             <p className={s.sidebarCopy}>{outcome}</p>
           </div>
 
-          {/* Checkout Form */}
+          {/* Unified UPI QR Enrollment Card */}
           <div className={s.sidebarCard}>
             {success ? (
               <div className={s.successBlock}>
                 <span className="icon-chip"><CircleCheck aria-hidden="true" /></span>
-                <h3 className={s.successTitle}>Enrollment Successful</h3>
-                <p className={s.successCopy}>We have received your payment. Check your email for cohort onboarding instructions.</p>
+                <h3 className={s.successTitle} style={{ color: '#10B981' }}>Seat Confirmed!</h3>
+                <p className={s.successCopy}>
+                  Your security deposit has been recorded (Ref: <code>{submissionId}</code>). Your LMS student account is active!
+                </p>
+                <div style={{ marginTop: '16px' }}>
+                  <a 
+                    href="https://lms.dbert.in/portal" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="btn btn-primary btn-sm"
+                    style={{ width: '100%', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px', textDecoration: 'none' }}
+                  >
+                    <span>Enter My LMS Portal</span>
+                    <ArrowRight size={14} />
+                  </a>
+                </div>
               </div>
-            ) : (
-              <form onSubmit={handleCheckout} className={s.checkoutForm}>
-                <h3 className={s.checkoutTitle}>Secure Enrollment</h3>
-                <p className={s.checkoutCopy}>Confirm your details to initiate payment validation.</p>
+            ) : step === 'details' ? (
+              <form onSubmit={handleProceedToPayment} className={s.checkoutForm}>
+                <h3 className={s.checkoutTitle}>Secure Your Seat</h3>
+                <p className={s.checkoutCopy}>Reserve with ₹499 security deposit (credited in full).</p>
                 
                 {errorMsg && <div className={s.error}>{errorMsg}</div>}
                 
@@ -324,8 +328,8 @@ export default function ProgramDetailTemplate({
                   type="text"
                   name="name"
                   required
-                  placeholder="Full Name"
-                  aria-label="Full Name"
+                  placeholder="Full Legal Name"
+                  aria-label="Full Legal Name"
                   value={formData.name}
                   onChange={handleInputChange}
                   className={s.input}
@@ -344,15 +348,95 @@ export default function ProgramDetailTemplate({
                   type="tel"
                   name="phone"
                   required
-                  placeholder="Phone Number"
+                  placeholder="10-Digit WhatsApp Phone"
                   aria-label="Phone Number"
                   value={formData.phone}
                   onChange={handleInputChange}
                   className={s.input}
                 />
+                <input
+                  type="text"
+                  name="college"
+                  placeholder="College / University Name"
+                  aria-label="College Name"
+                  value={formData.college}
+                  onChange={handleInputChange}
+                  className={s.input}
+                />
                 
-                <button type="submit" className={`btn btn-primary btn-sm ${s.submit}`} disabled={loading}>
-                  {loading ? 'Processing...' : `Enrol for ${price}`}
+                <button type="submit" className={`btn btn-primary btn-sm ${s.submit}`} style={{ background: 'linear-gradient(135deg, #F59E0B, #D97706)', color: '#0F172A', fontWeight: 800 }}>
+                  <span>Proceed to UPI QR (₹499)</span>
+                  <ArrowRight size={14} style={{ marginLeft: '6px' }} />
+                </button>
+              </form>
+            ) : (
+              <form onSubmit={handleFinalEnrollment} className={s.checkoutForm}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+                  <button 
+                    type="button" 
+                    onClick={() => setStep('details')}
+                    style={{ background: 'transparent', border: 'none', color: '#94A3B8', fontSize: '12px', display: 'flex', alignItems: 'center', gap: '4px', cursor: 'pointer' }}
+                  >
+                    <ArrowLeft size={12} /> Back
+                  </button>
+                  <span style={{ fontSize: '11px', color: '#FBBF24', fontWeight: 700 }}>STEP 2: UPI PAYMENT</span>
+                </div>
+
+                <div style={{ textAlign: 'center', background: '#0F172A', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '12px', padding: '14px', marginBottom: '12px' }}>
+                  <div style={{ fontSize: '11px', color: '#94A3B8', textTransform: 'uppercase', fontWeight: 700 }}>Scan with any UPI App</div>
+                  <div style={{ fontSize: '20px', fontWeight: 800, color: '#34D399', margin: '4px 0 10px' }}>Pay ₹499</div>
+                  
+                  <div style={{ width: '160px', height: '160px', margin: '0 auto', background: '#FFFFFF', borderRadius: '8px', padding: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Image
+                      src="/images/qrcode.jpeg"
+                      alt="DBERT UPI QR Code"
+                      width={144}
+                      height={144}
+                      style={{ objectFit: 'contain' }}
+                      priority
+                    />
+                  </div>
+
+                  <div style={{ fontSize: '11px', color: '#CBD5E1', marginTop: '8px', fontFamily: 'monospace' }}>
+                    UPI ID: <strong>Q652429146@ybl</strong>
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', gap: '6px', marginBottom: '12px' }}>
+                  <a
+                    href={upiDeepLink}
+                    className="btn btn-secondary btn-sm"
+                    style={{ flex: 1, fontSize: '11px', padding: '6px 8px', textAlign: 'center', textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '4px', borderRadius: '6px' }}
+                  >
+                    <Smartphone size={12} /> Open UPI App
+                  </a>
+                </div>
+
+                {errorMsg && <div className={s.error} style={{ marginBottom: '10px' }}>{errorMsg}</div>}
+
+                <label style={{ fontSize: '12px', color: '#CBD5E1', fontWeight: 600, display: 'block', marginBottom: '4px' }}>
+                  12-Digit UPI Transaction ID / UTR <span style={{ color: '#EF4444' }}>*</span>
+                </label>
+                <input
+                  type="text"
+                  name="utr"
+                  required
+                  placeholder="e.g. 418293849102"
+                  maxLength={16}
+                  value={formData.utr}
+                  onChange={handleInputChange}
+                  className={s.input}
+                  style={{ textTransform: 'uppercase', letterSpacing: '1px', fontFamily: 'monospace' }}
+                />
+
+                <button 
+                  type="submit" 
+                  className={`btn btn-primary btn-sm ${s.submit}`} 
+                  disabled={loading}
+                  style={{ background: 'linear-gradient(135deg, #10B981, #059669)', color: '#FFFFFF', fontWeight: 800, marginTop: '8px' }}
+                >
+                  <Lock size={13} style={{ marginRight: '6px' }} />
+                  {loading ? 'Verifying...' : 'Confirm Seat & Enroll (₹499)'}
                 </button>
               </form>
             )}

@@ -30,7 +30,7 @@ def get_db_url():
                 line = line.strip()
                 if line.startswith("DATABASE_URL="):
                     return line.split("=", 1)[1].strip().strip('"').strip("'")
-    return "postgresql://dbert_user:19d0b2647ef39526fa3fafff9f594026639ec2865c73d753@localhost:5432/dbert_lms"
+    return "postgresql://dbert_user:DBERT_SECURE_PASSWORD_123@localhost:5432/dbert_lms"
 
 def main():
     parser = argparse.ArgumentParser(description="Update Under Review and Payment Rejected applications to Selected.")

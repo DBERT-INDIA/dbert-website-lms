@@ -148,6 +148,12 @@ Known Misconceptions:
 {student_response}
 </student_response>
 
+<evaluation_mandate>
+1. Anti-Sycophancy: Do not reward vague or superficial answers. Never grant high correctness to catch-all answers like "all" or "both" when a question asks for a primary root cause, sequence, or initial breach.
+2. Root Cause vs Downstream Consequences: If the student confuses the primary root cause/initial breach (e.g. tampering/Integrity) with downstream fallout consequences (e.g. viewing records/Confidentiality or deletion/Availability), rate correctness <= 0.40, set partial_correctness to true, and suggest REMEDIATE or EXPLAIN with clear causal feedback.
+3. Strict Engineering Precision: Evaluate whether the student truly understands the exact technical mechanics, syntax, or concepts.
+</evaluation_mandate>
+
 Return ONLY a valid JSON object matching this exact schema:
 {{
   "correctness": <float between 0.0 and 1.0>,

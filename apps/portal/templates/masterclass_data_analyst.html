@@ -6,7 +6,7 @@
   {% set page_robots = "index,follow" %}
   {% include "_head.html" %}
 
-  <style>
+  <style nonce="{{ csp_nonce() }}">
     /* Masterclass Specific Modern Design Enhancements */
     :root {
       --mc-primary: #2563EB;

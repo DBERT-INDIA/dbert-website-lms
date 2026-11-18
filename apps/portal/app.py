@@ -1161,6 +1161,11 @@ def log_staff_review(queue_name, staff_id, subject_type, subject_id, decision, r
 def current_staff():
     staff_id = session.get("staff_id")
     if not staff_id:
+        user = get_current_user()
+        if user and user.get("role") in ("staff", "admin", "superadmin", "mentor"):
+            with get_db() as conn:
+                row = conn.execute("SELECT * FROM staff_accounts WHERE LOWER(email)=LOWER(?) AND is_active=1", (user["email"],)).fetchone()
+                return dict(row) if row else None
         return None
     with get_db() as conn:
         row = conn.execute("SELECT * FROM staff_accounts WHERE id = ? AND is_active = 1", (staff_id,)).fetchone()
@@ -1802,17 +1807,59 @@ def get_intern_flow_state(conn, email):
         "SELECT * FROM enrollments WHERE LOWER(email)=? ORDER BY id DESC LIMIT 1", (email_clean,)
     ).fetchone()
 
+    offer_row = conn.execute(
+        "SELECT * FROM intern_offer_letters WHERE LOWER(email)=? ORDER BY id DESC LIMIT 1", (email_clean,)
+    ).fetchone()
+
     domain = (acct["domain"] if acct and acct["domain"] and acct["domain"] in VALID_DOMAINS else None) or \
              (app_row["domain"] if app_row and app_row["domain"] and app_row["domain"] in VALID_DOMAINS else None) or \
-             (enr["domain"] if enr and enr["domain"] and enr["domain"] in VALID_DOMAINS else None) or ""
+             (enr["domain"] if enr and enr["domain"] and enr["domain"] in VALID_DOMAINS else None) or \
+             (offer_row["domain"] if offer_row and offer_row.get("domain") and offer_row["domain"] in VALID_DOMAINS else None) or \
+             (acct["domain"] if acct and acct.get("domain") else None) or \
+             (app_row["domain"] if app_row and app_row.get("domain") else None) or \
+             (enr["domain"] if enr and enr.get("domain") else None) or \
+             (offer_row["domain"] if offer_row and offer_row.get("domain") else "")
+
+    has_paid_deposit = bool(
+        (enr and (enr.get("payment_status") in ("Accepted", "Verified") or (enr.get("amount_paid") or 0) >= 499 or enr.get("deposit_paid") == 1)) or
+        (app_row and app_row.get("status") in (STATUS_ACCEPTED, STATUS_ENROLLED)) or
+        (offer_row and offer_row.get("caution_deposit_status") == "VERIFIED")
+    )
+    has_paid_balance = bool(
+        enr and ((enr.get("amount_paid") or 0) >= 1999 or enr.get("balance_paid") == 1)
+    )
+
+    days_since_joining = 0
+    balance_grace_expired = False
+    joining_val = (enr.get("joining_date") if enr else None) or (offer_row.get("batch_start_date") if offer_row else None)
+    if joining_val:
+        try:
+            from datetime import datetime
+            j_date = datetime.strptime(str(joining_val)[:10], "%Y-%m-%d").date()
+            today = datetime.now().date()
+            if today >= j_date:
+                days_since_joining = (today - j_date).days
+                if days_since_joining > 7 and not has_paid_balance:
+                    balance_grace_expired = True
+        except Exception:
+            pass
+
+    balance_flags = {
+        "has_paid_deposit": has_paid_deposit,
+        "has_paid_balance": has_paid_balance,
+        "days_since_joining": days_since_joining,
+        "balance_grace_expired": balance_grace_expired,
+        "balance_due": 0 if has_paid_balance else 1500,
+    }
 
     # Check Stage 5: Accepted (Confirmed)
     is_confirmed = bool(
-        (enr and enr["payment_status"] == "Accepted") or
-        (app_row and app_row["status"] == STATUS_ACCEPTED)
+        (enr and enr["payment_status"] in ("Accepted", "Verified")) or
+        (app_row and app_row["status"] in (STATUS_ACCEPTED, STATUS_ENROLLED)) or
+        (offer_row and offer_row.get("caution_deposit_status") == "VERIFIED" and offer_row.get("signature_name"))
     )
     if is_confirmed:
-        return {
+        res = {
             "stage": STAGE_CONFIRMED,
             "stage_num": 5,
             "label": "Confirmed & Enrolled",
@@ -1821,12 +1868,18 @@ def get_intern_flow_state(conn, email):
             "is_accepted": True,
             "can_upload_payment": False,
         }
+        res.update(balance_flags)
+        return res
 
     # Check Stage 4: Payment Verification Pending
-    has_receipt = bool(enr and (enr["payment_screenshot"] or "").strip())
-    is_payment_pending = bool(has_receipt and enr["payment_status"] == "Pending Verification")
+    has_receipt = bool(enr and ((enr["payment_screenshot"] or "").strip() or (enr.get("utr") or "").strip() or enr.get("deposit_paid") == 1))
+    is_payment_pending = bool(
+        (has_receipt and enr["payment_status"] in ("Pending Verification", "Pending", "Submitted", "Under Review")) or
+        (app_row and app_row["status"] == STATUS_ENROLLMENT_PENDING and has_receipt) or
+        (offer_row and offer_row.get("signature_name") and offer_row.get("caution_deposit_status") == "PENDING" and (enr and (enr.get("utr") or (enr.get("payment_screenshot") or "").strip())))
+    )
     if is_payment_pending:
-        return {
+        res = {
             "stage": STAGE_PAYMENT_PENDING,
             "stage_num": 4,
             "label": "Payment Verification Pending",
@@ -1835,10 +1888,12 @@ def get_intern_flow_state(conn, email):
             "is_accepted": False,
             "can_upload_payment": False,
         }
+        res.update(balance_flags)
+        return res
 
     # Check Rejection
     if app_row and app_row["status"] == STATUS_REJECTED:
-        return {
+        res = {
             "stage": STAGE_REJECTED,
             "stage_num": 0,
             "label": "Application Not Selected",
@@ -1847,13 +1902,15 @@ def get_intern_flow_state(conn, email):
             "is_accepted": False,
             "can_upload_payment": False,
         }
+        res.update(balance_flags)
+        return res
 
     # Check Stage 3: Selected (Admin Approved Application -> Deposit Required)
     is_selected = bool(
         app_row and app_row["status"] in (STATUS_SELECTED, STATUS_ENROLLMENT_PENDING)
     )
     if is_selected:
-        return {
+        res = {
             "stage": STAGE_SELECTED,
             "stage_num": 3,
             "label": "Application Approved — Deposit Required",
@@ -1862,13 +1919,15 @@ def get_intern_flow_state(conn, email):
             "is_accepted": False,
             "can_upload_payment": True,
         }
+        res.update(balance_flags)
+        return res
 
     # Check Stage 2: Under Review (Application Submitted -> Waiting for Admin)
     is_under_review = bool(
         app_row and app_row["status"] in (STATUS_UNDER_REVIEW, STATUS_APPLY_PENDING, STATUS_ON_HOLD)
     )
     if is_under_review:
-        return {
+        res = {
             "stage": STAGE_UNDER_REVIEW,
             "stage_num": 2,
             "label": "Application Under Review",
@@ -1877,9 +1936,11 @@ def get_intern_flow_state(conn, email):
             "is_accepted": False,
             "can_upload_payment": False,
         }
+        res.update(balance_flags)
+        return res
 
     # Default: Stage 1: Application Required
-    return {
+    res = {
         "stage": STAGE_APP_REQUIRED,
         "stage_num": 1,
         "label": "Application Required",
@@ -1888,6 +1949,221 @@ def get_intern_flow_state(conn, email):
         "is_accepted": False,
         "can_upload_payment": False,
     }
+    res.update(balance_flags)
+    return res
+
+
+def build_intern_next_action(flow_state, hours_logged=0.0):
+    """Builds the canonical next_action dictionary for the high-visibility mission card
+    on the intern dashboard (/portal) based on their evaluated 5-stage lifecycle.
+    Guarantees consistent copy across server Jinja rendering and client /intern/me JSON.
+    """
+    if not flow_state:
+        flow_state = {"stage_num": 1, "stage": STAGE_APP_REQUIRED}
+
+    stage_num = flow_state.get("stage_num", 1)
+    domain = flow_state.get("domain") or "Applied Engineering"
+    has_paid_balance = flow_state.get("has_paid_balance", False)
+    days_since_joining = flow_state.get("days_since_joining", 0)
+
+    if stage_num == 5:
+        # Confirmed & Enrolled
+        if has_paid_balance:
+            return {
+                "stage_badge": "Stage 5: Confirmed Fellow · Verified",
+                "heading": "Active Engineering Incubation Fellow",
+                "description": (
+                    f"Your seat and incubation fellowship in {domain} are fully verified. "
+                    "Complete your sprint modules, log attendance, and submit weekly engineering bounty tasks "
+                    "to qualify for the ₹5,000 milestone stipend."
+                ),
+                "primary_cta_url": "/courses",
+                "primary_cta_label": "Launch Sprint Workspace →",
+                "primary_cta_icon": "fa-play",
+                "primary_cta_type": "gold",
+                "secondary_cta_url": "/portal/offer",
+                "secondary_cta_label": "Download Signed Offer PDF →",
+                "secondary_cta_icon": "fa-file-pdf",
+                "secondary_cta_type": "blue",
+                "tertiary_cta_url": "/tasks",
+                "tertiary_cta_label": "Sprint Bounty Tasks →",
+                "tertiary_cta_icon": "fa-list-check",
+                "tertiary_cta_type": "emerald",
+                "hours_target": 10,
+                "hours_logged": hours_logged,
+            }
+        else:
+            days_left = max(0, 7 - days_since_joining)
+            if days_left > 0:
+                return {
+                    "stage_badge": f"Stage 5: Active Intern · Day {days_since_joining + 1} of 7-Day Window",
+                    "heading": f"Sprint Workspace Active ({days_left} Days Remaining in Balance Window)",
+                    "description": (
+                        f"Your ₹499 caution deposit has confirmed your {domain} workstation seat. "
+                        f"Complete your remaining ₹1,500 incubation balance within {days_left} days to permanently "
+                        "unlock official verified credentials, recommendation letters, and the ₹5,000 milestone stipend."
+                    ),
+                    "primary_cta_url": "/courses",
+                    "primary_cta_label": "Continue Sprints (Day 1) →",
+                    "primary_cta_icon": "fa-play",
+                    "primary_cta_type": "gold",
+                    "secondary_cta_url": "https://dbert.in/enroll/1999",
+                    "secondary_cta_label": "Complete ₹1,500 Balance →",
+                    "secondary_cta_icon": "fa-credit-card",
+                    "secondary_cta_type": "emerald",
+                    "tertiary_cta_url": "/portal/offer",
+                    "tertiary_cta_label": "Official Appointment Letter →",
+                    "tertiary_cta_icon": "fa-file-pdf",
+                    "tertiary_cta_type": "blue",
+                    "hours_target": 10,
+                    "hours_logged": hours_logged,
+                }
+            else:
+                return {
+                    "stage_badge": "Stage 5: Sprint Active · Balance Completion Required",
+                    "heading": "Sprints Active · Complete ₹1,500 Balance to Unlock Credentials",
+                    "description": (
+                        "You have completed the initial 7-day orientation. While your sprint access continues uninterrupted, "
+                        "official credentials, verified dossiers, and the ₹5,000 milestone stipend require completing your ₹1,500 incubation balance."
+                    ),
+                    "primary_cta_url": "https://dbert.in/enroll/1999",
+                    "primary_cta_label": "Complete ₹1,500 Balance Now →",
+                    "primary_cta_icon": "fa-credit-card",
+                    "primary_cta_type": "emerald",
+                    "secondary_cta_url": "/courses",
+                    "secondary_cta_label": "Resume Course Sprints →",
+                    "secondary_cta_icon": "fa-laptop-code",
+                    "secondary_cta_type": "gold",
+                    "tertiary_cta_url": "/portal/offer",
+                    "tertiary_cta_label": "View Appointment Letter →",
+                    "tertiary_cta_icon": "fa-file-contract",
+                    "tertiary_cta_type": "blue",
+                    "hours_target": 10,
+                    "hours_logged": hours_logged,
+                }
+
+    elif stage_num == 4:
+        # Payment Pending Verification
+        return {
+            "stage_badge": "Stage 4: Verification in Progress",
+            "heading": "₹499 Caution Deposit Under Administrative Verification",
+            "description": (
+                "Your 12-digit transaction UTR has been logged in the admissions ledger. "
+                "Our accounts desk is reconciling your payment. Your workstation seat, mentor allocation, "
+                "and official signed PDF will be unlocked within 24 hours."
+            ),
+            "primary_cta_url": "https://wa.me/918192911360?text=Hi%20Admissions%20Team%2C%20I%20have%20submitted%20my%20%E2%82%B9499%20deposit%20UTR.%20Kindly%20expedite%20my%20verification.",
+            "primary_cta_label": "Expedite Verification via WhatsApp →",
+            "primary_cta_icon": "fa-brands fa-whatsapp",
+            "primary_cta_type": "whatsapp",
+            "secondary_cta_url": "/portal/offer",
+            "secondary_cta_label": "View Offer Letter Status →",
+            "secondary_cta_icon": "fa-file-contract",
+            "secondary_cta_type": "gold",
+            "tertiary_cta_url": "/courses",
+            "tertiary_cta_label": "Explore Curriculum Tracks →",
+            "tertiary_cta_icon": "fa-graduation-cap",
+            "tertiary_cta_type": "blue",
+            "hours_target": 0,
+            "hours_logged": 0,
+        }
+
+    elif stage_num == 3:
+        # Selected - Deposit Required
+        return {
+            "stage_badge": "Stage 3: Selection & Appointment",
+            "heading": "Formal Appointment Extended — Seat Confirmation Required",
+            "description": (
+                f"Congratulations! Your technical profile has been approved for the {domain} fellowship. "
+                "Review your official appointment terms, milestone stipend schedule, and confirm your seat with the ₹499 refundable caution deposit."
+            ),
+            "primary_cta_url": "/portal/offer",
+            "primary_cta_label": "Review & Sign Offer Letter →",
+            "primary_cta_icon": "fa-file-signature",
+            "primary_cta_type": "gold",
+            "secondary_cta_url": "https://wa.me/918192911360?text=Hi%20Admissions%20Team%2C%20I%20have%20received%20my%20offer%20letter%20and%20need%20assistance.",
+            "secondary_cta_label": "Admissions WhatsApp Desk →",
+            "secondary_cta_icon": "fa-brands fa-whatsapp",
+            "secondary_cta_type": "whatsapp",
+            "tertiary_cta_url": "/courses",
+            "tertiary_cta_label": "Explore Domain Curriculum →",
+            "tertiary_cta_icon": "fa-compass",
+            "tertiary_cta_type": "blue",
+            "hours_target": 0,
+            "hours_logged": 0,
+        }
+
+    elif stage_num == 2:
+        # Under Review - Fast Track
+        return {
+            "stage_badge": "Stage 2: Fast-Track Available",
+            "heading": "Fast-Track Incubation Review & Seat Allocation",
+            "description": (
+                f"Your application for {domain} is queued with the Technical Council. "
+                "You may fast-track your cohort seat allocation immediately with a ₹499 caution deposit "
+                "(credited 100% towards your ₹1,999 fellowship, with 7 days to complete the balance after joining)."
+            ),
+            "primary_cta_url": "/portal/offer",
+            "primary_cta_label": "Review Terms & Fast-Track Seat →",
+            "primary_cta_icon": "fa-bolt",
+            "primary_cta_type": "gold",
+            "secondary_cta_url": "https://wa.me/918192911360?text=Hi%20Admissions%20Team%2C%20I%20would%20like%20to%20fast-track%20my%20incubation%20review.",
+            "secondary_cta_label": "Chat with Admissions →",
+            "secondary_cta_icon": "fa-brands fa-whatsapp",
+            "secondary_cta_type": "whatsapp",
+            "tertiary_cta_url": "/courses",
+            "tertiary_cta_label": "Preview Curriculum →",
+            "tertiary_cta_icon": "fa-book-open",
+            "tertiary_cta_type": "blue",
+            "hours_target": 0,
+            "hours_logged": 0,
+        }
+
+    elif stage_num == 0:
+        # Rejected
+        return {
+            "stage_badge": "Application Not Selected",
+            "heading": "Application Not Selected for Free Track",
+            "description": (
+                "Your application was not selected for the free track cohort. You may explore our direct enrollment paid program or re-apply after 30 days."
+            ),
+            "primary_cta_url": "/program",
+            "primary_cta_label": "Explore Paid Track (₹1,999) →",
+            "primary_cta_icon": "fa-rocket",
+            "primary_cta_type": "gold",
+            "secondary_cta_url": "/courses",
+            "secondary_cta_label": "Self-Paced Courses →",
+            "secondary_cta_icon": "fa-book-open",
+            "secondary_cta_type": "blue",
+            "tertiary_cta_url": None,
+            "hours_target": 0,
+            "hours_logged": 0,
+        }
+
+    else:
+        # Stage 1: Application Required
+        return {
+            "stage_badge": "Stage 1: Under Evaluation",
+            "heading": "Application Under Evaluation",
+            "description": (
+                "The Admissions Committee and Technical Council are reviewing your academic credentials and domain choice. "
+                "Expedite your review via Admissions WhatsApp or explore domain curriculum tracks below."
+            ),
+            "primary_cta_url": "https://wa.me/918192911360?text=Hi%20Admissions%20Team%2C%20my%20application%20is%20Under%20Evaluation.%20Kindly%20expedite%20my%20review.",
+            "primary_cta_label": "Expedite Review via WhatsApp →",
+            "primary_cta_icon": "fa-bolt",
+            "primary_cta_type": "whatsapp",
+            "secondary_cta_url": "/courses",
+            "secondary_cta_label": "Explore Curriculum & Projects →",
+            "secondary_cta_icon": "fa-graduation-cap",
+            "secondary_cta_type": "blue",
+            "tertiary_cta_url": "/program",
+            "tertiary_cta_label": "Explore Paid Track →",
+            "tertiary_cta_icon": "fa-rocket",
+            "tertiary_cta_type": "gold",
+            "hours_target": 0,
+            "hours_logged": 0,
+        }
 
 
 def ensure_application_record(conn, acct, chosen_domain=None, status=STATUS_UNDER_REVIEW, why_join=None):
@@ -3005,6 +3281,33 @@ def init_db():
                 created_at TEXT DEFAULT (datetime('now','localtime')),
                 updated_at TEXT DEFAULT (datetime('now','localtime'))
             );
+            
+            CREATE TABLE IF NOT EXISTS intern_offer_letters (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                offer_letter_id TEXT UNIQUE NOT NULL,
+                intern_id INTEGER,
+                enrollment_id INTEGER,
+                email TEXT NOT NULL,
+                name TEXT NOT NULL,
+                domain TEXT NOT NULL,
+                college TEXT,
+                batch_start_date TEXT NOT NULL,
+                batch_end_date TEXT NOT NULL,
+                tenure_months INTEGER DEFAULT 2,
+                stipend_amount INTEGER DEFAULT 5000,
+                login_hours_per_week INTEGER DEFAULT 10,
+                required_certifications INTEGER DEFAULT 2,
+                required_bounty_tasks INTEGER DEFAULT 75,
+                caution_deposit_amount INTEGER DEFAULT 499,
+                caution_deposit_status TEXT DEFAULT 'VERIFIED',
+                signature_name TEXT,
+                accepted_at TEXT,
+                pdf_unlocked INTEGER DEFAULT 0,
+                created_at TEXT DEFAULT (datetime('now','localtime')),
+                updated_at TEXT DEFAULT (datetime('now','localtime'))
+            );
+            CREATE INDEX IF NOT EXISTS idx_offer_letters_email ON intern_offer_letters(email);
+            CREATE INDEX IF NOT EXISTS idx_offer_letters_offer_id ON intern_offer_letters(offer_letter_id);
         """)
         # Auto-ensure 'program' column exists in SQLite for courses and intern_accounts
         try:
@@ -4037,7 +4340,7 @@ CSRF_SAFE_METHODS = {"GET", "HEAD", "OPTIONS", "TRACE"}
 # Endpoints that legitimately cannot carry a token. Keep this list empty unless
 # there is a genuine server-to-server caller — every browser-originated POST
 # must be protected. RFC 8058 one-click unsubscribe is authenticated via HMAC signature.
-CSRF_EXEMPT_ENDPOINTS = {"scraped_lead_click_track", "unsubscribe", "api_tools_ats_checker"}
+CSRF_EXEMPT_ENDPOINTS = {"scraped_lead_click_track", "unsubscribe", "api_tools_ats_checker", "internal_enrollment_sync"}
 
 
 def _csrf_token():
@@ -4313,29 +4616,65 @@ def _email_footer(to_email):
         "</div>"
     )
 
-def _build_email_message(to_email, subject, html_body, campaign):
-    """Build the full multipart/alternative message (text + html) with deliverability
-    headers, the CAN-SPAM footer, and RFC alignment. Excludes open pixels and UTM tags
-    for transactional emails to maximize deliverability reputation."""
+def _build_email_message(to_email, subject, html_body, campaign, attachments=None):
+    """Build the full multipart/alternative message (or multipart/mixed if attachments present)
+    with deliverability headers, the CAN-SPAM footer, and RFC alignment. Excludes open pixels
+    and UTM tags for transactional emails to maximize deliverability reputation."""
     html = _email_add_utm(html_body, campaign) if campaign == "marketing" else (html_body or "")
     inject = _email_footer(to_email)
     html = html.replace("</body>", inject + "</body>") if "</body>" in html else html + inject
     text = _email_to_text(html)
-    msg = MIMEMultipart("alternative")
-    msg["Subject"] = subject
-    msg["From"] = f"{FROM_NAME} <{FROM_EMAIL}>"
-    msg["To"] = to_email
+
     reply_to = os.environ.get("REPLY_TO_EMAIL", "support@dbert.in")
-    msg["Reply-To"] = reply_to
-    msg["Date"] = formatdate(localtime=True)
     domain_part = FROM_EMAIL.split("@")[-1] if "@" in FROM_EMAIL else "dbert.in"
-    msg["Message-ID"] = f"<{uuid.uuid4()}@{domain_part}>"
-    msg["List-Unsubscribe"] = f"<{_email_unsub_url(to_email)}>, <mailto:{reply_to}?subject=unsubscribe>"
-    msg["List-Unsubscribe-Post"] = "List-Unsubscribe=One-Click"
-    msg["Auto-Submitted"] = "auto-generated"
-    msg.attach(MIMEText(text, "plain", "utf-8"))      # text part first (RFC: least→most rich)
-    msg.attach(MIMEText(html, "html", "utf-8"))
-    return msg
+
+    if attachments:
+        from email.mime.application import MIMEApplication
+        msg = MIMEMultipart("mixed")
+        msg["Subject"] = subject
+        msg["From"] = f"{FROM_NAME} <{FROM_EMAIL}>"
+        msg["To"] = to_email
+        msg["Reply-To"] = reply_to
+        msg["Date"] = formatdate(localtime=True)
+        msg["Message-ID"] = f"<{uuid.uuid4()}@{domain_part}>"
+        msg["List-Unsubscribe"] = f"<{_email_unsub_url(to_email)}>, <mailto:{reply_to}?subject=unsubscribe>"
+        msg["List-Unsubscribe-Post"] = "List-Unsubscribe=One-Click"
+        msg["Auto-Submitted"] = "auto-generated"
+
+        alt_part = MIMEMultipart("alternative")
+        alt_part.attach(MIMEText(text, "plain", "utf-8"))      # text part first (RFC: least→most rich)
+        alt_part.attach(MIMEText(html, "html", "utf-8"))
+        msg.attach(alt_part)
+
+        for att in attachments:
+            fname = "attachment.dat"
+            data = b""
+            if isinstance(att, dict):
+                fname = att.get("filename", "attachment.dat")
+                data = att.get("content", b"")
+            elif isinstance(att, (list, tuple)) and len(att) >= 2:
+                fname = att[0]
+                data = att[1]
+            if isinstance(data, str):
+                data = data.encode("utf-8")
+            part = MIMEApplication(data, Name=fname)
+            part["Content-Disposition"] = f'attachment; filename="{fname}"'
+            msg.attach(part)
+        return msg
+    else:
+        msg = MIMEMultipart("alternative")
+        msg["Subject"] = subject
+        msg["From"] = f"{FROM_NAME} <{FROM_EMAIL}>"
+        msg["To"] = to_email
+        msg["Reply-To"] = reply_to
+        msg["Date"] = formatdate(localtime=True)
+        msg["Message-ID"] = f"<{uuid.uuid4()}@{domain_part}>"
+        msg["List-Unsubscribe"] = f"<{_email_unsub_url(to_email)}>, <mailto:{reply_to}?subject=unsubscribe>"
+        msg["List-Unsubscribe-Post"] = "List-Unsubscribe=One-Click"
+        msg["Auto-Submitted"] = "auto-generated"
+        msg.attach(MIMEText(text, "plain", "utf-8"))      # text part first (RFC: least→most rich)
+        msg.attach(MIMEText(html, "html", "utf-8"))
+        return msg
 
 def _ses_send_raw(msg, to_email):
     """Send a pre-built MIME message via the Amazon SES HTTPS API (port 443). SES signs
@@ -4464,7 +4803,7 @@ DUMMY_EMAIL_DOMAINS = (
     '@mailinator.com', '@fakemail.com'
 )
 
-def send_email_async(to_email, subject, html_body, name="", campaign="transactional"):
+def send_email_async(to_email, subject, html_body, name="", campaign="transactional", attachments=None):
     # Master kill-switch: emails suppressed for now (push notifications still fire separately).
     if not EMAILS_ENABLED:
         try:
@@ -4495,7 +4834,7 @@ def send_email_async(to_email, subject, html_body, name="", campaign="transactio
         msg_id = ""
         err_msg = None
         try:
-            msg = _build_email_message(to_email, subject, html_body, campaign)
+            msg = _build_email_message(to_email, subject, html_body, campaign, attachments=attachments)
             msg_id = msg.get("Message-ID", "")
             provider = os.environ.get("EMAIL_PROVIDER", EMAIL_PROVIDER).lower()
             if provider == "ses":
@@ -4505,17 +4844,17 @@ def send_email_async(to_email, subject, html_body, name="", campaign="transactio
                 provider_used = "delivery_service"
                 try:
                     from services.delivery_service import get_delivery_service
-                    res = get_delivery_service().send_email(to_email, subject, html_body)
+                    res = get_delivery_service().send_email(to_email, subject, html_body, attachments=attachments)
                     sent = "YES" if res.success else "NO"
                     provider_used = res.provider
                     msg_id = res.message_id
                     err_msg = res.error
-                    if not res.success:
-                        # Fallback to direct raw SMTP if delivery service encountered limit
+                    if not res.success or attachments:
+                        # Fallback to direct raw SMTP if delivery service encountered limit or attachments need direct MIME
                         try:
                             _smtp_send_raw(msg, to_email)
                             sent = "YES"
-                            provider_used = "smtp_fallback"
+                            provider_used = "smtp_fallback" if not res.success else "google_workspace_smtp_pool"
                             err_msg = None
                         except Exception as fb_err:
                             err_msg = f"{res.error} | fallback error: {fb_err}"
@@ -4607,13 +4946,29 @@ def _persist_notification_for_email(to_email, title, message, url):
         log_error("persist-notification", e)
 
 
-def send_push_notification(to_email, title, message, url="https://lms.dbert.in"):
+def send_push_notification(to_email, title, message, url="https://lms.dbert.in", kind="general"):
     """
-    Fire-and-forget OneSignal push notification (v2 API).
-    Uses external_id alias = intern email (set by frontend on login).
-    Also persists a durable in-app notification (#26), regardless of push creds.
+    Unified dual-engine push notification dispatcher:
+    1. Persists durable in-app notification in notifications table (#26).
+    2. Dispatches signed Native VAPID Web Push to all registered user devices (zero vendor dependency).
+    3. Legacy OneSignal fallback if configured.
     """
     _persist_notification_for_email(to_email, title, message, url)
+
+    # Native VAPID Web Push Dispatch (RFC 8292 NIST P-256)
+    try:
+        from services.notifications.web_push_service import dispatch_lifecycle_push
+        dispatch_lifecycle_push(
+            event_name=kind,
+            target_email=to_email,
+            title=title,
+            body=message,
+            url=url,
+            sync_inapp=False
+        )
+    except Exception as e:
+        log_error("native-vapid-push", e)
+
     if not ONESIGNAL_APP_ID or not ONESIGNAL_REST_API_KEY:
         return
     def _push():
@@ -4735,6 +5090,20 @@ def send_application_received_email(name, to_email, domain):
 
 
 def send_status_update_email(name, to_email, domain, status, note="", joining_date=None):
+    if status == STATUS_ACCEPTED and to_email:
+        try:
+            with get_db() as conn:
+                enr = conn.execute(
+                    "SELECT * FROM enrollments WHERE LOWER(email)=? ORDER BY id DESC LIMIT 1",
+                    (to_email.strip().lower(),)
+                ).fetchone()
+                if enr:
+                    sent = send_enrollment_acceptance_dossier_email(row_to_dict(enr), conn=conn)
+                    if sent:
+                        return
+        except Exception as e:
+            log_error("forward-status-accepted-to-dossier", e)
+
     first = (name or "Candidate").split()[0]
     note_block = _email_info_box(
         "<p style='margin:0 0 8px;color:#E2B96F;font-size:13px;font-weight:700;'>Note from our team</p>"
@@ -5529,7 +5898,85 @@ def portal_page():
     if not user:
         return redirect("/#signin")
     try:
-        resp = make_response(render_template("portal.html", active_page="dashboard"))
+        needs_academic_profile = False
+        with get_db() as conn:
+            email_clean = (user.get("email") or "").strip().lower()
+            flow_state = get_intern_flow_state(conn, email_clean)
+
+            acct = conn.execute(
+                "SELECT * FROM intern_accounts WHERE LOWER(email)=? AND is_active=1 LIMIT 1", (email_clean,)
+            ).fetchone()
+            app_row = conn.execute(
+                "SELECT * FROM applications WHERE LOWER(email)=? ORDER BY id DESC LIMIT 1", (email_clean,)
+            ).fetchone()
+            enr = conn.execute(
+                "SELECT * FROM enrollments WHERE LOWER(email)=? ORDER BY id DESC LIMIT 1", (email_clean,)
+            ).fetchone()
+
+            # Auto-healing academic profile sync:
+            if acct:
+                acct_college = (acct.get("college") or "").strip().lower()
+                acct_domain = (acct.get("domain") or "").strip()
+                cand_college = (app_row.get("college") if app_row else "") or (enr.get("college") if enr else "")
+                cand_domain = (app_row.get("domain") if app_row else "") or (enr.get("domain") if enr else "")
+
+                updated_college = None
+                updated_domain = None
+                if (not acct_college or acct_college in ("pending profile", "none", "n/a", "nil", "student", "college", "university")) and cand_college and cand_college.strip().lower() not in ("pending profile", "none", "n/a", "nil", "student", "college", "university"):
+                    updated_college = cand_college.strip()
+                if (not acct_domain or acct_domain not in VALID_DOMAINS) and cand_domain and cand_domain in VALID_DOMAINS:
+                    updated_domain = cand_domain
+
+                if updated_college or updated_domain:
+                    u_fields = []
+                    u_vals = []
+                    if updated_college:
+                        u_fields.append("college = ?")
+                        u_vals.append(updated_college)
+                    if updated_domain:
+                        u_fields.append("domain = ?")
+                        u_vals.append(updated_domain)
+                    u_fields.append("updated_at = ?")
+                    u_vals.append(now_str())
+                    u_vals.append(acct["id"])
+                    conn.execute(f"UPDATE intern_accounts SET {', '.join(u_fields)} WHERE id = ?", tuple(u_vals))
+                    if hasattr(conn, "commit"):
+                        conn.commit()
+                    acct = conn.execute("SELECT * FROM intern_accounts WHERE id = ?", (acct["id"],)).fetchone()
+
+            # Gating: Suppress academic profile warning if user is already Selected, Payment Pending, or Confirmed
+            col = (acct.get("college") or "").strip().lower() if acct else ""
+            st = int(acct.get("signup_stage") or 3) if acct else 3
+            if flow_state["stage_num"] < 3:
+                if st < 2 or not col or col in ("pending profile", "none", "n/a", "nil", "student", "college", "university"):
+                    needs_academic_profile = True
+            else:
+                needs_academic_profile = False
+
+            # Get weekly hours for attendance
+            hours_logged = 0.0
+            try:
+                week_start, _ = get_week_bounds()
+                ws = week_start.strftime("%Y-%m-%d")
+                att_row = conn.execute(
+                    "SELECT total_minutes FROM attendance WHERE (intern_id=? OR (email IS NOT NULL AND LOWER(email)=LOWER(?))) AND week_start=?",
+                    (acct["id"] if acct else 0, email_clean, ws)
+                ).fetchone() if acct else None
+                if att_row:
+                    hours_logged = round((att_row["total_minutes"] or 0) / 60.0, 1)
+            except Exception:
+                pass
+
+            next_action = build_intern_next_action(flow_state, hours_logged=hours_logged)
+
+        resp = make_response(render_template(
+            "portal.html",
+            active_page="dashboard",
+            needs_academic_profile=needs_academic_profile,
+            flow_state=flow_state,
+            current_stage=flow_state["stage_num"],
+            next_action=next_action
+        ))
         resp.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
         resp.headers["Pragma"] = "no-cache"
         resp.headers["Expires"] = "-1"
@@ -5560,6 +6007,323 @@ def profile_page():
 @app.route("/dashboard")
 def dashboard_page():
     return redirect("/portal")
+
+
+# ── Offer Letters & Executive Appointment System ─────────────────────────────
+OFFER_DOMAIN_CODES = {
+    "data analytics": "DA",
+    "data analyst": "DA",
+    "data science": "DS",
+    "python automation": "PA",
+    "ai & machine learning": "AIML",
+    "ai and machine learning": "AIML",
+    "ai agent development": "AIML",
+    "full stack web development": "FSD",
+    "full stack development": "FSD",
+    "web development": "FSD",
+    "ui/ux design": "UIUX",
+    "devops & cloud": "DEVOPS",
+    "cloud computing": "CLOUD",
+    "cybersecurity": "CYBER",
+}
+
+
+def get_offer_domain_code(domain_str: str) -> str:
+    if not domain_str:
+        return "GEN"
+    norm = domain_str.strip().lower()
+    if norm in OFFER_DOMAIN_CODES:
+        return OFFER_DOMAIN_CODES[norm]
+    for k, v in OFFER_DOMAIN_CODES.items():
+        if k in norm:
+            return v
+    words = [w for w in re.split(r'[^a-zA-Z0-9]+', norm) if w]
+    if len(words) >= 2:
+        return "".join(w[0].upper() for w in words[:4])
+    return norm[:4].upper() if norm else "GEN"
+
+
+def get_or_create_offer_letter(email: str, conn=None):
+    """Retrieve or deterministically generate an official appointment/offer letter."""
+    if not email:
+        return None
+    email_clean = email.strip().lower()
+
+    def _execute(db_conn):
+        row = db_conn.execute(
+            "SELECT * FROM intern_offer_letters WHERE LOWER(email) = ? ORDER BY id DESC LIMIT 1",
+            (email_clean,)
+        ).fetchone()
+
+        enr = db_conn.execute(
+            "SELECT * FROM enrollments WHERE LOWER(email) = ? ORDER BY id DESC LIMIT 1",
+            (email_clean,)
+        ).fetchone()
+
+        acct = db_conn.execute(
+            "SELECT * FROM intern_accounts WHERE LOWER(email) = ? ORDER BY id DESC LIMIT 1",
+            (email_clean,)
+        ).fetchone()
+
+        app_row = db_conn.execute(
+            "SELECT * FROM applications WHERE LOWER(email) = ? ORDER BY id DESC LIMIT 1",
+            (email_clean,)
+        ).fetchone()
+
+        is_deposit_verified = bool(
+            enr and (
+                (enr["payment_status"] or "").strip().lower() in ("verified", "accepted", "approved")
+                or enr["amount"] == 499
+            )
+        )
+
+        if row:
+            offer_dict = dict(row)
+            if is_deposit_verified and offer_dict.get("caution_deposit_status") != "VERIFIED":
+                db_conn.execute(
+                    "UPDATE intern_offer_letters SET caution_deposit_status = 'VERIFIED' WHERE id = ?",
+                    (offer_dict["id"],)
+                )
+                if hasattr(db_conn, "commit"):
+                    db_conn.commit()
+                offer_dict["caution_deposit_status"] = "VERIFIED"
+            return offer_dict
+
+        name = (enr and enr["name"]) or (acct and acct["name"]) or (app_row and app_row["name"]) or "Intern"
+        domain = (enr and enr["domain"]) or (acct and acct["domain"]) or (app_row and app_row["domain"]) or "Data Analytics"
+        college = (enr and enr["college"]) or (app_row and app_row["college"]) or ""
+        enrollment_id = (enr and enr["id"]) or (acct and acct["id"]) or (app_row and app_row["id"]) or 1
+        intern_id = acct["id"] if acct else None
+
+        domain_code = get_offer_domain_code(domain)
+        offer_letter_id = f"DBERT-OFR-2026-{domain_code}-{enrollment_id:04d}"
+
+        batch_start_date = (enr and enr["joining_date"]) or "2026-11-09"
+        try:
+            from datetime import datetime, timedelta
+            s_dt = datetime.strptime(str(batch_start_date).split()[0], "%Y-%m-%d")
+            batch_end_date = (s_dt + timedelta(days=60)).strftime("%d %b %Y")
+        except Exception:
+            batch_end_date = "08 Jan 2027"
+
+        caution_deposit_status = "VERIFIED" if is_deposit_verified else "PENDING"
+
+        db_conn.execute("""
+            INSERT INTO intern_offer_letters (
+                offer_letter_id, intern_id, enrollment_id, email, name, domain, college,
+                batch_start_date, batch_end_date, tenure_months, stipend_amount,
+                login_hours_per_week, required_certifications, required_bounty_tasks,
+                caution_deposit_amount, caution_deposit_status, signature_name,
+                accepted_at, pdf_unlocked
+            ) VALUES (
+                ?, ?, ?, ?, ?, ?, ?,
+                ?, ?, 2, 5000,
+                10, 2, 75,
+                499, ?, NULL,
+                NULL, 0
+            )
+        """, (
+            offer_letter_id, intern_id, enr["id"] if enr else None, email_clean, name, domain, college,
+            str(batch_start_date), str(batch_end_date), caution_deposit_status
+        ))
+        if hasattr(db_conn, "commit"):
+            db_conn.commit()
+
+        new_row = db_conn.execute(
+            "SELECT * FROM intern_offer_letters WHERE LOWER(email) = ? ORDER BY id DESC LIMIT 1",
+            (email_clean,)
+        ).fetchone()
+        return dict(new_row) if new_row else None
+
+    if conn is not None:
+        return _execute(conn)
+    with get_db() as db_conn:
+        return _execute(db_conn)
+
+
+@app.route("/portal/offer", methods=["GET"])
+def portal_offer_page():
+    """Phase 15/39 — candidate official offer letter and appointment view."""
+    user = require_role("intern")
+    if not user:
+        return redirect("/#signin")
+
+    email = (user.get("email") or "").strip().lower()
+
+    try:
+        with get_db() as conn:
+            enr = conn.execute(
+                "SELECT * FROM enrollments WHERE LOWER(email) = ? ORDER BY id DESC LIMIT 1",
+                (email,)
+            ).fetchone()
+
+            app_row = conn.execute(
+                "SELECT * FROM applications WHERE LOWER(email) = ? ORDER BY id DESC LIMIT 1",
+                (email,)
+            ).fetchone()
+
+            # Selection gate: candidate must be selected or enrolled
+            is_selected = bool(
+                enr or
+                (app_row and app_row["status"] in (
+                    STATUS_SELECTED, STATUS_ENROLLMENT_PENDING, STATUS_ENROLLED, STATUS_ACCEPTED, STATUS_PAID_ENROLLED
+                ))
+            )
+
+            if not is_selected:
+                resp = make_response(render_template(
+                    "portal_offer_letter.html",
+                    locked=True,
+                    preview_mode=False,
+                    is_signed=False,
+                    is_deposit_verified=False,
+                    offer=None,
+                    enrollment=enr or app_row,
+                    user=user,
+                    active_page="offer"
+                ))
+                resp.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+                return resp
+
+            offer = get_or_create_offer_letter(email, conn=conn)
+            is_deposit_verified = bool(offer and offer.get("caution_deposit_status") == "VERIFIED")
+
+            # Auto-reconcile deposit verification if enrollment or application is marked verified/accepted
+            if not is_deposit_verified and (
+                (enr and (enr.get("payment_status") in ("Accepted", "Verified") or enr.get("deposit_paid") == 1 or (enr.get("amount_paid") or 0) >= 499)) or
+                (app_row and app_row.get("status") in (STATUS_ACCEPTED, STATUS_ENROLLED))
+            ):
+                is_deposit_verified = True
+                if offer:
+                    conn.execute(
+                        "UPDATE intern_offer_letters SET caution_deposit_status = 'VERIFIED', pdf_unlocked = 1 WHERE id = ?",
+                        (offer["id"],)
+                    )
+                    if hasattr(conn, "commit"):
+                        conn.commit()
+                    offer = conn.execute("SELECT * FROM intern_offer_letters WHERE id = ?", (offer["id"],)).fetchone()
+
+            preview_mode = not is_deposit_verified
+            is_signed = bool(offer and offer.get("signature_name") and offer.get("accepted_at"))
+
+            resp = make_response(render_template(
+                "portal_offer_letter.html",
+                locked=False,
+                preview_mode=preview_mode,
+                is_signed=is_signed,
+                is_deposit_verified=is_deposit_verified,
+                offer=offer,
+                enrollment=enr or app_row,
+                user=user,
+                active_page="offer"
+            ))
+            resp.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+            return resp
+    except Exception as e:
+        log_error("/portal/offer", e)
+        return _render_error(500, "Error Loading Offer Letter", "Unable to load your official appointment letter.")
+
+
+@app.route("/portal/offer/sign", methods=["POST"])
+def portal_offer_sign():
+    """Execute digital signature and legal acceptance for internship appointment."""
+    user = require_role("intern")
+    if not user:
+        return jsonify({"status": "error", "message": "Authentication required."}), 401
+
+    email = (user.get("email") or "").strip().lower()
+
+    payload = request.get_json(silent=True) or request.form.to_dict() or {}
+    signature_name = (payload.get("signature_name") or "").strip()
+    agreed = payload.get("agreed")
+
+    if not signature_name:
+        return jsonify({"status": "error", "message": "Please provide your legal name to execute the digital signature."}), 400
+
+    if agreed is not True and str(agreed).lower() not in ("true", "1", "yes", "on"):
+        return jsonify({"status": "error", "message": "You must accept all terms to digitally sign the agreement."}), 400
+
+    from datetime import datetime
+    now_str = datetime.now().strftime("%d %b %Y, %I:%M %p IST")
+
+    try:
+        with get_db() as conn:
+            offer = get_or_create_offer_letter(email, conn=conn)
+            if not offer:
+                return jsonify({"status": "error", "message": "Offer record not found."}), 404
+
+            is_deposit_verified = bool(offer.get("caution_deposit_status") == "VERIFIED")
+            pdf_unlocked = 1 if is_deposit_verified else 0
+
+            conn.execute("""
+                UPDATE intern_offer_letters
+                SET signature_name = ?,
+                    accepted_at = ?,
+                    pdf_unlocked = ?
+                WHERE id = ?
+            """, (signature_name, now_str, pdf_unlocked, offer["id"]))
+            if hasattr(conn, "commit"):
+                conn.commit()
+
+        try:
+            from services.notifications.web_push_service import notify_offer_signed_push
+            notify_offer_signed_push(email, signature_name, offer.get("offer_letter_id") or "DBERT-OFR")
+        except Exception as pe:
+            app_logger.warning(f"[portal/offer/sign] Web push error: {pe}")
+
+        return jsonify({
+            "status": "success",
+            "signature_name": signature_name,
+            "accepted_at": now_str,
+            "pdf_unlocked": pdf_unlocked,
+            "requires_deposit": not is_deposit_verified,
+            "message": "Offer letter digitally signed successfully."
+        })
+    except Exception as e:
+        log_error("/portal/offer/sign", e)
+        return jsonify({"status": "error", "message": "Failed to record digital signature."}), 500
+
+
+@app.route("/portal/offer/print", methods=["GET"])
+def portal_offer_print():
+    """Executive print view for official signed appointment letter."""
+    user = require_role("intern")
+    if not user:
+        return redirect("/#signin")
+
+    email = (user.get("email") or "").strip().lower()
+
+    try:
+        with get_db() as conn:
+            offer = conn.execute(
+                "SELECT * FROM intern_offer_letters WHERE LOWER(email) = ? ORDER BY id DESC LIMIT 1",
+                (email,)
+            ).fetchone()
+
+            if not offer or not offer["pdf_unlocked"]:
+                return redirect("/portal/offer")
+
+            enr = conn.execute(
+                "SELECT * FROM enrollments WHERE LOWER(email) = ? ORDER BY id DESC LIMIT 1",
+                (email,)
+            ).fetchone()
+
+            app_row = conn.execute(
+                "SELECT * FROM applications WHERE LOWER(email) = ? ORDER BY id DESC LIMIT 1",
+                (email,)
+            ).fetchone()
+
+            resp = make_response(render_template(
+                "portal_offer_print.html",
+                offer=offer,
+                enrollment=enr or app_row,
+                user=user
+            ))
+            resp.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+            return resp
+    except Exception as e:
+        log_error("/portal/offer/print", e)
+        return redirect("/portal/offer")
 
 
 @app.route("/interview")
@@ -7426,7 +8190,21 @@ def course_quiz_submit(course_id, day_number):
                     "UPDATE course_enrollments SET current_day = ? WHERE id = ?",
                     (day_number + 1, enrollment["id"])
                 )
+
+        c_row = conn.execute("SELECT title FROM courses WHERE id = ?", (course_id,)).fetchone()
+        course_title = c_row["title"] if c_row and c_row["title"] else f"Course #{course_id}"
+        target_email = enrollment["email"] or intern.get("email")
         conn.commit()
+
+        if passed and target_email:
+            try:
+                from services.notifications.web_push_service import notify_quiz_passed_push, notify_course_completed_push
+                if cert_info and cert_info.get("cert_id"):
+                    notify_course_completed_push(target_email, course_title, cert_info["cert_id"])
+                else:
+                    notify_quiz_passed_push(target_email, course_id, day_number, course_title)
+            except Exception as _p_err:
+                log_error("quiz-passed-push", _p_err)
 
     resp_data = {
         "status": "success",
@@ -7444,7 +8222,91 @@ def course_quiz_submit(course_id, day_number):
     return jsonify(resp_data)
 
 
-# â”€â”€ UP2.3: BYOK Gemini Key Save & Validation Route â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# â”€â”€ UP2.3: BYOK Gemini Key Resolver & Validation Route â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+def get_intern_active_gemini_context(intern_id: int, conn=None) -> dict:
+    """
+    Universal BYOK Gemini Resolver for an intern.
+    Returns:
+      {
+        "has_key": bool,
+        "api_key": Optional[str],
+        "default_model": str,
+        "available_models": list,
+        "error": Optional[str]
+      }
+    Queries user_api_keys (fallback to intern_accounts), decrypts via _decrypt_gemini_key,
+    and runs discover_gemini_models to verify real-time validity and retrieve ranked models.
+    """
+    if not intern_id:
+        return {"has_key": False, "api_key": None, "default_model": "gemini-2.5-flash", "available_models": [], "error": "No intern id provided"}
+
+    def _resolve(c):
+        key_row = c.execute(
+            "SELECT id, encrypted_key, validated_at, available_models_json FROM user_api_keys WHERE intern_id = ? ORDER BY id DESC LIMIT 1",
+            (intern_id,)
+        ).fetchone()
+        raw_key = None
+        models_cached = []
+        if key_row and key_row["encrypted_key"]:
+            raw_key = _decrypt_gemini_key(key_row["encrypted_key"])
+            if key_row["available_models_json"]:
+                try:
+                    models_cached = json.loads(key_row["available_models_json"])
+                except Exception:
+                    models_cached = []
+
+        if not raw_key:
+            row = c.execute("SELECT gemini_api_key_encrypted FROM intern_accounts WHERE id = ?", (intern_id,)).fetchone()
+            if row and row["gemini_api_key_encrypted"]:
+                raw_key = _decrypt_gemini_key(row["gemini_api_key_encrypted"])
+
+        return raw_key, models_cached
+
+    if conn:
+        raw_key, models_cached = _resolve(conn)
+    else:
+        with get_db() as c:
+            raw_key, models_cached = _resolve(c)
+
+    if not raw_key:
+        return {
+            "has_key": False,
+            "api_key": None,
+            "default_model": "gemini-2.5-flash",
+            "available_models": [],
+            "error": "No Gemini API key registered. Please connect your free key at /account/gemini-key."
+        }
+
+    # Verify active status and retrieve ranked default model
+    try:
+        from services.ai.gemini_discovery import discover_gemini_models
+        best_default, discovered_models, err = discover_gemini_models(api_key=raw_key)
+        if err or not best_default:
+            return {
+                "has_key": False,
+                "api_key": None,
+                "default_model": "gemini-2.5-flash",
+                "available_models": [],
+                "error": err or "Google API rejected this Gemini key. Please update your key."
+            }
+        return {
+            "has_key": True,
+            "api_key": raw_key,
+            "default_model": best_default,
+            "available_models": discovered_models or models_cached,
+            "error": None
+        }
+    except Exception as e:
+        log_error("get_intern_active_gemini_context", e)
+        return {
+            "has_key": True,
+            "api_key": raw_key,
+            "default_model": models_cached[0] if models_cached else "gemini-2.5-flash",
+            "available_models": models_cached,
+            "error": None
+        }
+
+
 @app.route("/account/gemini-key", methods=["GET", "POST"])
 def account_gemini_key():
     intern = current_intern()
@@ -7452,6 +8314,10 @@ def account_gemini_key():
         if request.headers.get("X-Requested-With") == "XMLHttpRequest" or request.is_json:
             return jsonify({"status": "error", "message": "Authentication required"}), 401
         return redirect("/#signin")
+
+    next_url = request.args.get("next") or request.form.get("next") or ""
+    if not next_url.startswith("/") or next_url.startswith("//"):
+        next_url = ""
 
     if request.method == "GET":
         with get_db() as conn:
@@ -7486,12 +8352,16 @@ def account_gemini_key():
             has_key=has_valid_key,
             key_info=dict(key_row) if (key_row and has_valid_key) else None,
             fallback_used=fallback_used,
-            fallback_limit=fallback_limit
+            fallback_limit=fallback_limit,
+            next_url=next_url
         )
 
     # POST - Save / Validate Key
     data = request.get_json(silent=True) or {}
     raw_key = (data.get("api_key") or request.form.get("api_key") or "").strip()
+    next_dest = (data.get("next") if isinstance(data, dict) else None) or next_url or "/portal"
+    if not next_dest.startswith("/") or next_dest.startswith("//"):
+        next_dest = "/portal"
     
     # Phase 11: BYOK Endpoint Rate Limiting
     val_allowed, val_retry = rate_check(f"byok_val_{intern['id']}", 5, 3600)
@@ -7536,13 +8406,24 @@ def account_gemini_key():
             "VALUES (?, ?, ?, ?, ?)",
             (intern["id"], enc_key, key_hash, now_str, models_json)
         )
+        try:
+            conn.execute(
+                "UPDATE intern_accounts SET gemini_api_key_encrypted = ?, gemini_key_last_verified_at = ? WHERE id = ?",
+                (enc_key, now_str, intern["id"])
+            )
+        except Exception:
+            pass
         conn.commit()
 
-    return jsonify({
-        "status": "success",
-        "message": "Gemini API key validated and saved securely!",
-        "models_count": len(models or [])
-    })
+    if request.is_json or request.headers.get("X-Requested-With") == "XMLHttpRequest":
+        return jsonify({
+            "status": "success",
+            "message": "Gemini API key validated and saved securely!",
+            "models_count": len(models or []),
+            "redirect": next_dest
+        })
+    flash("Gemini API key validated and saved securely!", "success")
+    return redirect(next_dest)
 
 
 # â”€â”€ UP3.3: Staff Auth & Dashboard Routes â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -8524,6 +9405,18 @@ def staff_task_decision(submission_id):
 
         conn.commit()
 
+        try:
+            from services.notifications.web_push_service import notify_task_approved_push, notify_task_revision_push, notify_stipend_approved_push
+            if decision == "approved":
+                if sub.get("task_id") in (3, 4, 5, 6):
+                    notify_stipend_approved_push(sub["intern_email"], 5000)
+                else:
+                    notify_task_approved_push(sub["intern_email"], sub["task_title"], coins_awarded)
+            elif decision == "rejected":
+                notify_task_revision_push(sub["intern_email"], sub["task_title"], data.get("notes") or "")
+        except Exception as e_push:
+            log_error("push-task-decision", e_push)
+
     return jsonify({
         "status": "success",
         "message": f"Task submission {submission_id} marked as {decision}. {coins_awarded} coins awarded."
@@ -8696,10 +9589,294 @@ def task_submit(task_id):
         )
         conn.commit()
 
+        try:
+            from services.notifications.web_push_service import notify_task_submitted_push
+            notify_task_submitted_push(intern.get("email") or "", task["title"])
+        except Exception as e_push:
+            log_error("push-task-submit", e_push)
+
     return jsonify({
         "status": "success",
         "message": "Task submission received successfully! DBERT staff reviewers will evaluate your work."
     })
+
+
+@app.route("/tasks/<int:task_id>/guide", methods=["GET"])
+def task_guide(task_id):
+    intern = current_intern()
+    staff = current_staff()
+    mentor = current_mentor()
+    company = current_company()
+    user = intern or staff or mentor or company
+    if not user:
+        session["next"] = f"/tasks/{task_id}/guide"
+        flash("Please sign in or sign up to access this task.", "info")
+        return redirect("/#signin")
+
+    with get_db() as conn:
+        task = conn.execute("SELECT * FROM tasks WHERE id = ? AND is_active = 1", (task_id,)).fetchone()
+        if not task:
+            abort(404)
+
+        latest_version = conn.execute(
+            "SELECT * FROM task_versions WHERE task_id = ? ORDER BY version_number DESC LIMIT 1",
+            (task_id,)
+        ).fetchone()
+
+        my_submission = None
+        if intern:
+            sub = conn.execute(
+                "SELECT * FROM task_submissions WHERE (intern_id = ? OR (email IS NOT NULL AND LOWER(email) = LOWER(?))) AND task_id = ? ORDER BY id DESC LIMIT 1",
+                (intern["id"], intern.get("email") or "", task_id)
+            ).fetchone()
+            if sub:
+                my_submission = dict(sub)
+
+    is_social_bounty = (task_id >= 101 and task_id <= 104)
+    assigned_angle = None
+    gemini_ctx = None
+
+    if is_social_bounty and intern:
+        gemini_ctx = get_intern_active_gemini_context(intern["id"])
+        if not gemini_ctx["has_key"]:
+            flash("Please connect your free Gemini API key first to unlock the AI generator.", "warning")
+            return redirect(f"/account/gemini-key?next=/tasks/{task_id}/guide")
+
+        from services.ai.bounty_content_generator import get_assigned_angle
+        assigned_angle = get_assigned_angle(intern["id"], task_id)
+
+    return render_template(
+        "task_guide.html",
+        task=dict(task),
+        version=dict(latest_version) if latest_version else None,
+        my_submission=my_submission,
+        is_social_bounty=is_social_bounty,
+        assigned_angle=assigned_angle,
+        gemini_ctx=gemini_ctx
+    )
+
+
+@app.route("/api/tasks/<int:task_id>/angle", methods=["GET"])
+def task_get_angle(task_id):
+    intern = current_intern()
+    intern_id = intern["id"] if intern else 1
+    from services.ai.bounty_content_generator import get_assigned_angle
+    angle = get_assigned_angle(intern_id, task_id)
+    has_saved_key = False
+    if intern:
+        ctx = get_intern_active_gemini_context(intern["id"])
+        has_saved_key = ctx["has_key"]
+    return jsonify({"status": "success", "angle": angle, "has_saved_key": has_saved_key})
+
+
+@app.route("/api/tasks/<int:task_id>/generate-content", methods=["POST"])
+def task_generate_content(task_id):
+    intern = current_intern()
+    if not intern:
+        return jsonify({"status": "error", "message": "Authentication required"}), 401
+
+    ctx = get_intern_active_gemini_context(intern["id"])
+    if not ctx["has_key"]:
+        return jsonify({
+            "status": "needs_key",
+            "message": ctx["error"] or "Please connect your free Gemini API key to unlock the AI generator.",
+            "redirect": f"/account/gemini-key?next=/tasks/{task_id}/guide"
+        }), 400
+
+    from services.ai.bounty_content_generator import generate_bounty_post_copy
+    ok, copy_text, angle = generate_bounty_post_copy(
+        task_id=task_id,
+        intern_data=intern,
+        api_key=ctx["api_key"],
+        model=ctx.get("default_model")
+    )
+    if not ok:
+        return jsonify({"status": "error", "message": copy_text, "angle": angle}), 500
+
+    return jsonify({
+        "status": "success",
+        "copy": copy_text,
+        "angle": angle,
+        "model_used": ctx.get("default_model")
+    })
+
+
+# ── Web Push Engine REST APIs & Service Worker (RFC 8292 NIST P-256) ──────────
+
+@app.route("/sw-push.js")
+def serve_sw_push():
+    """Root service worker endpoint with Service-Worker-Allowed header for full origin scope."""
+    resp = make_response(send_from_directory(app.static_folder, "sw-push.js"))
+    resp.headers["Content-Type"] = "application/javascript"
+    resp.headers["Service-Worker-Allowed"] = "/"
+    resp.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    return resp
+
+
+@app.route("/api/push/vapid-public-key", methods=["GET"])
+def api_push_vapid_public_key():
+    from services.notifications.web_push_service import get_public_vapid_key
+    pub_key = get_public_vapid_key()
+    return jsonify({"status": "success", "publicKey": pub_key})
+
+
+@app.route("/api/push/subscribe", methods=["POST"])
+def api_push_subscribe():
+    data = request.get_json(silent=True) or {}
+    endpoint = (data.get("endpoint") or "").strip()
+    keys = data.get("keys") or {}
+    p256dh = (keys.get("p256dh") or "").strip()
+    auth = (keys.get("auth") or "").strip()
+    device_name = clean_text(data.get("device_name") or "Web Browser")
+    device_type = clean_text(data.get("device_type") or "desktop")
+    user_agent = request.headers.get("User-Agent") or (data.get("user_agent") or "")
+    ip_addr = request.headers.get("X-Forwarded-For", request.remote_addr)
+
+    intern = current_intern()
+    email = (data.get("user_email") or (intern["email"] if intern else "")).strip().lower()
+    intern_id = intern["id"] if intern else None
+
+    if not endpoint or not p256dh or not auth:
+        return jsonify({"status": "error", "message": "Missing subscription keys."}), 400
+
+    from services.notifications.web_push_service import register_device
+    with get_db() as conn:
+        ok, msg = register_device(
+            conn,
+            user_email=email,
+            endpoint=endpoint,
+            p256dh=p256dh,
+            auth=auth,
+            device_name=device_name,
+            device_type=device_type,
+            user_agent=user_agent,
+            ip_address=ip_addr,
+            intern_id=intern_id
+        )
+
+    if ok:
+        return jsonify({"status": "success", "message": msg})
+    return jsonify({"status": "error", "message": msg}), 500
+
+
+@app.route("/api/push/unsubscribe", methods=["POST"])
+def api_push_unsubscribe():
+    data = request.get_json(silent=True) or {}
+    endpoint = (data.get("endpoint") or "").strip()
+    if not endpoint:
+        return jsonify({"status": "error", "message": "Missing endpoint"}), 400
+
+    from services.notifications.web_push_service import unregister_device
+    with get_db() as conn:
+        unregister_device(conn, endpoint)
+    return jsonify({"status": "success", "message": "Device unsubscribed."})
+
+
+@app.route("/api/push/devices", methods=["GET"])
+def api_push_devices():
+    intern = current_intern()
+    if not intern:
+        return jsonify({"status": "error", "message": "Authentication required."}), 401
+
+    from services.notifications.web_push_service import get_user_devices
+    with get_db() as conn:
+        devs = get_user_devices(conn, intern_id=intern["id"], email=intern["email"])
+    return jsonify({"status": "success", "devices": devs})
+
+
+@app.route("/api/push/devices/<int:device_id>/revoke", methods=["POST"])
+def api_push_device_revoke(device_id):
+    intern = current_intern()
+    if not intern:
+        return jsonify({"status": "error", "message": "Authentication required."}), 401
+
+    from services.notifications.web_push_service import revoke_device_by_id
+    with get_db() as conn:
+        ok = revoke_device_by_id(conn, device_id, intern_id=intern["id"], email=intern["email"])
+    if ok:
+        return jsonify({"status": "success", "message": "Device push revoked."})
+    return jsonify({"status": "error", "message": "Device not found or not owned."}), 404
+
+
+@app.route("/api/push/preferences", methods=["POST"])
+def api_push_preferences():
+    intern = current_intern()
+    if not intern:
+        return jsonify({"status": "error", "message": "Authentication required."}), 401
+
+    data = request.get_json(silent=True) or {}
+    prefs = {
+        "bounties": bool(data.get("bounties", True)),
+        "sprints": bool(data.get("sprints", True)),
+        "wallet": bool(data.get("wallet", True)),
+        "attendance": bool(data.get("attendance", True)),
+        "courses": bool(data.get("courses", True)),
+        "broadcasts": bool(data.get("broadcasts", True))
+    }
+    from services.notifications.web_push_service import update_device_preferences
+    with get_db() as conn:
+        update_device_preferences(conn, intern["id"], prefs)
+    return jsonify({"status": "success", "message": "Preferences saved."})
+
+
+@app.route("/account/notifications", methods=["GET"])
+def account_notifications():
+    intern = current_intern()
+    if not intern:
+        session["next"] = "/account/notifications"
+        return redirect("/#signin")
+
+    from services.notifications.web_push_service import get_user_devices
+    with get_db() as conn:
+        devices = get_user_devices(conn, intern_id=intern["id"], email=intern["email"])
+        recent_notifs = conn.execute(
+            "SELECT * FROM notifications WHERE intern_id = ? ORDER BY id DESC LIMIT 30",
+            (intern["id"],)
+        ).fetchall()
+        recent_notifs = [dict(n) for n in recent_notifs]
+
+    return render_template(
+        "account_notifications.html",
+        intern=intern,
+        devices=devices,
+        notifications=recent_notifs
+    )
+
+
+@app.route("/admin/push-broadcast", methods=["GET", "POST"])
+def admin_push_broadcast():
+    staff = current_staff()
+    if not staff:
+        return redirect("/#signin")
+
+    with get_db() as conn:
+        total_devices = conn.execute("SELECT COUNT(*) AS c FROM web_push_devices WHERE is_active = 1").fetchone()["c"]
+        total_subscribers = conn.execute("SELECT COUNT(DISTINCT user_email) AS c FROM web_push_devices WHERE is_active = 1 AND user_email != ''").fetchone()["c"]
+        recent_logs = conn.execute("SELECT * FROM web_push_delivery_logs ORDER BY id DESC LIMIT 25").fetchall()
+        recent_logs = [dict(l) for l in recent_logs]
+
+    if request.method == "POST":
+        title = clean_text(request.form.get("title") or "")
+        body = clean_text(request.form.get("body") or "")
+        url = (request.form.get("url") or "https://lms.dbert.in").strip()
+        cohort = request.form.get("target_cohort") or "all"
+
+        if not title or not body:
+            flash("Title and body are required for broadcast.", "error")
+            return redirect("/admin/push-broadcast")
+
+        from services.notifications.web_push_service import notify_broadcast_push
+        notify_broadcast_push(title=title, body=body, url=url, target_cohort=cohort)
+        flash(f"Push broadcast queued for '{cohort}' cohort across active devices!", "success")
+        return redirect("/admin/push-broadcast")
+
+    return render_template(
+        "admin_push_broadcast.html",
+        staff=staff,
+        total_devices=total_devices,
+        total_subscribers=total_subscribers,
+        recent_logs=recent_logs
+    )
 
 
 # â”€â”€ UP5.6: Coin Discount Calculation Engine & Coin Enrollment Route â”€â”€â”€â”€â”€â”€â”€
@@ -10335,8 +11512,60 @@ def signup_stage1():
                 VALUES (?,?,?,?,1,1,?,?,1,?,?)
             """, (name, email, phone, set_password_hash(password), now_str(), newsletter, now_str(), now_str()))
 
-            # Auto-initialize baseline application in STATUS_UNDER_REVIEW for admissions review
+            # Auto-initialize baseline application in STATUS_APPLY_PENDING for admissions review
             chosen_domain = clean_text(data.get("domain"))
+
+            # Phase 48: Normalize domain slugs & shorthand to canonical VALID_DOMAINS
+            DOMAIN_SLUG_MAP = {
+                "ai-agent-development": "AI Agent Development",
+                "ai-agent": "AI Agent Development",
+                "ai": "AI Agent Development",
+                "aiml": "AI Agent Development",
+                "data-analyst": "Data Analyst",
+                "data-analytics": "Data Analyst",
+                "data-science": "Data Analyst",
+                "full-stack-development": "Full Stack Development",
+                "full-stack": "Full Stack Development",
+                "fsd": "Full Stack Development",
+                "python-automation": "Python Automation",
+                "python": "Python Automation",
+                "ui-ux-design": "UI/UX Design",
+                "ui-ux": "UI/UX Design",
+                "ui/ux": "UI/UX Design",
+                "devops-cloud": "DevOps & Cloud",
+                "devops": "DevOps & Cloud",
+                "mobile-app-development": "Mobile App Development",
+                "mobile": "Mobile App Development",
+                "cybersecurity": "Cybersecurity",
+                "digital-marketing": "Digital Marketing",
+            }
+            if chosen_domain and chosen_domain.lower() in DOMAIN_SLUG_MAP:
+                chosen_domain = DOMAIN_SLUG_MAP[chosen_domain.lower()]
+
+            pending_next = _safe_portal_next(request.args.get("next") or session.pop("next", None) or data.get("next"))
+
+            # Phase 48: Infer domain track from pending_next lead URL if not provided
+            if chosen_domain not in VALID_DOMAINS and pending_next:
+                pn_lower = pending_next.lower()
+                if "python-automation" in pn_lower:
+                    chosen_domain = "Python Automation"
+                elif "full-stack" in pn_lower:
+                    chosen_domain = "Full Stack Development"
+                elif "data-analyst" in pn_lower or "data-science" in pn_lower:
+                    chosen_domain = "Data Analyst"
+                elif "cybersecurity" in pn_lower or "threat" in pn_lower or "soc-analysis" in pn_lower:
+                    chosen_domain = "Cybersecurity"
+                elif "ui-ux" in pn_lower or "figma" in pn_lower or "design" in pn_lower:
+                    chosen_domain = "UI/UX Design"
+                elif "devops" in pn_lower or "cloud" in pn_lower or "site-reliability" in pn_lower:
+                    chosen_domain = "DevOps & Cloud"
+                elif "mobile" in pn_lower or "android" in pn_lower or "flutter" in pn_lower:
+                    chosen_domain = "Mobile App Development"
+                elif "ai-agent" in pn_lower or "aiml" in pn_lower or "machine-learning" in pn_lower:
+                    chosen_domain = "AI Agent Development"
+                elif "marketing" in pn_lower or "seo" in pn_lower:
+                    chosen_domain = "Digital Marketing"
+
             if chosen_domain not in VALID_DOMAINS:
                 chosen_domain = "AI Agent Development"
 
@@ -10356,7 +11585,7 @@ def signup_stage1():
                     clean_text(data.get("year_of_passing")) or "2026",
                     chosen_domain,
                     "Enrolled via DBERT portal direct registration.",
-                    STATUS_UNDER_REVIEW,
+                    STATUS_APPLY_PENDING,
                     visitor_id,
                     now_str(),
                     now_str()
@@ -10369,7 +11598,7 @@ def signup_stage1():
                 if app_id:
                     conn.execute("UPDATE intern_accounts SET application_id=?, domain=? WHERE email=?",
                                  (app_id, chosen_domain, email))
-            # Â§6.1 â€” attribute the signup to a referrer if the 30-day cookie is
+            # §6.1 — attribute the signup to a referrer if the 30-day cookie is
             # present. Threaded through the EXISTING flow; never blocks signup.
             try:
                 new_id = conn.execute("SELECT id FROM intern_accounts WHERE email=?",
@@ -10379,7 +11608,7 @@ def signup_stage1():
                     outcome, detail = attach_referral_on_signup(
                         conn, new_id["id"], email, ref_code, visitor_id=data.get("visitor_id"))
                     if outcome == "ok":
-                        ga4_server_event("referral_signup",                    # Â§8
+                        ga4_server_event("referral_signup",                    # §8
                                          {"source_code": ref_code},
                                          client_id=data.get("visitor_id"))
                     else:
@@ -10390,24 +11619,24 @@ def signup_stage1():
             conn.commit()
 
         token = create_session(email, "intern")
-        # Track 2 Â§3 funnel: a logged-out Apply-Now stashed the post URL in the flask
+        # Track 2 §3 funnel: a logged-out Apply-Now stashed the post URL in the flask
         # session. stage1's response replaces that cookie with the DB auth token (same
-        # cookie name), so persist the resume target on the session row now â€” it's the
-        # last moment the flask-session 'next' is still readable. Resumed at stage3.
+        # cookie name), so persist the resume target on the session row now — it's the
+        # last moment the flask-session 'next' is still readable. Resumed at stage2/3.
         pending_next = _safe_portal_next(request.args.get("next") or session.pop("next", None) or data.get("next"))
         if pending_next:
             with get_db() as conn:
                 conn.execute("UPDATE user_sessions SET next_url=? WHERE session_token=?",
                              (pending_next, token))
                 conn.commit()
-            resp = make_response(jsonify({
-                "status": "success",
-                "message": "Account created! Redirecting to application...",
-                "stage": 1,
-                "redirect": pending_next
-            }))
-        else:
-            resp = make_response(jsonify({"status": "success", "message": "Account created!", "stage": 1, "next": 2}))
+
+        # Phase 48: DO NOT redirect prematurely at stage1! Let user complete Stage 2 (Academics)
+        resp = make_response(jsonify({
+            "status": "success",
+            "message": "Account created! Please complete your academic profile.",
+            "stage": 1,
+            "next": 2
+        }))
         link_device_to_email(visitor_id, email)
         _set_session_cookie(resp, token)
         return resp
@@ -10455,15 +11684,27 @@ def signup_stage2():
                     signup_stage=?,updated_at=? WHERE LOWER(email)=LOWER(?)
             """, (city, college, course, semester, year, domain, new_stage, now_str(), email))
 
-            # Sync applications table so the intern's actual college and domain are reflected immediately
+            # Phase 48: Sync applications table — update college, domain, and promote from 'Apply Pending' to 'Under Review'
             conn.execute("""
                 UPDATE applications
                 SET city=?, college=?, course=?, semester=?, year_of_passing=?,
-                    domain=COALESCE(NULLIF(?,''), domain), updated_at=?
+                    domain=COALESCE(NULLIF(?,''), domain),
+                    status=CASE WHEN status IN (?, 'Draft', 'Incomplete Profile') THEN ? ELSE status END,
+                    updated_at=?
                 WHERE LOWER(email)=LOWER(?)
-            """, (city, college, course, semester, year, domain, now_str(), email))
+            """, (city, college, course, semester, year, domain, STATUS_APPLY_PENDING, STATUS_UNDER_REVIEW, now_str(), email))
             conn.commit()
-        return jsonify({"status": "success", "stage": 2, "next": 3})
+
+        # Phase 48: If there is a stashed next_url from an acquisition lead, return it
+        resume = _safe_portal_next(user.get("next_url"))
+        return jsonify({
+            "status": "success",
+            "message": "Academic details saved successfully!",
+            "stage": 2,
+            "next": 3,
+            "has_next": bool(resume),
+            "redirect": resume
+        })
     except Exception as e:
         log_error("signup-stage2", e)
         return jsonify({"status": "error", "message": "Server error. Please try again."}), 500
@@ -12951,7 +14192,7 @@ def apply_entry(post_id):
     nxt = _safe_portal_next(dest)
     if nxt:
         session["next"] = nxt
-    return redirect("/signup")
+    return redirect("/signup?next=" + quote(dest))
 
 
 @app.route("/posts/<int:post_id>/apply", methods=["POST"])
@@ -12983,11 +14224,13 @@ def post_apply(post_id):
         return jsonify({"status": "error", "message": "This post is no longer accepting applications."}), 400
     data = request.get_json(force=True, silent=True) or {}
     comment = (data.get("comment") or "").strip()
-    if not comment:
-        return jsonify({"status": "error", "message": "A comment is required to apply."}), 400
+    if len(comment) < 15:
+        return jsonify({"status": "error", "message": "Please write at least 15 characters explaining why you are suitable for this opportunity."}), 400
+    if len(comment) > 2000:
+        return jsonify({"status": "error", "message": "Suitability comment is too long (maximum 2000 characters)."}), 400
     with get_db() as conn:
         cv = conn.execute("SELECT id FROM cvs WHERE intern_id=?", (intern["id"],)).fetchone()
-        cv_id = cv["id"] if cv else None  # CV is OPTIONAL â€” never block on a missing one
+        cv_id = cv["id"] if cv else None  # CV is OPTIONAL — never block on a missing one
         is_new = conn.execute(
             "SELECT 1 FROM post_applications WHERE post_id=? AND intern_id=?", (post_id, intern["id"])
         ).fetchone() is None
@@ -13021,13 +14264,28 @@ def post_apply(post_id):
             (post_id, intern["id"], comment, cv_id, app_status, now_str(), intern_email),
         )
         conn.commit()
-    if is_new:  # T10: confirmation notice -- only on the first apply, not on a comment-edit re-submit
+
+    ext_url = (post.get("external_url") or post.get("link") or post.get("application_url") or "").strip()
+    is_external = bool(ext_url and (ext_url.startswith("http://") or ext_url.startswith("https://")))
+
+    if is_new:
         try:
-            notify_post_application_received(intern["name"], intern["email"], post["title"], post["company_name"])
+            # Asynchronously send transactional pre-vetted elevation invite
+            send_job_pre_vetted_elevate_email(
+                intern.get("name") or "",
+                intern_email,
+                post["title"],
+                post.get("company_name") or "Partner Company"
+            )
         except Exception as e:
             log_error("post-apply-notify", e)
+
     return jsonify({
-        "status": "success", "has_cv": cv_id is not None,
+        "status": "success",
+        "routing": "external" if is_external else "internal",
+        "redirect_url": ext_url if is_external else None,
+        "has_cv": cv_id is not None,
+        "message": "Application pitch recorded successfully!" if is_external else "Application submitted successfully! Your application note has been recorded for the hiring team.",
         "cv_hint": None if cv_id else "Add a CV to strengthen your application.",
     })
 
@@ -14182,14 +15440,15 @@ def intern_me():
             log_error("intern-me-refresh-session", _e)
 
         with get_db() as conn:
+            email_clean = (email or "").strip().lower()
             acct = conn.execute(
-                "SELECT * FROM intern_accounts WHERE email=? AND is_active=1", (email,)
+                "SELECT * FROM intern_accounts WHERE LOWER(email)=? AND is_active=1", (email_clean,)
             ).fetchone()
             apps = conn.execute(
-                "SELECT * FROM applications WHERE email=? ORDER BY created_at DESC", (email,)
+                "SELECT * FROM applications WHERE LOWER(email)=? ORDER BY created_at DESC", (email_clean,)
             ).fetchall()
             enr = conn.execute(
-                "SELECT * FROM enrollments WHERE email=? ORDER BY id DESC LIMIT 1", (email,)
+                "SELECT * FROM enrollments WHERE LOWER(email)=? ORDER BY id DESC LIMIT 1", (email_clean,)
             ).fetchone()
             paid_ok, _paid_reason, _ = paid_enroll_eligible(conn, email)
             # Wave A fix: this route previously never queried post_applications at all,
@@ -14396,6 +15655,19 @@ def intern_me():
             except Exception as _t_err:
                 log_error("intern-me-available-tasks", _t_err)
 
+        acct_college = (acct.get("college") or "").strip().lower() if acct else ""
+        acct_stage = int(acct.get("signup_stage") or 3) if acct else 3
+        if flow_st and flow_st.get("stage_num", 1) >= 3:
+            needs_academic_profile = False
+        else:
+            needs_academic_profile = bool(
+                acct_stage < 2 or
+                not acct_college or
+                acct_college in ("pending profile", "none", "n/a", "nil", "student", "college", "university")
+            )
+
+        next_action = build_intern_next_action(flow_st, hours_logged=attendance_summary.get("hours", 0.0)) if flow_st else None
+
         return jsonify({
             "status": overall_status,
             "attendance_status": attendance_status,
@@ -14403,6 +15675,7 @@ def intern_me():
             "coins_status": coins_status,
             "course_enrollment_warning": course_enrollment_warning,
             "available_tasks": available_tasks,
+            "next_action": next_action,
             "intern": {
                 "name":             acct["name"],
                 "email":            acct["email"],
@@ -14416,6 +15689,7 @@ def intern_me():
                 "tutor_completion_pct": top_pct,
                 "learning_completion_pct": top_pct,
                 "signup_stage":     int(acct["signup_stage"] or 3),
+                "needs_academic_profile": needs_academic_profile,
             },
             "applications": safe_apps,
             "job_applications": [row_to_dict(r) for r in job_apps],
@@ -14443,6 +15717,11 @@ def intern_me():
                 "domain": flow_st["domain"],
                 "is_accepted": flow_st["is_accepted"],
                 "can_upload_payment": flow_st["can_upload_payment"],
+                "has_paid_deposit": flow_st.get("has_paid_deposit", False),
+                "has_paid_balance": flow_st.get("has_paid_balance", False),
+                "balance_due": flow_st.get("balance_due", 1500),
+                "days_since_joining": flow_st.get("days_since_joining", 0),
+                "balance_grace_expired": flow_st.get("balance_grace_expired", False),
             } if flow_st else None,
             "flow_stage": flow_st["stage"] if flow_st else None,
             "flow_stage_num": flow_st["stage_num"] if flow_st else None,
@@ -16439,6 +17718,13 @@ def attendance_ping():
                     (new_total, now_str(), user["email"], existing["id"])
                 )
                 conn.commit()
+
+                if (existing["total_minutes"] or 0) < 600 <= new_total:
+                    try:
+                        from services.notifications.web_push_service import notify_attendance_goal_push
+                        notify_attendance_goal_push(user["email"], round(new_total / 60.0, 1))
+                    except Exception as _p_err:
+                        log_error("attendance-push-goal", _p_err)
             else:
                 # Initial ping for this week: start session at 0 minutes, record start timestamp
                 new_total = 0
@@ -17650,8 +18936,7 @@ def admin_enrollment_review():
             ed = row_to_dict(enr)
             joining_date = ed.get("joining_date", "")
             if action == "accept":
-                send_status_update_email(ed["name"], ed["email"], ed["domain"], STATUS_ACCEPTED,
-                                         "Payment verified. You're confirmed!", joining_date)
+                send_enrollment_acceptance_dossier_email(ed)
             elif is_paid:
                 send_paid_payment_rejected_email(ed["name"], ed["email"], ed["domain"])
             else:
@@ -17695,8 +18980,7 @@ def admin_enrollment_bulk_review():
                         ed = row_to_dict(enr)
                         joining_date = ed.get("joining_date", "")
                         if action == "accept":
-                            send_status_update_email(ed["name"], ed["email"], ed["domain"], STATUS_ACCEPTED,
-                                                     "Payment verified. Confirmed!", joining_date)
+                            send_enrollment_acceptance_dossier_email(ed)
                         elif is_paid:
                             send_paid_payment_rejected_email(ed["name"], ed["email"], ed["domain"])
                         else:
@@ -17846,8 +19130,7 @@ def admin_update_enrollment_status():
             ed = row_to_dict(enr)
             joining_date = ed.get("joining_date", "")
             if nps == "Accepted":
-                send_status_update_email(ed["name"], ed["email"], ed["domain"], STATUS_ACCEPTED,
-                                         "Payment verified. You're confirmed!", joining_date)
+                send_enrollment_acceptance_dossier_email(ed)
             elif nps == "Rejected" and is_paid:
                 send_paid_payment_rejected_email(ed["name"], ed["email"], ed["domain"])
             elif nps == "Rejected":
@@ -18028,6 +19311,9 @@ def admin_enrollment_edit():
                     conn.execute("UPDATE applications SET status=?, updated_at=? WHERE email=? AND domain=?",
                                  (STATUS_ACCEPTED, now_str(), email, domain))
                     handle_enrollment_accepted(conn, enr_id)
+                    enr_updated = conn.execute("SELECT * FROM enrollments WHERE id=?", (enr_id,)).fetchone()
+                    if enr_updated:
+                        send_enrollment_acceptance_dossier_email(row_to_dict(enr_updated), conn=conn)
                 elif payment_status == "Rejected":
                     reject_status = STATUS_PAID_ENROLLED if product == "paid_program" else STATUS_ENROLLMENT_PENDING
                     conn.execute("UPDATE applications SET status=?, updated_at=? WHERE email=? AND domain=?",
@@ -19102,12 +20388,492 @@ def admin_csv_interviews():
         log_error("csv-interviews", e); return "Error", 500
 
 
+def generate_utr_voucher_svg(record: dict) -> str:
+    """Generates an executive vector SVG payment receipt voucher."""
+    name = html.escape(str(record.get("name") or "Candidate"))
+    email = html.escape(str(record.get("email") or "—"))
+    phone = html.escape(str(record.get("phone") or "—"))
+    utr = html.escape(str(record.get("utr") or record.get("utr_number") or "—"))
+    amount = record.get("amount") or 499
+    domain = html.escape(str(record.get("domain") or "Technical Track"))
+    college = html.escape(str(record.get("college") or "Affiliated Institution"))[:48]
+    date_str = html.escape(str(record.get("created_at") or record.get("timestamp") or "2026-11-18")[:19])
+    batch = html.escape(str(record.get("batch_label") or "Admissions Cohort"))
+    status = html.escape(str(record.get("payment_status") or "Pending Verification"))
+    status_color = "#10B981" if status.lower() in ("verified", "accepted", "approved") else "#F59E0B"
+
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 560" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#080E1A"/>
+      <stop offset="50%" stop-color="#0F172A"/>
+      <stop offset="100%" stop-color="#1E293B"/>
+    </linearGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#C59B27"/>
+      <stop offset="50%" stop-color="#E2B96F"/>
+      <stop offset="100%" stop-color="#FCD34D"/>
+    </linearGradient>
+    <linearGradient id="cardBg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0B132B"/>
+      <stop offset="100%" stop-color="#070C18"/>
+    </linearGradient>
+    <filter id="cardShadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+
+  <rect width="840" height="560" fill="#030712"/>
+  <rect x="20" y="20" width="800" height="520" rx="16" fill="url(#bgGrad)" stroke="#334155" stroke-width="1.5" filter="url(#cardShadow)"/>
+  <rect x="28" y="28" width="784" height="504" rx="12" fill="none" stroke="url(#goldGrad)" stroke-width="1" stroke-dasharray="8,5" opacity="0.4"/>
+  <rect x="20" y="20" width="800" height="6" rx="3" fill="url(#goldGrad)"/>
+
+  <!-- Header Banner -->
+  <g transform="translate(50, 48)">
+    <rect x="0" y="0" width="46" height="46" rx="10" fill="#1E293B" stroke="url(#goldGrad)" stroke-width="1.5"/>
+    <text x="23" y="29" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="20" font-weight="900" fill="url(#goldGrad)" text-anchor="middle">D</text>
+
+    <text x="60" y="20" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="18" font-weight="800" fill="#F8FAFC" letter-spacing="1">DBERT ADMISSIONS &amp; CREDENTIALS</text>
+    <text x="60" y="38" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="600" fill="#94A3B8" letter-spacing="0.5">OFFICIAL UPI TRANSACTION VERIFICATION VOUCHER · ADMISSIONS LEDGER</text>
+    
+    <rect x="580" y="6" width="160" height="30" rx="15" fill="#0F172A" stroke="{status_color}" stroke-width="1.2"/>
+    <circle cx="596" cy="21" r="4" fill="{status_color}"/>
+    <text x="610" y="25" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" font-weight="700" fill="{status_color}" letter-spacing="0.5">{status.upper()}</text>
+  </g>
+
+  <line x1="50" y1="110" x2="790" y2="110" stroke="#334155" stroke-width="1"/>
+
+  <!-- Candidate Profile Grid -->
+  <g transform="translate(50, 130)">
+    <text x="0" y="0" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" font-weight="700" fill="#64748B" letter-spacing="0.8">CANDIDATE FULL NAME</text>
+    <text x="0" y="24" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="17" font-weight="700" fill="#F8FAFC">{name}</text>
+
+    <text x="0" y="66" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" font-weight="700" fill="#64748B" letter-spacing="0.8">REGISTERED EMAIL</text>
+    <text x="0" y="90" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="15" font-weight="600" fill="#38BDF8">{email}</text>
+
+    <text x="0" y="132" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" font-weight="700" fill="#64748B" letter-spacing="0.8">COLLEGE / INSTITUTION</text>
+    <text x="0" y="156" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13.5" font-weight="500" fill="#CBD5E1">{college}</text>
+
+    <text x="400" y="0" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" font-weight="700" fill="#64748B" letter-spacing="0.8">INTERNSHIP DOMAIN TRACK</text>
+    <text x="400" y="24" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="16" font-weight="700" fill="#F8FAFC">{domain}</text>
+
+    <text x="400" y="66" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" font-weight="700" fill="#64748B" letter-spacing="0.8">WHATSAPP CONTACT</text>
+    <text x="400" y="90" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="15" font-weight="600" fill="#E2E8F0">{phone}</text>
+
+    <text x="400" y="132" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" font-weight="700" fill="#64748B" letter-spacing="0.8">COHORT / BATCH</text>
+    <text x="400" y="156" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13.5" font-weight="500" fill="#CBD5E1">{batch}</text>
+  </g>
+
+  <!-- Highlight Box: Verified 12-Digit UPI UTR & Transaction Value -->
+  <g transform="translate(50, 320)">
+    <rect x="0" y="0" width="740" height="110" rx="12" fill="url(#cardBg)" stroke="#334155" stroke-width="1.2"/>
+    <rect x="0" y="0" width="6" height="110" rx="3" fill="url(#goldGrad)"/>
+
+    <text x="25" y="32" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11.5" font-weight="700" fill="url(#goldGrad)" letter-spacing="1">RECORDED 12-DIGIT UPI REFERENCE NUMBER (UTR)</text>
+    <text x="25" y="78" font-family="'Courier New', Courier, monospace" font-size="32" font-weight="800" fill="#FCD34D" letter-spacing="5">{utr}</text>
+
+    <text x="520" y="32" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11.5" font-weight="700" fill="#94A3B8" letter-spacing="0.8">TRANSACTION VALUE</text>
+    <text x="520" y="76" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="28" font-weight="800" fill="#10B981">₹{amount}</text>
+  </g>
+
+  <!-- Footer Metadata & Cryptographic Seal -->
+  <g transform="translate(50, 460)">
+    <text x="0" y="18" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" font-weight="500" fill="#64748B">SUBMISSION TIMESTAMP: <tspan fill="#CBD5E1" font-family="monospace">{date_str} UTC</tspan></text>
+    <text x="0" y="38" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" font-weight="500" fill="#64748B">LEDGER AUTHORITY: <tspan fill="#E2B96F">DBERT Admissions Verification Subsystem (dbert.in / lms.dbert.in)</tspan></text>
+
+    <g transform="translate(670, -10)">
+      <circle cx="35" cy="25" r="28" fill="#0F172A" stroke="url(#goldGrad)" stroke-width="1.5"/>
+      <circle cx="35" cy="25" r="24" fill="none" stroke="#E2B96F" stroke-width="0.8" stroke-dasharray="3,2"/>
+      <path d="M 27 25 L 32 30 L 44 18" fill="none" stroke="#10B981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </g>
+</svg>"""
+
+
+def generate_missing_asset_svg(filename: str) -> str:
+    """Generates a clean vector fallback when a requested physical file does not exist on disk."""
+    clean = html.escape(str(filename or "Asset"))
+    return f"""<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 360" width="100%" height="100%">
+  <rect width="600" height="360" rx="12" fill="#0F172A" stroke="#334155" stroke-width="1.5"/>
+  <circle cx="300" cy="110" r="36" fill="#1E293B" stroke="#F59E0B" stroke-width="2"/>
+  <path d="M 300 92 L 300 114 M 300 126 L 300 130" stroke="#F59E0B" stroke-width="3" stroke-linecap="round"/>
+  <text x="300" y="180" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="18" font-weight="700" fill="#F8FAFC" text-anchor="middle">Proof Asset Not Found On Disk</text>
+  <text x="300" y="210" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="13" font-weight="500" fill="#94A3B8" text-anchor="middle">The file has either been archived or recorded purely as a ledger reference.</text>
+  <rect x="80" y="240" width="440" height="42" rx="8" fill="#080E1A" stroke="#334155"/>
+  <text x="300" y="266" font-family="monospace" font-size="12" fill="#E2B96F" text-anchor="middle">{clean}</text>
+  <text x="300" y="320" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="11" fill="#64748B" text-anchor="middle">DBERT Verification Subsystem · Reference Ledger</text>
+</svg>"""
+
+
+def get_utr_voucher_record(utr_val: str, filename: str = "", email: str = "") -> dict:
+    """Looks up candidate details for a given UTR from PostgreSQL enrollments, intern_accounts, and JSON fallbacks."""
+    record = {
+        "utr": utr_val,
+        "name": "Candidate",
+        "email": email or "—",
+        "phone": "—",
+        "college": "Affiliated Institution",
+        "domain": "Technical Track",
+        "amount": 499,
+        "batch_label": "Admissions Cohort",
+        "payment_status": "Pending Verification",
+        "created_at": now_str()
+    }
+    try:
+        with get_db() as conn:
+            q = "SELECT * FROM enrollments WHERE utr = ? OR payment_screenshot = ? OR payment_screenshot LIKE ?"
+            params = [utr_val, filename, f"%{utr_val}%"]
+            if email:
+                q += " OR LOWER(email) = ?"
+                params.append(email.strip().lower())
+            q += " ORDER BY id DESC LIMIT 1"
+            row = conn.execute(q, params).fetchone()
+            
+            if row:
+                d = dict(row)
+                record["name"] = d.get("name") or record["name"]
+                record["email"] = d.get("email") or record["email"]
+                record["phone"] = d.get("phone") or record["phone"]
+                record["college"] = d.get("college") or record["college"]
+                record["domain"] = d.get("domain") or record["domain"]
+                record["amount"] = d.get("amount") or (1999 if d.get("product") == "paid_1999" else 499)
+                record["batch_label"] = d.get("batch_label") or record["batch_label"]
+                record["payment_status"] = d.get("payment_status") or record["payment_status"]
+                record["created_at"] = str(d.get("created_at") or d.get("timestamp") or record["created_at"])
+                
+                # Fetch missing phone/college/domain from intern_accounts
+                if record["email"] != "—" and (record["phone"] in ("—", "") or record["college"] in ("—", "Affiliated Institution", "")):
+                    acct = conn.execute("SELECT * FROM intern_accounts WHERE LOWER(email)=?", (record["email"].lower(),)).fetchone()
+                    if acct:
+                        ad = dict(acct)
+                        if record["phone"] in ("—", "") and ad.get("phone"):
+                            record["phone"] = ad.get("phone")
+                        if record["college"] in ("—", "Affiliated Institution", "") and ad.get("college"):
+                            record["college"] = ad.get("college")
+                        if (record["domain"] in ("—", "Technical Track", "") or record["domain"] == "Pending Profile") and ad.get("domain"):
+                            record["domain"] = ad.get("domain")
+                return record
+    except Exception as e:
+        log_error("utr-lookup-db", e)
+
+    # Fallback to balance_enrollments_1500.json
+    try:
+        json_path = "/var/www/dbert-website-lms/data/balance_enrollments_1500.json"
+        if not os.path.exists(json_path):
+            json_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "data", "balance_enrollments_1500.json")
+        if os.path.exists(json_path):
+            with open(json_path, "r", encoding="utf-8") as f:
+                items = json.load(f)
+                for item in items:
+                    if item.get("utrNumber") == utr_val or (record["email"] != "—" and item.get("email") == record["email"]) or (email and item.get("email") == email):
+                        record["name"] = item.get("fullName") or record["name"]
+                        record["email"] = item.get("email") or record["email"]
+                        record["phone"] = item.get("phone") or record["phone"]
+                        record["domain"] = item.get("domain") or record["domain"]
+                        record["college"] = item.get("college") or record["college"]
+                        record["amount"] = item.get("amountPaid") or 1500
+                        record["payment_status"] = item.get("status") or record["payment_status"]
+                        record["created_at"] = item.get("submittedAt") or record["created_at"]
+                        break
+    except Exception as e:
+        log_error("utr-lookup-json", e)
+
+    return record
+
+
+def send_enrollment_acceptance_dossier_email(enr_record, conn=None):
+    """
+    Dispatches the official Digital Payment Verification Voucher (Electronic Receipt)
+    and comprehensive 6-Milestone Next Steps Roadmap email to the intern upon enrollment approval.
+    """
+    try:
+        enr_dict = {}
+        if isinstance(enr_record, (int, str)):
+            # If passed an ID, query database
+            with (conn if conn else get_db()) as db:
+                row = db.execute("SELECT * FROM enrollments WHERE id=?", (int(enr_record),)).fetchone()
+                if not row:
+                    return False
+                enr_dict = row_to_dict(row)
+        elif isinstance(enr_record, dict):
+            enr_dict = dict(enr_record)
+        elif hasattr(enr_record, "keys"):
+            enr_dict = row_to_dict(enr_record)
+        else:
+            return False
+
+        name = enr_dict.get("name") or "Candidate"
+        first_name = name.split()[0]
+        email = (enr_dict.get("email") or "").strip().lower()
+        if not email or "@" not in email:
+            return False
+
+        domain = enr_dict.get("domain") or "AI Agent Development"
+        college = enr_dict.get("college") or "Affiliated Institution"
+        joining_date = enr_dict.get("joining_date") or "2026-11-09"
+        batch_label = make_batch_label(joining_date)
+        product = enr_dict.get("product") or "free_deposit"
+        amount = enr_dict.get("amount") or (1999 if product == "paid_program" else 499)
+        screenshot = enr_dict.get("payment_screenshot") or ""
+        enr_id = enr_dict.get("id") or 1
+
+        # Extract or resolve 12-digit UTR
+        m = re.search(r"\d{10,14}", screenshot or "")
+        if not m:
+            m = re.search(r"\d{10,14}", str(enr_dict.get("admin_note") or ""))
+        if not m and enr_dict.get("utr"):
+            m = re.search(r"\d{10,14}", str(enr_dict.get("utr")))
+
+        utr_digits = m.group(0) if m else f"UTR{enr_id:08d}"
+
+        # Calculate completion date (joining_date + 60 days)
+        try:
+            from datetime import datetime, timedelta
+            j_clean = str(joining_date).split()[0]
+            j_dt = datetime.strptime(j_clean, "%Y-%m-%d")
+            completion_date = (j_dt + timedelta(days=60)).strftime("%d %b %Y")
+        except Exception:
+            completion_date = "08 Jan 2027"
+
+        # Generate Vector SVG Voucher and Token
+        voucher_record = get_utr_voucher_record(utr_digits, screenshot, email=email)
+        voucher_record["name"] = name
+        voucher_record["email"] = email
+        voucher_record["domain"] = domain
+        voucher_record["college"] = college
+        voucher_record["amount"] = amount
+        voucher_record["batch_label"] = batch_label
+        voucher_record["payment_status"] = "Accepted"
+        svg_content = generate_utr_voucher_svg(voucher_record)
+
+        token = _email_sig("receipt", utr_digits)
+        voucher_url = f"https://lms.dbert.in/portal/receipt/utr_{utr_digits}.receipt?token={token}"
+
+        subject = f"DBERT — Enrollment Confirmed & Official Payment Voucher (UTR: {utr_digits})"
+
+        # Build in-body Electronic Payment Verification Voucher Card (Outlook & Gmail safe tables)
+        voucher_card_html = f"""
+        <div style="background-color:#131926;border:1.5px solid #E2B96F;border-radius:12px;padding:22px 24px;margin:22px 0;">
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%">
+            <tr>
+              <td style="vertical-align:top;">
+                <div style="color:#E2B96F;font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;">DBERT Admissions Directorate</div>
+                <h3 style="color:#FFFFFF;font-size:17px;font-weight:800;margin:4px 0 0;">Official Payment Verification Voucher</h3>
+              </td>
+              <td align="right" style="vertical-align:top;">
+                <span style="background-color:#064E3B;border:1px solid #10B981;color:#34D399;font-weight:700;padding:4px 12px;border-radius:999px;font-size:11px;display:inline-block;">✓ VERIFIED &amp; ACCEPTED</span>
+              </td>
+            </tr>
+          </table>
+
+          <div style="background-color:#0B0F17;border:1px solid #334155;border-radius:8px;padding:12px 16px;margin:16px 0;text-align:center;">
+            <div style="color:#E2B96F;font-size:11px;font-weight:700;letter-spacing:1px;margin-bottom:4px;">VERIFIED 12-DIGIT UPI REFERENCE (UTR)</div>
+            <div style="font-family:'Courier New',Courier,monospace;font-size:22px;font-weight:800;color:#FCD34D;letter-spacing:3px;">{utr_digits}</div>
+          </div>
+
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top:12px;">
+            <tr>
+              <td style="width:50%;vertical-align:top;padding-right:10px;">
+                <p style="color:#64748B;font-size:11px;font-weight:700;margin:0 0 2px;">CANDIDATE NAME</p>
+                <p style="color:#FFFFFF;font-size:13.5px;font-weight:600;margin:0 0 12px;">{name}</p>
+
+                <p style="color:#64748B;font-size:11px;font-weight:700;margin:0 0 2px;">REGISTERED EMAIL</p>
+                <p style="color:#38BDF8;font-size:13px;font-weight:500;margin:0 0 12px;">{email}</p>
+
+                <p style="color:#64748B;font-size:11px;font-weight:700;margin:0 0 2px;">COLLEGE / INSTITUTION</p>
+                <p style="color:#CBD5E1;font-size:12.5px;font-weight:500;margin:0;">{college}</p>
+              </td>
+              <td style="width:50%;vertical-align:top;padding-left:10px;">
+                <p style="color:#64748B;font-size:11px;font-weight:700;margin:0 0 2px;">CERTIFIED TRACK</p>
+                <p style="color:#FCD34D;font-size:13.5px;font-weight:700;margin:0 0 12px;">{domain}</p>
+
+                <p style="color:#64748B;font-size:11px;font-weight:700;margin:0 0 2px;">BATCH KICKOFF</p>
+                <p style="color:#FFFFFF;font-size:13px;font-weight:600;margin:0 0 12px;">{batch_label}</p>
+
+                <p style="color:#64748B;font-size:11px;font-weight:700;margin:0 0 2px;">AMOUNT PAID</p>
+                <p style="color:#10B981;font-size:16px;font-weight:800;margin:0;">₹{amount:,}</p>
+              </td>
+            </tr>
+          </table>
+
+          <div style="border-top:1px solid #1E293B;margin-top:16px;padding-top:14px;text-align:center;">
+            <a href="{voucher_url}" style="display:inline-block;background:linear-gradient(135deg,#E2B96F,#C59A45);color:#0B0F17;font-weight:800;font-size:12.5px;text-decoration:none;padding:10px 22px;border-radius:8px;box-shadow:0 4px 12px rgba(226,185,111,0.25);">
+              <i class="fas fa-file-invoice"></i> View &amp; Print Official Vector Voucher (.SVG) &rarr;
+            </a>
+            <p style="color:#94A3B8;font-size:11.5px;line-height:1.5;margin:10px 0 0;">
+              📎 An official vector SVG copy (<strong>DBERT_Payment_Voucher_{utr_digits}.svg</strong>) is attached to this email for your offline records.
+            </p>
+          </div>
+        </div>
+        """
+
+        # Build 6-Milestone Chronological Lifecycle Roadmap
+        roadmap_html = f"""
+        <div style="margin:26px 0 16px;border-top:1px solid #232a36;padding-top:22px;">
+          <div style="color:#E2B96F;font-size:11.5px;font-weight:800;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">Actionable Next Steps</div>
+          <h2 style="color:#FFFFFF;font-size:17px;font-weight:800;margin:0 0 16px;">Your Internship Lifecycle &amp; Milestone Roadmap</h2>
+
+          <!-- Milestone 1: Seat Confirmation & Payment Reconciled -->
+          <div style="background-color:#111827;border-left:4px solid #10B981;border-radius:0 8px 8px 0;padding:14px 16px;margin-bottom:12px;">
+            <strong style="color:#FFFFFF;font-size:13.5px;">1. Admission Confirmed &amp; Payment Reconciled</strong>
+            <span style="background-color:#064E3B;color:#34D399;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;margin-left:8px;">COMPLETED ✓</span>
+            <p style="color:#94A3B8;font-size:12.5px;line-height:1.6;margin:6px 0 0;">Your enrollment payment is verified and permanently sealed on the DBERT Sovereign Ledger.</p>
+          </div>
+
+          <!-- Milestone 2: Sign Official Letter of Offer -->
+          <div style="background-color:#111827;border-left:4px solid #F59E0B;border-radius:0 8px 8px 0;padding:14px 16px;margin-bottom:12px;">
+            <strong style="color:#FFFFFF;font-size:13.5px;">2. Review &amp; Sign Official Letter of Offer</strong>
+            <span style="background-color:#78350F;color:#FCD34D;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;margin-left:8px;">ACTION REQUIRED</span>
+            <p style="color:#CBD5E1;font-size:12.5px;line-height:1.6;margin:6px 0 8px;">Review appointment terms, weekly commitment (10 hrs/week), and ₹5,000 milestone stipend provisions. Execute your digital signature on canvas to unlock your counter-signed offer PDF.</p>
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td bgcolor="#E2B96F" style="border-radius:6px;">
+              <a href="https://lms.dbert.in/portal/offer" style="display:inline-block;padding:8px 16px;color:#0B0F17;text-decoration:none;font-weight:800;font-size:12px;border-radius:6px;">Sign Offer Letter &rarr;</a>
+            </td></tr></table>
+          </div>
+
+          <!-- Milestone 3: 7-Day Sprint Curriculum & AI Tutor -->
+          <div style="background-color:#111827;border-left:4px solid #3B82F6;border-radius:0 8px 8px 0;padding:14px 16px;margin-bottom:12px;">
+            <strong style="color:#FFFFFF;font-size:13.5px;">3. 7-Day Sprint Curriculum &amp; 24/7 AI Tutor</strong>
+            <span style="background-color:#1E3A8A;color:#93C5FD;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;margin-left:8px;">CURRICULUM ACTIVE</span>
+            <p style="color:#CBD5E1;font-size:12.5px;line-height:1.6;margin:6px 0 8px;">You are auto-enrolled in your specialized {domain} track. Complete your daily foundational modules, take hands-on quizzes, and get instant unblocking assistance from the 24/7 AI Tutor.</p>
+            <a href="https://lms.dbert.in/courses" style="color:#E2B96F;font-size:12.5px;font-weight:700;text-decoration:none;">Open Sprint Modules &rarr;</a>
+          </div>
+
+          <!-- Milestone 4: Social Bounties & Ambassador Network -->
+          <div style="background-color:#111827;border-left:4px solid #8B5CF6;border-radius:0 8px 8px 0;padding:14px 16px;margin-bottom:12px;">
+            <strong style="color:#FFFFFF;font-size:13.5px;">4. Social Bounties &amp; Ambassador Network</strong>
+            <span style="background-color:#4C1D95;color:#C4B5FD;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;margin-left:8px;">EARNINGS ACTIVE</span>
+            <p style="color:#CBD5E1;font-size:12.5px;line-height:1.6;margin:6px 0 8px;">Earn 50 DBERT Coins per verified technical article or project breakdown published to the community. In addition, your unique Ambassador referral link is active—earn a 10% direct reward on peer enrollments.</p>
+            <a href="https://lms.dbert.in/tasks" style="color:#E2B96F;font-size:12.5px;font-weight:700;text-decoration:none;">Submit Articles</a> &nbsp;&middot;&nbsp; 
+            <a href="https://lms.dbert.in/ambassador" style="color:#E2B96F;font-size:12.5px;font-weight:700;text-decoration:none;">Ambassador Dashboard &rarr;</a>
+          </div>
+
+          <!-- Milestone 5: 1:1 Faculty & Group Mentorship Booking -->
+          <div style="background-color:#111827;border-left:4px solid #EC4899;border-radius:0 8px 8px 0;padding:14px 16px;margin-bottom:12px;">
+            <strong style="color:#FFFFFF;font-size:13.5px;">5. 1:1 Faculty &amp; Group Mentorship Booking</strong>
+            <span style="background-color:#831843;color:#F472B6;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;margin-left:8px;">CALENDAR OPEN</span>
+            <p style="color:#CBD5E1;font-size:12.5px;line-height:1.6;margin:6px 0 8px;">Connect directly with senior engineers and domain mentors. Use our interactive 14-day calendar to schedule 1:1 mentorship or attend group project review sessions.</p>
+            <a href="https://lms.dbert.in/mentors/slots" style="color:#E2B96F;font-size:12.5px;font-weight:700;text-decoration:none;">Book Mentorship Session &rarr;</a>
+          </div>
+
+          <!-- Milestone 6: Capstone Milestone & ₹5,000 Stipend Unlock -->
+          <div style="background-color:#111827;border-left:4px solid #10B981;border-radius:0 8px 8px 0;padding:14px 16px;margin-bottom:12px;">
+            <strong style="color:#FFFFFF;font-size:13.5px;">6. 60-Day Capstone Milestone &amp; ₹5,000 Stipend Unlock</strong>
+            <span style="background-color:#064E3B;color:#34D399;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;margin-left:8px;">GRADUATION GATE: {completion_date}</span>
+            <p style="color:#CBD5E1;font-size:12.5px;line-height:1.6;margin:6px 0 8px;">On or after your official completion date ({completion_date}), submit your production Capstone deliverable (GitHub repository, live deployment demo, and technical report PDF). The automated AI pre-screening engine evaluates your contribution against technical rubrics, and staff review atomically releases your ₹5,000 UPI Stipend directly to your verified UPI ID.</p>
+            <a href="https://lms.dbert.in/stipend/tasks" style="color:#E2B96F;font-size:12.5px;font-weight:700;text-decoration:none;">View Stipend Dashboard &rarr;</a>
+          </div>
+
+          <!-- Milestone 7: Sovereign 3-Document Master Credential Dossier -->
+          <div style="background-color:#111827;border-left:4px solid #E2B96F;border-radius:0 8px 8px 0;padding:14px 16px;margin-bottom:12px;">
+            <strong style="color:#FFFFFF;font-size:13.5px;">7. Sovereign 3-Document Master Credential Dossier</strong>
+            <span style="background-color:#78350F;color:#FCD34D;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;margin-left:8px;">PERMANENT VERIFICATION</span>
+            <p style="color:#CBD5E1;font-size:12.5px;line-height:1.6;margin:6px 0 0;">Upon successful evaluation, your official 3-document credential packet (Certificate of Completion with QR code, Academic Project Evaluation with Turnitin seal, and Letter of Recommendation) will be minted and publicly verifiable on https://dbert.in/verify.</p>
+          </div>
+        </div>
+        """
+
+        body_html = f"""
+        <p style="margin:0 0 14px;color:#FFFFFF;font-size:15px;line-height:1.7;">
+          We are pleased to inform you that your enrollment payment has been successfully verified and officially recorded on the DBERT Sovereign Ledger. Your seat for the <strong style="color:#E2B96F;">{domain}</strong> cohort starting on <strong style="color:#FFFFFF;">{batch_label}</strong> is fully confirmed.
+        </p>
+        {voucher_card_html}
+        {roadmap_html}
+        <div style="margin:20px 0 10px;text-align:center;">
+          <a href="https://lms.dbert.in/portal/offer" style="display:inline-block;padding:12px 28px;background:linear-gradient(135deg,#10B981,#059669);color:#FFFFFF;text-decoration:none;font-weight:800;font-size:14px;border-radius:8px;margin-right:8px;margin-bottom:8px;">
+            <i class="fas fa-file-signature"></i> Sign Letter of Offer &amp; Enter Portal &rarr;
+          </a>
+        </div>
+        """
+
+        full_html = _email_shell(
+            "Enrollment Confirmed",
+            f"Hi {first_name},",
+            body_html,
+            cta_text="Sign Letter of Offer",
+            cta_url="https://lms.dbert.in/portal/offer",
+            preheader=f"Payment verified (UTR: {utr_digits}). Your batch starts {batch_label}."
+        )
+
+        attachments = [
+            (f"DBERT_Payment_Voucher_{utr_digits}.svg", svg_content.encode("utf-8"), "image/svg+xml")
+        ]
+
+        send_email_async(email, subject, full_html, name=name, campaign="enrollment_accepted", attachments=attachments)
+        send_push_notification(email, "🏆 Enrollment Confirmed & Payment Verified", f"Hi {first_name}! Your enrollment is confirmed (UTR: {utr_digits}). Sign your offer letter to begin.")
+        return True
+    except Exception as e:
+        log_error("send-enrollment-acceptance-dossier", e)
+        return False
+
+
+@app.route("/portal/receipt/<filename>")
+def portal_receipt(filename):
+    """
+    Candidate & public-verified access to official payment receipts and vector SVG vouchers.
+    Allows:
+    1. Staff / Admins
+    2. HMAC token verification (?token=...) matching _email_sig('receipt', utr_digits)
+    3. Authenticated Intern whose registered email matches the enrollment record
+    """
+    try:
+        from services.file_security_service import validate_filename_safety, PathTraversalError
+        try:
+            clean_filename = validate_filename_safety(filename)
+        except PathTraversalError as pte:
+            log_error("portal-receipt-traversal", pte)
+            return "Bad Request", 400
+
+        m = re.search(r"\d{10,14}", clean_filename)
+        utr_digits = m.group(0) if m else clean_filename.replace("utr_", "").replace(".receipt", "")
+
+        token = request.args.get("token", "").strip()
+        is_token_valid = bool(token and (
+            token == _email_sig("receipt", utr_digits) or 
+            token == _email_sig("receipt", clean_filename)
+        ))
+
+        staff = current_staff()
+        admin = is_admin_request()
+        user = get_current_user()
+
+        record = get_utr_voucher_record(utr_digits, clean_filename)
+        record_email = (record.get("email") or "").strip().lower()
+
+        authorized = admin or staff or is_token_valid
+        if not authorized and user and user.get("role") == "intern":
+            user_email = (user.get("email") or "").strip().lower()
+            if user_email and record_email and user_email == record_email:
+                authorized = True
+
+        if not authorized:
+            if "text/html" in request.headers.get("Accept", ""):
+                return redirect(f"/signin?next={quote(request.path)}")
+            return "Unauthorized", 401
+
+        svg_content = generate_utr_voucher_svg(record)
+        resp = make_response(svg_content)
+        resp.headers["Content-Type"] = "image/svg+xml; charset=utf-8"
+        resp.headers["Content-Disposition"] = f'inline; filename="DBERT_Payment_Voucher_{utr_digits}.svg"'
+        resp.headers["Cache-Control"] = "private, no-cache, no-store, must-revalidate"
+        resp.headers["X-Content-Type-Options"] = "nosniff"
+        return resp
+    except Exception as e:
+        log_error("portal-receipt", e)
+        svg_missing = generate_missing_asset_svg(filename)
+        resp = make_response(svg_missing, 404)
+        resp.headers["Content-Type"] = "image/svg+xml; charset=utf-8"
+        return resp
+
+
 @app.route("/admin/screenshot/<filename>")
 def admin_screenshot(filename):
     try:
         staff = current_staff()
         if not (is_admin_request() or staff):
+            if "text/html" in request.headers.get("Accept", ""):
+                return redirect(f"/signin?next={quote(request.path)}")
             return "Unauthorized", 401
+
         from services.file_security_service import (
             validate_filename_safety,
             validate_path_within_bounds,
@@ -19115,27 +20881,54 @@ def admin_screenshot(filename):
         )
         try:
             clean_filename = validate_filename_safety(filename)
-            resolved_path = validate_path_within_bounds(app.config["UPLOAD_FOLDER"], clean_filename)
         except PathTraversalError as pte:
             log_error("admin-screenshot-traversal", pte)
             return "Bad Request", 400
 
-        # Fallback to legacy path if not in the new directory
+        # Case 1: Dynamic UTR Digital Voucher (.receipt or utr_ prefix)
+        if clean_filename.startswith("utr_") or clean_filename.endswith(".receipt"):
+            m = re.search(r"\d{10,14}", clean_filename)
+            utr_digits = m.group(0) if m else clean_filename.replace("utr_", "").replace(".receipt", "")
+            record = get_utr_voucher_record(utr_digits, clean_filename)
+            svg_content = generate_utr_voucher_svg(record)
+            resp = make_response(svg_content)
+            resp.headers["Content-Type"] = "image/svg+xml; charset=utf-8"
+            resp.headers["Content-Disposition"] = "inline; filename=voucher.svg"
+            resp.headers["Cache-Control"] = "private, no-cache, no-store, must-revalidate"
+            return resp
+
+        # Case 2: Physical uploaded file on disk
+        try:
+            resolved_path = validate_path_within_bounds(app.config["UPLOAD_FOLDER"], clean_filename)
+        except PathTraversalError:
+            return "Bad Request", 400
+
         if not os.path.isfile(resolved_path):
             legacy_path = os.path.join("/var/www/apps/internship/uploads", clean_filename)
             if os.path.isfile(legacy_path):
                 resolved_path = legacy_path
             else:
-                return "Not found", 404
+                # Case 3: Missing physical file fallback
+                svg_missing = generate_missing_asset_svg(clean_filename)
+                resp = make_response(svg_missing, 404)
+                resp.headers["Content-Type"] = "image/svg+xml; charset=utf-8"
+                resp.headers["Content-Disposition"] = "inline; filename=not_found.svg"
+                resp.headers["Cache-Control"] = "private, no-cache, no-store, must-revalidate"
+                return resp
 
         from flask import send_file
-        resp = make_response(send_file(resolved_path))
+        resp = make_response(send_file(resolved_path, as_attachment=False))
+        resp.headers["Content-Disposition"] = "inline"
         resp.headers["X-Content-Type-Options"] = "nosniff"
         resp.headers["Cache-Control"] = "private, no-cache, no-store, must-revalidate"
         return resp
     except Exception as e:
         log_error("screenshot", e)
-        return "Not found", 404
+        svg_missing = generate_missing_asset_svg(filename)
+        resp = make_response(svg_missing, 404)
+        resp.headers["Content-Type"] = "image/svg+xml; charset=utf-8"
+        resp.headers["Content-Disposition"] = "inline; filename=error.svg"
+        return resp
 
 
 @app.route("/uploads/<path:filename>")
@@ -19732,7 +21525,7 @@ def _security_headers(resp):
     """Phase 8.7: baseline security headers. CSP is enforced and nonce-based
     (Phase 9) â€” see csp_policy_for() for the policy and the ops escape hatches."""
     resp.headers.setdefault("X-Content-Type-Options", "nosniff")
-    resp.headers.setdefault("X-Frame-Options", "DENY")
+    resp.headers["X-Frame-Options"] = "SAMEORIGIN"
     resp.headers.setdefault("Referrer-Policy", "strict-origin-when-cross-origin")
 
     # Spec Â§5.3: enforced, with an env switch back to report-only for ops.
@@ -19757,12 +21550,12 @@ def _security_headers(resp):
             "Strict-Transport-Security", "max-age=31536000; includeSubDomains"
         )
 
-    # Spec Â§5.5: user-uploaded bytes are served only through this admin route.
-    # Force download and forbid sniffing so a crafted "screenshot" can never be
-    # rendered as HTML/script in an admin's session.
+    # User-uploaded bytes & digital vouchers are served safely through this admin route.
+    # Set inline disposition so previews render directly in modals/tabs; never force attachment on errors.
     if request.path.startswith("/admin/screenshot/"):
         resp.headers["X-Content-Type-Options"] = "nosniff"
-        resp.headers.setdefault("Content-Disposition", "attachment")
+        if resp.status_code < 400 and not resp.headers.get("Content-Disposition"):
+            resp.headers["Content-Disposition"] = "inline"
 
     # Anti-back-button leakage: ensure sensitive authenticated paths are never cached by the browser
     if any(request.path.startswith(p) for p in ("/portal", "/admin", "/staff", "/company", "/mentor", "/intern")):
@@ -20438,10 +22231,10 @@ def scraped_lead_comment_add(job_id):
         return too_many(ra)
 
     body = clean_text(data.get("body") or "").strip()
-    if len(body) < 10:
-        return jsonify({"status": "error", "message": "Please write at least 10 characters explaining your fit."}), 400
+    if len(body) < 15:
+        return jsonify({"status": "error", "message": "Please write at least 15 characters explaining why you are suitable for this opportunity."}), 400
     if len(body) > 2000:
-        return jsonify({"status": "error", "message": "Comment too long (max 2000 chars)."}), 400
+        return jsonify({"status": "error", "message": "Suitability note too long (maximum 2000 characters)."}), 400
 
     with get_db() as conn:
         comments_table = "scraped_internship_comments"
@@ -20470,6 +22263,7 @@ def scraped_lead_comment_add(job_id):
             d_time = dup_row[3] if isinstance(dup_row, tuple) else dup_row["created_at"]
             return jsonify({
                 "status": "success",
+                "routing": "external",
                 "deduplicated": True,
                 "comment": {
                     "intern_name": d_name,
@@ -20485,6 +22279,7 @@ def scraped_lead_comment_add(job_id):
 
     return jsonify({
         "status": "success",
+        "routing": "external",
         "comment": {
             "intern_name": intern.get("name", "Intern"),
             "body": body,
@@ -20697,5 +22492,205 @@ def company_careers_hub(company_slug):
             jsonld=jsonld,
             breadcrumb_jsonld=breadcrumb_jsonld
         )
+
+
+# ════════════════════════════════════════════════════════════════════════════
+# Phase 49 — Internal Real-Time Enrollment & Balance Synchronization API
+# ════════════════════════════════════════════════════════════════════════════
+
+INTERNAL_SYNC_SECRET = os.environ.get("INTERNAL_SYNC_SECRET", "dbert-secure-sync-token-2026")
+
+@app.route("/api/internal/enrollment-sync", methods=["POST"])
+def internal_enrollment_sync():
+    """Synchronizes payment submissions from website (Next.js) directly into LMS PostgreSQL.
+    Validates internal bearer secret, upserts intern_accounts and enrollments tables.
+    """
+    token = request.headers.get("X-DBERT-Internal-Secret") or ""
+    if not token or token != INTERNAL_SYNC_SECRET:
+        return jsonify({"status": "error", "message": "Unauthorized internal call."}), 401
+
+    data = request.get_json(force=True, silent=True) or {}
+    name = (data.get("name") or data.get("fullName") or "").strip()
+    email = (data.get("email") or "").strip().lower()
+    phone = (data.get("phone") or "").strip()
+    college = (data.get("college") or "").strip()
+    domain = (data.get("domain") or data.get("track") or "").strip()
+    amount = float(data.get("amount") or 499)
+    payment_type = (data.get("payment_type") or "deposit").strip().lower()
+    utr = (data.get("utr") or data.get("utrNumber") or data.get("utr_number") or "").strip()
+    submission_id = (data.get("submission_id") or data.get("id") or "").strip()
+
+    if not email:
+        return jsonify({"status": "error", "message": "Valid email is required."}), 400
+
+    # Normalize domain to valid track if possible
+    if domain not in VALID_DOMAINS:
+        for vd in VALID_DOMAINS:
+            if vd.lower() in domain.lower() or domain.lower() in vd.lower():
+                domain = vd
+                break
+        if domain not in VALID_DOMAINS:
+            domain = "Full Stack Web Development"
+
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    try:
+        with get_db() as conn:
+            ensure_column(conn, "enrollments", "intern_id", "INTEGER")
+            ensure_column(conn, "enrollments", "amount_paid", "INTEGER DEFAULT 0")
+            ensure_column(conn, "enrollments", "utr_number", "TEXT")
+            ensure_column(conn, "enrollments", "deposit_paid", "INTEGER DEFAULT 0")
+            ensure_column(conn, "enrollments", "balance_paid", "INTEGER DEFAULT 0")
+            ensure_column(conn, "enrollments", "submission_id", "TEXT")
+
+            # 1. Upsert intern_accounts
+            acct = conn.execute(
+                "SELECT * FROM intern_accounts WHERE LOWER(email)=?", (email,)
+            ).fetchone()
+            if not acct:
+                import secrets
+                from werkzeug.security import generate_password_hash
+                rand_pwd = secrets.token_urlsafe(10)
+                pwd_hash = generate_password_hash(rand_pwd)
+                conn.execute("""
+                    INSERT INTO intern_accounts 
+                    (name, email, phone, college, domain, password_hash, password_set, is_active, signup_stage, created_at, updated_at)
+                    VALUES (?, ?, ?, ?, ?, ?, 0, 1, 3, ?, ?)
+                """, (
+                    name or email.split("@")[0].title(),
+                    email, phone, college, domain, pwd_hash, now, now
+                ))
+                conn.commit()
+                acct = conn.execute(
+                    "SELECT * FROM intern_accounts WHERE LOWER(email)=?", (email,)
+                ).fetchone()
+            else:
+                # Update existing profile fields if provided and previously empty
+                new_name = name or acct["name"]
+                new_phone = phone or acct["phone"]
+                new_college = college if (college and (not acct["college"] or acct["college"].lower() in ("pending profile", "none"))) else acct["college"]
+                new_domain = domain if (domain and not acct["domain"]) else acct["domain"]
+                conn.execute("""
+                    UPDATE intern_accounts 
+                    SET name=?, phone=?, college=?, domain=?, is_active=1, signup_stage=3, updated_at=?
+                    WHERE id=?
+                """, (new_name, new_phone, new_college, new_domain, now, acct["id"]))
+                conn.commit()
+
+            intern_id = acct["id"]
+
+            # 2. Check and upsert enrollments
+            enr = conn.execute(
+                "SELECT * FROM enrollments WHERE LOWER(email)=? ORDER BY id DESC LIMIT 1", (email,)
+            ).fetchone()
+            is_balance = (payment_type == "balance" or amount >= 1500)
+            is_deposit = (payment_type == "deposit" or (amount == 499 and not enr))
+
+            if enr:
+                cur_amount = float(enr.get("amount_paid") or 0)
+                new_amount = cur_amount + amount
+                deposit_flag = 1 if (enr.get("deposit_paid") == 1 or not is_balance) else 0
+                balance_flag = 1 if (is_balance or new_amount >= 1999) else (enr.get("balance_paid") or 0)
+
+                conn.execute("""
+                    UPDATE enrollments
+                    SET payment_status='Accepted',
+                        amount_paid=?,
+                        utr_number=?,
+                        deposit_paid=?,
+                        balance_paid=?,
+                        submission_id=COALESCE(?, submission_id),
+                        updated_at=?
+                    WHERE id=?
+                """, (
+                    int(new_amount),
+                    utr or enr.get("utr_number"),
+                    deposit_flag,
+                    balance_flag,
+                    submission_id or None,
+                    now,
+                    enr["id"]
+                ))
+            else:
+                # Create fresh enrollment
+                joining_date = (datetime.now() + timedelta(days=7)).strftime("%Y-%m-%d")
+                conn.execute("""
+                    INSERT INTO enrollments
+                    (intern_id, timestamp, name, email, phone, college, domain, joining_date,
+                     payment_status, amount_paid, utr_number, deposit_paid, balance_paid, submission_id, created_at, updated_at)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'Accepted', ?, ?, ?, ?, ?, ?, ?)
+                """, (
+                    intern_id, now, name or acct["name"], email, phone or acct["phone"],
+                    college or acct["college"], domain or acct["domain"], joining_date,
+                    int(amount), utr, 1 if is_deposit else 0, 1 if is_balance else 0,
+                    submission_id or None, now, now
+                ))
+
+            # 3. Update applications if exists
+            conn.execute("""
+                UPDATE applications 
+                SET status='Accepted', updated_at=?
+                WHERE LOWER(email)=?
+            """, (now, email))
+            conn.commit()
+
+        return jsonify({
+            "status": "success",
+            "intern_id": intern_id,
+            "email": email,
+            "payment_type": payment_type,
+            "amount": amount,
+            "message": "Payment and candidate status synchronized to LMS PostgreSQL."
+        })
+    except Exception as e:
+        log_error("internal_enrollment_sync", e)
+        return jsonify({"status": "error", "message": f"Sync failed: {str(e)}"}), 500
+
+
+def send_job_pre_vetted_elevate_email(name, to_email, job_title, company_name):
+    """Dispatches high-converting email to candidate who applied to partner job, inviting them to elevate to Pre-Vetted status via the 60-day Incubation (₹499 deposit)."""
+    try:
+        first_name = (name or "Candidate").split()[0].title()
+        subject = f"Elevate Your Application for {job_title} to Pre-Vetted Status | DBERT"
+        html_body = f"""
+        <div style="font-family:'Segoe UI',Roboto,Helvetica,Arial,sans-serif;max-width:600px;margin:0 auto;padding:24px;background:#0B0F17;color:#E2E8F0;border-radius:14px;border:1px solid #1E293B;">
+            <div style="text-align:center;margin-bottom:20px;">
+                <h1 style="color:#FFFFFF;font-size:22px;margin:0;font-weight:800;">DBERT Technical Council</h1>
+                <p style="color:#94A3B8;font-size:13px;margin:4px 0 0;">Pre-Vetted Engineering Sourcing & Incubation</p>
+            </div>
+            
+            <div style="background:#161D2B;padding:20px;border-radius:10px;border:1px solid #2D3748;margin-bottom:20px;">
+                <p style="margin:0 0 12px;font-size:15px;color:#F1F5F9;">Hi <strong>{first_name}</strong>,</p>
+                <p style="margin:0 0 14px;font-size:14px;line-height:1.6;color:#CBD5E1;">
+                    Your suitability pitch for the <strong>{job_title}</strong> role at <strong>{company_name}</strong> has been successfully recorded in our recruiter sourcing database.
+                </p>
+                <div style="background:rgba(245,158,11,0.12);border:1px solid #D97706;border-radius:8px;padding:12px 14px;margin-bottom:14px;">
+                    <div style="font-size:13px;font-weight:700;color:#FBBF24;margin-bottom:4px;">
+                        💡 Stand Out to the Hiring Team:
+                    </div>
+                    <div style="font-size:12.5px;color:#FDE68A;line-height:1.5;">
+                        <strong>94% of candidates shortlisted by our enterprise partners</strong> hold DBERT Pre-Vetted Credentials with evaluated GitHub PRs and Turnitin originality audit reports.
+                    </div>
+                </div>
+                <p style="margin:0 0 16px;font-size:14px;line-height:1.6;color:#CBD5E1;">
+                    Fast-track your application to <strong>Pre-Vetted Status</strong> through our 60-Day Technical Incubation Fellowship. You only need to pay the <strong>₹499 Security Deposit</strong> today to secure your seat (100% credited, remaining ₹1,500 due after joining).
+                </p>
+                <div style="text-align:center;margin:24px 0 12px;">
+                    <a href="https://dbert.in/enroll/1999?email={to_email}" style="background:linear-gradient(135deg,#F59E0B,#D97706);color:#0F172A;font-weight:800;font-size:14px;padding:12px 28px;border-radius:8px;text-decoration:none;display:inline-block;box-shadow:0 4px 14px rgba(245,158,11,0.4);">
+                        Secure Incubation Seat (₹499 Deposit) &rarr;
+                    </a>
+                </div>
+            </div>
+
+            <div style="font-size:12px;color:#64748B;text-align:center;line-height:1.6;">
+                DBERT Admissions & Sourcing Council &bull; MSME UDYAM-UP-29-0109046<br>
+                For questions, WhatsApp Admissions Desk at <a href="https://wa.me/918192911360" style="color:#38BDF8;text-decoration:none;">+91 81929 11360</a>.
+            </div>
+        </div>
+        """
+        send_email_async(to_email, subject, html_body, name=name, campaign="pre_vetted_job_elevation")
+    except Exception as e:
+        log_error("send_job_pre_vetted_elevate_email", e)
+
 
 

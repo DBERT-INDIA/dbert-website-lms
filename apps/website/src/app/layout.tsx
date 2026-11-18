@@ -10,6 +10,7 @@ import RevealObserver from '@/components/ui/RevealObserver'
 import Breadcrumbs from '@/components/seo/Breadcrumbs'
 import ScrollProgress from '@/components/ui/ScrollProgress'
 import BackToTop from '@/components/ui/BackToTop'
+import AttendanceHeartbeat from '@/components/analytics/AttendanceHeartbeat'
 import { GA_MEASUREMENT_ID } from '@/lib/analytics'
 
 /* Design system v2 typefaces with Option A Space Grotesk editorial precision. */
@@ -71,6 +72,9 @@ export const metadata: Metadata = {
         alt: 'DBERT - AI Venture Studio & Educational Hub'
       }
     ]
+  },
+  alternates: {
+    canonical: './',
   },
 }
 
@@ -165,6 +169,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Footer />
           <WhatsAppFloat />
           <BackToTop />
+          <AttendanceHeartbeat />
         </div>
       </body>
     </html>

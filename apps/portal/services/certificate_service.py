@@ -27,13 +27,13 @@ class CertificateService:
 
     @staticmethod
     def resolve_registry_path() -> Optional[str]:
-        """Resolves the absolute path to certificates_registry.json across local dev and EC2."""
+        """Resolves the absolute path to certificates_registry.json dynamically across local dev and EC2."""
+        repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
         candidates = [
-            os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "website", "src", "data", "certificates_registry.json")),
+            os.path.join(repo_root, "apps", "website", "src", "data", "certificates_registry.json"),
+            os.path.join(repo_root, "data", "certificates_registry.json"),
             "/var/www/dbert-website-lms/apps/website/src/data/certificates_registry.json",
             "/var/www/dbert-website-lms/data/certificates_registry.json",
-            os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..", "apps", "website", "src", "data", "certificates_registry.json")),
-            "c:/Users/user/Desktop/dbert-website-lms/apps/website/src/data/certificates_registry.json"
         ]
         for p in candidates:
             if os.path.isfile(p):
@@ -128,7 +128,7 @@ class CertificateService:
                     else:
                         tier_clean = (row["tier"] or "").strip().lower()
                         is_prov = tier_clean in ("provisional", "pending")
-                        is_ver = tier_clean in ("verified", "completed", "dbert_verified")
+                        is_ver = tier_clean in ("verified", "completed", "dbert_verified", "distinction", "merit")
                         return {
                             "verified": is_ver,
                             "is_provisional": is_prov,
@@ -289,13 +289,37 @@ class CertificateService:
                     "source": "certificate_registry"
                 }
 
+        # 3. Fallback to intern_accounts created_at
+        if conn and (clean_email or intern_id):
+            try:
+                acct = conn.execute(
+                    "SELECT created_at FROM intern_accounts WHERE (email IS NOT NULL AND LOWER(email) = LOWER(?)) OR id = ? LIMIT 1",
+                    (clean_email or "", intern_id or -1)
+                ).fetchone()
+                if acct and acct["created_at"]:
+                    cad = CertificateService.parse_flexible_date(acct["created_at"])
+                    if cad:
+                        comp_date = cad + timedelta(days=60)
+                        is_comp = today >= comp_date
+                        days_rem = max(0, (comp_date - today).days)
+                        return {
+                            "joining_date": cad.strftime("%Y-%m-%d"),
+                            "completion_date": comp_date.strftime("%Y-%m-%d"),
+                            "completion_date_display": comp_date.strftime("%d %b %Y"),
+                            "is_completed": is_comp,
+                            "days_remaining": days_rem,
+                            "source": "account_creation"
+                        }
+            except Exception:
+                pass
+
         # Default fallback: Strictly fail closed if dates cannot be verified
         return {
             "joining_date": "",
             "completion_date": "",
             "completion_date_display": "Pending Date Verification",
             "is_completed": False,
-            "days_remaining": 999,
+            "days_remaining": None,
             "source": "none",
             "requires_manual_review": True
         }

@@ -145,7 +145,7 @@
 | `/first-run` | `GET` | `first_run` | None direct | None | `HTML (Jinja)` | 200/OK | "/#signin" |  |
 | `/intern/ambassador` | `GET` | `ambassador.intern_ambassador` | ambassador_withdrawals, intern_accounts, referrals | Payment Gateway / UPI | `JSON` | 404, 401, 500 | None | Funnel stats, referral link, referral-coin balance, masked UPI (Â§6.6). |
 | `/intern/ambassador/upi` | `POST` | `ambassador.intern_ambassador_upi` | intern_accounts | Payment Gateway / UPI | `JSON` | 401, 400, 500 | None | Store the payout UPI id â€” encrypted at rest, never returned in clear. |
-| `/intern/ambassador/withdraw` | `POST` | `ambassador.intern_ambassador_withdraw` | ambassador_withdrawals, intern_accounts | Payment Gateway / UPI | `JSON` | 401, 400, 500 | None | Request a payout. Draws ONLY on the referral ledger (§6.5). |
+| `/intern/ambassador/withdraw` | `GET, POST` | `ambassador.intern_ambassador_withdraw` | ambassador_withdrawals, intern_accounts | Payment Gateway / UPI | `HTML / JSON` | 401, 400, 500 | None | Request a payout or navigate to withdrawal dashboard. Draws ONLY on referral ledger (§6.5). |
 | `/intern/certificates` | `GET` | `intern_certificates_json` | intern_certificates | None | `JSON` | 401, 500 | None | Return earned certificates for the logged-in intern. |
 | `/intern/cohorts` | `GET` | `intern_cohorts` | cohort_enrollments, cohorts, companies | None | `JSON` | 401 | None |  |
 | `/intern/coins` | `GET` | `intern_coins_json` | coin_ledger_mirror | None | `JSON` | 401, 500 | None | Return intern's coin balances and ledger activity. |

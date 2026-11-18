@@ -1,0 +1,902 @@
+[
+  {
+    "email": "kmanav653@gmail.com",
+    "name": "Manav Abhishek",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:20:05.500760",
+    "sender": "abhinav.sharma@dbert.in",
+    "message_id": "<b23c28f2-1349-40f5-99bd-46537ec47120@dbert.in>"
+  },
+  {
+    "email": "harshlohar004@gmail.com",
+    "name": "Harsh Lohar",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:20:30.685608",
+    "sender": "manoj.kumar@dbert.in",
+    "message_id": "<ad51e1f8-de8c-4017-be30-7ad01f26f597@dbert.in>"
+  },
+  {
+    "email": "sdivyanshusingh11@gmail.com",
+    "name": "Divyanshu Singh",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:20:56.066487",
+    "sender": "sandeep.bannu@dbert.in",
+    "message_id": "<eba73bbf-9e09-461d-9b22-914de6222880@dbert.in>"
+  },
+  {
+    "email": "goliakash710@gmail.com",
+    "name": "Goli Akash",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:21:19.000326",
+    "sender": "contactus@dbert.in",
+    "message_id": "<c971bb2e-fe31-4e8e-b421-9bb830bba14f@dbert.in>"
+  },
+  {
+    "email": "devarajsenthilkumar026@gmail.com",
+    "name": "Devaraj S",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:21:41.115330",
+    "sender": "pulkit.kunar@dbert.in",
+    "message_id": "<aac195c6-b296-49ac-8405-4975678d8acb@dbert.in>"
+  },
+  {
+    "email": "aitechs2050@gmail.com",
+    "name": "Yashraj Dnyaneshwar Kuyate",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:22:07.281937",
+    "sender": "abhinav.sharma@dbert.in",
+    "message_id": "<5bb5787d-a592-45c4-a6a4-4767dea6e397@dbert.in>"
+  },
+  {
+    "email": "veerasaimattapalli1406@gmail.com",
+    "name": "Veerasai Mattapalli",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:22:36.188895",
+    "sender": "manoj.kumar@dbert.in",
+    "message_id": "<53b1256f-6cad-43d1-a3d8-25f1a103aa63@dbert.in>"
+  },
+  {
+    "email": "srijitajanacs@gmail.com",
+    "name": "Srijita Jana",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:23:03.974329",
+    "sender": "sandeep.bannu@dbert.in",
+    "message_id": "<a01b4845-4b6d-48ae-afda-4fdc31a010f1@dbert.in>"
+  },
+  {
+    "email": "poojithakothakonda@gmail.com",
+    "name": "Kothakonda Poojitha",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:23:26.457787",
+    "sender": "contactus@dbert.in",
+    "message_id": "<f8f20e67-59dd-4d22-b905-39cd5e6d0978@dbert.in>"
+  },
+  {
+    "email": "kantamanisampathkumar@gmail.com",
+    "name": "sampath kumar Kantamani",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:23:57.292912",
+    "sender": "pulkit.kunar@dbert.in",
+    "message_id": "<d84811ab-e6e1-4527-931e-1d429e8d78ab@dbert.in>"
+  },
+  {
+    "email": "jainharshil007@gmail.com",
+    "name": "Harshil Jain",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:24:25.610794",
+    "sender": "abhinav.sharma@dbert.in",
+    "message_id": "<32cff06c-c771-421b-ace1-8c02f2b06efa@dbert.in>"
+  },
+  {
+    "email": "priya.khaliyana@gmail.com",
+    "name": "Priya",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:24:52.219917",
+    "sender": "manoj.kumar@dbert.in",
+    "message_id": "<0e927f0d-f553-4a31-bc9e-fae369d46140@dbert.in>"
+  },
+  {
+    "email": "piyaa.s297@gmail.com",
+    "name": "Piya Sharma",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:25:20.639239",
+    "sender": "sandeep.bannu@dbert.in",
+    "message_id": "<7a997165-b4a7-44fd-bd54-bd726829b6cc@dbert.in>"
+  },
+  {
+    "email": "swathinarayandas8114@gmail.com",
+    "name": "Narayandas Swathi",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:25:49.990796",
+    "sender": "contactus@dbert.in",
+    "message_id": "<f42a3927-f960-47b0-852d-f64cd6ca0953@dbert.in>"
+  },
+  {
+    "email": "snehamallesh2004@gmail.com",
+    "name": "VASPARI SNEHA",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:26:13.156891",
+    "sender": "pulkit.kunar@dbert.in",
+    "message_id": "<7c82ae71-0c0b-4206-8b8f-bd243160735a@dbert.in>"
+  },
+  {
+    "email": "sohamdeyabl2005@gmail.com",
+    "name": "Soham Dey",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:26:36.895556",
+    "sender": "abhinav.sharma@dbert.in",
+    "message_id": "<f379a301-afee-4f39-b072-fb856f3eec51@dbert.in>"
+  },
+  {
+    "email": "kholasneha@gmail.com",
+    "name": "Sneha Khola",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:27:04.089702",
+    "sender": "manoj.kumar@dbert.in",
+    "message_id": "<35988941-bea7-4ff5-8621-8b0b9994d1ee@dbert.in>"
+  },
+  {
+    "email": "venkatatejabandaru@gmail.com",
+    "name": "BANDARU VENKATATEJA",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:27:32.885547",
+    "sender": "sandeep.bannu@dbert.in",
+    "message_id": "<e9e818cf-b9c2-499b-8996-35e98be1f902@dbert.in>"
+  },
+  {
+    "email": "shmehta109@gmail.com",
+    "name": "Sagun Kumari",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:27:58.480659",
+    "sender": "contactus@dbert.in",
+    "message_id": "<17c852ef-78e5-4eac-a603-ece0cdd91993@dbert.in>"
+  },
+  {
+    "email": "harshithamergu59@gmail.com",
+    "name": "Harshitha Mergu",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:28:25.657495",
+    "sender": "pulkit.kunar@dbert.in",
+    "message_id": "<26e5195d-7a9f-48f8-84a4-4bd605beef7d@dbert.in>"
+  },
+  {
+    "email": "sanikac735@gmail.com",
+    "name": "Sanika Pradip Chougule",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:28:49.593412",
+    "sender": "abhinav.sharma@dbert.in",
+    "message_id": "<e137cb85-db8b-4c8d-951e-c06dc8c23bf5@dbert.in>"
+  },
+  {
+    "email": "pranathisaiyadav@gmail.com",
+    "name": "Yadav Pranathi sai",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:29:17.623609",
+    "sender": "manoj.kumar@dbert.in",
+    "message_id": "<dac059a6-85c5-406a-bf4f-e0fb5d28663c@dbert.in>"
+  },
+  {
+    "email": "avnitayal485@gmail.com",
+    "name": "Avni Tayal",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:29:44.642548",
+    "sender": "sandeep.bannu@dbert.in",
+    "message_id": "<c2541bca-0eed-4b21-b40d-c157b1b83ded@dbert.in>"
+  },
+  {
+    "email": "aakarshit.cse@gmail.com",
+    "name": "Aakarshit Bargotra",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:30:09.452461",
+    "sender": "contactus@dbert.in",
+    "message_id": "<f168c596-0072-405c-a433-a99f879f51f6@dbert.in>"
+  },
+  {
+    "email": "vtu22971@veltech.edu.in",
+    "name": "Adapala Vishnuvardhan",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:30:37.384708",
+    "sender": "pulkit.kunar@dbert.in",
+    "message_id": "<1ff3c0c0-f9bf-474d-af67-34eaf729f2d0@dbert.in>"
+  },
+  {
+    "email": "pathakananya053@gmail.com",
+    "name": "Ananya Pathak",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:31:09.122633",
+    "sender": "abhinav.sharma@dbert.in",
+    "message_id": "<94e36e59-aedf-463e-8ef4-691ff9b722c7@dbert.in>"
+  },
+  {
+    "email": "mohammedhisham962@gmail.com",
+    "name": "Mohammed Hisham",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:31:39.164566",
+    "sender": "manoj.kumar@dbert.in",
+    "message_id": "<141448e1-38cb-4d35-b26a-d524a6898aca@dbert.in>"
+  },
+  {
+    "email": "pawaskarsneha23@gmail.com",
+    "name": "PAWASKAR SNEHA SANTOSH",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:32:04.081851",
+    "sender": "sandeep.bannu@dbert.in",
+    "message_id": "<634729e4-ece3-47fa-a616-c8c980234572@dbert.in>"
+  },
+  {
+    "email": "aayushhhth0327@gmail.com",
+    "name": "Aayush Aryan",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:32:26.233349",
+    "sender": "contactus@dbert.in",
+    "message_id": "<a03c6aab-4b4e-43d4-9f7c-2baf00b52965@dbert.in>"
+  },
+  {
+    "email": "gangolashivamsingh@gmail.com",
+    "name": "Shivam Singh Gangola",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:32:49.819606",
+    "sender": "pulkit.kunar@dbert.in",
+    "message_id": "<2a4a5c00-c6df-4784-9ff3-ffe0ddccf702@dbert.in>"
+  },
+  {
+    "email": "viveksiripuram7@gmail.com",
+    "name": "Vivek Siripuram",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:33:18.868351",
+    "sender": "abhinav.sharma@dbert.in",
+    "message_id": "<12f4eaf2-5547-414f-82d1-87b835b46c72@dbert.in>"
+  },
+  {
+    "email": "arceus.1252006@gmail.com",
+    "name": "Saksham Sharma",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:33:48.426616",
+    "sender": "manoj.kumar@dbert.in",
+    "message_id": "<1b944579-2937-40dd-824b-f50af7407b04@dbert.in>"
+  },
+  {
+    "email": "goudatharun30@gmail.com",
+    "name": "Gouda Narasimha Tharun",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:34:11.341755",
+    "sender": "sandeep.bannu@dbert.in",
+    "message_id": "<e3c33843-b45d-4d10-b6d9-5df279806adc@dbert.in>"
+  },
+  {
+    "email": "giriprasath7806@gmail.com",
+    "name": "GIRI PRASATH G A",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:34:39.723152",
+    "sender": "contactus@dbert.in",
+    "message_id": "<0cf0f5fd-d28e-40ea-8ad1-3ff221eed9ac@dbert.in>"
+  },
+  {
+    "email": "sp3130016@gmail.com",
+    "name": "Sanket Sarjerao Patil",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:35:04.032550",
+    "sender": "pulkit.kunar@dbert.in",
+    "message_id": "<d65fa7d8-071c-425d-a112-ee0ec603049f@dbert.in>"
+  },
+  {
+    "email": "poornimasingh493@gmail.com",
+    "name": "poornima Singh",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:35:32.982170",
+    "sender": "abhinav.sharma@dbert.in",
+    "message_id": "<2d870f6d-8d9b-4b50-aace-77503d51def2@dbert.in>"
+  },
+  {
+    "email": "panwar22sakshi@gmail.com",
+    "name": "Sakshi Panwar",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:35:57.209350",
+    "sender": "manoj.kumar@dbert.in",
+    "message_id": "<651e0947-7504-43f6-8a47-2d14df1c37c8@dbert.in>"
+  },
+  {
+    "email": "gmbhavankumar@gmail.com",
+    "name": "Bhavan Kumar G M",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:36:25.076483",
+    "sender": "sandeep.bannu@dbert.in",
+    "message_id": "<7d4bef30-ecf8-4785-a12a-3b6bb8054325@dbert.in>"
+  },
+  {
+    "email": "saurabhbisht950@gmail.com",
+    "name": "saurabh Singh Bisht",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:36:53.531726",
+    "sender": "contactus@dbert.in",
+    "message_id": "<6ebe2fbe-8eea-492f-82dd-5b93bc69f67f@dbert.in>"
+  },
+  {
+    "email": "iamsuhana06@gmail.com",
+    "name": "Suhana Falak",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:37:18.531315",
+    "sender": "pulkit.kunar@dbert.in",
+    "message_id": "<f194ebd6-af9f-436e-94aa-569092ec9c00@dbert.in>"
+  },
+  {
+    "email": "saimanujupalli@gmail.com",
+    "name": "Saimanu",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:37:40.856296",
+    "sender": "abhinav.sharma@dbert.in",
+    "message_id": "<565a3712-6abd-4b2f-9d50-d6ec4ae0957d@dbert.in>"
+  },
+  {
+    "email": "kavana200518@gmail.com",
+    "name": "C S Kavana",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:38:05.763027",
+    "sender": "manoj.kumar@dbert.in",
+    "message_id": "<ef25185c-337f-4de4-9543-ae57bd7810ec@dbert.in>"
+  },
+  {
+    "email": "asthaarya42@gmail.com",
+    "name": "Astha Arya",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:38:32.754361",
+    "sender": "sandeep.bannu@dbert.in",
+    "message_id": "<5349bde1-ab5e-425f-ad23-7c919588d93c@dbert.in>"
+  },
+  {
+    "email": "suhaniroychowdhury.pratt@gmail.com",
+    "name": "Suhani Roy Chowdhury",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:38:59.092157",
+    "sender": "contactus@dbert.in",
+    "message_id": "<709f99c7-9fcc-44f7-b7b8-9dc50d2fb590@dbert.in>"
+  },
+  {
+    "email": "shubhibajpai2019@gmail.com",
+    "name": "Shubhi Bajpai",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:39:26.515042",
+    "sender": "pulkit.kunar@dbert.in",
+    "message_id": "<96221d9d-c038-4c44-bd45-1744f1593644@dbert.in>"
+  },
+  {
+    "email": "hiteshsonawane329@gmail.com",
+    "name": "Hitesh Sonawane",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:39:53.314712",
+    "sender": "abhinav.sharma@dbert.in",
+    "message_id": "<306798bb-8a17-4bca-8f13-2eb58791b826@dbert.in>"
+  },
+  {
+    "email": "sathyashree.r@msaic.christuniversity.in",
+    "name": "SATHYASHREE R B",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:40:18.180813",
+    "sender": "manoj.kumar@dbert.in",
+    "message_id": "<32b08cd5-8bd0-465f-a2e9-bf9dc6e63bfd@dbert.in>"
+  },
+  {
+    "email": "purvanehale04@gmail.com",
+    "name": "PURVA GOVIND NEHALE",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:40:44.652885",
+    "sender": "sandeep.bannu@dbert.in",
+    "message_id": "<77971c2f-4628-4def-9b77-68073db28800@dbert.in>"
+  },
+  {
+    "email": "arkakuilya79@gmail.com",
+    "name": "Arka Kuilya",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:41:06.329929",
+    "sender": "contactus@dbert.in",
+    "message_id": "<9007c6a1-3152-40b1-9e15-af0ddafd5f42@dbert.in>"
+  },
+  {
+    "email": "nandakumarthirupathi@gmail.com",
+    "name": "Thirupathi Nanda kumar",
+    "amount": 499,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:41:30.929195",
+    "sender": "pulkit.kunar@dbert.in",
+    "message_id": "<c67d7a3d-f1c0-4144-b8f7-686899223a63@dbert.in>"
+  },
+  {
+    "email": "priyanshukalondia@gmail.com",
+    "name": "Priyanshu Kalondia",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:42:00.820659",
+    "sender": "abhinav.sharma@dbert.in",
+    "message_id": "<bdbe49fc-a459-4aa7-827f-53bed144413d@dbert.in>"
+  },
+  {
+    "email": "udayver61@gmail.com",
+    "name": "Uday Verma",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:42:30.716695",
+    "sender": "manoj.kumar@dbert.in",
+    "message_id": "<712ab7ac-5603-413a-baba-65f7ba2c9042@dbert.in>"
+  },
+  {
+    "email": "kabisubhamdeep@gmail.com",
+    "name": "Shubham deep kabi",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:42:52.111380",
+    "sender": "sandeep.bannu@dbert.in",
+    "message_id": "<938e0abb-0763-46ef-87af-68768c9de26c@dbert.in>"
+  },
+  {
+    "email": "ysk9177727011@gmail.com",
+    "name": "Yalagandula Saikrishna",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:43:18.825021",
+    "sender": "contactus@dbert.in",
+    "message_id": "<1961d4ca-cd0e-498c-b593-fc9d3e60b9f0@dbert.in>"
+  },
+  {
+    "email": "as6130457@gmail.com",
+    "name": "Arman Shrama",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:43:46.845575",
+    "sender": "pulkit.kunar@dbert.in",
+    "message_id": "<11ea5e13-f1bc-471f-815b-78245ffb2c5e@dbert.in>"
+  },
+  {
+    "email": "chandramahesh736@gmail.com",
+    "name": "Yarlagadda Chanandra Mahesh Goud",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:44:16.560379",
+    "sender": "abhinav.sharma@dbert.in",
+    "message_id": "<34b75bb3-1679-48a2-be05-0a8f4e184e53@dbert.in>"
+  },
+  {
+    "email": "ndeekshitha07.24@kgpian.iitkgp.ac.in",
+    "name": "N Deekshitha",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:44:38.358432",
+    "sender": "manoj.kumar@dbert.in",
+    "message_id": "<58c07a5f-146e-4a3b-822c-10946ce9a240@dbert.in>"
+  },
+  {
+    "email": "meenakshisubramanian82@gmail.com",
+    "name": "meenakshi subramanian",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:45:01.469033",
+    "sender": "sandeep.bannu@dbert.in",
+    "message_id": "<4bba076c-5c5c-454c-a09d-2c560021812b@dbert.in>"
+  },
+  {
+    "email": "yashasvikumar052@gmail.com",
+    "name": "Yashasvi",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:45:23.794786",
+    "sender": "contactus@dbert.in",
+    "message_id": "<6f0443c5-e9fd-4b1a-b196-a6a37599dc31@dbert.in>"
+  },
+  {
+    "email": "chanju777781@gmail.com",
+    "name": "Chintalapally Anjali",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:45:48.827521",
+    "sender": "pulkit.kunar@dbert.in",
+    "message_id": "<2e40ba95-08e8-41f6-ae86-6e0e325b90b0@dbert.in>"
+  },
+  {
+    "email": "apoorvamaheshwari315@gmail.com",
+    "name": "Apoorva Maheshwari",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:46:11.427281",
+    "sender": "abhinav.sharma@dbert.in",
+    "message_id": "<aabd5ba9-b488-4beb-8171-49ac86c112a2@dbert.in>"
+  },
+  {
+    "email": "rishabhkhanna500@gmail.com",
+    "name": "Rishabh Khanna",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:46:38.267453",
+    "sender": "manoj.kumar@dbert.in",
+    "message_id": "<ca397b56-2052-421e-b1c4-599ba1ec9b5e@dbert.in>"
+  },
+  {
+    "email": "vaishnavi1657@gmail.com",
+    "name": "Vaishnavi",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:47:02.401847",
+    "sender": "sandeep.bannu@dbert.in",
+    "message_id": "<9cfe0cb7-79d5-4694-bf5a-bd3d580846b1@dbert.in>"
+  },
+  {
+    "email": "sainianirudh03march@gmail.com",
+    "name": "Anirudh Saini",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:47:25.537440",
+    "sender": "contactus@dbert.in",
+    "message_id": "<482994f7-d056-441a-b293-7adc33c4f274@dbert.in>"
+  },
+  {
+    "email": "nisharokaya2006@gmail.com",
+    "name": "Nisha Rokaya",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:47:50.854583",
+    "sender": "pulkit.kunar@dbert.in",
+    "message_id": "<adc39ffc-db61-45b9-8e76-bfa410b9a2fb@dbert.in>"
+  },
+  {
+    "email": "kalainila212@gmail.com",
+    "name": "Kalainila.P",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:48:14.955120",
+    "sender": "abhinav.sharma@dbert.in",
+    "message_id": "<caddfc30-8680-496f-9c01-e5273bdc98e7@dbert.in>"
+  },
+  {
+    "email": "sunilkumarsk2sf@gmail.com",
+    "name": "Sunil Fagoriya",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:48:38.481099",
+    "sender": "manoj.kumar@dbert.in",
+    "message_id": "<854fcef0-f485-4161-94c6-edd9cfdcb93d@dbert.in>"
+  },
+  {
+    "email": "tanayjain1704@gmail.com",
+    "name": "Tanay Jain",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:49:07.114353",
+    "sender": "sandeep.bannu@dbert.in",
+    "message_id": "<4842e00f-41fd-4e98-8eac-13edb6762da6@dbert.in>"
+  },
+  {
+    "email": "anuragprajapati911@gmail.com",
+    "name": "Anurag Prajapati",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:49:29.544262",
+    "sender": "contactus@dbert.in",
+    "message_id": "<5de8fa36-1b60-40dd-9f1b-d5949fa95e33@dbert.in>"
+  },
+  {
+    "email": "manuparihar858@gmail.com",
+    "name": "Devraj parihar",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:49:56.983213",
+    "sender": "pulkit.kunar@dbert.in",
+    "message_id": "<53f72cf6-5dc0-4ee7-a23c-b5d045994251@dbert.in>"
+  },
+  {
+    "email": "gopiappikonda94@gmail.com",
+    "name": "Gopi Appikonda",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:50:22.482725",
+    "sender": "abhinav.sharma@dbert.in",
+    "message_id": "<3e37b5d0-e46a-46b2-8257-a9899fc2bcca@dbert.in>"
+  },
+  {
+    "email": "charukeshwarans11@gmail.com",
+    "name": "CHARUKESHWARAN S",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:50:50.496958",
+    "sender": "manoj.kumar@dbert.in",
+    "message_id": "<6820f963-24dd-44b2-8866-9e530b865f55@dbert.in>"
+  },
+  {
+    "email": "krishkrishu888@gmail.com",
+    "name": "Darshil Kishor Paswan",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:51:17.527106",
+    "sender": "sandeep.bannu@dbert.in",
+    "message_id": "<7d492f51-6230-4bb7-80f4-6b602f17975a@dbert.in>"
+  },
+  {
+    "email": "deepjyotidebnathcse@gmail.com",
+    "name": "Deepjyoti Debnath",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:51:43.569926",
+    "sender": "contactus@dbert.in",
+    "message_id": "<c3873335-18f3-49d7-83a7-0e06ea120638@dbert.in>"
+  },
+  {
+    "email": "sm2454396@gmail.com",
+    "name": "Samanthula Mounika",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:52:08.048674",
+    "sender": "pulkit.kunar@dbert.in",
+    "message_id": "<c4235b28-86dd-4c0c-a8bd-17049e01a604@dbert.in>"
+  },
+  {
+    "email": "keerthanaramesh9798@gmail.com",
+    "name": "Keerthana Ramesh",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:52:35.052731",
+    "sender": "abhinav.sharma@dbert.in",
+    "message_id": "<47a0dae7-54ed-4069-8d6f-3b927526f52e@dbert.in>"
+  },
+  {
+    "email": "heshikcc@gmail.com",
+    "name": "Heshika G K",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:52:56.932576",
+    "sender": "manoj.kumar@dbert.in",
+    "message_id": "<79fbe9bf-9bd1-4086-b247-ab467d4c69e1@dbert.in>"
+  },
+  {
+    "email": "bhattacharyyaashim1972@gmail.com",
+    "name": "Ritam Bhattacharyya",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:53:20.587464",
+    "sender": "sandeep.bannu@dbert.in",
+    "message_id": "<f4b8f6b3-87bc-4986-8c8c-8970839b3128@dbert.in>"
+  },
+  {
+    "email": "97subhransu@gmail.com",
+    "name": "SUBHRANSU SHEKHAR SUDARSAN PATRO",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:53:43.108520",
+    "sender": "contactus@dbert.in",
+    "message_id": "<c2494ae6-b820-4917-ad82-305b8e7ff0c9@dbert.in>"
+  },
+  {
+    "email": "surajup5756@gmail.com",
+    "name": "Suraj upadhyay",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:54:12.187188",
+    "sender": "pulkit.kunar@dbert.in",
+    "message_id": "<4e078b09-3a7d-40fe-8961-55c6348ed9f9@dbert.in>"
+  },
+  {
+    "email": "marnenijasmine@gmail.com",
+    "name": "Jasmine marneni",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:54:37.062729",
+    "sender": "abhinav.sharma@dbert.in",
+    "message_id": "<316d782a-7a05-4c6e-ab9c-b03157349ea3@dbert.in>"
+  },
+  {
+    "email": "daksh225j@gmail.com",
+    "name": "DAKSH JAIN",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:55:01.637357",
+    "sender": "manoj.kumar@dbert.in",
+    "message_id": "<5a65e0c2-1edd-4741-9bc1-44b117827df0@dbert.in>"
+  },
+  {
+    "email": "ankithpoojary0309@gmail.com",
+    "name": "Ankith K C",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:55:25.889705",
+    "sender": "sandeep.bannu@dbert.in",
+    "message_id": "<51b43061-e4c6-43ef-af62-75d4edcf0ec5@dbert.in>"
+  },
+  {
+    "email": "pm9663683@gmail.com",
+    "name": "Pavan M",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:55:49.554640",
+    "sender": "contactus@dbert.in",
+    "message_id": "<adea6a74-8156-4e61-9de4-15f36a37ddf7@dbert.in>"
+  },
+  {
+    "email": "vermaarpita240@gmail.com",
+    "name": "Arpita Verma",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:56:16.224721",
+    "sender": "pulkit.kunar@dbert.in",
+    "message_id": "<f572838e-c21b-4f69-aa91-55a5e726d012@dbert.in>"
+  },
+  {
+    "email": "dar.saurav@gmail.com",
+    "name": "Shivam Saurav",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:56:38.399026",
+    "sender": "abhinav.sharma@dbert.in",
+    "message_id": "<75f46603-6e58-4642-8c0e-63f00ae5eedc@dbert.in>"
+  },
+  {
+    "email": "koukuntladeepak2005@gmail.com",
+    "name": "Deepak Koukuntla",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:57:00.635479",
+    "sender": "manoj.kumar@dbert.in",
+    "message_id": "<df1dfe71-432c-4791-bfc9-cbf3bab9c60d@dbert.in>"
+  },
+  {
+    "email": "shivamkumarbxr23@gmail.com",
+    "name": "Shivam Kumar Singh",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:57:23.496118",
+    "sender": "sandeep.bannu@dbert.in",
+    "message_id": "<4c4b7d63-e1f2-47ea-a078-cb9141abbd63@dbert.in>"
+  },
+  {
+    "email": "2200030055cseh@gmail.com",
+    "name": "Bonthala Sai Sreeja",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:57:47.836242",
+    "sender": "contactus@dbert.in",
+    "message_id": "<588df7ae-8e26-4675-869a-8a477980c04c@dbert.in>"
+  },
+  {
+    "email": "ikumbar59@gmail.com",
+    "name": "Iranna Kumbar",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:58:15.638677",
+    "sender": "pulkit.kunar@dbert.in",
+    "message_id": "<0e4a5ae8-4f5b-46a1-b9a7-897e0801ff8c@dbert.in>"
+  },
+  {
+    "email": "priyanshugoyal472@gmail.com",
+    "name": "Priyanshu Goyal",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:58:40.154536",
+    "sender": "abhinav.sharma@dbert.in",
+    "message_id": "<28c98f08-71fe-4d9e-9c10-80826e926b77@dbert.in>"
+  },
+  {
+    "email": "nandlal141225@gmail.com",
+    "name": "Nandlal Yadav",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:59:04.788610",
+    "sender": "manoj.kumar@dbert.in",
+    "message_id": "<0febb788-8bc3-4116-9dec-876b47392b56@dbert.in>"
+  },
+  {
+    "email": "mathadvasanta7@gmail.com",
+    "name": "vasanta mathad",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T10:59:32.339381",
+    "sender": "sandeep.bannu@dbert.in",
+    "message_id": "<45fd3f84-664e-4435-983e-91e78b9db315@dbert.in>"
+  },
+  {
+    "email": "akshaya.ayodhya@gmail.com",
+    "name": "Akshaya Ayodhya",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T11:00:01.388503",
+    "sender": "contactus@dbert.in",
+    "message_id": "<acaea1a7-d110-4ebb-8d5c-9f3cc4431c32@dbert.in>"
+  },
+  {
+    "email": "abhineetcharvik@gmail.com",
+    "name": "Chatla.Abhineet Charvik",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T11:00:27.274753",
+    "sender": "pulkit.kunar@dbert.in",
+    "message_id": "<fc97b81d-12ee-4a5e-838b-17a5504322e0@dbert.in>"
+  },
+  {
+    "email": "muskanpathan7672@gmail.com",
+    "name": "muskan Dastagir Pathan",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T11:00:50.544493",
+    "sender": "abhinav.sharma@dbert.in",
+    "message_id": "<f87e9eec-adc7-4d72-804d-6a1cb6b606a0@dbert.in>"
+  },
+  {
+    "email": "aggarwalnavya145@gmail.com",
+    "name": "Navya Aggarwal",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T11:01:18.008025",
+    "sender": "manoj.kumar@dbert.in",
+    "message_id": "<6a0a4b04-b87e-4d3e-b47d-fb68ffe0fc4c@dbert.in>"
+  },
+  {
+    "email": "rahuldewangan1616@gmail.com",
+    "name": "Rahul Dewangan",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T11:01:42.224813",
+    "sender": "sandeep.bannu@dbert.in",
+    "message_id": "<4059fdab-6a02-4b85-afc5-ba6541941847@dbert.in>"
+  },
+  {
+    "email": "rajnandinithombre461@gmail.com",
+    "name": "Rajnandini Vasant Thombre",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T11:02:03.867811",
+    "sender": "contactus@dbert.in",
+    "message_id": "<885ab1dc-1954-49ec-beff-fa486606853f@dbert.in>"
+  },
+  {
+    "email": "vedant.bajulge03@gmail.com",
+    "name": "Vedant Bajulge",
+    "amount": 299,
+    "status": "SENT",
+    "sent_at": "2026-11-14T11:02:32.417892",
+    "sender": "pulkit.kunar@dbert.in",
+    "message_id": "<ad530751-62c5-4136-8653-6f28b4ed91ec@dbert.in>"
+  }
+]

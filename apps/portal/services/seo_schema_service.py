@@ -302,3 +302,74 @@ def parse_base_salary_schema(
         "currency": currency,
         "value": amt_val,
     }
+
+
+def generate_dbert_internship_job_posting_schema(
+    track_slug: str,
+    domain_name: str,
+    city: Optional[str] = None,
+    start_date: str = "2026-11-09",
+    valid_through: str = "2027-01-08"
+) -> Dict[str, Any]:
+    """Generates a complete Google Jobs-compliant Schema.org JobPosting dict
+    for official DBERT remote technical internships."""
+    title = f"{domain_name} Intern (Remote)"
+    if city and city.lower() != "remote":
+        title = f"{domain_name} Intern — {city.title()} (Remote)"
+
+    desc = (
+        f"Official 2-month applied engineering internship in {domain_name} with DBERT Technical Council "
+        f"(UDYAM-UP-29-0109046). Build production-ready features, resolve sprint bounty tasks, and complete "
+        f"verified pull requests. Earn ₹5,000 fixed milestone stipend upon completing 10 hrs/wk login, 2 course "
+        f"certifications, and 75 bounty tasks, plus up to ₹18,000 performance-based incentive (Total earning potential "
+        f"up to ₹23,000). Refundable caution deposit of ₹499 is 100% credited/refundable. Remote cloud sandbox."
+    )
+
+    schema: Dict[str, Any] = {
+        "@context": "https://schema.org",
+        "@type": "JobPosting",
+        "title": title,
+        "description": desc,
+        "datePosted": start_date,
+        "validThrough": valid_through,
+        "employmentType": "INTERN",
+        "hiringOrganization": {
+            "@type": "Organization",
+            "name": "DBERT Technical Council",
+            "sameAs": "https://dbert.in",
+            "logo": "https://dbert.in/logo.svg",
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "Barakhamba Road, Connaught Place",
+                "addressLocality": "Delhi NCR",
+                "addressRegion": "Delhi",
+                "postalCode": "110001",
+                "addressCountry": "IN"
+            }
+        },
+        "jobLocationType": "TELECOMMUTE",
+        "applicantLocationRequirements": {
+            "@type": "Country",
+            "name": "India"
+        },
+        "baseSalary": {
+            "@type": "MonetaryAmount",
+            "currency": "INR",
+            "value": {
+                "@type": "QuantitativeValue",
+                "value": 5000,
+                "minValue": 5000,
+                "maxValue": 23000,
+                "unitText": "MONTH"
+            }
+        },
+        "directApply": True
+    }
+
+    if city and city.lower() != "remote":
+        schema["jobLocation"] = {
+            "@type": "Place",
+            "address": get_postal_address_for_city(city)
+        }
+
+    return schema

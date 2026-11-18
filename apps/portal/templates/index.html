@@ -923,6 +923,31 @@
   function _suVal(id){const el=document.getElementById(id);return el?(el.value||'').trim():'';}
   function suGoStep(n){
     _suStage=n;
+    if(n===2){
+      try{
+        const domEl = document.getElementById('su_domain');
+        if(domEl && !domEl.value){
+          const _uP = new URLSearchParams(window.location.search);
+          const _hR = window.location.hash || '';
+          const _hQs = _hR.includes('?') ? _hR.substring(_hR.indexOf('?') + 1) : '';
+          const _hP = new URLSearchParams(_hQs);
+          const rawD = _uP.get('domain') || _hP.get('domain') || '';
+          const domainMap = {
+            'ai-agent-development': 'AI Agent Development', 'ai-agent': 'AI Agent Development', 'ai': 'AI Agent Development',
+            'data-analyst': 'Data Analyst', 'data-analytics': 'Data Analyst', 'data-science': 'Data Analyst',
+            'full-stack-development': 'Full Stack Development', 'full-stack': 'Full Stack Development', 'fsd': 'Full Stack Development',
+            'python-automation': 'Python Automation', 'python': 'Python Automation',
+            'ui-ux-design': 'UI/UX Design', 'ui-ux': 'UI/UX Design',
+            'devops-cloud': 'DevOps & Cloud', 'devops': 'DevOps & Cloud',
+            'mobile-app-development': 'Mobile App Development', 'mobile': 'Mobile App Development',
+            'cybersecurity': 'Cybersecurity', 'digital-marketing': 'Digital Marketing'
+          };
+          if(rawD && domainMap[rawD.toLowerCase()]){
+            domEl.value = domainMap[rawD.toLowerCase()];
+          }
+        }
+      }catch(e){}
+    }
     for(let i=1;i<=3;i++){
       const step=document.getElementById('suStep'+i);
       if(step){
@@ -956,16 +981,41 @@
     try{
       const planVal = sessionStorage.getItem('dbert_plan') || '';
       const nextDest = (planVal === 'program1999') ? '' : (new URLSearchParams(window.location.search).get('next') || '');
-      const res=await fetch('/signup/stage1',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'include',body:JSON.stringify({name,email,phone,password,terms_accepted:true,newsletter_opt_in:newsletter,visitor_id:_visitorId,company_website:document.getElementById('su_company_website').value,_ts:document.getElementById('su_ts').value,next:nextDest,plan:planVal,/* §6.1 attribution: the 30-day ref cookie set on landing */ref:(window.dbertRefCode?window.dbertRefCode():'')})});
+
+      // Phase 48: Capture contextual domain from dropdown, search params, hash or target next URL
+      const domEl = document.getElementById('su_domain');
+      let domVal = domEl ? domEl.value : '';
+      if (!domVal) {
+        const _uP = new URLSearchParams(window.location.search);
+        const _hR = window.location.hash || '';
+        const _hQs = _hR.includes('?') ? _hR.substring(_hR.indexOf('?') + 1) : '';
+        const _hP = new URLSearchParams(_hQs);
+        domVal = _uP.get('domain') || _hP.get('domain') || '';
+      }
+
+      const res=await fetch('/signup/stage1',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        credentials:'include',
+        body:JSON.stringify({
+          name,email,phone,password,
+          terms_accepted:true,
+          newsletter_opt_in:newsletter,
+          visitor_id:_visitorId,
+          domain:domVal,
+          company_website:document.getElementById('su_company_website').value,
+          _ts:document.getElementById('su_ts').value,
+          next:nextDest,
+          plan:planVal,
+          /* §6.1 attribution: the 30-day ref cookie set on landing */
+          ref:(window.dbertRefCode?window.dbertRefCode():'')
+        })
+      });
       const data=await res.json(); setLoading('suBtn1',false);
       if(data.status==='success'){
         dbertGA('signup_stage1',{});
         osLogin(email);
-        if(data.redirect){
-          showToast('Account created! Redirecting to application...','success');
-          setTimeout(()=>{window.location.href=data.redirect;},400);
-          return;
-        }
+        // Phase 48: Seamlessly advance to Step 2 so student provides real academic profile
         suGoStep(2);
       }
       else if(res.status===409&&data.code==='account_exists'){
@@ -987,7 +1037,16 @@
     try{
       const res=await fetch('/signup/stage2',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'include',body:JSON.stringify({city,college,course,semester,year_of_passing:year,domain})});
       const data=await res.json(); setLoading('suBtn2',false);
-      if(data.status==='success'){dbertGA('signup_stage2',{});suGoStep(3);}
+      if(data.status==='success'){
+        dbertGA('signup_stage2',{});
+        // Phase 48: If user came from a specific internship application, resume now that profile is saved
+        if(data.redirect){
+          showToast('Academic profile saved! Redirecting to application...','success');
+          setTimeout(()=>{ window.location.href = data.redirect; }, 500);
+          return;
+        }
+        suGoStep(3);
+      }
       else if(res.status===401){switchAuthTab('signin');showAuthError('signinError','Please sign in to continue your application.');}
       else{showAuthError('signupError',data.message||'Could not save your details.');}
     }catch(e){setLoading('suBtn2',false);showAuthError('signupError','Network error. Please try again.');}

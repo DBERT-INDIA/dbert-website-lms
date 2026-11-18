@@ -4,6 +4,7 @@ import path from 'path';
 import raw409 from '@/data/all_409_provisional_registry.json';
 import raw56 from '@/data/certificates_registry.json';
 import raw1593 from '@/data/sheet_1593_provisional_registry.json';
+import { getNextCohortStandup } from '@/lib/cohortCalendar';
 
 interface CandidateRecord {
   certId: string;
@@ -127,13 +128,15 @@ export async function GET(request: NextRequest) {
         ? `+91 ******${rawPhone.slice(-4)}`
         : '';
 
+      const nextCohort = getNextCohortStandup();
+
       return NextResponse.json({
         found: true,
         enrollmentStatus: balanceMatch.status || 'SUBMITTED',
         isApproved,
         rejectionReason: (balanceMatch as any).rejectionReason || null,
-        batchStartDate: balanceMatch.batchStartDate || '2026-11-09T18:00:00+05:30',
-        batchStartDisplay: balanceMatch.batchStartDisplay || 'Monday, 9 Nov 2026',
+        batchStartDate: balanceMatch.batchStartDate || nextCohort.batchStartDate,
+        batchStartDisplay: balanceMatch.batchStartDisplay || nextCohort.batchStartDisplay,
         candidate: {
           // Never fabricate fake IDs (Finding DBERT-015)
           certId: balanceMatch.certId || null,
@@ -144,7 +147,7 @@ export async function GET(request: NextRequest) {
           college: balanceMatch.college || 'Full Stack Incubation Scholar',
           domain: balanceMatch.domain,
           project: balanceMatch.domain + ' Production Architecture',
-          batch: balanceMatch.batchStartDisplay || 'Monday, 9 Nov 2026',
+          batch: balanceMatch.batchStartDisplay || nextCohort.batchStartDisplay,
           isProvisional: !isApproved,
           submissionId: balanceMatch.id,
           status: balanceMatch.status,

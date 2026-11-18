@@ -1,0 +1,378 @@
+{
+  "generated_at": "2026-11-16 07:53:29 IST",
+  "total_unique_users_24h": 32,
+  "total_sessions_24h": 46,
+  "leaderboard": [
+    {
+      "rank": 1,
+      "sender": "Organic / Direct / Portal URL / WhatsApp",
+      "users_driven": 12,
+      "share_percentage": 37.5,
+      "total_sessions": 14
+    },
+    {
+      "rank": 2,
+      "sender": "abhinav.sharma@dbert.in",
+      "users_driven": 6,
+      "share_percentage": 18.75,
+      "total_sessions": 6
+    },
+    {
+      "rank": 3,
+      "sender": "pulkit.kunar@dbert.in",
+      "users_driven": 4,
+      "share_percentage": 12.5,
+      "total_sessions": 11
+    },
+    {
+      "rank": 4,
+      "sender": "sandeep.bannu@dbert.in",
+      "users_driven": 3,
+      "share_percentage": 9.38,
+      "total_sessions": 7
+    },
+    {
+      "rank": 5,
+      "sender": "manoj.kumar@dbert.in",
+      "users_driven": 3,
+      "share_percentage": 9.38,
+      "total_sessions": 3
+    },
+    {
+      "rank": 6,
+      "sender": "Unknown",
+      "users_driven": 2,
+      "share_percentage": 6.25,
+      "total_sessions": 3
+    },
+    {
+      "rank": 7,
+      "sender": "contactus@dbert.in",
+      "users_driven": 2,
+      "share_percentage": 6.25,
+      "total_sessions": 2
+    }
+  ],
+  "users": [
+    {
+      "email": "dhanurs24@gmail.com",
+      "sessions_count": 1,
+      "first_login": "2026-11-16 07:49:48.941604",
+      "last_login": "2026-11-16 07:49:48.941604",
+      "sender": "Unknown",
+      "comm_time": "2026-09-23 09:55:15",
+      "subject": "DBERT â€” Congratulations, you're selected!",
+      "source": "email_log"
+    },
+    {
+      "email": "sainianirudh03march@gmail.com",
+      "sessions_count": 4,
+      "first_login": "2026-11-16 07:39:34.844429",
+      "last_login": "2026-11-16 07:44:07.943239",
+      "sender": "pulkit.kunar@dbert.in",
+      "comm_time": "2026-11-16 07:46:41",
+      "subject": "DBERT â€” Awaiting enrollment.",
+      "source": "email_log"
+    },
+    {
+      "email": "vaishnavi1657@gmail.com",
+      "sessions_count": 3,
+      "first_login": "2026-11-16 07:41:28.494600",
+      "last_login": "2026-11-16 07:42:57.971193",
+      "sender": "sandeep.bannu@dbert.in",
+      "comm_time": "2026-11-16 07:41:26",
+      "subject": "DBERT â€” Enrollment accepted!",
+      "source": "email_log"
+    },
+    {
+      "email": "ayanashibumicle@gmail.com",
+      "sessions_count": 1,
+      "first_login": "2026-11-16 07:24:08.241026",
+      "last_login": "2026-11-16 07:24:08.241026",
+      "sender": "Organic / Direct / Portal URL / WhatsApp",
+      "comm_time": "None",
+      "subject": "Direct Navigation",
+      "source": "Direct"
+    },
+    {
+      "email": "maheshgowdass2006@gmail.com",
+      "sessions_count": 1,
+      "first_login": "2026-11-16 06:50:49.765670",
+      "last_login": "2026-11-16 06:50:49.765670",
+      "sender": "abhinav.sharma@dbert.in",
+      "comm_time": "2026-11-16 06:52:16",
+      "subject": "DBERT â€” Application received for SOC Analysis & Threat Mon",
+      "source": "email_log"
+    },
+    {
+      "email": "gurkavinay22@gmail.com",
+      "sessions_count": 5,
+      "first_login": "2026-11-15 20:45:55.320958",
+      "last_login": "2026-11-16 06:39:44.549225",
+      "sender": "pulkit.kunar@dbert.in",
+      "comm_time": "2026-11-14 07:44:10",
+      "subject": "Your Capstone Case Study is Officially Published on dbert.in",
+      "source": "email_log"
+    },
+    {
+      "email": "bhargavchittuluri@gmail.com",
+      "sessions_count": 1,
+      "first_login": "2026-11-16 06:37:01.423820",
+      "last_login": "2026-11-16 06:37:01.423820",
+      "sender": "contactus@dbert.in",
+      "comm_time": "2026-11-16 06:37:43",
+      "subject": "DBERT â€” Application received for SOC Analysis & Threat Mon",
+      "source": "email_log"
+    },
+    {
+      "email": "bsugnan97@gmail.com",
+      "sessions_count": 1,
+      "first_login": "2026-11-16 06:21:04.426545",
+      "last_login": "2026-11-16 06:21:04.426545",
+      "sender": "abhinav.sharma@dbert.in",
+      "comm_time": "2026-11-16 06:23:03",
+      "subject": "DBERT â€” Application received for Data Cleaning & ETL Inter",
+      "source": "email_log"
+    },
+    {
+      "email": "leelamanohars829@gmail.com",
+      "sessions_count": 1,
+      "first_login": "2026-11-16 05:24:24.102096",
+      "last_login": "2026-11-16 05:24:24.102096",
+      "sender": "Organic / Direct / Portal URL / WhatsApp",
+      "comm_time": "None",
+      "subject": "Direct Navigation",
+      "source": "Direct"
+    },
+    {
+      "email": "sahana.sainath@gmail.com",
+      "sessions_count": 1,
+      "first_login": "2026-11-16 04:58:57.131570",
+      "last_login": "2026-11-16 04:58:57.131570",
+      "sender": "pulkit.kunar@dbert.in",
+      "comm_time": "2026-11-16 05:00:47",
+      "subject": "DBERT â€” Application received for SOC Analysis & Threat Mon",
+      "source": "email_log"
+    },
+    {
+      "email": "mohankumar0306mk.com@gmail.com",
+      "sessions_count": 1,
+      "first_login": "2026-11-16 04:28:46.048403",
+      "last_login": "2026-11-16 04:28:46.048403",
+      "sender": "Organic / Direct / Portal URL / WhatsApp",
+      "comm_time": "None",
+      "subject": "Direct Navigation",
+      "source": "Direct"
+    },
+    {
+      "email": "sumedhjamdhade652003@gmail.com",
+      "sessions_count": 1,
+      "first_login": "2026-11-16 02:03:25.646981",
+      "last_login": "2026-11-16 02:03:25.646981",
+      "sender": "abhinav.sharma@dbert.in",
+      "comm_time": "2026-11-16 02:08:25",
+      "subject": "Application received â€” DBERT Internship 2026",
+      "source": "email_log"
+    },
+    {
+      "email": "sanvisinghmain@gmail.com",
+      "sessions_count": 1,
+      "first_login": "2026-11-15 21:20:40.099523",
+      "last_login": "2026-11-15 21:20:40.099523",
+      "sender": "manoj.kumar@dbert.in",
+      "comm_time": "2026-11-15 21:21:49",
+      "subject": "DBERT â€” Application received for SOC Analysis & Threat Mon",
+      "source": "email_log"
+    },
+    {
+      "email": "srivastavanaincy5@gmail.com",
+      "sessions_count": 2,
+      "first_login": "2026-11-15 19:27:35.707508",
+      "last_login": "2026-11-15 19:28:43.394677",
+      "sender": "Unknown",
+      "comm_time": "2026-09-23 09:27:04",
+      "subject": "DBERT â€” Congratulations, you're selected!",
+      "source": "email_log"
+    },
+    {
+      "email": "piyush.mintoo@yahoo.com",
+      "sessions_count": 3,
+      "first_login": "2026-11-15 18:35:13.761744",
+      "last_login": "2026-11-15 18:36:09.632563",
+      "sender": "sandeep.bannu@dbert.in",
+      "comm_time": "2026-11-15 18:46:05",
+      "subject": "Application received â€” DBERT Internship 2026",
+      "source": "email_log"
+    },
+    {
+      "email": "rudrapathade251@gmail.com",
+      "sessions_count": 1,
+      "first_login": "2026-11-15 17:14:47.354828",
+      "last_login": "2026-11-15 17:14:47.354828",
+      "sender": "manoj.kumar@dbert.in",
+      "comm_time": "2026-11-15 17:19:40",
+      "subject": "Application received â€” DBERT Internship 2026",
+      "source": "email_log"
+    },
+    {
+      "email": "varunpanda2004@gmail.com",
+      "sessions_count": 1,
+      "first_login": "2026-11-15 17:00:20.948350",
+      "last_login": "2026-11-15 17:00:20.948350",
+      "sender": "manoj.kumar@dbert.in",
+      "comm_time": "2026-11-15 17:03:15",
+      "subject": "Application received â€” DBERT Internship 2026",
+      "source": "email_log"
+    },
+    {
+      "email": "srgayathri0519@gmail.com",
+      "sessions_count": 1,
+      "first_login": "2026-11-15 15:30:47.711539",
+      "last_login": "2026-11-15 15:30:47.711539",
+      "sender": "Organic / Direct / Portal URL / WhatsApp",
+      "comm_time": "None",
+      "subject": "Direct Navigation",
+      "source": "Direct"
+    },
+    {
+      "email": "mritika470@gmail.com",
+      "sessions_count": 1,
+      "first_login": "2026-11-15 15:30:25.884518",
+      "last_login": "2026-11-15 15:30:25.884518",
+      "sender": "Organic / Direct / Portal URL / WhatsApp",
+      "comm_time": "None",
+      "subject": "Direct Navigation",
+      "source": "Direct"
+    },
+    {
+      "email": "harshita.shrivas29@gmail.com",
+      "sessions_count": 2,
+      "first_login": "2026-11-15 15:17:37.798569",
+      "last_login": "2026-11-15 15:23:56.831559",
+      "sender": "Organic / Direct / Portal URL / WhatsApp",
+      "comm_time": "None",
+      "subject": "Direct Navigation",
+      "source": "Direct"
+    },
+    {
+      "email": "nuzhat7sid@gmail.com",
+      "sessions_count": 1,
+      "first_login": "2026-11-15 15:23:42.924444",
+      "last_login": "2026-11-15 15:23:42.924444",
+      "sender": "Organic / Direct / Portal URL / WhatsApp",
+      "comm_time": "None",
+      "subject": "Direct Navigation",
+      "source": "Direct"
+    },
+    {
+      "email": "karthikaraja112008@gmail.com",
+      "sessions_count": 1,
+      "first_login": "2026-11-15 14:43:04.278447",
+      "last_login": "2026-11-15 14:43:04.278447",
+      "sender": "Organic / Direct / Portal URL / WhatsApp",
+      "comm_time": "None",
+      "subject": "Direct Navigation",
+      "source": "Direct"
+    },
+    {
+      "email": "joshuadevops1@gmail.com",
+      "sessions_count": 2,
+      "first_login": "2026-11-15 12:59:01.103448",
+      "last_login": "2026-11-15 12:59:37.306361",
+      "sender": "Organic / Direct / Portal URL / WhatsApp",
+      "comm_time": "None",
+      "subject": "Direct Navigation",
+      "source": "Direct"
+    },
+    {
+      "email": "reettandon628@gmail.com",
+      "sessions_count": 1,
+      "first_login": "2026-11-15 11:47:55.610611",
+      "last_login": "2026-11-15 11:47:55.610611",
+      "sender": "abhinav.sharma@dbert.in",
+      "comm_time": "2026-11-15 11:49:47",
+      "subject": "DBERT â€” Application received for Web Application Penetrati",
+      "source": "email_log"
+    },
+    {
+      "email": "amankrmuzsix@gmail.com",
+      "sessions_count": 1,
+      "first_login": "2026-11-15 10:48:19.061654",
+      "last_login": "2026-11-15 10:48:19.061654",
+      "sender": "Organic / Direct / Portal URL / WhatsApp",
+      "comm_time": "None",
+      "subject": "Direct Navigation",
+      "source": "Direct"
+    },
+    {
+      "email": "kgolanukonda@gmail.com",
+      "sessions_count": 1,
+      "first_login": "2026-11-15 10:33:48.367436",
+      "last_login": "2026-11-15 10:33:48.367436",
+      "sender": "abhinav.sharma@dbert.in",
+      "comm_time": "2026-11-15 10:35:32",
+      "subject": "DBERT â€” Application received for SOC Analysis & Threat Mon",
+      "source": "email_log"
+    },
+    {
+      "email": "shreyashk07004@gmail.com",
+      "sessions_count": 1,
+      "first_login": "2026-11-15 10:03:31.664357",
+      "last_login": "2026-11-15 10:03:31.664357",
+      "sender": "abhinav.sharma@dbert.in",
+      "comm_time": "2026-11-15 10:02:52",
+      "subject": "Reset your DBERT password",
+      "source": "email_log"
+    },
+    {
+      "email": "2300033195cseh@gmail.com",
+      "sessions_count": 1,
+      "first_login": "2026-11-15 09:48:33.462719",
+      "last_login": "2026-11-15 09:48:33.462719",
+      "sender": "Organic / Direct / Portal URL / WhatsApp",
+      "comm_time": "None",
+      "subject": "Direct Navigation",
+      "source": "Direct"
+    },
+    {
+      "email": "nandayasovardhan@gmail.com",
+      "sessions_count": 1,
+      "first_login": "2026-11-15 08:41:49.255259",
+      "last_login": "2026-11-15 08:41:49.255259",
+      "sender": "sandeep.bannu@dbert.in",
+      "comm_time": "2026-11-14 13:28:43",
+      "subject": "Reset your DBERT password",
+      "source": "email_log"
+    },
+    {
+      "email": "monami.mukherjee00@gmail.com",
+      "sessions_count": 1,
+      "first_login": "2026-11-15 08:34:10.441371",
+      "last_login": "2026-11-15 08:34:10.441371",
+      "sender": "pulkit.kunar@dbert.in",
+      "comm_time": "2026-11-15 08:37:38",
+      "subject": "Application received â€” DBERT Internship 2026",
+      "source": "email_log"
+    },
+    {
+      "email": "rahultpawar25@gmail.com",
+      "sessions_count": 1,
+      "first_login": "2026-11-15 08:25:48.435155",
+      "last_login": "2026-11-15 08:25:48.435155",
+      "sender": "Organic / Direct / Portal URL / WhatsApp",
+      "comm_time": "None",
+      "subject": "Direct Navigation",
+      "source": "Direct"
+    },
+    {
+      "email": "athinathan73@gmail.com",
+      "sessions_count": 1,
+      "first_login": "2026-11-15 08:17:07.860289",
+      "last_login": "2026-11-15 08:17:07.860289",
+      "sender": "contactus@dbert.in",
+      "comm_time": "2026-11-15 08:18:53",
+      "subject": "DBERT â€” Application received for SOC Analysis & Threat Mon",
+      "source": "email_log"
+    }
+  ]
+}

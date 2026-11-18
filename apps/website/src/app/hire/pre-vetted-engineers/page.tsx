@@ -124,14 +124,25 @@ export default function HirePreVettedEngineersPage() {
               Vetted through live system builds, code reviews, and production commit histories — not resume keywords. Onboard deployment-ready engineering squads without agency recruitment markups.
             </p>
             <div className="stack-h gap-4 mt-6 flex-wrap">
-              <Link href="/verify/directory" className="btn btn-primary">
+              <a
+                href="https://wa.me/918192911360?text=Hi%20DBERT%20Talent%20Team%2C%20I%20am%20looking%20to%20hire%20pre-vetted%20engineers%20for%20our%20team."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-primary"
+                style={{ background: '#10B981', borderColor: '#10B981', color: '#07090E', fontWeight: 800 }}
+              >
+                ⚡ 1-Tap WhatsApp Talent Concierge &rarr;
+              </a>
+              <Link href="/verify/directory" className="btn btn-outline">
                 Browse Pre-Vetted Directory <ArrowRight className="inline-icon" />
               </Link>
-              <a href="#contact-hiring" className="btn btn-outline">
-                Request Candidate Profiles
-              </a>
-              <a href="#vetting-process" className="btn btn-ghost">
-                Our Vetting Methodology
+              <a
+                href="https://lms.dbert.in/company/signup?ref=directory"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-ghost"
+              >
+                Connect on LMS (Self-Serve) ↗
               </a>
             </div>
           </div>
@@ -232,11 +243,25 @@ export default function HirePreVettedEngineersPage() {
             Tell us about your technical requirements and timeline. Receive curated candidate profiles within 24 hours.
           </p>
           <div className="stack-h gap-4 justify-center flex-wrap mt-4">
-            <Link href="/verify/directory" className="btn btn-primary btn-lg">
+            <a
+              href="https://wa.me/918192911360?text=Hi%20DBERT%20Talent%20Team%2C%20I%20am%20looking%20to%20hire%20pre-vetted%20engineers%20for%20our%20team."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-primary btn-lg"
+              style={{ background: '#10B981', borderColor: '#10B981', color: '#07090E', fontWeight: 800 }}
+            >
+              ⚡ 1-Tap WhatsApp Talent Concierge &rarr;
+            </a>
+            <Link href="/verify/directory" className="btn btn-outline btn-lg">
               Explore Pre-Vetted Directory &rarr;
             </Link>
-            <a href="https://lms.dbert.in/company/signup" target="_blank" rel="noopener noreferrer" className="btn btn-outline btn-lg">
-              Post a Role on LMS
+            <a
+              href="https://lms.dbert.in/company/signup?ref=directory"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-outline btn-lg"
+            >
+              Connect on LMS (Self-Serve) ↗
             </a>
           </div>
         </div>

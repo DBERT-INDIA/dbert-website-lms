@@ -88,6 +88,21 @@ def stipend_tasks():
         add_to_linkedin_url = LinkedInVerifier.build_add_to_linkedin_url(
             target_domain or "AI Engineering", cert_val_raw
         )
+        # Stipend Manual Verification & Payout Scheduling metadata
+        stipend_verified = bool(acct and (acct.get("stipend_verified") == 1 or acct.get("stipend_verified") is True))
+        stipend_release_date = (acct.get("stipend_release_date") if acct else "") or ""
+        stipend_amount = (acct.get("stipend_amount") if acct else 5499) or 5499
+        verified_github_org = (acct.get("verified_github_org") if acct else "") or ""
+        verified_github_repo = (acct.get("verified_github_repo") if acct else "") or ""
+        
+        stipend_release_date_display = ""
+        if stipend_release_date:
+            try:
+                dt_obj = datetime.strptime(stipend_release_date[:10], "%Y-%m-%d")
+                stipend_release_date_display = dt_obj.strftime("%A, %d %B %Y")
+            except Exception:
+                stipend_release_date_display = stipend_release_date
+
         active_task = None
         if all_gates_passed:
             active_task = conn.execute(
@@ -150,7 +165,13 @@ def stipend_tasks():
         linkedin_verified=linkedin_verified,
         linkedin_url=linkedin_url,
         linkedin_status=linkedin_status,
-        add_to_linkedin_url=add_to_linkedin_url
+        add_to_linkedin_url=add_to_linkedin_url,
+        stipend_verified=stipend_verified,
+        stipend_release_date=stipend_release_date,
+        stipend_release_date_display=stipend_release_date_display,
+        stipend_amount=stipend_amount,
+        verified_github_org=verified_github_org,
+        verified_github_repo=verified_github_repo
     )
 
 
@@ -294,6 +315,12 @@ def submit_stipend_task(task_id: int):
             )
         )
         conn.commit()
+
+        try:
+            from services.notifications.web_push_service import notify_task_submitted_push
+            notify_task_submitted_push(email, f"{domain} Capstone Milestone")
+        except Exception as _p_err:
+            logger.error(f"Failed to dispatch push for stipend submission: {_p_err}")
 
         # Send confirmation email
         student_name = acct["name"] if acct else "Intern"

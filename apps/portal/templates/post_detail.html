@@ -499,11 +499,27 @@
         {% elif is_intern or is_logged_in %}
           <button class="btn btn-primary" id="applyBtn" type="button" data-act-click="$addClass" data-arg-click='["applyModal", "open"]' style="background:linear-gradient(135deg, #E2B96F, #C89945); color:#0F172A; font-weight:800; padding:13px 32px; border-radius:999px; border:none; cursor:pointer; font-size:15px; display:inline-flex; align-items:center; gap:9px; box-shadow:0 4px 14px rgba(200,153,69,0.35); transition:transform 0.15s ease;"><i class="fas fa-paper-plane"></i> Apply Now</button>
         {% else %}
-          <div style="display:flex; flex-direction:column; align-items:flex-start; gap:8px;">
+          <div style="display:flex; align-items:center; gap:16px; flex-wrap:wrap;">
             <a class="btn btn-primary" href="/apply/{{ post.id }}" style="background:linear-gradient(135deg, #E2B96F, #C89945); color:#0F172A; font-weight:800; padding:13px 32px; border-radius:999px; text-decoration:none; font-size:15px; display:inline-flex; align-items:center; gap:9px; box-shadow:0 4px 14px rgba(200,153,69,0.35);"><i class="fas fa-paper-plane"></i> Apply Now</a>
-            <span style="font-size:12.5px; color:#64748B;"><i class="fas fa-lock" style="font-size:11px;"></i> Sign in required to submit application (Instant &amp; Free)</span>
+            <span style="font-size:13.5px; color:#64748B;">Already registered? <a href="/signin?next={{ post_path(post) }}%3Fapply%3D1" style="color:#C89945; font-weight:700; text-decoration:underline;">Sign In</a></span>
           </div>
         {% endif %}
+      </div>
+
+      <!-- Verified Fellow Priority Shortlist Advantage Banner -->
+      <div style="background: linear-gradient(135deg, rgba(226,185,111,0.08), rgba(16,185,129,0.05)); border: 1px solid rgba(226,185,111,0.3); border-radius: 8px; padding: 14px 18px; margin: 20px 0; display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+          <div style="background: #E2B96F; color: #0F172A; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800; flex-shrink: 0;">
+            <i class="fas fa-bolt"></i>
+          </div>
+          <div>
+            <div style="font-size: 13.5px; font-weight: 700; color: #0F172A;">Priority Recruiter Shortlisting Available</div>
+            <div style="font-size: 12px; color: #475569;">Verified DBERT Incubation Fellows receive direct Round-1 screening waivers and proof-of-work validation.</div>
+          </div>
+        </div>
+        <a href="https://dbert.in/enroll/1999" target="_blank" rel="noopener noreferrer" style="background: #0F172A; color: #E2B96F; font-size: 12px; font-weight: 700; padding: 8px 16px; border-radius: 6px; text-decoration: none; white-space: nowrap; box-shadow: 0 2px 8px rgba(15,23,42,0.15);">
+          Fast-Track Candidacy &#8594;
+        </a>
       </div>
 
       <!-- Key Benefits Summary Grid -->
@@ -721,11 +737,14 @@
         <button type="button" class="btn btn-ghost btn-sm" id="closeApplyModalX" style="padding:4px 8px; border:none; color:#94A3B8; cursor:pointer; font-size:16px;" data-act-click="$removeClass" data-arg-click='["applyModal", "open"]' aria-label="Close dialog"><i class="fas fa-times"></i></button>
       </div>
       <p style="font-size:13px; color:#94A3B8; margin:0 0 18px; line-height:1.55;">
-        A short note is required. It’s shown as your interest signal to the hiring team; your CV &amp; status stay private.
+        A short suitability note is required (minimum 15 characters). It is shared with the hiring team along with your candidate profile; your CV &amp; application status stay private.
       </p>
       <div class="field" style="margin-bottom:16px;">
-        <label for="applyComment" style="display:block; font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:#E2B96F; margin-bottom:8px;">Why are you a great fit? *</label>
-        <textarea id="applyComment" rows="4" style="width:100%; box-sizing:border-box; background:rgba(255,255,200,0.05); border:1px solid rgba(255,255,255,0.2); color:#FFFFFF; font-family:inherit; font-size:14px; padding:12px 14px; border-radius:10px; outline:none; resize:vertical; min-height:110px; line-height:1.55;" placeholder="Highlight your relevant skills, past projects, or why you want to contribute to this role..."></textarea>
+        <label for="applyComment" style="display:flex; justify-content:space-between; align-items:center; font-size:11.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.5px; color:#E2B96F; margin-bottom:8px;">
+          <span>Why are you suitable for this opportunity? *</span>
+          <span id="applyCharCount" style="font-size:11px; color:#94A3B8; text-transform:none; font-weight:500;">0 / 15 min</span>
+        </label>
+        <textarea id="applyComment" rows="4" style="width:100%; box-sizing:border-box; background:rgba(255,255,200,0.05); border:1px solid rgba(255,255,255,0.2); color:#FFFFFF; font-family:inherit; font-size:14px; padding:12px 14px; border-radius:10px; outline:none; resize:vertical; min-height:110px; line-height:1.55;" placeholder="Explain why your skills, projects, and domain track make you a great fit for this role (minimum 15 characters)..."></textarea>
       </div>
       <div id="applyMsg" class="note" role="alert" style="min-height:20px; font-size:13px; margin-bottom:14px;"></div>
 
@@ -746,21 +765,55 @@
       if (az) {
         az.innerHTML =
           '<div class="applied-box" style="background:#F0FDF4; border:1.5px solid #86EFAC; border-radius:14px; padding:20px 24px;">'
-        + '<div class="hd" style="font-size:16px; font-weight:800; color:#166534; margin-bottom:6px; display:flex; align-items:center; gap:8px;"><i class="fas fa-circle-check" style="color:#22C55E; font-size:18px;"></i> Applied — your application is in!</div>'
-        + '<p style="font-size:14px; color:#374151; margin:0 0 16px; line-height:1.55;">The company review team can see your interest and profile. Track real-time status and your next steps directly in My Applications.</p>'
+        + '<div class="hd" style="font-size:16px; font-weight:800; color:#166534; margin-bottom:6px; display:flex; align-items:center; gap:8px;"><i class="fas fa-circle-check" style="color:#22C55E; font-size:18px;"></i> Application Submitted!</div>'
+        + '<p style="font-size:14px; color:#374151; margin:0 0 16px; line-height:1.55;">Your suitability note and profile have been submitted to the company hiring team. Track real-time status and your next steps directly in My Applications.</p>'
         + '<div class="next-cta" style="display:flex; gap:12px; flex-wrap:wrap;">'
         + '<a class="btn btn-primary" href="'+MY_APPS_URL+'" style="background:linear-gradient(135deg,#E2B96F,#C89945); color:#0F172A; font-weight:700; padding:10px 20px; border-radius:10px; text-decoration:none; display:inline-flex; align-items:center; gap:8px; font-size:13.5px;"><i class="fas fa-briefcase"></i> View in My Applications</a>'
         + '<a class="btn btn-ghost" href="'+BOARD_URL+'" style="background:#F8FAFC; border:1px solid #CBD5E1; color:#334155; font-weight:600; padding:10px 20px; border-radius:10px; text-decoration:none; display:inline-flex; align-items:center; gap:8px; font-size:13.5px;"><i class="fas fa-layer-group"></i> Browse more openings</a>'
         + '</div></div>';
       }
     }
+
+    function showExternalApplied(redirectUrl){
+      var m = document.getElementById('applyModal');
+      if (m) m.classList.remove('open');
+      var az = document.getElementById('applyZone');
+      if (az) {
+        az.innerHTML =
+          '<div class="applied-box" style="background:#0F172A; border:1.5px solid #F59E0B; border-radius:16px; padding:24px; color:#F1F5F9; box-shadow:0 12px 32px rgba(0,0,0,0.5);">'
+        + '<div class="hd" style="font-size:16px; font-weight:800; color:#34D399; margin-bottom:8px; display:flex; align-items:center; gap:8px;"><i class="fas fa-circle-check" style="color:#34D399; font-size:20px;"></i> Application Pitch Recorded!</div>'
+        + '<h3 style="font-size:18px; font-weight:800; color:#FFFFFF; margin:6px 0 8px;">Elevate Your Candidacy to Pre-Vetted Status</h3>'
+        + '<p style="font-size:13.5px; color:#CBD5E1; margin:0 0 14px; line-height:1.6;">94% of partner hiring managers prioritize candidates carrying DBERT Pre-Vetted Credentials with verified GitHub PRs. Secure your 60-day Incubation seat with a ₹499 security deposit (credited in full).</p>'
+        + '<div style="background:rgba(245,158,11,0.12); border:1px solid rgba(245,158,11,0.3); border-radius:10px; padding:10px 14px; margin-bottom:18px; font-size:12.5px; color:#FDE68A;">'
+        + '<strong>Program Breakdown:</strong> ₹499 Security Deposit today &bull; Remaining ₹1,500 balance due after batch kickoff within 7 days.'
+        + '</div>'
+        + '<div class="next-cta" style="display:flex; gap:12px; flex-wrap:wrap; align-items:center;">'
+        + '<a class="btn btn-primary" href="https://dbert.in/enroll/1999" target="_blank" rel="noopener noreferrer" style="background:linear-gradient(135deg,#F59E0B,#D97706); color:#0F172A; font-weight:800; padding:11px 22px; border-radius:10px; text-decoration:none; display:inline-flex; align-items:center; gap:8px; font-size:13.5px;"><i class="fas fa-shield-alt"></i> Secure Incubation Seat (₹499) &rarr;</a>'
+        + '<a class="btn btn-secondary" id="extRedirectBtn" href="'+redirectUrl+'" target="_blank" rel="noopener noreferrer" style="background:#1E293B; border:1px solid rgba(255,255,255,0.2); color:#F8FAFC; font-weight:700; padding:11px 20px; border-radius:10px; text-decoration:none; display:inline-flex; align-items:center; gap:8px; font-size:13.5px;"><i class="fas fa-external-link-alt"></i> Proceed to Partner Job (<span id="extCountdown">5</span>s) ↗</a>'
+        + '</div></div>';
+
+        // 5-second automatic redirect countdown
+        var count = 5;
+        var timer = setInterval(function(){
+          count--;
+          var countEl = document.getElementById('extCountdown');
+          if (countEl) countEl.textContent = count;
+          if (count <= 0) {
+            clearInterval(timer);
+            var btn = document.getElementById('extRedirectBtn');
+            if (btn) btn.innerHTML = '<i class="fas fa-external-link-alt"></i> Proceed to Partner Job ↗';
+            window.open(redirectUrl, '_blank');
+          }
+        }, 1000);
+      }
+    }
     async function submitApply(){
       var msg = document.getElementById('applyMsg');
       var comment = document.getElementById('applyComment').value.trim();
-      if(!comment){
+      if(!comment || comment.length < 15){
         if(msg){
           msg.style.color = '#EF4444';
-          msg.textContent = 'Please add a comment explaining why you are a fit.';
+          msg.textContent = 'Please write at least 15 characters explaining why you are suitable for this opportunity.';
         }
         return;
       }
@@ -777,7 +830,11 @@
         var d = await r.json();
         if(r.status === 401 && d.next){ window.location = '/apply/{{ post.id }}'; return; }
         if(r.ok && d.status === 'success'){
-          showApplied();
+          if(d.routing === 'external' && d.redirect_url){
+            showExternalApplied(d.redirect_url);
+          } else {
+            showApplied();
+          }
           return;
         } else {
           if(msg){
@@ -801,10 +858,22 @@
     document.addEventListener('DOMContentLoaded', function(){
       var appBtn = document.getElementById('applyBtn');
       var modal = document.getElementById('applyModal');
+      var txt = document.getElementById('applyComment');
+      var charCount = document.getElementById('applyCharCount');
+      if(txt && charCount){
+        txt.addEventListener('input', function(){
+          var len = this.value.trim().length;
+          charCount.textContent = len + ' / 15 min';
+          if(len >= 15){
+            charCount.style.color = '#22C55E';
+          } else {
+            charCount.style.color = '#94A3B8';
+          }
+        });
+      }
       if(appBtn && modal){
         appBtn.addEventListener('click', function(){
           modal.classList.add('open');
-          var txt = document.getElementById('applyComment');
           if(txt) setTimeout(function(){ txt.focus(); }, 50);
         });
       }

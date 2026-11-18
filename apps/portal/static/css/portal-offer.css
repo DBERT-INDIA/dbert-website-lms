@@ -1,0 +1,733 @@
+/* ── DBERT LMS OFFICIAL APPOINTMENT & OFFER LETTER STYLESHEET ── */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+.offer-page-container {
+  max-width: 940px;
+  width: 100%;
+  margin: 24px auto 60px;
+  padding: 0 16px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: #0f172a;
+}
+
+/* ── EXECUTIVE HERO BANNER ── */
+.portal-header-banner {
+  background: linear-gradient(135deg, #0b1120 0%, #1e293b 100%);
+  border: 1px solid #334155;
+  border-radius: 14px;
+  padding: 26px 30px;
+  margin-bottom: 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 18px;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.25);
+}
+.portal-header-banner h1 {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  color: #ffffff !important;
+  font-size: 26px !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.5px !important;
+  margin: 0 0 10px !important;
+}
+.portal-header-banner p {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  color: #cbd5e1 !important;
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+  margin: 0 !important;
+}
+.banner-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.banner-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+.badge-verified {
+  background: rgba(16, 185, 129, 0.18);
+  border: 1px solid #10b981;
+  color: #34d399;
+}
+.badge-pending {
+  background: rgba(245, 158, 11, 0.2);
+  border: 1px solid #f59e0b;
+  color: #fbbf24;
+}
+.badge-ref {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #e2e8f0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+/* ── HIGH-CONVERSION CTA BUTTONS ── */
+.btn-gold {
+  background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+  color: #0b1120 !important;
+  font-weight: 800;
+  font-size: 13.5px;
+  letter-spacing: 0.3px;
+  text-decoration: none;
+  padding: 12px 24px;
+  border-radius: 9px;
+  border: none;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.btn-gold:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(245, 158, 11, 0.45);
+  filter: brightness(1.05);
+}
+.btn-gold:active {
+  transform: translateY(0);
+}
+.btn-secondary {
+  background: #1e293b;
+  color: #f1f5f9 !important;
+  font-weight: 600;
+  font-size: 13px;
+  padding: 11px 20px;
+  border-radius: 9px;
+  border: 1px solid #475569;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+.btn-secondary:hover {
+  background: #334155;
+  border-color: #64748b;
+}
+
+/* ── TWO-STEP PROGRESS STEPPER ── */
+.offer-stepper-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px 22px;
+  margin-bottom: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+.step-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+.step-number {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+.step-active .step-number {
+  background: #d97706;
+  color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.2);
+}
+.step-completed .step-number {
+  background: #10b981;
+  color: #ffffff;
+}
+.step-pending .step-number {
+  background: #f1f5f9;
+  color: #94a3b8;
+  border: 1px solid #cbd5e1;
+}
+.step-content {
+  display: flex;
+  flex-direction: column;
+}
+.step-label {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+.step-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #0f172a;
+}
+.step-divider {
+  width: 48px;
+  height: 2px;
+  background: #e2e8f0;
+  flex-shrink: 0;
+}
+
+/* ── DIGITAL SIGNATURE ACTION BOX ── */
+.signature-box-wrapper {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-top: 4px solid #d97706;
+  border-radius: 12px;
+  padding: 26px 30px;
+  margin-bottom: 26px;
+  box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.06);
+}
+.signature-box-wrapper.signed-state {
+  border-top-color: #10b981;
+  background: linear-gradient(180deg, #f0fdf4 0%, #ffffff 100%);
+}
+.sig-input-group {
+  margin: 16px 0;
+  max-width: 500px;
+}
+.sig-input-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 800;
+  color: #334155;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 8px;
+}
+.sig-input-field {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #0f172a;
+  background: #f8fafc;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+}
+.sig-input-field:focus {
+  outline: none;
+  border-color: #d97706;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.15);
+}
+.terms-acceptance-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  cursor: pointer;
+}
+.terms-acceptance-card:hover {
+  border-color: #cbd5e1;
+}
+.terms-acceptance-card input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  accent-color: #d97706;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.terms-acceptance-text {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #334155;
+}
+
+/* ── PARCHMENT APPOINTMENT LETTER CONTAINER ── */
+.official-offer-letter-wrapper {
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+.offer-letter-document {
+  background: #ffffff;
+  border: 2px solid #0f172a;
+  outline: 1px solid rgba(217, 119, 6, 0.4);
+  outline-offset: -8px;
+  border-radius: 12px;
+  padding: 42px 38px;
+  box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.08);
+  line-height: 1.7;
+  font-size: 13.5px;
+  color: #1e293b;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+/* ── LETTERHEAD STYLING ── */
+.letterhead-header {
+  text-align: center;
+  border-bottom: 2px solid #0f172a;
+  padding-bottom: 18px;
+  margin-bottom: 24px;
+}
+.letterhead-brand-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 6px;
+}
+.letterhead-title {
+  font-size: 34px;
+  font-weight: 900;
+  letter-spacing: 2px;
+  color: #0f172a;
+  text-transform: uppercase;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  line-height: 1;
+}
+.letterhead-fullform {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: #475569;
+  margin-top: 5px;
+}
+.letterhead-subtitle {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  color: #64748b;
+  text-transform: uppercase;
+  margin: 4px 0 6px;
+}
+.letterhead-meta {
+  font-size: 11px;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.gold-divider-bar {
+  height: 3px;
+  background: linear-gradient(90deg, #d97706, #fbbf24, #d97706);
+  margin-top: 14px;
+  border-radius: 2px;
+}
+
+/* ── APPOINTMENT DOSSIER GRID ── */
+.dossier-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin-bottom: 22px;
+  box-sizing: border-box;
+}
+.dossier-item {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.dossier-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #64748b;
+}
+.dossier-value {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+/* ── FORMAL SUBJECT BANNER ── */
+.formal-subject-box {
+  background: #f1f5f9;
+  border-left: 4px solid #0f172a;
+  border-radius: 4px;
+  padding: 12px 18px;
+  font-size: 14px;
+  font-weight: 800;
+  color: #0f172a;
+  margin-bottom: 22px;
+  letter-spacing: 0.2px;
+  box-sizing: border-box;
+}
+
+/* ── SECTION HEADINGS ── */
+.doc-section-heading {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #0f172a;
+  border-bottom: 1.5px solid #cbd5e1;
+  padding-bottom: 6px;
+  margin: 26px 0 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── RESPONSIVE TABLE WRAPPER & STRUCTURED TABLES ── */
+.table-responsive-container {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-bottom: 18px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  box-sizing: border-box;
+}
+.executive-table {
+  width: 100%;
+  max-width: 100%;
+  table-layout: auto;
+  border-collapse: collapse;
+  font-size: 12px;
+  line-height: 1.5;
+  box-sizing: border-box;
+  margin: 0;
+  border: none;
+}
+.executive-table th {
+  background: #f1f5f9;
+  padding: 8px 12px;
+  text-align: left;
+  font-weight: 800;
+  color: #0f172a;
+  border-bottom: 1px solid #cbd5e1;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+.executive-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid #e2e8f0;
+  color: #1e293b;
+  vertical-align: middle;
+  box-sizing: border-box;
+  word-break: normal;
+  overflow-wrap: break-word;
+}
+.executive-table tr:last-child td {
+  border-bottom: none;
+}
+.executive-table td.col-label {
+  background: #f8fafc;
+  font-weight: 700;
+  color: #475569;
+  width: 28%;
+  min-width: 180px;
+  max-width: 240px;
+  white-space: nowrap;
+}
+.executive-table td:not(.col-label) {
+  width: 72%;
+}
+
+/* ── 4 COMPENSATION & MILESTONE CARDS ── */
+.stipend-criteria-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin: 16px 0 18px;
+}
+.criteria-card {
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 14px 16px;
+  position: relative;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+  box-sizing: border-box;
+}
+.criteria-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #0f172a;
+  margin-bottom: 4px;
+}
+.criteria-val {
+  font-size: 17px;
+  font-weight: 900;
+  color: #d97706;
+  margin-bottom: 4px;
+}
+.criteria-desc {
+  font-size: 12px;
+  color: #475569;
+  line-height: 1.45;
+}
+
+/* ── HIGHLIGHT NOTICE BOXES ── */
+.notice-box-emerald {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-left: 4px solid #16a34a;
+  padding: 13px 16px;
+  border-radius: 6px;
+  margin: 14px 0 18px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #14532d;
+  line-height: 1.6;
+  box-sizing: border-box;
+}
+.notice-box-gold {
+  background: #fefce8;
+  border: 1px solid #fef08a;
+  border-left: 4px solid #d97706;
+  padding: 13px 16px;
+  border-radius: 6px;
+  margin: 14px 0 18px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #713f12;
+  line-height: 1.6;
+  box-sizing: border-box;
+}
+
+/* ── FORMAL SIGNATORY EXECUTION BLOCK ── */
+.signatures-dossier-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 140px 1fr;
+  gap: 16px;
+  align-items: stretch;
+  margin-top: 22px;
+  padding-top: 14px;
+  border-top: 1.5px solid #cbd5e1;
+  box-sizing: border-box;
+}
+.sig-block {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+.sig-block-label {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #64748b;
+  margin-bottom: 10px;
+}
+.sig-handwritten-zone {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px;
+}
+.sig-cursive-font {
+  font-family: "Brush Script MT", "Dancing Script", "Caveat", "Georgia", cursive, serif;
+  font-size: 26px;
+  color: #0f172a;
+  line-height: 1;
+}
+.sig-meta-block {
+  border-top: 1px solid #cbd5e1;
+  padding-top: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.sig-meta-name {
+  font-size: 13px;
+  font-weight: 800;
+  color: #0f172a;
+}
+.sig-meta-role {
+  font-size: 11.5px;
+  color: #475569;
+  font-weight: 600;
+}
+.sig-meta-org {
+  font-size: 11px;
+  color: #64748b;
+}
+
+.qr-verification-seal {
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 10px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 5px;
+  box-sizing: border-box;
+}
+.qr-verification-seal img {
+  width: 80px;
+  height: 80px;
+  display: block;
+}
+.qr-badge-text {
+  font-size: 8.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #0f172a;
+}
+.qr-code-id {
+  font-size: 8px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  color: #64748b;
+  word-break: break-all;
+}
+
+/* ── PRINT MEDIA OPTIMIZATION ── */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 10mm 12mm 10mm 12mm;
+  }
+  html, body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    height: auto !important;
+    overflow: visible !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    font-size: 11px !important;
+    line-height: 1.45 !important;
+  }
+  body * {
+    visibility: hidden !important;
+  }
+  #printable-offer-letter,
+  #printable-offer-letter * {
+    visibility: visible !important;
+  }
+  #printable-offer-letter {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  .no-print, header, nav, .sidebar, .btn, button, input, form, .main > header {
+    display: none !important;
+  }
+  .letterhead-header {
+    padding-bottom: 10px !important;
+    margin-bottom: 14px !important;
+  }
+  .doc-section-heading {
+    margin: 14px 0 6px !important;
+    padding-bottom: 3px !important;
+    font-size: 12px !important;
+  }
+  .executive-table th, .executive-table td {
+    padding: 5px 8px !important;
+    font-size: 10.5px !important;
+  }
+  .stipend-criteria-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 6px !important;
+    margin: 8px 0 !important;
+  }
+  .criteria-card {
+    padding: 8px !important;
+  }
+  .criteria-val {
+    font-size: 13px !important;
+  }
+  table, tr, td, th {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+  h2, h3, h4, .doc-section-heading {
+    page-break-after: avoid !important;
+    break-after: avoid !important;
+  }
+  .signatures-dossier-wrapper {
+    margin-top: 14px !important;
+    padding-top: 8px !important;
+    page-break-inside: avoid !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .offer-page-container {
+    padding: 0 8px;
+    margin-top: 14px;
+  }
+  .portal-header-banner {
+    padding: 18px;
+  }
+  .offer-stepper-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .step-divider {
+    display: none;
+  }
+  .offer-letter-document {
+    padding: 24px 16px;
+  }
+  .signatures-dossier-wrapper {
+    grid-template-columns: 1fr;
+  }
+  .executive-table {
+    font-size: 11.5px;
+  }
+  .executive-table th, .executive-table td {
+    padding: 6px 8px !important;
+  }
+}

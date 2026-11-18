@@ -3,86 +3,487 @@
 <head>
 {% set page_title = "Open Tasks & Bounties" %}
 {% include "_head.html" %}
+<style nonce="{{ csp_nonce() }}">
+  .bounty-hero {
+    background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%) !important;
+    border: 1px solid #334155 !important;
+    border-radius: 18px !important;
+    padding: 26px 28px !important;
+    margin-bottom: 24px !important;
+    box-shadow: 0 10px 28px rgba(15, 23, 42, 0.12) !important;
+    color: #FFFFFF !important;
+  }
+  .bounty-hero .eyebrow {
+    color: #FBBF24 !important;
+    font-weight: 800 !important;
+    letter-spacing: 1px !important;
+    margin-bottom: 6px !important;
+    font-size: 12px !important;
+    text-transform: uppercase !important;
+  }
+  .bounty-hero h1 {
+    font-size: 25px !important;
+    font-weight: 800 !important;
+    color: #FFFFFF !important;
+    margin: 0 0 8px 0 !important;
+    letter-spacing: -0.02em !important;
+  }
+  .bounty-hero p {
+    color: #CBD5E1 !important;
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+    margin: 0 !important;
+    max-width: 620px !important;
+  }
+  .bounty-btn-dashboard {
+    background: rgba(255, 255, 255, 0.14) !important;
+    color: #FFFFFF !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: 99px !important;
+    padding: 9px 20px !important;
+    font-weight: 700 !important;
+    font-size: 13px !important;
+    white-space: nowrap !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    text-decoration: none !important;
+    transition: all 0.2s ease !important;
+  }
+  .bounty-btn-dashboard:hover {
+    background: rgba(255, 255, 255, 0.24) !important;
+    color: #FFFFFF !important;
+    border-color: rgba(255, 255, 255, 0.5) !important;
+    transform: translateY(-1px) !important;
+  }
+  .bounty-metrics {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)) !important;
+    gap: 16px !important;
+    margin-top: 22px !important;
+  }
+  .bounty-metric-box {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 14px !important;
+    padding: 14px 18px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 14px !important;
+  }
+  .bounty-metric-label {
+    font-size: 11.5px !important;
+    color: #CBD5E1 !important;
+    text-transform: uppercase !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.5px !important;
+    margin-bottom: 2px !important;
+  }
+  .bounty-metric-value {
+    font-size: 20px !important;
+    font-weight: 800 !important;
+    color: #FFFFFF !important;
+    line-height: 1.2 !important;
+  }
+  .bounty-metric-value.gold {
+    color: #FDE047 !important;
+  }
+  .bounty-tabs {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    overflow-x: auto !important;
+    padding-bottom: 4px !important;
+    margin-bottom: 24px !important;
+    border-bottom: 2px solid #E2E8F0 !important;
+  }
+  .bounty-tab {
+    padding: 10px 20px !important;
+    font-size: 13.5px !important;
+    font-weight: 700 !important;
+    color: #475569 !important;
+    background: #FFFFFF !important;
+    border: 1.5px solid #CBD5E1 !important;
+    border-radius: 10px !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    white-space: nowrap !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05) !important;
+  }
+  .bounty-tab:hover {
+    background: #F1F5F9 !important;
+    color: #0F172A !important;
+    border-color: #94A3B8 !important;
+  }
+  .bounty-tab.active {
+    background: #2563EB !important;
+    color: #FFFFFF !important;
+    border-color: #2563EB !important;
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3) !important;
+  }
+  .bounty-tab .tab-badge {
+    padding: 3px 9px !important;
+    border-radius: 99px !important;
+    font-size: 11px !important;
+    font-weight: 800 !important;
+    background: #F1F5F9 !important;
+    color: #334155 !important;
+  }
+  .bounty-tab.active .tab-badge {
+    background: rgba(255, 255, 255, 0.25) !important;
+    color: #FFFFFF !important;
+  }
+  .bounty-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)) !important;
+    gap: 22px !important;
+  }
+  .bounty-card {
+    background: #FFFFFF !important;
+    border: 1.5px solid #E2E8F0 !important;
+    border-radius: 16px !important;
+    padding: 22px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease !important;
+    box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.03) !important;
+    position: relative !important;
+    min-height: 220px !important;
+  }
+  .bounty-card:hover {
+    transform: translateY(-2px) !important;
+    border-color: #2563EB !important;
+    box-shadow: 0 12px 28px -4px rgba(37, 99, 235, 0.15) !important;
+  }
+  .bounty-card-header {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+    margin-bottom: 14px !important;
+  }
+  .bounty-pill {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    padding: 5px 12px !important;
+    border-radius: 99px !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    white-space: nowrap !important;
+  }
+  .bounty-pill-domain {
+    background: #EEF2FF !important;
+    color: #4338CA !important;
+    border: 1.5px solid #C7D2FE !important;
+  }
+  .bounty-pill-general {
+    background: #EFF6FF !important;
+    color: #1D4ED8 !important;
+    border: 1.5px solid #BFDBFE !important;
+  }
+  .bounty-pill-format {
+    background: #F8FAFC !important;
+    color: #334155 !important;
+    border: 1.5px solid #CBD5E1 !important;
+    font-weight: 600 !important;
+  }
+  .bounty-coin-tag {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    padding: 5px 13px !important;
+    border-radius: 99px !important;
+    font-size: 12.5px !important;
+    font-weight: 800 !important;
+    background: #FEF3C7 !important;
+    color: #92400E !important;
+    border: 1.5px solid #FCD34D !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+  }
+  .bounty-title {
+    font-size: 17px !important;
+    font-weight: 800 !important;
+    color: #0F172A !important;
+    margin: 0 0 8px 0 !important;
+    line-height: 1.4 !important;
+    word-break: break-word !important;
+  }
+  .bounty-desc {
+    font-size: 13.5px !important;
+    color: #475569 !important;
+    line-height: 1.6 !important;
+    margin: 0 0 18px 0 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 3 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    word-break: break-word !important;
+  }
+  .bounty-footer {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    flex-wrap: wrap !important;
+    gap: 12px !important;
+    padding-top: 16px !important;
+    border-top: 1.5px solid #F1F5F9 !important;
+    margin-top: auto !important;
+  }
+  .bounty-status-tag {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    padding: 6px 13px !important;
+    border-radius: 99px !important;
+    white-space: nowrap !important;
+  }
+  .bounty-status-tag.approved {
+    background: #DCFCE7 !important;
+    color: #166534 !important;
+    border: 1.5px solid #86EFAC !important;
+  }
+  .bounty-status-tag.submitted {
+    background: #FEF3C7 !important;
+    color: #92400E !important;
+    border: 1.5px solid #FCD34D !important;
+  }
+  .bounty-status-tag.available {
+    background: #F1F5F9 !important;
+    color: #334155 !important;
+    border: 1.5px solid #CBD5E1 !important;
+  }
+  .bounty-status-dot {
+    width: 7px !important;
+    height: 7px !important;
+    border-radius: 50% !important;
+    display: inline-block !important;
+  }
+  .bounty-btn-action {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding: 10px 22px !important;
+    border-radius: 99px !important;
+    font-size: 13px !important;
+    font-weight: 800 !important;
+    white-space: nowrap !important;
+    text-decoration: none !important;
+    cursor: pointer !important;
+    background: linear-gradient(135deg, #2563EB, #1D4ED8) !important;
+    color: #FFFFFF !important;
+    border: none !important;
+    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35) !important;
+    transition: transform 0.15s ease, box-shadow 0.15s ease !important;
+  }
+  .bounty-btn-action:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.45) !important;
+    color: #FFFFFF !important;
+  }
+  .bounty-submissions-view {
+    display: none !important;
+  }
+  .bounty-submissions-view.active {
+    display: block !important;
+  }
+</style>
 </head>
-<body class="has-sidebar">
+<body class="has-sidebar portal portal-light">
 {% set active_page = 'tasks' %}
 {% include '_intern_sidebar.html' %}
 
 <div class="main">
   <div class="content">
 
-    <div class="row-between mb-24" style="align-items:flex-end">
-      <div class="page-head" style="margin-bottom:0">
-        <div class="eyebrow">Earn</div>
-        <h1>Open Bounty Tasks</h1>
-        <p>Complete real-world micro-tasks to earn DBERT Coins, redeemable for course discounts.</p>
+    <!-- Executive Header Banner -->
+    <div class="bounty-hero">
+      <div class="row-between" style="align-items:flex-start; flex-wrap:wrap; gap:16px;">
+        <div>
+          <div class="eyebrow">PRACTICE &amp; EARN</div>
+          <h1>Open Bounty Tasks</h1>
+          <p>
+            Complete real-world engineering and domain tasks to earn DBERT Coins, unlock course discounts, and level up your portfolio.
+          </p>
+        </div>
+        <a href="/portal" class="bounty-btn-dashboard">
+          <i class="fa-solid fa-gauge"></i> My Dashboard
+        </a>
       </div>
-      <a href="/portal" class="back-link" style="white-space:nowrap">
-        My dashboard <i class="fa-solid fa-arrow-right"></i>
-      </a>
+
+      <!-- Quick Metrics Strip -->
+      <div class="bounty-metrics">
+        <div class="bounty-metric-box">
+          <div style="width:42px; height:42px; border-radius:10px; background:rgba(37,99,235,0.25); display:flex; align-items:center; justify-content:center; color:#60A5FA; font-size:18px;">
+            <i class="fa-solid fa-list-check"></i>
+          </div>
+          <div>
+            <div class="bounty-metric-label">Available Bounties</div>
+            <div class="bounty-metric-value">{{ total_available or (tasks|length) }}</div>
+          </div>
+        </div>
+
+        <div class="bounty-metric-box">
+          <div style="width:42px; height:42px; border-radius:10px; background:rgba(16,185,129,0.25); display:flex; align-items:center; justify-content:center; color:#34D399; font-size:18px;">
+            <i class="fa-solid fa-circle-check"></i>
+          </div>
+          <div>
+            <div class="bounty-metric-label">My Submissions</div>
+            <div class="bounty-metric-value">{{ my_submissions|length if my_submissions else (user_submissions|length) }}</div>
+          </div>
+        </div>
+
+        <div class="bounty-metric-box">
+          <div style="width:42px; height:42px; border-radius:10px; background:rgba(245,158,11,0.25); display:flex; align-items:center; justify-content:center; color:#FBBF24; font-size:18px;">
+            <i class="fa-solid fa-coins"></i>
+          </div>
+          <div>
+            <div class="bounty-metric-label">Coins Earned</div>
+            <div class="bounty-metric-value gold">🪙 +{{ earned_coins or 0 }}</div>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="catalog-grid">
+    <!-- Filter Tabs Strip -->
+    <div class="bounty-tabs">
+      <button type="button" class="bounty-tab active" data-filter="all" onclick="filterBounties('all', this)">
+        <i class="fa-solid fa-layer-group"></i> All Bounties <span class="tab-badge">{{ tasks|length }}</span>
+      </button>
+      <button type="button" class="bounty-tab" data-filter="growth" onclick="filterBounties('growth', this)">
+        <i class="fa-solid fa-bullhorn" style="color:#F59E0B;"></i> Growth Bounties (50 Coins) <span class="tab-badge" style="background:#FEF3C7; color:#92400E;">4</span>
+      </button>
+      <button type="button" class="bounty-tab" data-filter="domain" onclick="filterBounties('domain', this)">
+        <i class="fa-solid fa-crosshairs"></i> Domain Specific
+      </button>
+      <button type="button" class="bounty-tab" data-filter="general" onclick="filterBounties('general', this)">
+        <i class="fa-solid fa-globe"></i> General
+      </button>
+      <button type="button" class="bounty-tab" data-filter="submitted" onclick="filterBounties('submitted', this)">
+        <i class="fa-solid fa-clock-rotate-left"></i> My Submissions <span class="tab-badge">{{ my_submissions|length if my_submissions else 0 }}</span>
+      </button>
+    </div>
+
+    <!-- Available Tasks Grid -->
+    <div class="catalog-grid bounty-grid" id="tasksGrid">
       {% if tasks %}
         {% for task in tasks %}
-        <div class="card choice-card">
+        <div class="card choice-card bounty-card" data-category="{{ 'growth' if task.coin_reward == 50 else ('domain' if task.task_type == 'domain_specific' else 'general') }}">
           <div>
-            <div class="row-between mb-16" style="align-items:flex-start">
-              <div>
-                <h3 style="font-size:16px;margin-bottom:8px">{{ task.title }}</h3>
-                <div class="row wrap" style="gap:6px">
-                  {% if task.task_type == 'domain_specific' %}
-                    <span class="badge b-violet">🎯 {{ task.target_domain or 'Domain specific' }}</span>
-                  {% else %}
-                    <span class="badge b-blue">🌐 General</span>
-                  {% endif %}
+            <div class="bounty-card-header">
+              <div style="display:flex; flex-wrap:wrap; gap:6px; align-items:center;">
+                {% if task.coin_reward == 50 %}
+                  <span class="badge b-amber bounty-pill" style="background:#FEF3C7; color:#92400E; border:1.5px solid #FCD34D;">📢 Social Bounty</span>
+                {% elif task.task_type == 'domain_specific' %}
+                  <span class="badge b-violet bounty-pill bounty-pill-domain">🎯 {{ task.target_domain or 'Domain Specific' }}</span>
+                {% else %}
+                  <span class="badge b-blue bounty-pill bounty-pill-general">🌐 General</span>
+                {% endif %}
 
-                  {% if task.submission_type == 'file' %}
-                    <span class="badge b-muted">📁 File upload</span>
-                  {% elif task.submission_type == 'text' %}
-                    <span class="badge b-green">📝 Text response</span>
-                  {% elif task.submission_type == 'any' %}
-                    <span class="badge b-blue">🔀 Any format</span>
-                  {% else %}
-                    <span class="badge b-blue">🔗 URL link</span>
-                  {% endif %}
-                </div>
+                {% if task.submission_type == 'file' %}
+                  <span class="badge b-muted bounty-pill bounty-pill-format">📁 File upload</span>
+                {% elif task.submission_type == 'text' %}
+                  <span class="badge b-green bounty-pill bounty-pill-format">📝 Text response</span>
+                {% elif task.submission_type == 'any' %}
+                  <span class="badge b-blue bounty-pill bounty-pill-format">🔀 Any format</span>
+                {% else %}
+                  <span class="badge b-blue bounty-pill bounty-pill-format">🔗 URL link</span>
+                {% endif %}
               </div>
 
               {% if task.payment_type == 'unpaid' %}
-                <span class="badge b-muted" style="white-space:nowrap">🌱 Unpaid</span>
+                <span class="badge b-muted bounty-pill bounty-pill-format">🌱 Unpaid</span>
               {% else %}
-                <span class="coin-badge">🪙 +{{ task.coin_reward }}</span>
+                <span class="coin-badge bounty-coin-tag">🪙 +{{ task.coin_reward }} Coins</span>
               {% endif %}
             </div>
-            <p class="task-desc">{{ task.description }}</p>
+
+            <h3 class="bounty-title">{{ task.title }}</h3>
+            <p class="task-desc bounty-desc" title="{{ task.description }}">{{ task.description }}</p>
           </div>
 
-          <div class="card-foot">
+          <div class="card-foot bounty-footer">
             {% if user_submissions and task.id in user_submissions %}
-              <span class="status-tag {{ user_submissions[task.id] }}">
-                {{ user_submissions[task.id] }}
-              </span>
-              <button disabled class="btn btn-ghost btn-sm">
-                {% if user_submissions[task.id] == 'approved' %}Completed ✓{% else %}Submitted ✓{% endif %}
-              </button>
+              {% set s_status = user_submissions[task.id] %}
+              {% if s_status == 'approved' %}
+                <span class="status-tag bounty-status-tag approved"><span class="bounty-status-dot" style="background:#22c55e;"></span> Approved</span>
+                <button disabled class="btn btn-ghost btn-sm" style="font-size:12px; font-weight:700; color:#22c55e;">Completed ✓</button>
+              {% else %}
+                <span class="status-tag bounty-status-tag submitted"><span class="bounty-status-dot" style="background:#eab308;"></span> In Review</span>
+                <button disabled class="btn btn-ghost btn-sm" style="font-size:12px; font-weight:700; color:#eab308;">Submitted ✓</button>
+              {% endif %}
             {% else %}
-              <span class="status-tag">Not attempted</span>
-              {# title goes through |tojson: it is HTML-safe and quote-safe, so a
-                 task title containing an apostrophe no longer breaks the handler. #}
-              <button data-act-click="openSubmitModal" data-arg-click='[{{ task.id|tojson }}, {{ task.title|tojson|tojson }}]'
-                      class="btn btn-primary btn-sm">
+              <span class="status-tag bounty-status-tag available"><span class="bounty-status-dot" style="background:var(--tx-muted);"></span> Available</span>
+              <a href="/tasks/{{ task.id }}/guide"
+                 class="btn btn-primary btn-sm bounty-btn-action">
                 View &amp; submit <i class="fa-solid fa-arrow-right"></i>
-              </button>
+              </a>
             {% endif %}
           </div>
         </div>
         {% endfor %}
       {% else %}
-        <div class="card empty" style="grid-column:1 / -1">
-          <i class="fa-solid fa-list-check"></i>
-          <h4>No active tasks right now</h4>
-          <p>Nothing matches your profile at the moment. Check back soon.</p>
+        <div class="card empty" style="grid-column:1 / -1; padding:48px 24px; text-align:center; background:var(--bg-surface); border:1px solid var(--border); border-radius:16px;">
+          <i class="fa-solid fa-list-check" style="font-size:36px; color:var(--gold); margin-bottom:12px;"></i>
+          <h4 style="font-size:18px; color:var(--tx-head); margin-bottom:6px;">No unattempted tasks right now</h4>
+          <p style="color:var(--tx-muted); font-size:13.5px; margin:0;">All available micro-tasks in your domain have been attempted or completed.</p>
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- My Submissions View (Hidden by default, shown when Submissions tab is clicked) -->
+    <div id="submissionsContainer" class="bounty-submissions-view" style="display:none;">
+      {% if my_submissions %}
+        <div style="background:#FFFFFF; border:1.5px solid #E2E8F0; border-radius:16px; overflow:hidden; box-shadow:0 4px 16px rgba(15,23,42,0.06);">
+          <div style="padding:18px 24px; border-bottom:1.5px solid #E2E8F0; display:flex; justify-content:space-between; align-items:center;">
+            <h3 style="font-size:16px; font-weight:800; color:#0F172A; margin:0;">My Submission History</h3>
+            <span style="font-size:12px; font-weight:700; color:#475569; background:#F1F5F9; padding:4px 10px; border-radius:99px;">{{ my_submissions|length }} record(s)</span>
+          </div>
+          <div style="overflow-x:auto;">
+            <table class="data-table" style="width:100%; border-collapse:collapse; text-align:left;">
+              <thead>
+                <tr style="border-bottom:1.5px solid #E2E8F0; background:#F8FAFC;">
+                  <th style="padding:14px 20px; font-size:12px; color:#475569; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">Task</th>
+                  <th style="padding:14px 20px; font-size:12px; color:#475569; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">Domain</th>
+                  <th style="padding:14px 20px; font-size:12px; color:#475569; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">Reward</th>
+                  <th style="padding:14px 20px; font-size:12px; color:#475569; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">Status</th>
+                  <th style="padding:14px 20px; font-size:12px; color:#475569; font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">Submitted At</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for sub in my_submissions %}
+                <tr style="border-bottom:1px solid #F1F5F9;">
+                  <td style="padding:16px 20px; font-size:14px; font-weight:700; color:#0F172A;">{{ sub.title }}</td>
+                  <td style="padding:16px 20px; font-size:13px; color:#475569;">{{ sub.target_domain or 'General' }}</td>
+                  <td style="padding:16px 20px; font-size:13.5px; font-weight:800; color:#B45309;">🪙 +{{ sub.coin_reward }}</td>
+                  <td style="padding:16px 20px;">
+                    {% if sub.status == 'approved' %}
+                      <span class="bounty-status-tag approved"><span class="bounty-status-dot" style="background:#16A34A;"></span> Approved (+{{ sub.coins_awarded }} coins)</span>
+                    {% elif sub.status == 'rejected' %}
+                      <span class="bounty-status-tag" style="background:#FEE2E2; color:#DC2626; border:1.5px solid #FCA5A5;"><span class="bounty-status-dot" style="background:#DC2626;"></span> Needs Revision</span>
+                    {% else %}
+                      <span class="bounty-status-tag submitted"><span class="bounty-status-dot" style="background:#D97706;"></span> In Review</span>
+                    {% endif %}
+                  </td>
+                  <td style="padding:16px 20px; font-size:12.5px; color:#64748B;">{{ sub.submitted_at or 'Recently' }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      {% else %}
+        <div class="card empty" style="padding:48px 24px; text-align:center; background:#FFFFFF; border:1.5px solid #E2E8F0; border-radius:16px; box-shadow:0 4px 16px rgba(15,23,42,0.04);">
+          <i class="fa-solid fa-clock-rotate-left" style="font-size:36px; color:#2563EB; margin-bottom:12px;"></i>
+          <h4 style="font-size:18px; color:#0F172A; font-weight:800; margin-bottom:6px;">No submissions yet</h4>
+          <p style="color:#64748B; font-size:14px; margin:0;">Select an available task above and submit your work to start earning coins.</p>
         </div>
       {% endif %}
     </div>
@@ -90,57 +491,195 @@
   </div>
 </div>
 
-<!-- Submission modal -->
-<div class="modal" id="taskModal" role="dialog" aria-modal="true" aria-labelledby="modalTaskTitle">
-  <div class="modal-box">
+<!-- Submission Modal -->
+<div class="modal" id="taskModal" role="dialog" aria-modal="true" aria-labelledby="modalTaskTitle" style="display:none; align-items:center; justify-content:center;">
+  <div class="modal-box" style="max-width:540px; width:92%; background:var(--bg-surface); border:1px solid var(--border); border-radius:18px; padding:24px; box-shadow:0 20px 50px rgba(0,0,0,0.5);">
 
-    <h3 id="modalTaskTitle">Submit task</h3>
-    <div id="modalInstructions" class="t-sm t-muted mb-24"
-         style="background:var(--bg-inset);padding:14px;border-radius:var(--r-sm);line-height:1.55">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+      <h3 id="modalTaskTitle" style="font-size:17px; font-weight:800; color:var(--tx-head); margin:0;">Submit Task</h3>
+      <button type="button" onclick="closeModal()" style="background:transparent; border:none; color:var(--tx-muted); font-size:18px; cursor:pointer;" aria-label="Close modal">&times;</button>
+    </div>
+
+    <div id="modalInstructions" class="t-sm t-muted mb-20"
+         style="background:rgba(255,255,255,0.03); border:1px solid var(--border); padding:14px; border-radius:10px; line-height:1.55; font-size:13px; color:var(--tx-muted);">
       Loading instructions…
     </div>
 
-    <form id="taskSubmitForm" data-act-submit="submitTask" data-arg-submit='["$event"]' enctype="multipart/form-data">
+    <!-- AI Generator Section (Only for Growth Bounties 101-104) -->
+    <div id="aiGeneratorBox" style="display:none; background:linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.9)); border:1.5px solid #38BDF8; border-radius:12px; padding:16px; margin-bottom:18px;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <span style="font-size:12.5px; font-weight:800; color:#38BDF8; text-transform:uppercase; letter-spacing:0.5px; display:inline-flex; align-items:center; gap:6px;">
+          <i class="fa-solid fa-wand-magic-sparkles"></i> AI Post Generator (BYOK Gemini)
+        </span>
+        <span id="aiAssignedBadge" style="font-size:11px; font-weight:700; background:#0284C7; color:#FFFFFF; padding:2px 8px; border-radius:99px;">Topic #1</span>
+      </div>
+
+      <div id="aiTopicCard" style="background:rgba(0,0,0,0.25); border:1px solid rgba(255,255,255,0.08); border-radius:8px; padding:10px 12px; margin-bottom:12px;">
+        <div id="aiAssignedTitle" style="font-size:13.5px; font-weight:700; color:#F8FAFC; margin-bottom:4px;">Loading assigned topic...</div>
+        <div id="aiAssignedFocus" style="font-size:12px; color:#94A3B8; line-height:1.45;"></div>
+      </div>
+
+      <!-- BYOK Key Input (if not saved) -->
+      <div id="aiKeyFieldGroup" style="display:none; margin-bottom:12px;">
+        <label for="internGeminiApiKey" style="display:block; font-size:12px; font-weight:700; color:#E2E8F0; margin-bottom:4px;">
+          Google Gemini API Key <span style="font-size:11px; color:#38BDF8; font-weight:400;">(BYOK - encrypted &amp; saved)</span>
+        </label>
+        <div style="position:relative;">
+          <input type="password" id="internGeminiApiKey" placeholder="AIzaSy..." style="width:100%; padding:8px 12px; border-radius:6px; border:1px solid #475569; background:rgba(0,0,0,0.3); color:#FFFFFF; font-size:12.5px;">
+        </div>
+        <div style="font-size:11px; color:#94A3B8; margin-top:4px;">
+          Free key from <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener" style="color:#38BDF8; text-decoration:underline;">Google AI Studio</a>. Used only for your generation.
+        </div>
+      </div>
+
+      <button type="button" id="btnGenerateAiPost" onclick="generateAiPost()" class="btn btn-sm" style="width:100%; background:linear-gradient(135deg, #0284C7, #2563EB); color:#FFFFFF; border:none; padding:9px; border-radius:8px; font-weight:700; font-size:13px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px;">
+        <i class="fa-solid fa-sparkles"></i> Generate Unique Post with Gemini
+      </button>
+
+      <!-- AI Copy Output Preview -->
+      <div id="aiOutputGroup" style="display:none; margin-top:14px; padding-top:12px; border-top:1px dashed #334155;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+          <span style="font-size:11.5px; font-weight:700; color:#38BDF8;"><i class="fa-solid fa-copy"></i> Copy &amp; Publish on Platform:</span>
+          <button type="button" id="btnCopyAiPost" onclick="copyAiPost()" class="btn btn-ghost btn-sm" style="font-size:11px; padding:3px 10px; border:1px solid #38BDF8; color:#38BDF8; border-radius:6px;">
+            <i class="fa-regular fa-clipboard"></i> Copy Text
+          </button>
+        </div>
+        <textarea id="aiGeneratedCopy" rows="7" readonly style="width:100%; padding:10px; font-size:12px; line-height:1.45; border-radius:6px; border:1px solid #475569; background:rgba(0,0,0,0.4); color:#F1F5F9; font-family:monospace; resize:vertical;"></textarea>
+        <div style="font-size:11.5px; color:#FDE047; margin-top:6px; line-height:1.4;">
+          👉 <strong>Next Step:</strong> Paste and publish this on the platform, then paste the public URL below and submit.
+        </div>
+      </div>
+    </div>
+
+    <form id="taskSubmitForm" onsubmit="submitTask(event)" enctype="multipart/form-data">
+      {{ csrf_field() }}
       <input type="hidden" id="modalTaskId">
       <input type="hidden" id="modalSubtype" value="url">
 
-      <div class="field" id="fieldUrlGroup">
-        <label for="submissionUrl">Repository or live web app link *</label>
-        <input type="url" id="submissionUrl" placeholder="https://github.com/your-username/your-repo">
+      <div class="field" id="fieldUrlGroup" style="margin-bottom:16px;">
+        <label for="submissionUrl" style="display:block; font-size:12.5px; font-weight:700; color:var(--tx-head); margin-bottom:6px;">Repository or Live Web App Link *</label>
+        <input type="url" id="submissionUrl" placeholder="https://github.com/your-username/your-repo" style="width:100%; padding:10px 14px; border-radius:8px; border:1px solid var(--border); background:rgba(0,0,0,0.2); color:var(--tx-head); font-size:13.5px;">
       </div>
 
-      <div class="field" id="fieldTextGroup" style="display:none">
-        <label for="submissionText">Your detailed response / solution code *</label>
-        <textarea id="submissionText" rows="6"
-                  placeholder="Type your detailed explanation or paste your code solution…"></textarea>
+      <div class="field" id="fieldTextGroup" style="display:none; margin-bottom:16px;">
+        <label for="submissionText" style="display:block; font-size:12.5px; font-weight:700; color:var(--tx-head); margin-bottom:6px;">Your Detailed Response / Solution Code *</label>
+        <textarea id="submissionText" rows="6" placeholder="Type your detailed explanation or paste your code solution…" style="width:100%; padding:10px 14px; border-radius:8px; border:1px solid var(--border); background:rgba(0,0,0,0.2); color:var(--tx-head); font-size:13.5px;"></textarea>
       </div>
 
-      <div class="field" id="fieldFileGroup" style="display:none">
-        <label for="submissionFile">Upload submission file *</label>
-        <input type="file" id="submissionFile"
-               accept=".pdf,.doc,.docx,.zip,.png,.jpg,.jpeg,.txt,.py,.js,.html">
-        <div class="hint">Allowed: PDF, DOC, DOCX, ZIP, PNG, JPG, TXT, PY, JS, HTML.</div>
+      <div class="field" id="fieldFileGroup" style="display:none; margin-bottom:16px;">
+        <label for="submissionFile" style="display:block; font-size:12.5px; font-weight:700; color:var(--tx-head); margin-bottom:6px;">Upload Submission File *</label>
+        <input type="file" id="submissionFile" accept=".pdf,.doc,.docx,.zip,.png,.jpg,.jpeg,.txt,.py,.js,.html" style="width:100%; padding:8px; border-radius:8px; border:1px solid var(--border); background:rgba(0,0,0,0.2); color:var(--tx-head); font-size:12px;">
+        <div class="hint" style="font-size:11px; color:var(--tx-muted); margin-top:4px;">Allowed: PDF, DOC, DOCX, ZIP, PNG, JPG, TXT, PY, JS, HTML (Max 10MB)</div>
       </div>
 
-      <div class="modal-foot">
-        <button type="button" data-act-click="closeModal" class="btn btn-ghost btn-sm">Cancel</button>
-        <button type="submit" class="btn btn-primary btn-sm">
-          Submit work <i class="fa-solid fa-arrow-right"></i>
+      <div class="modal-foot" style="display:flex; justify-content:flex-end; gap:10px; margin-top:20px; padding-top:14px; border-top:1px solid var(--border);">
+        <button type="button" onclick="closeModal()" class="btn btn-ghost btn-sm" style="padding:8px 16px; font-weight:600;">Cancel</button>
+        <button type="submit" id="submitBtn" class="btn btn-primary btn-sm" style="display:inline-flex; align-items:center; gap:6px; padding:8px 18px; font-weight:700;">
+          Submit Work <i class="fa-solid fa-arrow-right"></i>
         </button>
       </div>
     </form>
 
-    <div id="modalMsg" class="t-sm mt-16" role="alert" style="display:none"></div>
+    <div id="modalMsg" style="display:none; margin-top:14px; padding:10px 14px; border-radius:8px; font-size:12.5px; font-weight:700;" role="alert"></div>
   </div>
 </div>
 
 <script nonce="{{ csp_nonce() }}">
+    let currentAssignedAngle = null;
+
+    function filterBounties(category, btn) {
+        document.querySelectorAll('.bounty-tab').forEach(t => t.classList.remove('active'));
+        if (btn) btn.classList.add('active');
+
+        const grid = document.getElementById('tasksGrid');
+        const subContainer = document.getElementById('submissionsContainer');
+
+        if (category === 'submitted') {
+            if (grid) grid.style.display = 'none';
+            if (subContainer) {
+                subContainer.classList.add('active');
+                subContainer.style.display = 'block';
+            }
+            return;
+        }
+
+        if (subContainer) {
+            subContainer.classList.remove('active');
+            subContainer.style.display = 'none';
+        }
+        if (grid) grid.style.display = 'grid';
+
+        const cards = document.querySelectorAll('.bounty-card');
+        cards.forEach(card => {
+            const cat = card.dataset.category;
+            if (category === 'all' || cat === category || (category === 'general' && cat === 'growth')) {
+                card.style.display = 'flex';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+
     function openSubmitModal(taskId, title) {
         document.getElementById('modalTaskId').value = taskId;
         document.getElementById('modalTaskTitle').textContent = `Submit task: ${title}`;
-        document.getElementById('taskModal').style.display = 'flex';
+        const modal = document.getElementById('taskModal');
+        if (modal) {
+            modal.classList.add('open');
+            modal.style.display = 'flex';
+        }
         document.getElementById('modalInstructions').textContent = 'Loading latest instructions...';
         document.getElementById('modalMsg').style.display = 'none';
+
+        const aiBox = document.getElementById('aiGeneratorBox');
+        const urlLabel = document.querySelector('#fieldUrlGroup label');
+        const urlInput = document.getElementById('submissionUrl');
+
+        if (taskId >= 101 && taskId <= 104) {
+            if (aiBox) aiBox.style.display = 'block';
+            document.getElementById('aiOutputGroup').style.display = 'none';
+
+            if (taskId === 101) {
+                if (urlLabel) urlLabel.textContent = 'LinkedIn Published Post Live URL *';
+                if (urlInput) urlInput.placeholder = 'https://www.linkedin.com/posts/...';
+            } else if (taskId === 102) {
+                if (urlLabel) urlLabel.textContent = 'X / Twitter Post or Thread Live URL *';
+                if (urlInput) urlInput.placeholder = 'https://x.com/your-username/status/...';
+            } else if (taskId === 103) {
+                if (urlLabel) urlLabel.textContent = 'GitHub Public Repository URL with Badge *';
+                if (urlInput) urlInput.placeholder = 'https://github.com/your-username/your-repo';
+            } else if (taskId === 104) {
+                if (urlLabel) urlLabel.textContent = 'Reddit / Quora Live Post/Answer URL *';
+                if (urlInput) urlInput.placeholder = 'https://www.reddit.com/r/... or https://quora.com/...';
+            }
+
+            fetch(`/api/tasks/${taskId}/angle`)
+            .then(r => r.json())
+            .then(data => {
+                if (data.angle) {
+                    currentAssignedAngle = data.angle;
+                    const badge = document.getElementById('aiAssignedBadge');
+                    const titleEl = document.getElementById('aiAssignedTitle');
+                    const focusEl = document.getElementById('aiAssignedFocus');
+                    if (badge) badge.textContent = `Angle #${data.angle.id}: ${data.angle.category}`;
+                    if (titleEl) titleEl.textContent = data.angle.title;
+                    if (focusEl) focusEl.textContent = `${data.angle.focus} Takeaway: ${data.angle.key_takeaway}`;
+                }
+                const keyGroup = document.getElementById('aiKeyFieldGroup');
+                if (keyGroup) {
+                    if (data.has_saved_key) {
+                        keyGroup.style.display = 'none';
+                    } else {
+                        keyGroup.style.display = 'block';
+                    }
+                }
+            })
+            .catch(() => {});
+        } else {
+            if (aiBox) aiBox.style.display = 'none';
+            if (urlLabel) urlLabel.textContent = 'Repository or Live Web App Link *';
+            if (urlInput) urlInput.placeholder = 'https://github.com/your-username/your-repo';
+        }
 
         fetch(`/tasks/${taskId}`)
         .then(r => r.json())
@@ -178,8 +717,78 @@
         });
     }
 
+    function generateAiPost() {
+        const taskId = document.getElementById('modalTaskId').value;
+        const keyInput = document.getElementById('internGeminiApiKey');
+        const apiKey = keyInput ? keyInput.value.trim() : '';
+        const genBtn = document.getElementById('btnGenerateAiPost');
+        const originalText = genBtn.innerHTML;
+
+        genBtn.disabled = true;
+        genBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Generating with Gemini...';
+
+        fetch(`/api/tasks/${taskId}/generate-content`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('input[name="csrf_token"]') ? document.querySelector('input[name="csrf_token"]').value : ''
+            },
+            body: JSON.stringify({ gemini_api_key: apiKey })
+        })
+        .then(r => r.json())
+        .then(data => {
+            genBtn.disabled = false;
+            genBtn.innerHTML = originalText;
+
+            if (data.status === 'success') {
+                document.getElementById('aiOutputGroup').style.display = 'block';
+                document.getElementById('aiGeneratedCopy').value = data.copy;
+                const copyBtn = document.getElementById('btnCopyAiPost');
+                if (copyBtn) {
+                    copyBtn.innerHTML = '<i class="fa-regular fa-clipboard"></i> Copy Text';
+                    copyBtn.style.color = '#38BDF8';
+                }
+            } else if (data.status === 'needs_key') {
+                document.getElementById('aiKeyFieldGroup').style.display = 'block';
+                alert(data.message || 'Please provide your Google Gemini API key.');
+                if (keyInput) keyInput.focus();
+            } else {
+                alert(data.message || 'Content generation failed. Please check your Gemini API key.');
+            }
+        })
+        .catch(err => {
+            genBtn.disabled = false;
+            genBtn.innerHTML = originalText;
+            alert('Error communicating with generation endpoint.');
+        });
+    }
+
+    function copyAiPost() {
+        const copyBox = document.getElementById('aiGeneratedCopy');
+        if (!copyBox || !copyBox.value) return;
+        copyBox.select();
+        copyBox.setSelectionRange(0, 99999);
+        navigator.clipboard.writeText(copyBox.value).then(() => {
+            const btn = document.getElementById('btnCopyAiPost');
+            if (btn) {
+                btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+                btn.style.color = '#4ADE80';
+                setTimeout(() => {
+                    btn.innerHTML = '<i class="fa-regular fa-clipboard"></i> Copy Text';
+                    btn.style.color = '#38BDF8';
+                }, 3000);
+            }
+        }).catch(() => {
+            document.execCommand('copy');
+        });
+    }
+
     function closeModal() {
-        document.getElementById('taskModal').style.display = 'none';
+        const modal = document.getElementById('taskModal');
+        if (modal) {
+            modal.classList.remove('open');
+            modal.style.display = 'none';
+        }
     }
 
     function submitTask(e) {
@@ -187,26 +796,33 @@
         const taskId = document.getElementById('modalTaskId').value;
         const subType = document.getElementById('modalSubtype').value;
         const msg = document.getElementById('modalMsg');
+        const btn = document.getElementById('submitBtn');
 
         msg.style.display = 'block';
         msg.style.color = 'var(--tx-muted)';
+        msg.style.background = 'rgba(255,255,255,0.05)';
         msg.textContent = 'Submitting task work...';
+        if (btn) btn.disabled = true;
 
         const formData = new FormData();
 
         if (subType === 'file') {
             const fileInput = document.getElementById('submissionFile');
             if (!fileInput.files || !fileInput.files[0]) {
-                msg.style.color = 'var(--red)';
+                msg.style.color = '#ef4444';
+                msg.style.background = 'rgba(239,68,68,0.12)';
                 msg.textContent = 'Please select a file to upload.';
+                if (btn) btn.disabled = false;
                 return;
             }
             formData.append('submission_file', fileInput.files[0]);
         } else if (subType === 'text') {
             const txt = document.getElementById('submissionText').value.trim();
             if (!txt) {
-                msg.style.color = 'var(--red)';
+                msg.style.color = '#ef4444';
+                msg.style.background = 'rgba(239,68,68,0.12)';
                 msg.textContent = 'Please enter your text response.';
+                if (btn) btn.disabled = false;
                 return;
             }
             formData.append('submission_content', txt);
@@ -216,15 +832,19 @@
             if (txt) formData.append('submission_content', txt);
             if (fileInput.files && fileInput.files[0]) formData.append('submission_file', fileInput.files[0]);
             if (!txt && (!fileInput.files || !fileInput.files[0])) {
-                msg.style.color = 'var(--red)';
+                msg.style.color = '#ef4444';
+                msg.style.background = 'rgba(239,68,68,0.12)';
                 msg.textContent = 'Please provide text response or upload a file.';
+                if (btn) btn.disabled = false;
                 return;
             }
         } else {
             const url = document.getElementById('submissionUrl').value.trim();
             if (!url) {
-                msg.style.color = 'var(--red)';
+                msg.style.color = '#ef4444';
+                msg.style.background = 'rgba(239,68,68,0.12)';
                 msg.textContent = 'Please enter a submission URL.';
+                if (btn) btn.disabled = false;
                 return;
             }
             formData.append('submission_content', url);
@@ -237,22 +857,33 @@
         .then(r => r.json())
         .then(data => {
             if (data.status === 'success') {
-                msg.style.color = 'var(--green)';
-                msg.textContent = data.message;
+                msg.style.color = '#22c55e';
+                msg.style.background = 'rgba(34,197,94,0.12)';
+                msg.textContent = data.message || 'Task submitted successfully!';
                 setTimeout(() => window.location.reload(), 1500);
             } else {
-                msg.style.color = 'var(--red)';
+                msg.style.color = '#ef4444';
+                msg.style.background = 'rgba(239,68,68,0.12)';
                 msg.textContent = data.message || 'Submission failed.';
+                if (btn) btn.disabled = false;
             }
         })
         .catch(() => {
-            msg.style.color = 'var(--red)';
+            msg.style.color = '#ef4444';
+            msg.style.background = 'rgba(239,68,68,0.12)';
             msg.textContent = 'Server error during submission.';
+            if (btn) btn.disabled = false;
         });
     }
+
+    window.filterBounties = filterBounties;
     window.openSubmitModal = openSubmitModal;
     window.closeModal = closeModal;
     window.submitTask = submitTask;
+    window.generateAiPost = generateAiPost;
+    window.copyAiPost = copyAiPost;
 </script>
+</body>
+</html>
 </body>
 </html>

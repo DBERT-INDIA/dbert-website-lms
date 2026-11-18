@@ -4,6 +4,42 @@
 {% set page_title_full = "DBERT — Admin Panel" %}
 {% include "_head.html" %}
 <meta name="robots" content="noindex,nofollow"/>
+<style nonce="{{ csp_nonce() }}">
+  /* Ensure all Admin Modals have functional, beautiful scroll bars */
+  body.pg-admin .modal-overlay {
+    overflow-y: auto !important;
+  }
+  body.pg-admin .modal-box {
+    max-height: 90vh !important;
+    display: flex !important;
+    flex-direction: column !important;
+    overflow: hidden !important;
+  }
+  body.pg-admin .modal-header {
+    flex-shrink: 0 !important;
+  }
+  body.pg-admin .modal-body {
+    overflow-y: auto !important;
+    flex: 1 1 auto !important;
+    max-height: calc(90vh - 72px) !important;
+    scrollbar-width: thin !important;
+    scrollbar-color: var(--gold, #E2B96F) rgba(255, 255, 255, 0.08) !important;
+  }
+  body.pg-admin .modal-body::-webkit-scrollbar {
+    width: 8px !important;
+  }
+  body.pg-admin .modal-body::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3) !important;
+    border-radius: 4px !important;
+  }
+  body.pg-admin .modal-body::-webkit-scrollbar-thumb {
+    background: var(--gold, #E2B96F) !important;
+    border-radius: 4px !important;
+  }
+  body.pg-admin .modal-body::-webkit-scrollbar-thumb:hover {
+    background: var(--gold-deep, #FBBF24) !important;
+  }
+</style>
 </head>
 <body class="pg-admin">
 
@@ -116,6 +152,7 @@
           <select class="filter-select" id="appStatusFilter" aria-label="Filter applications by status" data-act-change="loadApplications">
             <option value="all">All Statuses</option>
             <option value="Under Review">Under Review</option>
+            <option value="Apply Pending">Apply Pending (Incomplete)</option>
             <option value="On Hold">On Hold</option>
             <option value="Selected">Selected</option>
             <option value="Enrolled">Enrolled</option>
@@ -491,15 +528,22 @@
 
   <!-- ENROLLMENT REVIEW MODAL -->
   <div class="modal-overlay" id="enrModal" role="dialog" aria-modal="true" aria-labelledby="enrModalTitle">
-    <div class="modal-box">
-      <div class="modal-header">
+    <div class="modal-box" style="max-height:90vh; display:flex; flex-direction:column; overflow:hidden; width:100%; max-width:580px;">
+      <div class="modal-header" style="flex-shrink:0;">
         <div><h2 id="enrModalTitle">Review Enrollment</h2><p id="enrModalSub">Verify payment</p></div>
         <button class="modal-close" data-act-click="closeModal" data-arg-click='["enrModal"]'><i class="fas fa-times"></i></button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" style="overflow-y:auto !important; max-height:calc(90vh - 72px); flex:1 1 auto; padding:18px 22px 24px; scrollbar-width:thin; scrollbar-color:var(--gold,#E2B96F) rgba(255,255,255,0.08);">
         <div id="enrModalDetails"></div>
         <span class="modal-section-label">Payment Screenshot</span>
-        <div class="screenshot-wrap"><img id="screenshotImg" src="" alt="Screenshot"/></div>
+        <div class="screenshot-wrap" style="position:relative;">
+          <img id="screenshotImg" src="" alt="Screenshot" style="max-width:100%; max-height:360px; object-fit:contain; border-radius:8px; margin:0 auto; display:block;"/>
+          <div id="screenshotLinkWrap" style="margin-top:8px;">
+            <a id="screenshotLink" href="#" target="_blank" rel="noopener" style="color:var(--gold,#E2B96F); font-size:12px; text-decoration:none; font-weight:600; display:inline-flex; align-items:center; gap:6px;">
+              <i class="fas fa-external-link-alt"></i> Open Full-Size Screenshot
+            </a>
+          </div>
+        </div>
         <span class="modal-section-label">Admin Note (optional)</span>
         <textarea id="enrNote" class="field-textarea" rows="2" aria-label="Admin Note" placeholder="Note for intern on rejection..."></textarea>
         <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;">
@@ -1002,7 +1046,9 @@
       <td style="font-size:12px;">${escHtml(r.batch_label||'—')}</td>
       <td>${r.tutor_completion_pct>0?`<span style="color:#8b5cf6;font-weight:700;font-size:12px;">${Math.round(r.tutor_completion_pct)}%</span>`:'<span style="color:var(--tx-muted);font-size:12px;">—</span>'}</td>
       <td>${payBadge(r.payment_status)}</td>
-      <td>${r.payment_screenshot?`<button class="btn-sm ghost" ${actAttr('click','viewScreenshot',[r.payment_screenshot,r.name])}><i class="fas fa-image"></i></button>`:'—'}</td>
+      <td>${(r.payment_screenshot && (r.payment_screenshot.startsWith('utr_') || r.payment_screenshot.endsWith('.receipt') || (r.utr && !r.payment_screenshot.includes('.'))))
+        ? `<button class="btn-sm ghost" ${actAttr('click','viewScreenshot',[r.payment_screenshot,r.name,r.utr||''])} title="View UPI UTR Digital Receipt" style="color:var(--gold);font-weight:700;"><i class="fas fa-receipt" style="margin-right:4px;"></i>UTR</button>`
+        : (r.payment_screenshot ? `<button class="btn-sm ghost" ${actAttr('click','viewScreenshot',[r.payment_screenshot,r.name,''])} title="View Screenshot"><i class="fas fa-image"></i></button>` : '—')}</td>
       <td><button class="btn-sm gold" ${actAttr('click','openEnrModal',[r.id])}><i class="fas fa-eye"></i> Review</button> <button class="btn-sm ghost" ${actAttr('click','openEditEnrModal',[r.id])}><i class="fas fa-edit"></i> Edit</button></td>
     </tr>`,
 
@@ -1012,7 +1058,7 @@
       <td><strong>${escHtml(r.name)}</strong>${r.sibling_count>0?` <span class="badge badge-gold" title="This person has ${r.sibling_count} other application(s)">+${r.sibling_count} more</span>`:''}</td>
       <td style="color:var(--tx-muted);font-size:12px;">${escHtml(r.email)}</td>
       <td style="font-size:12px;">${escHtml(r.domain)}</td>
-      <td style="font-size:12px;">${escHtml(r.college||'')}</td>
+      <td style="font-size:12px;">${(r.college && r.college.toLowerCase().includes('pending')) ? `<span class="badge badge-amber" style="background:rgba(217,119,6,0.15);border:1px solid rgba(217,119,6,0.4);color:#F59E0B;font-size:11px;font-weight:700;"><i class="fas fa-clock" style="margin-right:3px;"></i>Pending Profile</span>` : escHtml(r.college||'—')}</td>
       <td>${statusBadge(r.status)}</td>
       <td style="color:var(--tx-muted);font-size:12px;">${fmtDate(r.created_at)}</td>
       <td><button class="btn-sm ghost" ${actAttr('click','openAppModal',[r.id,r.name,r.status,r.email])}><i class="fas fa-edit"></i></button></td>
@@ -1441,29 +1487,75 @@
     document.getElementById('enrNote').value = '';
     document.getElementById('enrModalDetails').innerHTML = '<p style="color:var(--tx-muted);font-size:13px;">Loading...</p>';
     document.getElementById('screenshotImg').src = '';
+    const shotLink = document.getElementById('screenshotLink');
+    if(shotLink) shotLink.style.display = 'none';
     openModal('enrModal');
     const data = await apiFetch('/admin/enrollments?status=all');
     if(!data||!data.enrollments) return;
     const r = data.enrollments.find(e=>e.id==id); if(!r) return;
     document.getElementById('enrModalTitle').textContent = 'Review: '+r.name;
     document.getElementById('enrModalSub').textContent   = r.domain+' · '+r.email;
-    document.getElementById('screenshotImg').src = API('/admin/screenshot/'+r.payment_screenshot);
+    const shotUrl = r.payment_screenshot ? API('/admin/screenshot/'+r.payment_screenshot) : '';
+    document.getElementById('screenshotImg').src = shotUrl;
+    if(shotLink && shotUrl){
+      shotLink.href = shotUrl;
+      const isUtrReceipt = Boolean(r.payment_screenshot && (r.payment_screenshot.startsWith('utr_') || r.payment_screenshot.endsWith('.receipt') || r.utr));
+      shotLink.innerHTML = isUtrReceipt
+        ? '<i class="fas fa-external-link-alt"></i> Open Full-Size Digital Voucher'
+        : '<i class="fas fa-external-link-alt"></i> Open Full-Size Screenshot';
+      shotLink.style.display = 'inline-flex';
+    }
     document.getElementById('enrModalDetails').innerHTML = `
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px;margin-bottom:12px;">
         <div style="color:var(--tx-muted);">Product</div><div>${productBadge(r)}</div>
         <div style="color:var(--tx-muted);">Joining Date</div><div style="color:var(--gold);font-weight:700;">${escHtml(r.joining_date||'TBD')}</div>
         <div style="color:var(--tx-muted);">Batch</div><div style="font-weight:600;">${escHtml(r.batch_label||'—')}</div>
         <div style="color:var(--tx-muted);">Payment</div><div>${payBadge(r.payment_status)}</div>
+        <div style="color:var(--tx-muted);">UTR / Trans ID</div><div style="color:var(--gold);font-weight:700;font-family:monospace;letter-spacing:0.5px;">${escHtml(r.utr||'—')}</div>
         <div style="color:var(--tx-muted);">Submitted</div><div style="font-size:12px;">${fmtDate(r.created_at)}</div>
       </div>`;
   }
 
-  function viewScreenshot(filename, name){
-    document.getElementById('enrModalTitle').textContent = 'Screenshot: '+name;
-    document.getElementById('enrModalSub').textContent   = 'Payment proof';
-    document.getElementById('enrModalDetails').innerHTML = '';
-    document.getElementById('screenshotImg').src = API('/admin/screenshot/'+filename);
+  function viewScreenshot(filename, name, utr){
+    const isUtr = Boolean((filename && (filename.startsWith('utr_') || filename.endsWith('.receipt'))) || utr);
+    document.getElementById('enrModalTitle').textContent = isUtr ? 'UPI UTR Voucher: '+name : 'Screenshot: '+name;
+    document.getElementById('enrModalSub').textContent   = isUtr ? 'Verified Admissions Ledger Record' : 'Payment proof';
+    
+    let detailsHtml = '';
+    if(isUtr){
+      const utrDigits = utr || (filename ? filename.replace('utr_','').replace('.receipt','') : '—');
+      detailsHtml = `
+        <div style="background:rgba(226,185,111,0.08);border:1px solid rgba(226,185,111,0.3);border-radius:var(--r-sm);padding:14px;margin-bottom:14px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+            <span style="font-size:11px;font-weight:700;color:var(--gold);letter-spacing:0.8px;text-transform:uppercase;"><i class="fas fa-receipt"></i> 12-Digit UPI Transaction ID</span>
+            <button type="button" class="btn-sm ghost" style="padding:4px 8px;font-size:11px;" ${actAttr('click','copyUtr',[utrDigits])}><i class="fas fa-copy"></i> Copy UTR</button>
+          </div>
+          <div style="font-family:monospace;font-size:20px;font-weight:800;color:#FCD34D;letter-spacing:2px;">${escHtml(utrDigits)}</div>
+          <div style="font-size:12px;color:var(--tx-muted);margin-top:6px;">This candidate completed payment using UPI reference recording. The official verification voucher is rendered below.</div>
+        </div>`;
+    }
+    document.getElementById('enrModalDetails').innerHTML = detailsHtml;
+
+    const shotUrl = filename ? API('/admin/screenshot/'+filename) : '';
+    document.getElementById('screenshotImg').src = shotUrl;
+    const shotLink = document.getElementById('screenshotLink');
+    if(shotLink && shotUrl){
+      shotLink.href = shotUrl;
+      shotLink.innerHTML = isUtr
+        ? '<i class="fas fa-external-link-alt"></i> Open Full-Size Digital Voucher'
+        : '<i class="fas fa-external-link-alt"></i> Open Full-Size Screenshot';
+      shotLink.style.display = 'inline-flex';
+    }
     openModal('enrModal');
+  }
+
+  function copyUtr(text){
+    if(!text) return;
+    navigator.clipboard.writeText(text).then(()=>{
+      showToast('UTR copied to clipboard!','green');
+    }).catch(()=>{
+      showToast('Could not copy UTR','red');
+    });
   }
 
   async function reviewEnrollment(action){

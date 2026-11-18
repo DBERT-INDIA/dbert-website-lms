@@ -1,0 +1,72 @@
+[
+  {
+    "certId": "CERT-DBERT-2026-AIML-100",
+    "holderName": "Rajveer Singh",
+    "email": "rajveerpopli1@gmail.com",
+    "domain": "Artificial Intelligence & Machine Learning",
+    "status": "SENT",
+    "sent_at": "2026-11-14T00:06:33.819187",
+    "message_id": "<7c0c2035-2c39-4fd8-9043-56afa1ca4b72@dbert.in>",
+    "error": null
+  },
+  {
+    "certId": "CERT-DBERT-2026-DA-186",
+    "holderName": "Deepanshu",
+    "email": "hey.deepanshu2006@gmail.com",
+    "domain": "Data Analyst",
+    "status": "SENT",
+    "sent_at": "2026-11-14T00:07:24.970129",
+    "message_id": "<887da5c6-1b32-4e13-a3cb-d46888eec251@dbert.in>",
+    "error": null
+  },
+  {
+    "certId": "CERT-DBERT-2026-DA-127",
+    "holderName": "Komma Hari Kesava",
+    "email": "kommakesava1@gmail.com",
+    "domain": "Data Analyst",
+    "status": "SENT",
+    "sent_at": "2026-11-14T00:08:08.474197",
+    "message_id": "<c5d75c2c-6660-48ac-89f1-f5dd1abc922f@dbert.in>",
+    "error": null
+  },
+  {
+    "certId": "CERT-DBERT-2026-DA-187",
+    "holderName": "Arya Nitin Pawar",
+    "email": "aryapawar1805@gmail.com",
+    "domain": "Data Analyst",
+    "status": "SENT",
+    "sent_at": "2026-11-14T00:08:51.255564",
+    "message_id": "<fe8bf5b4-1ff2-444a-94f1-23356dd12a43@dbert.in>",
+    "error": null
+  },
+  {
+    "certId": "CERT-DBERT-2026-AIML-064",
+    "holderName": "Piyush Solanki",
+    "email": "piyushsolanki6569@gmail.com",
+    "domain": "Artificial Intelligence & Machine Learning",
+    "status": "SENT",
+    "sent_at": "2026-11-14T00:09:34.368593",
+    "message_id": "<efe1cf7b-b42f-4969-bbcf-ef9f48dc72a2@dbert.in>",
+    "error": null
+  },
+  {
+    "certId": "CERT-DBERT-2026-DA-086",
+    "holderName": "Ramparia Amrita R.",
+    "email": "amritarampariya@gmail.com",
+    "domain": "Data Analyst",
+    "status": "SENT",
+    "sent_at": "2026-11-14T00:10:16.415560",
+    "message_id": "<34512edf-6e7c-422c-ae29-db6a31ff2bce@dbert.in>",
+    "error": null
+  },
+  {
+    "certId": "CERT-DBERT-2026-AIML-178",
+    "holderName": "Arnak Ray",
+    "email": "arnakrayofficial@gmail.com",
+    "domain": "Artificial Intelligence & Machine Learning",
+    "status": "SENT",
+    "sent_at": "2026-11-14T00:10:58.662861",
+    "message_id": "<ad5cbd02-0e6d-4efb-b0e9-076d82c70f74@dbert.in>",
+    "error": null
+  }
+]

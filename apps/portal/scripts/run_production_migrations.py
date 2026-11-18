@@ -13,6 +13,25 @@ Sequentially and idempotently applies all Guided Learning V2 and security migrat
 import os
 import sys
 
+# Auto-load .env from apps/portal/.env if DATABASE_URL is not set
+def load_env():
+    portal_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    env_file = os.path.join(portal_dir, ".env")
+    if os.path.exists(env_file):
+        with open(env_file, "r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith("#") and "=" in line:
+                    k, v = line.split("=", 1)
+                    k = k.strip()
+                    v = v.strip().strip("'\"")
+                    if k not in os.environ:
+                        os.environ[k] = v
+
+load_env()
+if not os.environ.get("DATABASE_URL") and os.path.exists("/var/www/dbert-website-lms/apps/portal/.env"):
+    load_env()
+
 # Ensure portal path is available
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -130,6 +149,35 @@ MIGRATIONS = [
             spotlight_id INTEGER,
             clicked_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );
+    """),
+    ("Phase 15: Offer Letters and Admin Notes (intern_offer_letters)", """
+        CREATE TABLE IF NOT EXISTS intern_offer_letters (
+            id SERIAL PRIMARY KEY,
+            offer_letter_id TEXT UNIQUE NOT NULL,
+            intern_id INTEGER,
+            enrollment_id INTEGER,
+            email TEXT NOT NULL,
+            name TEXT NOT NULL,
+            domain TEXT NOT NULL,
+            college TEXT,
+            batch_start_date TEXT NOT NULL,
+            batch_end_date TEXT NOT NULL,
+            tenure_months INTEGER DEFAULT 2,
+            stipend_amount INTEGER DEFAULT 5000,
+            login_hours_per_week INTEGER DEFAULT 10,
+            required_certifications INTEGER DEFAULT 2,
+            required_bounty_tasks INTEGER DEFAULT 75,
+            caution_deposit_amount INTEGER DEFAULT 499,
+            caution_deposit_status TEXT DEFAULT 'VERIFIED',
+            signature_name TEXT,
+            accepted_at TEXT,
+            pdf_unlocked INTEGER DEFAULT 0,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+        CREATE INDEX IF NOT EXISTS idx_offer_letters_email ON intern_offer_letters(email);
+        CREATE INDEX IF NOT EXISTS idx_offer_letters_offer_id ON intern_offer_letters(offer_letter_id);
+        ALTER TABLE applications ADD COLUMN IF NOT EXISTS admin_note TEXT;
     """)
 ]
 

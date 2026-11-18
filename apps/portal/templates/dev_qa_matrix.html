@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DBERT Ecosystem QA Matrix & Local Testing Cockpit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <style nonce="{{ csp_nonce() }}">
+    :root {
+      --bg: #0B0F19;
+      --card-bg: rgba(18, 24, 38, 0.85);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --accent-blue: #38BDF8;
+      --accent-purple: #A855F7;
+      --accent-green: #34D399;
+      --accent-amber: #FBBF24;
+      --accent-red: #F87171;
+      --text-main: #F1F5F9;
+      --text-muted: #94A3B8;
+      --text-sub: #64748B;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      padding: 32px 24px 60px;
+      line-height: 1.5;
+    }
+    .container { max-width: 1400px; margin: 0 auto; }
+    
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.9));
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 24px 28px;
+      margin-bottom: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .header-title h1 {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .badge-dev {
+      background: rgba(56, 189, 248, 0.15);
+      color: var(--accent-blue);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .header-p { color: var(--text-muted); font-size: 13px; margin-top: 4px; }
+    
+    .status-chips { display: flex; gap: 10px; flex-wrap: wrap; }
+    .chip {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--card-border);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .dot { width: 8px; height: 8px; border-radius: 50%; }
+    .dot-green { background: #10B981; box-shadow: 0 0 8px #10B981; }
+    .dot-blue { background: #38BDF8; box-shadow: 0 0 8px #38BDF8; }
+
+    /* Actions Bar */
+    .quick-actions {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 14px 20px;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .quick-actions-label { font-size: 12px; font-weight: 700; color: var(--text-sub); text-transform: uppercase; letter-spacing: 0.8px; }
+    .quick-actions-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+    .btn-action {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text-main);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-action:hover { background: rgba(255, 255, 255, 0.12); border-color: rgba(255, 255, 255, 0.25); }
+
+    /* Section Styling */
+    .section-title {
+      font-size: 15px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    /* Persona Card */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 18px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.15s ease, border-color 0.15s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .card:hover { transform: translateY(-2px); border-color: rgba(255, 255, 255, 0.2); }
+    .card-top { margin-bottom: 14px; }
+    .card-badge-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .pill {
+      font-size: 10px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+    .pill-blue { background: rgba(56, 189, 248, 0.15); color: #38BDF8; border: 1px solid rgba(56, 189, 248, 0.3); }
+    .pill-green { background: rgba(52, 211, 153, 0.15); color: #34D399; border: 1px solid rgba(52, 211, 153, 0.3); }
+    .pill-amber { background: rgba(251, 191, 36, 0.15); color: #FBBF24; border: 1px solid rgba(251, 191, 36, 0.3); }
+    .pill-purple { background: rgba(168, 85, 247, 0.15); color: #C084FC; border: 1px solid rgba(168, 85, 247, 0.3); }
+    .pill-red { background: rgba(248, 113, 113, 0.15); color: #F87171; border: 1px solid rgba(248, 113, 113, 0.3); }
+
+    .card-name { font-size: 15px; font-weight: 700; color: #FFFFFF; margin-bottom: 4px; }
+    .card-email { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent-blue); word-break: break-all; margin-bottom: 8px; }
+    .card-desc { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+
+    .card-details {
+      background: rgba(0, 0, 0, 0.25);
+      border-radius: 8px;
+      padding: 8px 12px;
+      margin: 10px 0 14px;
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--text-sub);
+    }
+    .card-details div { margin-bottom: 2px; }
+    .card-details span { color: var(--text-main); font-weight: 600; }
+
+    /* Button Impersonate */
+    .btn-login {
+      background: linear-gradient(135deg, #2563EB, #1D4ED8);
+      color: #FFFFFF;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 9px 16px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      text-align: center;
+      text-decoration: none;
+      display: block;
+      transition: all 0.15s ease;
+    }
+    .btn-login:hover { background: linear-gradient(135deg, #1D4ED8, #1E40AF); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35); }
+    .btn-website {
+      background: linear-gradient(135deg, #7C3AED, #6D28D9);
+    }
+    .btn-website:hover { background: linear-gradient(135deg, #6D28D9, #5B21B6); box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <div class="header-title">
+        <h1>DBERT QA Matrix & Local Testing Cockpit <span class="badge-dev">Local Dev Only</span></h1>
+        <p class="header-p">All seeded test personas are pre-configured with uniform password: <strong style="color:#FFF;">TestPass123!</strong></p>
+      </div>
+      <div class="status-chips">
+        <div class="chip"><span class="dot dot-green"></span> LMS Port: 5001</div>
+        <div class="chip"><span class="dot dot-blue"></span> Next.js Port: 3000</div>
+        <div class="chip">AI Default: <span style="color:#38BDF8;font-weight:700;">{{ ai_model or 'gemini-3.8-flash' }}</span></div>
+      </div>
+    </div>
+
+    <!-- Quick Actions Bar -->
+    <div class="quick-actions">
+      <div class="quick-actions-label">Test Simulation Shortcuts:</div>
+      <div class="quick-actions-btns">
+        <a href="/dev/action/verify-deposit?intern_id=9104" class="btn-action">✓ Approve Stage 4 Deposit (₹499)</a>
+        <a href="/dev/action/trigger-ai-eval?submission_id=9305" class="btn-action">🤖 Re-Score Capstone with Gemini</a>
+        <a href="/dev/action/release-stipend?intern_id=9205" class="btn-action">🎁 Release 5,000 Coins to Wallet</a>
+        <a href="/dev/action/execute-payout?withdrawal_id=9507" class="btn-action">💸 Mark ₹5,000 Payout Paid</a>
+      </div>
+    </div>
+
+    <!-- Cluster A: Admin, Staff, Company -->
+    <div class="section-title">01 · Administrative, Review Staff & Hiring Partners</div>
+    <div class="section-grid">
+      <!-- Super Admin -->
+      <div class="card">
+        <div class="card-top">
+          <div class="card-badge-row">
+            <span class="pill pill-purple">Super Admin</span>
+            <span style="font-size:11px;color:var(--text-sub);">Role: admin</span>
+          </div>
+          <div class="card-name">Super Admin QA</div>
+          <div class="card-email">admin@dbert.test</div>
+          <div class="card-desc">Full administration privileges, admissions verification, and ambassador UPI payout clearance.</div>
+          <div class="card-details">
+            <div>Target: <span>/admin</span></div>
+            <div>Payouts: <span>/admin/ambassador-payouts</span></div>
+          </div>
+        </div>
+        <a href="/dev/impersonate?email=admin@dbert.test&target=/admin" class="btn-login">⚡ 1-Click Login to Admin Portal</a>
+      </div>
+
+      <!-- Staff Reviewer -->
+      <div class="card">
+        <div class="card-top">
+          <div class="card-badge-row">
+            <span class="pill pill-blue">Review Staff</span>
+            <span style="font-size:11px;color:var(--text-sub);">Role: staff</span>
+          </div>
+          <div class="card-name">Mentor Staff QA</div>
+          <div class="card-email">staff@dbert.test</div>
+          <div class="card-desc">Evaluator review queue for intern tasks, AI score verification, and 1-click stipend approval.</div>
+          <div class="card-details">
+            <div>Target: <span>/staff/tasks</span></div>
+            <div>Queue Role: <span>tasks, enrollments</span></div>
+          </div>
+        </div>
+        <a href="/dev/impersonate?email=staff@dbert.test&target=/staff/tasks" class="btn-login">⚡ 1-Click Login to Staff Queue</a>
+      </div>
+
+      <!-- Faculty Mentor: Dr. Ananya Sen -->
+      <div class="card">
+        <div class="card-top">
+          <div class="card-badge-row">
+            <span class="pill pill-amber">Faculty Mentor</span>
+            <span style="font-size:11px;color:var(--text-sub);">ID: 16 (staff)</span>
+          </div>
+          <div class="card-name">Dr. Ananya Sen</div>
+          <div class="card-email">ananya.sen@dbert.in</div>
+          <div class="card-desc">Faculty Technical Mentor for Industry Advisory, AI/ML & Full Stack sessions. Manage availability and view registered intern attendee rosters.</div>
+          <div class="card-details">
+            <div>Target: <span>/staff/mentor-slots</span></div>
+            <div>Track: <span>All Tracks &middot; AI/ML &middot; FSD</span></div>
+          </div>
+        </div>
+        <a href="/dev/impersonate?email=ananya.sen@dbert.in&target=/staff/mentor-slots" class="btn-login">⚡ 1-Click Login to Mentor Console</a>
+      </div>
+
+      <!-- Faculty Mentor: Rohan Kulkarni -->
+      <div class="card">
+        <div class="card-top">
+          <div class="card-badge-row">
+            <span class="pill pill-amber">Faculty Mentor</span>
+            <span style="font-size:11px;color:var(--text-sub);">ID: 17 (staff)</span>
+          </div>
+          <div class="card-name">Rohan Kulkarni</div>
+          <div class="card-email">rohan.kulkarni@dbert.in</div>
+          <div class="card-desc">Faculty Technical Mentor for Capstone Architecture, Data Analytics & Automation sessions. View registered attendee rosters and session links.</div>
+          <div class="card-details">
+            <div>Target: <span>/staff/mentor-slots</span></div>
+            <div>Track: <span>Data Analyst &middot; Python RPA</span></div>
+          </div>
+        </div>
+        <a href="/dev/impersonate?email=rohan.kulkarni@dbert.in&target=/staff/mentor-slots" class="btn-login">⚡ 1-Click Login to Mentor Console</a>
+      </div>
+
+      <!-- Hiring Partner -->
+      <div class="card">
+        <div class="card-top">
+          <div class="card-badge-row">
+            <span class="pill pill-green">Company Partner</span>
+            <span style="font-size:11px;color:var(--text-sub);">Role: company</span>
+          </div>
+          <div class="card-name">TechCorp Labs QA</div>
+          <div class="card-email">recruiter@techcorp.test</div>
+          <div class="card-desc">Employer hiring portal, candidate applications review, and direct directory search.</div>
+          <div class="card-details">
+            <div>Target: <span>/company/dashboard</span></div>
+            <div>Status: <span>Approved Partner</span></div>
+          </div>
+        </div>
+        <a href="/dev/impersonate?email=recruiter@techcorp.test&target=/company/dashboard" class="btn-login">⚡ 1-Click Login to Recruiter Dashboard</a>
+      </div>
+    </div>
+
+    <!-- Cluster B: Internship Application Stages 1-5 -->
+    <div class="section-title">02 · Internship Application Lifecycle (Stages 1 through 5)</div>
+    <div class="section-grid">
+      <!-- Stage 1 -->
+      <div class="card">
+        <div class="card-top">
+          <div class="card-badge-row">
+            <span class="pill pill-amber">Stage 1: Apply Pending</span>
+            <span style="font-size:11px;color:var(--text-sub);">ID: 9101</span>
+          </div>
+          <div class="card-name">Arun Verma</div>
+          <div class="card-email">stage1_apply@dbert.test</div>
+          <div class="card-desc">Application newly submitted. Candidate sees application received status and awaits screening interview.</div>
+          <div class="card-details">
+            <div>Domain: <span>Full Stack Web Development</span></div>
+            <div>Status: <span>Apply Pending</span></div>
+          </div>
+        </div>
+        <a href="/dev/impersonate?email=stage1_apply@dbert.test&target=/portal" class="btn-login">⚡ View Stage 1 on /portal</a>
+      </div>
+
+      <!-- Stage 2 -->
+      <div class="card">
+        <div class="card-top">
+          <div class="card-badge-row">
+            <span class="pill pill-blue">Stage 2: Under Review</span>
+            <span style="font-size:11px;color:var(--text-sub);">ID: 9102</span>
+          </div>
+          <div class="card-name">Bhavna Patel</div>
+          <div class="card-email">stage2_review@dbert.test</div>
+          <div class="card-desc">Candidate completed interview. Application is under review by admissions staff.</div>
+          <div class="card-details">
+            <div>Domain: <span>AI & Machine Learning</span></div>
+            <div>Status: <span>Under Review</span></div>
+          </div>
+        </div>
+        <a href="/dev/impersonate?email=stage2_review@dbert.test&target=/portal" class="btn-login">⚡ View Stage 2 on /portal</a>
+      </div>
+
+      <!-- Stage 3 -->
+      <div class="card">
+        <div class="card-top">
+          <div class="card-badge-row">
+            <span class="pill pill-green">Stage 3: Selected (Deposit)</span>
+            <span style="font-size:11px;color:var(--text-sub);">ID: 9103</span>
+          </div>
+          <div class="card-name">Chirag Gupta</div>
+          <div class="card-email">stage3_selected@dbert.test</div>
+          <div class="card-desc">Approved for cohort! Candidate is prompted to select upcoming Monday joining date and pay ₹499 caution deposit.</div>
+          <div class="card-details">
+            <div>Domain: <span>Data Analytics</span></div>
+            <div>Action: <span>Select Monday & Pay ₹499</span></div>
+          </div>
+        </div>
+        <a href="/dev/impersonate?email=stage3_selected@dbert.test&target=/portal" class="btn-login">⚡ View Stage 3 on /portal</a>
+      </div>
+
+      <!-- Stage 4 -->
+      <div class="card">
+        <div class="card-top">
+          <div class="card-badge-row">
+            <span class="pill pill-purple">Stage 4: Deposit Verifying</span>
+            <span style="font-size:11px;color:var(--text-sub);">ID: 9104</span>
+          </div>
+          <div class="card-name">Divya Rao</div>
+          <div class="card-email">stage4_pending@dbert.test</div>
+          <div class="card-desc">Candidate submitted ₹499 UTR (TEST499UTR001). Status displays admissions verification in progress.</div>
+          <div class="card-details">
+            <div>Domain: <span>Python Automation</span></div>
+            <div>UTR: <span>TEST499UTR001 (Verifying)</span></div>
+          </div>
+        </div>
+        <a href="/dev/impersonate?email=stage4_pending@dbert.test&target=/portal" class="btn-login">⚡ View Stage 4 on /portal</a>
+      </div>
+
+      <!-- Stage 5 -->
+      <div class="card">
+        <div class="card-top">
+          <div class="card-badge-row">
+            <span class="pill pill-green">Stage 5: Enrolled Sprints</span>
+            <span style="font-size:11px;color:var(--text-sub);">ID: 9105</span>
+          </div>
+          <div class="card-name">Eshan Sen</div>
+          <div class="card-email">stage5_enrolled@dbert.test</div>
+          <div class="card-desc">Fully confirmed fellow! Accesses sprint lessons, daily quizzes, capstone instructions, and Gemini AI classroom tutor.</div>
+          <div class="card-details">
+            <div>Domain: <span>Full Stack Web Development</span></div>
+            <div>Status: <span>Active Cohort Enrolled</span></div>
+          </div>
+        </div>
+        <a href="/dev/impersonate?email=stage5_enrolled@dbert.test&target=/portal" class="btn-login">⚡ View Stage 5 on /portal</a>
+      </div>
+    </div>
+
+    <!-- Cluster C: 4-Gate Stipend Progression Matrix -->
+    <div class="section-title">03 · 4-Gate Stipend Progression Lifecycle (/stipend/tasks)</div>
+    <div class="section-grid">
+      <!-- Gate 1 Locked -->
+      <div class="card">
+        <div class="card-top">
+          <div class="card-badge-row">
+            <span class="pill pill-red">Gate 1: Provisional Locked</span>
+            <span style="font-size:11px;color:var(--text-sub);">ID: 9201</span>
+          </div>
+          <div class="card-name">Farhan Ali</div>
+          <div class="card-email">stipend_gate1_locked@dbert.test</div>
+          <div class="card-desc">Candidate holds a PROVISIONAL certificate. Stipend submission is locked with an amber notice and 1-click CTA to verify.</div>
+          <div class="card-details">
+            <div>Cert: <span>CERT-DBERT-2026-FSD-901</span></div>
+            <div>Gate 1: <span style="color:#F87171;">LOCKED (Provisional)</span></div>
+          </div>
+        </div>
+        <a href="/dev/impersonate?email=stipend_gate1_locked@dbert.test&target=/stipend/tasks" class="btn-login">⚡ Test Gate 1 Lock on /stipend/tasks</a>
+      </div>
+
+      <!-- Gate 2 Date Locked -->
+      <div class="card">
+        <div class="card-top">
+          <div class="card-badge-row">
+            <span class="pill pill-amber">Gate 2: Date Countdown</span>
+            <span style="font-size:11px;color:var(--text-sub);">ID: 9202</span>
+          </div>
+          <div class="card-name">Gauri Menon</div>
+          <div class="card-email">stipend_gate2_date@dbert.test</div>
+          <div class="card-desc">Verified certificate, but intern joined only 20 days ago (requires 60 days). Live countdown displays remaining days.</div>
+          <div class="card-details">
+            <div>Cert: <span>CERT-DBERT-2026-AIML-902 (VERIFIED)</span></div>
+            <div>Gate 2: <span style="color:#FBBF24;">40 Days Remaining</span></div>
+          </div>
+        </div>
+        <a href="/dev/impersonate?email=stipend_gate2_date@dbert.test&target=/stipend/tasks" class="btn-login">⚡ Test Gate 2 Countdown on /stipend/tasks</a>
+      </div>
+
+      <!-- Gate 3 UPI Missing -->
+      <div class="card">
+        <div class="card-top">
+          <div class="card-badge-row">
+            <span class="pill pill-amber">Gate 3: UPI Setup Needed</span>
+            <span style="font-size:11px;color:var(--text-sub);">ID: 9203</span>
+          </div>
+          <div class="card-name">Hari Prasad</div>
+          <div class="card-email">stipend_gate3_upi@dbert.test</div>
+          <div class="card-desc">Verified certificate and 65 days elapsed, but encrypted UPI ID has not been saved on profile yet.</div>
+          <div class="card-details">
+            <div>Cert: <span>CERT-DBERT-2026-DA-903 (VERIFIED)</span></div>
+            <div>Gate 3: <span style="color:#FBBF24;">UPI Setup Required</span></div>
+          </div>
+        </div>
+        <a href="/dev/impersonate?email=stipend_gate3_upi@dbert.test&target=/stipend/tasks" class="btn-login">⚡ Test Gate 3 on /stipend/tasks</a>
+      </div>
+
+      <!-- Gate 4 Ready to Submit -->
+      <div class="card">
+        <div class="card-top">
+          <div class="card-badge-row">
+            <span class="pill pill-green">Gate 4: Form Unlocked</span>
+            <span style="font-size:11px;color:var(--text-sub);">ID: 9204</span>
+          </div>
+          <div class="card-name">Ishita Roy</div>
+          <div class="card-email">stipend_ready@dbert.test</div>
+          <div class="card-desc">All 4 gates unlocked! Candidate sees the full active submission form for GitHub repo, live demo, and PDF report.</div>
+          <div class="card-details">
+            <div>Cert: <span>CERT-DBERT-2026-PA-904 (VERIFIED)</span></div>
+            <div>All Gates: <span style="color:#34D399;">UNLOCKED (Form Active)</span></div>
+          </div>
+        </div>
+        <a href="/dev/impersonate?email=stipend_ready@dbert.test&target=/stipend/tasks" class="btn-login">⚡ Open Stipend Form on /stipend/tasks</a>
+      </div>
+
+      <!-- Staff Review Queue -->
+      <div class="card">
+        <div class="card-top">
+          <div class="card-badge-row">
+            <span class="pill pill-purple">AI Scored: 88/100</span>
+            <span style="font-size:11px;color:var(--text-sub);">ID: 9205</span>
+          </div>
+          <div class="card-name">Jayesh Shah</div>
+          <div class="card-email">stipend_eval_queue@dbert.test</div>
+          <div class="card-desc">Submission uploaded and pre-screened by Gemini AI (88/100). Visible in staff queue for final release decision.</div>
+          <div class="card-details">
+            <div>AI Score: <span style="color:#C084FC;">88 / 100 (Pass)</span></div>
+            <div>Target: <span>/staff/tasks</span></div>
+          </div>
+        </div>
+        <a href="/dev/impersonate?email=staff@dbert.test&target=/staff/tasks" class="btn-login">⚡ Review in Staff Queue (/staff/tasks)</a>
+      </div>
+
+      <!-- Wallet Credited -->
+      <div class="card">
+        <div class="card-top">
+          <div class="card-badge-row">
+            <span class="pill pill-green">5,000 Coins Credited</span>
+            <span style="font-size:11px;color:var(--text-sub);">ID: 9206</span>
+          </div>
+          <div class="card-name">Kavya Nair</div>
+          <div class="card-email">stipend_wallet@dbert.test</div>
+          <div class="card-desc">Approved by staff! LMS wallet has 5,000 coins available with active "Request Payout" button.</div>
+          <div class="card-details">
+            <div>Wallet: <span style="color:#34D399;">5,000 Coins (Withdrawable)</span></div>
+            <div>Target: <span>/intern/ambassador/withdraw</span></div>
+          </div>
+        </div>
+        <a href="/dev/impersonate?email=stipend_wallet@dbert.test&target=/intern/ambassador/withdraw" class="btn-login">⚡ View Wallet & Request Payout</a>
+      </div>
+
+      <!-- Admin Payout Queue -->
+      <div class="card">
+        <div class="card-top">
+          <div class="card-badge-row">
+            <span class="pill pill-purple">Payout in Admin Queue</span>
+            <span style="font-size:11px;color:var(--text-sub);">ID: 9207</span>
+          </div>
+          <div class="card-name">Lalit Deshmukh</div>
+          <div class="card-email">stipend_payout@dbert.test</div>
+          <div class="card-desc">Withdrawal requested for 5,000 coins. Waiting in superadmin queue for single-reveal UPI decryption and execution.</div>
+          <div class="card-details">
+            <div>Withdrawal: <span>5,000 Coins (Pending)</span></div>
+            <div>Target: <span>/admin/ambassador-payouts</span></div>
+          </div>
+        </div>
+        <a href="/dev/impersonate?email=admin@dbert.test&target=/admin/ambassador-payouts" class="btn-login">⚡ Clear Payout on /admin/ambassador-payouts</a>
+      </div>
+    </div>
+
+    <!-- Cluster D: Next.js Website Incubation & Verification -->
+    <div class="section-title">04 · Next.js Website Incubation & Verification Engine (Port 3000)</div>
+    <div class="section-grid">
+      <!-- Balance Payable -->
+      <div class="card">
+        <div class="card-top">
+          <div class="card-badge-row">
+            <span class="pill pill-amber">₹1,500 Balance Payable</span>
+            <span style="font-size:11px;color:var(--text-sub);">Next.js</span>
+          </div>
+          <div class="card-name">Kunal Sharma</div>
+          <div class="card-email">balance1500@dbert.test</div>
+          <div class="card-desc">Candidate has paid ₹499 caution deposit. Portal autofills profile and presents ₹1,500 balance payable via UPI QR/launcher.</div>
+          <div class="card-details">
+            <div>Deposit Paid: <span>₹499 (Credited)</span></div>
+            <div>Balance Due: <span style="color:#FBBF24;">₹1,500 Payable</span></div>
+          </div>
+        </div>
+        <a href="http://localhost:3000/enroll/1999?email=balance1500@dbert.test" target="_blank" class="btn-login btn-website">↗ Open /enroll/1999 (Port 3000)</a>
+      </div>
+
+      <!-- Approved Fellow -->
+      <div class="card">
+        <div class="card-top">
+          <div class="card-badge-row">
+            <span class="pill pill-green">Seat Confirmed & Live Countdown</span>
+            <span style="font-size:11px;color:var(--text-sub);">Next.js</span>
+          </div>
+          <div class="card-name">Meera Joshi</div>
+          <div class="card-email">approved_fellow@dbert.test</div>
+          <div class="card-desc">Balance payment approved! Shows official seat confirmed dossier with live 1-second countdown ticking down to Monday standup.</div>
+          <div class="card-details">
+            <div>Program Fee: <span style="color:#34D399;">₹1,999 Paid in Full</span></div>
+            <div>Countdown: <span>Ticks to Monday 18:00 IST</span></div>
+          </div>
+        </div>
+        <a href="http://localhost:3000/enroll/1999?email=approved_fellow@dbert.test" target="_blank" class="btn-login btn-website">↗ Open Approved Countdown (Port 3000)</a>
+      </div>
+
+      <!-- Verification Rubric -->
+      <div class="card">
+        <div class="card-top">
+          <div class="card-badge-row">
+            <span class="pill pill-blue">Public Verification Dossier</span>
+            <span style="font-size:11px;color:var(--text-sub);">Next.js</span>
+          </div>
+          <div class="card-name">Public Credential Check</div>
+          <div class="card-email">CERT-DBERT-2026-AIML-902</div>
+          <div class="card-desc">Public cryptographic verification engine with academic evaluation rubric, Turnitin score, and recommendation letter.</div>
+          <div class="card-details">
+            <div>Cert ID: <span>CERT-DBERT-2026-AIML-902</span></div>
+            <div>Evaluation: <span>96/100 (Distinction)</span></div>
+          </div>
+        </div>
+        <a href="http://localhost:3000/verify/CERT-DBERT-2026-AIML-902" target="_blank" class="btn-login btn-website">↗ Open Public Verification (Port 3000)</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

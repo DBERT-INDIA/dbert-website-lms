@@ -1,0 +1,74 @@
+{
+  "aaditya": {
+    "status": "SENT",
+    "email": "aadityakadam432@gmail.com",
+    "type": "verified",
+    "subject": "Official Internship Credential Packet \u2014 Aaditya Kadam [CERT-DBERT-2026-DA-024]",
+    "sender": "abhinav.sharma@dbert.in",
+    "message_id": "<179493639231.16896.17833061484951495325@dbert.in>",
+    "sent_at": "2026-11-17T22:56:44.866698"
+  },
+  "sakthi": {
+    "status": "SENT",
+    "email": "me250003067@iiti.ac.in",
+    "type": "verified",
+    "subject": "Official Internship Credential Packet \u2014 Sakthi P [CERT-DBERT-2026-DA-173]",
+    "sender": "contactus@dbert.in",
+    "message_id": "<179493641287.16896.9445357582756675868@dbert.in>",
+    "sent_at": "2026-11-17T22:57:04.390754"
+  },
+  "gurveer": {
+    "status": "SENT",
+    "email": "gurveer3057.beai25@chitkara.edu.in",
+    "type": "verified",
+    "subject": "Official Internship Credential Packet \u2014 Gurveer Singh [CERT-DBERT-2026-UIUX-040]",
+    "sender": "manoj.kumar@dbert.in",
+    "message_id": "<179493643239.16896.17364436414835723033@dbert.in>",
+    "sent_at": "2026-11-17T22:57:25.253997"
+  },
+  "chandramahesh": {
+    "status": "SENT",
+    "email": "chandramahesh736@gmail.com",
+    "type": "verified",
+    "subject": "Official Internship Credential Packet \u2014 Yarlagadda Chandra Mahesh Goud [CERT-DBERT-2026-FSD-071]",
+    "sender": "sandeep.bannu@dbert.in",
+    "message_id": "<179493645326.16896.9490175567046701953@dbert.in>",
+    "sent_at": "2026-11-17T22:57:45.936805"
+  },
+  "monika": {
+    "status": "SENT",
+    "email": "monikach575@gmail.com",
+    "type": "verified",
+    "subject": "Official Internship Credential Packet \u2014 CH MONIKA SAI [CERT-DBERT-2026-DA-185]",
+    "sender": "pulkit.kunar@dbert.in",
+    "message_id": "<179493647393.16896.6036676917486201315@dbert.in>",
+    "sent_at": "2026-11-17T22:58:06.644442"
+  },
+  "sub53": {
+    "status": "SENT",
+    "email": "vishvajeetshinde2005@gmail.com",
+    "type": "sub53_revise",
+    "subject": "Stipend Contribution Review Update \u2014 1 Step Remaining for \u20b95,499 Release [CERT-DBERT-2026-DA-027]",
+    "sender": "abhinav.sharma@dbert.in",
+    "message_id": "<179493649464.16896.17519403527051740274@dbert.in>",
+    "sent_at": "2026-11-17T22:58:18.981161"
+  },
+  "sub51": {
+    "status": "SENT",
+    "email": "shreyashk07004@gmail.com",
+    "type": "sub51_revise",
+    "subject": "Stipend Contribution Review Update \u2014 Next Steps to Complete Gates [CERT-DBERT-2026-DA-077]",
+    "sender": "contactus@dbert.in",
+    "message_id": "<179493650698.16896.1251453267304966040@dbert.in>",
+    "sent_at": "2026-11-17T22:58:30.173759"
+  },
+  "sub52": {
+    "status": "SENT",
+    "email": "chinniprincess842@gmail.com",
+    "type": "sub52_discrepancy",
+    "subject": "Action Required: Stipend Repository Contribution Review \u2014 Resubmission Needed [CERT-DBERT-2026-DA-117]",
+    "sender": "manoj.kumar@dbert.in",
+    "message_id": "<179493651817.16896.4632447544050911423@dbert.in>",
+    "sent_at": "2026-11-17T22:58:41.206640"
+  }
+}

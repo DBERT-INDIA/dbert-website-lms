@@ -302,16 +302,28 @@ export default function DirectoryClient({
           </div>
         </div>
 
-        <div className={s.heroActions}>
-          <a
-            href="https://lms.dbert.in/company/signup"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={s.btnPrimaryCta}
-          >
-            Post Jobs &amp; Connect on LMS &rarr;
-          </a>
-          <span className={s.ctaNote}>Free employer signup · Instant candidate messaging</span>
+        <div className={s.heroActions} style={{ display: 'flex', flexDirection: 'column', gap: '0.65rem', alignItems: 'flex-start' }}>
+          <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <a
+              href="https://wa.me/918192911360?text=Hi%20DBERT%20Talent%20Team%2C%20I%20am%20looking%20to%20hire%20pre-vetted%20engineers%20for%20our%20team."
+              target="_blank"
+              rel="noopener noreferrer"
+              className={s.btnPrimaryCta}
+              style={{ background: '#10B981', borderColor: '#10B981', color: '#07090E', fontWeight: 800 }}
+            >
+              ⚡ 1-Tap WhatsApp Talent Concierge &rarr;
+            </a>
+            <a
+              href="https://lms.dbert.in/company/signup?ref=directory"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={s.btnConnectLms}
+              style={{ padding: '0.75rem 1.25rem', fontSize: '0.9rem', borderRadius: '8px' }}
+            >
+              Connect on LMS (Self-Serve) ↗
+            </a>
+          </div>
+          <span className={s.ctaNote}>48h match turnaround · Zero recruiter markup · 14-day risk-free trial</span>
         </div>
       </div>
 
@@ -472,6 +484,7 @@ export default function DirectoryClient({
               : `/verify/${cand.certId}`;
 
             const connectLmsHref = `https://lms.dbert.in/company/signup?ref=directory&candidate=${encodeURIComponent(cand.certId)}`;
+            const waCandidateHref = `https://wa.me/918192911360?text=${encodeURIComponent(`Hi DBERT Talent Concierge, I am interested in hiring/interviewing ${cand.holderName} (${cand.certId}) in ${cand.domain}. Please assist with candidate introduction.`)}`;
             const skills = DOMAIN_SKILLS[cand.domain] || ['Production Sprints', 'Code Reviews', 'Git Architecture'];
             const scoreNum = Number(cand.score) || 0;
 
@@ -559,10 +572,20 @@ export default function DirectoryClient({
                   </div>
                 </div>
 
-                <div className={s.cardFooter}>
+                <div className={s.cardFooter} style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
                   <Link href={verifyHref} className={s.btnDossierLink}>
-                    View Proof Dossier &rarr;
+                    Proof Dossier &rarr;
                   </Link>
+                  <a
+                    href={waCandidateHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={s.btnDossierLink}
+                    style={{ borderColor: 'rgba(16, 185, 129, 0.4)', color: '#34D399' }}
+                    title="Hire this candidate via 1-Tap WhatsApp Concierge"
+                  >
+                    💬 WhatsApp Hire
+                  </a>
                   <a
                     href={connectLmsHref}
                     target="_blank"
@@ -570,7 +593,7 @@ export default function DirectoryClient({
                     className={s.btnConnectLms}
                     title="Connect with this engineer via LMS employer portal"
                   >
-                    Connect on LMS
+                    LMS Connect ↗
                   </a>
                 </div>
               </div>

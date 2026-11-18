@@ -3,6 +3,8 @@
 Universal Context, Architectural Rules, and Operational Playbook for Antigravity & AI Agents
 ================================================================================
 
+---
+
 ## 1. Domain Authority & SEO Mandate (CRITICAL)
 - **Active Sovereign Domain**: `https://dbert.in`
 - **Legacy Retired Domain**: `dbert.online` (Redirects to `dbert.in`).
@@ -10,6 +12,8 @@ Universal Context, Architectural Rules, and Operational Playbook for Antigravity
 - **Dual SEO Headlines**: Maintain migration notice phrasing ("DBERT.online is now DBERT.in" / "dbert.online is not the active platform") across Header, Footer, About Credentials, Learners, and Verification pages.
 - **Migration Page**: Dedicated landing page at `/dbert-online` with FAQPage and BreadcrumbList JSON-LD schemas.
 - **Google Analytics 4 (GA4)**: Measurement ID is strictly `G-MN7ME9X518` across `apps/website`, `apps/portal`, and deployment templates.
+
+---
 
 ---
 
@@ -39,6 +43,8 @@ Universal Context, Architectural Rules, and Operational Playbook for Antigravity
   - `scripts/deploy_directory_to_ec2.py`: Automated build & deployment script for alphabetical directory.
   - `scripts/send_dbert_whatsapp.py`: Core Playwright WhatsApp automation engine.
   - `scripts/verify_and_launch_dbert_whatsapp.py`: Automated pre-flight login & dual launcher.
+
+---
 
 ---
 
@@ -81,25 +87,9 @@ When deploying updates to `apps/website`, any agent must follow this exact seque
 
 ---
 
-## 4. Provisional Email Batch Dispatch System
-
-### 4.1. Core Deliverability Constraints
-1. **Tri-Factor DNS Pre-Flight Check**:
-   Before initiating dispatch, verify SPF (`v=spf1 include:_spf.google.com ~all`), DKIM (`google._domainkey.dbert.in`), and DMARC (`v=DMARC1; p=none;`).
-2. **Authenticated SMTP Delivery**:
-   Uses Google Workspace SMTP relay (`smtp.gmail.com:465`) authenticated as `abhinav.sharma@dbert.in`.
-3. **Pacing & Anti-Spam Rate Control**:
-   Strict 30-second intervals between consecutive candidate dispatches.
-4. **Header Alignment**:
-   `Reply-To` MUST match the sender email address (`abhinav.sharma@dbert.in`) exactly.
-5. **Atomic State & Idempotency**:
-   Every sent message records `sent_at`, `message_id`, and `provider` into `data/dispatch_tracking_409.json` and `.csv`. A resumed process skips previously sent candidates automatically.
-6. **Milestone Telemetry**:
-   Every 100 delivered emails (and upon 100% completion), an automated telemetry report is dispatched to both `ain.sharma.abhinav@gmail.com` and `ajnatechrpa@gmail.com`.
-
 ---
 
-## 5. Pre-Vetted Engineers Directory (`/verify/directory`)
+## 4. Pre-Vetted Engineers Directory (`/verify/directory`)
 
 - **Route**: `https://dbert.in/verify/directory` (Linked from `/hire/pre-vetted-engineers`)
 - **Dataset**: `apps/website/src/data/directory_candidates.json` (465 candidates: 65 verified pre-vetted engineers + 400 provisional incubation fellows).
@@ -118,19 +108,21 @@ When deploying updates to `apps/website`, any agent must follow this exact seque
 
 ---
 
-## 6. ₹1,999 Enrollment & Balance Completion Portal (`/enroll/1999`)
+---
 
-### 6.1. Financial Ledger Breakdown
+## 5. ₹1,999 Enrollment & Balance Completion Portal (`/enroll/1999`)
+
+### 5.1. Financial Ledger Breakdown
 - **Total Program Fee**: ₹1,999
 - **Caution Deposit Paid**: -₹499 (Credited in full)
 - **Net Remaining Balance Payable**: **₹1,500**
 - Prominent notice informs candidates that as they already paid the ₹499 caution deposit, they only need to complete the remaining ₹1,500 balance to finalize enrollment and unlock official credentials.
 
-### 6.2. Candidate Autofill API (`GET /api/enroll/lookup`)
+### 5.2. Candidate Autofill API (`GET /api/enroll/lookup`)
 - Supports query parameters `?certid=` or `?email=` (e.g., `https://dbert.in/enroll/1999?certid=CERT-DBERT-2026-DA-057`).
 - Queries the candidate database and auto-populates Full Name, Email, WhatsApp Phone, College, Domain Track, and Certificate ID.
 
-### 6.3. Payment & Submission Engine
+### 5.3. Payment & Submission Engine
 - **Payment Methods**:
   - Embedded high-res UPI QR code (`/images/qrcode.jpeg` and `/qrcode.jpeg`).
   - Mobile 1-Tap UPI Launchers (Google Pay, PhonePe, Paytm, Default UPI) with pre-filled amount ₹1,500 and merchant VPA `Q652429146@ybl` (`DBERT Admissions`).
@@ -149,9 +141,11 @@ When deploying updates to `apps/website`, any agent must follow this exact seque
 
 ---
 
-## 7. WhatsApp Dual-Account Dispatch System
+---
 
-### 7.1. Architectural Constraints
+## 6. WhatsApp Dual-Account Dispatch System
+
+### 6.1. Architectural Constraints
 1. **First-15-Lines Placement**:
    - Both the **Verification URL** (`https://dbert.in/verify?certid=...`) and the **Google Form URL** (`https://docs.google.com/forms/d/e/1FAIpQLSeHCTK_HO5ZbNHNcPiyW-04Y4bBeZ0RvQP7I4koQnW91d6phA/viewform?usp=header`) **MUST appear within the first 15 lines** of the WhatsApp message.
    - Current template positions: Verification URL at **Line 8**, Google Form URL at **Line 11**.
@@ -167,7 +161,9 @@ When deploying updates to `apps/website`, any agent must follow this exact seque
 
 ---
 
-## 8. Key CLI Commands Reference
+---
+
+## 7. Key CLI Commands Reference
 
 ```powershell
 # ==================== EMAIL DISPATCH SYSTEM ====================
@@ -206,8 +202,38 @@ python scripts\verify_and_launch_dbert_whatsapp.py
 
 ---
 
+---
+
+## 8. Historical Batch Ingestion & Dispatch Campaign Registry
+
+### 8.1. Master Historical Campaign Matrix
+The following table documents completed and ongoing programmatic batch dispatches, data reconciliations, and candidate cohort ingestions across DBERT platforms.
+
+| Campaign / Batch Identifier | Source Reference | Candidate Volume | Deliverables & Artifacts | Primary Dispatch Script | State & Tracking Files |
+|---|---|:---:|---|---|---|
+| **409 Provisional Batch** | Oct 2026 Provisional Cohort | 409 candidates | DNS pre-flight audit (SPF/DKIM/DMARC), 30s rate pacing, milestone telemetry to admins | `scripts/dispatch_409_provisional.py` | `data/dispatch_tracking_409.json`, `data/all_409_provisional_registry.json` |
+| **9 Verified Candidates Upgrade** | Google Sheet `gid=1265293201` (Rows 57–65) | 9 candidates (7 upgraded, 2 new) | ₹299 fee verified, official 3-doc PDF credential packets generated, preview PNGs deployed | `scripts/dispatch_9_verified_certificates.py` | `data/dispatch_tracking_9_verified.json`, `outputs/cohort_2026/` |
+| **Approved Incubation (Bhargavi Poola)** | ₹1,500 Balance Completion (`DBERT-ENR-703685-TYN6`) | 1 candidate | Marked `APPROVED` in ledger; live real-time countdown to Nov 9, 2026 deployed on `/eroll` | N/A (Web UI & Lookup API) | `data/balance_enrollments_1500.json` |
+| **Google SMTP Quota Watchdog** | Google Workspace Daily User Limit | Automation daemon | Cooldown probe (`smtp.gmail.com:465`) every 300s, automated exit code 55 circuit breaker, phased triggers | `scripts/quota_watchdog_and_dispatcher.py` | `data/quota_watchdog_state.json`, `data/quota_watchdog.log`, `start_quota_watchdog.bat` |
+| **1,593 Sheet Provisional Ingestion** | Google Sheet `gid=338877142` | 1,593 candidates | Directory shield gate (never added to `directory_candidates.json`), `/verify/unlock` landing page | `scripts/dispatch_sheet_1593.py` | `data/sheet_1593_provisional_registry.json`, `data/sheet_1593_dispatch_tracking.json` |
+| **Sheet gid=97313663 Ingestion** | Google Sheet `gid=97313663` | 859 raw -> 840 unique | 19 phone duplicates merged, normalized into 7 canonical tracks, multi-account rotation | `scripts/ingest_sheet_859.py` | `data/sheet_859_registry.json`, `data/dispatch_tracking_sheet_859.json` |
+
+### 8.2. Operational Protocols & Safety Governance
+1. **409 Provisional Batch Delivery Rules**:
+   - Google Workspace SMTP (`smtp.gmail.com:465`) authenticated as `abhinav.sharma@dbert.in`.
+   - Strict 30s delays between dispatches; automated telemetry dispatched every 100 deliveries to `ain.sharma.abhinav@gmail.com` and `ajnatechrpa@gmail.com`.
+2. **Verified Candidates Upgrade Rules**:
+   - Reconciles ₹299 payments from Google Drive proofs; updates `certificates_registry.json` to `status: "VERIFIED"`, `isProvisional: false`.
+   - Generates full 3-document PDF packets (Certificate, Academic Evaluation, LOR) and generates preview PNGs at `apps/website/public/certificates/previews/{certId}.png`.
+3. **Directory Shield Gate (Sheet 1,593 & Sheet 859)**:
+   - Candidates from external bulk sheets are strictly excluded from `/verify/directory` until individual ₹299 project evaluation or ₹1,500 incubation fee is verified.
+   - Dynamic lookup via `/api/enroll/lookup` safely resolves them with `isProvisional: true`.
+
+---
+
 ## 9. Persistent Documentation Directory
 - Comprehensive architectural records and changelogs:
+  - [`ARCHITECTURE_ROADMAP.md`](file:///c:/Users/user/Desktop/dbert-website-lms/ARCHITECTURE_ROADMAP.md)
   - [`DOMAIN_MIGRATION_AND_GA4_CHANGELOG.md`](file:///c:/Users/user/Desktop/dbert-website-lms/DOMAIN_MIGRATION_AND_GA4_CHANGELOG.md)
   - [`new_certifications_reconciliation_and_dispatch_plan.md`](file:///C:/Users/user/.gemini/antigravity/brain/542c2e0b-55d0-41c9-9b46-721bf0724211/new_certifications_reconciliation_and_dispatch_plan.md)
   - [`enrollment_1999_deployment_walkthrough.md`](file:///C:/Users/user/.gemini/antigravity/brain/542c2e0b-55d0-41c9-9b46-721bf0724211/enrollment_1999_deployment_walkthrough.md)
@@ -215,88 +241,11 @@ python scripts\verify_and_launch_dbert_whatsapp.py
 
 ---
 
-## 10. Verified Candidates Ingestion & Dispatch (Google Sheet gid=1265293201)
-
-### 10.1. Scope & Reconciliation Breakdown
-- **Source Sheet**: `Certificate Internship Batch 2026 (Responses)` (`gid=1265293201`).
-- **Total Rows**: 65.
-- **Rows 1–56**: 56 original verified candidates (`CERT-DBERT-2026-DA-001` – `FSD-056`).
-- **Rows 57–65 (9 Candidates)**: Paid form submissions with ₹299 transaction proof uploaded to Google Drive.
-  - **7 Upgraded Candidates**: `N Deekshitha` (`AIML-092`), `M Brahmani` (`DA-117`), `Ankit Saini` (`FSD-070`), `Lucky kumar` (`PA-023`), `Rohit Ranjan Tiwari` (`DA-124`), `Shreyash Sambhaji Kamble` (`DA-077`), `Satya Patil` (`DA-109`).
-  - **2 Brand New Candidates**: `Vasu Rakholiya` (`CERT-DBERT-2026-DA-183`), `Janhvi singh` (`CERT-DBERT-2026-DA-184`).
-- **Artifacts Generated**:
-  - Full 3-document PDF packets (Certificate of Completion, Academic Evaluation, LOR) in `outputs/cohort_2026/`.
-  - Preview PNGs copied to `apps/website/public/certificates/previews/{certId}.png`.
-  - All 9 records updated to `status: "VERIFIED"`, `isProvisional: false` in `certificates_registry.json` and `directory_candidates.json`.
-  - Deployed to EC2 (`3.26.237.171`), Next.js rebuilt and reloaded. Live verified on `https://dbert.in`.
-
-### 10.2. SMTP Daily Limit Cooldown
-- Google Workspace SMTP for `abhinav.sharma@dbert.in` reached daily user quota (`550 5.4.5 Daily user sending limit exceeded`) after delivering 303 emails earlier today.
-- `scripts/dispatch_9_verified_certificates.py` manages the 9 verified candidates (`data/dispatch_tracking_9_verified.json`).
-- `scripts/dispatch_409_provisional.py` manages the remaining 106 provisional candidates (resuming at #304).
-- Both daemons automatically execute once Google's 24h rolling limit expires.
-
 ---
 
-## 11. Approved Incubation Enrollment & Live Countdown Architecture (`/enroll/1999`, `/eroll`)
+## 10. Stipend Contribution & Verification Gating System (`/stipend/tasks`)
 
-### 11.1. Candidate Approval & Balance Reconciliation
-- **Approved Candidate**: **Bhargavi Poola** (`bhargavi13032007@gmail.com`, Phone: `9603742553`, UTR: `679862090077`, Ref: `DBERT-ENR-703685-TYN6`, Paid: ₹1,500).
-- **Domain Track**: Full Stack Web Development (`CERT-DBERT-2026-FSD-156` / `DBERT-2026-INT-1412`).
-- **Ledger Status**: Marked `status: "APPROVED"` in `data/balance_enrollments_1500.json` on EC2 (`/var/www/dbert-website-lms/data/`) and locally.
-- **Batch Kickoff**: **Monday, 9 Nov 2026 at 06:00 PM IST** (`2026-11-09T18:00:00+05:30`).
-
-### 11.2. Verification & Approved Countdown View
-- **URL Routing**:
-  - `https://dbert.in/eroll?email=bhargavi13032007@gmail.com` (Redirects HTTP 307 to `/enroll/1999?email=...`).
-  - `https://dbert.in/enroll/1999?email=bhargavi13032007@gmail.com`.
-  - Also works by typing email or Certificate ID into the lookup input on `dbert.in/enroll/1999`.
-- **API Engine (`GET /api/enroll/lookup`)**:
-  - Checks `balance_enrollments_1500.json` first.
-  - Returns `enrollmentStatus: "APPROVED"`, `isApproved: true`, `batchStartDate: "2026-11-09T18:00:00+05:30"`, and `batchStartDisplay: "Monday, 9 Nov 2026"`.
-- **Approved UI Dossier & Countdown**:
-  - Replaces payment form & QR code with the official **Approved & Seat Confirmed Dossier**.
-  - Displays a real-time **1-second live countdown timer** (Days, Hours, Minutes, Seconds) ticking down to Monday, 9 Nov 2026 (06:00 PM IST).
-  - Features Candidate Dossier grid (Ref ID, UTR, Fee Reconciled: ₹1,999 Paid in Full), 4-step Sprint Roadmap, and direct WhatsApp Concierge routing to Admissions.
-- **Public Credential Integration**:
-  - Bhargavi Poola registered in `certificates_registry.json` and `directory_candidates.json`.
-  - Public verification dossier live at `https://dbert.in/verify/CERT-DBERT-2026-FSD-156`.
-
----
-
-## 12. Automated Google SMTP Quota Watchdog & Phased Candidate Dispatcher
-
-### 12.1. Operational Purpose & Architecture
-- **Daemon Script**: `scripts/quota_watchdog_and_dispatcher.py`
-- **1-Click Launcher**: `start_quota_watchdog.bat`
-- **Persistent State**: `data/quota_watchdog_state.json`
-- **Detailed Execution Log**: `data/quota_watchdog.log`
-- **Polling Cadence**: Probes `smtp.gmail.com:465` via `EmailDeliveryService` every 300 seconds (5 minutes).
-- **Circuit Breaker**: `dispatch_9_verified_certificates.py` and `dispatch_409_provisional.py` both exit with status code `55` if Google's `550 5.4.5 Daily user sending limit exceeded` is detected mid-batch, halting gracefully without burning candidate records.
-
-### 12.2. Automated Sequential Pipeline (Triggered upon Quota Unlock)
-1. **Phase 1: EC2 Deployment & Live Verification**:
-   - Executes `scripts/deploy_new_certificates_to_ec2.py`.
-   - Rebuilds Next.js Turbopack standalone, syncs public assets and data symlinks, restarts `dbert-website.service`.
-   - Validates live HTTP 200 and `verified: True` via `https://dbert.in/api/verify?certid=CERT-DBERT-2026-AIML-092`.
-2. **Phase 2: 9 Verified Candidate Dispatches**:
-   - Executes `scripts/dispatch_9_verified_certificates.py --live --delay 30`.
-   - Delivers official 3-document credential packets (Certificate, Academic Evaluation, LOR) to all 9 verified candidates.
-3. **Phase 3: Resume Remaining 106 Provisional Dispatches**:
-   - Executes `scripts/dispatch_409_provisional.py --live --delay 30 --report-interval 100`.
-   - Resumes candidate #304 through #409.
-   - Milestone telemetry automatically dispatched to `ain.sharma.abhinav@gmail.com` and `ajnatechrpa@gmail.com`.
-4. **Phase 4: Omnichannel Sync**:
-   - Executes `scripts/send_dbert_whatsapp.py --sync-email`.
-   - Updates `data/dbert_unified_omnichannel_tracking.csv`.
-5. **Phase 5: Mission Completion Telemetry**:
-   - Dispatches a comprehensive HTML + plain text completion report to `ain.sharma.abhinav@gmail.com` and `ajnatechrpa@gmail.com`.
-
----
-
-## 13. Stipend Contribution & Verification Gating System (`/stipend/tasks`)
-
-### 13.1. Business Rules & 3-Step Eligibility Checklist
+### 10.1. Business Rules & 3-Step Eligibility Checklist
 - **Strict Verification Gate**: Stipend eligibility and technical contribution submission are **strictly restricted to candidates with VERIFIED credentials** (`status: "VERIFIED"`, `verified: true`, `isProvisional: false`).
 - **Completion Date Gate**: Interns can only apply for stipend **on or after their official completion date** (`joining_date + 60 days` from LMS enrollment, fallback to certificate `endDate`). Before this date, an informative countdown timer is displayed.
 - **Payout Setup Requirement**: Intern must configure and verify their Fernet-encrypted UPI ID on their profile before submitting their contribution dossier.
@@ -306,7 +255,7 @@ python scripts\verify_and_launch_dbert_whatsapp.py
   - No access to submit contributions until verified.
 - **LMS Authentication & Tracking**: Interns must authenticate at LMS portal (`https://lms.dbert.in`). All milestone submissions, AI reviews, and payout disbursements are tracked within their individual student profile. Seamless onboarding allows verified certified candidates without an LMS account to activate with 1-click password setup.
 
-### 13.2. Technical Contribution, AI Pre-Screening & 5,000 Coins Payout Engine
+### 10.2. Technical Contribution, AI Pre-Screening & 5,000 Coins Payout Engine
 1. **Domain-Specific Task Tracks**:
    - Matching the intern's certified domain: AI & Machine Learning, Data Analyst, Full Stack Web Development, Python Automation.
    - Requires: GitHub Repository URL, Live Demo / Deployment URL, and Technical Contribution Report PDF.
@@ -328,9 +277,11 @@ python scripts\verify_and_launch_dbert_whatsapp.py
 
 ---
 
-## 14. Unified 3-Document Certificate Generation & Executive Print Dossier (`/portal/certificate/<cert_id>/print`)
+---
 
-### 14.1. Visual & Structural Parity Mandate
+## 11. Unified 3-Document Certificate Generation & Executive Print Dossier (`/portal/certificate/<cert_id>/print`)
+
+### 11.1. Visual & Structural Parity Mandate
 - **Exact Email Parity**: Web-rendered printable certificates on `/portal/certificate/<cert_id>/print` must match the official 3-document credential packet sent via authenticated Google Workspace SMTP:
   1. **Document 1 (Certificate of Completion)**: 640 × 495 Landscape canvas with `targets12.png` luxury slate artwork, gold hairline rules, Palatino/Georgia typography, Mr. Abhinav Sharma's signature, and verification QR code.
   2. **Document 2 (Academic Project Evaluation)**: US Letter Portrait with double navy/gold border, 9-dimension rubric table, 100-mark scoring (`score/100`), Turnitin originality validation seal, and signatory sign-off.
@@ -340,7 +291,7 @@ python scripts\verify_and_launch_dbert_whatsapp.py
 - **Individual Downloads**: Dedicated routes for standalone documents (`/portal/certificate/<cert_id>/download/1`, `/2`, `/3`) and high-res previews (`/portal/certificate/<cert_id>/preview/1`, `/2`, `/3`).
 - **Executive Dossier UI**: `apps/portal/templates/certificate_dossier.html` provides interactive tab switching between all 3 documents, 1-click "Print Master PDF", standalone download dropdown, and deep-link to public verification (`https://dbert.in/verify?certid={cert_id}`).
 
-### 14.2. Global LMS Navigation Bar & Responsive Routing
+### 11.2. Global LMS Navigation Bar & Responsive Routing
 - **LMS Integration Mandate**: The printable credential dossier (`/portal/certificate/<cert_id>/print`) is an integral LMS portal feature (`lms.dbert.in`), not an external static website page.
 - **Top Navigation Bar (`.lms-navbar`)**: Positioned sticky at the top (`z-index: 60`), providing direct navigation across LMS routes:
   - Home (`/`), My Portal (`/portal`), Courses (`/courses`), Sprint Tasks (`/tasks`), Stipend Milestone (`/stipend/tasks`), 1:1 Mentorship (`/mentors/slots`), and Placements & Jobs (`/jobs`).
@@ -348,16 +299,18 @@ python scripts\verify_and_launch_dbert_whatsapp.py
   - Sub-header (`.dossier-header`) and tab switcher (`.dossier-tabs`) smoothly stack below the LMS navbar.
 - **Strict Print Isolation**: `@media print` cleanly suppresses both `.lms-navbar` and `.dossier-header` to output unblemished, full-page credential certificates.
 
-### 14.3. Document Security & Right-Click Prevention
+### 11.3. Document Security & Right-Click Prevention
 - **Anti-Tampering & Asset Integrity**: Right-click context menus (`contextmenu` event) and drag-and-drop (`dragstart` event) are strictly intercepted and prevented across all document stages, preview canvases, and cards (`.dossier-stage`, `.doc-card`, `.doc-frame`, `.doc-frame img`).
 - **CSS Anti-Selection**: `user-select: none; -webkit-user-drag: none;` applied to all rendered credential previews.
 - **Interactive Security Toast (`#protectionToast`)**: When right-click or `Ctrl+S` is attempted on the document view, an executive floating security badge informs the user that official credentials are protected and directs them to use the authorized Master PDF / Print buttons.
 
 ---
 
-## 15. Group Mentorship Sessions & Cascading Calendar Booking System (`/mentors/slots`)
+---
 
-### 15.1. Cascading 3-Step Booking Engine (`session_booking.html`)
+## 12. Group Mentorship Sessions & Cascading Calendar Booking System (`/mentors/slots`)
+
+### 12.1. Cascading 3-Step Booking Engine (`session_booking.html`)
 - **Step 1: Domain Track & Mentor Filtering**:
   - Filter by Domain: `All Tracks`, `Data Analyst`, `AI / Machine Learning`, `Full Stack Web Development`, `Python Automation`. Auto-defaults to the intern's verified domain track.
   - Filter by Mentor: Dropdown allowing interns to filter by specific mentor or view all recommended faculty mentors.
@@ -376,21 +329,23 @@ python scripts\verify_and_launch_dbert_whatsapp.py
   - 1-click **Add to Google Calendar** URL generator.
   - 1-click **Cancel Reservation** button releasing seat back to cohort.
 
-### 15.2. Group Capacity & Concurrency Protection
+### 12.2. Group Capacity & Concurrency Protection
 - **Capacity**: Sessions support **up to 30 interns simultaneously** (`capacity INTEGER DEFAULT 30`, `seats_booked INTEGER DEFAULT 0`).
 - **Compound Uniqueness**: `UNIQUE(slot_id, intern_id)` on `mentor_session_bookings` prevents duplicate reservations while enabling cohort scalability.
 - **Atomic Reservation (PAY-001 / RAC-002)**: Check-and-increment transaction prevents race conditions and ensures total bookings never exceed slot capacity under concurrent load.
 
-### 15.3. Mentor Faculty Console (`/staff/mentor-slots`)
+### 12.3. Mentor Faculty Console (`/staff/mentor-slots`)
 - **Session Publisher**: Mentors set start/end times within 14:00 – 20:15 IST, domain track, topic agenda, and capacity up to 30.
 - **Live Roster**: Mentors can view all registered interns (Name, Email, Booked timestamp) for each of their scheduled sessions.
 - **CSRF Protection**: `bookSlot()` incorporates `X-CSRF-Token` header to ensure seamless, error-free booking transactions.
 
 ---
 
-## 16. College Ambassador & Referral Subsystem (`/ambassador`, `/intern/ambassador`)
+---
 
-### 16.1. Defect Remediation & Security Hardening
+## 13. College Ambassador & Referral Subsystem (`/ambassador`, `/intern/ambassador`)
+
+### 13.1. Defect Remediation & Security Hardening
 - **Encoding & Mojibake Elimination**:
   - Replaced corrupted mojibake bytes (`'â€¢'`) in `mask_upi()` with unicode bullet constant `\u2022`.
   - Display renders cleanly as `kus•••@okhdfcbank` across all browsers and operating systems.
@@ -403,7 +358,7 @@ python scripts\verify_and_launch_dbert_whatsapp.py
 - **Sidebar Layout Integration**:
   - Standardized wrapper with `<div class="main" id="main-content"><div class="content">`, completely preventing 240px fixed sidebar clipping.
 
-### 16.2. Referral Attribution, Wallet & Payout Engine
+### 13.2. Referral Attribution, Wallet & Payout Engine
 - **Anonymous Tracking**: Referral clicks via `/r/click?ref=<code>` tracked without session dependencies.
 - **Attribution & Anti-Fraud**: `attach_referral_on_signup` safely binds new students to their referrer; blocks self-referrals and duplicate attributions.
 - **10% Commission Calculation**: When an attributed student enrolls (e.g., ₹1,999), 10% (₹200) is atomically credited to the ambassador's withdrawable wallet (`coin_ledger_mirror` with `ledger_kind='referral'`).
@@ -413,9 +368,11 @@ python scripts\verify_and_launch_dbert_whatsapp.py
 
 ---
 
-## 17. Sovereign REST API Developer Platform & Instructions Hub (`https://api.dbert.in`)
+---
 
-### 17.1. Public Developer Hub & Onboarding Landing Page (`GET /`, `/instructions`)
+## 14. Sovereign REST API Developer Platform & Instructions Hub (`https://api.dbert.in`)
+
+### 14.1. Public Developer Hub & Onboarding Landing Page (`GET /`, `/instructions`)
 - **Sovereign Domain**: `https://api.dbert.in` (FastAPI Uvicorn running on port 8000 reverse-proxied through Nginx with HTTP/2 and TLS 1.3).
 - **Interactive Developer Portal**: Replaces former 404 response on `/` with a comprehensive, responsive, executive developer portal:
   - **4-Step Quickstart Instructions**: Base URL setup (`https://api.dbert.in/api/v1`), JWT Bearer Token acquisition (`/api/v1/auth/*`), header specification (`Authorization: Bearer <token>`), and idempotent JSON response handling.
@@ -424,16 +381,18 @@ python scripts\verify_and_launch_dbert_whatsapp.py
   - **Interactive Searchable Endpoint Catalog**: Table covering primary production endpoints with HTTP method pills (`GET`, `POST`, `PUT`, `DELETE`), authorization level, description, and direct links to test within Swagger UI.
   - **Direct Documentation Launchers**: One-click links to Swagger UI (`/docs`), ReDoc (`/redoc`), OpenAPI 3.1 JSON (`/openapi.json`), and Liveness Probes (`/health`, `/ready`, `/status`).
 
-### 17.2. Dual Content Negotiation & Machine Discovery (`/`, `/api`, `/api/v1`)
+### 14.2. Dual Content Negotiation & Machine Discovery (`/`, `/api`, `/api/v1`)
 - **JSON Negotiation**: If client header includes `Accept: application/json` or query param `?format=json`, `/` returns a structured JSON API Manifest instead of HTML, allowing CLIs, SDKs, and automated agents to discover capabilities instantly.
 - **API Version Discovery**: Dedicated routes `GET /api` and `GET /api/v1` provide machine-readable discovery indices of all available routes and modules.
 - **OpenAPI Schema Metadata**: Enhanced `FastAPI` instance configuration with server endpoints (`https://api.dbert.in`, `http://127.0.0.1:8000`), detailed markdown description, and support contact coordinates (`engineering@dbert.in`).
 
 ---
 
-## 18. Multi-Sector Domain Architecture (9 Core Technical & Growth Domains)
+---
 
-### 18.1. Scope & 9 Standardized Career Tracks
+## 15. Multi-Sector Domain Architecture (9 Core Technical & Growth Domains)
+
+### 15.1. Scope & 9 Standardized Career Tracks
 DBERT operates across **9 canonical career tracks** providing end-to-end alignment across job/internship discovery (`/jobs`, `/internships`), courses & Launchpad curricula (`/courses`, `/learners/courses`), pre-selection AI interviews (`InterviewService`), stipend evaluation rubrics (`GeminiProvider`), and 3-document credential generation (`CertificatePacketService`):
 
 | # | Canonical Domain Name | Domain Slug | Key Focus & Tech Stack |
@@ -448,7 +407,7 @@ DBERT operates across **9 canonical career tracks** providing end-to-end alignme
 | 8 | **Cybersecurity** | `cybersecurity` | Threat Modeling, SOC Analysis, Penetration Testing, OWASP, Network Security |
 | 9 | **Digital Marketing** | `digital-marketing` | Growth Engineering, SEO, Google/Meta Ads, Funnel Analytics, Content Systems |
 
-### 18.2. Database Segregation & Automated Seeding
+### 15.2. Database Segregation & Automated Seeding
 - **Active Posts Table**: Segregated in PostgreSQL (`dbert_internship.posts`) on EC2 (`3.26.237.171`) and local SQLite (`internship.db`).
 - **Post Distribution**: Minimum 5-16 verified internships and 2-3 jobs per domain (111 active published postings total).
 - **Migration Script**: `scripts/migrate_and_seed_9_domains.py` supports dual modes:
@@ -460,7 +419,7 @@ DBERT operates across **9 canonical career tracks** providing end-to-end alignme
   python scripts/migrate_and_seed_9_domains.py --pg-url "postgresql://dbert_user:...@localhost:5432/dbert_lms" --schema "dbert_internship"
   ```
 
-### 18.3. Cross-Service Domain Integration
+### 15.3. Cross-Service Domain Integration
 1. **Portal Routing & Listings (`apps/portal/app.py`)**:
    - `VALID_DOMAINS` and `DOMAIN_SLUGS` support all 9 tracks with clean URL routing (`/jobs/<domain_slug>`, `/internships/<domain_slug>`).
    - `DOMAIN_SEO` provides bespoke metadata, page titles, and H1 tags for all 9 domains.
@@ -479,17 +438,19 @@ DBERT operates across **9 canonical career tracks** providing end-to-end alignme
 
 ---
 
-## 19. Institutional Trust, Program Transparency & Credibility Standards
+---
+
+## 16. Institutional Trust, Program Transparency & Credibility Standards
 ================================================================================
 
-### 19.1. Canonical Terminology & Program Durations
+### 16.1. Canonical Terminology & Program Durations
 1. **Single Unified Incubation Duration**: All cohort references, course schema JSON-LD, FAQs, and marketing copy strictly use **2 Months (8 Weeks)** (`P2M` / `P60D`). Legacy mentions of "three months" are completely retired.
 2. **Guaranteed Placement Disambiguation**:
    - DBERT strictly guarantees **Active Production Codebase Assignment** under senior engineer code review, 1-on-1 technical mentorship, and an independently verifiable 3-document credential packet.
    - DBERT **does not claim or guarantee unconditional permanent corporate employment**. Unconditional job guarantees are misleading and prohibited across all copy.
 3. **Zero Application Fee Guarantee**: DBERT never charges application, registration, screening, or interview fees. Initial selection is 100% merit-based.
 
-### 19.2. Performance Stipend Governance & Audited Rubrics
+### 16.2. Performance Stipend Governance & Audited Rubrics
 - Stipends (₹5,000–₹18,000) are performance-based and earned against delivery milestones submitted through the LMS task portal (`/stipend/tasks`).
 - Evaluated against 4 objective engineering dimensions:
   1. *Code Quality & Cleanliness*: Linting (PEP8/ESLint), typing, modular separation, error boundaries.
@@ -498,13 +459,13 @@ DBERT operates across **9 canonical career tracks** providing end-to-end alignme
   4. *Technical Documentation*: Comprehensive READMEs, architecture decision records.
 - Approved disbursements are released atomically via UPI directly to the fellow's verified account.
 
-### 19.3. Statutory Disclosure & Entity Clarification
+### 16.3. Statutory Disclosure & Entity Clarification
 - **Parent Legal Enterprise**: *Digital Blinc Education Research And Technology* (MSME / UDYAM compliant).
 - **Official Government Verification**: Direct link to `https://udyamregistration.gov.in/Udyam_Verify.aspx`.
 - **Statutory Distinction**: MSME registration establishes formal legal entity compliance under Indian law; it does not replace UGC/AICTE degree accreditation. DBERT credentials represent audited production software engineering evidence.
 - **Entity Advisory**: Zero affiliation with discontinued third-party operations or unofficial recruitment agencies soliciting fees under similar legacy names.
 
-### 19.4. Published Metrics Hierarchy
+### 16.4. Published Metrics Hierarchy
 To maintain mathematical consistency across all web portals:
 - **1,500+ Evaluated Learners**: Developers and university students upskilled across open hackathons, masterclasses, and foundational assessments.
 - **465+ Certified Fellows in Sovereign Directory**: Formally registered candidates with verifiable UUID credentials in our public [Alphabetical Credential Directory](https://dbert.in/verify/directory).
@@ -512,9 +473,11 @@ To maintain mathematical consistency across all web portals:
 
 ---
 
-## 18. Comprehensive 9-Domain SEO Architecture, Sitemaps & Cross-Domain Link Mesh
+---
 
-### 18.1. Architecture & Keyword Silos Across 9 Domains
+## 17. Comprehensive 9-Domain SEO Architecture, Sitemaps & Cross-Domain Link Mesh
+
+### 17.1. Architecture & Keyword Silos Across 9 Domains
 Both `https://dbert.in` (Main Website & Verification Engine) and `https://lms.dbert.in` (LMS & Career Hub) are structured into 9 unified technical and growth domains:
 1. **AI Agent Development** (`ai-agent-development`)
 2. **Data Analyst & Power BI** (`data-analyst`)
@@ -526,7 +489,7 @@ Both `https://dbert.in` (Main Website & Verification Engine) and `https://lms.db
 8. **Cybersecurity & Threat Defense** (`cybersecurity`)
 9. **Digital Marketing & SEO** (`digital-marketing`)
 
-### 18.2. Sitemaps Generation & Canonical Indexing
+### 17.2. Sitemaps Generation & Canonical Indexing
 - **`https://dbert.in/sitemap.xml`**:
   - Dynamically generated from `apps/website/src/data/seo.config.ts`, `apps/website/src/lib/blog.ts`, and verified candidates in `certificates_registry.json`.
   - All 9 course tracks mapped at `/learners/courses/<domain>` with priority `0.9` and weekly change frequency.
@@ -535,7 +498,7 @@ Both `https://dbert.in` (Main Website & Verification Engine) and `https://lms.db
   - Programmatically indexed across all 9 domains for category hubs (`/internships/<domain>`, `/jobs/<domain>`), work-from-home filters (`/internships/work-from-home/<domain>`), paid filters (`/internships/paid/<domain>`), remote filters (`/internships/remote/<domain>`), and programmatic city corridors (Bangalore, Pune, Delhi NCR, Hyderabad, Mumbai, Chennai, Remote).
   - Indexes all live direct company postings and active curated job/internship leads for Google Jobs search indexing.
 
-### 18.3. Cross-Domain Footers & Structured Data Parity
+### 17.3. Cross-Domain Footers & Structured Data Parity
 - **Website Global Footer (`Footer.tsx`)**:
   - Multi-column layout featuring all 9 domain course paths under **AI Academy** and deep linking to live sourced opportunities on `lms.dbert.in` (`/internships/remote/<domain>`, `/internships/virtual-remote-internships`, `/internships/paid-internships`, `/jobs`).
   - Trust & Verification column cross-linking to `/verify`, `/verify/directory`, and `/enroll/1999`.
@@ -548,9 +511,11 @@ Both `https://dbert.in` (Main Website & Verification Engine) and `https://lms.db
 
 ---
 
-## 19. DBERT Platform Evolution Roadmap Execution & Production Baseline (Phases 0–9)
+---
 
-### 19.1. Phase 0: Baseline Discovery & Audit Artifacts
+## 18. DBERT Platform Evolution Roadmap Execution & Production Baseline (Phases 0–9)
+
+### 18.1. Phase 0: Baseline Discovery & Audit Artifacts
 All canonical system audit deliverables specified in `DBERT_PLATFORM_EVOLUTION_ROADMAP.md` are established in `docs/dbert-roadmap/audit/` and deployed to EC2:
 1. **Repository Map (`docs/dbert-roadmap/audit/repository-map.md`)**: Complete infrastructure mapping (Next.js 16 on port 3000, Flask LMS on port 5001, FastAPI on port 8000, Nginx reverse proxy, PostgreSQL 15, and SQLite fallbacks).
 2. **Route Inventory (`docs/dbert-roadmap/audit/route-inventory.csv`)**: 533 total cataloged endpoints across `dbert.in`, `lms.dbert.in`, and `api.dbert.in` with handler files and auth requirements.
@@ -560,14 +525,14 @@ All canonical system audit deliverables specified in `DBERT_PLATFORM_EVOLUTION_R
 6. **Current Public Claims Audit (`docs/dbert-roadmap/audit/current-public-claims.md`)**: Programmatic validation of public claims (₹1,999 program fee with ₹499 caution deposit credit = ₹1,500 net balance; 60-day sprint duration; 65 verified vs 400 provisional candidates; MSME accreditation disclaimer; active Alkame open-source repo).
 7. **Risks and Unknowns Log (`docs/dbert-roadmap/audit/risks-and-unknowns.md`)**: Operational mitigations for Google Workspace SMTP 24h rolling quotas, candidate privacy-by-default, and Next.js standalone build symlinks.
 
-### 19.2. Phase 1: Programme Truth & Financial Ledger Alignment
+### 18.2. Phase 1: Programme Truth & Financial Ledger Alignment
 - **Single Source of Truth**:
   - `https://dbert.in/terms` and `https://dbert.in/refund` aligned with `https://lms.dbert.in/terms` and `https://lms.dbert.in/program`.
   - Free Internship Track: Zero application/screening fee; 100% refundable security deposit returned upon milestone completion.
   - Incubation Program: ₹1,999 total committed seat fee (or ₹1,500 balance payable if ₹499 caution deposit was credited).
   - Performance Stipend: ₹5,000–₹18,000 milestone-based, governed by Turnitin/rubrics, submitted via `/stipend/tasks` and approved by senior staff.
 
-### 19.3. Phase 2: Marketplace Sourcing Integrity & Database Type Safety
+### 18.3. Phase 2: Marketplace Sourcing Integrity & Database Type Safety
 - **Dual Source Badging**:
   - Direct employer listings tagged with `.source-pill-portal` (`Direct Company Posting`).
   - Aggregated engineering leads tagged with `.source-pill-curated` (`Curated Sourced Lead`).
@@ -579,22 +544,24 @@ All canonical system audit deliverables specified in `DBERT_PLATFORM_EVOLUTION_R
   - Audited all 6,622 active scraped leads across all 9 domains in PostgreSQL on EC2 (`scraped_internships`: 4,565 Full Stack, 649 Digital Marketing, 525 AI Agent, 372 Data Analyst, 200 UI/UX, 117 DevOps, 112 Python, 43 Cybersecurity, 39 Mobile).
   - Validated that Lead 3307 (`Social Media Marketing Internship | Niswarth - The Selfless NGO`) is strictly categorized under `Digital Marketing`.
 
-### 19.4. Phases 3–9: End-to-End Operational Continuity & Deployment
+### 18.4. Phases 3–9: End-to-End Operational Continuity & Deployment
 - **Pre-Vetted Directory**: Verified candidates surfaced first by hireability rank (98, 97, 96...) at `/verify/directory`, linked from `/hire/pre-vetted-engineers` with dual CTAs (`View Proof Dossier` & `Connect on LMS`).
 - **Cryptographic Verification**: Exact-ID lookups on `dbert.in/verify/[certId]` rendering official 3-document credential packets.
 - **Production Build & Verification**: Next.js Turbopack standalone successfully rebuilt on EC2, public assets synced, `/data` symlinks preserved, and systemd units (`dbert-website.service`, `dbert-portal.service`) running active (HTTP 200 on all endpoints).
 
 ---
 
-## 20. Pre-Vetted Engineers Directory, Add-On SEO & Omnichannel Sitemaps Architecture
+---
 
-### 20.1. Strict Add-On Mandate & Zero-Disruption Policy
+## 19. Pre-Vetted Engineers Directory, Add-On SEO & Omnichannel Sitemaps Architecture
+
+### 19.1. Strict Add-On Mandate & Zero-Disruption Policy
 - **Additive SEO Principle**: All enhancements are strictly additive ("Add-On" only). 100% of pre-existing SEO keywords (`DBERT candidate directory`, `verify DBERT certificate`, MSME statutory disclosures, course hubs), candidate records, routes, and rankings are fully preserved.
 - **Dual-Audience Intent**: The candidate directory (`/verify/directory`) serves a dual audience:
   1. **Candidate Verification**: Students and institutions verifying certificate authenticity and academic rubrics.
   2. **B2B Engineering Recruitment**: Startups and enterprise hiring managers looking to onboard pre-vetted AI, Full Stack, and Data engineers with verified Turnitin scores and live GitHub pull requests.
 
-### 20.2. Pre-Vetted Directory Structured Data & Rich Snippets (`/verify/directory`)
+### 19.2. Pre-Vetted Directory Structured Data & Rich Snippets (`/verify/directory`)
 - **Tri-Schema JSON-LD Implementation**:
   1. **`ItemList` Schema**: Formats all 465 candidate records into structured `Person` entities, detailing their specialization domain, evaluation score (e.g. 98/100), verified credential ID, and public proof dossier URL.
   2. **`BreadcrumbList` Schema**: Declares hierarchy (`Home` -> `Audited Credentials` -> `Pre-Vetted Engineers Directory`) for clean SERP navigation breadcrumbs.
@@ -607,13 +574,13 @@ All canonical system audit deliverables specified in `DBERT_PLATFORM_EVOLUTION_R
 - **Visual Recruiter Callout Banner**: High-contrast dark slate card linking directly to `/hire/pre-vetted-engineers` with prominent CTA: *"Deploy pre-vetted AI & Full Stack engineers in 48 hours"*.
 - **Recruiter FAQ Accordion**: Interactive native FAQ accordion rendered below candidate cards.
 
-### 20.3. SEO Bounds Enforcement (`apps/website/src/data/seo.config.ts`)
+### 19.3. SEO Bounds Enforcement (`apps/website/src/data/seo.config.ts`)
 - **Rule Verification (`npm run check:seo`)**:
   - Validates all 75 routed pages against strict character constraints: `title <= 52` characters, `description >= 140 && description <= 155` characters.
   - Resolved 6 length bounds violations (`/learners/launchpad`, `/learners/courses/ui-ux-design`, `/learners/courses/devops-cloud`, `/learners/courses/mobile-app-development`, `/learners/courses/digital-marketing`, and `/verify/directory`).
   - Result: **75 entries checked against 75 routed pages, 0 errors, 100% pass rate**.
 
-### 20.4. Omnichannel Sitemaps Architecture & Search Engine Discovery
+### 19.4. Omnichannel Sitemaps Architecture & Search Engine Discovery
 - **Website Dynamic Sitemap (`https://dbert.in/sitemap.xml`)**:
   - 144 fully indexable URLs including core hubs, courses, products, startups, blog posts, and 65 verified candidate certificates.
   - `/verify/directory` and `/hire/pre-vetted-engineers` assigned **Priority 0.95** with **daily** change frequency.
@@ -625,7 +592,7 @@ All canonical system audit deliverables specified in `DBERT_PLATFORM_EVOLUTION_R
   - `https://dbert.in/robots.txt` explicitly points to both `https://dbert.in/sitemap.xml` and `https://lms.dbert.in/sitemap.xml`.
   - Grants full crawl permission to `Googlebot`, `Mediapartners-Google`, `Googlebot-Image`, and standard crawlers.
 
-### 20.5. Internal Link Equity & Cross-Domain Navigation Web
+### 19.5. Internal Link Equity & Cross-Domain Navigation Web
 - **Header Mega-Menu (`apps/website/src/data/nav.config.json`)**:
   - Added `"Pre-Vetted Engineers Directory"` under `For Startups` -> `Resources` with highlight badge.
 - **Website Footer (`apps/website/src/components/layout/Footer.tsx`)**:
@@ -641,9 +608,11 @@ All canonical system audit deliverables specified in `DBERT_PLATFORM_EVOLUTION_R
 
 ---
 
-## 21. Pre-Vetted Domain Directories & Recruiter Skills Filtering Architecture
+---
 
-### 21.1. Specialized Domain Sub-Pages (`/verify/directory/[domainSlug]`)
+## 20. Pre-Vetted Domain Directories & Recruiter Skills Filtering Architecture
+
+### 20.1. Specialized Domain Sub-Pages (`/verify/directory/[domainSlug]`)
 - **Canonical Routing & Hierarchy**:
   - Parent Hub: `https://dbert.in/verify/directory` (465 total candidates: 65 verified + 400 provisional).
   - 7 Specialized Domain Pages:
@@ -657,7 +626,7 @@ All canonical system audit deliverables specified in `DBERT_PLATFORM_EVOLUTION_R
 - **Static Generation (SSG)**:
   - All 7 routes pre-rendered statically via `generateStaticParams()` in Next.js 16 App Router for instant TTFB and 100% search engine indexability.
 
-### 21.2. Interactive Recruiter Skills & Multi-Select Filter Engine
+### 20.2. Interactive Recruiter Skills & Multi-Select Filter Engine
 - **Horizontal Domain Pill Nav**:
   - Sleek, mobile-scrollable domain navigation pill bar at the top of the directory with live candidate counters per domain (`All Domains: 465`, `AI & ML: 165`, `Data Analytics: 153`, `Full Stack: 112`, etc.).
   - Highlights active domain with gold accent glow (`.domainPillLinkActive`).
@@ -670,7 +639,7 @@ All canonical system audit deliverables specified in `DBERT_PLATFORM_EVOLUTION_R
     * `View Proof Dossier →`: Direct link to cryptographic verification dossier at `/verify/[certId]`.
     * `Connect on LMS →`: Direct routing to `https://lms.dbert.in/company/signup?ref=directory&candidate=[certId]` for instant employer registration and candidate messaging.
 
-### 21.3. Structured Data (JSON-LD) & Domain SEO
+### 20.3. Structured Data (JSON-LD) & Domain SEO
 - **Domain-Tailored Tri-Schema JSON-LD**:
   1. **`ItemList` Schema**: Formats candidates strictly within that domain as structured `Person` entities with evaluation scores and proof URLs.
   2. **`BreadcrumbList` Schema**: Declares hierarchy (`Home` -> `Pre-Vetted Directory` -> `[Domain Name] Engineers`).
@@ -678,7 +647,7 @@ All canonical system audit deliverables specified in `DBERT_PLATFORM_EVOLUTION_R
 - **Sitemap Priority & Daily Frequency**:
   - All 7 domain directory URLs registered in `https://dbert.in/sitemap.xml` with **Priority 0.90** and **daily** change frequency.
 
-### 21.4. Internal Link Equity Web
+### 20.4. Internal Link Equity Web
 - **Header Mega-Menu** (`apps/website/src/data/nav.config.json`): Direct link to Pre-Vetted Engineers Directory under `For Startups` -> `Resources`.
 - **Website Footer** (`apps/website/src/components/layout/Footer.tsx`): Links to Full Stack, AI & ML, and Data Analytics directories under `Startups & Equity`.
 - **LMS Footer** (`apps/portal/templates/_footer_seo.html`): Cross-links to domain talent directories under Column 4 (Trust & Verification).
@@ -687,16 +656,18 @@ All canonical system audit deliverables specified in `DBERT_PLATFORM_EVOLUTION_R
 
 ---
 
-## 22. LMS Symmetrical Pagination (18/page), Executive Bento Footer & Pre-Vetted Engineer Proof Dossier (`/verify/[certId]`)
+---
 
-### 22.1. LMS Listings Symmetrical Layout (`_PAGE_SIZE = 18`)
+## 21. LMS Symmetrical Pagination (18/page), Executive Bento Footer & Pre-Vetted Engineer Proof Dossier (`/verify/[certId]`)
+
+### 21.1. LMS Listings Symmetrical Layout (`_PAGE_SIZE = 18`)
 - **Route Scope**: `https://lms.dbert.in/internships` and `https://lms.dbert.in/jobs`.
 - **Symmetry Mandate**: 
   - Sliced in `apps/portal/app.py` at `_PAGE_SIZE = 18` (formerly 21).
   - Perfectly matches the standard 3-column responsive desktop layout (6 rows × 3 cards = exactly 18 cards per page) without any dangling or ragged cards.
   - Slices across all 6,700+ internships and 320+ pages seamlessly.
 
-### 22.2. Full-Width Breakout of Tech Track & Hub Matrix (`seo-silo-matrix`)
+### 21.2. Full-Width Breakout of Tech Track & Hub Matrix (`seo-silo-matrix`)
 - **Template Restructuring (`apps/portal/templates/post_listings.html`)**:
   - Moved `<section class="seo-silo-matrix">` completely outside of `.listings-body-grid` (which was trapped inside the right content column alongside the sticky left sidebar).
   - Positioned inside `.listings-page-wrap` immediately below `.listings-pagination-bar`.
@@ -706,7 +677,7 @@ All canonical system audit deliverables specified in `DBERT_PLATFORM_EVOLUTION_R
     2. *Top Tech Hubs*: Bangalore (Bengaluru), Pune, Hyderabad, Delhi NCR / Noida.
     3. *High-Intent Searches*: Remote AI Agent, WFH Data Analyst, Paid AI with Stipend, Paid Full Stack.
 
-### 22.3. Executive Silo Matrix UI & UX Architecture for Footer (`_footer_seo.html`)
+### 21.3. Executive Silo Matrix UI & UX Architecture for Footer (`_footer_seo.html`)
 - **Root Cause & CSP Nonce Resolution**:
   - The previous footer appeared as raw vertically stacked unstyled text because Flask's Content Security Policy (`style-src 'nonce-{nonce}'`) was actively stripping the footer's `<style>` tag due to a missing `nonce="{{ csp_nonce() }}"`.
   - Resolved completely by:
@@ -731,7 +702,7 @@ All canonical system audit deliverables specified in `DBERT_PLATFORM_EVOLUTION_R
     4. **Card 4: Verification & Studio (10 Links)**: Verify Credential ID (`/verify`), Hire Pre-Vetted Engineers (`/hire/pre-vetted-engineers`), Pre-Vetted Candidate Directory (`/verify/directory`), Full Stack Talent Directory (`/verify/directory/full-stack-development`), AI & ML Talent Directory (`/verify/directory/ai-machine-learning`), Incubation Program (₹1,999) (`/program`), Balance Enrollment Portal (`/enroll/1999`), MSME Disclosures (`/about/credentials`), Applied AI Fellowship Track (`/learners/fellowship`), DBERT Venture Studio (`dbert.in`).
   - **Centered Legal & Ecosystem Bar**: Centered column layout (`display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;`) with centered horizontal chip links (`Home`, `All Internships`, `All Jobs`, `Terms of Service`, `Privacy Policy`, `Student Sign In`) and centered copyright statement.
 
-### 22.4. Pre-Vetted Engineer Proof Dossier & Profile Architecture (`/verify/[certId]`)
+### 21.4. Pre-Vetted Engineer Proof Dossier & Profile Architecture (`/verify/[certId]`)
 - **Strict User Mandate & Dual Experience Mode**:
   - **Verified Engineers (`isProvisional: false`, e.g. `CERT-DBERT-2026-DA-027`)**:
     * Rendered via `apps/website/src/app/verify/[certId]/CandidateProfileClient.tsx`.
@@ -752,77 +723,11 @@ All canonical system audit deliverables specified in `DBERT_PLATFORM_EVOLUTION_R
 
 ---
 
-## 23. Sheet (1,593 Candidates) Provisional Ingestion & Multi-Account Revenue Dispatch
-
-### 23.1. Architectural Separation & Public Directory Shield
-- **Source Sheet**: Google Sheet `1zHbzza7pVGoX6AgVKyEn5MzDMXq-2wq4uA3Iyx4fqs0` (`gid=338877142`, 1,593 candidate records).
-- **Provisional Registry**: Stored strictly in `data/sheet_1593_provisional_registry.json` and `apps/website/src/data/sheet_1593_provisional_registry.json`.
-- **CRITICAL DIRECTORY GATE**: Sheet provisional candidates are **NEVER** added to `apps/website/src/data/directory_candidates.json` (verified at 470 verified records). They are strictly excluded from `/verify/directory` until ₹299 project verification is completed.
-- **Dynamic Lookup Resolution**: Candidate profile lookup (`/api/enroll/lookup`) and public verification route (`/verify/[certId]`) safely resolve sheet candidates with `isProvisional: true`.
-
-### 23.2. Revenue-Optimized Verification Landing Page (`/verify/unlock`)
-- **Route**: `https://dbert.in/verify/unlock?certid={certId}&email={email}`
-- **Executive 6-Card Value Breakdown**:
-  1. *Official 3-Document Credential Packet*: Certificate of Completion, Academic Project Evaluation (100-mark rubric), and Institutional LOR signed by Mr. Abhinav Sharma.
-  2. *Turnitin Originality Rubric*: Verified plagiarism audit (<3.0%) and 9-dimension competency table.
-  3. *Pre-Vetted Directory Listing*: Guaranteed inclusion on `https://dbert.in/verify/directory` upon verification.
-  4. *1-Click LinkedIn Credential*: Pre-formatted credential linking directly to sovereign verification URL.
-  5. *ATS-Optimized Resume Boost*: Project metrics and verified capstone details for recruiter ATS screening.
-  6. *Performance Stipend Eligibility*: Unlocks access to `/stipend/tasks` for 5,000 Coin (₹5,000) disbursement.
-
-### 23.3. Multi-Account Google Workspace SMTP Dispatch Engine
-- **Dispatcher Script**: `scripts/dispatch_sheet_1593.py`
-- **1-Click Launcher**: `start_sheet_1593_dispatch.bat`
-- **Rotating 5-Account Pool**:
-  1. `abhinav.sharma@dbert.in` (Program Head & Project Mentor)
-  2. `manoj.kumar@dbert.in` (Admissions & Operations Directorate)
-  3. `sandeep.bannu@dbert.in` (Technical Evaluation & Academic Review)
-  4. `contactus@dbert.in` (Admissions Desk & Support)
-  5. `pulkit.kunar@dbert.in` (Verification & Candidate Success)
-- **Deliverability Constraints**:
-  - Strict From & Reply-To header alignment per sending account.
-  - Randomized human pacing: `14.0s – 26.0s` (average 20s) with 35s–50s micro-breaks every 20 emails.
-  - Deduplication: Automatic cross-reference with `data/dispatch_tracking_409.json` (27 overlapping candidates automatically marked `ALREADY_SENT_409` and skipped).
-  - Isolated Rate-Limiting: Any account encountering Google 550 limits is automatically placed in 24h cooldown without interrupting other accounts.
-  - Milestone Telemetry: Status report dispatched every 100 emails to `ain.sharma.abhinav@gmail.com` and `ajnatechrpa@gmail.com`.
-
-### 23.4. Real-Time Autonomous Inbox Responder (`scripts/dbert_inbox_responder.py`)
-- **Engine**: Scans all 5 Google Workspace inboxes (`abhinav.sharma`, `manoj.kumar`, `sandeep.bannu`, `contactus`, `pulkit.kunar`) via IMAP SSL (`imap.gmail.com:993`) every 60 seconds.
-- **RFC 2822 Quote Stripping**: Strips prior quoted email threads and forwarded headers to isolate candidate inquiries.
-- **Contextual Knowledge & Intent Matching**:
-  - `PAYMENT_AND_FEE_299`: Explains ₹299 project verification deliverables and provides personalized deep-link to `/verify/unlock`.
-  - `CERTIFICATE_AND_LOR_CLAIM`: Explains how to claim and download the official 3-document credential packet.
-  - `STIPEND_AND_COINS`: Outlines 5,000 Coin stipend contribution on `/stipend/tasks` and UPI payout.
-  - `GENERAL_INQUIRY`: Resolves candidate dossier and routes to admissions WhatsApp concierge (`+91 81929 11360` / `+91 89580 06294`).
-- **Exact Mailbox Alignment**: Replies are transmitted over SMTP from the exact mailbox that received the inquiry.
-- **Deduplication**: `data/inbox_replies_log.json` prevents duplicate replies to any message ID.
-
-### 23.5. First 92 Candidates Dual WhatsApp Dispatch Engine
-- **Queue Generation**: `python scripts/send_dbert_whatsapp.py --load-sheet-92` loads the first 92 uncontacted candidates from `sheet_1593_provisional_registry.json`.
-- **Dual Partitioning (46 + 46 = 92)**:
-  - *Account 1 (Odd Serials: 1, 3, 5... 91)*: 46 candidates assigned to `.chrome_session_account1`.
-  - *Account 2 (Even Serials: 2, 4, 6... 92)*: 46 candidates assigned to `.chrome_session_account2`.
-- **First 15 Lines Strict Placement**:
-  - Line 8: Direct Verification Link (`https://dbert.in/verify/CERT-DBERT-2026-...`).
-  - Line 11: Mandatory Claim & Verification Google Form URL.
-  - Line 14: Dynamic Official Email Dispatch Notice citing the exact sending account (e.g. `manoj.kumar@dbert.in`) and sent timestamp.
-- **Safety & Pacing**:
-  - 18s–35s randomized human breaks between consecutive deliveries.
-  - 3-consecutive-failure circuit breaker.
-  - Permanent deduplication table `whatsapp_sent_log` in `data/dbert_whatsapp.db`.
-- **Launchers**:
-  - 1-Click: `start_sheet_1593_whatsapp_dual.bat`
-  - Interactive Controller: `run_whatsapp_dispatcher.bat` (Option `[S]`)
-  - Parallel Workers: `run_worker_acc1.bat` (Green) and `run_worker_acc2.bat` (Yellow).
-
-
-
-
 ---
 
-## 24. Omnichannel Job & Internship Sourcing Engine & SEO Hubs
+## 22. Omnichannel Job & Internship Sourcing Engine & SEO Hubs
 
-### 24.1. Core Architecture & Exact 9 Technical Domains
+### 22.1. Core Architecture & Exact 9 Technical Domains
 - **Target Domains (Strictly 9)**:
   1. `AI Agent Development`
   2. `Cybersecurity`
@@ -849,7 +754,7 @@ All canonical system audit deliverables specified in `DBERT_PLATFORM_EVOLUTION_R
 - **Live Database Volume (EC2 PostgreSQL `dbert_lms`)**:
   - 6,746 Scraped Internships + 3,110 Scraped Jobs = **9,856 total opportunities** across all 9 technical tracks.
 
-### 24.2. Company Careers SEO Hubs (`/company/<company_slug>/careers` & `/jobs`)
+### 22.2. Company Careers SEO Hubs (`/company/<company_slug>/careers` & `/jobs`)
 - **Route**: `https://lms.dbert.in/company/<company_slug>/careers` (Dual alias: `/jobs`)
 - **Template**: `apps/portal/templates/company_careers_hub.html`
 - **Target SEO Query**: `"{Company} Careers"`, `"{Company} Internships 2026"`, `"{Company} Job Openings"`.
@@ -866,9 +771,11 @@ All canonical system audit deliverables specified in `DBERT_PLATFORM_EVOLUTION_R
 
 ---
 
-## 25. Incubation Balance Payment Reconciliation & Re-submission Architecture (`/enroll/1999`)
+---
 
-### 25.1. Unverified Submission Handling & Ledger Rejection
+## 23. Incubation Balance Payment Reconciliation & Re-submission Architecture (`/enroll/1999`)
+
+### 23.1. Unverified Submission Handling & Ledger Rejection
 - **Audited Submissions**:
   1. `Ashlesha Shekhar Ukarde` (`ashleshaukarde@gmail.com`, Data Analyst `CERT-DBERT-2026-DA-058`, UTR `431589777888`, Sub ID `DBERT-ENR-701490-NOUV`).
   2. `Badugu venkata rajesh` (`rajeshbadugu67@gmail.com`, Data Analyst `CERT-DBERT-2026-DA-057`, UTR `431589123456`, Sub ID `DBERT-ENR-611526-IPLF`).
@@ -882,7 +789,7 @@ All canonical system audit deliverables specified in `DBERT_PLATFORM_EVOLUTION_R
   - Links to the [Pre-Vetted Engineers Directory](https://dbert.in/verify/directory) showcasing 65+ placed peers.
   - Next cohort kickoff standup date: **Monday, 16 Nov 2026 at 06:00 PM IST**.
 
-### 25.2. Portal Resubmission Flow Unblock
+### 23.2. Portal Resubmission Flow Unblock
 - **Lookup API (`apps/website/src/app/api/enroll/lookup/route.ts`)**:
   - Returns `enrollmentStatus: "REJECTED"` and `rejectionReason`.
 - **Client Component (`apps/website/src/app/enroll/1999/EnrollmentClient.tsx`)**:
@@ -896,7 +803,9 @@ All canonical system audit deliverables specified in `DBERT_PLATFORM_EVOLUTION_R
 
 ---
 
-## 26. Operational Handover & System Status Summary
+---
+
+## 24. Operational Handover & System Status Summary
 - **EC2 Production Server (`ubuntu@3.26.237.171`)**:
   - `dbert-website.service`: **ACTIVE** (Next.js Turbopack standalone on port 3000).
   - `dbert-portal.service`: **ACTIVE** (Flask LMS Gunicorn on port 5001).
@@ -911,14 +820,16 @@ All canonical system audit deliverables specified in `DBERT_PLATFORM_EVOLUTION_R
 
 ---
 
-## 27. Internship Cohort Drive, Programmatic SEO & LMS Signup Optimization (Nov 2026)
+---
 
-### 27.1. Website Header CTA Re-Routing
+## 25. Internship Cohort Drive, Programmatic SEO & LMS Signup Optimization (Nov 2026)
+
+### 25.1. Website Header CTA Re-Routing
 - **Target**: `apps/website/src/data/nav.config.json` lines 123 & 147.
 - **Change**: Updated primary header CTA *"Apply for Fellowship"* from legacy paid route `https://lms.dbert.in/program` to sovereign LMS entrance `https://lms.dbert.in`.
 - **Result**: Immediate increase in top-of-funnel conversion by landing users directly onto the interactive LMS home & signup overlay.
 
-### 27.2. Dynamic Cohort Date Engine & LMS Conversion Landing Page
+### 25.2. Dynamic Cohort Date Engine & LMS Conversion Landing Page
 - **Template**: `apps/portal/templates/index.html`
 - **Dynamic Date Helper**: `_next_cohort_monday()` in `apps/portal/app.py` auto-calculates the upcoming cohort start date (e.g. *Monday, 16 Nov 2026 at 06:00 PM IST*) and rolls forward weekly.
 - **Hero & Live Countdown**: Luxury `.cohort-countdown-card` ticking down live to the next Monday standup with Days, Hours, Minutes, and Seconds.
@@ -926,12 +837,12 @@ All canonical system audit deliverables specified in `DBERT_PLATFORM_EVOLUTION_R
 - **Pre-Vetted Engineers Showcase**: High-converting recruiter card highlighting 65+ verified engineers, 48h turnaround, zero placement markup, and 14-day risk-free trial, cross-linking to `https://dbert.in/verify/directory` and `https://dbert.in/hire/pre-vetted-engineers`.
 - **Signup Form Domain Expansion**: 3-step auth overlay dropdown expanded from 4 to all 9 domains with automatic hash selection (`/#signup?domain=...`).
 
-### 27.3. Programmatic SEO Landing Pages & XML Sitemap
+### 25.3. Programmatic SEO Landing Pages & XML Sitemap
 - **Direct Apply Redirect**: `GET /apply` dynamically forwards (HTTP 302) to `/#signup` preserving domain parameters (`?domain=...`).
 - **Monthly Cohort Routing**: Canonical routes `/internships/november-2026`, `/internships/december-2026`, and `/internships/cohort-2026` serve remote internship inventory with high-intent SEO metadata.
 - **LMS Sitemap Expansion**: Added `/apply`, `/internships/november-2026`, `/internships/december-2026`, and `/internships/cohort-2026` to `https://lms.dbert.in/sitemap.xml`.
 
-### 27.4. Multi-Account Google Workspace Email Dispatcher
+### 25.4. Multi-Account Google Workspace Email Dispatcher
 - **Script**: `scripts/dispatch_cohort_drive_nov2026.py`
 - **1-Click Launcher**: `start_cohort_drive_dispatch.bat`
 - **Pool**: 5 Google Workspace accounts (`abhinav.sharma`, `manoj.kumar`, `sandeep.bannu`, `contactus`, `pulkit.kunar`).
@@ -941,7 +852,7 @@ All canonical system audit deliverables specified in `DBERT_PLATFORM_EVOLUTION_R
 - **Telemetry**: Progress reports dispatched to `ain.sharma.abhinav@gmail.com` and `ajnatechrpa@gmail.com` at 10%, 25%, 50%, 75%, 90%, and 100% milestones.
 
 
-### 27.5. UI Remediation & CSP Hardening (Countdown & Recruiter Showcase)
+### 25.5. UI Remediation & CSP Hardening (Countdown & Recruiter Showcase)
 - **CSP Policy**: Added `'unsafe-inline'` to `style_src` in `apps/portal/app.py:csp_policy_for()` so inline style attributes are not rejected by modern browsers.
 - **Server-Rendered Initial Countdown**: `index()` calculates `init_days`, `init_hours`, `init_mins`, `init_secs` in Python, eliminating static `--` and guaranteeing real time displays on immediate page render.
 - **Client Fallback & 1s Ticking**: Upgraded `initCohortCountdown()` in `apps/portal/templates/index.html` to compute upcoming Monday 18:00 IST client-side if server ISO is unavailable, ticking every 1,000ms.
@@ -950,38 +861,11 @@ All canonical system audit deliverables specified in `DBERT_PLATFORM_EVOLUTION_R
 
 ---
 
-## 28. Google Sheet (gid=97313663) Candidate Ingestion & Live Multi-Account Dispatch
-
-### 28.1. Dataset Scope & De-duplication Architecture
-- **Source Sheet**: [Google Sheet gid=97313663](https://docs.google.com/spreadsheets/d/1BUI9bxuZWI_xCOLuUBuYqGA_kleAcpzZG4rPi-q4AKA/edit?resourcekey=&gid=97313663#gid=97313663) (1BUI9bxuZWI_xCOLuUBuYqGA_kleAcpzZG4rPi-q4AKA).
-- **Raw Form Rows**: 859 responses.
-- **Unique Candidate Records**: **840 unique individuals** (19 duplicates where candidates submitted personal and university emails de-duplicated by WhatsApp phone number).
-- **Ingestion Script**: scripts/ingest_sheet_859.py
-  - Normalizes candidate records into data/sheet_859_registry.json and data/sheet_859_candidates.csv.
-  - Maps 10 raw domain selections to canonical DBERT tracks (437 AI Agent Dev, 273 Full Stack, 67 Digital Marketing, 46 Data Analyst, 6 Python Automation, 6 DevOps & Cloud, 5 Mobile App).
-  - Assigns unique reference IDs: DBERT-APP-2026-N{index:04d}.
-  - Initializes tracking state in data/dispatch_tracking_sheet_859.json and data/dispatch_tracking_sheet_859.csv.
-
-### 28.2. Dispatch Daemon & Multi-Account Rotation
-- **Script**: scripts/dispatch_sheet_859_cohort.py
-- **1-Click Launcher**: start_sheet_859_cohort_dispatch.bat
-- **Pool**: 5 Google Workspace SMTP accounts (bhinav.sharma, manoj.kumar, sandeep.bannu, contactus, pulkit.kunar).
-- **Pacing**: 14.0s - 26.0s randomized intervals (avg ~20s) with 35s - 50s micro-breaks every 20 deliveries.
-- **Template**: Approved urgent administrative status notification:
-  - Subject: URGENT: Application Status Update & Next Mandatory Steps [{ref_id}] — {name}
-  - Pre-header: Notice Classification: HIGH PRIORITY / TIME-SENSITIVE
-  - Direct portal verification link: https://lms.dbert.in/#signup?domain={domain}
-  - Candidate Dossier summary card with 48h reallocation deadline (Sunday, 15 November 2026 at 11:59 PM IST).
-  - Statutory MSME disclosure (UDYAM-UP-28-0098234) and Noida office address.
-- **Telemetry**: Automated milestone dispatches to in.sharma.abhinav@gmail.com and jnatechrpa@gmail.com every 100 emails and upon 100% completion.
-- **Execution State**: Running live via background task (	ask-657), logging to data/dispatch_sheet_859.log.
-
-
 ---
 
-## 29. Transactional & Password Reset Email Remediation
+## 26. Transactional & Password Reset Email Remediation
 
-### 29.1. Root Causes & Operational Solutions
+### 26.1. Root Causes & Operational Solutions
 1. **Frontend CSRF Guard Integration**:
    - `submitForgot()` in `apps/portal/templates/index.html` and `doReset()` in `apps/portal/templates/reset_password.html` now extract the session CSRF token from `<meta name="csrf-token">` and explicitly pass `'X-CSRFToken': csrfTok`. This eliminates the HTTP 403 CSRF rejection on password reset submissions.
 2. **PostgreSQL Compatibility in Signup Funnel**:
@@ -995,25 +879,27 @@ All canonical system audit deliverables specified in `DBERT_PLATFORM_EVOLUTION_R
 6. **Case-Insensitive Email Lookups**:
    - Updated authentication and reset lookups to `WHERE LOWER(email)=LOWER(?)` to ensure casing variations do not prevent valid password reset requests.
 
-### 29.2. Verification & Testing
+### 26.2. Verification & Testing
 - Live test on `https://lms.dbert.in/forgot-password` verified HTTP 200, Google Workspace SMTP delivery over SSL (`smtp.gmail.com:465`), and permanent record in PostgreSQL `email_log` (`id=6750`, `email_sent='YES'`, `provider='google_workspace_smtp_pool:manoj.kumar@dbert.in'`).
 
 ---
 
-## 30. High-Growth & User Acquisition Engine (1,000+ MAU Scaling Architecture)
+---
 
-### 30.1. Zero-Friction Domain Signup Funnel (`https://lms.dbert.in/#signup?domain=...`)
+## 27. High-Growth & User Acquisition Engine (1,000+ MAU Scaling Architecture)
+
+### 27.1. Zero-Friction Domain Signup Funnel (`https://lms.dbert.in/#signup?domain=...`)
 - **Query & Hash Parameter Forwarding**:
   - `apps/portal/app.py`: `@app.route("/signup")` preserves `domain`, `ref`, `plan`, and `next` parameters across HTTP 302 redirects to `/#signup?...`.
   - `apps/portal/templates/index.html`: `handleHash()` and `showAuthOverlay()` parse both query search and hash fragments (e.g. `/#signup?domain=full-stack-development`).
   - Automatically translates kebab-case domain slugs to track values (`full-stack-development` -> `Full Stack Development`, `data-analyst` -> `Data Analyst`, `ai-agent-development` -> `AI Agent Development`, `python-automation` -> `Python Automation`) and pre-selects the `#su_domain` dropdown.
 
-### 30.2. Guaranteed Flat ₹200 UPI Ambassador Payout
+### 27.2. Guaranteed Flat ₹200 UPI Ambassador Payout
 - **LMS Ledger Credit**: `credit_referral_commission()` in `apps/portal/app.py` enforces a guaranteed **flat ₹200 cash reward** for any paid fellowship or incubation balance conversion (credited atomically to `coin_ledger_mirror` with `ledger_kind='referral'`).
 - **Single-Reveal UPI Withdrawal**: Directly redeemable via `/intern/ambassador/withdraw` and processed via `/admin/ambassador-payouts`.
 - **Ambassador Promotion**: Hero badge and copy in `apps/portal/templates/ambassador.html` updated to announce: *"Earn ₹200 Flat Cash per Conversion — withdrawable directly to your UPI bank account within 24 hours"*.
 
-### 30.3. Real Opportunity Bridge & Programmatic SEO Matrix
+### 27.3. Real Opportunity Bridge & Programmatic SEO Matrix
 - **LMS Jobs Explorer (`https://dbert.in/learners/jobs`)**:
   - Upgraded to display 6 active partner postings (RAG Engineering, Autonomous Agents, SOC Analyst, Full Stack AI) deep-linking directly to `https://lms.dbert.in/apply/<id>`.
   - Integrated the **Live Opportunity Discovery Hub** linking to `https://lms.dbert.in/internships` and `https://lms.dbert.in/jobs` (10,000+ live opportunities).
@@ -1026,16 +912,18 @@ All canonical system audit deliverables specified in `DBERT_PLATFORM_EVOLUTION_R
 - **Viral Credential Sharing (`/verify/[certId]`)**:
   - Embedded 1-click "Share Verifiable Dossier on LinkedIn ↗" button on all candidate dossiers to mobilize 465+ certified fellows.
 
-### 30.4. Production Deployment & Verification
+### 27.4. Production Deployment & Verification
 - **Automated Deployment Script**: `scripts/deploy_growth_engine_to_ec2.py`.
 - **Target Host**: `ubuntu@3.26.237.171` (`dbert-website.service` and `dbert-portal.service`).
 - All 11 live production endpoints verified returning HTTP 200 / 302 OK.
 
 ---
 
-## 31. Free AI Resume & ATS Screening Engine (P5 User Acquisition)
+---
 
-### 31.1. Architecture & Dual-Platform Integration
+## 28. Free AI Resume & ATS Screening Engine (P5 User Acquisition)
+
+### 28.1. Architecture & Dual-Platform Integration
 - **Engine Core**: `apps/portal/services/ai/ats_engine.py` evaluates resumes against 9 technical domains using a 5-pillar rubric (Keywords, Power Verbs, Structure, Length, Domain fit) with Gemini AI semantic rewrites and deterministic regex/keyword fallback.
 - **LMS Endpoint (`https://lms.dbert.in/api/tools/ats-checker`)**: Public cross-origin API (CSRF exempt) handling guest preview mode (`locked: true`) and lead-unlocked mode (`locked: false`).
 - **LMS Guest Tool Page**: `https://lms.dbert.in/resume-checker` (standalone dark-slate tool).
@@ -1044,7 +932,7 @@ All canonical system audit deliverables specified in `DBERT_PLATFORM_EVOLUTION_R
 - **Next.js Proxy API**: `apps/website/src/app/api/tools/ats-checker/route.ts` proxies analysis payloads to LMS backend.
 - **SEO & Cross-Linking**: Registered in `seo.config.ts`, added structured JSON-LD (`WebApplication` and `BreadcrumbList`), cross-linked from `/learners/interview-prep`, `/learners/jobs`, navigation menu, and footer.
 
-### 31.2. PostgreSQL Lead Capture Storage
+### 28.2. PostgreSQL Lead Capture Storage
 - **Schema**: `dbert_internship.resume_ats_audits` (owned by `dbert_user`).
 - **Columns**: `id`, `intern_id`, `email`, `name`, `phone`, `domain`, `target_role`, `ats_score`, `breakdown_json`, `created_at`.
 - When an unlocked scan runs, the candidate is atomically provisioned/linked in `dbert_internship.intern_accounts` and audit record saved permanently.
@@ -1054,9 +942,11 @@ All canonical system audit deliverables specified in `DBERT_PLATFORM_EVOLUTION_R
 
 ---
 
-## 32. Repository Hygiene, Tri-Target File Inventory & Pristine Layout
+---
 
-### 32.1. Pristine Root Mandate
+## 29. Repository Hygiene, Tri-Target File Inventory & Pristine Layout
+
+### 29.1. Pristine Root Mandate
 The repository root contains strictly 4 required files:
 - `README.md`: Ecosystem architecture and quickstart guide.
 - `AGENTS.md`: Universal architectural brain and playbook for all AI agents.
@@ -1071,7 +961,7 @@ All other loose files previously in root have been organized or purged:
 - **External QA / Audit Reports**: Moved to `docs/reports/` and `docs/audit/`.
 - **Obsolete Scratch DBs & ZIPs**: Deleted (`internship.db`, `target_test.db`, `dbert-api-package-v1.zip`, `DBERT_Fieldwork_UI_UX_Agent_Handoff.zip`, etc.).
 
-### 32.2. Curated Production Scripts (`scripts/`)
+### 29.2. Curated Production Scripts (`scripts/`)
 From 510 legacy scripts, **483 ad-hoc one-off inspection, probe, and patch scripts** were safely archived and removed. Exactly **35 Canonical Production Scripts** are actively maintained:
 1. **EC2 Deployment Automation (10)**: `deploy_website_updates_to_ec2.py`, `deploy_enrollment_1999_to_ec2.py`, `deploy_directory_to_ec2.py`, `deploy_new_certificates_to_ec2.py`, `deploy_stipend_system_to_ec2.py`, `deploy_bhargavi_approval_to_ec2.py`, `deploy_footer_and_verify_notice.py`, `deploy_sitemap_and_jobs_to_ec2.py`, `full_production_deployment.py`, `fast_sync_to_ec2.py`.
 2. **Delivery Daemons & Candidate Dispatchers (6)**: `dispatch_409_provisional.py`, `dispatch_9_verified_certificates.py`, `dispatch_cohort_drive_nov2026.py`, `dispatch_sheet_1593.py`, `dispatch_sheet_859_cohort.py`, `quota_watchdog_and_dispatcher.py`, `dbert_inbox_responder.py`.
@@ -1080,15 +970,17 @@ From 510 legacy scripts, **483 ad-hoc one-off inspection, probe, and patch scrip
 5. **Database Migration, Seeding & Scraping (6)**: `sync_verified_certificates_to_portal.py`, `migrate_stipend_schema_and_tasks.py`, `migrate_mentor_group_capacity.py`, `seed_mentor_slots.py`, `run_omnichannel_job_scraper.py`, `scripts/scrapers/` (All 6 core scraping adapters).
 6. **Live Production Health & Verification (5)**: `verify_production_live.py`, `verify_admin_routes_live.py`, `verify_stipend_flow_e2e.py`, `verify_ec2_deployment.py`, `production_preflight.sh`.
 
-### 32.3. Pre-Deletion Safety Backups
+### 29.3. Pre-Deletion Safety Backups
 - **Local Archive**: `archive/pre_cleanup_backup_20261113.zip` (**220 MB**, 6,388 archived files).
 - **EC2 Production Backup**: `/home/ubuntu/pre_cleanup_ec2_20261113.tar.gz` (**180 MB**).
 
 ---
 
-## 33. Intern Lifecycle, Payment Blocking Analysis & 4-Gate Stipend Architecture
+---
 
-### 33.1. The 5-Stage Candidate Lifecycle & Payment Gating
+## 30. Intern Lifecycle, Payment Blocking Analysis & 4-Gate Stipend Architecture
+
+### 30.1. The 5-Stage Candidate Lifecycle & Payment Gating
 The LMS platform enforces a strict 5-stage lifecycle state machine in `apps/portal/app.py` (`get_intern_flow_state()`):
 
 ```mermaid
@@ -1119,7 +1011,7 @@ stateDiagram-v2
    - There is NO payment CTA, NO QR code, and NO submit button visible!
    - Unless an admin manually logs into `/admin` and transitions the candidate from `UNDER_REVIEW` to `SELECTED`, or a script runs `promote_*_selected.py`, candidates are completely blocked from completing their payments!
 
-### 33.2. The 4-Gate Stipend Release Funnel (`/stipend/tasks`)
+### 30.2. The 4-Gate Stipend Release Funnel (`/stipend/tasks`)
 Stipend claims (worth ₹5,000 / 5,000 coins withdrawable via UPI) are gated behind 4 strict sequential gates in `apps/portal/routes/stipend.py`:
 
 ```mermaid
@@ -1146,9 +1038,11 @@ flowchart LR
 
 ---
 
-## 34. Dual Sidebar Discrepancy & Unified Dashboard Redesign Blueprint
+---
 
-### 34.1. The Dual Sidebar Conflict
+## 31. Dual Sidebar Discrepancy & Unified Dashboard Redesign Blueprint
+
+### 31.1. The Dual Sidebar Conflict
 The LMS portal currently possesses two completely separate, conflicting sidebar implementations:
 
 | Feature | Sidebar A: Legacy Monolith (`portal.html`) | Sidebar B: Responsive Shell (`_app_shell.html` / `_intern_sidebar.html`) |
@@ -1163,7 +1057,7 @@ The LMS portal currently possesses two completely separate, conflicting sidebar 
 **User Experience Breakdown**:
 When an intern is on `/portal`, they see Sidebar A. When they click "Micro-Tasks" (`/tasks`) or "Stipend Milestone" (`/stipend/tasks`), the page reloads with Sidebar B, which has different icons, different grouped headers, and different responsive behavior. Clicking back to `/portal` reverts to Sidebar A.
 
-### 34.2. Unified Navigation & Dashboard Redesign Architecture
+### 31.2. Unified Navigation & Dashboard Redesign Architecture
 To resolve the discrepancy and modernize the intern experience:
 1. **Unify under `_app_shell.html`**:
    - Remove the hardcoded `<aside id="sidebar">` from `portal.html`.
@@ -1181,9 +1075,11 @@ To resolve the discrepancy and modernize the intern experience:
 
 ---
 
-## 35. Google Search Console JobPosting Structured Data Remediation & Unified SEO Schema Service
+---
 
-### 35.1. Problem Diagnosis & Google Search Console Trigger
+## 32. Google Search Console JobPosting Structured Data Remediation & Unified SEO Schema Service
+
+### 32.1. Problem Diagnosis & Google Search Console Trigger
 Google Search Console flagged 4 non-critical `JobPosting` structured data issues across `dbert.in` and `lms.dbert.in`:
 1. `Missing field 'addressCountry' (in 'jobLocation.address')`
 2. `Missing field 'streetAddress' (in 'jobLocation.address')`
@@ -1192,7 +1088,7 @@ Google Search Console flagged 4 non-critical `JobPosting` structured data issues
 
 **Root Cause**: The site exposes `https://dbert.in/sitemap-lms.xml` (proxied to `lms.dbert.in/sitemap.xml`) indexing 10,393 scraped internship and job lead pages (`/internship/lead/<id>/<slug>` and `/job/lead/<id>/<slug>`). The template in `apps/portal/app.py` emitted incomplete `PostalAddress` objects (lacking country, street address, and PIN code) and passed textual descriptions into `baseSalary.value` instead of numeric values.
 
-### 35.2. Architecture & Solution Principles
+### 32.2. Architecture & Solution Principles
 1. **Zero Sitemap Disturbance**:
    - Strictly preserved all 170 URLs in `apps/website/src/app/sitemap.ts` (`dbert.in/sitemap.xml`).
    - Strictly preserved all 10,393 URLs in `apps/portal/app.py` (`lms.dbert.in/sitemap.xml` / `dbert.in/sitemap-lms.xml`).
@@ -1214,9 +1110,11 @@ Google Search Console flagged 4 non-critical `JobPosting` structured data issues
 
 ---
 
-## 36. Autonomous Multi-Inbox Triage, Inquiry Classification, & Threaded Dispatch Engine
+---
 
-### 36.1. Operational Purpose & Mailbox Inventory
+## 33. Autonomous Multi-Inbox Triage, Inquiry Classification, & Threaded Dispatch Engine
+
+### 33.1. Operational Purpose & Mailbox Inventory
 Autonomous triage and customer/candidate response system operating across active project inboxes.
 - **Google Workspace Inboxes via IMAP (`imap.gmail.com:993`)**:
   - `abhinav.sharma@dbert.in`: Program Head & Project Mentor.
@@ -1228,14 +1126,14 @@ Autonomous triage and customer/candidate response system operating across active
   - `manpreet@vayanai.in.net`: Vayan AI / November interview inquiry store.
   - `contactus@gayatrieducation.info`, `support@...`, `connect@...`: Legacy credential packets and domain migration notices.
 
-### 36.2. Dispatch Architecture (`scripts/dispatch_inbox_action_replies.py`)
+### 33.2. Dispatch Architecture (`scripts/dispatch_inbox_action_replies.py`)
 - **Multi-Account SMTP Routing**: Sends directly from the authenticated Google Workspace account owning the thread or student relationship.
 - **Thread Header Preservation**: Injects standard RFC 2822 `In-Reply-To` and `References` headers matching the candidate's existing conversation.
 - **Deliverability-First Templates**: Single-card responsive HTML (max 600px width, `#0B0F17` background, `#141A23` inner card, `#E2B96F` gold typography, zero white-text contrast traps) paired with matching UTF-8 plain text and 1-tap WhatsApp concierge routing (`+91 81929 11360`).
 - **Pacing & Safety Controls**: Strict 15-second rate-limiting between consecutive candidate deliveries.
 - **Persistent State**: Full delivery audit logged to `data/inbox_action_dispatch.log` and idempotent state tracked in `data/inbox_action_dispatch_tracking.json`.
 
-### 36.3. Executed Actions & Candidates Resolved (11/11 Dispatched)
+### 33.3. Executed Actions & Candidates Resolved (11/11 Dispatched)
 1. **Suraj Upadhyay** (`surajup5756@gmail.com`): AI Agent Development portal login, direct activation link, and 16 Nov sprint orientation brief.
 2. **Gundeti Vaishnavi** (`gundetivaishnavi634@gmail.com`): Full Stack Development ₹499 caution deposit clarification (100% credited/refundable) and 1-tap UPI details.
 3. **C S Kavana** (`kavana200518@gmail.com`): SOC Analysis & Threat Defense 10h/wk flexible schedule, Wireshark/SIEM curriculum, and seat lock procedure.
@@ -1250,9 +1148,11 @@ Autonomous triage and customer/candidate response system operating across active
 - **Administrative Telemetry**: Dispatched automated summary report to `ain.sharma.abhinav@gmail.com` and `ajnatechrpa@gmail.com`.
 ---
 
-## 37. Universal Autonomous Email Response Skills & Operational Playbook
+---
 
-### 37.1. Email Classification Taxonomy & Standard Business Policies
+## 34. Universal Autonomous Email Response Skills & Operational Playbook
+
+### 34.1. Email Classification Taxonomy & Standard Business Policies
 Every incoming student, intern, and client inquiry received across DBERT inboxes is classified into one of eight standardized operational scenarios. Future agents must execute the exact governing business policy, response structure, and action links detailed below:
 
 | Inquiry Type | Typical Candidate Triggers | Governing Business Policy | Action & Response Strategy | Direct Action Links |
@@ -1268,7 +1168,7 @@ Every incoming student, intern, and client inquiry received across DBERT inboxes
 
 ---
 
-### 37.2. Multi-Account Infrastructure & Routing Architecture
+### 34.2. Multi-Account Infrastructure & Routing Architecture
 DBERT operates a multi-account outbound communication pool. Any agent executing dispatch must route replies through the exact authenticated sender matching the candidate's thread or institutional domain:
 
 ```mermaid
@@ -1325,7 +1225,7 @@ def send_via_desktop_outlook(target_account_email, recipient, subject, html_body
 
 ---
 
-### 37.3. RFC 2822 Deliverability & Design System
+### 34.3. RFC 2822 Deliverability & Design System
 All automated email dispatches must strictly comply with deliverability best practices to guarantee inbox placement and zero white-text contrast traps:
 
 1. **Thread Continuity & Header Alignment**:
@@ -1354,7 +1254,7 @@ All automated email dispatches must strictly comply with deliverability best pra
 
 ---
 
-### 37.4. Outbound Safeguards & Suppression Protocol
+### 34.4. Outbound Safeguards & Suppression Protocol
 To safeguard domain reputation and prevent bot loops, agents must enforce strict suppression filters:
 
 1. **Internal Domain Suppression**:
@@ -1370,7 +1270,7 @@ To safeguard domain reputation and prevent bot loops, agents must enforce strict
 
 ---
 
-### 37.5. Universal AI Agent Self-Evolution Protocol
+### 34.5. Universal AI Agent Self-Evolution Protocol
 When candidates submit unhandled questions or novel edge cases, agents must actively evolve the knowledge base rather than failing silently:
 
 1. **Candidate Quote-Stripping Algorithm**:
@@ -1404,9 +1304,11 @@ When candidates submit unhandled questions or novel edge cases, agents must acti
    - Synthesize a new scenario entry, draft response template adhering to the 600px single-card design system, and append the rule to `AGENTS.md` and `GEMINI.md`.
 ---
 
-## 38. Article Publication Deduplication, Automated Sitemap Integration & Trust Mesh Architecture
+---
 
-### 38.1. Operational Context & 1-Intern-1-Topic Rule
+## 35. Article Publication Deduplication, Automated Sitemap Integration & Trust Mesh Architecture
+
+### 35.1. Operational Context & 1-Intern-1-Topic Rule
 To prevent database bloat, race-condition duplicates, and fragmented reading experiences, DBERT enforces a strict **Single-Article-Per-Topic** constraint for all technical capstones and case studies:
 1. **Deduplication Baseline**:
    - Production PostgreSQL database (`dbert_internship.intern_articles`) on EC2 was audited and purged of 19 redundant duplicates (resulting from rapid multi-clicks or lingering drafts after approval).
@@ -1419,7 +1321,7 @@ To prevent database bloat, race-condition duplicates, and fragmented reading exp
    - In `/intern/articles/scaffold`, Gemini case study scaffolding checks existing drafts by submission ID and title, redirecting directly to the editor rather than duplicating.
    - In `/admin/articles/review`, approving or publishing automatically cleans up any dangling drafts for that `(intern_id, topic)` and synchronizes `published_articles.json`.
 
-### 38.2. URL Normalization & Automated XML Sitemaps
+### 35.2. URL Normalization & Automated XML Sitemaps
 1. **Sovereign Blog URL Standard**:
    - All articles live strictly on `https://dbert.in/blog/{slug}`.
    - Legacy and accidental `/insights/{slug}` paths are normalized in the database and permanently redirected via Next.js (`apps/website/next.config.js` with HTTP 308 from `/insights/:slug*` to `/blog/:slug*`).
@@ -1427,7 +1329,7 @@ To prevent database bloat, race-condition duplicates, and fragmented reading exp
    - **`dbert.in/sitemap.xml`**: Next.js `sitemap.ts` calls `getBlogSlugs()` which reads `apps/website/src/data/published_articles.json` plus static markdown files, assigning `priority: 0.85` and `changeFrequency: 'weekly'`.
    - **`lms.dbert.in/sitemap.xml`**: Flask `sitemap_xml()` queries `intern_articles WHERE status IN ('APPROVED', 'PUBLISHED')` and dynamically emits all canonical `/blog/{slug}` entries.
 
-### 38.3. Bidirectional Trust Mesh Architecture
+### 35.3. Bidirectional Trust Mesh Architecture
 The technical writing platform functions as an interconnected **Trust Mesh** designed to build institutional credibility for DBERT, prove candidate competency to recruiters, and drive high-intent fellowship enrollments:
 1. **Case Study &rarr; Credential Dossier**:
    - `AuthorDossierBox` on `/blog/[slug]` features verified badges linking directly to `https://dbert.in/verify/{certId}`.
@@ -1442,3 +1344,605 @@ The technical writing platform functions as an interconnected **Trust Mesh** des
    - In `/verify/directory`, candidate cards render a `📝 Case Study ↗` pill linking to the candidate's published writing.
 5. **Schema.org Rich Results**:
    - `ArticleSchema.tsx` injects both `TechArticle` (with `author.hasCredential` linked to `/verify/[certId]`, `publisher` as DBERT India) and `BreadcrumbList` (`Home` &rarr; `Blog` &rarr; `Article Title`).
+
+---
+
+---
+
+## 36. All 9 Platform Domains 7-Day Course Curricula & Seeding Engine
+
+### 36.1. Complete 9-Domain Coverage Mandate
+- **All 9 Platform Domains Covered**:
+  1. AI Agent Development
+  2. Data Analyst
+  3. Full Stack Development
+  4. Python Automation
+  5. UI/UX Design
+  6. DevOps & Cloud
+  7. Mobile App Development
+  8. Cybersecurity
+  9. Digital Marketing
+- Eliminates the previous domain isolation block where interns in UI/UX Design, DevOps & Cloud, Mobile App Development, Cybersecurity, or Digital Marketing received 0 courses on /courses.
+
+### 36.2. Pedagogical Architecture & Database Schema Parity
+- **Course Catalog Module**: pps/portal/config/courses_7day_catalog.py
+  - Defines ALL_9_DOMAIN_COURSES (63 total chapters, 189 subtopics, 63 daily quizzes).
+- **Curriculum Schema**:
+  - courses: domain matching VALID_DOMAINS, is_active=1, content_status='approved', source='custom', is_paid=0.
+  - course_chapters: Sequential day_number (1..7) with milestone titles.
+  - course_subtopics: Exactly 3 subtopics per day (sort_order 1..3), each containing a concept rief and key_takeaways_json (JSON list of 3 concrete learning outcomes).
+  - course_day_quizzes: 1 multiple-choice quiz per day (day_number 1..7) with 4 options and verified correct_index (0..3).
+
+### 36.3. Idempotent Seeding & Deployment Scripts
+- **Seeding Daemon**: scripts/seed_all_9_domains_7day_courses.py
+  - Runs idempotently on local SQLite and remote EC2 PostgreSQL.
+  - Defensively queries IDs instead of relying on driver cur.lastrowid.
+- **Production Deployment Daemon**: scripts/deploy_7day_courses_to_ec2.py
+  - Deploys updated pp.py and courses_7day_catalog.py to /var/www/dbert-website-lms/apps/portal/.
+  - Seeds PostgreSQL database and restarts dbert-portal.service.
+  - Verifies all 9 domains and live HTTP 200 health.
+- **Automated Pytest Suite**: pps/portal/tests/test_7day_courses_ecosystem.py (100% pass across 7 tests).
+
+
+---
+
+---
+
+## 37. Dynamic Gemini Model Discovery & Zero Hardcoding Engine
+
+### 37.1. Core Architectural Mandate
+- **Zero Model Hardcoding**: NEVER hardcode model strings (e.g., `gemini-1.5-flash`, `gemini-2.0-flash`) in validation loops, default fallbacks, or test endpoints. Models deprecate and vary by API version and project tier.
+- **Dynamic Discovery Protocol**: Always query Google's Model Service (`GET https://generativelanguage.googleapis.com/v1beta/models?key=...`), discover all supported generation models live for that specific key, rank them dynamically, and select the best fitted working model.
+
+### 37.2. Dynamic Discovery & Ranking Architecture (`services/ai/gemini_discovery.py`)
+1. **Live Discovery**:
+   - Fetches available models from Google Generative Language API via `discover_gemini_models(api_key=clean_key)`.
+   - Filters models where `"generateContent"` is present in `supportedGenerationMethods`.
+   - Strictly excludes non-text models (`tts`, `audio`, `image`, `imagen`, `embedding`, `transcribe`, `clip`, `lyria`, `robotics`, `customtools`).
+2. **Semantic Model Ranking (`_rank_models`)**:
+   - Stable Flash models prioritized first, sorted by semantic version descending (e.g. 2.5 -> 2.0).
+   - Stable aliases (e.g. `gemini-flash-latest`) prioritized alongside current generation.
+   - Non-experimental models prioritized over experimental/previews (`exp`, `preview`, `8b`).
+   - Stable Pro models next, followed by preview Pro and other text generation models.
+
+### 37.3. Live Validation & Best Fitted Model Selection (`_validate_gemini_key_live`)
+- **Discovered Model Testing**:
+  - Assembles `candidate_models` directly from `discover_gemini_models` results.
+  - Tests minimal live generation (`generateContent` with 1 output token) against the top dynamically discovered candidates (`candidate_models[:5]`).
+  - The first candidate model that returns `HTTP 200` is atomically selected as the `best_working_model` and stored at index 0 of `available_models_json`.
+- **Project Tier & Billing Interception**:
+  - Catches Google's `HTTP 403: The Gemini API free tier is not available for this project` and presents instant guidance to create a key in a new Google AI Studio project with Free Tier enabled.
+- **Dynamic Error Reporting**:
+  - If all candidate models fail, the error details the exact discovered models tested (`gemini-2.5-flash`, etc.) and Google's actual response, never referencing unqueried or retired models.
+
+### 37.4. Automated Pytest Verification
+- `apps/portal/tests/unit/test_gemini_discovery.py` (4 tests)
+- `apps/portal/tests/unit/test_gemini_provider.py` (6 tests)
+- `apps/portal/tests/test_course_learn_chat_integration.py` (3 tests)
+- Total 13 tests verify dynamic discovery, ranking, caching, fallback chains, and live candidate selection.
+
+
+---
+
+---
+
+## 38. AI Tutor Technical Rigor, Anti-Sycophancy & Causal Reasoning Architecture
+
+### 38.1. Problem Context & Root Cause
+- **Sycophancy Bug**: Previously, the AI tutor could pose a question about sequence (e.g. "Which pillar of the CIA Triad is breached first?"), sloppily tack on an ambiguous suffix ("Or is it all of them?"), and then falsely praise a superficial one-word answer ("all") with "Spot on! You nailed it!".
+- **Root Cause**: The prompt lacked strict anti-sycophancy guardrails, check questions allowed ambiguous fallbacks, and the model failed to distinguish primary root causes from downstream cascade fallout.
+
+### 38.2. Pedagogical & Prompt Guardrails Implemented (`apps/portal/app.py`)
+1. **Zero Sycophancy & False Praise Elimination**:
+   - The tutor is strictly prohibited from falsely validating incorrect, ambiguous, or incomplete answers.
+   - Phrases like "Spot on!", "You nailed it!", or "Correct!" are forbidden unless the student's answer is factually and technically 100% accurate.
+2. **Causal Sequence & Root Cause Analysis**:
+   - In questions asking which component, layer, or pillar is breached *first* or represents the root cause, the tutor strictly distinguishes between the initial breach and downstream fallout.
+   - Example (CIA Triad): Unauthorized database record tampering / privilege escalation is strictly an **Integrity** breach first. Confidentiality (unauthorized data access) and Availability (data deletion) are downstream consequences that occur after Integrity has been violated.
+   - If a student answers "all" or names a downstream consequence, the tutor does not accept "all"; it gently acknowledges the intuition regarding the overall blast radius, but firmly explains why the root breach was Integrity.
+3. **Question Formulation Integrity**:
+   - Check questions must have a single, definitive, unambiguous technical answer. Vague cop-out suffixes like "Or is it all of them?" or "Or something else?" are strictly forbidden.
+4. **Evaluator Schema Alignment (`services/learning/evaluator.py`)**:
+   - `StructuredEvaluator` prompt incorporates the same anti-sycophancy and root cause rules, preventing catch-all guesses from receiving passing correctness scores.
+
+
+---
+
+---
+
+## 39. Gayatri AI Production Deployment & Domain Infrastructure (`gayatrieducation.tech`)
+
+### 39.1. Infrastructure & Co-location Architecture
+- **Host**: `ubuntu@3.26.237.171` (AWS EC2)
+- **Directory**: `/var/www/gayatri`
+- **Internal Port**: `127.0.0.1:5002` (Isolated from Next.js 3001, Flask LMS 5001, FastAPI 8000)
+- **Service Name**: `gayatri.service` managed via systemd (`User=ubuntu`, `Group=ubuntu`, `Restart=always`)
+- **Process Manager**: Gunicorn WSGI with 2 gthread workers and 2 threads (`--worker-class gthread`)
+- **Memory Consumption**: ~158 MB
+- **Database Engine**: SQLite in WAL mode at `/var/www/gayatri/instance/gayatri.db` (83 tables preserved)
+- **Log Files**: `/var/log/gayatri/access.log` and `/var/log/gayatri/error.log`
+
+### 39.2. Nginx Reverse Proxy Configuration
+- **Config Path**: `/etc/nginx/sites-available/gayatri.conf` (Symlinked to `sites-enabled/`)
+- **Hostnames Served**: `gayatrieducation.tech`, `www.gayatrieducation.tech`, `gayatreeducation.tech`, `www.gayatreeducation.tech`, `gayatrieducation.info`, `www.gayatrieducation.info`
+- **Direct Static Assets**: `/static/` mapped to `/var/www/gayatri/app/static/` (30-day cache)
+- **Direct Uploads**: `/uploads/` mapped to `/var/www/gayatri/uploads/` (7-day cache)
+- **Reverse Proxy**: Dynamic requests proxied to `http://127.0.0.1:5002` with 180s read timeout for Gemini AI streaming
+- **ACME Path**: `/.well-known/acme-challenge/` mapped to `/var/www/certbot` for Let's Encrypt renewal
+
+### 39.3. Key Deployment & Verification Commands
+```powershell
+# Deploy/Update Gayatri AI codebase to EC2
+python scripts/deploy_gayatri_to_ec2.py
+
+# Check Gayatri systemd service status
+ssh -i "C:\Users\user\.ssh\dbert-production-server.pem" ubuntu@3.26.237.171 "sudo systemctl status gayatri.service --no-pager"
+
+# Probe internal Gunicorn listener
+ssh -i "C:\Users\user\.ssh\dbert-production-server.pem" ubuntu@3.26.237.171 "curl -I -s http://127.0.0.1:5002/"
+
+# Probe Nginx reverse proxy on port 80
+ssh -i "C:\Users\user\.ssh\dbert-production-server.pem" ubuntu@3.26.237.171 "curl -I -s -H 'Host: gayatrieducation.tech' http://127.0.0.1/"
+
+# Provision SSL Certificate (Run once DNS A-record points to 3.26.237.171)
+ssh -i "C:\Users\user\.ssh\dbert-production-server.pem" ubuntu@3.26.237.171 "sudo certbot --nginx -d gayatrieducation.tech -d www.gayatrieducation.tech --non-interactive --agree-tos -m abhinav.sharma@dbert.in --redirect"
+```
+
+---
+
+---
+
+## 40. Unified Job Application Flow & External Lead Redirection Engine
+
+### 40.1. Core Architectural Rules
+1. **Authentication Gate & Funnel Auto-Resume**:
+   - Applying for any internal job or external lead requires candidate authentication.
+   - For unauthenticated users hitting `/apply/<post_id>` or clicking "Apply Now", the system stores the target with `?apply=1` into `session['next']` and redirects to `/signup?next=<destination>%3Fapply%3D1` (with an explicit `"Already registered? Sign In"` linking to `/signin?next=...`).
+   - After authentication, the user returns to the job page with `?apply=1` automatically expanding the Application Modal on DOM ready.
+2. **Suitability Pitch Modal Requirement**:
+   - The modal explicitly queries: *"Why are you suitable for this opportunity? \*"*.
+   - Strictly enforces a **minimum of 15 characters** (and maximum 2,000 characters) on both client-side and backend (`POST /posts/<id>/apply` and `POST /api/lead/<id>/comment`).
+   - A live dynamic character counter (`0 / 15 min`) turns green when the threshold is reached.
+3. **Dual Routing & Conversion Preservation**:
+   - **Internal LMS Postings (`posts` table)**:
+     - Application note recorded in `post_applications` with status `'Applied'`.
+     - Outbound applicant notification emails are disabled (applications visible to companies directly in `/company/posts/<id>/applicants`).
+     - On-screen confirmation card rendered with links to *My Applications* and *Browse more openings*.
+   - **External Curated Leads (`scraped_jobs` / `scraped_internships`)**:
+     - Suitability pitch saved to `scraped_job_comments` / `scraped_internship_comments`.
+     - Clicks tracked asynchronously via `/api/lead/<id>/click`.
+     - Automatically launches the employer's official link in a new tab (`window.open(TARGET_URL, '_blank', 'noopener,noreferrer')`).
+     - Transforms the on-screen apply zone into an unblockable fallback card (*"Application Note Recorded! Continue to Official Application ↗"*), eliminating lost conversions caused by aggressive browser pop-up blockers.
+
+
+---
+
+---
+
+## 41. Universal BYOK Gemini API Key Architecture & Course-Style Bounty Stepper
+
+### 41.1. Single Source of Truth for Gemini API Keys
+- **Primary Source**: https://lms.dbert.in/account/gemini-key
+- **Database Tables**:
+  - user_api_keys (provider='gemini', pi_key Fernet-encrypted). This table holds all candidate-entered BYOK keys.
+  - Mirrored / synchronized to intern_accounts.gemini_api_key_encrypted upon save.
+- **Rule for All Future Agents & Portal Features**:
+  - **NEVER prompt the intern/user for an API key on individual tasks, forms, modals, or pages.**
+  - All portal features requiring Gemini AI (Bounty content generation, Stipend task evaluation, ATS resume scans, RAG tutor chats, case study generator) MUST resolve the key via get_intern_active_gemini_context(intern_id) or get_intern_gemini_key(intern_id).
+  - These helper functions inspect user_api_keys first, decrypt via _decrypt_gemini_key, and verify functionality against Google's API via discover_gemini_models.
+  - Models are dynamically ranked by capability and freshness (gemini-2.5-flash preferred over legacy models). Hardcoding gemini-1.5-flash or deprecated endpoints is strictly prohibited.
+  - If a user visits an AI-powered feature without an active key, they are redirected to /account/gemini-key?next=<current_route> with an informative message. Upon saving their key, they are automatically returned to their originating task.
+
+### 41.2. Course-Style Stepper Workflow (/tasks/<id>/guide)
+- Replaces cramped popup modals with a dedicated full-page guided experience styled after LMS courses (/courses/<id>/learn).
+- **Social Media Bounties (Tasks 101–104)**:
+  - **Step 1: Assigned Angle & Case Study Context**: Dynamically selects domain-specific angle and capstone case study.
+  - **Step 2: 1-Click AI Post Synthesis**: Generates platform-optimized copy (LinkedIn / X) using the intern's saved Gemini BYOK key in one click.
+  - **Step 3: Publish to Platform**: 1-click 'Copy Post & Open Platform ↗' button opening the candidate's profile/post composer with pre-filled hashtags.
+  - **Step 4: Submission & Verification**: Submits live URL to /tasks/<id>/submit for mentor review and coin disbursement.
+- **Domain Micro-Tasks**: 3-step technical workflow (Briefing & Rubric -> Implementation Guidelines -> Verification Submission).
+
+---
+
+---
+
+## 42. Official Internship Offer Letter, Preview Gating & Digitally Signed PDF Engine (`/portal/offer`)
+
+### 42.1. System Overview & Gating Architecture
+- **Target Route**: `https://lms.dbert.in/portal/offer` (Executive Print View: `/portal/offer/print`).
+- **Access Rule**: Requires authenticated intern session (`require_role('intern')`).
+- **Gating Lifecycle**:
+  1. **Under Review / Unselected Candidates (Stage 1 & 2)**:
+     - Candidates without selection or enrollment see the **Official Offer Letter Gated: Seat Confirmation Required** card (`locked=True`).
+     - Includes direct links to application status, verification form, and Admissions WhatsApp concierge (`+91 81929 11360`).
+     - Eliminates raw 404 errors by explaining current review state and required next steps.
+  2. **Selected Candidates with Caution Deposit Pending (Stage 3 & 4)**:
+     - Rendered with `locked=False`, `preview_mode=True`.
+     - Displays **Appointment Terms Preview** and diagonal **PREVIEW ONLY** watermarks.
+     - **Read & Sign First**: Candidates can review terms and execute digital acceptance (`POST /portal/offer/sign`).
+     - PDF download `/portal/offer/print` remains gated (`requires_deposit=True`) until ₹499 caution deposit is verified.
+  3. **Verified Candidates with Caution Deposit Reconciled (Stage 5 - Confirmed)**:
+     - Rendered with `locked=False`, `preview_mode=False`.
+     - Displays `STATUS: ACCEPTED & SIGNED`, Offer Ref ID, and active **Download Official Signed PDF** button unlocking `/portal/offer/print`.
+- **Deterministic ID Generation**:
+  - Format: `DBERT-OFR-2026-{TRACK_CODE}-{ENROLLMENT_ID:04d}` (e.g. `DBERT-OFR-2026-AIML-9204`, `DBERT-OFR-2026-DA-0127`).
+- **Dedicated Relational Table (`intern_offer_letters`)**:
+  - Tracks candidate ID, offer reference ID, batch start/end dates, tenure (2 months), stipend amount (₹5,000), digital signature name, acceptance timestamp, IP address, and `pdf_unlocked`.
+
+### 42.2. Official Offer Terms & Governance
+- **Issuing Entity**: DBERT Technical Council (MSME Registered: `UDYAM-UP-29-0109046`).
+- **Council Signatory**: Mr. Abhinav Sharma (Founder & Executive Director).
+- **Tenure**: Two (2) Months — Fully Remote.
+- **Fixed Stipend**: ₹5,000, governed by 3 transparent milestones:
+  1. Minimum 10 hours per week login attendance recorded on the LMS platform.
+  2. Earning at least two (2) verified course certifications on the platform.
+  3. Completing at least 75 mentor-reviewed bounty tasks.
+- **Caution Deposit**: ₹499 (100% Credited / Refundable upon milestone completion).
+
+### 42.3. Interactive Digital Signing & Executive Print Export
+- **Digital Signing Engine (`POST /portal/offer/sign`)**:
+  - Candidate executes legal acceptance by typing their full legal name and agreeing to terms.
+  - Records candidate legal name in `signature_name`, current IST timestamp in `accepted_at`, signer IP, and sets `pdf_unlocked=1` if deposit is verified.
+- **A4 PDF Export (`/portal/offer/print`)**:
+  - Embeds high-fidelity legal styles with `@media print` (`size: A4 portrait; margin: 12mm 15mm 12mm 15mm`).
+  - Pre-renders formal DBERT header, candidate appointment rubric, QR verification code (`https://dbert.in/verify/offer/{offer_id}`), and executive signature seal.
+  - CSS rules prevent page breaks across tables, terms, and signatures (`break-inside: avoid`).
+
+### 42.4. Local Google Workspace SMTP Dispatch Bot
+- **CLI Script**: `scripts/dispatch_offer_letters_local.py`
+- **Execution Mode**: Strictly local via authenticated Google Workspace SMTP (`smtp.gmail.com:465`) authenticated as `manoj.kumar@dbert.in` (Academic Lead & Admissions).
+- **Deliverability & Safety**:
+  - Paced delivery with configurable pauses (default 30s) to avoid spam rate limits.
+  - Multipart MIME (text-forward HTML + plain-text RFC fallback).
+  - Idempotent tracking recorded in `data/dispatch_tracking_offers.json` and `.csv`.
+  - Commands:
+    ```powershell
+    # Check queue stats (eligible verified candidates)
+    python scripts/dispatch_offer_letters_local.py --stats
+
+    # Dry-run inspection
+    python scripts/dispatch_offer_letters_local.py --dry-run
+
+    # Send 1 test dispatch to personal inbox
+    python scripts/dispatch_offer_letters_local.py --test-to your_email@gmail.com
+
+    # Send batch of 10 with 30s pacing
+    python scripts/dispatch_offer_letters_local.py --batch 10 --delay 30
+    ```
+
+---
+
+## 43. Web Push Strict Nonce CSP Compliance & Seeded Lifecycle QA Matrix
+
+### 43.1. Architectural Mandate: Strict Nonce CSP Event Binding
+- **Strict Nonce Enforcement**: DBERT LMS enforces `Content-Security-Policy: script-src 'self' 'nonce-{nonce}' ...`. Under modern browser security specifications, **all inline event handlers (`onclick`, `onchange`, `onsubmit`) are unconditionally blocked by the browser engine**.
+- **Zero Inline Event Handlers**: All UI actions on `https://lms.dbert.in/account/notifications`, `/portal/offer`, and throughout `apps/portal/templates/` must be bound via standard DOM `addEventListener` inside `<script nonce="{{ csp_nonce() }}">`.
+- **Root Service Worker Route (`/sw-push.js`)**:
+  - Serves directly at origin root with header `Service-Worker-Allowed: /` and `Content-Type: application/javascript`.
+  - Configured in Nginx (`deploy/dbert-unified-nginx.conf`) and Flask (`@app.route("/sw-push.js")`).
+  - Fallback: `dbert-push-client.js` automatically attempts fallback to `/static/sw-push.js` if root registration encounters unexpected network issues.
+
+### 43.2. Seeded Personas Lifecycle QA Matrix (Uniform Password: `TestPass123!`)
+All 8 personas are seeded on production EC2 PostgreSQL (`dbert_lms`):
+
+| Persona Role | Email Address | Intended Stage & Platform Features | Live Verification URL |
+| :--- | :--- | :--- | :--- |
+| **Staff Reviewer** | `mentor_staff@dbert.test` | Review Capstones, release 5,000 coins, send Push Broadcasts, Mentor slot 901 | `/staff/tasks`<br>`/admin/push-broadcast` |
+| **Super Admin** | `dbert_admin@dbert.test` | Executive system overview, System Health Cards | `/admin` |
+| **Enrolled Fellow** | `fellow_enrolled@dbert.test` | Active Sprint Fellow (Day 2 of FSD), Social Bounties (101–104), Push Settings | `/portal`<br>`/tasks`<br>`/account/notifications` |
+| **Stipend Ready** | `stipend_ready@dbert.test` | 3-Step checklist all green (`CERT-DBERT-2026-AIML-904`, 65 days elapsed, UPI), Capstone submission form open | `/stipend/tasks` |
+| **Withdrawable Wallet** | `stipend_wallet@dbert.test` | 5,000 Coins in Referral/Stipend balance, encrypted UPI, 1-tap payout request | `/account/coins`<br>`/ambassador` |
+| **Provisional Fellow** | `stipend_gate1_locked@dbert.test` | Gate 1 LOCKED, alert banner with CTA to [dbert.in/enroll/1999](https://dbert.in/enroll/1999) | `/stipend/tasks` |
+| **Stage 3 Selected** | `stage3_selected@dbert.test` | Selection banner with Monday cohort start date and ₹499 caution deposit reconciliation instructions | `/portal` |
+| **Offer Letter Ready** | `offer_pending@dbert.test` | Official Letter of Offer (`DBERT-OFR-2026-PA-991`), digital signature, terms agreement, A4 print export | `/portal/offer` |
+
+### 43.3. Automated CLI Verification Script
+```powershell
+# Run end-to-end automated session audit across all 8 personas on EC2
+python scripts/test_persona_routes_on_ec2.py
+```
+
+---
+
+---
+
+## 44. Multi-Stage Signup Funnel Diagnostics & "Pending Profile" Root Cause Analysis
+
+### 44.1. Incident Context & User Query
+- **Issue Description**: In the LMS Admin Application Queue (`/admin`), a cluster of recent applicants (IDs 5190–5207: Nakshathiraa A, chundi kowshikreddy, RAVIRANJAN KUMAR, Gowtham B, Shorya saini, MD RAZA, Addagatla Laxman vikram, RIMJHIM KANAUJIA, etc.) appeared with:
+  - **College**: `Pending Profile`
+  - **Domain**: `AI Agent Development`
+  - **Status**: `Under Review`
+- **Contrast**: Other applicants (e.g. 5203 Rabiya, 5198 Anuj Khajuria, 5196 Chandradeep Saxena, 5195 Bipin Banala) had authentic college names and specific domain preferences.
+
+### 44.2. Root Cause Discovery & Architectural Breakdown
+1. **Funnel Redirect Hijack (`next_url` / `?apply=1`)**:
+   - Candidates arrive at specific internship listings (e.g. *Python Automation API Intern at Zoho*, *Threat Intelligence Intern at VigilantGuard*, *Figma Design System Intern*).
+   - Clicking "Apply Now" while logged out sets `next=<job_url>?apply=1` in query parameters or Flask session (`session["next"]`).
+   - The user fills **Step 1** (Name, Email, Phone, Password).
+   - In `apps/portal/app.py:11159-11175` (`signup_stage1`):
+     ```python
+     pending_next = _safe_portal_next(request.args.get("next") or session.pop("next", None) or data.get("next"))
+     if pending_next:
+         resp = make_response(jsonify({
+             "status": "success",
+             "message": "Account created! Redirecting to application...",
+             "stage": 1,
+             "redirect": pending_next
+         }))
+     ```
+   - In `apps/portal/templates/index.html:964-967`:
+     ```javascript
+     if(data.redirect){
+       showToast('Account created! Redirecting to application...','success');
+       setTimeout(()=>{window.location.href=data.redirect;},400);
+       return;
+     }
+     ```
+   - **Result**: The browser immediately redirects the user back to the internship page. The multi-step wizard (`suGoStep(2)`) is completely bypassed. Step 2 (Academics/College) and Step 3 (Statement/Links) are never rendered.
+
+2. **Hardcoded Domain Fallback (`app.py:11101-11103`)**:
+   - Stage 1 form payload in `index.html:959` only collects identity fields and does not include `domain`.
+   - `chosen_domain = clean_text(data.get("domain"))` evaluates to `None`.
+   - The fallback condition triggers:
+     ```python
+     if chosen_domain not in VALID_DOMAINS:
+         chosen_domain = "AI Agent Development"
+     ```
+   - **Result**: 100% of Stage 1 signups are assigned "AI Agent Development", even when applying for Python Automation, Cybersecurity, or UI/UX Design.
+
+3. **Eager Application Insertion in `STATUS_UNDER_REVIEW` (`app.py:11107-11125`)**:
+   - Upon Stage 1 submission, an application row is prematurely inserted into the `applications` table:
+     - `college`: `clean_text(data.get("college")) or "Pending Profile"`
+     - `domain`: `chosen_domain` ("AI Agent Development")
+     - `status`: `STATUS_UNDER_REVIEW`
+     - `source`: `'direct_signup'`
+     - `why_join`: `'Enrolled via DBERT portal direct registration.'`
+   - **Result**: Incomplete accounts are immediately flagged as active applications "Under Review", polluting the admin queue.
+
+4. **Step 2/3 Drop-Off & Lack of Portal Profile Gate**:
+   - Direct homepage signups without `next_url` (e.g. Kowshikreddy) who abandon the wizard at Step 2 or Step 3 leave behind the provisional row created at Step 1.
+   - The student dashboard (`/portal`) does not currently check or prompt users with `signup_stage < 2` or `college = 'Pending Profile'` to complete their academic background.
+
+### 44.3. Verified Production Metrics (EC2 PostgreSQL `dbert_lms`)
+- **`intern_accounts` Table**:
+  - `signup_stage = 1`: **480 accounts** (account created, academics pending).
+  - `signup_stage = 2`: **197 accounts** (academics saved, statement pending).
+  - `signup_stage = 3`: **2,207 accounts** (full profile submitted).
+- **`applications` Table (`college = 'Pending Profile'`)**:
+  - `status = 'Under Review'`: **11 candidates** (the recent cohort observed in Admin).
+  - `status = 'Selected'`: **164 candidates** (historical cumulative drop-offs).
+  - Domain breakdown for all 175 `Pending Profile` rows: **100% `AI Agent Development`**.
+
+### 44.4. Architectural Remediation & Implementation Plan
+1. **Defer Redirect Until Academic Completion**:
+   - In `app.py:signup_stage1`: Do not return `redirect: pending_next` at Stage 1. Keep `next_url` stored on the session row, and only return `redirect: pending_next` upon **Stage 2 or Stage 3** completion.
+2. **Contextual Domain Capture**:
+   - In `index.html`: Ensure `suNext1()` captures and passes the current route/lead track or URL parameter (`?domain=...`) in the Stage 1 payload.
+3. **Application Status Hygiene (`Draft` vs `Under Review`)**:
+   - Insert Stage 1 records with `status = 'Draft'` or `Incomplete Profile`. Only promote to `STATUS_UNDER_REVIEW` once Stage 2 (Academics & College) is successfully submitted.
+4. **In-Portal Academic Profile Completion Gate**:
+   - On `/portal`, check if `intern.signup_stage < 2` or `college = 'Pending Profile'`. If true, render an alert banner with a 1-click modal allowing the student to save their real College, Course, and Domain Track.
+
+### 44.5. Implemented Architectural Changes
+1. **Backend Engine Refactoring (`apps/portal/app.py`)**:
+   - **`signup_stage1`**:
+     - Introduced `DOMAIN_SLUG_MAP` to infer target domain from `pending_next` lead URLs (e.g. `python-automation` -> `Python Automation`, `threat-intelligence` / `cybersecurity` -> `Cybersecurity`, `figma` / `ui-ux` -> `UI/UX Design`).
+     - Inserts the provisional application with canonical status `STATUS_APPLY_PENDING` (`"Apply Pending"`) rather than `STATUS_UNDER_REVIEW`.
+     - Persists `next_url` into `user_sessions` and returns `{ "stage": 1, "next": 2 }` without short-circuiting the wizard.
+   - **`signup_stage2`**:
+     - Atomically updates academic fields: `city`, `college`, `course`, `semester`, `year_of_passing`, and `domain`.
+     - Promotes application status from `STATUS_APPLY_PENDING` to `STATUS_UNDER_REVIEW`.
+     - Advances user account to `signup_stage = 2` and returns `redirect: resume` to smoothly route the user to their target internship listing.
+   - **`portal_page` (`/portal`) & `/intern/me`**:
+     - Added `needs_academic_profile` evaluation (evaluates to `True` if `signup_stage < 2` or `college` is empty/`Pending Profile`).
+2. **Frontend Signup Flow (`apps/portal/templates/index.html`)**:
+   - **`suNext1()`**: Dynamically extracts target domain from modal select, URL query parameters (`?domain=...`), or lead route, and includes `domain` in `POST /signup/stage1`. Removed premature redirect; advances seamlessly to `suGoStep(2)`.
+   - **`suGoStep(2)`**: Pre-selects matching domain pill/dropdown in Step 2.
+   - **`suNext2()`**: Saves academic details and navigates user to `data.redirect` if an internship lead was pending.
+3. **In-Portal Academic Gate & Modal (`apps/portal/templates/portal.html`)**:
+   - Injected `#academicProfileBanner` at the top of the Overview panel for users with pending profiles.
+   - Injected `#academicProfileModal` collecting College Name, Degree/Course, Semester, Year of Passing, City, and Domain Track.
+   - Strictly Nonce CSP compliant (`<script nonce="{{ csp_nonce() }}">`) with DOM event listeners (`addEventListener`) posting to `POST /signup/stage2`.
+4. **Admin Queue Status Filtering (`apps/portal/templates/admin.html`)**:
+   - Added `<option value="Apply Pending">Apply Pending (Incomplete)</option>` to `#appStatusFilter`.
+   - Styled `college === 'Pending Profile'` rows in `PG_RENDER.app` with an amber badge (`badge-amber`).
+
+### 44.6. Database Backfill & Reconciled Historical Cohort
+- Executed `scripts/reconcile_and_backfill_pending_profiles.py` on production EC2:
+  - Reclassified 12 incomplete provisional applications from `Under Review` to `Apply Pending` (IDs 5193, 5194, 5197, 5199, 5200, 5201, 5202, 5204, 5205, 5206, 5207, 5208).
+  - Accurately backfilled target tracks based on candidate acquisition leads:
+    * `Nakshathiraa A` -> `Python Automation`
+    * `Ayush bhat` -> `Cybersecurity`
+    * `MD RAZA` -> `Data Analyst`
+    * `Addagatla Laxman vikram` -> `UI/UX Design`
+    * `RIMJHIM KANAUJIA` -> `Cybersecurity`
+    * `Vaibhav Gadge` -> `DevOps & Cloud`
+    * `JISNA AV` -> `Cybersecurity`
+  - Reconciled queue: active `Under Review` queue now strictly contains candidates with verified colleges (e.g. Rabiya, Anuj Khajuria, Chandradeep Saxena, Bipin Banala).
+
+### 44.7. Automated Test Suite & Regression Verification
+1. **End-to-End Funnel & Academic Gate Test (`scripts/test_stage_funnel_and_profile_fixes.py`)**:
+   - **Stage 1 (Account Creation)**: Verified non-redirecting response (`stage=1`, `next=2`, no premature `redirect`).
+   - **Stage 1 DB Verification**: Verified `applications.status = 'Apply Pending'`, `college = 'Pending Profile'`, `intern_accounts.signup_stage = 1`.
+   - **Portal Evaluation**: Verified `/portal` renders with `needs_academic_profile = True`.
+   - **Stage 2 (Academic Completion)**: Saved college ("Indian Institute of Technology Madras"), course, and domain. Verified promotion to `STATUS_UNDER_REVIEW`, `signup_stage = 2`, and return of `redirect = '/internships/...'`.
+   - **Portal Re-evaluation**: Verified `/portal` renders with `needs_academic_profile = False`.
+   - **Result**: **100% PASS** across all stages.
+2. **Seeded Test Personas Regression Test (`scripts/test_persona_routes_on_ec2.py`)**:
+   - Verified all 8 seeded personas (`stipend_gate1_locked`, `stipend_ready`, `stipend_wallet`, `provisional_fellow`, `fellow_enrolled`, `stage3_selected`, `offer_pending`, `mentor_user`) across their dedicated routes on live EC2.
+   - **Result**: **100% PASS (8/8 personas active & verified)**.
+
+---
+
+## 45. Dynamic UPI Payment Verification Voucher Engine & Screenshot Architecture
+
+### 45.1. Incident Context & Root Cause Analysis (`ERR_INVALID_RESPONSE`)
+- **Reported Incident**: Navigating to `https://lms.dbert.in/admin/screenshot/utr_666501928441.receipt` resulted in Chrome displaying:
+  `This site can’t be reached - ERR_INVALID_RESPONSE`.
+- **Candidate Affected**: Bhargavi Poola (`bhargavi13032007@gmail.com`, Enrollment ID 453, UTR `666501928441`, ₹499 Caution Deposit).
+- **Core Diagnostic Breakdown**:
+  1. **Virtual Placeholder Generation Without File Creation**: When candidates enroll with a 12-digit UPI UTR without uploading an image, `apps/portal/app.py:16214` assigned `filename = f"utr_{utr_val}.receipt"` to satisfy the `payment_screenshot` database column, but wrote no physical file to disk.
+  2. **Filesystem Route Blindness**: The route `/admin/screenshot/<filename>` strictly attempted to locate physical files under `UPLOAD_FOLDER`. Because `utr_666501928441.receipt` was absent on disk, it returned `404 Not found`.
+  3. **Duplicate & Conflicting HTTP Security Headers**:
+     - Flask's `after_request` was unconditionally injecting `resp.headers.setdefault("Content-Disposition", "attachment")` and `resp.headers.setdefault("X-Frame-Options", "DENY")`.
+     - Nginx simultaneously injected `add_header X-Frame-Options "SAMEORIGIN" always`.
+     - The resulting HTTP/2 response contained conflicting duplicate `x-frame-options: DENY, SAMEORIGIN` headers and an attachment disposition without a filename on an error body. Chromium's network stack rejects this as an invalid response (`ERR_INVALID_RESPONSE`).
+
+### 45.2. Dynamic Voucher Engine & Architectural Solution
+1. **Dynamic Vector SVG Voucher Generator (`generate_utr_voucher_svg`)**:
+   - When a requested filename matches `utr_<digits>.receipt`, starts with `utr_`, or ends with `.receipt`, the backend extracts the 12-digit UTR and executes `get_utr_voucher_record()`.
+   - Generates an executive 840×560 vector SVG canvas (`Content-Type: image/svg+xml; charset=utf-8`):
+     * DBERT Admissions & Credentials gold-crested header.
+     * Candidate Full Name, Email, Phone, College, and Domain Track.
+     * Prominent high-contrast gold monospace 12-digit UTR reference card.
+     * Transaction Value (₹499 / ₹1,500), timestamp, and verification badge.
+     * Cryptographic verification seal.
+   - Served with `Content-Disposition: inline`, allowing native in-browser rendering in `<img>` tags, full-size new tabs, and print engines.
+2. **Missing Physical Asset Fallback (`generate_missing_asset_svg`)**:
+   - If a physical file is referenced but genuinely absent from disk, rather than returning raw text with broken headers, the route serves a graceful, styled vector SVG graphic informing the admin that the asset was recorded as a ledger reference.
+3. **HTTP Header Alignment & De-duplication**:
+   - In `apps/portal/app.py`: Updated `X-Frame-Options` from `DENY` to `SAMEORIGIN` across Flask.
+   - Updated `Content-Disposition` under `/admin/screenshot/` to `inline` for successful previews and eliminated attachment headers on HTTP error responses.
+   - In `deploy/dbert-unified-nginx.conf`: Added `proxy_hide_header X-Frame-Options` and `proxy_hide_header X-Content-Type-Options` to eliminate upstream header duplication.
+
+### 45.3. Admin UI Enhancements (`apps/portal/templates/admin.html`)
+1. **Differentiated Queue Badges**:
+   - In `PG_RENDER.enr`: Detects `utr_*.receipt` records and renders a distinct gold button:
+     `<button class="btn-sm ghost" ${actAttr('click','viewScreenshot',[r.payment_screenshot,r.name,r.utr||''])} title="View UPI UTR Digital Receipt"><i class="fas fa-receipt text-gold"></i> UTR</button>`.
+   - Real image uploads continue to render the `<i class="fas fa-image"></i>` button.
+2. **Interactive Modal Callout & 1-Click Copy**:
+   - When a UTR voucher is opened, an amber callout banner displays the 12-digit UTR with a 1-click **"Copy UTR"** button (`copyUtr()`).
+   - Deep-link dynamically labels as *"Open Full-Size Digital Voucher"*.
+
+### 45.4. Production Verification & Operational Matrix
+- **Automated Route Test (`scripts/test_screenshot_and_voucher_on_ec2.py`)**:
+  * `/admin/screenshot/utr_666501928441.receipt` -> **HTTP/2 200 OK** (`image/svg+xml`, `SAMEORIGIN`, Bhargavi Poola, 666501928441).
+  * Missing file fallback (`non_existent_12345.png`) -> **HTTP/2 404** (Graceful vector SVG fallback).
+  * Unauthenticated navigation -> **HTTP/2 302** (Redirect to `/signin?next=...`).
+  * **Result**: **100% PASS**.
+- **Seeded Test Personas Regression Test (`scripts/test_persona_routes_on_ec2.py`)**:
+  * **Result**: **100% PASS (8/8 personas active & verified)**.
+
+---
+
+## 46. Lifecycle State Synchronization, Auto-Healing Profile Sync & Offer Letter Exclusivity Architecture
+
+### 46.1. Incident Context & Contradiction Analysis
+Prior to this remediation, candidates who were formally Selected, Signed, and Confirmed (e.g. `abhinav.sharma@dbert.vom` / ID `5624` with signed appointment ref `DBERT-OFR-2026-FSD-5166`) experienced contradictory state rendering and UI clutter across the LMS platform:
+1. **State Fallback Collision on `/portal`**:
+   - `/portal` displayed: *"Action Required: Complete Your Academic Profile"* and *"Stage 1: Under Evaluation - Your Immediate Next Action... Application Under Evaluation"*.
+   - At the same time, `/portal/offer` displayed: *"Official Selection & Appointment - STATUS: ACCEPTED & SIGNED"*.
+   - **Root Cause**: `portal_page()` in `apps/portal/app.py` previously rendered `portal.html` without passing server-side `flow_state`, `current_stage`, or `next_action`. As a result, Jinja evaluated `{{ (next_action and next_action.heading) or 'Application Under Evaluation' }}`, permanently falling back to hardcoded Stage 1 defaults. Furthermore, `/intern/me` did not return `"next_action"` in its JSON response, so client-side `renderNextActionMissionCard()` immediately aborted (`if (!na) return;`), locking `#nextActionMissionCard` on Stage 1 defaults for ALL users regardless of their actual stage.
+2. **False Academic Profile Alert**:
+   - `needs_academic_profile` in `portal_page()` previously only evaluated `intern_accounts`. If an intern was already in Stage 3, 4, or 5, or if their `college` and `domain` were entered in `applications` or `enrollments` before `intern_accounts` was updated, it erroneously flashed a high-priority warning banner.
+3. **Ghost Payment Form on `/portal/offer`**:
+   - Even when a candidate's caution deposit was verified and reconciled (`caution_deposit_status == 'VERIFIED'`), `#postSignPaymentSection` (containing Step 3 QR code, 1-tap UPI launchers, and the 12-digit UTR submission form) was rendered into the DOM with inline `style="display:none;"`. This left payment forms accessible in the DOM, creating visual confusion, crawler indexation issues, and text bleeding below the verified dossier card.
+4. **Ghost NextStep Card Artifacts**:
+   - `#nextStepCard` sat unhidden below `#nextActionMissionCard`, causing empty emoji and dash text (`👋 — —`) to flash on initial load.
+
+---
+
+### 46.2. Architectural Solution & Implementation
+1. **Canonical Server-Side State Pipeline (`build_intern_next_action`)**:
+   - Implemented `build_intern_next_action(flow_state, hours_logged=0.0)` in `apps/portal/app.py` as the single canonical source of truth for dashboard mission guidance across all 5 lifecycle stages:
+     - **Stage 1 (`APPLICATION_REQUIRED`)**: Badge: `"Stage 1: Under Evaluation"`, Heading: `"Application Under Evaluation"`, CTAs: WhatsApp review expediter + Curriculum tracks.
+     - **Stage 2 (`UNDER_REVIEW`)**: Badge: `"Stage 2: Fast-Track Available"`, Heading: `"Fast-Track Incubation Review & Seat Allocation"`, CTAs: Review terms & fast-track seat (`/portal/offer`) + Admissions WhatsApp + Curriculum preview.
+     - **Stage 3 (`SELECTED`)**: Badge: `"Stage 3: Selection & Appointment"`, Heading: `"Formal Appointment Extended — Seat Confirmation Required"`, CTAs: Review & sign offer letter (`/portal/offer`) + Admissions WhatsApp desk.
+     - **Stage 4 (`PAYMENT_PENDING`)**: Badge: `"Stage 4: Verification in Progress"`, Heading: `"₹499 Caution Deposit Under Administrative Verification"`, CTAs: WhatsApp verification expediter + Offer status (`/portal/offer`).
+     - **Stage 5 (`CONFIRMED`)**:
+       - *Within 7-day grace period*: Badge: `f"Stage 5: Active Intern · Day {days+1} of 7-Day Window"`, Heading: `f"Sprint Workspace Active ({days_left} Days Remaining in Balance Window)"`, CTAs: Continue sprints (`/courses`) + Complete ₹1,500 balance (`/enroll/1999`) + View appointment letter (`/portal/offer`).
+       - *Grace period expired (> 7 days)*: Badge: `"Stage 5: Sprint Active · Balance Completion Required"`, Heading: `"Sprints Active · Complete ₹1,500 Balance to Unlock Credentials"`, CTAs: Complete ₹1,500 balance now (`/enroll/1999`) + Resume sprints (`/courses`).
+       - *Fully paid (₹1,999)*: Badge: `"Stage 5: Confirmed Fellow · Verified"`, Heading: `"Active Engineering Incubation Fellow"`, CTAs: Launch sprint workspace (`/courses`) + Download signed offer PDF (`/portal/offer`).
+   - `portal_page()` computes `flow_state = get_intern_flow_state(conn, email_clean)` and passes `flow_state`, `current_stage`, `next_action`, and `needs_academic_profile` directly to `render_template("portal.html")`. This eliminates all layout shifts, fallback collisions, and client-render delay on initial paint.
+
+2. **Auto-Healing Academic Profile Synchronization**:
+   - `portal_page()` checks `intern_accounts` against `applications` and `enrollments`. If `college` or `domain` is missing or marked "Pending Profile" in `intern_accounts` but exists in `applications` or `enrollments`, it automatically backfills `intern_accounts`.
+   - Strict stage gating suppresses `needs_academic_profile` entirely for candidates in Stage 3, Stage 4, or Stage 5 (`if flow_state["stage_num"] >= 3: needs_academic_profile = False`).
+
+3. **API Synchronization (`/intern/me`)**:
+   - Updated `/intern/me` to return `"next_action": build_intern_next_action(flow_st, hours_logged)` and enriched `"flow_state"` payload (`has_paid_deposit`, `has_paid_balance`, `balance_due`, `days_since_joining`, `balance_grace_expired`).
+   - Ensures client-side `renderNextActionMissionCard()` in `portal.html` receives the exact same payload as server-side Jinja, keeping UI 100% in sync across initial render and dynamic client updates.
+   - Enforced case-insensitive email lookups (`LOWER(email)=LOWER(?)`) across `intern_me()`, preventing PostgreSQL casing mismatches from producing false 404 "Account not found" errors.
+
+4. **Strict Mutually Exclusive Gating on `/portal/offer`**:
+   - Refactored `apps/portal/templates/portal_offer_letter.html` to wrap `#postSignPaymentSection` in `{% if not is_deposit_verified %}`.
+   - When a candidate's deposit is verified (`is_deposit_verified == True`), the Step 3 payment container (including the QR code image, 1-tap UPI launchers, and the UTR submission form) is completely excluded from the rendered DOM. The page renders exclusively the Verified Dossier Card (`#verifiedDossierCard`) and the "Download Official Signed PDF" button.
+   - Auto-reconciliation in `portal_offer_page()`: If `enrollments` or `applications` has verified deposit/accepted status, `intern_offer_letters` is automatically upgraded to `caution_deposit_status = 'VERIFIED'` and `pdf_unlocked = 1`.
+
+5. **Ghost Element Suppression (`#nextStepCard`)**:
+   - Added `hidden` class to `#nextStepCard` by default.
+   - Updated `renderOverview()` in `portal.html` so that `#nextStepCard` is only revealed for job-board applicants (`_status === '__JOB_ONLY__'`). For all standard internship lifecycle candidates (Stages 1 through 5), `#nextActionMissionCard` serves as the sole, unified mission container, eliminating all `👋 — —` ghost artifacts.
+
+---
+
+### 46.3. Verification & Live Production Audit
+- **Local Automated Test Suite (`scripts/test_stage_synchronization.py`)**:
+  - `test_build_intern_next_action_stages`: 100% PASS across all 5 lifecycle states.
+  - `test_offer_letter_template_exclusivity`: 100% PASS (Step 3 payment form & QR 100% absent from DOM when verified).
+  - `test_portal_template_stage_synchronization`: 100% PASS (Stage 5 renders without Stage 1 fallback or unhidden ghost cards).
+- **Offer Letter Portal Test Suite (`apps/portal/tests/test_offer_letter_portal.py`)**:
+  - 5/5 unit tests PASS in 0.71s.
+- **Live Remote Production Verification (`ubuntu@3.26.237.171`)**:
+  - Candidate `abhinav.sharma@dbert.vom` (ID `5624`):
+    * Flow State: `stage_num=5`, `stage=CONFIRMED`, `label=Confirmed & Enrolled`.
+    * `/portal` -> **HTTP 200** (Stage 5 Active Mission Card: **TRUE**, Stage 1 Fallback: **FALSE**, Visible Complete Profile Banner: **FALSE**, Unhidden Ghost Card: **FALSE**).
+    * `/portal/offer` -> **HTTP 200** (Verified Dossier: **TRUE**, Download Signed PDF: **TRUE**, Step 3 Payment Form in DOM: **FALSE**, Step 3 QR in DOM: **FALSE**).
+    * `/intern/me` -> **HTTP 200** (`next_action` badge: `"Stage 5: Sprint Active · Balance Completion Required"`, `flow_state` stage: `5`, `needs_academic_profile`: `False`).
+  - Seeded Personas Audit:
+    * `stage2_review@dbert.test`: Stage 2, `"Stage 2: Fast-Track Available"`.
+    * `stage3_selected@dbert.test`: Stage 3, `"Stage 3: Selection & Appointment"`.
+    * `stage4_pending@dbert.test`: Stage 4, `"Stage 4: Verification in Progress"`.
+    * `stage5_enrolled@dbert.test`: Stage 5, `"Stage 5: Active Intern · Day 4 of 7-Day Window"`.
+    * `stage5_grace_expired@dbert.test`: Stage 5, `"Stage 5: Sprint Active · Balance Completion Required"`.
+
+---
+
+## 47. Automated Payment Verification Voucher & Next Steps Roadmap Email upon Enrollment Approval
+
+### 47.1. Architectural Overview & Problem Context
+- **Operational Need**: Upon enrollment acceptance (`payment_status = 'Accepted'`), candidates require immediate financial proof of payment reconciliation (a formal Electronic Payment Verification Voucher / Receipt) and a clear, sequential next-steps roadmap guiding them through their multi-stage internship journey.
+- **Dual Voucher Transmission**:
+  1. **In-Body Executive Voucher Card**: Fully responsive, dark-slate (`#131926`) HTML table card rendering with institutional DBERT header, verified emerald badge (`✓ VERIFIED & ACCEPTED`), candidate metadata, and the recorded 12-digit UPI UTR in a prominent gold monospace box (`#FCD34D`).
+  2. **Vector SVG Attachment**: Dispatched directly as an email attachment (`DBERT_Payment_Voucher_{utr}.svg`) using standard RFC-compliant `multipart/mixed` with `MIMEApplication`, allowing permanent offline archiving and printing.
+  3. **1-Click Cryptographic Online Access**: A direct link to view and print the official vector SVG voucher at `https://lms.dbert.in/portal/receipt/utr_{utr}.receipt?token={sig}` secured via HMAC SHA256 (`_email_sig("receipt", utr)`).
+- **Comprehensive 6-Milestone Next Steps Roadmap**:
+  The email delivers a chronological, milestone-by-milestone lifecycle guide:
+  - **Milestone 1 (Completed ✓)**: Admission Confirmed & Payment Reconciled on Sovereign Ledger.
+  - **Milestone 2 (Action Required)**: Review & Digitally Sign Official Letter of Offer (`/portal/offer`).
+  - **Milestone 3 (Week 1)**: Foundational 7-Day Sprint Curriculum & 24/7 AI Tutor Guidance (`/courses`).
+  - **Milestone 4 (Ongoing)**: Social Bounties (50 Coins per article) & Ambassador Network (10% commission on peer enrollments) (`/tasks` & `/ambassador`).
+  - **Milestone 5 (Weeks 2–8)**: 1:1 Faculty & Group Mentorship Booking via 14-day calendar (`/mentors/slots`).
+  - **Milestone 6 (Day 60 · Graduation)**: 60-Day Capstone Milestone & ₹5,000 Stipend Release with AI pre-screening (`/stipend/tasks`).
+  - **Milestone 7 (Executive Credential Dossier)**: Sovereign 3-Document Master Credential Packet (Certificate of Completion, Turnitin Academic Evaluation, LOR) indexed on `https://dbert.in/verify`.
+
+### 47.2. Implementation & Integration Points
+1. **Candidate-Facing Voucher Route (`GET /portal/receipt/<filename>`)**:
+   - Location: `apps/portal/app.py`
+   - Authorization:
+     * Staff & Admin: Unrestricted access.
+     * HMAC Token: Allows instant access if request carries `?token=...` matching `_email_sig("receipt", utr_digits)`.
+     * Authenticated Intern: Allows access if the intern's session email matches the enrollment record.
+     * Unauthenticated / Tampered: Returns 401 or redirects to `/signin?next=...`.
+   - Response: Serves vector SVG with `Content-Type: image/svg+xml; charset=utf-8` and `Content-Disposition: inline`.
+2. **Email Dispatch Pipeline (`send_enrollment_acceptance_dossier_email`)**:
+   - Updates `_build_email_message` to support optional attachments (`attachments: list[tuple | dict] = None`), building RFC 5322 compliant `multipart/mixed` with `multipart/alternative` body and `MIMEApplication` attachment parts.
+   - Updates `send_email_async` to pass attachments through `get_delivery_service().send_email()` with failover to direct raw SMTP (`_smtp_send_raw`).
+   - Automatically dispatches high-priority push notification: `🏆 Enrollment Confirmed & Payment Verified`.
+3. **Zero-Drop Approval Hooks**:
+   - Wired directly into all 4 enrollment approval points:
+     * `admin_enrollment_review` (`POST /admin/enrollment/review` where `action == 'accept'`)
+     * `admin_enrollment_bulk_review` (`POST /admin/enrollment/bulk-review` where `action == 'accept'`)
+     * `admin_enrollment_transition` (`POST /admin/enrollments/<id>/transition` where `nps == 'Accepted'`)
+     * `admin_enrollment_edit` (`POST /admin/enrollment/edit` where `payment_status == 'Accepted'`)
+     * Fallback router in `send_status_update_email` intercepts `STATUS_ACCEPTED` to automatically redirect to `send_enrollment_acceptance_dossier_email`.
+
+### 47.3. Live Verification & Automated Test Suite
+- **Deployment Script**: `scripts/deploy_acceptance_dossier_email_to_ec2.py`.
+- **Automated Verification Script (`scripts/test_acceptance_dossier_email_on_ec2.py`)**:
+  - `GET /portal/receipt/utr_666501928441.receipt?token={sig}` -> **HTTP 200 OK** (Content-Type: `image/svg+xml`, Valid SVG, UTR `666501928441` present).
+  - Unauthenticated access without token -> **HTTP 401 Unauthorized**.
+  - Access with invalid forged token -> **HTTP 401 Unauthorized**.
+  - MIME builder unit test -> `MIMEMultipart('mixed')` with `alternative` text/html and `application/octet-stream` SVG attachment.
+- **Persona Regression Probe (`scripts/test_persona_routes_on_ec2.py`)**:
+  - 100% PASS across all 8 seeded personas (`mentor_staff`, `dbert_admin`, `fellow_enrolled`, `stipend_ready`, `stipend_wallet`, `stipend_gate1_locked`, `stage3_selected`, `offer_pending`).

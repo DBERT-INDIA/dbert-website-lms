@@ -303,10 +303,10 @@ export default function CandidateProfileClient({
                         alignItems: 'center',
                         justifyContent: 'center',
                         gap: '6px',
-                        background: '#1E293B',
-                        border: '1px solid #334155',
-                        color: '#F8FAFC',
-                        fontWeight: 600,
+                        background: '#0F1E19',
+                        border: '1px solid rgba(16, 185, 129, 0.4)',
+                        color: '#34D399',
+                        fontWeight: 700,
                         fontSize: '12.5px',
                         padding: '10px 14px',
                         borderRadius: '8px',
@@ -314,7 +314,7 @@ export default function CandidateProfileClient({
                         textAlign: 'center',
                       }}
                     >
-                      <span>💬 Request Interview</span>
+                      <span>⚡ 1-Tap WhatsApp Hire</span>
                     </a>
 
                     <a

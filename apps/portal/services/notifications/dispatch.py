@@ -54,7 +54,8 @@ def dispatch_event(event_type: str, payload: Dict[str, Any]) -> bool:
             send_paid_payment_rejected_email(name, email, domain)
             
         elif event_type == "certificate.issued":
-            cert_url = f"https://lms.dbert.in/cert/{payload.get('certificate_id', '')}"
+            cert_id = payload.get("certificate_id") or payload.get("cert_id") or ""
+            cert_url = f"https://lms.dbert.in/portal/certificate/{cert_id}/print" if cert_id else "https://lms.dbert.in/portal"
             notify_cert_issued(name, email, payload.get("title", domain), cert_url)
             
         elif event_type == "task.reviewed":
