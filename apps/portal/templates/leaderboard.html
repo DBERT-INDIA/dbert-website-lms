@@ -5,6 +5,12 @@
   {% include "_head.html" %}
 
   <style nonce="{{ csp_nonce() }}">
+    body.intern-body {
+      background: #070A12 !important;
+      color: #F8FAFC !important;
+      min-height: 100vh;
+    }
+
     .leaderboard-container {
       max-width: 1200px;
       margin: 0 auto;
@@ -314,43 +320,114 @@
 
     /* Scoring Rubric Section */
     .rubric-card {
-      background: rgba(15, 23, 42, 0.5);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 16px;
-      padding: 1.5rem;
+      background: linear-gradient(145deg, #0D1527 0%, #111C35 100%);
+      border: 1.5px solid rgba(99, 102, 241, 0.4);
+      border-radius: 18px;
+      padding: 1.75rem 2rem;
+      box-shadow: 0 12px 35px -8px rgba(0, 0, 0, 0.7), 0 0 20px -3px rgba(99, 102, 241, 0.15);
+      margin-top: 2rem;
     }
     .rubric-title {
-      font-size: 1rem;
+      font-size: 1.2rem;
       font-weight: 800;
-      color: #F8FAFC;
-      margin-bottom: 0.75rem;
+      color: #FFFFFF;
+      margin-bottom: 0.5rem;
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.65rem;
+      letter-spacing: -0.01em;
+    }
+    .rubric-title i {
+      color: #818CF8;
+      filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.5));
+    }
+    .rubric-desc {
+      font-size: 0.875rem;
+      color: #CBD5E1;
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
     }
     .rubric-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
       gap: 1rem;
     }
     .rubric-item {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
-      font-size: 0.8125rem;
-      color: #94A3B8;
+      gap: 0.85rem;
+      background: #151F38;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 12px;
+      padding: 0.85rem 1.1rem;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .rubric-item strong {
-      color: #F8FAFC;
+    .rubric-item:hover {
+      transform: translateY(-2px);
+      border-color: rgba(99, 102, 241, 0.5);
+      background: #1A2644;
+      box-shadow: 0 6px 16px -2px rgba(0, 0, 0, 0.4);
+    }
+    .rubric-label {
       font-size: 0.875rem;
+      font-weight: 600;
+      color: #F8FAFC;
+      line-height: 1.35;
     }
     .rubric-badge {
-      padding: 3px 8px;
-      border-radius: 6px;
-      font-size: 0.75rem;
+      padding: 5px 10px;
+      border-radius: 8px;
+      font-size: 0.8125rem;
       font-weight: 800;
-      background: rgba(99, 102, 241, 0.2);
-      color: #818CF8;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .rubric-badge.badge-gold {
+      background: rgba(245, 158, 11, 0.22);
+      border: 1.5px solid #F59E0B;
+      color: #FDE68A;
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.25);
+    }
+    .rubric-badge.badge-green {
+      background: rgba(16, 185, 129, 0.22);
+      border: 1.5px solid #10B981;
+      color: #6EE7B7;
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.25);
+    }
+    .rubric-badge.badge-cyan {
+      background: rgba(6, 182, 212, 0.22);
+      border: 1.5px solid #06B6D4;
+      color: #67E8F9;
+      box-shadow: 0 0 12px rgba(6, 182, 212, 0.25);
+    }
+    .rubric-badge.badge-indigo {
+      background: rgba(99, 102, 241, 0.26);
+      border: 1.5px solid #818CF8;
+      color: #E0E7FF;
+      box-shadow: 0 0 12px rgba(99, 102, 241, 0.25);
+    }
+    .rubric-badge.badge-purple {
+      background: rgba(168, 85, 247, 0.22);
+      border: 1.5px solid #A855F7;
+      color: #F3E8FF;
+      box-shadow: 0 0 12px rgba(168, 85, 247, 0.25);
+    }
+    .rubric-badge.badge-blue {
+      background: rgba(59, 130, 246, 0.22);
+      border: 1.5px solid #3B82F6;
+      color: #DBEAFE;
+      box-shadow: 0 0 12px rgba(59, 130, 246, 0.25);
+    }
+    .rubric-badge.badge-rose {
+      background: rgba(244, 63, 94, 0.22);
+      border: 1.5px solid #F43F5E;
+      color: #FFE4E6;
+      box-shadow: 0 0 12px rgba(244, 63, 94, 0.25);
     }
   </style>
 </head>
@@ -544,39 +621,39 @@
     <!-- Scoring Methodology Card -->
     <div class="rubric-card">
       <div class="rubric-title">
-        <i class="fa-solid fa-calculator" style="color: #6366F1;"></i> Multidimensional Scoring Methodology
+        <i class="fa-solid fa-calculator"></i> Multidimensional Scoring Methodology
       </div>
-      <p style="font-size: 0.8125rem; color: #94A3B8; margin-bottom: 1.25rem; line-height: 1.5;">
+      <p class="rubric-desc">
         The DBERT Leaderboard calculates real-time competency through an objective multidimensional scoring formula across 7 core activity metrics:
       </p>
       <div class="rubric-grid">
         <div class="rubric-item">
-          <span class="rubric-badge">+40 pts</span>
-          <span>Verified Certification</span>
+          <span class="rubric-badge badge-gold">+40 pts</span>
+          <span class="rubric-label">Verified Certification</span>
         </div>
         <div class="rubric-item">
-          <span class="rubric-badge">+20 pts</span>
-          <span>Approved Bounty Task</span>
+          <span class="rubric-badge badge-green">+20 pts</span>
+          <span class="rubric-label">Approved Bounty Task</span>
         </div>
         <div class="rubric-item">
-          <span class="rubric-badge">+10 pts</span>
-          <span>Completed Sprint Lesson</span>
+          <span class="rubric-badge badge-cyan">+10 pts</span>
+          <span class="rubric-label">Completed Sprint Lesson</span>
         </div>
         <div class="rubric-item">
-          <span class="rubric-badge">+5 pts/hr</span>
-          <span>Platform Sprint Attendance</span>
+          <span class="rubric-badge badge-indigo">+5 pts/hr</span>
+          <span class="rubric-label">Platform Sprint Attendance</span>
         </div>
         <div class="rubric-item">
-          <span class="rubric-badge">+5 pts</span>
-          <span>100% Score on Daily Quiz</span>
+          <span class="rubric-badge badge-purple">+5 pts</span>
+          <span class="rubric-label">100% Score on Daily Quiz</span>
         </div>
         <div class="rubric-item">
-          <span class="rubric-badge">+30 pts</span>
-          <span>Published Engineering Article</span>
+          <span class="rubric-badge badge-blue">+30 pts</span>
+          <span class="rubric-label">Published Engineering Article</span>
         </div>
         <div class="rubric-item">
-          <span class="rubric-badge">+5 pts</span>
-          <span>Mastered Technical Concept</span>
+          <span class="rubric-badge badge-rose">+5 pts</span>
+          <span class="rubric-label">Mastered Technical Concept</span>
         </div>
       </div>
     </div>

@@ -5,6 +5,12 @@
   {% include "_head.html" %}
 
   <style nonce="{{ csp_nonce() }}">
+    body.intern-body {
+      background: #070A12 !important;
+      color: #F8FAFC !important;
+      min-height: 100vh;
+    }
+
     .certs-container {
       max-width: 1200px;
       margin: 0 auto;
