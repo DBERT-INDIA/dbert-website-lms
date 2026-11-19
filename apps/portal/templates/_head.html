@@ -94,4 +94,7 @@
 <script src="/static/js/dbert-whatsapp-widget.js?v=20261110" defer></script>
 
 {# ---- DBERT Real-Time Native Web Push Notifications Client ---- #}
+{% if user and user.email %}
+<meta name="user-email" content="{{ user.email }}">
+{% endif %}
 <script src="/static/js/dbert-push-client.js" defer></script>

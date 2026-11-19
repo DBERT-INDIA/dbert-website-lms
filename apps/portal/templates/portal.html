@@ -4033,7 +4033,8 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
     renderNextActionMissionCard();
     const apBanner = document.getElementById('academicProfileBanner');
     if (apBanner) {
-      const needsAp = (_intern && _intern.needs_academic_profile);
+      const stageNum = (_rawMe && _rawMe.flow_state && _rawMe.flow_state.stage_num) || 1;
+      const needsAp = Boolean(_intern && _intern.needs_academic_profile && stageNum < 3);
       apBanner.style.display = needsAp ? 'block' : 'none';
     }
     if(_status==='Accepted') updateOverviewCardsGrid();
@@ -5162,6 +5163,86 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
       </div>
     </div>
   </div>
+
+  <!-- DBERT Sovereign Web Push Notification Modal Prompt -->
+  <div id="dbertPushPermissionModal" class="dbert-push-modal-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.75); z-index:9999; align-items:center; justify-content:center; padding:16px;">
+    <div class="dbert-push-modal-card" style="background:#0F172A; border:1.5px solid rgba(99,102,241,0.4); border-radius:20px; max-width:480px; width:100%; padding:28px; box-shadow:0 20px 40px -10px rgba(0,0,0,0.8); text-align:center;">
+      <div style="width:56px; height:56px; border-radius:16px; background:linear-gradient(135deg, rgba(99,102,241,0.2), rgba(79,70,229,0.3)); border:1px solid #6366F1; color:#818CF8; display:flex; align-items:center; justify-content:center; font-size:24px; margin:0 auto 16px;">
+        <i class="fas fa-bell"></i>
+      </div>
+      <h3 style="margin:0 0 8px; color:#F8FAFC; font-size:18px; font-weight:800;">Enable Sprint & Stipend Alerts</h3>
+      <p style="margin:0 0 18px; color:#94A3B8; font-size:13px; line-height:1.5;">
+        Never miss a milestone. Receive instant browser notifications when mentors review your code, sprint bounty tasks are approved, and your &#8377;5,000 stipend is credited.
+      </p>
+      <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:12px; padding:12px 16px; margin-bottom:20px; text-align:left;">
+        <div style="display:flex; align-items:center; gap:10px; font-size:12px; color:#CBD5E1; margin-bottom:8px;">
+          <i class="fas fa-check-circle" style="color:#10B981;"></i>
+          <span>Instant alert when code bounties are approved</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:10px; font-size:12px; color:#CBD5E1; margin-bottom:8px;">
+          <i class="fas fa-check-circle" style="color:#10B981;"></i>
+          <span>Direct notification when mentors review your work</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:10px; font-size:12px; color:#CBD5E1;">
+          <i class="fas fa-check-circle" style="color:#10B981;"></i>
+          <span>Wallet confirmation for &#8377;5,000 stipend release</span>
+        </div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <button type="button" id="dbertPushEnableBtn" style="background:linear-gradient(135deg, #6366F1, #4F46E5); color:#fff; font-weight:800; padding:12px 20px; border-radius:10px; border:none; cursor:pointer; font-size:14px; box-shadow:0 4px 15px rgba(99,102,241,0.4); display:flex; align-items:center; justify-content:center; gap:8px;">
+          <i class="fas fa-bell"></i> Enable Instant Notifications
+        </button>
+        <button type="button" id="dbertPushDismissBtn" style="background:transparent; border:1px solid rgba(255,255,255,0.12); color:#94A3B8; padding:9px 16px; border-radius:8px; cursor:pointer; font-size:12.5px;">
+          Remind Me Later
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script nonce="{{ csp_nonce() }}">
+    document.addEventListener('DOMContentLoaded', function() {
+      // Sovereign Web Push Modal Prompt Logic
+      setTimeout(function() {
+        if (!('Notification' in window)) return;
+        if (Notification.permission !== 'default') return;
+        
+        var dismissedUntil = localStorage.getItem('dbert_push_modal_dismissed_until');
+        if (dismissedUntil && Date.now() < parseInt(dismissedUntil, 10)) return;
+
+        var modal = document.getElementById('dbertPushPermissionModal');
+        if (modal) {
+          modal.style.display = 'flex';
+        }
+      }, 3500);
+
+      var enableBtn = document.getElementById('dbertPushEnableBtn');
+      if (enableBtn) {
+        enableBtn.addEventListener('click', async function() {
+          var modal = document.getElementById('dbertPushPermissionModal');
+          if (modal) modal.style.display = 'none';
+          
+          if (window.DBERTPush) {
+            var metaEmail = document.querySelector('meta[name="user-email"]');
+            var email = metaEmail ? metaEmail.content : (window.__INTERN_EMAIL__ || '');
+            var sub = await window.DBERTPush.requestPermissionAndSubscribe(email);
+            if (sub && typeof showToast === 'function') {
+              showToast('Real-time push notifications enabled for this device!', 'green');
+            }
+          }
+        });
+      }
+
+      var dismissBtn = document.getElementById('dbertPushDismissBtn');
+      if (dismissBtn) {
+        dismissBtn.addEventListener('click', function() {
+          var modal = document.getElementById('dbertPushPermissionModal');
+          if (modal) modal.style.display = 'none';
+          // Dismiss for 24 hours
+          localStorage.setItem('dbert_push_modal_dismissed_until', String(Date.now() + 24 * 3600 * 1000));
+        });
+      }
+    });
+  </script>
 </body>
 </html>
 

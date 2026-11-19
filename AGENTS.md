@@ -2044,3 +2044,70 @@ The remediation resolved 12 baseline architectural defects (`BASE-01` to `BASE-1
   * Next.js standalone build: `npm --prefix apps/website run build` passed with 297/297 pages generated and 0 TypeScript errors.
   * Master plan gates `Gate 0` through `Gate 5` marked **CLOSED**.
 
+---
+
+## 14. LMS Dead-End Remediation, Sovereign Leaderboard & Dual-Tier Certificates (`/leaderboard`, `/certificates`)
+
+### 14.1. Lifecycle State Machine Hardening & Profile Desynchronization Remediation
+- **Problem Remediated**: Candidates holding an accepted, digitally signed, and deposit-verified appointment letter (e.g. `DBERT-OFR-2026-FSD-5166` on `/portal/offer`) previously displayed *"Action Required: Complete Your Academic Profile"* and fell back to *"Stage 1: Under Evaluation"* on `/portal`.
+- **Root Cause & Structural Fixes**:
+  1. **Gunicorn In-Memory Process Desync**: `dbert-portal.service` on production EC2 was running stale in-memory workers loaded prior to previous logic deployments. Automated restart added to all future portal deployment scripts.
+  2. **Stage Elevation via Offer Letter (`get_intern_flow_state`)**:
+     * Stage 5 (`is_confirmed`): Explicitly elevated if `offer_row` has `signature_name` AND (`caution_deposit_status == 'VERIFIED'` OR `pdf_unlocked == 1`).
+     * Stage 3 (`is_selected`): Explicitly elevated if `offer_row` has `offer_letter_id`, preventing unverified offer holders from ever falling into Stage 1.
+  3. **Academic Profile Auto-Healing & Banner Suppression**:
+     * In `portal_page()` and `/intern/me`: Candidate college, course, and domain are auto-synced into `intern_accounts` from `intern_offer_letters`.
+     * `needs_academic_profile` is forced to `False` across both Jinja context and client-side JavaScript (`renderOverview`) whenever `flow_state.stage_num >= 3`.
+
+### 14.2. Sovereign Multidimensional Leaderboard Engine (`/leaderboard`)
+- **Route**: `https://lms.dbert.in/leaderboard` (Eliminates 404).
+- **Backend Scoring Engine (`_tutor_leaderboard`)**:
+  * Calculates real-time composite competency via 7 activity metrics:
+    $$\text{Score} = 40 \times \text{certs} + 20 \times \text{tasks} + 10 \times \text{lessons} + 5 \times \text{hours} + 5 \times \text{quizzes} + 30 \times \text{articles} + 5 \times \text{concepts}$$
+- **UI/UX Architecture (`apps/portal/templates/leaderboard.html`)**:
+  * **Domain Filtering Pills**: Fast domain-level sorting across All Domains, AI Agent Development, Data Analyst, Full Stack Development, Python Automation, Cybersecurity, and DevOps & Cloud.
+  * **Top 3 Podium Cards**: Luxury metallic styling for 1st (Gold 🥇), 2nd (Silver 🥈), and 3rd (Bronze 🥉).
+  * **Remaining Standings (Ranks 4–50)**: Table view with sprint hours, approved bounties, completed lessons, and mastered concepts.
+  * **Sticky Personal Standing Card**: Highlights the logged-in intern's live rank, total points, sprint hours, and next milestone.
+
+### 14.3. Sovereign Dual-Tier Certificates Portal (`/certificates`)
+- **Route**: `https://lms.dbert.in/certificates` (Eliminates 404).
+- **Dual-Tier Credential Architecture (`apps/portal/templates/certificates.html`)**:
+  * **Tier 1: Pre-Vetted Engineers (Verified · Ready to Hire)** (e.g. `CERT-DBERT-2026-FSD-156`):
+    - Full 3-document credential dossier (Certificate of Completion, Turnitin Academic Project Evaluation, Letter of Recommendation).
+    - 1-Click Master PDF vector print (`/portal/certificate/{cert_id}/print`) and public verification deep-link (`https://dbert.in/verify/{cert_id}`).
+  * **Tier 2: Incubation Fellows In-Sprints (383 Candidates)** (e.g. Gaurav Giri `CERT-DBERT-2026-DA-108`, Gun Soni `CERT-DBERT-2026-AIML-078`, K Tejaswi):
+    - High-merit evaluation score badge (e.g. `88/100 · Grade A+ (Outstanding)`).
+    - Provisional sprint milestone card with watermarked preview.
+    - **Credential Verification Gateway Card**:
+      * Option 1: Fast-track unlock via ₹299 Project Verification Fee (`https://dbert.in/enroll/1999?certid={certId}&fee=299`).
+      * Option 2: Full fellowship completion via ₹1,500 Incubation Balance (`https://dbert.in/enroll/1999?certid={certId}`).
+      * 1-Click direct routing to WhatsApp Admissions Concierge (`+91 81929 11360`).
+  * **Section 2: LMS Course Micro-Certifications**:
+    - Auto-heals and renders certificates for all completed LMS courses (`intern_certificates` where `course_id IS NOT NULL`).
+    - Direct "View & Print" and "Verify Authenticity" action buttons.
+
+### 14.4. Universal Web Push Notification Approval Modal
+- **Infrastructure**: Native RFC 8292 NIST P-256 VAPID push engine (`web_push_service.py`), client controller (`dbert-push-client.js`), and PostgreSQL storage (`web_push_devices`).
+- **Modal Engagement (`#dbertPushPermissionModal`)**:
+  * Automatically prompts interns on `/portal` when `Notification.permission === 'default'`.
+  * Communicates direct user value: real-time mentor code review notifications, bounty task approvals, and ₹5,000 stipend release confirmations.
+  * Direct 1-click subscription registration via `DBERTPush.requestPermissionAndSubscribe()` with 24-hour dismissal cooldown support.
+
+### 14.5. Seeded Test Personas & Verification Matrix
+The following accounts are permanently provisioned on production PostgreSQL (`dbert_lms`):
+
+| Stage # | Lifecycle State | Seeded Email | Password | Key Characteristics & Expected Behavior |
+|:---:|---|---|---|---|
+| **Stage 1** | Application Required | `stage1_apply@dbert.test` | `TestPass123!` | Incomplete application; shows "Complete Academic Profile" banner and domain track selection. |
+| **Stage 2** | Under Review | `stage2_review@dbert.test` | `TestPass123!` | Application submitted; awaiting Technical Council review; shows WhatsApp expedite CTA. |
+| **Stage 3** | Selected (Deposit Due) | `stage3_selected@dbert.test` | `TestPass123!` | Admin approved; appointment letter issued; requires ₹499 caution deposit to confirm seat. |
+| **Stage 4** | Payment Pending | `stage4_pending@dbert.test` | `TestPass123!` | ₹499 UTR submitted; under accounts desk reconciliation; seat confirmation pending. |
+| **Stage 5** | Confirmed Fellow (Sprint Active) | `fellow_enrolled@dbert.test` | `TestPass123!` | ₹499 deposit verified; sprint workspace unlocked; 7-day balance window active. |
+| **Stage 5** | Grace Expired (Needs Balance) | `stage5_grace_expired@dbert.test` | `TestPass123!` | Sprints active; orientation ended; prompts ₹1,500 balance completion to unlock credentials. |
+| **Stage 5** | Fully Paid Incubation Fellow | `fellow_paid_1999@dbert.test` | `TestPass123!` | ₹1,999 fully paid; all sprint modules, verified credentials, and stipend unlocked. |
+| **Active** | Signed Offer Holder (User Reported) | `abhinav.sharma@dbert.vom` | `TestPass123!` | Offer `DBERT-OFR-2026-FSD-5166` signed & verified; sprint workspace active. |
+| **Stipend** | 5,000 Coins in Wallet | `stipend_wallet@dbert.test` | `TestPass123!` | Completed milestones; 5,000 coins credited; withdrawable to encrypted UPI. |
+| **Provisional** | 383 Fellow Persona (Gun Soni) | `gun.soni.test@dbert.test` | `TestPass123!` | In Sprints; score 88/100; shows course certificates + ₹299 upgrade card on `/certificates`. |
+
+

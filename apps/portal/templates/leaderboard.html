@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% set page_title_full = "Cohort Leaderboard — DBERT LMS" %}
+  {% include "_head.html" %}
+
+  <style nonce="{{ csp_nonce() }}">
+    .leaderboard-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 4rem;
+    }
+
+    .lb-header {
+      margin-bottom: 2rem;
+    }
+    .lb-header h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #fff;
+      margin: 0 0 0.5rem;
+      font-family: var(--f-display, 'Space Grotesk', sans-serif);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .lb-header p {
+      color: #94A3B8;
+      margin: 0;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* Personal Standing Banner */
+    .standing-card {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(15, 23, 42, 0.9) 100%);
+      border: 1.5px solid rgba(99, 102, 241, 0.35);
+      border-radius: 16px;
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5);
+    }
+    .standing-left {
+      display: flex;
+      align-items: center;
+      gap: 1.25rem;
+    }
+    .standing-rank-badge {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #6366F1, #4F46E5);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.35rem;
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+      flex-shrink: 0;
+    }
+    .standing-rank-badge small {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      margin-top: -2px;
+      color: #C7D2FE;
+    }
+    .standing-stats {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+    .standing-stat-item {
+      text-align: right;
+    }
+    .standing-stat-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #94A3B8;
+      margin-bottom: 2px;
+    }
+    .standing-stat-value {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #F8FAFC;
+    }
+
+    /* Domain Filtering Pills */
+    .domain-tabs-wrapper {
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+      padding-bottom: 0.75rem;
+      margin-bottom: 2rem;
+      scrollbar-width: thin;
+    }
+    .domain-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.5rem 1rem;
+      border-radius: 9999px;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      text-decoration: none;
+      color: #94A3B8;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+    .domain-pill:hover {
+      color: #F8FAFC;
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+    .domain-pill.active {
+      color: #F8FAFC;
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(79, 70, 229, 0.3));
+      border-color: #6366F1;
+      box-shadow: 0 0 15px rgba(99, 102, 241, 0.25);
+    }
+
+    /* Podium Cards */
+    .podium-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+    @media (max-width: 860px) {
+      .podium-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .podium-card {
+      border-radius: 18px;
+      padding: 1.75rem;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .podium-card:hover {
+      transform: translateY(-4px);
+    }
+    .podium-card.rank-1 {
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.18) 0%, rgba(15, 23, 42, 0.95) 100%);
+      border: 1.5px solid rgba(212, 175, 55, 0.45);
+      box-shadow: 0 10px 30px -5px rgba(212, 175, 55, 0.2);
+    }
+    .podium-card.rank-2 {
+      background: linear-gradient(135deg, rgba(148, 163, 184, 0.18) 0%, rgba(15, 23, 42, 0.95) 100%);
+      border: 1.5px solid rgba(148, 163, 184, 0.35);
+      box-shadow: 0 10px 30px -5px rgba(148, 163, 184, 0.15);
+    }
+    .podium-card.rank-3 {
+      background: linear-gradient(135deg, rgba(205, 127, 50, 0.18) 0%, rgba(15, 23, 42, 0.95) 100%);
+      border: 1.5px solid rgba(205, 127, 50, 0.35);
+      box-shadow: 0 10px 30px -5px rgba(205, 127, 50, 0.15);
+    }
+    .podium-medal {
+      font-size: 2.25rem;
+      margin-bottom: 0.75rem;
+    }
+    .podium-name {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 0.35rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .podium-domain {
+      font-size: 0.8125rem;
+      color: #94A3B8;
+      margin-bottom: 1rem;
+    }
+    .podium-score {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: #F8FAFC;
+      display: flex;
+      align-items: baseline;
+      gap: 0.35rem;
+    }
+    .podium-score small {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: #94A3B8;
+    }
+    .podium-metrics {
+      display: flex;
+      justify-content: space-between;
+      padding-top: 1rem;
+      margin-top: 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.8125rem;
+      color: #94A3B8;
+    }
+    .podium-metrics strong {
+      color: #F8FAFC;
+    }
+
+    /* Leaderboard Table */
+    .table-card {
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+      margin-bottom: 2.5rem;
+    }
+    .lb-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+    .lb-table th {
+      background: rgba(255, 255, 255, 0.02);
+      padding: 1rem 1.25rem;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #94A3B8;
+      font-weight: 700;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .lb-table td {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 0.875rem;
+      color: #E2E8F0;
+    }
+    .lb-table tr:last-child td {
+      border-bottom: none;
+    }
+    .lb-table tr.my-row {
+      background: rgba(99, 102, 241, 0.12);
+      border-left: 3px solid #6366F1;
+    }
+    .rank-number {
+      font-weight: 800;
+      color: #94A3B8;
+      width: 48px;
+    }
+    .candidate-cell {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .candidate-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: rgba(99, 102, 241, 0.2);
+      border: 1px solid rgba(99, 102, 241, 0.4);
+      color: #A5B4FC;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.8125rem;
+      flex-shrink: 0;
+    }
+    .candidate-name {
+      font-weight: 700;
+      color: #F8FAFC;
+    }
+    .you-badge {
+      display: inline-block;
+      font-size: 0.65rem;
+      background: #6366F1;
+      color: #fff;
+      font-weight: 800;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-left: 6px;
+      text-transform: uppercase;
+    }
+    .domain-tag {
+      display: inline-block;
+      font-size: 0.75rem;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      color: #94A3B8;
+    }
+    .total-score-cell {
+      font-weight: 800;
+      font-size: 1rem;
+      color: #F59E0B;
+    }
+
+    /* Scoring Rubric Section */
+    .rubric-card {
+      background: rgba(15, 23, 42, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 1.5rem;
+    }
+    .rubric-title {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #F8FAFC;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .rubric-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    .rubric-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.8125rem;
+      color: #94A3B8;
+    }
+    .rubric-item strong {
+      color: #F8FAFC;
+      font-size: 0.875rem;
+    }
+    .rubric-badge {
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      background: rgba(99, 102, 241, 0.2);
+      color: #818CF8;
+    }
+  </style>
+</head>
+<body class="intern-body">
+
+{% set active_page = 'leaderboard' %}
+{% include '_intern_sidebar.html' %}
+
+<main class="main-content">
+  <div class="leaderboard-container">
+    
+    <!-- Header -->
+    <div class="lb-header">
+      <h1><i class="fa-solid fa-trophy" style="color: #F59E0B;"></i> Cohort Engineering Leaderboard</h1>
+      <p>Real-time competency rankings across applied engineering sprints, completed course certifications, approved bounty tasks, attendance hours, and mastered technical concepts.</p>
+    </div>
+
+    <!-- Personal Standing Card (if user is authenticated) -->
+    {% if user %}
+    <div class="standing-card">
+      <div class="standing-left">
+        <div class="standing-rank-badge">
+          {% if my_standing %}
+            #{{ my_standing.rank }}
+            <small>Rank</small>
+          {% else %}
+            --
+            <small>Unranked</small>
+          {% endif %}
+        </div>
+        <div>
+          <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: #818CF8; font-weight: 800; margin-bottom: 2px;">
+            Your Current Standing
+          </div>
+          <h3 style="margin: 0; color: #fff; font-size: 1.25rem;">{{ user.name or 'Fellow' }}</h3>
+          <div style="font-size: 0.8125rem; color: #94A3B8; margin-top: 3px;">
+            {{ user.domain or 'Applied Engineering' }} · Active Cohort
+          </div>
+        </div>
+      </div>
+      <div class="standing-stats">
+        <div class="standing-stat-item">
+          <div class="standing-stat-label">Total Points</div>
+          <div class="standing-stat-value" style="color: #F59E0B;">
+            {{ my_standing.score if my_standing else 0 }} pts
+          </div>
+        </div>
+        <div class="standing-stat-item">
+          <div class="standing-stat-label">Sprint Hours</div>
+          <div class="standing-stat-value">
+            {{ my_standing.hours if my_standing else 0 }} hrs
+          </div>
+        </div>
+        <div class="standing-stat-item">
+          <div class="standing-stat-label">Bounty Tasks</div>
+          <div class="standing-stat-value">
+            {{ my_standing.task_count if my_standing else 0 }}
+          </div>
+        </div>
+        <div class="standing-stat-item">
+          <div class="standing-stat-label">Certificates</div>
+          <div class="standing-stat-value">
+            {{ my_standing.cert_count if my_standing else 0 }}
+          </div>
+        </div>
+      </div>
+    </div>
+    {% else %}
+    <div class="standing-card" style="background: rgba(15, 23, 42, 0.8); border-color: rgba(255, 255, 255, 0.1);">
+      <div>
+        <h3 style="margin: 0 0 4px; color: #fff;">Are you an active DBERT fellow?</h3>
+        <p style="margin: 0; font-size: 0.875rem; color: #94A3B8;">Sign in to your LMS profile to track your position, complete bounty sprints, and unlock milestone stipends.</p>
+      </div>
+      <a href="/#signin" class="btn btn-primary" style="background: #6366F1; color: #fff; font-weight: 700; padding: 0.6rem 1.25rem; border-radius: 8px; text-decoration: none;">
+        Sign In to Portal &rarr;
+      </a>
+    </div>
+    {% endif %}
+
+    <!-- Domain Filtering Tabs -->
+    <div class="domain-tabs-wrapper">
+      <a href="/leaderboard" class="domain-pill {% if selected_domain == 'All' %}active{% endif %}">
+        <i class="fa-solid fa-globe" style="margin-right: 6px;"></i> All Domains
+      </a>
+      {% for d in domains %}
+        <a href="/leaderboard?domain={{ d }}" class="domain-pill {% if selected_domain == d %}active{% endif %}">
+          {{ d }}
+        </a>
+      {% endfor %}
+    </div>
+
+    <!-- Top 3 Podium Cards -->
+    {% if top_3 %}
+    <div class="podium-grid">
+      {% for cand in top_3 %}
+      <div class="podium-card rank-{{ cand.rank }}">
+        <div>
+          <div class="podium-medal">
+            {% if cand.rank == 1 %}🥇{% elif cand.rank == 2 %}🥈{% else %}🥉{% endif %}
+          </div>
+          <div class="podium-name" title="{{ cand.name }}">
+            {{ cand.name }}
+            {% if cand.is_me %}<span class="you-badge">YOU</span>{% endif %}
+          </div>
+          <div class="podium-domain">{{ cand.domain or 'Engineering' }}</div>
+        </div>
+        <div>
+          <div class="podium-score">
+            {{ cand.score }} <small>points</small>
+          </div>
+          <div class="podium-metrics">
+            <span>Hours: <strong>{{ cand.hours }}h</strong></span>
+            <span>Bounties: <strong>{{ cand.task_count }}</strong></span>
+            <span>Certs: <strong>{{ cand.cert_count }}</strong></span>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Remaining Ranks 4-50 Table -->
+    <div class="table-card">
+      <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
+        <h3 style="margin: 0; font-size: 1.1rem; color: #fff; font-weight: 700;">
+          Leaderboard Standings (Top 50)
+        </h3>
+        <span style="font-size: 0.8125rem; color: #94A3B8;">
+          Showing {{ board | length }} ranked candidates in {{ selected_domain }}
+        </span>
+      </div>
+
+      {% if board %}
+      <div style="overflow-x: auto;">
+        <table class="lb-table">
+          <thead>
+            <tr>
+              <th style="width: 60px;">Rank</th>
+              <th>Candidate</th>
+              <th>Domain</th>
+              <th style="text-align: center;">Hours</th>
+              <th style="text-align: center;">Bounties</th>
+              <th style="text-align: center;">Lessons</th>
+              <th style="text-align: center;">Concepts</th>
+              <th style="text-align: right;">Total Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in board %}
+            <tr class="{% if row.is_me %}my-row{% endif %}">
+              <td class="rank-number">
+                {% if row.rank == 1 %}🥇 1
+                {% elif row.rank == 2 %}🥈 2
+                {% elif row.rank == 3 %}🥉 3
+                {% else %}#{{ row.rank }}
+                {% endif %}
+              </td>
+              <td>
+                <div class="candidate-cell">
+                  <div class="candidate-avatar">
+                    {{ (row.name or 'F')[0] | upper }}
+                  </div>
+                  <div class="candidate-name">
+                    {{ row.name }}
+                    {% if row.is_me %}<span class="you-badge">YOU</span>{% endif %}
+                  </div>
+                </div>
+              </td>
+              <td>
+                <span class="domain-tag">{{ row.domain or 'Engineering' }}</span>
+              </td>
+              <td style="text-align: center; color: #94A3B8;">{{ row.hours }} hrs</td>
+              <td style="text-align: center; color: #94A3B8;">{{ row.task_count }}</td>
+              <td style="text-align: center; color: #94A3B8;">{{ row.lessons_done }}</td>
+              <td style="text-align: center; color: #94A3B8;">{{ row.mastered_concepts }}</td>
+              <td style="text-align: right;" class="total-score-cell">{{ row.score }} pts</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <div style="padding: 3rem 1.5rem; text-align: center; color: #94A3B8;">
+        <i class="fa-solid fa-trophy" style="font-size: 2.5rem; color: rgba(255, 255, 255, 0.15); margin-bottom: 1rem;"></i>
+        <h4 style="margin: 0 0 0.5rem; color: #fff;">No candidates recorded in this domain yet</h4>
+        <p style="margin: 0; font-size: 0.875rem;">Be the first fellow to log hours and complete sprint bounties to top this leaderboard!</p>
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Scoring Methodology Card -->
+    <div class="rubric-card">
+      <div class="rubric-title">
+        <i class="fa-solid fa-calculator" style="color: #6366F1;"></i> Multidimensional Scoring Methodology
+      </div>
+      <p style="font-size: 0.8125rem; color: #94A3B8; margin-bottom: 1.25rem; line-height: 1.5;">
+        The DBERT Leaderboard calculates real-time competency through an objective multidimensional scoring formula across 7 core activity metrics:
+      </p>
+      <div class="rubric-grid">
+        <div class="rubric-item">
+          <span class="rubric-badge">+40 pts</span>
+          <span>Verified Certification</span>
+        </div>
+        <div class="rubric-item">
+          <span class="rubric-badge">+20 pts</span>
+          <span>Approved Bounty Task</span>
+        </div>
+        <div class="rubric-item">
+          <span class="rubric-badge">+10 pts</span>
+          <span>Completed Sprint Lesson</span>
+        </div>
+        <div class="rubric-item">
+          <span class="rubric-badge">+5 pts/hr</span>
+          <span>Platform Sprint Attendance</span>
+        </div>
+        <div class="rubric-item">
+          <span class="rubric-badge">+5 pts</span>
+          <span>100% Score on Daily Quiz</span>
+        </div>
+        <div class="rubric-item">
+          <span class="rubric-badge">+30 pts</span>
+          <span>Published Engineering Article</span>
+        </div>
+        <div class="rubric-item">
+          <span class="rubric-badge">+5 pts</span>
+          <span>Mastered Technical Concept</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+</body>
+</html>

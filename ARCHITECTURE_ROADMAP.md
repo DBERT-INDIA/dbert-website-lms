@@ -384,3 +384,37 @@ flowchart TD
   * Next.js standalone build (`apps/website`): 297/297 pages generated, 0 TypeScript errors.
   * Flask LMS test suites: 100% pass across persona regression and stage synchronization tests.
 
+---
+
+## 10. LMS Dead-End Remediation, Multidimensional Leaderboard & Dual-Tier Certificates Architecture
+
+### 10.1. Operational State Synchronization & Academic Profile Hardening
+- **Remediation**: Eliminated state regression where accepted/signed offer holders saw "Complete Your Academic Profile" and fell back to Stage 1.
+- **Architectural Guardrails**:
+  1. `get_intern_flow_state()` checks `intern_offer_letters`: elevated to Stage 5 if signed and deposit-verified/unlocked; elevated to Stage 3 if offer letter exists.
+  2. Auto-healing academic profile sync copies college, course, and domain from offer letters into `intern_accounts`.
+  3. `needs_academic_profile` strictly forced to `False` whenever `flow_state.stage_num >= 3`.
+
+### 10.2. Production Sovereign Leaderboard (`/leaderboard`)
+- **Route**: `https://lms.dbert.in/leaderboard`
+- **Scoring Engine**: Composite 7-metric formula:
+  $$\text{Score} = 40 \times \text{certs} + 20 \times \text{tasks} + 10 \times \text{lessons} + 5 \times \text{hours} + 5 \times \text{quizzes} + 30 \times \text{articles} + 5 \times \text{concepts}$$
+- **UI Architecture (`apps/portal/templates/leaderboard.html`)**:
+  * Domain filtering pills (All, AI/ML, Data Analyst, Full Stack, Python Automation, Cybersecurity, DevOps & Cloud).
+  * Top 3 podium cards (Gold, Silver, Bronze) with metrics breakdown.
+  * Ranks 4–50 table view highlighting logged-in candidate row with "YOU" badge.
+  * Sticky personal standing card displaying user rank, total score, sprint hours, and bounties.
+
+### 10.3. Dual-Tier Certificates Portal (`/certificates`)
+- **Route**: `https://lms.dbert.in/certificates`
+- **Dual-Tier Model (`apps/portal/templates/certificates.html`)**:
+  * **Pre-Vetted Engineers (66 Verified Candidates)**: Full 3-document credential dossier (Certificate, Turnitin Evaluation Rubric, Letter of Recommendation) with 1-click Master PDF print and public verification link.
+  * **Incubation Fellows In-Sprints (383 Candidates)**: High-merit evaluation score badge (88/100, etc.), watermarked preview, and prominent upgrade gateway card with direct links for ₹299 Project Verification Fee (`/enroll/1999?fee=299`) or ₹1,500 Incubation Balance.
+  * **LMS Course Micro-Certifications**: Grid of auto-healed certificates for completed LMS courses with print and verify actions.
+
+### 10.4. Universal Web Push Notification Approval Modal
+- Sovereign RFC 8292 NIST P-256 VAPID web push modal (`#dbertPushPermissionModal`) in `portal.html`.
+- Prompts interns on first entry (`Notification.permission === 'default'`), highlighting mentor review, bounty approval, and stipend alerts.
+- Subscribes device via `DBERTPush.requestPermissionAndSubscribe()` and persists endpoint in PostgreSQL `web_push_devices`.
+
+

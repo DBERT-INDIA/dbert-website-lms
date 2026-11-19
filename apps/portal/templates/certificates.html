@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% set page_title_full = "My Certificates & Credentials — DBERT LMS" %}
+  {% include "_head.html" %}
+
+  <style nonce="{{ csp_nonce() }}">
+    .certs-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 4rem;
+    }
+
+    .certs-header {
+      margin-bottom: 2rem;
+    }
+    .certs-header h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #fff;
+      margin: 0 0 0.5rem;
+      font-family: var(--f-display, 'Space Grotesk', sans-serif);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .certs-header p {
+      color: #94A3B8;
+      margin: 0;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* Section Headers */
+    .section-headline {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #F8FAFC;
+      margin: 2rem 0 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Verified Dossier Card */
+    .verified-card {
+      background: linear-gradient(135deg, rgba(212, 175, 55, 0.12) 0%, rgba(15, 23, 42, 0.95) 100%);
+      border: 1.5px solid rgba(212, 175, 55, 0.45);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 15px 35px -5px rgba(212, 175, 55, 0.18);
+      margin-bottom: 2.5rem;
+    }
+    .verified-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .verified-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 0.9rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: rgba(212, 175, 55, 0.25);
+      border: 1px solid #D4AF37;
+      color: #F5E096;
+    }
+    .verified-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #fff;
+      margin: 0.5rem 0 0.25rem;
+    }
+    .verified-subtitle {
+      font-size: 0.9rem;
+      color: #94A3B8;
+    }
+    .verified-docs-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    @media (max-width: 768px) {
+      .verified-docs-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .verified-doc-box {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+    }
+    .verified-doc-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(212, 175, 55, 0.2);
+      color: #D4AF37;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .verified-doc-name {
+      font-weight: 700;
+      color: #F8FAFC;
+      font-size: 0.875rem;
+    }
+    .verified-doc-desc {
+      font-size: 0.75rem;
+      color: #94A3B8;
+    }
+    .verified-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      align-items: center;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    /* Provisional In-Sprints Card */
+    .provisional-card {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(15, 23, 42, 0.95) 100%);
+      border: 1.5px solid rgba(245, 158, 11, 0.4);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 15px 35px -5px rgba(245, 158, 11, 0.15);
+      margin-bottom: 2.5rem;
+    }
+    .provisional-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 0.9rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: rgba(245, 158, 11, 0.2);
+      border: 1px solid #F59E0B;
+      color: #FBBF24;
+    }
+
+    /* Upgrade Banner Card */
+    .upgrade-box {
+      background: linear-gradient(135deg, rgba(30, 27, 75, 0.8) 0%, rgba(15, 23, 42, 0.95) 100%);
+      border: 1.5px solid rgba(99, 102, 241, 0.4);
+      border-radius: 16px;
+      padding: 1.75rem;
+      margin-top: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+    .upgrade-options-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 1.25rem 0;
+    }
+    @media (max-width: 768px) {
+      .upgrade-options-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .upgrade-opt-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .upgrade-opt-badge {
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 6px;
+      display: inline-block;
+      width: fit-content;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Course Certificates Grid */
+    .course-certs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+    .course-cert-card {
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .course-cert-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(99, 102, 241, 0.4);
+    }
+    .cert-icon-top {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      color: #818CF8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+    }
+    .course-cert-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 0.35rem;
+      line-height: 1.4;
+    }
+    .course-cert-id {
+      font-size: 0.75rem;
+      color: #94A3B8;
+      font-family: monospace;
+      margin-bottom: 1rem;
+    }
+    .course-cert-actions {
+      display: flex;
+      gap: 0.75rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      margin-top: 1rem;
+    }
+
+    /* Common Buttons */
+    .btn-gold {
+      background: linear-gradient(135deg, #D4AF37, #AA8820);
+      color: #07090E;
+      font-weight: 800;
+      padding: 0.75rem 1.5rem;
+      border-radius: 10px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-gold:hover {
+      background: linear-gradient(135deg, #F5E096, #D4AF37);
+      transform: translateY(-1px);
+    }
+    .btn-amber {
+      background: linear-gradient(135deg, #F59E0B, #D97706);
+      color: #0F172A;
+      font-weight: 800;
+      padding: 0.75rem 1.5rem;
+      border-radius: 10px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #F8FAFC;
+      font-weight: 700;
+      padding: 0.75rem 1.25rem;
+      border-radius: 10px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+      transition: all 0.2s ease;
+    }
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+    }
+    .btn-whatsapp {
+      background: #10B981;
+      color: #07090E;
+      font-weight: 800;
+      padding: 0.75rem 1.25rem;
+      border-radius: 10px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+    }
+  </style>
+</head>
+<body class="intern-body">
+
+{% set active_page = 'certificates' %}
+{% include '_intern_sidebar.html' %}
+
+<main class="main-content">
+  <div class="certs-container">
+    
+    <!-- Header -->
+    <div class="certs-header">
+      <h1><i class="fa-solid fa-award" style="color: #D4AF37;"></i> My Official Credentials & Certifications</h1>
+      <p>Cryptographically verifiable micro-credentials, sprint achievements, and sovereign 3-document applied engineering credential dossiers.</p>
+    </div>
+
+    <!-- Section 1: Official Internship Credential Dossier -->
+    <div class="section-headline">
+      <i class="fa-solid fa-file-contract" style="color: #6366F1;"></i> Official Technical Internship Credential
+    </div>
+
+    {% if is_verified %}
+      <!-- TIER 1: VERIFIED CANDIDATE (Pre-Vetted Engineer) -->
+      <div class="verified-card">
+        <div class="verified-top">
+          <div>
+            <span class="verified-badge">
+              <i class="fa-solid fa-circle-check"></i> Verified · Ready to Hire
+            </span>
+            <div class="verified-title">
+              Certificate of Technical Internship Completion
+            </div>
+            <div class="verified-subtitle">
+              Domain: <strong style="color: #F8FAFC;">{{ candidate_domain }}</strong> · Ref: <span style="font-family: monospace; color: #D4AF37;">{{ cert_id }}</span>
+            </div>
+          </div>
+          <div style="text-align: right;">
+            <div style="font-size: 0.75rem; text-transform: uppercase; color: #94A3B8; font-weight: 700;">Evaluation Score</div>
+            <div style="font-size: 1.75rem; font-weight: 800; color: #D4AF37;">
+              {{ eval_score }}/100
+            </div>
+            <div style="font-size: 0.8125rem; color: #10B981; font-weight: 700;">{{ eval_grade }}</div>
+          </div>
+        </div>
+
+        <p style="color: #94A3B8; font-size: 0.9rem; line-height: 1.6; margin: 0;">
+          Your official 3-document credential packet is authenticated by the DBERT Technical Council and verified under Govt. MSME registration UDYAM-UP-29-0109046.
+        </p>
+
+        <!-- 3-Document Grid -->
+        <div class="verified-docs-grid">
+          <div class="verified-doc-box">
+            <div class="verified-doc-icon"><i class="fa-solid fa-certificate"></i></div>
+            <div>
+              <div class="verified-doc-name">1. Certificate of Completion</div>
+              <div class="verified-doc-desc">Landscape luxury credential</div>
+            </div>
+          </div>
+          <div class="verified-doc-box">
+            <div class="verified-doc-icon"><i class="fa-solid fa-square-poll-vertical"></i></div>
+            <div>
+              <div class="verified-doc-name">2. Academic Project Evaluation</div>
+              <div class="verified-doc-desc">Turnitin Originality Rubric</div>
+            </div>
+          </div>
+          <div class="verified-doc-box">
+            <div class="verified-doc-icon"><i class="fa-solid fa-file-signature"></i></div>
+            <div>
+              <div class="verified-doc-name">3. Letter of Recommendation</div>
+              <div class="verified-doc-desc">Official Executive Endorsement</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action CTAs -->
+        <div class="verified-actions">
+          <a href="/portal/certificate/{{ cert_id }}/print" class="btn-gold" target="_blank">
+            <i class="fa-solid fa-print"></i> View 3-Doc Dossier & Print PDF
+          </a>
+          <a href="https://dbert.in/verify/{{ cert_id }}" class="btn-secondary" target="_blank">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> Public Verification Dossier
+          </a>
+        </div>
+      </div>
+
+    {% elif is_provisional %}
+      <!-- TIER 2: PROVISIONAL IN-SPRINTS CANDIDATE (383 Fellows) -->
+      <div class="provisional-card">
+        <div class="verified-top">
+          <div>
+            <span class="provisional-badge">
+              <i class="fa-solid fa-hourglass-half"></i> In Sprints · Provisional Milestone
+            </span>
+            <div class="verified-title">
+              Technical Incubation Fellowship — {{ candidate_domain }}
+            </div>
+            <div class="verified-subtitle">
+              Milestone Dossier Ref: <span style="font-family: monospace; color: #F59E0B;">{{ cert_id }}</span>
+            </div>
+          </div>
+          <div style="text-align: right;">
+            <div style="font-size: 0.75rem; text-transform: uppercase; color: #94A3B8; font-weight: 700;">Evaluation Score</div>
+            <div style="font-size: 1.75rem; font-weight: 800; color: #F59E0B;">
+              {{ eval_score }}/100
+            </div>
+            <div style="font-size: 0.8125rem; color: #FBBF24; font-weight: 700;">{{ eval_grade }}</div>
+          </div>
+        </div>
+
+        <p style="color: #CBD5E1; font-size: 0.9rem; line-height: 1.6; margin: 0 0 1rem;">
+          You have achieved a merit evaluation score of <strong>{{ eval_score }}/100</strong>. Your record is provisionally listed in the DBERT Directory. Complete your verification to unlock your official 3-document credential packet (Official Certificate, Turnitin Rubric Evaluation, and Recommendation Letter) and download official PDFs.
+        </p>
+
+        <!-- High-Priority Upgrade Card -->
+        <div class="upgrade-box">
+          <div style="max-width: 650px;">
+            <div style="font-size: 0.75rem; text-transform: uppercase; color: #818CF8; font-weight: 800; letter-spacing: 0.5px; margin-bottom: 4px;">
+              Credential Verification Gateway
+            </div>
+            <h3 style="margin: 0 0 6px; color: #fff; font-size: 1.2rem;">
+              Unlock Your Official Verifiable Dossier
+            </h3>
+            <p style="margin: 0; color: #94A3B8; font-size: 0.875rem; line-height: 1.5;">
+              Choose either of the two standard verification pathways below to permanently unlock your credential packet:
+            </p>
+
+            <div class="upgrade-options-grid">
+              <div class="upgrade-opt-card">
+                <div>
+                  <span class="upgrade-opt-badge" style="background: rgba(16, 185, 129, 0.2); color: #10B981;">
+                    Option 1 · Fast Track
+                  </span>
+                  <div style="font-weight: 800; color: #fff; font-size: 1.05rem; margin-bottom: 2px;">
+                    ₹299 Project Verification Fee
+                  </div>
+                  <div style="font-size: 0.8125rem; color: #94A3B8; line-height: 1.4;">
+                    Instant evaluation verification, official 3-doc vector PDFs, Turnitin report seal, and verified recruiter directory badge.
+                  </div>
+                </div>
+                <div style="margin-top: 1rem;">
+                  <a href="https://dbert.in/enroll/1999?certid={{ cert_id }}&fee=299" target="_blank" class="btn-amber" style="width: 100%; justify-content: center;">
+                    Unlock for ₹299 &rarr;
+                  </a>
+                </div>
+              </div>
+
+              <div class="upgrade-opt-card">
+                <div>
+                  <span class="upgrade-opt-badge" style="background: rgba(99, 102, 241, 0.2); color: #818CF8;">
+                    Option 2 · Full Fellowship
+                  </span>
+                  <div style="font-weight: 800; color: #fff; font-size: 1.05rem; margin-bottom: 2px;">
+                    ₹1,500 Incubation Balance
+                  </div>
+                  <div style="font-size: 0.8125rem; color: #94A3B8; line-height: 1.4;">
+                    Complete remaining incubation balance. Unlocks verified credentials, 1:1 mentor booking, and ₹5,000 milestone stipend eligibility.
+                  </div>
+                </div>
+                <div style="margin-top: 1rem;">
+                  <a href="https://dbert.in/enroll/1999?certid={{ cert_id }}" target="_blank" class="btn-secondary" style="width: 100%; justify-content: center; background: rgba(99, 102, 241, 0.2); border-color: #6366F1;">
+                    Complete ₹1,500 Balance &rarr;
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <a href="https://wa.me/918192911360?text=Hi%20Admissions%20Team%2C%20I%20want%20to%20unlock%20my%20official%20credentials%20for%20{{ cert_id }}." target="_blank" class="btn-whatsapp">
+              <i class="fa-brands fa-whatsapp"></i> Admissions Concierge
+            </a>
+            <a href="https://dbert.in/verify/{{ cert_id }}" target="_blank" class="btn-secondary" style="justify-content: center;">
+              <i class="fa-solid fa-eye"></i> Preview Directory Dossier
+            </a>
+          </div>
+        </div>
+      </div>
+
+    {% else %}
+      <!-- TIER 3: SPRINT IN PROGRESS -->
+      <div class="provisional-card" style="border-color: rgba(99, 102, 241, 0.3); background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(15, 23, 42, 0.95) 100%);">
+        <div class="verified-top">
+          <div>
+            <span class="provisional-badge" style="background: rgba(99, 102, 241, 0.2); border-color: #6366F1; color: #818CF8;">
+              <i class="fa-solid fa-code"></i> Sprints Active · Evaluation Pending
+            </span>
+            <div class="verified-title">
+              Engineering Incubation — {{ candidate_domain }}
+            </div>
+            <div class="verified-subtitle">
+              Assigned Candidate: <strong style="color: #F8FAFC;">{{ user.name or 'Fellow' }}</strong>
+            </div>
+          </div>
+        </div>
+
+        <p style="color: #94A3B8; font-size: 0.9rem; line-height: 1.6; margin: 0 0 1.25rem;">
+          Your official internship credential dossier is generated upon completing your sprint curriculum, submitting weekly engineering bounties, and presenting your domain milestone project.
+        </p>
+
+        <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+          <a href="/courses" class="btn-gold">
+            <i class="fa-solid fa-play"></i> Continue Course Sprints
+          </a>
+          <a href="/tasks" class="btn-secondary">
+            <i class="fa-solid fa-list-check"></i> Submit Bounty Tasks
+          </a>
+          <a href="/portal/offer" class="btn-secondary">
+            <i class="fa-solid fa-file-contract"></i> View Appointment Letter
+          </a>
+        </div>
+      </div>
+    {% endif %}
+
+    <!-- Section 2: LMS Course Completion Certificates -->
+    <div class="section-headline">
+      <i class="fa-solid fa-graduation-cap" style="color: #10B981;"></i> Course Micro-Certifications
+    </div>
+
+    {% if course_certificates %}
+      <div class="course-certs-grid">
+        {% for cert in course_certificates %}
+        <div class="course-cert-card">
+          <div>
+            <div class="cert-icon-top">
+              <i class="fa-solid fa-certificate"></i>
+            </div>
+            <div class="course-cert-title">{{ cert.course_title }}</div>
+            <div class="course-cert-id">ID: {{ cert.cert_id }}</div>
+            <div style="font-size: 0.8125rem; color: #94A3B8;">
+              Issued: <strong style="color: #F8FAFC;">{{ cert.issued_at[:10] if cert.issued_at else 'Recent' }}</strong>
+            </div>
+          </div>
+          <div class="course-cert-actions">
+            <a href="{{ cert.download_url }}" class="btn-gold" style="flex: 1; justify-content: center; padding: 0.6rem 1rem;" target="_blank">
+              <i class="fa-solid fa-print"></i> View & Print
+            </a>
+            <a href="/portal/certificate/{{ cert.cert_id }}" class="btn-secondary" style="flex: 1; justify-content: center; padding: 0.6rem 1rem;" target="_blank">
+              Verify
+            </a>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="table-card" style="padding: 2.5rem 1.5rem; text-align: center;">
+        <i class="fa-solid fa-graduation-cap" style="font-size: 2.5rem; color: rgba(255, 255, 255, 0.15); margin-bottom: 1rem;"></i>
+        <h3 style="margin: 0 0 0.5rem; color: #fff;">No course micro-certificates issued yet</h3>
+        <p style="margin: 0 auto 1.5rem; max-width: 500px; font-size: 0.875rem; color: #94A3B8; line-height: 1.5;">
+          Complete your daily course modules and achieve 100% on the day quizzes to automatically earn your cryptographic course completion certificates.
+        </p>
+        <a href="/courses" class="btn-gold">
+          <i class="fa-solid fa-laptop-code"></i> Launch Course Sprints &rarr;
+        </a>
+      </div>
+    {% endif %}
+
+  </div>
+</main>
+
+</body>
+</html>

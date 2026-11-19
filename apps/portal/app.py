@@ -1855,8 +1855,11 @@ def get_intern_flow_state(conn, email):
     # Check Stage 5: Accepted (Confirmed)
     is_confirmed = bool(
         (enr and enr["payment_status"] in ("Accepted", "Verified")) or
-        (app_row and app_row["status"] in (STATUS_ACCEPTED, STATUS_ENROLLED)) or
-        (offer_row and offer_row.get("caution_deposit_status") == "VERIFIED" and offer_row.get("signature_name"))
+        (app_row and app_row["status"] in (STATUS_ACCEPTED, STATUS_ENROLLED, STATUS_PAID_ENROLLED)) or
+        (offer_row and (
+            (offer_row.get("caution_deposit_status") == "VERIFIED" and offer_row.get("signature_name")) or
+            (offer_row.get("pdf_unlocked") == 1 and offer_row.get("signature_name"))
+        ))
     )
     if is_confirmed:
         res = {
@@ -1907,7 +1910,8 @@ def get_intern_flow_state(conn, email):
 
     # Check Stage 3: Selected (Admin Approved Application -> Deposit Required)
     is_selected = bool(
-        app_row and app_row["status"] in (STATUS_SELECTED, STATUS_ENROLLMENT_PENDING)
+        (app_row and app_row["status"] in (STATUS_SELECTED, STATUS_ENROLLMENT_PENDING)) or
+        (offer_row and offer_row.get("offer_letter_id"))
     )
     if is_selected:
         res = {
@@ -5645,6 +5649,7 @@ def sitemap_xml():
         (f"{SITE_ORIGIN}/internships/cohort-2026",   today, "daily", "0.9"),
         (f"{SITE_ORIGIN}/internships/cohort-november-2026", today, "daily", "0.9"),
         (f"{SITE_ORIGIN}/program", today, "weekly",  "0.9"),
+        (f"{SITE_ORIGIN}/leaderboard", today, "daily", "0.9"),
         (f"{SITE_ORIGIN}/jobs",        today, "daily",   "0.8"),
         (f"{SITE_ORIGIN}/internships", today, "daily",   "0.8"),
         (f"{SITE_ORIGIN}/internships/ai-automation-internship", today, "daily", "0.9"),
@@ -5917,13 +5922,16 @@ def portal_page():
             enr = conn.execute(
                 "SELECT * FROM enrollments WHERE LOWER(email)=? ORDER BY id DESC LIMIT 1", (email_clean,)
             ).fetchone()
+            offer_row = conn.execute(
+                "SELECT * FROM intern_offer_letters WHERE LOWER(email)=? ORDER BY id DESC LIMIT 1", (email_clean,)
+            ).fetchone()
 
             # Auto-healing academic profile sync:
             if acct:
                 acct_college = (acct.get("college") or "").strip().lower()
                 acct_domain = (acct.get("domain") or "").strip()
-                cand_college = (app_row.get("college") if app_row else "") or (enr.get("college") if enr else "")
-                cand_domain = (app_row.get("domain") if app_row else "") or (enr.get("domain") if enr else "")
+                cand_college = (app_row.get("college") if app_row else "") or (enr.get("college") if enr else "") or (offer_row.get("college") if offer_row else "")
+                cand_domain = (app_row.get("domain") if app_row else "") or (enr.get("domain") if enr else "") or (offer_row.get("domain") if offer_row else "")
 
                 updated_college = None
                 updated_domain = None
@@ -10904,6 +10912,54 @@ def intern_leaderboard_proxy():
         return jsonify({"status": "error", "message": "Error"}), 500
 
 
+@app.route("/leaderboard")
+def leaderboard_page():
+    """Phase 16 — Production Sovereign Leaderboard View.
+    Displays multidimensional composite rankings with podium and logged-in standing."""
+    user = current_intern() or get_current_user()
+    domain_filter = clean_text(request.args.get("domain") or "").strip()
+    
+    slug = ""
+    if domain_filter and domain_filter.lower() != "all":
+        slug = DOMAIN_SLUGS.get(domain_filter, domain_filter.lower().replace(" ", "-"))
+    
+    data = _tutor_leaderboard(slug if slug else None)
+    raw_board = data.get("domain" if slug else "global") or []
+    
+    me_id = str(user.get("id")) if user and user.get("id") else ""
+    me_email = (user.get("email") or "").strip().lower() if user else ""
+    
+    board = []
+    my_standing = None
+    for idx, r in enumerate(raw_board, start=1):
+        d = dict(r)
+        d["rank"] = idx
+        is_me = bool((me_id and str(d.get("intern_id")) == me_id) or (me_email and str(d.get("email", "")).lower() == me_email))
+        d["is_me"] = is_me
+        if is_me and not my_standing:
+            my_standing = d
+        board.append(d)
+        
+    top_3 = board[:3]
+    rest_ranks = board[3:]
+    
+    resp = make_response(render_template(
+        "leaderboard.html",
+        active_page="leaderboard",
+        board=board,
+        top_3=top_3,
+        rest_ranks=rest_ranks,
+        domains=VALID_DOMAINS,
+        domain_slugs=DOMAIN_SLUGS,
+        selected_domain=domain_filter if domain_filter else "All",
+        user=user,
+        my_standing=my_standing
+    ))
+    resp.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+    return resp
+
+
+
 @app.route("/intern/coins")
 def intern_coins_json():
     """Return intern's coin balances and ledger activity."""
@@ -10971,6 +11027,114 @@ def intern_certificates_json():
     except Exception as e:
         log_error("intern-certificates", e)
         return jsonify({"status": "error", "message": "Error"}), 500
+
+
+@app.route("/certificates")
+@app.route("/portal/certificates")
+def portal_certificates_page():
+    """Phase 16 — Sovereign Dual-Tier Certificates Portal.
+    Displays course completion certificates, 3-document verified credential dossiers,
+    and incubation sprint provisional upgrade gateways."""
+    user = current_intern() or get_current_user()
+    if not user:
+        return redirect("/#signin")
+
+    email = (user.get("email") or "").strip().lower()
+
+    try:
+        with get_db() as conn:
+            from services.certificate_service import CertificateService
+
+            # 1. Self-healing: auto-issue certificate for any completed course missing one
+            try:
+                comp_courses = conn.execute("""
+                    SELECT ce.course_id, c.title
+                    FROM course_enrollments ce
+                    JOIN courses c ON c.id = ce.course_id
+                    WHERE (ce.intern_id = ? OR (ce.email IS NOT NULL AND LOWER(ce.email) = LOWER(?)))
+                      AND ce.completed_at IS NOT NULL
+                """, (user["id"], email)).fetchall()
+                for cc in comp_courses:
+                    CertificateService.issue_course_completion_certificate(
+                        conn, intern_id=user["id"], course_id=cc["course_id"], email=email
+                    )
+            except Exception as ex_sh:
+                log_error("portal-cert-self-heal", ex_sh)
+
+            # 2. Query LMS Course Certificates (course_id IS NOT NULL)
+            course_rows = conn.execute("""
+                SELECT course_id, course_title, cert_id, issued_at, url, tier
+                FROM intern_certificates
+                WHERE (intern_id = ? OR (email IS NOT NULL AND LOWER(email) = LOWER(?)))
+                  AND course_id IS NOT NULL
+                ORDER BY issued_at DESC, id DESC
+            """, (user["id"], email)).fetchall()
+            course_certificates = []
+            for r in course_rows:
+                d = dict(r)
+                d["download_url"] = f"/portal/certificate/{d['cert_id']}/print"
+                course_certificates.append(d)
+
+            # 3. Dual-layer verification check for formal internship credentials
+            verified_info = CertificateService.is_intern_verified(conn, intern_id=user["id"], email=email)
+
+            # 4. Lookup in directory_candidates.json for provisional / in-sprints candidates
+            directory_candidate = None
+            try:
+                portal_dir = os.path.dirname(os.path.abspath(__file__))
+                cand_dir_path = os.path.join(portal_dir, "..", "website", "src", "data", "directory_candidates.json")
+                if os.path.exists(cand_dir_path):
+                    with open(cand_dir_path, "r", encoding="utf-8") as f:
+                        cand_list = json.load(f)
+                        target_cid = verified_info.get("cert_id")
+                        user_name_clean = (user.get("name") or "").strip().lower()
+                        for c in cand_list:
+                            if target_cid and c.get("certId") == target_cid:
+                                directory_candidate = c
+                                break
+                            if user_name_clean and c.get("holderName") and c["holderName"].strip().lower() == user_name_clean:
+                                directory_candidate = c
+                                break
+            except Exception as e_cand:
+                log_error("portal-cert-cand-lookup", e_cand)
+
+            is_verified = bool(verified_info.get("verified"))
+            is_provisional = bool(
+                verified_info.get("is_provisional") or
+                (directory_candidate and directory_candidate.get("isProvisional"))
+            )
+            cert_id = verified_info.get("cert_id") or (directory_candidate and directory_candidate.get("certId")) or ""
+            eval_score = (directory_candidate and directory_candidate.get("score")) or 85
+            eval_grade = (directory_candidate and directory_candidate.get("grade")) or "Grade A (Very Good)"
+            candidate_domain = (directory_candidate and directory_candidate.get("domain")) or user.get("domain") or "Engineering"
+
+            # Check if offer letter exists for this candidate
+            offer_row = conn.execute(
+                "SELECT * FROM intern_offer_letters WHERE LOWER(email)=? ORDER BY id DESC LIMIT 1",
+                (email,)
+            ).fetchone()
+
+        resp = make_response(render_template(
+            "certificates.html",
+            active_page="certificates",
+            user=user,
+            course_certificates=course_certificates,
+            verified_info=verified_info,
+            is_verified=is_verified,
+            is_provisional=is_provisional,
+            directory_candidate=directory_candidate,
+            cert_id=cert_id,
+            eval_score=eval_score,
+            eval_grade=eval_grade,
+            candidate_domain=candidate_domain,
+            offer_row=offer_row
+        ))
+        resp.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+        return resp
+    except Exception as e:
+        log_error("portal-certificates", e)
+        return _render_error(500, "Error Loading Certificates", "Unable to load your certificate dossier.")
+
 
 
 @app.route("/portal/certificate/<cert_id>/print")
