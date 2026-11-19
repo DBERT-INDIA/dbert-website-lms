@@ -2083,13 +2083,25 @@ The remediation resolved 12 baseline architectural defects (`BASE-01` to `BASE-1
 ### 14.2. Sovereign Multidimensional Leaderboard Engine (`/leaderboard`)
 - **Route**: `https://lms.dbert.in/leaderboard` (Eliminates 404).
 - **Backend Scoring Engine (`_tutor_leaderboard`)**:
-  * Calculates real-time composite competency via 7 activity metrics:
-    $$\text{Score} = 40 \times \text{certs} + 20 \times \text{tasks} + 10 \times \text{lessons} + 5 \times \text{hours} + 5 \times \text{quizzes} + 30 \times \text{articles} + 5 \times \text{concepts}$$
+  * Calculates real-time composite competency via 7 activity metrics within the 8-week cohort tenure window (capped at 80.0 hours):
+    $$\text{Score} = 100 \times \text{certs} + 50 \times \text{tasks} + 25 \times \text{lessons} + 5 \times \min(\text{tenure\_hours}, 80.0) + 100 \times \text{articles} + 5 \times \text{quizzes} + 5 \times \text{concepts}$$
 - **UI/UX Architecture (`apps/portal/templates/leaderboard.html`)**:
   * **Domain Filtering Pills**: Fast domain-level sorting across All Domains, AI Agent Development, Data Analyst, Full Stack Development, Python Automation, Cybersecurity, and DevOps & Cloud.
   * **Top 3 Podium Cards**: Luxury metallic styling for 1st (Gold 🥇), 2nd (Silver 🥈), and 3rd (Bronze 🥉).
   * **Remaining Standings (Ranks 4–50)**: Table view with sprint hours, approved bounties, completed lessons, and mastered concepts.
   * **Sticky Personal Standing Card**: Highlights the logged-in intern's live rank, total points, sprint hours, and next milestone.
+  * **Expandable Scoring Methodology Card (`#rubricCard`)**:
+    - Clean accordion header with `#rubricHeader` and `#toggleRubricBtn` (`View Scoring Rules` / `Hide Scoring Rules`).
+    - Collapsed by default (`display: none;`) to keep focus on top rankings, expanding smoothly on click with a rotating chevron indicator.
+    - Displays detailed 7-dimension scoring badge breakdown with hover interactions:
+      * Verified Certification: `+100 pts`
+      * Approved Bounty Task: `+50 pts`
+      * Completed Sprint Lesson: `+25 pts`
+      * Platform Sprint Attendance (Max 80 hrs): `+5 pts/hr`
+      * Published Engineering Article: `+100 pts`
+      * 100% Score on Daily Quiz: `+5 pts`
+      * Mastered Technical Concept: `+5 pts`
+    - Strict nonce CSP compliance: zero inline `onclick`, event listeners programmatically bound in `DOMContentLoaded`.
 
 ### 14.3. Sovereign Dual-Tier Certificates Portal (`/certificates`)
 - **Route**: `https://lms.dbert.in/certificates` (Eliminates 404).
@@ -2114,6 +2126,11 @@ The remediation resolved 12 baseline architectural defects (`BASE-01` to `BASE-1
   * Automatically prompts interns on `/portal` when `Notification.permission === 'default'`.
   * Communicates direct user value: real-time mentor code review notifications, bounty task approvals, and ₹5,000 stipend release confirmations.
   * Direct 1-click subscription registration via `DBERTPush.requestPermissionAndSubscribe()` with 24-hour dismissal cooldown support.
+- **Anti-Overlap & Stacking Architecture**:
+  * Elevated `z-index: 100001` with `backdrop-filter: blur(8px)` and `rgba(0, 0, 0, 0.82)` overlay spanning the entire viewport.
+  * Responsive desktop offset: `@media (min-width: 821px)` applies `padding-left: calc(var(--portal-sidebar, 260px) + 24px)` and `padding-right: 24px`, ensuring the card is centered directly in the active main content workspace with guaranteed 60px–140px clearance from the fixed sidebar.
+  * Mobile resilience: `@media (max-width: 820px)` centers card across the mobile screen with 16px padding.
+  * Vertical scroll safety: `overflow-y: auto` on overlay and card prevents clipping of action buttons on short laptop screens.
 
 ### 14.5. Seeded Test Personas & Verification Matrix
 The following accounts are permanently provisioned on production PostgreSQL (`dbert_lms`):

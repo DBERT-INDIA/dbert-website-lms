@@ -361,28 +361,63 @@
       background: #FFFFFF !important;
       border: 1.5px solid #E2E8F0 !important;
       border-radius: 18px;
-      padding: 1.75rem 2rem;
+      padding: 1.25rem 1.75rem;
       box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.08) !important;
       margin-top: 2rem;
+      transition: all 0.25s ease;
+    }
+    .rubric-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      cursor: pointer;
+      user-select: none;
     }
     .rubric-title {
-      font-size: 1.2rem;
+      font-size: 1.15rem;
       font-weight: 800;
       color: #0F172A !important;
-      margin-bottom: 0.5rem;
       display: flex;
       align-items: center;
       gap: 0.65rem;
       letter-spacing: -0.01em;
+      margin: 0;
     }
     .rubric-title i {
       color: #4F46E5 !important;
+    }
+    .rubric-toggle-btn {
+      background: #F1F5F9;
+      color: #334155 !important;
+      border: 1px solid #CBD5E1;
+      border-radius: 99px;
+      padding: 7px 16px;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .rubric-toggle-btn:hover {
+      background: #E2E8F0;
+      color: #0F172A !important;
+      border-color: #94A3B8;
+      transform: translateY(-1px);
+    }
+    .rubric-expandable-content {
+      display: none;
+      margin-top: 1.25rem;
+      padding-top: 1.25rem;
+      border-top: 1px dashed #CBD5E1;
     }
     .rubric-desc {
       font-size: 0.875rem;
       color: #475569 !important;
       font-weight: 500;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.25rem;
       line-height: 1.6;
     }
     .rubric-grid {
@@ -648,48 +683,94 @@
       {% endif %}
     </div>
 
-    <!-- Scoring Methodology Card -->
-    <div class="rubric-card">
-      <div class="rubric-title">
-        <i class="fa-solid fa-calculator"></i> Multidimensional Scoring Methodology
+    <!-- Scoring Methodology Expandable Card -->
+    <div class="rubric-card" id="rubricCard">
+      <div class="rubric-header" id="rubricHeader">
+        <div class="rubric-title">
+          <i class="fa-solid fa-calculator"></i>
+          <span>Multidimensional Scoring Methodology</span>
+        </div>
+        <button type="button" id="toggleRubricBtn" class="rubric-toggle-btn" aria-expanded="false" aria-controls="rubricExpandableContent">
+          <span id="rubricToggleLabel">View Scoring Rules</span>
+          <i id="rubricToggleIcon" class="fa-solid fa-chevron-down" style="font-size: 0.75rem; transition: transform 0.25s ease;"></i>
+        </button>
       </div>
-      <p class="rubric-desc">
-        The DBERT Leaderboard calculates real-time competency through an objective multidimensional scoring formula across 7 core activity metrics:
-      </p>
-      <div class="rubric-grid">
-        <div class="rubric-item">
-          <span class="rubric-badge badge-gold">+100 pts</span>
-          <span class="rubric-label">Verified Certification</span>
-        </div>
-        <div class="rubric-item">
-          <span class="rubric-badge badge-green">+50 pts</span>
-          <span class="rubric-label">Approved Bounty Task</span>
-        </div>
-        <div class="rubric-item">
-          <span class="rubric-badge badge-cyan">+25 pts</span>
-          <span class="rubric-label">Completed Sprint Lesson</span>
-        </div>
-        <div class="rubric-item">
-          <span class="rubric-badge badge-indigo">+5 pts/hr</span>
-          <span class="rubric-label">Platform Sprint Attendance (Max 80 hrs)</span>
-        </div>
-        <div class="rubric-item">
-          <span class="rubric-badge badge-blue">+100 pts</span>
-          <span class="rubric-label">Published Engineering Article</span>
-        </div>
-        <div class="rubric-item">
-          <span class="rubric-badge badge-purple">+5 pts</span>
-          <span class="rubric-label">100% Score on Daily Quiz</span>
-        </div>
-        <div class="rubric-item">
-          <span class="rubric-badge badge-rose">+5 pts</span>
-          <span class="rubric-label">Mastered Technical Concept</span>
+
+      <div id="rubricExpandableContent" class="rubric-expandable-content" style="display: none;">
+        <p class="rubric-desc">
+          The DBERT Leaderboard calculates real-time competency through an objective multidimensional scoring formula across 7 core activity metrics:
+        </p>
+        <div class="rubric-grid">
+          <div class="rubric-item">
+            <span class="rubric-badge badge-gold">+100 pts</span>
+            <span class="rubric-label">Verified Certification</span>
+          </div>
+          <div class="rubric-item">
+            <span class="rubric-badge badge-green">+50 pts</span>
+            <span class="rubric-label">Approved Bounty Task</span>
+          </div>
+          <div class="rubric-item">
+            <span class="rubric-badge badge-cyan">+25 pts</span>
+            <span class="rubric-label">Completed Sprint Lesson</span>
+          </div>
+          <div class="rubric-item">
+            <span class="rubric-badge badge-indigo">+5 pts/hr</span>
+            <span class="rubric-label">Platform Sprint Attendance (Max 80 hrs)</span>
+          </div>
+          <div class="rubric-item">
+            <span class="rubric-badge badge-blue">+100 pts</span>
+            <span class="rubric-label">Published Engineering Article</span>
+          </div>
+          <div class="rubric-item">
+            <span class="rubric-badge badge-purple">+5 pts</span>
+            <span class="rubric-label">100% Score on Daily Quiz</span>
+          </div>
+          <div class="rubric-item">
+            <span class="rubric-badge badge-rose">+5 pts</span>
+            <span class="rubric-label">Mastered Technical Concept</span>
+          </div>
         </div>
       </div>
     </div>
 
   </div>
 </main>
+
+<script nonce="{{ csp_nonce() }}">
+document.addEventListener('DOMContentLoaded', function() {
+  var header = document.getElementById('rubricHeader');
+  var content = document.getElementById('rubricExpandableContent');
+  var btn = document.getElementById('toggleRubricBtn');
+  var label = document.getElementById('rubricToggleLabel');
+  var icon = document.getElementById('rubricToggleIcon');
+
+  function toggleRubric() {
+    if (!content) return;
+    var isExpanded = content.style.display !== 'none';
+    if (isExpanded) {
+      content.style.display = 'none';
+      if (btn) btn.setAttribute('aria-expanded', 'false');
+      if (label) label.textContent = 'View Scoring Rules';
+      if (icon) {
+        icon.className = 'fa-solid fa-chevron-down';
+        icon.style.transform = 'rotate(0deg)';
+      }
+    } else {
+      content.style.display = 'block';
+      if (btn) btn.setAttribute('aria-expanded', 'true');
+      if (label) label.textContent = 'Hide Scoring Rules';
+      if (icon) {
+        icon.className = 'fa-solid fa-chevron-up';
+        icon.style.transform = 'rotate(180deg)';
+      }
+    }
+  }
+
+  if (header) {
+    header.addEventListener('click', toggleRubric);
+  }
+});
+</script>
 
 </body>
 </html>

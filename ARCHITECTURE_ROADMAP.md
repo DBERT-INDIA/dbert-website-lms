@@ -416,6 +416,11 @@ flowchart TD
   * Ranks 4–50 table view highlighting logged-in candidate row with "YOU" badge.
   * Sticky personal standing card displaying user rank, total score, sprint hours, and bounties.
   * Dedicated `.table-card-header` component with generous 1.5rem–2rem padding preventing visual clipping of table title and candidate counter against container and sidebar edges.
+  * **Expandable Multidimensional Scoring Card (`#rubricCard`)**:
+    - Clean accordion header with `#rubricHeader` and `#toggleRubricBtn` (`View Scoring Rules` / `Hide Scoring Rules`).
+    - Collapsed by default (`display: none;`) to keep focus on top rankings, expanding smoothly on click with rotating chevron indicator.
+    - Displays detailed 7-dimension scoring badge breakdown with hover interactions.
+    - Strict nonce CSP compliance: zero inline `onclick`, event listeners programmatically bound in `DOMContentLoaded`.
 
 ### 10.3. Dual-Tier Certificates Portal (`/certificates`)
 - **Route**: `https://lms.dbert.in/certificates`
@@ -428,6 +433,11 @@ flowchart TD
 - Sovereign RFC 8292 NIST P-256 VAPID web push modal (`#dbertPushPermissionModal`) in `portal.html`.
 - Prompts interns on first entry (`Notification.permission === 'default'`), highlighting mentor review, bounty approval, and stipend alerts.
 - Subscribes device via `DBERTPush.requestPermissionAndSubscribe()` and persists endpoint in PostgreSQL `web_push_devices`.
+- **Anti-Overlap & Viewport Hardening**:
+  * Elevated stacking priority (`z-index: 100001`) with dark blurred backdrop (`rgba(0, 0, 0, 0.82)`, `backdrop-filter: blur(8px)`).
+  * Desktop sidebar compensation (`@media (min-width: 821px)`): Insets left padding by `calc(var(--portal-sidebar, 260px) + 24px)` and right by `24px` to center the card within the active workspace area, preventing any visual overlap with the fixed 260px sidebar.
+  * Mobile resilience (`@media (max-width: 820px)`): Uses 16px padding and full screen centering.
+  * Vertical scroll safety (`overflow-y: auto`, max-height ceiling) prevents button clipping on short screens.
 
 ---
 

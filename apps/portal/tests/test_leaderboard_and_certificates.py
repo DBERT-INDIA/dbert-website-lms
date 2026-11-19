@@ -30,5 +30,36 @@ class TestLeaderboardAndCertificates(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertIn(b"/leaderboard", res.data)
 
+    def test_leaderboard_expandable_scoring_methodology(self):
+        res = self.client.get('/leaderboard')
+        self.assertEqual(res.status_code, 200)
+        html = res.get_data(as_text=True)
+
+        # Card and toggle elements
+        self.assertIn('id="rubricCard"', html)
+        self.assertIn('id="rubricHeader"', html)
+        self.assertIn('id="toggleRubricBtn"', html)
+        self.assertIn('View Scoring Rules', html)
+        self.assertIn('id="rubricExpandableContent"', html)
+        self.assertIn('style="display: none;"', html)
+
+        # 7 scoring metrics
+        self.assertIn('Verified Certification', html)
+        self.assertIn('+100 pts', html)
+        self.assertIn('Approved Bounty Task', html)
+        self.assertIn('+50 pts', html)
+        self.assertIn('Completed Sprint Lesson', html)
+        self.assertIn('+25 pts', html)
+        self.assertIn('Platform Sprint Attendance', html)
+        self.assertIn('+5 pts/hr', html)
+        self.assertIn('Published Engineering Article', html)
+        self.assertIn('100% Score on Daily Quiz', html)
+        self.assertIn('+5 pts', html)
+        self.assertIn('Mastered Technical Concept', html)
+
+        # CSP compliance: zero inline onclick
+        self.assertNotIn('onclick=', html)
+        self.assertIn('header.addEventListener(\'click\', toggleRubric);', html)
+
 if __name__ == '__main__':
     unittest.main()
