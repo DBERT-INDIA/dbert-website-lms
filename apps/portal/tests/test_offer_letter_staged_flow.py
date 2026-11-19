@@ -71,11 +71,9 @@ class TestOfferLetterStagedFlow(unittest.TestCase):
             self.assertNotIn("Signed by None on None", html)
             self.assertNotIn("None &bull; Recorded", html)
 
-            # Signed banner must be hidden when unsigned
-            self.assertIn('id="signedBanner" style="display:none;', html)
-
-            # Payment section must be hidden when unsigned
-            self.assertIn('id="postSignPaymentSection" style="display:none;', html)
+            # Signed banner and payment section must NOT be in the HTML at all when unsigned
+            self.assertNotIn('id="signedBanner"', html)
+            self.assertNotIn('id="postSignPaymentSection"', html)
 
             # Stepper Step 3 must be locked/pending
             self.assertIn("Pending Signature", html)
@@ -136,8 +134,8 @@ class TestOfferLetterStagedFlow(unittest.TestCase):
             # Payment section must be active
             self.assertIn('id="postSignPaymentSection" style="display:block;', html)
 
-            # Compact QR code (115px)
-            self.assertIn('width:115px; height:115px;', html)
+            # Compact QR code (130px)
+            self.assertIn('width:130px; height:130px;', html)
 
             # Download QR button
             self.assertIn('id="btnDownloadOfferQr"', html)
@@ -148,13 +146,15 @@ class TestOfferLetterStagedFlow(unittest.TestCase):
             self.assertIn("Q652429146@ybl", html)
             self.assertIn("copyUpiVpa", html)
 
-            # High-contrast 1-Tap UPI Launchers
+            # High-contrast 1-Tap UPI Launchers matching /enroll/1999 standard
             self.assertIn("GPay", html)
             self.assertIn("PhonePe", html)
             self.assertIn("Paytm", html)
             self.assertIn("Any UPI", html)
-            self.assertIn("background:#5f259f", html)  # PhonePe purple
-            self.assertIn("background:#00baf2", html)  # Paytm cyan (distinct from dark card)
+            self.assertIn("background:#1A73E8", html)  # GPay Google Blue
+            self.assertIn("background:#5F259F", html)  # PhonePe purple
+            self.assertIn("background:#00BAF2", html)  # Paytm cyan (distinct from dark card)
+            self.assertIn("background:#10B981", html)  # Any UPI emerald green
 
             # Screen 2 (Action) must be active and Screen 1 (Review) hidden for signed candidate
             self.assertIn('id="screenActionSteps" class="offer-screen-view" style="display:block;', html)

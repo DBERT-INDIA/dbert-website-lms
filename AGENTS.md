@@ -2301,6 +2301,43 @@ $$\text{Score} = 100 \times \text{certs} + 50 \times \text{tasks} + 25 \times \t
 - **Card Header Component**: Replaced inline styles with `.table-card-header` class with `padding: 1.5rem 2rem;` (desktop) and `padding: 1.25rem 1.25rem;` (mobile).
 - **Anti-Clipping Design**: Table heading `"Leaderboard Standings (Top 50)"` and candidate count `"Showing 50 ranked candidates in All"` have ample margin and flex spacing, preventing any glyph clipping of leading characters ("L" and "S") against the card border or sidebar.
 
+---
+
+## 18. Staged Offer Review, Signature-First Gating & Luxury Dark Seat Confirmation (`/portal/offer`)
+
+### 18.1. Screen Segregation & Strict Gating Architecture
+- **Screen 1 (`#screenOfferReview`)**: Official Appointment Letter reading view with legal terms, responsibilities, stipends, and dual navigation CTAs.
+- **Screen 2 (`#screenActionSteps`)**:
+  - **For Unsigned Candidates (`is_signed == False`)**:
+    * Jinja strictly compiles ONLY `#offerSignCard` (Step 2: Review & Digital Acceptance).
+    * `#signedBanner` ("STEP 2 COMPLETED: AGREEMENT EXECUTED / Signed by None on None") and `#postSignPaymentSection` ("STEP 3: COHORT SEAT CONFIRMATION") are physically omitted from HTML compilation via a strict `{% if is_signed %}` server gate.
+    * Zero possibility of leaking empty signature names or rendering Step 3 before digital agreement execution.
+  - **For Executed Candidates (`is_signed == True`)**:
+    * Jinja strictly compiles `#signedBanner` (displaying actual signature name and execution timestamp recorded under Indian IT Act, 2000) and `#postSignPaymentSection` (Step 3: Cohort Seat Confirmation).
+    * `#offerSignCard` is physically omitted from HTML compilation.
+- **Digital Execution Transition Protocol**:
+  * When candidate signs, AJAX POST to `/portal/offer/sign` commits signature to database and returns `{ status: "success" }`.
+  * JavaScript displays toast: `"Appointment Agreement Digitally Signed! Loading Cohort Seat Confirmation..."` and triggers `window.location.reload()`.
+  * Upon reload, `is_signed` evaluates `True`, automatically revealing Screen 2 with the Executed Banner and Step 3 Payment/UTR.
+
+### 18.2. Step 3 UI/UX Design System Parity (`/enroll/1999` Standard)
+- **Left Card (Scan & Pay ₹499 + Mobile 1-Tap Fast Pay)**:
+  * Container: `background: #0B0F17; border: 1px solid #2A364B; border-radius: 12px; padding: 22px;`.
+  * White QR Box: `130px × 130px` high-contrast wrapper (`background: #FFFFFF; padding: 12px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.6)`).
+  * High-Res Download Button: `background: transparent; color: #E2B96F; border: 1px solid rgba(226, 185, 111, 0.4)`.
+  * Merchant VPA Pill: `background: #141A23; border: 1px solid #1E2633; color: #F0F4F8;` monospace with copy button (`color: #38BDF8; font-weight: 700`).
+  * 1-Tap Mobile UPI Intent Launchers (2x2 Grid):
+    - Google Pay: `background: #1A73E8; color: #FFFFFF !important; font-weight: 800;`
+    - PhonePe: `background: #5F259F; color: #FFFFFF !important; font-weight: 800;`
+    - Paytm: `background: #00BAF2; color: #FFFFFF !important; font-weight: 800;`
+    - Any UPI: `background: #10B981; color: #FFFFFF !important; font-weight: 800;`
+- **Right Card (12-Digit Bank UTR Entry Form)**:
+  * Container: `background: #0B0F17; border: 1px solid #2A364B; border-radius: 12px; padding: 22px;`.
+  * Heading: `#F0F4F8`, description `#8A9AB5`.
+  * UTR input: `background: #080C14; border: 1.5px solid #2A364B; color: #F0F4F8; font-family: monospace; letter-spacing: 1.5px;`.
+  * Submit button: `background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%); color: #0b1120 !important; font-weight: 900;`.
+  * Footer note: `border-top: 1px solid #1E2633; color: #8A9AB5; font-size: 12px;`.
+
 
 
 

@@ -152,8 +152,6 @@
     color: #ffffff !important;
     transform: translateY(-1px);
   }
-    transition: all 0.2s ease;
-  }
   .offer-stepper-card {
     background: #ffffff;
     border: 1px solid #e2e8f0;
@@ -1367,8 +1365,9 @@
           </div>
         </div>
 
-        <!-- A. SIGNED CONFIRMATION BANNER (Strictly visible ONLY if signed with verified signature, or revealed dynamically on signing) -->
-        <div id="signedBanner" style="display:{% if is_signed and offer and offer.signature_name %}flex{% else %}none{% endif %}; background:#f0fdf4; border:1.5px solid #86efac; border-radius:10px; padding:16px 20px; margin-bottom:20px; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+        {% if is_signed %}
+        <!-- ── EXECUTED STATE: STEP 2 CONFIRMATION BANNER ── -->
+        <div id="signedBanner" style="display:flex; background:#f0fdf4; border:1.5px solid #86efac; border-radius:10px; padding:16px 20px; margin-bottom:24px; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
           <div style="display:flex; align-items:center; gap:12px;">
             <div style="width:38px; height:38px; border-radius:50%; background:#10b981; color:#ffffff; display:flex; align-items:center; justify-content:center; font-size:17px; flex-shrink:0;">
               <i class="fa-solid fa-check"></i>
@@ -1390,61 +1389,9 @@
           </span>
         </div>
 
-        {% if not is_signed %}
-        <!-- B. DIGITAL SIGNATURE FORM (Visible first: Candidate reads letter and signs here) -->
-        <div id="offerSignCard">
-          <div style="display:flex; align-items:center; gap:12px; margin-bottom:14px;">
-            <div style="width:36px; height:36px; border-radius:50%; background:#eff6ff; color:#2563eb; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; border:1px solid #bfdbfe;">
-              <i class="fa-solid fa-signature"></i>
-            </div>
-            <div>
-              <div style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.8px; color:#2563eb;">
-                STEP 2: REVIEW &amp; DIGITAL ACCEPTANCE
-              </div>
-              <h3 style="margin:2px 0 0; font-size:18px; font-weight:900; color:#0f172a; font-family:'Georgia', serif;">
-                Execute Appointment Agreement
-              </h3>
-            </div>
-          </div>
-          <p style="font-size:13.5px; color:#475569; line-height:1.65; margin:0 0 16px;">
-            To execute this appointment agreement and secure your workstation seat in the <strong>{{ offer.domain }}</strong> cohort, please confirm your legal name and accept the terms below.
-          </p>
-
-          <form id="offerSignForm">
-            <div class="sig-input-group" style="margin:16px 0; max-width:520px;">
-              <label for="sigNameInput" class="sig-input-label" style="display:block; font-size:12px; font-weight:800; color:#0f172a; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:8px;">
-                Full Legal Name (Digital Signature) *
-              </label>
-              <input type="text" id="sigNameInput" placeholder="e.g. {{ offer.name }}" value="{{ offer.name }}" required class="sig-input-field" style="width:100%; padding:13px 16px; border:2px solid #cbd5e1; border-radius:8px; font-size:15px; font-weight:700; color:#0f172a; background:#ffffff; box-sizing:border-box;">
-              <p style="font-size:11.5px; color:#64748b; margin:6px 0 0;">
-                <i class="fa-solid fa-circle-info"></i> Must match candidate identification on official academic records.
-              </p>
-            </div>
-
-            <label class="terms-acceptance-card" style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:14px 18px; display:flex; align-items:flex-start; gap:12px; margin-bottom:18px; cursor:pointer;">
-              <input type="checkbox" id="agreeCheckbox" required style="width:18px; height:18px; margin-top:2px; accent-color:#10b981; cursor:pointer;">
-              <span class="terms-acceptance-text" style="font-size:13px; line-height:1.6; color:#334155;">
-                I, <strong>{{ offer.name }}</strong>, have read, understood, and accept all terms of this Appointment Letter &amp; Technical Engagement, including attendance commitments, remote sprint deliverables, intellectual property assignments, and the ₹499 refundable caution deposit terms.
-              </span>
-            </label>
-
-            <div id="signAlertBox" style="display:none; padding:12px 16px; border-radius:8px; font-size:13.5px; font-weight:600; margin-bottom:16px;"></div>
-
-            <div style="display:flex; align-items:center; gap:16px; flex-wrap:wrap;">
-              <button type="submit" id="signSubmitBtn" class="btn-emerald btn-gold-pulse" style="padding:15px 32px; font-size:15px; font-weight:900; text-transform:uppercase; letter-spacing:0.5px; border-radius:10px; background:linear-gradient(135deg, #10b981 0%, #059669 100%); color:#ffffff !important; border:1.5px solid #6ee7b7; box-shadow:0 6px 20px rgba(16, 185, 129, 0.45); cursor:pointer; display:inline-flex; align-items:center; gap:10px;">
-                <i class="fa-solid fa-signature" style="font-size:19px;"></i> Sign &amp; Accept Appointment Agreement
-              </button>
-              <span style="font-size:12px; color:#64748b;">
-                <i class="fa-solid fa-lock"></i> Binding digital signature recorded under Indian IT Act, 2000.
-              </span>
-            </div>
-          </form>
-        </div>
-        {% endif %}
-
-        <!-- C. POST-SIGN PAYMENT SECTION (REVEALED IN-PLACE AFTER SIGNING OR IF ALREADY SIGNED) -->
         {% if not is_deposit_verified %}
-        <div id="postSignPaymentSection" style="display:{% if is_signed %}block{% else %}none{% endif %}; margin-top:{% if not is_signed %}24px{% else %}0{% endif %};">
+        <!-- ── STEP 3: COHORT SEAT CONFIRMATION (REVEALED ON NEXT SCREEN AFTER SIGNING) ── -->
+        <div id="postSignPaymentSection" style="display:block; margin-top:0;">
 
           {% if enrollment and (enrollment.utr or enrollment.payment_status in ('Pending', 'Submitted', 'Under Review')) %}
           <!-- ── STATE 3A: DEPOSIT SUBMITTED & UNDER ADMIN VERIFICATION ── -->
@@ -1503,82 +1450,84 @@
           </p>
 
           <!-- Scan & Pay QR Code + 1-Tap UPI Launchers + UTR Submission Grid -->
-          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:20px; margin-bottom:18px;">
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:20px; margin-bottom:18px;">
 
-            <!-- Left: QR Code & Fast Pay Card -->
-            <div style="background:#0b1120; border:1px solid #1e293b; border-radius:12px; padding:20px; display:flex; flex-direction:column; justify-content:space-between; box-shadow:0 8px 24px rgba(0,0,0,0.18);">
+            <!-- Left: QR Code & Fast Pay Card (Exact /enroll/1999 Luxury Dark Standard) -->
+            <div style="background:#0B0F17; border:1px solid #2A364B; border-radius:12px; padding:22px; display:flex; flex-direction:column; justify-content:space-between; box-shadow:0 8px 24px rgba(0,0,0,0.25);">
               <div>
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                  <span style="font-size:11px; font-weight:800; letter-spacing:0.8px; text-transform:uppercase; color:#fbbf24;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+                  <span style="font-size:11px; font-weight:800; letter-spacing:0.8px; text-transform:uppercase; color:#fbbf24; display:inline-flex; align-items:center; gap:6px;">
                     <i class="fa-solid fa-qrcode"></i> Scan &amp; Pay ₹499
                   </span>
-                  <span style="font-size:11px; font-weight:700; background:rgba(16,185,129,0.2); color:#34d399; padding:3px 8px; border-radius:99px; border:1px solid #10b981;">
+                  <span style="font-size:11px; font-weight:700; background:rgba(16,185,129,0.2); color:#34d399; padding:3px 10px; border-radius:99px; border:1px solid #10b981;">
                     100% Refundable
                   </span>
                 </div>
 
-                <!-- QR Display (Compact 115px + Download Option) -->
-                <div style="text-align:center; padding:10px; background:#ffffff; border-radius:10px; margin-bottom:12px;">
-                  <img src="/static/img/qrcode.jpeg" id="offerUpiQrImg" alt="DBERT Admissions ₹499 UPI QR" style="width:115px; height:115px; object-fit:contain; border-radius:6px; display:inline-block;">
-                  <div style="font-size:11px; font-weight:800; color:#0f172a; margin-top:6px; letter-spacing:0.4px;">
+                <!-- QR Display (Compact White Wrapper + Download Option) -->
+                <div style="text-align:center; padding:12px; background:#ffffff; border-radius:12px; margin-bottom:14px; box-shadow:0 4px 20px rgba(0,0,0,0.6);">
+                  <img src="/static/img/qrcode.jpeg" id="offerUpiQrImg" alt="DBERT Admissions ₹499 UPI QR" style="width:130px; height:130px; object-fit:contain; border-radius:6px; display:block; margin:0 auto;">
+                  <div style="font-size:11px; font-weight:800; color:#0f172a; margin-top:8px; letter-spacing:0.4px;">
                     Scan with GPay &bull; PhonePe &bull; Paytm &bull; BHIM
                   </div>
                   <div style="margin-top:8px;">
-                    <a href="/static/img/qrcode.jpeg" download="DBERT_Caution_Deposit_UPI_QR.jpeg" id="btnDownloadOfferQr" style="display:inline-flex; align-items:center; gap:6px; background:#f1f5f9; color:#0f172a; border:1px solid #cbd5e1; border-radius:6px; padding:5px 12px; font-size:11.5px; font-weight:700; text-decoration:none; cursor:pointer; transition:all 0.2s;">
+                    <a href="/static/img/qrcode.jpeg" download="DBERT_Caution_Deposit_UPI_QR.jpeg" id="btnDownloadOfferQr" style="display:inline-flex; align-items:center; gap:6px; background:transparent; color:#E2B96F; border:1px solid rgba(226, 185, 111, 0.4); border-radius:6px; padding:6px 14px; font-size:12px; font-weight:700; text-decoration:none; cursor:pointer; transition:all 0.15s ease;">
                       <i class="fa-solid fa-download"></i> Download QR
                     </a>
                   </div>
                 </div>
 
                 <!-- Copy UPI ID Pill -->
-                <div style="font-size:12px; color:#94a3b8; text-align:center; margin-bottom:14px; display:flex; align-items:center; justify-content:center; gap:6px; flex-wrap:wrap;">
+                <div style="font-size:12px; color:#8A9AB5; text-align:center; margin-bottom:14px; display:flex; align-items:center; justify-content:center; gap:8px; flex-wrap:wrap;">
                   <span>Merchant VPA:</span>
-                  <button type="button" id="copyVpaBtn" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#fbbf24; font-family:monospace; font-size:12px; font-weight:700; padding:4px 10px; border-radius:6px; cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:all 0.2s;">
+                  <span class="vpa-badge" style="display:inline-flex; align-items:center; gap:8px; background:#141A23; border:1px solid #1E2633; border-radius:6px; padding:5px 12px; font-size:12.5px; color:#F0F4F8; font-family:Menlo, Consolas, monospace;">
                     <span id="vpaText">Q652429146@ybl</span>
-                    <i class="fa-solid fa-copy" id="copyVpaIcon"></i>
-                  </button>
+                    <button type="button" id="copyVpaBtn" style="background:transparent; border:none; color:#38BDF8; font-size:12px; font-weight:700; cursor:pointer; padding:2px 4px; display:inline-flex; align-items:center; gap:4px;" title="Copy UPI ID">
+                      <i class="fa-solid fa-copy" id="copyVpaIcon"></i> Copy
+                    </button>
+                  </span>
                 </div>
               </div>
 
-              <!-- 1-Tap Mobile UPI Buttons (Vibrant, brand-distinct, non-blending) -->
+              <!-- 1-Tap Mobile UPI Buttons (Exact /enroll/1999 Spec: GPay, PhonePe, Paytm, Any UPI) -->
               <div>
-                <div style="font-size:11px; font-weight:700; color:#cbd5e1; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px;">
+                <div style="font-size:11px; font-weight:700; color:#8A9AB5; margin-bottom:10px; text-transform:uppercase; letter-spacing:0.06em; text-align:center;">
                   <i class="fa-solid fa-bolt" style="color:#fbbf24;"></i> Mobile 1-Tap Fast Pay (₹499):
                 </div>
-                <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:8px; margin-bottom:6px;">
-                  <!-- GPay: Pure White with Official Google Blue Border & Icon -->
-                  <a href="intent://pay?pa=Q652429146@ybl&pn=DBERT%20Admissions&am=499&cu=INR&tn=DBERT-DEPOSIT-{{ offer.offer_letter_id }}#Intent;scheme=upi;package=com.google.android.apps.nbu.paisa.user;end" target="_blank" rel="noopener" style="display:flex; align-items:center; justify-content:center; gap:7px; padding:12px 14px; background:#ffffff; border:2px solid #4285F4; border-radius:8px; color:#0f172a !important; text-decoration:none; font-size:13px; font-weight:800; box-shadow:0 4px 12px rgba(66, 133, 244, 0.3); transition:transform 0.15s ease;">
-                    <i class="fab fa-google-pay" style="font-size:22px; color:#4285F4;"></i> GPay
+                <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:10px; margin-bottom:4px;">
+                  <!-- GPay: Official Google Blue -->
+                  <a href="intent://pay?pa=Q652429146@ybl&pn=DBERT%20Admissions&am=499&cu=INR&tn=DBERT-DEPOSIT-{{ offer.offer_letter_id }}#Intent;scheme=upi;package=com.google.android.apps.nbu.paisa.user;end" target="_blank" rel="noopener" style="display:flex; align-items:center; justify-content:center; gap:8px; padding:11px 14px; background:#1A73E8; border-radius:8px; color:#FFFFFF !important; text-decoration:none; font-size:13px; font-weight:800; box-shadow:0 4px 12px rgba(26, 115, 232, 0.35); transition:transform 0.15s ease;">
+                    <i class="fab fa-google-pay" style="font-size:20px; color:#FFFFFF;"></i> GPay
                   </a>
-                  <!-- PhonePe: Vibrant Royal Purple with Bright Border -->
-                  <a href="phonepe://pay?pa=Q652429146@ybl&pn=DBERT%20Admissions&am=499&cu=INR&tn=DBERT-DEPOSIT-{{ offer.offer_letter_id }}" target="_blank" rel="noopener" style="display:flex; align-items:center; justify-content:center; gap:7px; padding:12px 14px; background:#5f259f; border:2px solid #c084fc; border-radius:8px; color:#ffffff !important; text-decoration:none; font-size:13px; font-weight:800; box-shadow:0 4px 14px rgba(95, 37, 159, 0.55); transition:transform 0.15s ease;">
-                    <i class="fas fa-mobile-screen" style="font-size:15px; color:#ffffff;"></i> PhonePe
+                  <!-- PhonePe: Vibrant Royal Purple -->
+                  <a href="phonepe://pay?pa=Q652429146@ybl&pn=DBERT%20Admissions&am=499&cu=INR&tn=DBERT-DEPOSIT-{{ offer.offer_letter_id }}" target="_blank" rel="noopener" style="display:flex; align-items:center; justify-content:center; gap:8px; padding:11px 14px; background:#5F259F; border-radius:8px; color:#FFFFFF !important; text-decoration:none; font-size:13px; font-weight:800; box-shadow:0 4px 14px rgba(95, 37, 159, 0.45); transition:transform 0.15s ease;">
+                    <i class="fas fa-mobile-screen" style="font-size:15px; color:#FFFFFF;"></i> PhonePe
                   </a>
-                  <!-- Paytm: Electric Cyan with Deep Navy Contrast (Distinct from dark card background) -->
-                  <a href="paytmmp://pay?pa=Q652429146@ybl&pn=DBERT%20Admissions&am=499&cu=INR&tn=DBERT-DEPOSIT-{{ offer.offer_letter_id }}" target="_blank" rel="noopener" style="display:flex; align-items:center; justify-content:center; gap:7px; padding:12px 14px; background:#00baf2; border:2px solid #ffffff; border-radius:8px; color:#002970 !important; text-decoration:none; font-size:13px; font-weight:900; box-shadow:0 4px 14px rgba(0, 186, 242, 0.45); transition:transform 0.15s ease;">
-                    <i class="fas fa-wallet" style="font-size:15px; color:#002970;"></i> Paytm
+                  <!-- Paytm: Electric Cyan -->
+                  <a href="paytmmp://pay?pa=Q652429146@ybl&pn=DBERT%20Admissions&am=499&cu=INR&tn=DBERT-DEPOSIT-{{ offer.offer_letter_id }}" target="_blank" rel="noopener" style="display:flex; align-items:center; justify-content:center; gap:8px; padding:11px 14px; background:#00BAF2; border-radius:8px; color:#FFFFFF !important; text-decoration:none; font-size:13px; font-weight:800; box-shadow:0 4px 14px rgba(0, 186, 242, 0.35); transition:transform 0.15s ease;">
+                    <i class="fas fa-wallet" style="font-size:15px; color:#FFFFFF;"></i> Paytm
                   </a>
-                  <!-- Any UPI: Radiant Gold/Amber Gradient with Crisp Border -->
-                  <a href="upi://pay?pa=Q652429146@ybl&pn=DBERT%20Admissions&am=499&cu=INR&tn=DBERT-DEPOSIT-{{ offer.offer_letter_id }}" target="_blank" rel="noopener" style="display:flex; align-items:center; justify-content:center; gap:7px; padding:12px 14px; background:linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border:2px solid #fef08a; border-radius:8px; color:#0b1120 !important; text-decoration:none; font-size:13px; font-weight:900; box-shadow:0 4px 14px rgba(245, 158, 11, 0.5); transition:transform 0.15s ease;">
-                    <i class="fas fa-qrcode" style="font-size:15px; color:#0b1120;"></i> Any UPI
+                  <!-- Any UPI: Emerald Green -->
+                  <a href="upi://pay?pa=Q652429146@ybl&pn=DBERT%20Admissions&am=499&cu=INR&tn=DBERT-DEPOSIT-{{ offer.offer_letter_id }}" target="_blank" rel="noopener" style="display:flex; align-items:center; justify-content:center; gap:8px; padding:11px 14px; background:#10B981; border-radius:8px; color:#FFFFFF !important; text-decoration:none; font-size:13px; font-weight:800; box-shadow:0 4px 14px rgba(16, 185, 129, 0.35); transition:transform 0.15s ease;">
+                    <i class="fas fa-qrcode" style="font-size:15px; color:#FFFFFF;"></i> Any UPI
                   </a>
                 </div>
               </div>
             </div>
 
-            <!-- Right: UTR Entry Form Card -->
-            <div style="background:#f8fafc; border:1.5px solid #cbd5e1; border-radius:12px; padding:24px; display:flex; flex-direction:column; justify-content:space-between; box-shadow:0 6px 18px rgba(0,0,0,0.04);">
+            <!-- Right: UTR Entry Form Card (Exact /enroll/1999 Luxury Dark Standard) -->
+            <div style="background:#0B0F17; border:1px solid #2A364B; border-radius:12px; padding:22px; display:flex; flex-direction:column; justify-content:space-between; box-shadow:0 8px 24px rgba(0,0,0,0.25);">
               <div>
                 <div style="display:flex; align-items:center; gap:8px; margin-bottom:12px;">
-                  <span style="width:26px; height:26px; border-radius:50%; background:#d97706; color:#ffffff; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:800;">
+                  <span style="width:26px; height:26px; border-radius:50%; background:#d97706; color:#ffffff; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800;">
                     2
                   </span>
-                  <span style="font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:0.7px; color:#0f172a;">
+                  <span style="font-size:12.5px; font-weight:800; text-transform:uppercase; letter-spacing:0.7px; color:#F0F4F8;">
                     Submit UTR for Seat Confirmation
                   </span>
                 </div>
 
-                <p style="font-size:13px; color:#475569; line-height:1.6; margin:0 0 16px;">
+                <p style="font-size:13px; color:#8A9AB5; line-height:1.6; margin:0 0 16px;">
                   After completing your ₹499 transfer via QR code or 1-Tap UPI app, copy the <strong>12-Digit Bank UTR / UPI Reference Number</strong> and enter it below to confirm your cohort workstation seat.
                 </p>
 
@@ -1586,10 +1535,10 @@
                 <form id="depositSubmitForm">
                   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                   <div class="sig-input-group" style="margin-bottom:16px;">
-                    <label for="depositUtrInput" class="sig-input-label" style="display:block; font-size:12px; font-weight:800; color:#0f172a; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:8px;">
+                    <label for="depositUtrInput" class="sig-input-label" style="display:block; font-size:11.5px; font-weight:800; color:#cbd5e1; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:8px;">
                       12-Digit Bank UTR / UPI Ref Number *
                     </label>
-                    <input type="text" id="depositUtrInput" name="utr_number" maxlength="12" pattern="\d{12}" placeholder="e.g. 679862090077" required class="sig-input-field" style="width:100%; padding:14px 16px; border:2px solid #cbd5e1; border-radius:8px; font-size:16px; font-weight:700; font-family:monospace; color:#0f172a; background:#ffffff; box-sizing:border-box; letter-spacing:1.5px;">
+                    <input type="text" id="depositUtrInput" name="utr_number" maxlength="12" pattern="\d{12}" placeholder="e.g. 679862090077" required class="sig-input-field" style="width:100%; padding:13px 16px; border:1.5px solid #2A364B; border-radius:8px; font-size:15px; font-weight:700; font-family:monospace; color:#F0F4F8; background:#080C14; box-sizing:border-box; letter-spacing:1.5px;">
                     <p style="font-size:11.5px; color:#64748b; margin:6px 0 0;">
                       <i class="fa-solid fa-circle-info"></i> Found in transaction details on GPay, PhonePe, Paytm, or bank SMS receipt.
                     </p>
@@ -1598,15 +1547,15 @@
                   <input type="hidden" name="domain" value="{{ offer.domain }}">
                   <input type="hidden" name="joining_date" value="{{ offer.batch_start_date }}">
 
-                  <div id="depositAlertBox" style="display:none; padding:12px 16px; border-radius:8px; font-size:13.5px; font-weight:600; margin-bottom:16px;"></div>
+                  <div id="depositAlertBox" style="display:none; padding:12px 16px; border-radius:8px; font-size:13px; font-weight:600; margin-bottom:16px;"></div>
 
-                  <button type="submit" id="depositSubmitBtn" class="btn-gold btn-gold-pulse" style="width:100%; justify-content:center; padding:15px 24px; font-size:15px; font-weight:900; text-transform:uppercase; letter-spacing:0.5px; box-shadow:0 6px 20px rgba(245, 158, 11, 0.45); border-radius:10px; background:linear-gradient(135deg, #fbbf24 0%, #d97706 100%); color:#0b1120 !important; border:1.5px solid #fde68a; cursor:pointer; display:inline-flex; align-items:center; gap:10px;">
+                  <button type="submit" id="depositSubmitBtn" class="btn-gold btn-gold-pulse" style="width:100%; justify-content:center; padding:14px 24px; font-size:14.5px; font-weight:900; text-transform:uppercase; letter-spacing:0.5px; box-shadow:0 6px 20px rgba(245, 158, 11, 0.45); border-radius:9px; background:linear-gradient(135deg, #fbbf24 0%, #d97706 100%); color:#0b1120 !important; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:10px;">
                     <i class="fa-solid fa-circle-check" style="font-size:18px;"></i> Submit UTR for Admin Verification &rarr;
                   </button>
                 </form>
               </div>
 
-              <div style="margin-top:16px; padding-top:14px; border-top:1px solid #e2e8f0; font-size:12px; color:#64748b; display:flex; align-items:center; gap:8px;">
+              <div style="margin-top:16px; padding-top:14px; border-top:1px solid #1E2633; font-size:12px; color:#8A9AB5; display:flex; align-items:center; gap:8px;">
                 <i class="fa-solid fa-shield-halved" style="color:#10b981; font-size:15px;"></i>
                 <span>Automated admissions ledger reconciliation &bull; Unlocks official signed PDF upon admin check.</span>
               </div>
@@ -1615,6 +1564,59 @@
           </div>
           {% endif %}
 
+        </div>
+        {% endif %}
+
+        {% else %}
+
+        <!-- ── UNSIGNED STATE: STEP 2 REVIEW & DIGITAL ACCEPTANCE ONLY ── -->
+        <div id="offerSignCard">
+          <div style="display:flex; align-items:center; gap:12px; margin-bottom:14px;">
+            <div style="width:36px; height:36px; border-radius:50%; background:#eff6ff; color:#2563eb; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; border:1px solid #bfdbfe;">
+              <i class="fa-solid fa-signature"></i>
+            </div>
+            <div>
+              <div style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.8px; color:#2563eb;">
+                STEP 2: REVIEW &amp; DIGITAL ACCEPTANCE
+              </div>
+              <h3 style="margin:2px 0 0; font-size:18px; font-weight:900; color:#0f172a; font-family:'Georgia', serif;">
+                Execute Appointment Agreement
+              </h3>
+            </div>
+          </div>
+          <p style="font-size:13.5px; color:#475569; line-height:1.65; margin:0 0 16px;">
+            To execute this appointment agreement and secure your workstation seat in the <strong>{{ offer.domain }}</strong> cohort, please confirm your legal name and accept the terms below.
+          </p>
+
+          <form id="offerSignForm">
+            <div class="sig-input-group" style="margin:16px 0; max-width:520px;">
+              <label for="sigNameInput" class="sig-input-label" style="display:block; font-size:12px; font-weight:800; color:#0f172a; text-transform:uppercase; letter-spacing:0.6px; margin-bottom:8px;">
+                Full Legal Name (Digital Signature) *
+              </label>
+              <input type="text" id="sigNameInput" placeholder="e.g. {{ offer.name }}" value="{{ offer.name }}" required class="sig-input-field" style="width:100%; padding:13px 16px; border:2px solid #cbd5e1; border-radius:8px; font-size:15px; font-weight:700; color:#0f172a; background:#ffffff; box-sizing:border-box;">
+              <p style="font-size:11.5px; color:#64748b; margin:6px 0 0;">
+                <i class="fa-solid fa-circle-info"></i> Must match candidate identification on official academic records.
+              </p>
+            </div>
+
+            <label class="terms-acceptance-card" style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:14px 18px; display:flex; align-items:flex-start; gap:12px; margin-bottom:18px; cursor:pointer;">
+              <input type="checkbox" id="agreeCheckbox" required style="width:18px; height:18px; margin-top:2px; accent-color:#10b981; cursor:pointer;">
+              <span class="terms-acceptance-text" style="font-size:13px; line-height:1.6; color:#334155;">
+                I, <strong>{{ offer.name }}</strong>, have read, understood, and accept all terms of this Appointment Letter &amp; Technical Engagement, including attendance commitments, remote sprint deliverables, intellectual property assignments, and the ₹499 refundable caution deposit terms.
+              </span>
+            </label>
+
+            <div id="signAlertBox" style="display:none; padding:12px 16px; border-radius:8px; font-size:13.5px; font-weight:600; margin-bottom:16px;"></div>
+
+            <div style="display:flex; align-items:center; gap:16px; flex-wrap:wrap;">
+              <button type="submit" id="signSubmitBtn" class="btn-emerald btn-gold-pulse" style="padding:15px 32px; font-size:15px; font-weight:900; text-transform:uppercase; letter-spacing:0.5px; border-radius:10px; background:linear-gradient(135deg, #10b981 0%, #059669 100%); color:#ffffff !important; border:1.5px solid #6ee7b7; box-shadow:0 6px 20px rgba(16, 185, 129, 0.45); cursor:pointer; display:inline-flex; align-items:center; gap:10px;">
+                <i class="fa-solid fa-signature" style="font-size:19px;"></i> Sign &amp; Accept Appointment Agreement
+              </button>
+              <span style="font-size:12px; color:#64748b;">
+                <i class="fa-solid fa-lock"></i> Binding digital signature recorded under Indian IT Act, 2000.
+              </span>
+            </div>
+          </form>
         </div>
         {% endif %}
 
@@ -1886,85 +1888,11 @@ function handleSignOffer(e) {
   .then(function(res) { return res.json(); })
   .then(function(data) {
     if (data.status === 'success') {
-      // 1. Hide the sign form card
-      var formCard = document.getElementById('offerSignCard');
-      if (formCard) formCard.style.display = 'none';
-
-      // 2. Show the signed banner
-      var banner = document.getElementById('signedBanner');
-      if (banner) {
-        banner.style.display = 'flex';
-        var nameSpan = document.getElementById('signedNameDisplay');
-        if (nameSpan) nameSpan.textContent = data.signature_name || name;
-        var dateSpan = document.getElementById('signedDateDisplay');
-        if (dateSpan) dateSpan.textContent = data.accepted_at || 'Just now';
-      }
-
-      // 3. Update candidate digital signature block in the parchment document above
-      var parchmentSigZone = document.getElementById('parchmentCandidateSigZone');
-      if (parchmentSigZone) {
-        parchmentSigZone.innerHTML = '<div class="sig-cursive-font" style="color:#15803d; font-family:\'Brush Script MT\', \'Dancing Script\', cursive, serif; font-size:24px; font-weight:700;">' + (data.signature_name || name) + '</div>';
-      }
-      var parchmentSigStatus = document.getElementById('parchmentCandidateSigStatus');
-      if (parchmentSigStatus) {
-        parchmentSigStatus.innerHTML = '<span style="color:#15803d; font-weight:700;"><i class="fa-solid fa-check-double"></i> Executed: ' + (data.accepted_at || 'Just now') + '</span>';
-      }
-
-      // 4. Update the Progress Stepper
-      var step2Item = document.getElementById('stepperStep2');
-      if (step2Item) {
-        step2Item.className = 'step-item step-completed';
-        var step2Num = step2Item.querySelector('.step-number');
-        if (step2Num) {
-          step2Num.style.background = '#10b981';
-          step2Num.style.color = '#ffffff';
-          step2Num.innerHTML = '<i class="fa-solid fa-check"></i>';
-        }
-        var step2Lbl = step2Item.querySelector('.step-label');
-        if (step2Lbl) {
-          step2Lbl.style.color = '#10b981';
-          step2Lbl.textContent = 'Step 2 Executed';
-        }
-      }
-
-      var step3Item = document.getElementById('stepperStep3');
-      if (step3Item) {
-        step3Item.className = 'step-item step-active';
-        var step3Num = step3Item.querySelector('.step-number');
-        if (step3Num) {
-          step3Num.style.background = '#d97706';
-          step3Num.style.color = '#ffffff';
-          step3Num.style.boxShadow = '0 0 0 3px rgba(217, 119, 6, 0.2)';
-          step3Num.innerHTML = '3';
-        }
-        var step3Lbl = step3Item.querySelector('.step-label');
-        if (step3Lbl) {
-          step3Lbl.style.color = '#d97706';
-          step3Lbl.textContent = 'Action Required';
-        }
-      }
-
-      // 5. Update Top Action Button
-      var topBtnReview = document.getElementById('btnReviewSignTop');
-      if (topBtnReview) {
-        topBtnReview.id = 'btnConfirmSeatTop';
-        topBtnReview.className = 'btn-gold btn-gold-pulse';
-        topBtnReview.style.background = 'linear-gradient(135deg, #fbbf24 0%, #d97706 100%)';
-        topBtnReview.style.color = '#0b1120';
-        topBtnReview.style.border = '1.5px solid #fde68a';
-        topBtnReview.innerHTML = '<i class="fa-solid fa-credit-card" style="font-size:17px;"></i> <span>Confirm Seat &amp; Pay ₹499 Now &rarr;</span>';
-      }
-
-      // 6. Unfold the ₹499 payment section with smooth scroll
-      var paymentSec = document.getElementById('postSignPaymentSection');
-      if (paymentSec) {
-        paymentSec.style.display = 'block';
-        setTimeout(function() {
-          paymentSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 150);
-      }
-
-      showToastNotification('Appointment Agreement Digitally Signed! Complete ₹499 caution deposit below to confirm your cohort workstation seat.');
+      btn.innerHTML = '<i class="fa-solid fa-circle-check"></i> Agreement Executed! Loading Step 3...';
+      showToastNotification('Appointment Agreement Digitally Signed! Loading Cohort Seat Confirmation...');
+      setTimeout(function() {
+        window.location.reload();
+      }, 450);
     } else {
       btn.disabled = false;
       btn.innerHTML = '<i class="fa-solid fa-signature"></i> Sign &amp; Accept Appointment Agreement';

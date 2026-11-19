@@ -458,19 +458,42 @@ flowchart TD
 
 ---
 
-## 12. Staged Offer Letter Review, Transparent Watermark & Seat Confirmation Flow (`/portal/offer`)
+## 12. Staged Offer Letter Review, Strict Signature-First Gating & Luxury Dark Seat Confirmation (`/portal/offer`)
 - **Screen 1 (`#screenOfferReview`) — Transparent Review**:
   * Official appointment terms displayed in high-fidelity parchment format.
   * Delicate, transparent watermark (`rgba(254, 243, 199, 0.10)`, zero blur, faint amber lettering) ensuring 100% legibility of all terms underneath.
   * Bottom review completion bar with prominent button: `Accept & Sign Offer Letter →`.
-- **Screen 2 (`#screenActionSteps`) — Digital Execution & Seat Confirmation**:
+- **Screen 2 (`#screenActionSteps`) — Strict Signature-First Gate & Seat Confirmation**:
   * Top navigation bar with `← Review Appointment Letter` back button.
-  * **Step 2**: Legal Name input + Indian IT Act 2000 acceptance checkbox + `Sign & Accept Appointment Agreement`. Once signed, transforms into `STEP 2 COMPLETED: AGREEMENT EXECUTED` banner.
-  * **Step 3**: Seat confirmation via ₹499 caution deposit:
-    - Sized-down, compact QR code (115px × 115px).
-    - `Download QR` button + Merchant VPA `Q652429146@ybl` with 1-click `Copy UPI ID`.
-    - Vibrant, non-blending 1-Tap UPI launchers (GPay pure white with `#4285F4`, PhonePe `#5f259f`, Paytm electric cyan `#00baf2` with `#002970` text, Any UPI gold gradient).
-    - 12-digit UTR entry card with instant validation and admissions ledger reconciliation.
+  * **Strict Server-Side Gating Architecture (`{% if is_signed %}`)**:
+    - **Unsigned State (`is_signed: False`)**:
+      * Jinja strictly compiles ONLY `#offerSignCard` (Step 2: Review & Digital Acceptance).
+      * `#signedBanner` ("STEP 2 COMPLETED: AGREEMENT EXECUTED / Signed by None on None") and `#postSignPaymentSection` ("STEP 3: COHORT SEAT CONFIRMATION") are physically omitted from the DOM/HTML.
+      * Prevents all leaks, blank signature placeholders, and premature payment displays.
+    - **Executed State (`is_signed: True`)**:
+      * Jinja strictly compiles `#signedBanner` (displaying actual candidate legal name and execution timestamp recorded under Indian IT Act, 2000) and `#postSignPaymentSection` (Step 3).
+      * `#offerSignCard` is physically omitted from the DOM/HTML.
+    - **Digital Execution Transition Protocol**:
+      * When candidate signs, AJAX POST to `/portal/offer/sign` commits signature to PostgreSQL and returns `{ status: "success" }`.
+      * JavaScript displays confirmation toast: `"Appointment Agreement Digitally Signed! Loading Cohort Seat Confirmation..."` and executes `window.location.reload()`.
+      * Upon reload, `is_signed` evaluates `True`, automatically revealing Screen 2 with the Executed Banner and Step 3 Payment/UTR.
+  * **Step 3 UI/UX Design System Parity (`/enroll/1999` Standard)**:
+    - **Left Card (Scan & Pay ₹499 + Mobile 1-Tap Fast Pay)**:
+      * Dark card container: `background: #0B0F17; border: 1px solid #2A364B; border-radius: 12px; padding: 22px;`.
+      * White QR box: `130px × 130px` high-contrast wrapper (`background: #FFFFFF; padding: 12px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.6)`).
+      * High-res download button: `background: transparent; color: #E2B96F; border: 1px solid rgba(226, 185, 111, 0.4)`.
+      * Merchant VPA pill: `background: #141A23; border: 1px solid #1E2633; color: #F0F4F8;` monospace with copy button (`color: #38BDF8; font-weight: 700`).
+      * 1-Tap Mobile UPI Intent Launchers (2x2 Grid):
+        - Google Pay: `background: #1A73E8; color: #FFFFFF !important; font-weight: 800;`
+        - PhonePe: `background: #5F259F; color: #FFFFFF !important; font-weight: 800;`
+        - Paytm: `background: #00BAF2; color: #FFFFFF !important; font-weight: 800;`
+        - Any UPI: `background: #10B981; color: #FFFFFF !important; font-weight: 800;`
+    - **Right Card (12-Digit Bank UTR Entry Form)**:
+      * Dark card container: `background: #0B0F17; border: 1px solid #2A364B; border-radius: 12px; padding: 22px;`.
+      * Heading: `#F0F4F8`, description `#8A9AB5`.
+      * UTR input: `background: #080C14; border: 1.5px solid #2A364B; color: #F0F4F8; font-family: monospace; letter-spacing: 1.5px;`.
+      * Submit button: `background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%); color: #0b1120 !important; font-weight: 900;`.
+      * Footer note: `border-top: 1px solid #1E2633; color: #8A9AB5; font-size: 12px;`.
 - **Screen 3 / Reconciled State (`is_deposit_verified: True`)**:
   * Preview watermark eliminated.
   * Embedded candidate cursive signature and cryptographic QR seal.
@@ -478,7 +501,21 @@ flowchart TD
 - **Strict Nonce CSP Compliance**:
   * All action triggers use `<button type="button">` instead of `<a>` anchors with pseudo-URLs.
   * Exactly 0 inline `onclick` or `href="javascript:..."` handlers across template.
-  * Programmatic listeners bound via standard `addEventListener` in `DOMContentLoaded` within `<script nonce="{{ csp_nonce() }}">` for `#btnReviewSignTop`, `#btnConfirmSeatTop`, `#btnAcceptAndSignBottom`, `#btnBackToReview`, `#stepperStep1-3`, `#copyVpaBtn`, `#btnPrintOfferTop`, and `#btnPrintOfferDossier`.
+  * Programmatic listeners bound via standard `addEventListener` in `DOMContentLoaded` within `<script nonce="{{ csp_nonce() }}">`.
+
+---
+
+## 13. Cohort Engineering Leaderboard & Expandable Scoring Methodology (`/leaderboard`)
+- **8-Week Cohort Tenure Window Protocol**:
+  * All DBERT internship cohorts operate on a strict 8-Week (56 calendar days) tenure window based on `enrollments.joining_date` or `intern_offer_letters.batch_start_date`. Attendance outside this 56-day window is strictly excluded from ranking calculations.
+- **80-Hour Attendance Points Cap**:
+  * Attendance points capped at 80.0 hours ($\max 400.0\text{ pts}$ at 5 pts/hr) to ensure fair merit competition.
+- **7 Core Activity Metrics**:
+  * Verified Certifications (+100 pts), Approved Bounty Tasks (+50 pts), Completed Lessons (+25 pts), Attendance (+5 pts/hr), Technical Articles (+100 pts), Daily Quizzes (+5 pts), Technical Concepts (+5 pts).
+- **Expandable Scoring Methodology Card**:
+  * Interactive collapsible card (`#scoringMethodologyCard`, `#scoringChevronIcon`) allowing users to expand and collapse the full 7-dimension competency scoring methodology table.
+- **Anti-Clipping & Spacing Hardening**:
+  * Standard `.table-card-header` component with generous desktop and mobile padding, preventing glyph clipping of leading characters against card borders or sidebars.
 
 
 
