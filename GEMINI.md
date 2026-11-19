@@ -2112,4 +2112,46 @@ The following accounts are permanently provisioned on production PostgreSQL (`db
 | **Stipend** | 5,000 Coins in Wallet | `stipend_wallet@dbert.test` | `TestPass123!` | Completed milestones; 5,000 coins credited; withdrawable to encrypted UPI. |
 | **Provisional** | 383 Fellow Persona (Gun Soni) | `gun.soni.test@dbert.test` | `TestPass123!` | In Sprints; score 88/100; shows course certificates + ₹299 upgrade card on `/certificates`. |
 
+---
+
+---
+
+## 15. Domain Funnel Auto-Resolution & Unified Dashboard Architecture
+
+### 15.1. Canonical Domain Normalization Engine
+- **Master Tracks**: Exactly 9 canonical domains in `VALID_DOMAINS`:
+  `AI Agent Development`, `Data Analyst`, `Full Stack Development`, `Python Automation`, `UI/UX Design`, `DevOps & Cloud`, `Mobile App Development`, `Cybersecurity`, `Digital Marketing`.
+- **Normalization Engine (`normalize_domain_string(raw_domain)`)**:
+  Maps all non-canonical entries from external Google Sheets, Typeform funnels, candidate inputs, and legacy abbreviations:
+  * `"Data Analytics"`, `"data-analytics"`, `"data science"`, `"da"` &rarr; `"Data Analyst"`
+  * `"Full Stack Web Development"`, `"web development"`, `"fsd"`, `"full-stack"` &rarr; `"Full Stack Development"`
+  * `"AI & Machine Learning"`, `"aiml"`, `"ai-agent"` &rarr; `"AI Agent Development"`
+  * `"Python Developer"`, `"python"`, `"pa"` &rarr; `"Python Automation"`
+  * `"UI/UX"`, `"ui design"`, `"figma"` &rarr; `"UI/UX Design"`
+  * `"DevOps"`, `"cloud computing"` &rarr; `"DevOps & Cloud"`
+  * `"Android"`, `"flutter"`, `"mobile"` &rarr; `"Mobile App Development"`
+
+### 15.2. Multi-Table Auto-Healing & Auto-Enrollment
+- **Automatic Sync (`get_intern_flow_state()` & `portal_page()`)**:
+  When an intern logs in or accesses `/portal`, the system inspects linked records across `intern_accounts`, `applications`, `enrollments`, `intern_offer_letters`, and `intern_certificates`.
+  * Normalizes the candidate's domain string.
+  * Auto-updates `intern_accounts.domain` in PostgreSQL.
+  * Automatically enrolls the intern into domain-specific courses via `auto_enroll_intern_in_domain_courses()`.
+  * Auto-heals missing college and course from linked records.
+
+### 15.3. Dashboard Stacked Visual Hierarchy (`/portal`)
+The Overview dashboard (`#panel-overview`) enforces a strict, clean vertical layout:
+1. **Top**: `#nextActionMissionCard` (Immediate next action mission card: Stage badge, weekly attendance hours vs 10h target, and 3 high-contrast action CTAs).
+2. **Directly Below**: `#academicProfileBanner` (Onboarding Step 1: Academic Background & Domain Verification with real-time status chips for College, Course, and Domain). Automatically hidden when all profile fields are completed.
+3. **Directly Below**: `#overviewStepBar` (Unhidden 8-Week Milestone Roadmap from Week 1 Induction to Week 8 Graduation).
+4. **Directly Below**: `#ovAccepted` (Full legacy active dashboard including Bounty Accelerator 200 coins, Guided Learning Workspace, Cognitive Progress & Mastery, Micro-Tasks & Reward Coins, Learning Analytics, AI Directives, Weekly Attendance Hub with 10h target & audit log, Enrollment Profile, and Recommended Internships).
+5. **Suppression of Duplicate Banners**: Cleaned up redundant JavaScript injection of `ovBalanceGraceBanner` since `#nextActionMissionCard` officially renders the Stage 5 balance message at the top.
+
+### 15.4. Fallback 1-Click Domain Confirmation Modal
+- **Modal Component (`#domainSelectionModal`)**:
+  For interns who have no domain record across any linked table upon login, a sleek modal prompts them to choose one of the 9 canonical tracks in a single click.
+- **API Endpoint (`POST /api/intern/select-domain`)**:
+  Validates track via `normalize_domain_string()`, updates `intern_accounts.domain`, `applications.domain`, and `enrollments.domain`, auto-enrolls into domain courses, and returns `{ "status": "success", "domain": "..." }`.
+
+
 

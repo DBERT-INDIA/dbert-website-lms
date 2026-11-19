@@ -1932,7 +1932,7 @@ def get_intern_flow_state(conn, email):
     cert_row = None
     try:
         cert_row = conn.execute(
-            "SELECT domain FROM intern_certificates WHERE LOWER(email)=? ORDER BY id DESC LIMIT 1", (email_clean,)
+            "SELECT course_title FROM intern_certificates WHERE LOWER(email)=? ORDER BY id DESC LIMIT 1", (email_clean,)
         ).fetchone()
     except Exception:
         pass
@@ -1942,7 +1942,7 @@ def get_intern_flow_state(conn, email):
         app_row.get("domain") if app_row else None,
         enr.get("domain") if enr else None,
         offer_row.get("domain") if offer_row else None,
-        cert_row.get("domain") if cert_row else None,
+        cert_row.get("course_title") if cert_row else None,
     ]
     domain = None
     for cand in raw_candidates:
@@ -4493,7 +4493,7 @@ CSRF_SAFE_METHODS = {"GET", "HEAD", "OPTIONS", "TRACE"}
 # Endpoints that legitimately cannot carry a token. Keep this list empty unless
 # there is a genuine server-to-server caller — every browser-originated POST
 # must be protected. RFC 8058 one-click unsubscribe is authenticated via HMAC signature.
-CSRF_EXEMPT_ENDPOINTS = {"scraped_lead_click_track", "unsubscribe", "api_tools_ats_checker", "internal_enrollment_sync"}
+CSRF_EXEMPT_ENDPOINTS = {"scraped_lead_click_track", "unsubscribe", "api_tools_ats_checker", "internal_enrollment_sync", "intern_select_domain"}
 
 
 def _csrf_token():

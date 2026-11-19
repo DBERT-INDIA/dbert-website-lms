@@ -77,10 +77,11 @@ class TestDomainFunnelResolution(unittest.TestCase):
         test_email = "test_funnel_heal@dbert.test"
         with get_db() as conn:
             # Clean up previous test runs
-            conn.execute("DELETE FROM intern_accounts WHERE LOWER(email)=?", (test_email,))
+            conn.execute("DELETE FROM course_enrollments WHERE LOWER(email)=?", (test_email,))
             conn.execute("DELETE FROM applications WHERE LOWER(email)=?", (test_email,))
             conn.execute("DELETE FROM enrollments WHERE LOWER(email)=?", (test_email,))
             conn.execute("DELETE FROM intern_offer_letters WHERE LOWER(email)=?", (test_email,))
+            conn.execute("DELETE FROM intern_accounts WHERE LOWER(email)=?", (test_email,))
             if hasattr(conn, "commit"):
                 conn.commit()
 
@@ -95,8 +96,8 @@ class TestDomainFunnelResolution(unittest.TestCase):
             # Insert application with 'Accepted' status to reach Stage 5
             conn.execute(
                 """
-                INSERT INTO applications (name, email, phone, city, domain, college, course, semester, year_of_passing, status)
-                VALUES ('Test User', ?, '9999999999', 'Delhi', 'data analytics', 'Test College', 'B.Tech', '6th Semester', '2026', 'Accepted')
+                INSERT INTO applications (name, email, phone, city, domain, college, course, semester, year_of_passing, why_join, status)
+                VALUES ('Test User', ?, '9999999999', 'Delhi', 'data analytics', 'Test College', 'B.Tech', '6th Semester', '2026', 'Statement of purpose for domain funnel test.', 'Accepted')
                 """,
                 (test_email,)
             )
@@ -115,8 +116,11 @@ class TestDomainFunnelResolution(unittest.TestCase):
             self.assertEqual(acct["domain"], "Data Analyst")
 
             # Clean up
-            conn.execute("DELETE FROM intern_accounts WHERE LOWER(email)=?", (test_email,))
+            conn.execute("DELETE FROM course_enrollments WHERE LOWER(email)=?", (test_email,))
             conn.execute("DELETE FROM applications WHERE LOWER(email)=?", (test_email,))
+            conn.execute("DELETE FROM enrollments WHERE LOWER(email)=?", (test_email,))
+            conn.execute("DELETE FROM intern_offer_letters WHERE LOWER(email)=?", (test_email,))
+            conn.execute("DELETE FROM intern_accounts WHERE LOWER(email)=?", (test_email,))
             if hasattr(conn, "commit"):
                 conn.commit()
 
@@ -150,6 +154,56 @@ class TestDomainFunnelResolution(unittest.TestCase):
         self.assertIn("confirmDomainSelection('Data Analyst')", content)
         self.assertIn("confirmDomainSelection('AI Agent Development')", content)
         self.assertIn("showDomainSelectionModal", content)
+
+    def test_select_domain_api(self):
+        """Tests /api/intern/select-domain endpoint authentication, validation, and domain updating."""
+        from app import create_session, AUTH_COOKIE
+
+        # 1. Unauthorized request
+        res = self.client.post("/api/intern/select-domain", json={"domain": "Data Analytics"})
+        self.assertIn(res.status_code, (401, 403))
+
+        # 2. Authenticated request
+        test_email = "api_domain_test@dbert.test"
+        with get_db() as conn:
+            conn.execute("DELETE FROM user_sessions WHERE LOWER(email)=?", (test_email,))
+            conn.execute("DELETE FROM course_enrollments WHERE LOWER(email)=?", (test_email,))
+            conn.execute("DELETE FROM applications WHERE LOWER(email)=?", (test_email,))
+            conn.execute("DELETE FROM intern_accounts WHERE LOWER(email)=?", (test_email,))
+            conn.execute(
+                """
+                INSERT INTO intern_accounts (name, email, phone, password_hash, domain, college, course, is_active, signup_stage)
+                VALUES ('API Test', ?, '9888888888', 'hash', 'Pending Profile', 'VIT', 'B.Tech', 1, 3)
+                """,
+                (test_email,)
+            )
+            if hasattr(conn, "commit"):
+                conn.commit()
+
+        tok = create_session(test_email, "intern")
+        headers = {"X-Session-Token": tok}
+
+        # Bad domain
+        bad_res = self.client.post("/api/intern/select-domain", json={"domain": "NonExistentTrack"}, headers=headers)
+        self.assertEqual(bad_res.status_code, 400)
+
+        # Valid synonym 'data-analytics'
+        ok_res = self.client.post("/api/intern/select-domain", json={"domain": "data-analytics"}, headers=headers)
+        self.assertEqual(ok_res.status_code, 200)
+        data = ok_res.get_json()
+        self.assertEqual(data["status"], "success")
+        self.assertEqual(data["domain"], "Data Analyst")
+
+        # Verify DB updated
+        with get_db() as conn:
+            acct = conn.execute("SELECT domain FROM intern_accounts WHERE LOWER(email)=?", (test_email,)).fetchone()
+            self.assertEqual(acct["domain"], "Data Analyst")
+            # Cleanup
+            conn.execute("DELETE FROM user_sessions WHERE LOWER(email)=?", (test_email,))
+            conn.execute("DELETE FROM course_enrollments WHERE LOWER(email)=?", (test_email,))
+            conn.execute("DELETE FROM intern_accounts WHERE LOWER(email)=?", (test_email,))
+            if hasattr(conn, "commit"):
+                conn.commit()
 
 
 if __name__ == "__main__":

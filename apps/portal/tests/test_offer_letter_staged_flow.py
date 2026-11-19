@@ -10,7 +10,8 @@ PORTAL_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 if PORTAL_DIR not in sys.path:
     sys.path.insert(0, PORTAL_DIR)
 
-os.environ["DATABASE_URL"] = ""
+if "DATABASE_URL" not in os.environ:
+    os.environ["DATABASE_URL"] = ""
 os.environ["SECRET_KEY"] = "test-secret-key-12345"
 
 from app import app

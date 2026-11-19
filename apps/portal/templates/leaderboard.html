@@ -9,6 +9,14 @@
       max-width: 1200px;
       margin: 0 auto;
       padding: 2rem 1.25rem 4rem;
+      box-sizing: border-box;
+      width: 100%;
+    }
+
+    @media (max-width: 820px) {
+      .leaderboard-container {
+        padding-top: 4.5rem;
+      }
     }
 
     .lb-header {
@@ -224,6 +232,7 @@
     }
     .lb-table {
       width: 100%;
+      min-width: 680px;
       border-collapse: collapse;
       text-align: left;
     }
@@ -345,12 +354,12 @@
     }
   </style>
 </head>
-<body class="intern-body">
+<body class="intern-body has-sidebar">
 
 {% set active_page = 'leaderboard' %}
 {% include '_intern_sidebar.html' %}
 
-<main class="main-content">
+<main class="main-content" id="main-content" tabindex="-1">
   <div class="leaderboard-container">
     
     <!-- Header -->

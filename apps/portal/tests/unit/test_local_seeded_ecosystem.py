@@ -114,18 +114,23 @@ def test_dev_impersonate_route(client):
 
 
 def test_leaderboard_and_certificates_routes(client):
-    # Log in as stage 5 enrolled intern
-    client.get("/dev/impersonate?email=stage5_enrolled@dbert.test&target=/portal")
+    from app import create_session, AUTH_COOKIE
+    token = create_session("stage5_enrolled@dbert.test", "intern")
+    client.set_cookie(AUTH_COOKIE, token)
     
-    # Check /leaderboard redirect
-    res_lb = client.get("/leaderboard", follow_redirects=False)
-    assert res_lb.status_code == 302
-    assert "/portal#leaderboard" in res_lb.headers["Location"]
+    # Check sovereign /leaderboard view and layout clearance
+    res_lb = client.get("/leaderboard")
+    assert res_lb.status_code == 200
+    html_lb = res_lb.data.decode("utf-8")
+    assert "has-sidebar" in html_lb
+    assert 'id="main-content"' in html_lb
     
-    # Check /certificates redirect
-    res_cert = client.get("/certificates", follow_redirects=False)
-    assert res_cert.status_code == 302
-    assert "/portal#certificate" in res_cert.headers["Location"]
+    # Check sovereign /certificates view and layout clearance
+    res_cert = client.get("/certificates")
+    assert res_cert.status_code == 200
+    html_cert = res_cert.data.decode("utf-8")
+    assert "has-sidebar" in html_cert
+    assert 'id="main-content"' in html_cert
 
 
 def test_bounty_tasks_page_and_sidebar_links(client):
