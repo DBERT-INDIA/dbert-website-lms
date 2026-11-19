@@ -2126,6 +2126,14 @@ The remediation resolved 12 baseline architectural defects (`BASE-01` to `BASE-1
   * Automatically prompts interns on `/portal` when `Notification.permission === 'default'`.
   * Communicates direct user value: real-time mentor code review notifications, bounty task approvals, and ₹5,000 stipend release confirmations.
   * Direct 1-click subscription registration via `DBERTPush.requestPermissionAndSubscribe()` with 24-hour dismissal cooldown support.
+- **Dual-State Dynamic Prompt & Blocked Address Bar Guide**:
+  * **State 1 (`#pushModalStateDefault`)**: Standard value proposition card for `Notification.permission === 'default'`.
+  * **State 2 (`#pushModalStateBlocked`)**: Triggered when `Notification.permission === 'denied'` or when a candidate selects "Block" in the browser prompt. Displays a 3-step actionable visual guide directing the intern to the browser address bar Lock 🔒 / Tune 🎛️ icon to change Notifications to "Allow", paired with a 1-click "I've Enabled It — Refresh Page" button (`#dbertPushReloadBtn`).
+- **Persistent Dashboard Alert Banner (`#pushBlockedBanner`)**:
+  * Rendered at the top of `#panel-overview` above `#nextActionMissionCard` whenever browser notifications are blocked.
+  * Warns interns that they will miss ₹5,000 stipend release alerts and mentor code reviews, with an "Unblock Notifications" trigger to open the guidance modal.
+- **Real-Time Live Recovery Engine (`navigator.permissions.query`)**:
+  * Continuously monitors permission changes via W3C Permissions API. When an intern toggles notifications to "Allow" in site settings, the system immediately detects `'granted'`, auto-dismisses the modal and banner, auto-subscribes the device via `DBERTPush.autoSubscribe()`, and displays a real-time success toast without requiring a manual refresh.
 - **Anti-Overlap & Stacking Architecture**:
   * Elevated `z-index: 100001` with `backdrop-filter: blur(8px)` and `rgba(0, 0, 0, 0.82)` overlay spanning the entire viewport.
   * Responsive desktop offset: `@media (min-width: 821px)` applies `padding-left: calc(var(--portal-sidebar, 260px) + 24px)` and `padding-right: 24px`, ensuring the card is centered directly in the active main content workspace with guaranteed 60px–140px clearance from the fixed sidebar.

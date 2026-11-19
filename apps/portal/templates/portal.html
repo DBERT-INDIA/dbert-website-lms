@@ -122,6 +122,125 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
   overflow-y: auto;
 }
 
+/* Push Blocked Dashboard Banner Styling */
+.push-blocked-banner {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.12) 0%, rgba(185, 28, 28, 0.08) 100%);
+  border: 1.5px solid rgba(239, 68, 68, 0.35);
+  border-left: 5px solid #EF4444;
+  border-radius: 14px;
+  padding: 14px 18px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.pbb-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+  min-width: 260px;
+}
+.pbb-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(239, 68, 68, 0.2);
+  color: #F87171;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.pbb-title {
+  margin: 0 0 3px;
+  font-size: 14px;
+  font-weight: 800;
+  color: #FEE2E2;
+}
+.pbb-desc {
+  margin: 0;
+  font-size: 12.5px;
+  color: #FCA5A5;
+  line-height: 1.4;
+}
+.pbb-desc code {
+  background: rgba(0,0,0,0.3);
+  padding: 1px 5px;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 11.5px;
+}
+.pbb-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.btn-pbb-fix {
+  background: #EF4444;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+.btn-pbb-fix:hover {
+  background: #DC2626;
+  transform: translateY(-1px);
+}
+.btn-pbb-dismiss {
+  background: transparent;
+  border: none;
+  color: #F87171;
+  font-size: 20px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px;
+}
+
+/* Step Guide Card in Blocked Modal */
+.push-guide-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  text-align: left;
+}
+.push-step-num {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #6366F1;
+  color: #fff;
+  font-weight: 800;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.push-step-txt {
+  font-size: 12.5px;
+  color: #CBD5E1;
+  line-height: 1.45;
+}
+.push-step-txt strong {
+  color: #F8FAFC;
+}
+
 /* High-Visibility Next Action Mission Card & Buttons */
 #nextActionMissionCard {
   background: linear-gradient(135deg, #0b132b 0%, #111827 50%, #1e293b 100%) !important;
@@ -315,6 +434,25 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
 
       <!-- ══════════════ OVERVIEW ══════════════ -->
       <div class="panel" id="panel-overview">
+        <!-- High-Visibility Web Push Blocked Alert Banner -->
+        <div id="pushBlockedBanner" class="push-blocked-banner" style="display:none;">
+          <div class="pbb-left">
+            <div class="pbb-icon"><i class="fa-solid fa-bell-slash"></i></div>
+            <div>
+              <h4 class="pbb-title">⚠️ Browser Push Notifications Are Blocked</h4>
+              <p class="pbb-desc">
+                Your browser is currently blocking notifications for <code>lms.dbert.in</code>. You will miss instant alerts when mentors review your code, sprint bounties are approved, and your &#8377;5,000 stipend is released.
+              </p>
+            </div>
+          </div>
+          <div class="pbb-actions">
+            <button type="button" class="btn-pbb-fix" id="btnOpenPushHelp">
+              <i class="fa-solid fa-unlock"></i> How to Unblock
+            </button>
+            <button type="button" class="btn-pbb-dismiss" id="btnDismissPushBanner" title="Dismiss banner">&times;</button>
+          </div>
+        </div>
+
         <!-- 0. HIGH-VISIBILITY NEXT ACTION IN LINE MISSION CARD (Positioned at Top) -->
         <div id="nextActionMissionCard">
           <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:12px; flex-wrap:wrap;">
@@ -5361,78 +5499,241 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
   <!-- DBERT Sovereign Web Push Notification Modal Prompt -->
   <div id="dbertPushPermissionModal" class="dbert-push-modal-overlay" style="display:none;">
     <div class="dbert-push-modal-card">
-      <div style="width:56px; height:56px; border-radius:16px; background:linear-gradient(135deg, rgba(99,102,241,0.2), rgba(79,70,229,0.3)); border:1px solid #6366F1; color:#818CF8; display:flex; align-items:center; justify-content:center; font-size:24px; margin:0 auto 16px;">
-        <i class="fas fa-bell"></i>
-      </div>
-      <h3 style="margin:0 0 8px; color:#F8FAFC; font-size:18px; font-weight:800;">Enable Sprint & Stipend Alerts</h3>
-      <p style="margin:0 0 18px; color:#94A3B8; font-size:13px; line-height:1.5;">
-        Never miss a milestone. Receive instant browser notifications when mentors review your code, sprint bounty tasks are approved, and your &#8377;5,000 stipend is credited.
-      </p>
-      <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:12px; padding:12px 16px; margin-bottom:20px; text-align:left;">
-        <div style="display:flex; align-items:center; gap:10px; font-size:12px; color:#CBD5E1; margin-bottom:8px;">
-          <i class="fas fa-check-circle" style="color:#10B981;"></i>
-          <span>Instant alert when code bounties are approved</span>
+
+      <!-- STATE 1: DEFAULT PROMO STATE (When permission === 'default') -->
+      <div id="pushModalStateDefault">
+        <div style="width:56px; height:56px; border-radius:16px; background:linear-gradient(135deg, rgba(99,102,241,0.2), rgba(79,70,229,0.3)); border:1px solid #6366F1; color:#818CF8; display:flex; align-items:center; justify-content:center; font-size:24px; margin:0 auto 16px;">
+          <i class="fas fa-bell"></i>
         </div>
-        <div style="display:flex; align-items:center; gap:10px; font-size:12px; color:#CBD5E1; margin-bottom:8px;">
-          <i class="fas fa-check-circle" style="color:#10B981;"></i>
-          <span>Direct notification when mentors review your work</span>
+        <h3 style="margin:0 0 8px; color:#F8FAFC; font-size:18px; font-weight:800;">Enable Sprint &amp; Stipend Alerts</h3>
+        <p style="margin:0 0 18px; color:#94A3B8; font-size:13px; line-height:1.5;">
+          Never miss a milestone. Receive instant browser notifications when mentors review your code, sprint bounty tasks are approved, and your &#8377;5,000 stipend is credited.
+        </p>
+        <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:12px; padding:12px 16px; margin-bottom:20px; text-align:left;">
+          <div style="display:flex; align-items:center; gap:10px; font-size:12px; color:#CBD5E1; margin-bottom:8px;">
+            <i class="fas fa-check-circle" style="color:#10B981;"></i>
+            <span>Instant alert when code bounties are approved</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:10px; font-size:12px; color:#CBD5E1; margin-bottom:8px;">
+            <i class="fas fa-check-circle" style="color:#10B981;"></i>
+            <span>Direct notification when mentors review your work</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:10px; font-size:12px; color:#CBD5E1;">
+            <i class="fas fa-check-circle" style="color:#10B981;"></i>
+            <span>Wallet confirmation for &#8377;5,000 stipend release</span>
+          </div>
         </div>
-        <div style="display:flex; align-items:center; gap:10px; font-size:12px; color:#CBD5E1;">
-          <i class="fas fa-check-circle" style="color:#10B981;"></i>
-          <span>Wallet confirmation for &#8377;5,000 stipend release</span>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <button type="button" id="dbertPushEnableBtn" style="background:linear-gradient(135deg, #6366F1, #4F46E5); color:#fff; font-weight:800; padding:12px 20px; border-radius:10px; border:none; cursor:pointer; font-size:14px; box-shadow:0 4px 15px rgba(99,102,241,0.4); display:flex; align-items:center; justify-content:center; gap:8px;">
+            <i class="fas fa-bell"></i> Enable Instant Notifications
+          </button>
+          <button type="button" id="dbertPushDismissBtn" style="background:transparent; border:1px solid rgba(255,255,255,0.12); color:#94A3B8; padding:9px 16px; border-radius:8px; cursor:pointer; font-size:12.5px;">
+            Remind Me Later
+          </button>
         </div>
       </div>
-      <div style="display:flex; flex-direction:column; gap:10px;">
-        <button type="button" id="dbertPushEnableBtn" style="background:linear-gradient(135deg, #6366F1, #4F46E5); color:#fff; font-weight:800; padding:12px 20px; border-radius:10px; border:none; cursor:pointer; font-size:14px; box-shadow:0 4px 15px rgba(99,102,241,0.4); display:flex; align-items:center; justify-content:center; gap:8px;">
-          <i class="fas fa-bell"></i> Enable Instant Notifications
-        </button>
-        <button type="button" id="dbertPushDismissBtn" style="background:transparent; border:1px solid rgba(255,255,255,0.12); color:#94A3B8; padding:9px 16px; border-radius:8px; cursor:pointer; font-size:12.5px;">
-          Remind Me Later
-        </button>
+
+      <!-- STATE 2: BLOCKED / UNBLOCK GUIDE STATE (When permission === 'denied') -->
+      <div id="pushModalStateBlocked" style="display:none;">
+        <div style="width:56px; height:56px; border-radius:16px; background:linear-gradient(135deg, rgba(239,68,68,0.2), rgba(220,38,38,0.3)); border:1.5px solid #EF4444; color:#F87171; display:flex; align-items:center; justify-content:center; font-size:24px; margin:0 auto 16px;">
+          <i class="fa-solid fa-bell-slash"></i>
+        </div>
+        <div style="display:inline-block; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.35); color:#FCA5A5; font-size:11px; font-weight:800; padding:3px 10px; border-radius:99px; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">
+          Action Required: Browser Blocked
+        </div>
+        <h3 style="margin:0 0 8px; color:#F8FAFC; font-size:18px; font-weight:800;">How to Unblock Notifications</h3>
+        <p style="margin:0 0 16px; color:#94A3B8; font-size:12.5px; line-height:1.5;">
+          Your browser is blocking notifications for <code>lms.dbert.in</code>. Due to browser security restrictions, we cannot unblock them automatically. Please follow these 3 quick steps:
+        </p>
+        <div style="margin-bottom:18px;">
+          <div class="push-guide-step">
+            <div class="push-step-num">1</div>
+            <div class="push-step-txt">
+              Look at the left side of your browser address bar next to <code>lms.dbert.in</code>. Click the <strong>Lock 🔒 or Settings / Tune 🎛️ icon</strong>.
+            </div>
+          </div>
+          <div class="push-guide-step">
+            <div class="push-step-num">2</div>
+            <div class="push-step-txt">
+              Find <strong>Notifications</strong> in the permissions list and change it from <strong>Block</strong> to <strong>Allow</strong>.
+            </div>
+          </div>
+          <div class="push-guide-step">
+            <div class="push-step-num">3</div>
+            <div class="push-step-txt">
+              Click the button below to refresh the page and activate your instant real-time alerts.
+            </div>
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <button type="button" id="dbertPushReloadBtn" style="background:linear-gradient(135deg, #10B981, #059669); color:#fff; font-weight:800; padding:12px 20px; border-radius:10px; border:none; cursor:pointer; font-size:14px; box-shadow:0 4px 15px rgba(16,185,129,0.4); display:flex; align-items:center; justify-content:center; gap:8px;">
+            <i class="fa-solid fa-rotate-right"></i> <span>I've Enabled It &mdash; Refresh Page</span>
+          </button>
+          <button type="button" id="dbertPushBlockedDismissBtn" style="background:transparent; border:1px solid rgba(255,255,255,0.12); color:#94A3B8; padding:9px 16px; border-radius:8px; cursor:pointer; font-size:12.5px;">
+            Dismiss for Now
+          </button>
+        </div>
       </div>
+
     </div>
   </div>
 
   <script nonce="{{ csp_nonce() }}">
     document.addEventListener('DOMContentLoaded', function() {
-      // Sovereign Web Push Modal Prompt Logic
-      setTimeout(function() {
-        if (!('Notification' in window)) return;
-        if (Notification.permission !== 'default') return;
-        
-        var dismissedUntil = localStorage.getItem('dbert_push_modal_dismissed_until');
-        if (dismissedUntil && Date.now() < parseInt(dismissedUntil, 10)) return;
+      var modal = document.getElementById('dbertPushPermissionModal');
+      var stateDefault = document.getElementById('pushModalStateDefault');
+      var stateBlocked = document.getElementById('pushModalStateBlocked');
+      var banner = document.getElementById('pushBlockedBanner');
 
-        var modal = document.getElementById('dbertPushPermissionModal');
-        if (modal) {
+      function setPushModalState(state) {
+        if (!modal) return;
+        if (state === 'blocked') {
+          if (stateDefault) stateDefault.style.display = 'none';
+          if (stateBlocked) stateBlocked.style.display = 'block';
+          modal.style.display = 'flex';
+        } else {
+          if (stateBlocked) stateBlocked.style.display = 'none';
+          if (stateDefault) stateDefault.style.display = 'block';
           modal.style.display = 'flex';
         }
-      }, 3500);
+      }
 
-      var enableBtn = document.getElementById('dbertPushEnableBtn');
-      if (enableBtn) {
-        enableBtn.addEventListener('click', async function() {
-          var modal = document.getElementById('dbertPushPermissionModal');
+      function updatePushState() {
+        if (!('Notification' in window)) return;
+
+        if (Notification.permission === 'granted') {
           if (modal) modal.style.display = 'none';
-          
+          if (banner) banner.style.display = 'none';
           if (window.DBERTPush) {
             var metaEmail = document.querySelector('meta[name="user-email"]');
             var email = metaEmail ? metaEmail.content : (window.__INTERN_EMAIL__ || '');
-            var sub = await window.DBERTPush.requestPermissionAndSubscribe(email);
-            if (sub && typeof showToast === 'function') {
-              showToast('Real-time push notifications enabled for this device!', 'green');
+            window.DBERTPush.autoSubscribe(email);
+          }
+        } else if (Notification.permission === 'denied') {
+          // Show persistent alert banner on dashboard (unless dismissed in this session)
+          if (banner && sessionStorage.getItem('dbert_push_banner_dismissed') !== '1') {
+            banner.style.display = 'flex';
+          }
+          // Also pop up unblocking guide modal if 24h dismissal is not active
+          var blockedDismissedUntil = localStorage.getItem('dbert_push_blocked_dismissed_until');
+          if (!blockedDismissedUntil || Date.now() >= parseInt(blockedDismissedUntil, 10)) {
+            setTimeout(function() {
+              if (Notification.permission === 'denied') {
+                setPushModalState('blocked');
+              }
+            }, 3000);
+          }
+        } else if (Notification.permission === 'default') {
+          var dismissedUntil = localStorage.getItem('dbert_push_modal_dismissed_until');
+          if (!dismissedUntil || Date.now() >= parseInt(dismissedUntil, 10)) {
+            setTimeout(function() {
+              if (Notification.permission === 'default') {
+                setPushModalState('default');
+              }
+            }, 3500);
+          }
+        }
+      }
+
+      updatePushState();
+
+      // Live Permission Change Observer via Permissions API
+      if ('permissions' in navigator && navigator.permissions.query) {
+        navigator.permissions.query({ name: 'notifications' }).then(function(pStatus) {
+          pStatus.onchange = function() {
+            if (this.state === 'granted') {
+              if (modal) modal.style.display = 'none';
+              if (banner) banner.style.display = 'none';
+              if (window.DBERTPush) {
+                var metaEmail = document.querySelector('meta[name="user-email"]');
+                var email = metaEmail ? metaEmail.content : (window.__INTERN_EMAIL__ || '');
+                window.DBERTPush.autoSubscribe(email);
+              }
+              if (typeof showToast === 'function') {
+                showToast('Real-time push notifications successfully activated!', 'green');
+              }
+            } else if (this.state === 'denied') {
+              if (banner) banner.style.display = 'flex';
+              setPushModalState('blocked');
             }
+          };
+        }).catch(function(e) {
+          console.warn('[Push Permissions Observer]', e);
+        });
+      }
+
+      // Action: Enable Instant Notifications
+      var enableBtn = document.getElementById('dbertPushEnableBtn');
+      if (enableBtn) {
+        enableBtn.addEventListener('click', async function() {
+          if (!('Notification' in window)) return;
+          try {
+            var permission = await Notification.requestPermission();
+            if (permission === 'granted') {
+              if (modal) modal.style.display = 'none';
+              if (banner) banner.style.display = 'none';
+              if (window.DBERTPush) {
+                var metaEmail = document.querySelector('meta[name="user-email"]');
+                var email = metaEmail ? metaEmail.content : (window.__INTERN_EMAIL__ || '');
+                var sub = await window.DBERTPush.autoSubscribe(email);
+                if (typeof showToast === 'function') {
+                  showToast('Real-time push notifications enabled for this device!', 'green');
+                }
+              }
+            } else if (permission === 'denied') {
+              // User blocked notifications in the browser prompt: do NOT close silently!
+              if (banner) banner.style.display = 'flex';
+              setPushModalState('blocked');
+              if (typeof showToast === 'function') {
+                showToast('Notifications are blocked by your browser. Please follow the steps to allow them.', 'red');
+              }
+            }
+          } catch (err) {
+            console.warn('[DBERT Push Request Error]', err);
           }
         });
       }
 
+      // Action: Dismiss Default Modal (24-hour cooldown)
       var dismissBtn = document.getElementById('dbertPushDismissBtn');
       if (dismissBtn) {
         dismissBtn.addEventListener('click', function() {
-          var modal = document.getElementById('dbertPushPermissionModal');
           if (modal) modal.style.display = 'none';
-          // Dismiss for 24 hours
           localStorage.setItem('dbert_push_modal_dismissed_until', String(Date.now() + 24 * 3600 * 1000));
+        });
+      }
+
+      // Action: Dismiss Blocked Modal (24-hour cooldown)
+      var blockedDismissBtn = document.getElementById('dbertPushBlockedDismissBtn');
+      if (blockedDismissBtn) {
+        blockedDismissBtn.addEventListener('click', function() {
+          if (modal) modal.style.display = 'none';
+          localStorage.setItem('dbert_push_blocked_dismissed_until', String(Date.now() + 24 * 3600 * 1000));
+        });
+      }
+
+      // Action: Open Push Help from Dashboard Banner
+      var openHelpBtn = document.getElementById('btnOpenPushHelp');
+      if (openHelpBtn) {
+        openHelpBtn.addEventListener('click', function() {
+          setPushModalState('blocked');
+        });
+      }
+
+      // Action: Dismiss Dashboard Banner for current session
+      var dismissBannerBtn = document.getElementById('btnDismissPushBanner');
+      if (dismissBannerBtn) {
+        dismissBannerBtn.addEventListener('click', function() {
+          if (banner) banner.style.display = 'none';
+          sessionStorage.setItem('dbert_push_banner_dismissed', '1');
+        });
+      }
+
+      // Action: Reload Page after enabling in site settings
+      var reloadBtn = document.getElementById('dbertPushReloadBtn');
+      if (reloadBtn) {
+        reloadBtn.addEventListener('click', function() {
+          window.location.reload();
         });
       }
     });

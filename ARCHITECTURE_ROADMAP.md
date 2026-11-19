@@ -438,6 +438,14 @@ flowchart TD
   * Desktop sidebar compensation (`@media (min-width: 821px)`): Insets left padding by `calc(var(--portal-sidebar, 260px) + 24px)` and right by `24px` to center the card within the active workspace area, preventing any visual overlap with the fixed 260px sidebar.
   * Mobile resilience (`@media (max-width: 820px)`): Uses 16px padding and full screen centering.
   * Vertical scroll safety (`overflow-y: auto`, max-height ceiling) prevents button clipping on short screens.
+- **Dual-State Dynamic Prompt & Blocked Address Bar Guide**:
+  * **State 1 (`#pushModalStateDefault`)**: Value proposition card when permission is `default`.
+  * **State 2 (`#pushModalStateBlocked`)**: Shown when permission is `denied` or when the candidate clicks "Block" in the browser prompt. Shows an illustrated 3-step guide directing the user to the address bar Lock 🔒 icon to set Notifications to "Allow", with an "I've Enabled It — Refresh Page" button.
+- **Persistent Dashboard Alert Banner (`#pushBlockedBanner`)**:
+  * Rendered at the top of `#panel-overview` above `#nextActionMissionCard` whenever browser notifications are blocked.
+  * Warns interns that they will miss ₹5,000 stipend release alerts and mentor code reviews, with an "Unblock Notifications" trigger to open the guidance modal.
+- **Real-Time Live Recovery Engine (`navigator.permissions.query`)**:
+  * Continuously monitors permission changes via W3C Permissions API. When an intern toggles notifications to "Allow" in site settings, the system immediately detects `'granted'`, auto-dismisses the modal and banner, auto-subscribes the device via `DBERTPush.autoSubscribe()`, and displays a real-time success toast without requiring a manual refresh.
 
 ---
 
