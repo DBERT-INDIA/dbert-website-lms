@@ -80,6 +80,12 @@ class TestOfferLetterStagedFlow(unittest.TestCase):
             # Stepper Step 3 must be locked/pending
             self.assertIn("Pending Signature", html)
 
+            # Screen 1 (Review) must be active and Screen 2 (Action) hidden for unsigned candidate
+            self.assertIn('id="screenOfferReview" class="offer-screen-view" style="display:block;', html)
+            self.assertIn('id="screenActionSteps" class="offer-screen-view" style="display:none;', html)
+            self.assertIn('id="btnAcceptAndSignBottom"', html)
+            self.assertIn("Accept &amp; Sign Offer Letter", html)
+
     def test_signed_offer_letter_reveals_payment_and_enhancements(self):
         """Phase 2: Signed offer reveals signed banner, compact QR, Copy UPI ID, and high-contrast buttons."""
         with self.app.test_request_context("/portal/offer"):
@@ -130,8 +136,8 @@ class TestOfferLetterStagedFlow(unittest.TestCase):
             # Payment section must be active
             self.assertIn('id="postSignPaymentSection" style="display:block;', html)
 
-            # Compact QR code (135px)
-            self.assertIn('width:135px; height:135px;', html)
+            # Compact QR code (115px)
+            self.assertIn('width:115px; height:115px;', html)
 
             # Download QR button
             self.assertIn('id="btnDownloadOfferQr"', html)
@@ -148,7 +154,49 @@ class TestOfferLetterStagedFlow(unittest.TestCase):
             self.assertIn("Paytm", html)
             self.assertIn("Any UPI", html)
             self.assertIn("background:#5f259f", html)  # PhonePe purple
-            self.assertIn("background:#002970", html)  # Paytm navy
+            self.assertIn("background:#00baf2", html)  # Paytm cyan (distinct from dark card)
+
+            # Screen 2 (Action) must be active and Screen 1 (Review) hidden for signed candidate
+            self.assertIn('id="screenActionSteps" class="offer-screen-view" style="display:block;', html)
+            self.assertIn('id="screenOfferReview" class="offer-screen-view" style="display:none;', html)
+            self.assertIn("Review Appointment Letter", html)
+
+    def test_csp_compliance_no_inline_click_handlers(self):
+        """Enforce CSP compliance: Zero inline onclick or javascript: links; all attached in script."""
+        with self.app.test_request_context("/portal/offer"):
+            html = render_template(
+                "portal_offer_letter.html",
+                candidate={"name": "Chirag Gupta", "email": "chirag.test@dbert.test", "domain": "Data Analytics", "intern_id": 110},
+                offer={
+                    "offer_letter_id": "DBERT-OFR-2026-DA-0110",
+                    "name": "Chirag Gupta",
+                    "email": "chirag.test@dbert.test",
+                    "domain": "Data Analytics",
+                    "caution_deposit_status": "PENDING",
+                    "signature_name": None,
+                    "accepted_at": None,
+                },
+                is_signed=False,
+                is_deposit_verified=False,
+                locked=False,
+                preview_mode=True,
+                enrollment=None,
+                user={"email": "chirag.test@dbert.test", "role": "intern"},
+                active_page="offer"
+            )
+
+            # Strict CSP assertions: No inline onclick or javascript: pseudo-protocol
+            self.assertNotIn("onclick=", html)
+            self.assertNotIn("javascript:", html)
+
+            # Assert programmatic event listener registrations in nonce script
+            self.assertIn("btnReviewSignTop.addEventListener('click'", html)
+            self.assertIn("btnAcceptAndSignBottom.addEventListener('click'", html)
+            self.assertIn("btnBackToReview.addEventListener('click'", html)
+            self.assertIn("copyBtn.addEventListener('click'", html)
+            self.assertIn("step1.addEventListener('click'", html)
+            self.assertIn("step2.addEventListener('click'", html)
+            self.assertIn("step3.addEventListener('click'", html)
 
     def test_profile_redirects_to_portal_editprofile(self):
         """Option B: /profile route redirects to /portal?tab=editprofile."""

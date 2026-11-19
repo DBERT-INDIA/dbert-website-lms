@@ -10787,18 +10787,74 @@ def admin_course_payment_review(pay_id):
 
 def _tutor_leaderboard(domain_slug):
     """Local composite leaderboard with comprehensive multidimensional scoring:
-    certs*40 + tasks*20 + lessons*10 + hours*5 + perfect_quizzes*5 + articles*30 + mastered_concepts*5."""
+    certs*100 + tasks*50 + lessons*25 + min(tenure_hours, 80)*5 + articles*100 + perfect_quizzes*5 + mastered_concepts*5.
+    Enforces strict 8-week tenure window for attendance calculations."""
     def _run_board(conn, domain_filter=None):
         domain_clause = ""
         params = []
         if domain_filter:
             domain_clause = " AND LOWER(REPLACE(ia.domain,' ','-')) = LOWER(?)"
             params.append(domain_filter)
+
+        # 1. Pre-aggregate tenure attendance:
+        # A candidate's tenure start date is:
+        # COALESCE(enrollments.joining_date, intern_offer_letters.batch_start_date, earliest attendance.week_start)
+        enr_rows = conn.execute("SELECT LOWER(email) as email, joining_date FROM enrollments WHERE joining_date IS NOT NULL AND joining_date != ''").fetchall()
+        joining_by_email = {r["email"]: r["joining_date"] for r in enr_rows if r["email"]}
+
+        offer_rows = conn.execute("SELECT intern_id, LOWER(COALESCE(email, '')) as email, batch_start_date FROM intern_offer_letters WHERE batch_start_date IS NOT NULL AND batch_start_date != ''").fetchall()
+        offer_start_by_id = {}
+        for r in offer_rows:
+            if r["intern_id"]:
+                offer_start_by_id[r["intern_id"]] = r["batch_start_date"]
+            if r["email"]:
+                offer_start_by_id[r["email"]] = r["batch_start_date"]
+
+        att_rows = conn.execute("SELECT intern_id, LOWER(COALESCE(email, '')) as email, week_start, total_minutes FROM attendance").fetchall()
+        first_week_by_id = {}
+        for r in att_rows:
+            iid = r["intern_id"]
+            em = r["email"]
+            ws = r["week_start"]
+            if iid and (iid not in first_week_by_id or ws < first_week_by_id[iid]):
+                first_week_by_id[iid] = ws
+            if em and (em not in first_week_by_id or ws < first_week_by_id[em]):
+                first_week_by_id[em] = ws
+
+        def get_tenure(iid, em):
+            start_str = joining_by_email.get(em) or offer_start_by_id.get(iid) or offer_start_by_id.get(em) or first_week_by_id.get(iid) or first_week_by_id.get(em)
+            if not start_str:
+                return None, None
+            try:
+                st = datetime.strptime(start_str[:10], "%Y-%m-%d").date()
+                return st, st + timedelta(days=56)
+            except Exception:
+                return None, None
+
+        tenure_mins_by_intern = {}
+        for r in att_rows:
+            iid = r["intern_id"]
+            em = r["email"]
+            ws_str = r["week_start"]
+            if not ws_str:
+                continue
+            try:
+                ws = datetime.strptime(ws_str[:10], "%Y-%m-%d").date()
+            except Exception:
+                continue
+            st, end = get_tenure(iid, em)
+            if st and end and st <= ws <= end:
+                mins = r["total_minutes"] or 0
+                if iid:
+                    tenure_mins_by_intern[iid] = tenure_mins_by_intern.get(iid, 0) + mins
+                if em:
+                    tenure_mins_by_intern[em] = tenure_mins_by_intern.get(em, 0) + mins
+
+        # 2. Fetch candidate activity metrics
         rows = conn.execute("""
-            SELECT ia.id AS intern_id, ia.name, ia.domain,
-                (SELECT COUNT(*) FROM intern_certificates WHERE intern_id = ia.id OR (email IS NOT NULL AND LOWER(email) = LOWER(ia.email))) AS cert_count,
+            SELECT ia.id AS intern_id, ia.name, ia.domain, LOWER(COALESCE(ia.email, '')) as email,
+                (SELECT COUNT(*) FROM intern_certificates WHERE (intern_id = ia.id OR (email IS NOT NULL AND LOWER(email) = LOWER(ia.email))) AND (tier IS NULL OR LOWER(tier) != 'provisional')) AS cert_count,
                 (SELECT COUNT(*) FROM task_submissions WHERE (intern_id = ia.id OR (email IS NOT NULL AND LOWER(email) = LOWER(ia.email))) AND status = 'approved') AS task_count,
-                COALESCE((SELECT SUM(total_minutes) FROM attendance WHERE intern_id = ia.id OR (email IS NOT NULL AND LOWER(email) = LOWER(ia.email))), 0) AS att_mins,
                 COALESCE((SELECT MAX(COALESCE(ce.current_day, 1)) - 1 FROM course_enrollments ce WHERE ce.intern_id = ia.id OR (ce.email IS NOT NULL AND LOWER(ce.email) = LOWER(ia.email))), 0) AS lessons_done,
                 COALESCE((SELECT COUNT(*) FROM day_quiz_attempts dqa
                           JOIN course_enrollments ce_q ON ce_q.id = dqa.enrollment_id
@@ -10807,39 +10863,32 @@ def _tutor_leaderboard(domain_slug):
                 COALESCE((SELECT COUNT(*) FROM intern_articles WHERE intern_id = ia.id AND status = 'PUBLISHED'), 0) AS articles_count,
                 COALESCE((SELECT COUNT(*) FROM gl_student_mastery WHERE student_id = ia.id AND mastery_level = 'MASTERED'), 0) AS mastered_concepts
             FROM intern_accounts ia
-            WHERE ia.is_active = 1""" + domain_clause + """
-            ORDER BY (
-                (SELECT COUNT(*) FROM intern_certificates WHERE intern_id = ia.id OR (email IS NOT NULL AND LOWER(email) = LOWER(ia.email))) * 40 +
-                (SELECT COUNT(*) FROM task_submissions WHERE (intern_id = ia.id OR (email IS NOT NULL AND LOWER(email) = LOWER(ia.email))) AND status = 'approved') * 20 +
-                COALESCE((SELECT MAX(COALESCE(ce.current_day, 1)) - 1 FROM course_enrollments ce WHERE ce.intern_id = ia.id OR (ce.email IS NOT NULL AND LOWER(ce.email) = LOWER(ia.email))), 0) * 10 +
-                COALESCE((SELECT SUM(total_minutes) FROM attendance WHERE intern_id = ia.id OR (email IS NOT NULL AND LOWER(email) = LOWER(ia.email))), 0) / 60.0 * 5 +
-                COALESCE((SELECT COUNT(*) FROM day_quiz_attempts dqa
-                          JOIN course_enrollments ce_q ON ce_q.id = dqa.enrollment_id
-                          WHERE (ce_q.intern_id = ia.id OR (ce_q.email IS NOT NULL AND LOWER(ce_q.email) = LOWER(ia.email)))
-                            AND dqa.passed = 1 AND dqa.score >= dqa.max_score AND dqa.max_score > 0), 0) * 5 +
-                COALESCE((SELECT COUNT(*) FROM intern_articles WHERE intern_id = ia.id AND status = 'PUBLISHED'), 0) * 30 +
-                COALESCE((SELECT COUNT(*) FROM gl_student_mastery WHERE student_id = ia.id AND mastery_level = 'MASTERED'), 0) * 5
-            ) DESC
-            LIMIT 50
-        """, params).fetchall()
+            WHERE ia.is_active = 1""" + domain_clause, params).fetchall()
+
         board = []
         for r in rows:
             d = row_to_dict(r)
-            hours = round(d["att_mins"] / 60.0, 1)
+            iid = d["intern_id"]
+            em = d.get("email", "")
+            mins = tenure_mins_by_intern.get(iid) or tenure_mins_by_intern.get(em) or 0
+            hours = round(mins / 60.0, 1)
+            capped_hours = min(hours, 80.0)
             score = round(
-                d["cert_count"] * 40 +
-                d["task_count"] * 20 +
-                d["lessons_done"] * 10 +
-                hours * 5 +
+                d["cert_count"] * 100 +
+                d["task_count"] * 50 +
+                d["lessons_done"] * 25 +
+                d.get("articles_count", 0) * 100 +
+                capped_hours * 5 +
                 d.get("perfect_quizzes", 0) * 5 +
-                d.get("articles_count", 0) * 30 +
                 d.get("mastered_concepts", 0) * 5,
                 1
             )
             d["score"] = score
             d["hours"] = hours
             board.append(d)
-        return board
+
+        board.sort(key=lambda x: x["score"], reverse=True)
+        return board[:50]
 
     try:
         with get_db() as conn:

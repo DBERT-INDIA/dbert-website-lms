@@ -1620,6 +1620,25 @@ ssh -i "C:\Users\user\.ssh\dbert-production-server.pem" ubuntu@3.26.237.171 "sud
     python scripts/dispatch_offer_letters_local.py --batch 10 --delay 30
     ```
 
+### 42.5. Staged Offer Review, Transparent Watermark & Payment Execution Flow
+- **Screen 1 (`#screenOfferReview`) — Appointment Letter Review**:
+  - **Transparent Watermark**: Styled with `background: rgba(254, 243, 199, 0.10)`, delicate dashed border `rgba(217, 119, 6, 0.22)`, and zero blur (`backdrop-filter: none !important`), ensuring every clause, compensation milestone, and legal term is razor-sharp while retaining preview stamping.
+  - **Review Completion Bar**: Positioned at the document footer with Step 1 check and prominent `#btnAcceptAndSignBottom` (`Accept & Sign Offer Letter →`) transitioning candidates directly to Screen 2.
+- **Screen 2 (`#screenActionSteps`) — Staged Execution & Seat Confirmation**:
+  - **Back Navigation**: Includes `#btnBackToReview` (`← Review Appointment Letter`) and candidate reference chips.
+  - **Step 2 (Digital Acceptance)**:
+    - *Unsigned State*: Displays `#offerSignCard` with Full Legal Name input, Indian IT Act 2000 acceptance checkbox, and `#signSubmitBtn`.
+    - *Signed State*: Immediately renders green `#signedBanner` (`STEP 2 COMPLETED: AGREEMENT EXECUTED`) with verified signature name and timestamp.
+  - **Step 3 (Seat Confirmation)**:
+    - Unfolds upon digital signature execution or lands directly for previously signed candidates.
+    - Sized-down compact QR code (115px × 115px) with dedicated `#btnDownloadOfferQr` (`/static/img/qrcode.jpeg`) and `#copyVpaBtn` (`Q652429146@ybl`).
+    - High-contrast, brand-distinct 1-Tap UPI Launchers: GPay (`#ffffff`), PhonePe (`#5f259f`), Paytm Electric Cyan (`#00baf2` with `#002970` deep navy text to eliminate dark card blending), and Any UPI radiant gold gradient.
+    - 12-digit UTR submission form with real-time regex validation and instant admissions ledger reconciliation.
+- **Strict Nonce CSP Compliance**:
+  - Converted all triggers from `<a>` anchors with pseudo-URLs (`javascript:void(0)`) to `<button type="button">`.
+  - Exactly **0 inline `onclick` or pseudo-protocol handlers** across the template.
+  - All interactive listeners (`btnReviewSignTop`, `btnConfirmSeatTop`, `btnAcceptAndSignBottom`, `btnBackToReview`, `stepperStep1-3`, `copyVpaBtn`, `btnPrintOfferTop`, `btnPrintOfferDossier`) are bound programmatically in `DOMContentLoaded` within `<script nonce="{{ csp_nonce() }}">`.
+
 ---
 
 ## 43. Web Push Strict Nonce CSP Compliance & Seeded Lifecycle QA Matrix
@@ -2152,6 +2171,112 @@ The Overview dashboard (`#panel-overview`) enforces a strict, clean vertical lay
   For interns who have no domain record across any linked table upon login, a sleek modal prompts them to choose one of the 9 canonical tracks in a single click.
 - **API Endpoint (`POST /api/intern/select-domain`)**:
   Validates track via `normalize_domain_string()`, updates `intern_accounts.domain`, `applications.domain`, and `enrollments.domain`, auto-enrolls into domain courses, and returns `{ "status": "success", "domain": "..." }`.
+
+---
+
+## 16. Staged Offer Letter Review, Transparent Watermark & Seat Confirmation Flow (`/portal/offer`)
+
+### 16.1. Staged 2-Screen User Journey Architecture
+To prevent cognitive overload and maintain strict legal compliance under the Indian IT Act, 2000, `/portal/offer` divides the appointment onboarding flow into two distinct visual screens:
+1. **Screen 1 (`#screenOfferReview`) — Appointment Letter Review**:
+   - High-fidelity parchment rendering of the full official appointment terms, weekly 10h commitments, sprint deliverables, and ₹5,000 milestone stipend provisions.
+   - **Delicate & Transparent Watermark**: Faint amber styling (`background: rgba(254, 243, 199, 0.10)`, `border: 2.5px dashed rgba(217, 119, 6, 0.22)`, `color: rgba(180, 83, 9, 0.20)`, zero `backdrop-filter` blur) ensures 100% legibility of all terms underneath while retaining the unverified preview watermark stamp.
+   - **Review Completion Bar**: Pinned at the bottom of the letter with a prominent CTA button: `Accept & Sign Offer Letter →` (`#btnAcceptAndSignBottom`), which smoothly transitions candidate to Screen 2.
+2. **Screen 2 (`#screenActionSteps`) — Digital Execution & Seat Confirmation**:
+   - **Top Navigation Bar**: Provides instant `← Review Appointment Letter` back button and candidate reference chips (`REF: {{ offer.offer_letter_id }}`, `Track: {{ offer.domain }}`).
+   - **Step 2 (Digital Acceptance)**:
+     * Unsigned: Renders `STEP 2: REVIEW & DIGITAL ACCEPTANCE` with Full Legal Name input, statutory agreement checkbox, and `Sign & Accept Appointment Agreement` button.
+     * Signed: Renders `STEP 2 COMPLETED: AGREEMENT EXECUTED` green banner with verified signature name, execution timestamp, and `Legally Accepted` badge.
+   - **Step 3 (Cohort Seat Confirmation)**:
+     * **Compact QR Code**: Scaled down to a sleek **115px × 115px** with `Download QR` button and Merchant VPA (`Q652429146@ybl`) with 1-click `Copy UPI ID`.
+     * **Vibrant Brand 1-Tap UPI Launchers**: High-contrast, non-blending buttons with distinct brand styling:
+       - **GPay**: Pure White (`#ffffff`), border `2px solid #4285F4`, Google blue icon (`#4285F4`).
+       - **PhonePe**: Vibrant Royal Purple (`#5f259f`), border `2px solid #c084fc`, white text (`#ffffff`).
+       - **Paytm**: Electric Paytm Sky Blue (`#00baf2`), border `2px solid #ffffff`, deep navy text (`#002970`), high-contrast against dark card background.
+       - **Any UPI**: Radiant Amber/Gold gradient (`linear-gradient(135deg, #f59e0b 0%, #d97706 100%)`), border `2px solid #fde68a`, dark text (`#0b1120`).
+     * **UTR Submission & Reconciliation Card**: 12-digit numeric validation (`\d{12}`), admissions ledger submission, and under-review state with 1-tap WhatsApp expedite button.
+3. **Screen 3 / Reconciled State (`is_deposit_verified: True`)**:
+   - Stepper displays all 3 steps completed.
+   - Preview watermark is eliminated; candidate legal cursive signature and cryptographic QR seal are embedded.
+   - Official signed PDF download button (`#btnPrintOfferTop`, `#btnPrintOfferDossier`) is unlocked, directing to `/portal/offer/print`.
+
+### 16.2. Smart Screen Routing & Stepper Navigation
+- **Initial Landing Logic**:
+  * `is_signed: False` &rarr; Lands on Screen 1 (Review) with transparent watermark.
+  * `is_signed: True`, `is_deposit_verified: False` &rarr; Lands directly on Screen 2 (Action Steps: Step 2 Executed + Step 3 Payment) to minimize friction.
+  * `is_deposit_verified: True` &rarr; Lands on Screen 1 (Verified Document with Download PDF unlocked).
+- **Interactive Stepper Switcher**:
+  Clicking Step 1 on `#stepperStep1` toggles to Screen 1. Clicking Step 2 (`#stepperStep2`) or Step 3 (`#stepperStep3`) toggles to Screen 2.
+
+### 16.3. Strict Nonce CSP Event Binding & Zero-Inline-Handler Enforcement
+- **CSP Nonce Requirement**: Under `Content-Security-Policy: script-src 'self' 'nonce-{nonce}'`, modern browsers drop all inline `onclick="..."` and pseudo-URLs (`href="javascript:void(0)"`).
+- **Semantic Button Architecture**: All action controls use `<button type="button">` instead of anchors with void hrefs.
+- **Zero Inline Event Handlers**: Exactly 0 inline `onclick` attributes remain across the template.
+- **Programmatic Event Registrations**: All listeners are registered inside `DOMContentLoaded` within `<script nonce="{{ csp_nonce() }}">`:
+  * `#btnReviewSignTop`: switches to Screen 2 (`showScreen('screenActionSteps')`).
+  * `#btnConfirmSeatTop`: switches to Screen 2 (`showScreen('screenActionSteps')`).
+  * `#btnAcceptAndSignBottom`: switches to Screen 2 (`showScreen('screenActionSteps')`).
+  * `#btnBackToReview`: switches back to Screen 1 (`showScreen('screenOfferReview')`).
+  * `#stepperStep1`: switches to Screen 1.
+  * `#stepperStep2` & `#stepperStep3`: switches to Screen 2.
+  * `#copyVpaBtn`: 1-click clipboard copy (`copyUpiVpa('Q652429146@ybl')`) with visual checkmark and toast notification.
+  * `#btnPrintOfferTop` & `#btnPrintOfferDossier`: opens `/portal/offer/print` in new tab.
+- **Academic Profile Route Forwarding (Option B)**:
+  Route `/profile` dynamically redirects via HTTP 302 to `/portal?tab=editprofile`, ensuring candidates who click profile links seamlessly access academic background completion without broken or disconnected pages.
+
+---
+
+## 17. Cohort Engineering Leaderboard Architecture & Weightage Governance (`/leaderboard`)
+
+### 17.1. Route & Component Architecture
+- **Route**: `https://lms.dbert.in/leaderboard` (Managed by Flask route handler `_tutor_leaderboard()` in `apps/portal/app.py`).
+- **Template**: `apps/portal/templates/leaderboard.html`.
+- **UI Structure**:
+  * Top Header with Trophy icon and cohort description.
+  * Personal Standing Card (`.standing-card`) with rank, points, sprint hours, bounty count, and cert count.
+  * Domain Filter Pills (`.domain-tabs-wrapper`) across canonical domains.
+  * Top 3 Podium Cards (`.podium-card.rank-1`, `.rank-2`, `.rank-3`) with gold, silver, bronze medal styling.
+  * Top 50 Standings Table (`.table-card` and `.lb-table`) with rank, avatar, name, domain tag, hours, bounties, lessons, concepts, and total score.
+  * Multidimensional Scoring Methodology Card (`.rubric-card`) with color-coded rubric badges.
+
+### 17.2. 8-Week Cohort Tenure Window Protocol
+1. **Tenure Duration**: All DBERT internship cohorts operate on a strict **8-Week (56 calendar days)** cohort tenure.
+2. **Start Date Resolution**:
+   - Primary: Candidate's recorded `enrollments.joining_date`.
+   - Secondary: Candidate's offer letter `intern_offer_letters.batch_start_date`.
+   - Fallback: Earliest recorded attendance record `MIN(attendance.week_start)` for the candidate.
+3. **Window Boundary**:
+   $$\text{tenure\_window} = [\text{start\_date}, \text{start\_date} + 56\text{ days}]$$
+4. **Attendance Exclusion**: Any attendance record whose `week_start` falls outside this 56-day window is strictly excluded from ranking calculations.
+
+### 17.3. 80-Hour Attendance Points Cap
+- Standard engagement across the 8-week cohort is **10 hours/week**, totaling an expected **80.0 hours**.
+- **Display vs Calculation**:
+  - The leaderboard table displays the candidate's actual logged hours within their tenure window (e.g., `104.0 hrs`).
+  - For total point calculation, attendance hours are capped at 80.0 hours:
+    $$\text{points}_{\text{attendance}} = \min(\text{tenure\_hours}, 80.0) \times 5.0\text{ pts}$$
+    (Maximum possible contribution from attendance is **400.0 pts**).
+
+### 17.4. Multidimensional Competency Scoring Weightage (7 Core Metrics)
+The total score for each candidate is calculated using the updated weightage formula:
+$$\text{Score} = 100 \times \text{certs} + 50 \times \text{tasks} + 25 \times \text{lessons} + 5 \times \min(\text{tenure\_hours}, 80.0) + 100 \times \text{articles} + 5 \times \text{quizzes} + 5 \times \text{concepts}$$
+
+| Metric | Point Weightage | Verification & Source Criteria | Rubric Badge |
+|---|:---:|---|---|
+| **Verified Certification** | **+100 pts** | Completed credential in `intern_certificates` where `tier != 'provisional'` | `.badge-gold` |
+| **Approved Bounty Task** | **+50 pts** | Staff-approved task submission in `task_submissions` (`status = 'approved'`) | `.badge-green` |
+| **Completed Sprint Lesson** | **+25 pts** | Course lesson marked complete in `user_progress` | `.badge-cyan` |
+| **Platform Sprint Attendance** | **+5 pts/hr** | Logged sprint attendance within 8-week tenure window (capped at max 80.0 hrs) | `.badge-indigo` |
+| **Published Engineering Article**| **+100 pts** | Peer-reviewed and published technical article (`approved_articles`) | `.badge-blue` |
+| **100% Score on Daily Quiz** | **+5 pts** | Quiz attempt scored at 100% in `quiz_attempts` | `.badge-purple` |
+| **Mastered Technical Concept** | **+5 pts** | Concept marked mastered in `concept_mastery` | `.badge-rose` |
+
+### 17.5. Spacing & Typography Hardening
+- **Container Padding**: Increased `.leaderboard-container` padding to `2rem 2rem 4rem` (desktop) and `4.5rem 1.25rem 4rem` (mobile).
+- **Card Header Component**: Replaced inline styles with `.table-card-header` class with `padding: 1.5rem 2rem;` (desktop) and `padding: 1.25rem 1.25rem;` (mobile).
+- **Anti-Clipping Design**: Table heading `"Leaderboard Standings (Top 50)"` and candidate count `"Showing 50 ranked candidates in All"` have ample margin and flex spacing, preventing any glyph clipping of leading characters ("L" and "S") against the card border or sidebar.
+
+
 
 
 

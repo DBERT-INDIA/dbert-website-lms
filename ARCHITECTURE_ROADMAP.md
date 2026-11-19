@@ -397,13 +397,25 @@ flowchart TD
 
 ### 10.2. Production Sovereign Leaderboard (`/leaderboard`)
 - **Route**: `https://lms.dbert.in/leaderboard`
-- **Scoring Engine**: Composite 7-metric formula:
-  $$\text{Score} = 40 \times \text{certs} + 20 \times \text{tasks} + 10 \times \text{lessons} + 5 \times \text{hours} + 5 \times \text{quizzes} + 30 \times \text{articles} + 5 \times \text{concepts}$$
+- **8-Week Cohort Tenure Window & 80h Cap**:
+  * Attendance hours are strictly calculated within each candidate's official 8-week internship tenure window (56 calendar days from `enrollments.joining_date` / `intern_offer_letters.batch_start_date`, or fallback `MIN(attendance.week_start)`).
+  * Hours logged outside the 8-week tenure window are excluded from ranking calculations.
+  * Maximum login attendance considered for points is capped at **80.0 hours** (10 hours/week $\times$ 8 weeks = max 400.0 pts from attendance). The table displays actual hours logged within the tenure window.
+- **Scoring Engine**: Updated composite 7-metric formula:
+  $$\text{Score} = 100 \times \text{certs} + 50 \times \text{tasks} + 25 \times \text{lessons} + 5 \times \min(\text{tenure\_hours}, 80.0) + 100 \times \text{articles} + 5 \times \text{quizzes} + 5 \times \text{concepts}$$
+  * **Verified Certification**: `+100 pts` (completed credentials in `intern_certificates` where `tier != 'provisional'`).
+  * **Approved Bounty Task**: `+50 pts` per approved task.
+  * **Completed Sprint Lesson**: `+25 pts` per lesson completed.
+  * **Platform Sprint Attendance**: `+5 pts/hr` (capped at 80.0 hrs within tenure = max 400 pts).
+  * **Published Engineering Article**: `+100 pts` per approved technical publication.
+  * **100% Score on Daily Quiz**: `+5 pts` per perfect quiz.
+  * **Mastered Technical Concept**: `+5 pts` per mastered technical concept.
 - **UI Architecture (`apps/portal/templates/leaderboard.html`)**:
   * Domain filtering pills (All, AI/ML, Data Analyst, Full Stack, Python Automation, Cybersecurity, DevOps & Cloud).
   * Top 3 podium cards (Gold, Silver, Bronze) with metrics breakdown.
   * Ranks 4–50 table view highlighting logged-in candidate row with "YOU" badge.
   * Sticky personal standing card displaying user rank, total score, sprint hours, and bounties.
+  * Dedicated `.table-card-header` component with generous 1.5rem–2rem padding preventing visual clipping of table title and candidate counter against container and sidebar edges.
 
 ### 10.3. Dual-Tier Certificates Portal (`/certificates`)
 - **Route**: `https://lms.dbert.in/certificates`
@@ -416,5 +428,39 @@ flowchart TD
 - Sovereign RFC 8292 NIST P-256 VAPID web push modal (`#dbertPushPermissionModal`) in `portal.html`.
 - Prompts interns on first entry (`Notification.permission === 'default'`), highlighting mentor review, bounty approval, and stipend alerts.
 - Subscribes device via `DBERTPush.requestPermissionAndSubscribe()` and persists endpoint in PostgreSQL `web_push_devices`.
+
+---
+
+## 11. Domain Funnel Auto-Resolution & Overview Dashboard Hierarchy (`/portal`)
+- **Canonical Normalization Engine**: `normalize_domain_string()` handles all variants, synonyms, and abbreviations mapping into 9 canonical tracks.
+- **Auto-Healing Multi-Table Sync**: On login or `/portal` entry, queries `intern_accounts`, `applications`, `enrollments`, `intern_offer_letters`, and `intern_certificates.course_title`. Heals `intern_accounts.domain`, enrolls intern in domain curriculum, and heals missing profile fields.
+- **Stacked Dashboard Hierarchy**: `#nextActionMissionCard` (Top Stage 5 balance notice) &rarr; `#academicProfileBanner` (Onboarding Step 1 clearance) &rarr; `#overviewStepBar` (8-week timeline) &rarr; `#ovAccepted` (Full legacy active dashboard).
+- **Fallback Modal**: 1-click `#domainSelectionModal` with `/api/intern/select-domain` endpoint for candidates without any recorded domain.
+- **Academic Profile Route Forwarding (Option B)**: Dedicated `/profile` route permanently forwards via HTTP 302 to `/portal?tab=editprofile`, allowing candidates to complete academic records seamlessly without orphan screens.
+
+---
+
+## 12. Staged Offer Letter Review, Transparent Watermark & Seat Confirmation Flow (`/portal/offer`)
+- **Screen 1 (`#screenOfferReview`) — Transparent Review**:
+  * Official appointment terms displayed in high-fidelity parchment format.
+  * Delicate, transparent watermark (`rgba(254, 243, 199, 0.10)`, zero blur, faint amber lettering) ensuring 100% legibility of all terms underneath.
+  * Bottom review completion bar with prominent button: `Accept & Sign Offer Letter →`.
+- **Screen 2 (`#screenActionSteps`) — Digital Execution & Seat Confirmation**:
+  * Top navigation bar with `← Review Appointment Letter` back button.
+  * **Step 2**: Legal Name input + Indian IT Act 2000 acceptance checkbox + `Sign & Accept Appointment Agreement`. Once signed, transforms into `STEP 2 COMPLETED: AGREEMENT EXECUTED` banner.
+  * **Step 3**: Seat confirmation via ₹499 caution deposit:
+    - Sized-down, compact QR code (115px × 115px).
+    - `Download QR` button + Merchant VPA `Q652429146@ybl` with 1-click `Copy UPI ID`.
+    - Vibrant, non-blending 1-Tap UPI launchers (GPay pure white with `#4285F4`, PhonePe `#5f259f`, Paytm electric cyan `#00baf2` with `#002970` text, Any UPI gold gradient).
+    - 12-digit UTR entry card with instant validation and admissions ledger reconciliation.
+- **Screen 3 / Reconciled State (`is_deposit_verified: True`)**:
+  * Preview watermark eliminated.
+  * Embedded candidate cursive signature and cryptographic QR seal.
+  * Official Signed PDF download permanently unlocked (`/portal/offer/print`).
+- **Strict Nonce CSP Compliance**:
+  * All action triggers use `<button type="button">` instead of `<a>` anchors with pseudo-URLs.
+  * Exactly 0 inline `onclick` or `href="javascript:..."` handlers across template.
+  * Programmatic listeners bound via standard `addEventListener` in `DOMContentLoaded` within `<script nonce="{{ csp_nonce() }}">` for `#btnReviewSignTop`, `#btnConfirmSeatTop`, `#btnAcceptAndSignBottom`, `#btnBackToReview`, `#stepperStep1-3`, `#copyVpaBtn`, `#btnPrintOfferTop`, and `#btnPrintOfferDossier`.
+
 
 
