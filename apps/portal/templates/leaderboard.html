@@ -6,9 +6,13 @@
 
   <style nonce="{{ csp_nonce() }}">
     body.intern-body {
-      background: #070A12 !important;
-      color: #F8FAFC !important;
+      background: #F8FAFC !important;
+      color: #0F172A !important;
       min-height: 100vh;
+    }
+
+    main.main-content {
+      background: #F8FAFC !important;
     }
 
     .leaderboard-container {
@@ -31,7 +35,7 @@
     .lb-header h1 {
       font-size: 2rem;
       font-weight: 800;
-      color: #fff;
+      color: #0F172A !important;
       margin: 0 0 0.5rem;
       font-family: var(--f-display, 'Space Grotesk', sans-serif);
       display: flex;
@@ -39,7 +43,7 @@
       gap: 0.75rem;
     }
     .lb-header p {
-      color: #94A3B8;
+      color: #475569 !important;
       margin: 0;
       font-size: 0.95rem;
       line-height: 1.6;
@@ -47,8 +51,8 @@
 
     /* Personal Standing Banner */
     .standing-card {
-      background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(15, 23, 42, 0.9) 100%);
-      border: 1.5px solid rgba(99, 102, 241, 0.35);
+      background: #FFFFFF !important;
+      border: 1.5px solid #E2E8F0 !important;
       border-radius: 16px;
       padding: 1.5rem 1.75rem;
       margin-bottom: 2rem;
@@ -57,7 +61,7 @@
       align-items: center;
       flex-wrap: wrap;
       gap: 1.5rem;
-      box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.08) !important;
     }
     .standing-left {
       display: flex;
@@ -68,15 +72,15 @@
       width: 56px;
       height: 56px;
       border-radius: 14px;
-      background: linear-gradient(135deg, #6366F1, #4F46E5);
-      color: #fff;
+      background: linear-gradient(135deg, #2563EB, #1D4ED8) !important;
+      color: #fff !important;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       font-weight: 800;
       font-size: 1.35rem;
-      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+      box-shadow: 0 4px 15px rgba(37, 99, 235, 0.25) !important;
       flex-shrink: 0;
     }
     .standing-rank-badge small {
@@ -85,7 +89,7 @@
       font-weight: 700;
       letter-spacing: 0.5px;
       margin-top: -2px;
-      color: #C7D2FE;
+      color: #DBEAFE !important;
     }
     .standing-stats {
       display: flex;
@@ -99,13 +103,14 @@
       font-size: 0.75rem;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      color: #94A3B8;
+      color: #64748B !important;
+      font-weight: 600;
       margin-bottom: 2px;
     }
     .standing-stat-value {
       font-size: 1.25rem;
       font-weight: 800;
-      color: #F8FAFC;
+      color: #0F172A !important;
     }
 
     /* Domain Filtering Pills */
@@ -125,22 +130,23 @@
       font-size: 0.8125rem;
       font-weight: 700;
       text-decoration: none;
-      color: #94A3B8;
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #475569 !important;
+      background: #FFFFFF !important;
+      border: 1px solid #E2E8F0 !important;
       white-space: nowrap;
       transition: all 0.2s ease;
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
     }
     .domain-pill:hover {
-      color: #F8FAFC;
-      background: rgba(255, 255, 255, 0.08);
-      border-color: rgba(255, 255, 255, 0.15);
+      color: #0F172A !important;
+      background: #F1F5F9 !important;
+      border-color: #CBD5E1 !important;
     }
     .domain-pill.active {
-      color: #F8FAFC;
-      background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(79, 70, 229, 0.3));
-      border-color: #6366F1;
-      box-shadow: 0 0 15px rgba(99, 102, 241, 0.25);
+      color: #FFFFFF !important;
+      background: #2563EB !important;
+      border-color: #1D4ED8 !important;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25) !important;
     }
 
     /* Podium Cards */
@@ -164,24 +170,26 @@
       flex-direction: column;
       justify-content: space-between;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
+      background: #FFFFFF !important;
+      box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.08) !important;
     }
     .podium-card:hover {
       transform: translateY(-4px);
     }
     .podium-card.rank-1 {
-      background: linear-gradient(135deg, rgba(212, 175, 55, 0.18) 0%, rgba(15, 23, 42, 0.95) 100%);
-      border: 1.5px solid rgba(212, 175, 55, 0.45);
-      box-shadow: 0 10px 30px -5px rgba(212, 175, 55, 0.2);
+      background: linear-gradient(145deg, #FFFBEB 0%, #FFFFFF 100%) !important;
+      border: 2px solid #F59E0B !important;
+      box-shadow: 0 8px 24px -4px rgba(245, 158, 11, 0.2) !important;
     }
     .podium-card.rank-2 {
-      background: linear-gradient(135deg, rgba(148, 163, 184, 0.18) 0%, rgba(15, 23, 42, 0.95) 100%);
-      border: 1.5px solid rgba(148, 163, 184, 0.35);
-      box-shadow: 0 10px 30px -5px rgba(148, 163, 184, 0.15);
+      background: linear-gradient(145deg, #F8FAFC 0%, #FFFFFF 100%) !important;
+      border: 2px solid #94A3B8 !important;
+      box-shadow: 0 8px 24px -4px rgba(148, 163, 184, 0.2) !important;
     }
     .podium-card.rank-3 {
-      background: linear-gradient(135deg, rgba(205, 127, 50, 0.18) 0%, rgba(15, 23, 42, 0.95) 100%);
-      border: 1.5px solid rgba(205, 127, 50, 0.35);
-      box-shadow: 0 10px 30px -5px rgba(205, 127, 50, 0.15);
+      background: linear-gradient(145deg, #FFF7ED 0%, #FFFFFF 100%) !important;
+      border: 2px solid #F97316 !important;
+      box-shadow: 0 8px 24px -4px rgba(249, 115, 22, 0.2) !important;
     }
     .podium-medal {
       font-size: 2.25rem;
@@ -190,7 +198,7 @@
     .podium-name {
       font-size: 1.25rem;
       font-weight: 800;
-      color: #fff;
+      color: #0F172A !important;
       margin-bottom: 0.35rem;
       white-space: nowrap;
       overflow: hidden;
@@ -198,13 +206,14 @@
     }
     .podium-domain {
       font-size: 0.8125rem;
-      color: #94A3B8;
+      color: #64748B !important;
+      font-weight: 600;
       margin-bottom: 1rem;
     }
     .podium-score {
       font-size: 1.75rem;
       font-weight: 800;
-      color: #F8FAFC;
+      color: #0F172A !important;
       display: flex;
       align-items: baseline;
       gap: 0.35rem;
@@ -212,28 +221,28 @@
     .podium-score small {
       font-size: 0.8125rem;
       font-weight: 600;
-      color: #94A3B8;
+      color: #64748B !important;
     }
     .podium-metrics {
       display: flex;
       justify-content: space-between;
       padding-top: 1rem;
       margin-top: 1rem;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      border-top: 1px solid #E2E8F0 !important;
       font-size: 0.8125rem;
-      color: #94A3B8;
+      color: #64748B !important;
     }
     .podium-metrics strong {
-      color: #F8FAFC;
+      color: #0F172A !important;
     }
 
     /* Leaderboard Table */
     .table-card {
-      background: rgba(15, 23, 42, 0.75);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: #FFFFFF !important;
+      border: 1px solid #E2E8F0 !important;
       border-radius: 18px;
       overflow: hidden;
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.08) !important;
       margin-bottom: 2.5rem;
     }
     .lb-table {
@@ -241,34 +250,42 @@
       min-width: 680px;
       border-collapse: collapse;
       text-align: left;
+      background: #FFFFFF !important;
     }
     .lb-table th {
-      background: rgba(255, 255, 255, 0.02);
+      background: #F8FAFC !important;
       padding: 1rem 1.25rem;
       font-size: 0.75rem;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      color: #94A3B8;
+      color: #475569 !important;
       font-weight: 700;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      border-bottom: 2px solid #E2E8F0 !important;
     }
     .lb-table td {
       padding: 1rem 1.25rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      border-bottom: 1px solid #F1F5F9 !important;
       font-size: 0.875rem;
-      color: #E2E8F0;
+      color: #1E293B !important;
+      background: #FFFFFF;
     }
     .lb-table tr:last-child td {
-      border-bottom: none;
+      border-bottom: none !important;
+    }
+    .lb-table tbody tr:hover td {
+      background: #F8FAFC !important;
+    }
+    .lb-table tr.my-row td {
+      background: #EFF6FF !important;
     }
     .lb-table tr.my-row {
-      background: rgba(99, 102, 241, 0.12);
-      border-left: 3px solid #6366F1;
+      border-left: 4px solid #2563EB !important;
     }
     .rank-number {
       font-weight: 800;
-      color: #94A3B8;
+      color: #0F172A !important;
       width: 48px;
+      font-size: 0.9375rem;
     }
     .candidate-cell {
       display: flex;
@@ -276,61 +293,64 @@
       gap: 0.75rem;
     }
     .candidate-avatar {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      background: rgba(99, 102, 241, 0.2);
-      border: 1px solid rgba(99, 102, 241, 0.4);
-      color: #A5B4FC;
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: #EEF2FF !important;
+      border: 1.5px solid #C7D2FE !important;
+      color: #4338CA !important;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 800;
-      font-size: 0.8125rem;
+      font-size: 0.875rem;
       flex-shrink: 0;
     }
     .candidate-name {
       font-weight: 700;
-      color: #F8FAFC;
+      color: #0F172A !important;
+      font-size: 0.9375rem;
     }
     .you-badge {
       display: inline-block;
       font-size: 0.65rem;
-      background: #6366F1;
-      color: #fff;
+      background: #2563EB !important;
+      color: #FFFFFF !important;
       font-weight: 800;
-      padding: 2px 6px;
-      border-radius: 4px;
+      padding: 2px 7px;
+      border-radius: 6px;
       margin-left: 6px;
       text-transform: uppercase;
     }
     .domain-tag {
       display: inline-block;
       font-size: 0.75rem;
-      padding: 3px 8px;
-      border-radius: 6px;
-      background: rgba(255, 255, 255, 0.05);
-      color: #94A3B8;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      background: #F1F5F9 !important;
+      color: #334155 !important;
+      border: 1px solid #E2E8F0 !important;
+      font-weight: 600;
     }
     .total-score-cell {
       font-weight: 800;
       font-size: 1rem;
-      color: #F59E0B;
+      color: #D97706 !important;
     }
 
     /* Scoring Rubric Section */
     .rubric-card {
-      background: linear-gradient(145deg, #0D1527 0%, #111C35 100%);
-      border: 1.5px solid rgba(99, 102, 241, 0.4);
+      background: #FFFFFF !important;
+      border: 1.5px solid #E2E8F0 !important;
       border-radius: 18px;
       padding: 1.75rem 2rem;
-      box-shadow: 0 12px 35px -8px rgba(0, 0, 0, 0.7), 0 0 20px -3px rgba(99, 102, 241, 0.15);
+      box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.08) !important;
       margin-top: 2rem;
     }
     .rubric-title {
       font-size: 1.2rem;
       font-weight: 800;
-      color: #FFFFFF;
+      color: #0F172A !important;
       margin-bottom: 0.5rem;
       display: flex;
       align-items: center;
@@ -338,12 +358,11 @@
       letter-spacing: -0.01em;
     }
     .rubric-title i {
-      color: #818CF8;
-      filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.5));
+      color: #4F46E5 !important;
     }
     .rubric-desc {
       font-size: 0.875rem;
-      color: #CBD5E1;
+      color: #475569 !important;
       font-weight: 500;
       margin-bottom: 1.5rem;
       line-height: 1.6;
@@ -357,22 +376,22 @@
       display: flex;
       align-items: center;
       gap: 0.85rem;
-      background: #151F38;
-      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: #F8FAFC !important;
+      border: 1px solid #E2E8F0 !important;
       border-radius: 12px;
       padding: 0.85rem 1.1rem;
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .rubric-item:hover {
       transform: translateY(-2px);
-      border-color: rgba(99, 102, 241, 0.5);
-      background: #1A2644;
-      box-shadow: 0 6px 16px -2px rgba(0, 0, 0, 0.4);
+      border-color: #CBD5E1 !important;
+      background: #F1F5F9 !important;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
     }
     .rubric-label {
       font-size: 0.875rem;
-      font-weight: 600;
-      color: #F8FAFC;
+      font-weight: 700;
+      color: #0F172A !important;
       line-height: 1.35;
     }
     .rubric-badge {
@@ -388,46 +407,39 @@
       justify-content: center;
     }
     .rubric-badge.badge-gold {
-      background: rgba(245, 158, 11, 0.22);
-      border: 1.5px solid #F59E0B;
-      color: #FDE68A;
-      box-shadow: 0 0 12px rgba(245, 158, 11, 0.25);
+      background: #FEF3C7 !important;
+      border: 1.5px solid #F59E0B !important;
+      color: #B45309 !important;
     }
     .rubric-badge.badge-green {
-      background: rgba(16, 185, 129, 0.22);
-      border: 1.5px solid #10B981;
-      color: #6EE7B7;
-      box-shadow: 0 0 12px rgba(16, 185, 129, 0.25);
+      background: #DCFCE7 !important;
+      border: 1.5px solid #10B981 !important;
+      color: #047857 !important;
     }
     .rubric-badge.badge-cyan {
-      background: rgba(6, 182, 212, 0.22);
-      border: 1.5px solid #06B6D4;
-      color: #67E8F9;
-      box-shadow: 0 0 12px rgba(6, 182, 212, 0.25);
+      background: #CFFAFE !important;
+      border: 1.5px solid #06B6D4 !important;
+      color: #0E7490 !important;
     }
     .rubric-badge.badge-indigo {
-      background: rgba(99, 102, 241, 0.26);
-      border: 1.5px solid #818CF8;
-      color: #E0E7FF;
-      box-shadow: 0 0 12px rgba(99, 102, 241, 0.25);
+      background: #EEF2FF !important;
+      border: 1.5px solid #6366F1 !important;
+      color: #4338CA !important;
     }
     .rubric-badge.badge-purple {
-      background: rgba(168, 85, 247, 0.22);
-      border: 1.5px solid #A855F7;
-      color: #F3E8FF;
-      box-shadow: 0 0 12px rgba(168, 85, 247, 0.25);
+      background: #F3E8FF !important;
+      border: 1.5px solid #A855F7 !important;
+      color: #7E22CE !important;
     }
     .rubric-badge.badge-blue {
-      background: rgba(59, 130, 246, 0.22);
-      border: 1.5px solid #3B82F6;
-      color: #DBEAFE;
-      box-shadow: 0 0 12px rgba(59, 130, 246, 0.25);
+      background: #DBEAFE !important;
+      border: 1.5px solid #3B82F6 !important;
+      color: #1D4ED8 !important;
     }
     .rubric-badge.badge-rose {
-      background: rgba(244, 63, 94, 0.22);
-      border: 1.5px solid #F43F5E;
-      color: #FFE4E6;
-      box-shadow: 0 0 12px rgba(244, 63, 94, 0.25);
+      background: #FFE4E6 !important;
+      border: 1.5px solid #F43F5E !important;
+      color: #BE123C !important;
     }
   </style>
 </head>
@@ -459,11 +471,11 @@
           {% endif %}
         </div>
         <div>
-          <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: #818CF8; font-weight: 800; margin-bottom: 2px;">
+          <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; color: #2563EB; font-weight: 800; margin-bottom: 2px;">
             Your Current Standing
           </div>
-          <h3 style="margin: 0; color: #fff; font-size: 1.25rem;">{{ user.name or 'Fellow' }}</h3>
-          <div style="font-size: 0.8125rem; color: #94A3B8; margin-top: 3px;">
+          <h3 style="margin: 0; color: #0F172A; font-size: 1.25rem; font-weight: 800;">{{ user.name or 'Fellow' }}</h3>
+          <div style="font-size: 0.8125rem; color: #64748B; margin-top: 3px; font-weight: 500;">
             {{ user.domain or 'Applied Engineering' }} · Active Cohort
           </div>
         </div>
@@ -471,7 +483,7 @@
       <div class="standing-stats">
         <div class="standing-stat-item">
           <div class="standing-stat-label">Total Points</div>
-          <div class="standing-stat-value" style="color: #F59E0B;">
+          <div class="standing-stat-value" style="color: #D97706;">
             {{ my_standing.score if my_standing else 0 }} pts
           </div>
         </div>
@@ -496,12 +508,12 @@
       </div>
     </div>
     {% else %}
-    <div class="standing-card" style="background: rgba(15, 23, 42, 0.8); border-color: rgba(255, 255, 255, 0.1);">
+    <div class="standing-card" style="background: #FFFFFF; border: 1.5px solid #E2E8F0; box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.08);">
       <div>
-        <h3 style="margin: 0 0 4px; color: #fff;">Are you an active DBERT fellow?</h3>
-        <p style="margin: 0; font-size: 0.875rem; color: #94A3B8;">Sign in to your LMS profile to track your position, complete bounty sprints, and unlock milestone stipends.</p>
+        <h3 style="margin: 0 0 4px; color: #0F172A; font-weight: 800;">Are you an active DBERT fellow?</h3>
+        <p style="margin: 0; font-size: 0.875rem; color: #64748B;">Sign in to your LMS profile to track your position, complete bounty sprints, and unlock milestone stipends.</p>
       </div>
-      <a href="/#signin" class="btn btn-primary" style="background: #6366F1; color: #fff; font-weight: 700; padding: 0.6rem 1.25rem; border-radius: 8px; text-decoration: none;">
+      <a href="/#signin" class="btn btn-primary" style="background: #2563EB; color: #fff; font-weight: 700; padding: 0.6rem 1.25rem; border-radius: 8px; text-decoration: none;">
         Sign In to Portal &rarr;
       </a>
     </div>
@@ -551,11 +563,11 @@
 
     <!-- Remaining Ranks 4-50 Table -->
     <div class="table-card">
-      <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid rgba(255, 255, 255, 0.08); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem;">
-        <h3 style="margin: 0; font-size: 1.1rem; color: #fff; font-weight: 700;">
+      <div style="padding: 1.25rem 1.5rem; border-bottom: 1px solid #E2E8F0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; background: #FFFFFF;">
+        <h3 style="margin: 0; font-size: 1.1rem; color: #0F172A; font-weight: 700;">
           Leaderboard Standings (Top 50)
         </h3>
-        <span style="font-size: 0.8125rem; color: #94A3B8;">
+        <span style="font-size: 0.8125rem; color: #64748B; font-weight: 500;">
           Showing {{ board | length }} ranked candidates in {{ selected_domain }}
         </span>
       </div>
@@ -599,10 +611,10 @@
               <td>
                 <span class="domain-tag">{{ row.domain or 'Engineering' }}</span>
               </td>
-              <td style="text-align: center; color: #94A3B8;">{{ row.hours }} hrs</td>
-              <td style="text-align: center; color: #94A3B8;">{{ row.task_count }}</td>
-              <td style="text-align: center; color: #94A3B8;">{{ row.lessons_done }}</td>
-              <td style="text-align: center; color: #94A3B8;">{{ row.mastered_concepts }}</td>
+              <td style="text-align: center; color: #0F172A; font-weight: 600;">{{ row.hours }} hrs</td>
+              <td style="text-align: center; color: #0F172A; font-weight: 600;">{{ row.task_count }}</td>
+              <td style="text-align: center; color: #0F172A; font-weight: 600;">{{ row.lessons_done }}</td>
+              <td style="text-align: center; color: #0F172A; font-weight: 600;">{{ row.mastered_concepts }}</td>
               <td style="text-align: right;" class="total-score-cell">{{ row.score }} pts</td>
             </tr>
             {% endfor %}
@@ -610,10 +622,10 @@
         </table>
       </div>
       {% else %}
-      <div style="padding: 3rem 1.5rem; text-align: center; color: #94A3B8;">
-        <i class="fa-solid fa-trophy" style="font-size: 2.5rem; color: rgba(255, 255, 255, 0.15); margin-bottom: 1rem;"></i>
-        <h4 style="margin: 0 0 0.5rem; color: #fff;">No candidates recorded in this domain yet</h4>
-        <p style="margin: 0; font-size: 0.875rem;">Be the first fellow to log hours and complete sprint bounties to top this leaderboard!</p>
+      <div style="padding: 3rem 1.5rem; text-align: center; color: #64748B;">
+        <i class="fa-solid fa-trophy" style="font-size: 2.5rem; color: #CBD5E1; margin-bottom: 1rem;"></i>
+        <h4 style="margin: 0 0 0.5rem; color: #0F172A; font-weight: 700;">No candidates recorded in this domain yet</h4>
+        <p style="margin: 0; font-size: 0.875rem; color: #64748B;">Be the first fellow to log hours and complete sprint bounties to top this leaderboard!</p>
       </div>
       {% endif %}
     </div>
