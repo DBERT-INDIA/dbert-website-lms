@@ -34,6 +34,11 @@ const nextConfig = {
         destination: '/blog/:slug*',
         permanent: true,
       },
+      {
+        source: '/sitemap-lms.xml',
+        destination: 'https://lms.dbert.in/sitemap.xml',
+        permanent: true,
+      },
     ];
   },
 };

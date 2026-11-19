@@ -24,7 +24,6 @@ export default function robots(): MetadataRoute.Robots {
     sitemap: [
       `${baseUrl}/sitemap.xml`,
       'https://lms.dbert.in/sitemap.xml',
-      `${baseUrl}/sitemap-lms.xml`,
     ],
   };
 }

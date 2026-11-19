@@ -40,6 +40,12 @@ export const seoConfig: Record<string, SeoEntry> = {
     description: '',
     noindex: true,
   },
+  '/qa': {
+    keyword: 'DBERT technical Q&A',
+    title: 'Technical Knowledge & Career Q&A Hub',
+    description:
+      'Explore verified architectural case studies, production AI blueprints, and engineering career advice in our DBERT technical Q&A. Read expert answers now.',
+  },
   '/pricing': {
     keyword: 'DBERT pricing',
     title: 'Pricing — Programs, Products & Incubation Terms',

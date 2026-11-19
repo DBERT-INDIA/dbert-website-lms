@@ -72,8 +72,16 @@ When deploying updates to `apps/website`, any agent must follow this exact seque
    cd /var/www/dbert-website-lms/apps/website
    export NODE_ENV=production
    npm run build
+   # Sync dynamically generated sitemap into static standalone public paths
+   if [ -f .next/server/app/sitemap.xml.body ]; then
+     cp .next/server/app/sitemap.xml.body public/sitemap.xml
+   fi
    cp -r public .next/standalone/ 2>/dev/null || true
    cp -r public .next/standalone/apps/website/ 2>/dev/null || true
+   if [ -f .next/server/app/sitemap.xml.body ]; then
+     cp .next/server/app/sitemap.xml.body .next/standalone/public/sitemap.xml 2>/dev/null || true
+     cp .next/server/app/sitemap.xml.body .next/standalone/apps/website/public/sitemap.xml 2>/dev/null || true
+   fi
    # Ensure permanent data symlink persists across builds:
    mkdir -p /var/www/dbert-website-lms/data
    rm -rf /var/www/dbert-website-lms/apps/website/.next/standalone/data
