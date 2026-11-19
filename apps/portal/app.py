@@ -515,6 +515,124 @@ DOMAIN_SLUGS = {
     "Digital Marketing": "digital-marketing",
 }
 
+CANONICAL_DOMAIN_MAP = {
+    # AI & ML
+    "ai agent development": "AI Agent Development",
+    "ai-agent-development": "AI Agent Development",
+    "ai-agent": "AI Agent Development",
+    "ai": "AI Agent Development",
+    "aiml": "AI Agent Development",
+    "ai & machine learning": "AI Agent Development",
+    "ai and machine learning": "AI Agent Development",
+    "ai/ml": "AI Agent Development",
+    "artificial intelligence": "AI Agent Development",
+    "machine learning": "AI Agent Development",
+    "machine learning & ai": "AI Agent Development",
+    "prompt engineering": "AI Agent Development",
+
+    # Data Analyst
+    "data analyst": "Data Analyst",
+    "data-analyst": "Data Analyst",
+    "data analytics": "Data Analyst",
+    "data-analytics": "Data Analyst",
+    "data science": "Data Analyst",
+    "data-science": "Data Analyst",
+    "da": "Data Analyst",
+    "ds": "Data Analyst",
+    "business intelligence": "Data Analyst",
+    "business analytics": "Data Analyst",
+
+    # Full Stack Development
+    "full stack development": "Full Stack Development",
+    "full-stack-development": "Full Stack Development",
+    "full stack web development": "Full Stack Development",
+    "full-stack": "Full Stack Development",
+    "full stack": "Full Stack Development",
+    "web development": "Full Stack Development",
+    "web dev": "Full Stack Development",
+    "fsd": "Full Stack Development",
+    "frontend development": "Full Stack Development",
+    "backend development": "Full Stack Development",
+    "mern stack": "Full Stack Development",
+    "mean stack": "Full Stack Development",
+
+    # Python Automation
+    "python automation": "Python Automation",
+    "python-automation": "Python Automation",
+    "python developer": "Python Automation",
+    "python": "Python Automation",
+    "pa": "Python Automation",
+    "automation": "Python Automation",
+
+    # UI/UX Design
+    "ui/ux design": "UI/UX Design",
+    "ui-ux-design": "UI/UX Design",
+    "ui/ux": "UI/UX Design",
+    "ui-ux": "UI/UX Design",
+    "ui design": "UI/UX Design",
+    "ux design": "UI/UX Design",
+    "product design": "UI/UX Design",
+    "figma": "UI/UX Design",
+
+    # DevOps & Cloud
+    "devops & cloud": "DevOps & Cloud",
+    "devops-cloud": "DevOps & Cloud",
+    "devops": "DevOps & Cloud",
+    "cloud computing": "DevOps & Cloud",
+    "cloud": "DevOps & Cloud",
+    "aws": "DevOps & Cloud",
+    "site reliability": "DevOps & Cloud",
+
+    # Mobile App Development
+    "mobile app development": "Mobile App Development",
+    "mobile-app-development": "Mobile App Development",
+    "mobile development": "Mobile App Development",
+    "android": "Mobile App Development",
+    "android app development": "Mobile App Development",
+    "ios app development": "Mobile App Development",
+    "flutter": "Mobile App Development",
+    "react native": "Mobile App Development",
+
+    # Cybersecurity
+    "cybersecurity": "Cybersecurity",
+    "cyber security": "Cybersecurity",
+    "information security": "Cybersecurity",
+    "ethical hacking": "Cybersecurity",
+    "soc-analysis": "Cybersecurity",
+    "threat analysis": "Cybersecurity",
+
+    # Digital Marketing
+    "digital marketing": "Digital Marketing",
+    "digital-marketing": "Digital Marketing",
+    "growth marketing": "Digital Marketing",
+    "seo": "Digital Marketing",
+}
+
+def normalize_domain_string(raw_domain):
+    """Normalizes any domain string, slug, or synonym to a canonical VALID_DOMAINS string."""
+    if not raw_domain:
+        return None
+    raw_str = str(raw_domain).strip()
+    if not raw_str:
+        return None
+    # 1. Exact match against VALID_DOMAINS
+    if raw_str in VALID_DOMAINS:
+        return raw_str
+    # 2. Case-insensitive exact match in CANONICAL_DOMAIN_MAP
+    norm = CANONICAL_DOMAIN_MAP.get(raw_str.lower())
+    if norm:
+        return norm
+    # 3. Clean punctuation (replace -, _, / with spaces)
+    cleaned = raw_str.lower().replace("-", " ").replace("_", " ").replace("/", " ").strip()
+    norm = CANONICAL_DOMAIN_MAP.get(cleaned)
+    if norm:
+        return norm
+    # 4. Partial / substring match
+    for k, v in CANONICAL_DOMAIN_MAP.items():
+        if k in cleaned or cleaned in k:
+            return v
+    return None
+
 _LIVE_SQL = "status='published' AND (expires_at IS NULL OR expires_at > datetime('now','localtime')) AND EXISTS (SELECT 1 FROM companies comp_live WHERE comp_live.id=company_id AND comp_live.is_approved=1 AND comp_live.is_active=1)"
 
 # T7: public ids for portal-authored courses are offset so they never collide with
@@ -1811,14 +1929,40 @@ def get_intern_flow_state(conn, email):
         "SELECT * FROM intern_offer_letters WHERE LOWER(email)=? ORDER BY id DESC LIMIT 1", (email_clean,)
     ).fetchone()
 
-    domain = (acct["domain"] if acct and acct["domain"] and acct["domain"] in VALID_DOMAINS else None) or \
-             (app_row["domain"] if app_row and app_row["domain"] and app_row["domain"] in VALID_DOMAINS else None) or \
-             (enr["domain"] if enr and enr["domain"] and enr["domain"] in VALID_DOMAINS else None) or \
-             (offer_row["domain"] if offer_row and offer_row.get("domain") and offer_row["domain"] in VALID_DOMAINS else None) or \
-             (acct["domain"] if acct and acct.get("domain") else None) or \
-             (app_row["domain"] if app_row and app_row.get("domain") else None) or \
-             (enr["domain"] if enr and enr.get("domain") else None) or \
-             (offer_row["domain"] if offer_row and offer_row.get("domain") else "")
+    cert_row = None
+    try:
+        cert_row = conn.execute(
+            "SELECT domain FROM intern_certificates WHERE LOWER(email)=? ORDER BY id DESC LIMIT 1", (email_clean,)
+        ).fetchone()
+    except Exception:
+        pass
+
+    raw_candidates = [
+        acct.get("domain") if acct else None,
+        app_row.get("domain") if app_row else None,
+        enr.get("domain") if enr else None,
+        offer_row.get("domain") if offer_row else None,
+        cert_row.get("domain") if cert_row else None,
+    ]
+    domain = None
+    for cand in raw_candidates:
+        norm = normalize_domain_string(cand)
+        if norm and norm in VALID_DOMAINS:
+            domain = norm
+            break
+
+    # If domain was resolved and acct.domain is empty or non-canonical, auto-heal intern_accounts:
+    if domain and acct and acct.get("domain") != domain:
+        try:
+            conn.execute(
+                "UPDATE intern_accounts SET domain = ?, updated_at = ? WHERE id = ?",
+                (domain, now_str(), acct["id"])
+            )
+            if hasattr(conn, "commit"):
+                conn.commit()
+            auto_enroll_intern_in_domain_courses(conn, acct["id"], domain, email=email_clean)
+        except Exception as e:
+            log_error("auto-heal-domain", e)
 
     has_paid_deposit = bool(
         (enr and (enr.get("payment_status") in ("Accepted", "Verified") or (enr.get("amount_paid") or 0) >= 499 or enr.get("deposit_paid") == 1)) or
@@ -5929,23 +6073,32 @@ def portal_page():
             # Auto-healing academic profile sync:
             if acct:
                 acct_college = (acct.get("college") or "").strip().lower()
-                acct_domain = (acct.get("domain") or "").strip()
+                acct_course = (acct.get("course") or "").strip().lower()
+                acct_domain = normalize_domain_string(acct.get("domain"))
                 cand_college = (app_row.get("college") if app_row else "") or (enr.get("college") if enr else "") or (offer_row.get("college") if offer_row else "")
-                cand_domain = (app_row.get("domain") if app_row else "") or (enr.get("domain") if enr else "") or (offer_row.get("domain") if offer_row else "")
+                cand_course = (app_row.get("course") if app_row else "") or (enr.get("course") if enr else "") or (offer_row.get("course") if offer_row else "")
+                raw_cand_domain = (app_row.get("domain") if app_row else "") or (enr.get("domain") if enr else "") or (offer_row.get("domain") if offer_row else "") or (flow_state.get("domain") or "")
+                cand_domain = normalize_domain_string(raw_cand_domain)
 
                 updated_college = None
+                updated_course = None
                 updated_domain = None
                 if (not acct_college or acct_college in ("pending profile", "none", "n/a", "nil", "student", "college", "university")) and cand_college and cand_college.strip().lower() not in ("pending profile", "none", "n/a", "nil", "student", "college", "university"):
                     updated_college = cand_college.strip()
-                if (not acct_domain or acct_domain not in VALID_DOMAINS) and cand_domain and cand_domain in VALID_DOMAINS:
+                if (not acct_course or acct_course in ("pending profile", "none", "n/a", "nil")) and cand_course and cand_course.strip().lower() not in ("pending profile", "none", "n/a", "nil"):
+                    updated_course = cand_course.strip()
+                if (not acct.get("domain") or acct.get("domain") not in VALID_DOMAINS) and cand_domain and cand_domain in VALID_DOMAINS:
                     updated_domain = cand_domain
 
-                if updated_college or updated_domain:
+                if updated_college or updated_course or updated_domain:
                     u_fields = []
                     u_vals = []
                     if updated_college:
                         u_fields.append("college = ?")
                         u_vals.append(updated_college)
+                    if updated_course:
+                        u_fields.append("course = ?")
+                        u_vals.append(updated_course)
                     if updated_domain:
                         u_fields.append("domain = ?")
                         u_vals.append(updated_domain)
@@ -5955,16 +6108,18 @@ def portal_page():
                     conn.execute(f"UPDATE intern_accounts SET {', '.join(u_fields)} WHERE id = ?", tuple(u_vals))
                     if hasattr(conn, "commit"):
                         conn.commit()
+                    if updated_domain:
+                        auto_enroll_intern_in_domain_courses(conn, acct["id"], updated_domain, email=email_clean)
                     acct = conn.execute("SELECT * FROM intern_accounts WHERE id = ?", (acct["id"],)).fetchone()
 
-            # Gating: Suppress academic profile warning if user is already Selected, Payment Pending, or Confirmed
+            # Gating: Display academic profile banner if college, course, or domain is incomplete
             col = (acct.get("college") or "").strip().lower() if acct else ""
-            st = int(acct.get("signup_stage") or 3) if acct else 3
-            if flow_state["stage_num"] < 3:
-                if st < 2 or not col or col in ("pending profile", "none", "n/a", "nil", "student", "college", "university"):
-                    needs_academic_profile = True
-            else:
-                needs_academic_profile = False
+            cou = (acct.get("course") or "").strip().lower() if acct else ""
+            dom = normalize_domain_string(acct.get("domain")) if acct else None
+            is_pending_college = (not col or col in ("pending profile", "none", "n/a", "nil", "student", "college", "university"))
+            is_pending_course = (not cou or cou in ("pending profile", "none", "n/a", "nil"))
+            is_pending_domain = (not dom or dom not in VALID_DOMAINS)
+            needs_academic_profile = bool(is_pending_college or is_pending_course or is_pending_domain)
 
             # Get weekly hours for attendance
             hours_logged = 0.0
@@ -6014,7 +6169,7 @@ def enrollment_count():
 # and bookmarks keep working (both route names stay registered). 302 by default.
 @app.route("/profile")
 def profile_page():
-    return redirect("/portal")
+    return redirect("/portal?tab=editprofile")
 
 
 @app.route("/dashboard")
@@ -15835,15 +15990,13 @@ def intern_me():
                 log_error("intern-me-available-tasks", _t_err)
 
         acct_college = (acct.get("college") or "").strip().lower() if acct else ""
-        acct_stage = int(acct.get("signup_stage") or 3) if acct else 3
-        if flow_st and flow_st.get("stage_num", 1) >= 3:
-            needs_academic_profile = False
-        else:
-            needs_academic_profile = bool(
-                acct_stage < 2 or
-                not acct_college or
-                acct_college in ("pending profile", "none", "n/a", "nil", "student", "college", "university")
-            )
+        acct_course = (acct.get("course") or "").strip().lower() if acct else ""
+        norm_domain = normalize_domain_string(acct.get("domain")) or (flow_st.get("domain") if flow_st else None)
+        
+        is_pending_college = (not acct_college or acct_college in ("pending profile", "none", "n/a", "nil", "student", "college", "university"))
+        is_pending_course = (not acct_course or acct_course in ("pending profile", "none", "n/a", "nil"))
+        is_pending_domain = (not norm_domain or norm_domain not in VALID_DOMAINS)
+        needs_academic_profile = bool(is_pending_college or is_pending_course or is_pending_domain)
 
         next_action = build_intern_next_action(flow_st, hours_logged=attendance_summary.get("hours", 0.0)) if flow_st else None
 
@@ -15860,11 +16013,11 @@ def intern_me():
                 "email":            acct["email"],
                 "phone":            acct["phone"],
                 "city":             acct["city"],
-                "college":          acct["college"],
-                "course":           acct["course"],
+                "college":          acct["college"] or "Pending Profile",
+                "course":           acct["course"] or "Pending Profile",
                 "semester":         acct["semester"],
                 "year_of_passing":  acct["year_of_passing"],
-                "domain":           acct["domain"],
+                "domain":           norm_domain or "",
                 "tutor_completion_pct": top_pct,
                 "learning_completion_pct": top_pct,
                 "signup_stage":     int(acct["signup_stage"] or 3),
@@ -16881,6 +17034,67 @@ def enroll():
         return jsonify({"status": "error", "message": "Error"}), 500
 
 
+
+@app.route("/api/intern/select-domain", methods=["POST"])
+def intern_select_domain():
+    """Allows an intern to select or confirm their specialization domain track.
+    Normalizes input, updates intern_accounts.domain, applications.domain, enrollments.domain,
+    and automatically enrolls the intern into domain-specific courses.
+    """
+    user = require_role("intern")
+    if not user:
+        return jsonify({"status": "error", "message": "Unauthorized"}), 401
+    
+    data = request.get_json(silent=True) or request.form or {}
+    raw_domain = clean_text(data.get("domain") or data.get("value"))
+    canonical_domain = normalize_domain_string(raw_domain)
+    
+    if not canonical_domain or canonical_domain not in VALID_DOMAINS:
+        return jsonify({
+            "status": "error",
+            "message": f"Invalid domain track. Choose from: {', '.join(VALID_DOMAINS)}"
+        }), 400
+        
+    email = user["email"].strip().lower()
+    try:
+        with get_db() as conn:
+            acct = conn.execute(
+                "SELECT id, domain FROM intern_accounts WHERE LOWER(email)=? AND is_active=1 LIMIT 1",
+                (email,)
+            ).fetchone()
+            if not acct:
+                return jsonify({"status": "error", "message": "Intern account not found."}), 404
+            
+            conn.execute(
+                "UPDATE intern_accounts SET domain = ?, updated_at = ? WHERE id = ?",
+                (canonical_domain, now_str(), acct["id"])
+            )
+            conn.execute(
+                "UPDATE applications SET domain = ?, updated_at = ? WHERE LOWER(email) = ?",
+                (canonical_domain, now_str(), email)
+            )
+            conn.execute(
+                "UPDATE enrollments SET domain = ?, updated_at = ? WHERE LOWER(email) = ?",
+                (canonical_domain, now_str(), email)
+            )
+            if hasattr(conn, "commit"):
+                conn.commit()
+                
+            enrolled = auto_enroll_intern_in_domain_courses(conn, acct["id"], canonical_domain, email=email)
+            if hasattr(conn, "commit"):
+                conn.commit()
+                
+            return jsonify({
+                "status": "success",
+                "domain": canonical_domain,
+                "courses_enrolled": enrolled,
+                "message": f"Domain updated to '{canonical_domain}' and courses activated."
+            })
+    except Exception as e:
+        log_error("intern_select_domain", e)
+        return jsonify({"status": "error", "message": "Failed to update domain track."}), 500
+
+
 @app.route("/api/intern/request-fast-track", methods=["POST"])
 def request_fast_track_review():
     """Records an expedited admissions review request for candidates in Stage 2 (UNDER_REVIEW)."""
@@ -17192,8 +17406,9 @@ def intern_save_wizard_step():
             ).fetchone()
 
             if step_key == "domain":
-                val = clean_text(request.form.get("value") or ((request.is_json and request.get_json(silent=True)) or {}).get("value"))
-                if val not in VALID_DOMAINS:
+                raw_val = clean_text(request.form.get("value") or ((request.is_json and request.get_json(silent=True)) or {}).get("value"))
+                val = normalize_domain_string(raw_val)
+                if not val or val not in VALID_DOMAINS:
                     return jsonify({"status": "error", "message": f"Invalid domain. Choose from: {', '.join(VALID_DOMAINS)}"}), 400
 
                 conn.execute("UPDATE intern_accounts SET domain=?, updated_at=? WHERE id=?", (val, now_str(), acct["id"]))
@@ -17201,7 +17416,11 @@ def intern_save_wizard_step():
                     conn.execute("UPDATE applications SET domain=?, updated_at=? WHERE id=?", (val, now_str(), app_row["id"]))
                 if enr:
                     conn.execute("UPDATE enrollments SET domain=?, updated_at=? WHERE id=?", (val, now_str(), enr["id"]))
-                conn.commit()
+                if hasattr(conn, "commit"):
+                    conn.commit()
+                auto_enroll_intern_in_domain_courses(conn, acct["id"], val, email=email)
+                if hasattr(conn, "commit"):
+                    conn.commit()
                 return jsonify({"status": "success", "message": "Domain updated successfully.", "domain": val})
 
             elif step_key == "application_sop":

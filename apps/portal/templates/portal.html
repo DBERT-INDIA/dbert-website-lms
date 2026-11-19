@@ -273,30 +273,7 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
 
       <!-- ══════════════ OVERVIEW ══════════════ -->
       <div class="panel" id="panel-overview">
-        <!-- Phase 48: High-Priority Academic Profile Completion Card -->
-        <div id="academicProfileBanner" class="academic-profile-banner" style="display:{% if needs_academic_profile %}block{% else %}none{% endif %}; margin-bottom: 24px; background: linear-gradient(135deg, rgba(217, 119, 6, 0.12), rgba(245, 158, 11, 0.05)); border: 1.5px solid #F59E0B; border-radius: 16px; padding: 20px 24px; box-shadow: 0 10px 25px -5px rgba(245, 158, 11, 0.15);">
-          <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap;">
-            <div style="display: flex; align-items: center; gap: 14px;">
-              <div style="width: 44px; height: 44px; border-radius: 12px; background: #F59E0B; color: #0F172A; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0;">
-                <i class="fas fa-university"></i>
-              </div>
-              <div>
-                <div style="display: flex; align-items: center; gap: 8px;">
-                  <span class="badge" style="background: #F59E0B; color: #0F172A; font-weight: 800; font-size: 10.5px; text-transform: uppercase; padding: 3px 8px; border-radius: 6px;">Action Required</span>
-                  <h3 style="margin: 0; color: #F8FAFC; font-size: 16px; font-weight: 800;">Complete Your Academic Profile</h3>
-                </div>
-                <p style="margin: 4px 0 0; color: #94A3B8; font-size: 13px; line-height: 1.5;">
-                  Your College, Course, and Domain Track are currently marked as <strong style="color: #F59E0B;">Pending Profile</strong>. Complete these details to expedite mentor evaluation, offer letter release, and official credentials.
-                </p>
-              </div>
-            </div>
-            <button type="button" class="btn btn-primary" id="openAcademicModalBtn" style="background: linear-gradient(135deg, #F59E0B, #D97706); color: #0F172A; font-weight: 800; padding: 11px 22px; border-radius: 10px; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-size: 13.5px; box-shadow: 0 4px 14px rgba(217, 119, 6, 0.35); flex-shrink: 0;">
-              <i class="fas fa-edit"></i> Complete Profile &rarr;
-            </button>
-          </div>
-        </div>
-
-        <!-- 0. HIGH-VISIBILITY NEXT ACTION IN LINE MISSION CARD -->
+        <!-- 0. HIGH-VISIBILITY NEXT ACTION IN LINE MISSION CARD (Positioned at Top) -->
         <div id="nextActionMissionCard">
           <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:12px; flex-wrap:wrap;">
             <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
@@ -356,6 +333,50 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
                 <span id="naTertiaryText">Explore Paid Track &rarr;</span>
               </a>
               {% endif %}
+            </div>
+          </div>
+        </div>
+
+        <!-- Phase 48: Dedicated Academic Background & Verification Section Card (Placed directly below Next Action) -->
+        <div id="academicProfileBanner" class="academic-profile-banner" style="display:{% if needs_academic_profile %}block{% else %}none{% endif %}; margin-bottom: 24px; background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.9) 100%); border: 1.5px solid rgba(245, 158, 11, 0.4); border-left: 5px solid #F59E0B; border-radius: 16px; padding: 22px 24px; box-shadow: 0 12px 28px -6px rgba(0, 0, 0, 0.45);">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 18px; flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 280px;">
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
+                <span class="badge" style="background: #F59E0B; color: #0F172A; font-weight: 900; font-size: 10.5px; text-transform: uppercase; padding: 3px 9px; border-radius: 6px; letter-spacing: 0.5px;">
+                  <i class="fas fa-graduation-cap"></i> Onboarding Step 1
+                </span>
+                <span style="color: #94A3B8; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px;">
+                  Academic Clearance Required
+                </span>
+              </div>
+              <h3 style="margin: 0 0 6px; color: #F8FAFC; font-size: 17px; font-weight: 800; font-family: 'Georgia', serif;">
+                Academic Background &amp; Domain Verification
+              </h3>
+              <p style="margin: 0 0 14px; color: #94A3B8; font-size: 13px; line-height: 1.55;">
+                Enter your official university and academic details to generate your Turnitin evaluation rubric, appointment letter, and verified credentials.
+              </p>
+              
+              <!-- Real-time Status Chips -->
+              <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 4px;">
+                <span class="badge" style="background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.35); color: #FBBF24; font-size: 11.5px; padding: 4px 10px; border-radius: 6px; display: inline-flex; align-items: center; gap: 6px;">
+                  <i class="fas fa-university"></i> College: <strong id="chipCollege">Pending Profile</strong>
+                </span>
+                <span class="badge" style="background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.35); color: #FBBF24; font-size: 11.5px; padding: 4px 10px; border-radius: 6px; display: inline-flex; align-items: center; gap: 6px;">
+                  <i class="fas fa-book"></i> Course: <strong id="chipCourse">Pending Profile</strong>
+                </span>
+                <span class="badge" style="background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.35); color: #38BDF8; font-size: 11.5px; padding: 4px 10px; border-radius: 6px; display: inline-flex; align-items: center; gap: 6px;">
+                  <i class="fas fa-laptop-code"></i> Domain: <strong id="chipDomain">Pending Profile</strong>
+                </span>
+              </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 8px; align-items: flex-start; justify-content: center; flex-shrink: 0;">
+              <button type="button" class="btn btn-primary" id="openAcademicModalBtn" style="background: linear-gradient(135deg, #F59E0B, #D97706); color: #0F172A; font-weight: 900; padding: 12px 24px; border-radius: 10px; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-size: 13.5px; box-shadow: 0 4px 16px rgba(217, 119, 6, 0.35); text-transform: uppercase; letter-spacing: 0.5px;">
+                <i class="fas fa-edit"></i> Complete Profile Now &rarr;
+              </button>
+              <button type="button" onclick="switchTab('editprofile')" style="background: transparent; border: none; color: #94A3B8; font-size: 12px; cursor: pointer; text-decoration: underline; padding: 0 4px;">
+                or open Full Profile Tab &rarr;
+              </button>
             </div>
           </div>
         </div>
@@ -4033,9 +4054,28 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
     renderNextActionMissionCard();
     const apBanner = document.getElementById('academicProfileBanner');
     if (apBanner) {
-      const stageNum = (_rawMe && _rawMe.flow_state && _rawMe.flow_state.stage_num) || 1;
-      const needsAp = Boolean(_intern && _intern.needs_academic_profile && stageNum < 3);
+      const col = (_intern && _intern.college || '').toLowerCase();
+      const cou = (_intern && _intern.course || '').toLowerCase();
+      const dom = (_intern && _intern.domain || '').trim();
+      const isPendingCol = !col || col.includes('pending') || ['none', 'n/a', 'nil', 'student', 'college', 'university'].includes(col);
+      const isPendingCou = !cou || cou.includes('pending') || ['none', 'n/a', 'nil'].includes(cou);
+      const isPendingDom = !dom || dom.toLowerCase().includes('pending') || dom === '';
+      const needsAp = Boolean(_intern && _intern.needs_academic_profile && (isPendingCol || isPendingCou || isPendingDom));
+
       apBanner.style.display = needsAp ? 'block' : 'none';
+      if (needsAp) {
+        const cCol = document.getElementById('chipCollege');
+        if (cCol) cCol.textContent = _intern.college || 'Pending Profile';
+        const cCou = document.getElementById('chipCourse');
+        if (cCou) cCou.textContent = _intern.course || 'Pending Profile';
+        const cDom = document.getElementById('chipDomain');
+        if (cDom) cDom.textContent = _intern.domain || 'Pending Profile';
+      }
+
+      // If domain is completely missing or pending, trigger 1-click domain modal
+      if (isPendingDom && typeof window.showDomainSelectionModal === 'function') {
+        window.showDomainSelectionModal();
+      }
     }
     if(_status==='Accepted') updateOverviewCardsGrid();
     const name=(_intern.name||'').split(' ')[0]||'there';
@@ -4195,34 +4235,9 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
       document.getElementById('nextStepCard').classList.add('hidden');
       buildInternshipProgress('overviewStepBar');showOvBlock('ovAccepted');
 
-      // 7-Day Balance Completion Notice (Fellowship Balance: ₹1,500)
-      if(_flowState && !_flowState.has_paid_balance) {
-        var balBanner = document.getElementById('ovBalanceGraceBanner');
-        if(!balBanner) {
-          balBanner = document.createElement('div');
-          balBanner.id = 'ovBalanceGraceBanner';
-          balBanner.style.cssText = 'background:linear-gradient(90deg, rgba(245,158,11,0.18) 0%, rgba(15,23,42,0.95) 100%); border:1.5px solid #d97706; border-radius:14px; padding:16px 20px; margin:20px 0; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; box-shadow:0 8px 24px rgba(0,0,0,0.3);';
-          var ovAcc = document.getElementById('ovAccepted');
-          if(ovAcc && ovAcc.parentNode) {
-            ovAcc.parentNode.insertBefore(balBanner, ovAcc);
-          }
-        }
-        var daysSince = _flowState.days_since_joining || 0;
-        var daysLeftInGrace = Math.max(0, 7 - daysSince);
-        balBanner.innerHTML = 
-          '<div style="display:flex;align-items:center;gap:14px;">'
-          + '<div style="width:42px;height:42px;border-radius:10px;background:rgba(245,158,11,0.2);display:flex;align-items:center;justify-content:center;color:#fbbf24;font-size:20px;"><i class="fas fa-coins"></i></div>'
-          + '<div>'
-          + '<div style="font-size:11px;font-weight:800;color:#fbbf24;letter-spacing:1px;text-transform:uppercase;">FELLOWSHIP BALANCE DUE (₹1,500)</div>'
-          + '<div style="font-size:13.5px;color:#f1f5f9;margin-top:2px;">'
-          + (daysLeftInGrace > 0
-              ? 'Your fellowship is active! Complete your remaining <strong>₹1,500 balance</strong> within <strong style="color:#fbbf24;">' + daysLeftInGrace + ' day' + (daysLeftInGrace > 1 ? 's' : '') + '</strong> to unlock official verified credentials &amp; ₹5,000 stipend release.'
-              : 'Grace window ended. Sprints remain open, but your <strong>Certificate of Completion, LOR, and ₹5,000 Stipend</strong> are locked until your remaining ₹1,500 balance is paid.')
-          + '</div></div></div>'
-          + '<div style="display:flex;gap:10px;align-items:center;">'
-          + '<a href="https://dbert.in/enroll/1999?email=' + encodeURIComponent((_intern&&_intern.email)||_statusEmail||'') + '" target="_blank" class="na-cta-btn na-btn-gold" style="text-decoration:none;font-size:13px;padding:9px 20px;font-weight:800;border-radius:8px;"><i class="fas fa-unlock"></i> Complete ₹1,500 Balance &rarr;</a>'
-          + '</div>';
-      }
+      // Clean up legacy dynamic duplicate balance banner if present (now officially handled by #nextActionMissionCard)
+      const existingBalBanner = document.getElementById('ovBalanceGraceBanner');
+      if (existingBalBanner) existingBalBanner.remove();
 
       const matDateEl = document.getElementById('stipendMaturityDate');
       if (matDateEl && _internshipEndDateStr) {
@@ -5085,6 +5100,62 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
     }
   }
 
+  async function confirmDomainSelection(domain) {
+    const msg = document.getElementById('domainModalMsg');
+    if (msg) {
+      msg.style.color = '#38BDF8';
+      msg.textContent = 'Activating ' + domain + ' track...';
+    }
+    try {
+      const res = await fetch('/api/intern/select-domain', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ domain: domain })
+      });
+      const data = await res.json();
+      if (res.ok && data.status === 'success') {
+        if (_intern) _intern.domain = data.domain;
+        const modal = document.getElementById('domainSelectionModal');
+        if (modal) {
+          modal.style.display = 'none';
+          modal.classList.add('hidden');
+        }
+        showToast('Domain set to ' + data.domain + '! Activating workspace...', 'green');
+        setTimeout(() => {
+          window.location.reload();
+        }, 600);
+      } else {
+        if (msg) {
+          msg.style.color = '#EF4444';
+          msg.textContent = data.message || 'Failed to update domain.';
+        }
+      }
+    } catch (e) {
+      if (msg) {
+        msg.style.color = '#EF4444';
+        msg.textContent = 'Network error. Please try again.';
+      }
+    }
+  }
+
+  window.showDomainSelectionModal = function() {
+    if (_intern && _intern.domain && _intern.domain !== 'Pending Profile' && _intern.domain.trim().length > 0) {
+      return;
+    }
+    const modal = document.getElementById('domainSelectionModal');
+    if (modal) {
+      modal.style.display = 'flex';
+      modal.classList.remove('hidden');
+    }
+  };
+  window.closeDomainSelectionModal = function() {
+    const modal = document.getElementById('domainSelectionModal');
+    if (modal) {
+      modal.style.display = 'none';
+      modal.classList.add('hidden');
+    }
+  };
+
   document.addEventListener('DOMContentLoaded', () => {
     loadPortal();
     const openBtn = document.getElementById('openAcademicModalBtn');
@@ -5161,6 +5232,87 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
           <i class="fas fa-check"></i> Save Academic Details
         </button>
       </div>
+    </div>
+  </div>
+
+  <!-- 1-Click Domain Track Confirmation Fallback Modal -->
+  <div class="modal-overlay hidden" id="domainSelectionModal" role="dialog" aria-modal="true" aria-labelledby="domainModalTitle" style="display:none; background:rgba(0,0,0,0.85); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); z-index:99999; position:fixed; inset:0; align-items:center; justify-content:center;">
+    <div class="modal-box" style="background:#0F172A; border:1.5px solid rgba(56, 189, 248, 0.4); border-radius:20px; padding:28px 30px; max-width:640px; width:92%; box-shadow:0 25px 60px rgba(0,0,0,0.85); color:#F8FAFC;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="width:40px; height:40px; border-radius:10px; background:rgba(56,189,248,0.15); border:1px solid rgba(56,189,248,0.3); display:flex; align-items:center; justify-content:center; color:#38BDF8; font-size:18px;">
+            <i class="fas fa-compass"></i>
+          </div>
+          <div>
+            <h2 id="domainModalTitle" style="margin:0; font-size:18px; font-weight:800; color:#FFFFFF;">
+              Confirm Your Specialization Domain
+            </h2>
+            <span style="font-size:12px; color:#94A3B8;">Required to activate your curriculum, 1:1 mentor allocation &amp; sprint repos</span>
+          </div>
+        </div>
+        <button type="button" onclick="closeDomainSelectionModal()" style="background:none; border:none; color:#94A3B8; font-size:22px; cursor:pointer; line-height:1;" aria-label="Close">&times;</button>
+      </div>
+      <p style="font-size:13px; color:#CBD5E1; margin:0 0 16px; line-height:1.5;">
+        Select your primary engineering or analytics track below to instantly unlock your domain workspace:
+      </p>
+
+      <div id="domainGridOptions" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:10px; margin-bottom:18px;">
+        <button type="button" class="domain-pick-btn" onclick="confirmDomainSelection('AI Agent Development')" style="background:#1E293B; border:1.5px solid #334155; border-radius:12px; padding:14px 12px; text-align:left; cursor:pointer; transition:all 0.2s ease;">
+          <div style="font-size:20px; margin-bottom:6px;">🤖</div>
+          <div style="font-weight:700; font-size:13px; color:#F8FAFC;">AI Agent Development</div>
+          <div style="font-size:11px; color:#94A3B8; margin-top:2px;">LLMs, LangChain, Autogen</div>
+        </button>
+
+        <button type="button" class="domain-pick-btn" onclick="confirmDomainSelection('Data Analyst')" style="background:#1E293B; border:1.5px solid #334155; border-radius:12px; padding:14px 12px; text-align:left; cursor:pointer; transition:all 0.2s ease;">
+          <div style="font-size:20px; margin-bottom:6px;">📊</div>
+          <div style="font-weight:700; font-size:13px; color:#F8FAFC;">Data Analyst</div>
+          <div style="font-size:11px; color:#94A3B8; margin-top:2px;">SQL, Power BI, Python, EDA</div>
+        </button>
+
+        <button type="button" class="domain-pick-btn" onclick="confirmDomainSelection('Full Stack Development')" style="background:#1E293B; border:1.5px solid #334155; border-radius:12px; padding:14px 12px; text-align:left; cursor:pointer; transition:all 0.2s ease;">
+          <div style="font-size:20px; margin-bottom:6px;">💻</div>
+          <div style="font-weight:700; font-size:13px; color:#F8FAFC;">Full Stack Development</div>
+          <div style="font-size:11px; color:#94A3B8; margin-top:2px;">Next.js, Node.js, Postgres</div>
+        </button>
+
+        <button type="button" class="domain-pick-btn" onclick="confirmDomainSelection('Python Automation')" style="background:#1E293B; border:1.5px solid #334155; border-radius:12px; padding:14px 12px; text-align:left; cursor:pointer; transition:all 0.2s ease;">
+          <div style="font-size:20px; margin-bottom:6px;">🐍</div>
+          <div style="font-weight:700; font-size:13px; color:#F8FAFC;">Python Automation</div>
+          <div style="font-size:11px; color:#94A3B8; margin-top:2px;">Scraping, APIs, RPA, Schedulers</div>
+        </button>
+
+        <button type="button" class="domain-pick-btn" onclick="confirmDomainSelection('UI/UX Design')" style="background:#1E293B; border:1.5px solid #334155; border-radius:12px; padding:14px 12px; text-align:left; cursor:pointer; transition:all 0.2s ease;">
+          <div style="font-size:20px; margin-bottom:6px;">🎨</div>
+          <div style="font-weight:700; font-size:13px; color:#F8FAFC;">UI/UX Design</div>
+          <div style="font-size:11px; color:#94A3B8; margin-top:2px;">Figma, Wireframing, UX Specs</div>
+        </button>
+
+        <button type="button" class="domain-pick-btn" onclick="confirmDomainSelection('DevOps & Cloud')" style="background:#1E293B; border:1.5px solid #334155; border-radius:12px; padding:14px 12px; text-align:left; cursor:pointer; transition:all 0.2s ease;">
+          <div style="font-size:20px; margin-bottom:6px;">☁️</div>
+          <div style="font-weight:700; font-size:13px; color:#F8FAFC;">DevOps &amp; Cloud</div>
+          <div style="font-size:11px; color:#94A3B8; margin-top:2px;">AWS, Docker, CI/CD, Linux</div>
+        </button>
+
+        <button type="button" class="domain-pick-btn" onclick="confirmDomainSelection('Mobile App Development')" style="background:#1E293B; border:1.5px solid #334155; border-radius:12px; padding:14px 12px; text-align:left; cursor:pointer; transition:all 0.2s ease;">
+          <div style="font-size:20px; margin-bottom:6px;">📱</div>
+          <div style="font-weight:700; font-size:13px; color:#F8FAFC;">Mobile App Development</div>
+          <div style="font-size:11px; color:#94A3B8; margin-top:2px;">React Native, Flutter, Android</div>
+        </button>
+
+        <button type="button" class="domain-pick-btn" onclick="confirmDomainSelection('Cybersecurity')" style="background:#1E293B; border:1.5px solid #334155; border-radius:12px; padding:14px 12px; text-align:left; cursor:pointer; transition:all 0.2s ease;">
+          <div style="font-size:20px; margin-bottom:6px;">🛡️</div>
+          <div style="font-weight:700; font-size:13px; color:#F8FAFC;">Cybersecurity</div>
+          <div style="font-size:11px; color:#94A3B8; margin-top:2px;">Network Defense, SOC, Audits</div>
+        </button>
+
+        <button type="button" class="domain-pick-btn" onclick="confirmDomainSelection('Digital Marketing')" style="background:#1E293B; border:1.5px solid #334155; border-radius:12px; padding:14px 12px; text-align:left; cursor:pointer; transition:all 0.2s ease;">
+          <div style="font-size:20px; margin-bottom:6px;">🚀</div>
+          <div style="font-weight:700; font-size:13px; color:#F8FAFC;">Digital Marketing</div>
+          <div style="font-size:11px; color:#94A3B8; margin-top:2px;">SEO, Analytics, Growth Funnels</div>
+        </button>
+      </div>
+
+      <div id="domainModalMsg" style="min-height:18px; font-size:12.5px; font-weight:600; text-align:center; color:#EF4444; margin-bottom:6px;"></div>
     </div>
   </div>
 

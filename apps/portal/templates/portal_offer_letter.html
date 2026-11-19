@@ -951,7 +951,7 @@
         <!-- Step 3: Confirm Seat (₹499 Deposit) -->
         <div class="step-item {% if is_deposit_verified %}step-completed{% elif is_signed %}step-active{% else %}step-pending{% endif %}" id="stepperStep3" style="display:flex; align-items:center; gap:12px; flex:1;">
           <div class="step-number" style="width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:800; flex-shrink:0; background:{% if is_deposit_verified %}#10b981{% elif is_signed %}#d97706{% else %}#f1f5f9{% endif %}; color:{% if is_deposit_verified or is_signed %}#ffffff{% else %}#94a3b8{% endif %}; {% if not is_signed %}border:1px solid #cbd5e1;{% elif not is_deposit_verified %}box-shadow:0 0 0 3px rgba(217, 119, 6, 0.2);{% endif %}">
-            {% if is_deposit_verified %}<i class="fa-solid fa-shield-halved"></i>{% else %}3{% endif %}
+            {% if is_deposit_verified %}<i class="fa-solid fa-shield-halved"></i>{% elif is_signed %}3{% else %}<i class="fa-solid fa-lock" style="font-size:11px;"></i>{% endif %}
           </div>
           <div class="step-content" style="display:flex; flex-direction:column;">
             <span class="step-label" style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.6px; color:{% if is_deposit_verified %}#10b981{% elif is_signed %}#d97706{% else %}#94a3b8{% endif %};">
@@ -1323,8 +1323,8 @@
       <!-- 4. ACTION CARD (DIGITAL SIGNATURE & SEAT CONFIRMATION DEPOSIT) -->
       <div class="no-print signature-box-wrapper {% if is_signed and is_deposit_verified %}signed-state{% endif %}" id="signature-section" style="background:{% if is_signed and is_deposit_verified %}linear-gradient(180deg, #f0fdf4 0%, #ffffff 100%){% else %}#ffffff{% endif %}; border:1px solid #cbd5e1; border-top:4px solid {% if is_signed and is_deposit_verified %}#10b981{% elif is_signed %}#d97706{% else %}#2563eb{% endif %}; border-radius:12px; padding:26px 30px; margin-top:26px; margin-bottom:26px; box-shadow:0 8px 20px -4px rgba(0, 0, 0, 0.06);">
 
-        <!-- A. SIGNED CONFIRMATION BANNER (Visible if signed, or revealed dynamically on signing) -->
-        <div id="signedBanner" style="display:{% if is_signed %}flex{% else %}none{% endif %}; background:#f0fdf4; border:1.5px solid #86efac; border-radius:10px; padding:16px 20px; margin-bottom:20px; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+        <!-- A. SIGNED CONFIRMATION BANNER (Strictly visible ONLY if signed with verified signature, or revealed dynamically on signing) -->
+        <div id="signedBanner" style="display:{% if is_signed and offer and offer.signature_name %}flex{% else %}none{% endif %}; background:#f0fdf4; border:1.5px solid #86efac; border-radius:10px; padding:16px 20px; margin-bottom:20px; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
           <div style="display:flex; align-items:center; gap:12px;">
             <div style="width:38px; height:38px; border-radius:50%; background:#10b981; color:#ffffff; display:flex; align-items:center; justify-content:center; font-size:17px; flex-shrink:0;">
               <i class="fa-solid fa-check"></i>
@@ -1337,7 +1337,7 @@
                 Appointment Agreement Digitally Signed &amp; Accepted
               </div>
               <div style="font-size:12px; color:#475569; margin-top:2px;">
-                Signed by <strong style="color:#0f172a;" id="signedNameDisplay">{{ offer.signature_name }}</strong> on <span id="signedDateDisplay">{{ offer.accepted_at }}</span> &bull; Recorded under Indian IT Act, 2000
+                Signed by <strong style="color:#0f172a;" id="signedNameDisplay">{{ (offer and offer.signature_name) or '' }}</strong> on <span id="signedDateDisplay">{{ (offer and offer.accepted_at) or '' }}</span> &bull; Recorded under Indian IT Act, 2000
               </div>
             </div>
           </div>
@@ -1473,36 +1473,50 @@
                   </span>
                 </div>
 
-                <!-- QR Display -->
+                <!-- QR Display (Compact 135px + Download Option) -->
                 <div style="text-align:center; padding:12px; background:#ffffff; border-radius:10px; margin-bottom:12px;">
-                  <img src="/static/img/qrcode.jpeg" alt="DBERT Admissions ₹499 UPI QR" style="width:170px; height:170px; object-fit:contain; border-radius:6px; display:inline-block;">
-                  <div style="font-size:11px; font-weight:800; color:#0f172a; margin-top:6px; letter-spacing:0.5px;">
+                  <img src="/static/img/qrcode.jpeg" id="offerUpiQrImg" alt="DBERT Admissions ₹499 UPI QR" style="width:135px; height:135px; object-fit:contain; border-radius:6px; display:inline-block;">
+                  <div style="font-size:11px; font-weight:800; color:#0f172a; margin-top:6px; letter-spacing:0.4px;">
                     Scan with GPay &bull; PhonePe &bull; Paytm &bull; BHIM
+                  </div>
+                  <div style="margin-top:8px;">
+                    <a href="/static/img/qrcode.jpeg" download="DBERT_Caution_Deposit_UPI_QR.jpeg" id="btnDownloadOfferQr" style="display:inline-flex; align-items:center; gap:6px; background:#f1f5f9; color:#0f172a; border:1px solid #cbd5e1; border-radius:6px; padding:5px 12px; font-size:11.5px; font-weight:700; text-decoration:none; cursor:pointer; transition:all 0.2s;">
+                      <i class="fa-solid fa-download"></i> Download QR
+                    </a>
                   </div>
                 </div>
 
-                <div style="font-size:12px; color:#94a3b8; text-align:center; margin-bottom:12px;">
-                  Merchant VPA: <strong style="color:#ffffff; font-family:monospace; background:rgba(255,255,255,0.1); padding:2px 6px; border-radius:4px;">Q652429146@ybl</strong>
+                <!-- Copy UPI ID Pill -->
+                <div style="font-size:12px; color:#94a3b8; text-align:center; margin-bottom:14px; display:flex; align-items:center; justify-content:center; gap:6px; flex-wrap:wrap;">
+                  <span>Merchant VPA:</span>
+                  <button type="button" id="copyVpaBtn" onclick="copyUpiVpa('Q652429146@ybl')" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.2); color:#fbbf24; font-family:monospace; font-size:12px; font-weight:700; padding:4px 10px; border-radius:6px; cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:all 0.2s;">
+                    <span id="vpaText">Q652429146@ybl</span>
+                    <i class="fa-solid fa-copy" id="copyVpaIcon"></i>
+                  </button>
                 </div>
               </div>
 
-              <!-- 1-Tap Mobile UPI Buttons -->
+              <!-- 1-Tap Mobile UPI Buttons (Vibrant, high-contrast, distinct from background) -->
               <div>
                 <div style="font-size:11px; font-weight:700; color:#cbd5e1; margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px;">
                   <i class="fa-solid fa-bolt" style="color:#fbbf24;"></i> Mobile 1-Tap Fast Pay (₹499):
                 </div>
                 <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:8px; margin-bottom:6px;">
-                  <a href="intent://pay?pa=Q652429146@ybl&pn=DBERT%20Admissions&am=499&cu=INR&tn=DBERT-DEPOSIT-{{ offer.offer_letter_id }}#Intent;scheme=upi;package=com.google.android.apps.nbu.paisa.user;end" target="_blank" rel="noopener" style="display:flex; align-items:center; justify-content:center; gap:6px; padding:11px 12px; background:#ffffff; border:1.5px solid #e2e8f0; border-radius:8px; color:#0f172a !important; text-decoration:none; font-size:13px; font-weight:800; box-shadow:0 3px 8px rgba(0,0,0,0.12);">
-                    <i class="fab fa-google-pay" style="font-size:20px; color:#4285F4;"></i> GPay
+                  <!-- GPay: Pure White with GPay Colors & Blue Glow -->
+                  <a href="intent://pay?pa=Q652429146@ybl&pn=DBERT%20Admissions&am=499&cu=INR&tn=DBERT-DEPOSIT-{{ offer.offer_letter_id }}#Intent;scheme=upi;package=com.google.android.apps.nbu.paisa.user;end" target="_blank" rel="noopener" style="display:flex; align-items:center; justify-content:center; gap:7px; padding:12px 14px; background:#ffffff; border:2px solid #93c5fd; border-radius:8px; color:#0f172a !important; text-decoration:none; font-size:13px; font-weight:800; box-shadow:0 4px 12px rgba(66, 133, 244, 0.25); transition:transform 0.15s ease;">
+                    <i class="fab fa-google-pay" style="font-size:22px; color:#4285F4;"></i> GPay
                   </a>
-                  <a href="phonepe://pay?pa=Q652429146@ybl&pn=DBERT%20Admissions&am=499&cu=INR&tn=DBERT-DEPOSIT-{{ offer.offer_letter_id }}" target="_blank" rel="noopener" style="display:flex; align-items:center; justify-content:center; gap:6px; padding:11px 12px; background:#5f259f; border:1.5px solid #7c3aed; border-radius:8px; color:#ffffff !important; text-decoration:none; font-size:13px; font-weight:800; box-shadow:0 3px 8px rgba(95,37,159,0.35);">
-                    <i class="fas fa-mobile-screen" style="font-size:14px; color:#ffffff;"></i> PhonePe
+                  <!-- PhonePe: Vibrant Purple with Crisp Border -->
+                  <a href="phonepe://pay?pa=Q652429146@ybl&pn=DBERT%20Admissions&am=499&cu=INR&tn=DBERT-DEPOSIT-{{ offer.offer_letter_id }}" target="_blank" rel="noopener" style="display:flex; align-items:center; justify-content:center; gap:7px; padding:12px 14px; background:#5f259f; border:2px solid #a855f7; border-radius:8px; color:#ffffff !important; text-decoration:none; font-size:13px; font-weight:800; box-shadow:0 4px 14px rgba(95, 37, 159, 0.45); transition:transform 0.15s ease;">
+                    <i class="fas fa-mobile-screen" style="font-size:15px; color:#ffffff;"></i> PhonePe
                   </a>
-                  <a href="paytmmp://pay?pa=Q652429146@ybl&pn=DBERT%20Admissions&am=499&cu=INR&tn=DBERT-DEPOSIT-{{ offer.offer_letter_id }}" target="_blank" rel="noopener" style="display:flex; align-items:center; justify-content:center; gap:6px; padding:11px 12px; background:#002970; border:1.5px solid #00baf2; border-radius:8px; color:#ffffff !important; text-decoration:none; font-size:13px; font-weight:800; box-shadow:0 3px 8px rgba(0,186,242,0.35);">
-                    <i class="fas fa-wallet" style="font-size:14px; color:#00baf2;"></i> Paytm
+                  <!-- Paytm: Deep Navy with Electric Cyan Border & Badge -->
+                  <a href="paytmmp://pay?pa=Q652429146@ybl&pn=DBERT%20Admissions&am=499&cu=INR&tn=DBERT-DEPOSIT-{{ offer.offer_letter_id }}" target="_blank" rel="noopener" style="display:flex; align-items:center; justify-content:center; gap:7px; padding:12px 14px; background:#002970; border:2px solid #00baf2; border-radius:8px; color:#ffffff !important; text-decoration:none; font-size:13px; font-weight:800; box-shadow:0 4px 14px rgba(0, 186, 242, 0.35); transition:transform 0.15s ease;">
+                    <i class="fas fa-wallet" style="font-size:15px; color:#00baf2;"></i> Paytm
                   </a>
-                  <a href="upi://pay?pa=Q652429146@ybl&pn=DBERT%20Admissions&am=499&cu=INR&tn=DBERT-DEPOSIT-{{ offer.offer_letter_id }}" target="_blank" rel="noopener" style="display:flex; align-items:center; justify-content:center; gap:6px; padding:11px 12px; background:#1e293b; border:1.5px solid #f59e0b; border-radius:8px; color:#ffffff !important; text-decoration:none; font-size:13px; font-weight:800; box-shadow:0 3px 8px rgba(0,0,0,0.25);">
-                    <i class="fas fa-qrcode" style="font-size:14px; color:#fbbf24;"></i> Any UPI
+                  <!-- Any UPI: Radiant Gold/Amber Gradient with Dark Text & Gold Border -->
+                  <a href="upi://pay?pa=Q652429146@ybl&pn=DBERT%20Admissions&am=499&cu=INR&tn=DBERT-DEPOSIT-{{ offer.offer_letter_id }}" target="_blank" rel="noopener" style="display:flex; align-items:center; justify-content:center; gap:7px; padding:12px 14px; background:linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border:2px solid #fde68a; border-radius:8px; color:#0b1120 !important; text-decoration:none; font-size:13px; font-weight:900; box-shadow:0 4px 14px rgba(245, 158, 11, 0.45); transition:transform 0.15s ease;">
+                    <i class="fas fa-qrcode" style="font-size:15px; color:#0b1120;"></i> Any UPI
                   </a>
                 </div>
               </div>
@@ -1632,6 +1646,61 @@ function showToastNotification(msg) {
     toast.style.opacity = '0';
     setTimeout(function() { toast.remove(); }, 400);
   }, 4000);
+}
+
+function copyUpiVpa(vpa) {
+  if (!vpa) vpa = 'Q652429146@ybl';
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(vpa).then(function() {
+      showCopyVpaSuccess();
+    }).catch(function() {
+      fallbackCopyVpa(vpa);
+    });
+  } else {
+    fallbackCopyVpa(vpa);
+  }
+}
+
+function showCopyVpaSuccess() {
+  var icon = document.getElementById('copyVpaIcon');
+  var btn = document.getElementById('copyVpaBtn');
+  if (icon) {
+    icon.className = 'fa-solid fa-check';
+    icon.style.color = '#34d399';
+  }
+  if (btn) {
+    btn.style.borderColor = '#10b981';
+    btn.style.background = 'rgba(16, 185, 129, 0.2)';
+  }
+  showToastNotification('UPI ID copied to clipboard: Q652429146@ybl');
+  setTimeout(function() {
+    if (icon) {
+      icon.className = 'fa-solid fa-copy';
+      icon.style.color = '';
+    }
+    if (btn) {
+      btn.style.borderColor = 'rgba(255,255,255,0.2)';
+      btn.style.background = 'rgba(255,255,255,0.08)';
+    }
+  }, 2200);
+}
+
+function fallbackCopyVpa(vpa) {
+  var ta = document.createElement('textarea');
+  ta.value = vpa;
+  ta.style.position = 'fixed';
+  ta.style.opacity = '0';
+  document.body.appendChild(ta);
+  ta.select();
+  try {
+    document.execCommand('copy');
+    showCopyVpaSuccess();
+  } catch(e) {
+    alert('Merchant UPI ID: ' + vpa);
+  }
+  if (document.body.contains(ta)) {
+    document.body.removeChild(ta);
+  }
 }
 
 function highlightSignatureCard() {
@@ -1797,6 +1866,7 @@ function handleSignOffer(e) {
           step3Num.style.background = '#d97706';
           step3Num.style.color = '#ffffff';
           step3Num.style.boxShadow = '0 0 0 3px rgba(217, 119, 6, 0.2)';
+          step3Num.innerHTML = '3';
         }
         var step3Lbl = step3Item.querySelector('.step-label');
         if (step3Lbl) {
@@ -1821,10 +1891,12 @@ function handleSignOffer(e) {
       var paymentSec = document.getElementById('postSignPaymentSection');
       if (paymentSec) {
         paymentSec.style.display = 'block';
-        paymentSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        setTimeout(function() {
+          paymentSec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 150);
       }
 
-      showToastNotification('Appointment Agreement Digitally Signed! Complete ₹499 caution deposit below to confirm your cohort seat.');
+      showToastNotification('Appointment Agreement Digitally Signed! Complete ₹499 caution deposit below to confirm your cohort workstation seat.');
     } else {
       btn.disabled = false;
       btn.innerHTML = '<i class="fa-solid fa-signature"></i> Sign &amp; Accept Appointment Agreement';
