@@ -1652,7 +1652,7 @@
 
           <div class="locked-actions" style="margin-top:20px; display:flex; gap:14px; flex-wrap:wrap; justify-content:center;">
             {% if not ver_info.verified %}
-              <a href="https://docs.google.com/forms/d/e/1FAIpQLSeHCTK_HO5ZbNHNcPiyW-04Y4bBeZ0RvQP7I4koQnW91d6phA/viewform?usp=header" target="_blank" rel="noopener" class="btn-verify-cta" style="background:linear-gradient(135deg, #fbbf24 0%, #d97706 100%); color:#0b1120 !important; font-weight:900; font-size:15px; padding:15px 30px; border-radius:10px; box-shadow:0 6px 22px rgba(245,158,11,0.5); text-transform:uppercase; letter-spacing:0.4px; display:inline-flex; align-items:center; gap:10px; text-decoration:none;">
+              <a href="https://dbert.in/verify/unlock?{% if ver_info and ver_info.cert_id %}certid={{ ver_info.cert_id }}&{% endif %}email={{ intern.email }}" target="_blank" rel="noopener" class="btn-verify-cta" style="background:linear-gradient(135deg, #fbbf24 0%, #d97706 100%); color:#0b1120 !important; font-weight:900; font-size:15px; padding:15px 30px; border-radius:10px; box-shadow:0 6px 22px rgba(245,158,11,0.5); text-transform:uppercase; letter-spacing:0.4px; display:inline-flex; align-items:center; gap:10px; text-decoration:none;">
                 <span>Complete Official ₹299 Verification Form</span>
                 <i class="fa-solid fa-arrow-up-right-from-square"></i>
               </a>

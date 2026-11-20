@@ -235,6 +235,17 @@ class StipendNudgeService:
 
         subject = f"Action Required: Complete Your Next Step ({next_step}) to Unlock Your ₹5,000 DBERT Stipend"
 
+        unlock_cta = ""
+        if candidate.get("next_action") == "VERIFY_CERTIFICATE":
+            unlock_link = f"https://dbert.in/verify/unlock?email={email}" + (f"&certid={cert_id}" if cert_id else "")
+            unlock_cta = f'''
+            <div style="text-align: center; margin: 10px 0 20px;">
+              <a href="{unlock_link}" style="display: inline-block; background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%); color: #0F172A; text-decoration: none; font-weight: 800; padding: 12px 28px; border-radius: 8px; font-size: 14px; box-shadow: 0 4px 14px rgba(245,158,11,0.35);">
+                Direct ₹299 Credential Verification Portal &rarr;
+              </a>
+            </div>
+            '''
+
         html_body = f"""
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #1e293b; line-height: 1.6; border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; background: #ffffff;">
           <div style="background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%); padding: 28px; color: #ffffff; text-align: center;">
@@ -253,10 +264,11 @@ class StipendNudgeService:
             <div style="background: #F8FAFC; border-left: 4px solid #F59E0B; padding: 14px 16px; margin: 16px 0; border-radius: 0 8px 8px 0;">
               <strong style="color: #92400E; font-size: 14px;">Next Action Required:</strong>
               <p style="margin: 4px 0 0; font-size: 13.5px; color: #475569;">
-                <strong>{next_step}</strong>. Please log into your LMS dashboard to complete this milestone.
+                <strong>{next_step}</strong>. Please complete this milestone to unlock your stipend release.
               </p>
             </div>
-            <div style="text-align: center; margin: 24px 0;">
+            {unlock_cta}
+            <div style="text-align: center; margin: 16px 0;">
               <a href="https://lms.dbert.in/#signin?email={email}" style="display: inline-block; background: #2563EB; color: #ffffff; text-decoration: none; font-weight: 700; padding: 12px 28px; border-radius: 8px; font-size: 14px;">
                 Log into LMS Dashboard &rarr;
               </a>
