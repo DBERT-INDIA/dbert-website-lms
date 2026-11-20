@@ -9997,6 +9997,42 @@ def api_push_preferences():
     return jsonify({"status": "success", "message": "Preferences saved."})
 
 
+@app.route("/api/push/test", methods=["POST"])
+@app.route("/api/push/broadcast", methods=["POST"])
+def api_push_test():
+    """Authenticated self-test endpoint for browser push notifications.
+    Dispatches a native VAPID push specifically to the current user's active device(s).
+    Aliased to both /api/push/test and /api/push/broadcast for full backward compatibility."""
+    intern = current_intern()
+    staff = current_staff()
+    if not intern and not staff:
+        return jsonify({"status": "error", "message": "Authentication required."}), 401
+
+    data = request.get_json(silent=True) or {}
+    title = clean_text(data.get("title") or "🔔 DBERT Push Test")
+    body = clean_text(data.get("body") or "Your device is connected and receiving real-time cryptographic notifications!")
+    url = (data.get("url") or "/account/notifications").strip()
+
+    target_email = (intern["email"] if intern else (staff.get("email") if staff else "")).strip().lower()
+    intern_id = intern["id"] if intern else None
+
+    from services.notifications.web_push_service import dispatch_lifecycle_push
+    dispatch_lifecycle_push(
+        event_name="self_test",
+        target_email=target_email,
+        intern_id=intern_id,
+        title=title,
+        body=body,
+        url=url,
+        sync_inapp=True
+    )
+
+    return jsonify({
+        "status": "success",
+        "message": "Cryptographic self-test push alert dispatched to your active registered device(s)!"
+    })
+
+
 @app.route("/account/notifications", methods=["GET"])
 def account_notifications():
     intern = current_intern()

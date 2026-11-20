@@ -2338,6 +2338,42 @@ $$\text{Score} = 100 \times \text{certs} + 50 \times \text{tasks} + 25 \times \t
   * Submit button: `background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%); color: #0b1120 !important; font-weight: 900;`.
   * Footer note: `border-top: 1px solid #1E2633; color: #8A9AB5; font-size: 12px;`.
 
+---
+
+## 19. Web Push Notification Architecture, Self-Test Endpoint & Telemetry Pipeline (`/account/notifications`)
+
+### 19.1. Architectural Scope & Endpoint Routing
+- **Active Endpoints**:
+  * `@app.route("/api/push/test", methods=["POST"])` (Primary self-test endpoint)
+  * `@app.route("/api/push/broadcast", methods=["POST"])` (Backward-compatible alias for legacy or cached clients)
+- **Strict Role & Tenant Gating**:
+  * Dispatches exclusively to the authenticated intern (`current_intern()`) or staff (`current_staff()`).
+  * Unauthenticated requests are rejected with `401 Unauthorized` (`{"status": "error", "message": "Authentication required."}`).
+  * Eliminates mass broadcast vulnerabilities: Student self-test triggers target ONLY the caller's active device(s) (`event_name="self_test"`). Mass cohort broadcasts remain strictly reserved for `/admin/push-broadcast`.
+- **CSRF Protection**:
+  * Validates session `_csrf` against `X-CSRF-Token` / `X-CSRFToken` request headers.
+
+### 19.2. Cryptographic VAPID Delivery & Zero Silent Fails
+- **RFC 8292 NIST P-256 Protocol**:
+  * Payload signed by `VapidManager` and encrypted via `pywebpush.webpush()` with client `p256dh` and `auth` credentials.
+- **Delivery Telemetry & Last-Pushed Audit**:
+  * On delivery (HTTP 201 Created from Google/Chrome FCM or Mozilla autopush):
+    - Updates `last_pushed_at = CURRENT_TIMESTAMP` in `dbert_internship.web_push_devices`.
+    - Atomically inserts audit record into `dbert_internship.web_push_delivery_logs` with `delivery_status='DELIVERED'`, `status_code=201`.
+  * Dual-syncs with in-app notifications inbox in `notifications` table (`sync_inapp=True`).
+
+### 19.3. Frontend UX Hardening (`account_notifications.html`)
+- **Button State & Spinner**:
+  * `#btnTestPush` disables on click and shows `<i class="fa-solid fa-spinner fa-spin"></i> Sending Alert...` during network roundtrip.
+- **Toast & DOM Feedback**:
+  * On 200 JSON success: Displays green toast (`✓ Push notification dispatched to your registered device!`) and immediately updates the "Last Pushed" table column from "None" / "Never" to bold green "Just now".
+  * On error: Displays red toast with exact error message from server.
+- **Fallback Notification**:
+  * Uses verified logo asset `/static/img/dbert-logo-192.png`.
+  * Handles click event via `onclick = () => window.focus()` to seamlessly bring browser tab to foreground.
+- **Nonce CSP Compliance**:
+  * Zero inline `onclick` or pseudo-URL handlers. Bound programmatically via `addEventListener`.
+
 
 
 

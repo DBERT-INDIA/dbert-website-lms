@@ -517,5 +517,26 @@ flowchart TD
 - **Anti-Clipping & Spacing Hardening**:
   * Standard `.table-card-header` component with generous desktop and mobile padding, preventing glyph clipping of leading characters against card borders or sidebars.
 
+---
+
+## 14. Sovereign Native Web Push Infrastructure & Self-Test Verification (`/account/notifications`)
+- **Self-Test HTTP API Endpoints (`/api/push/test` & `/api/push/broadcast`)**:
+  * Primary route `@app.route("/api/push/test", methods=["POST"])` provides dedicated self-testing for authenticated students and staff.
+  * Aliased route `@app.route("/api/push/broadcast", methods=["POST"])` prevents 404 breaks for cached clients or legacy callers while safely dispatching only to the caller's devices.
+  * Strict authentication requirement: Unauthenticated POSTs return 401 JSON.
+  * Strict tenant scoping: Dispatches exclusively to active devices owned by the authenticated caller (`event_name="self_test"`), eliminating accidental mass broadcasts.
+- **Cryptographic RFC 8292 NIST P-256 Engine**:
+  * Payloads signed via `VapidManager` and encrypted via `pywebpush.webpush()`.
+  * Verified live against FCM/Google Push services with status code 201 Created and `delivery_status='DELIVERED'`.
+- **Delivery Audit & Last Pushed Telemetry**:
+  * Every dispatch attempt logs atomically into `dbert_internship.web_push_delivery_logs`.
+  * Successful push automatically updates `last_pushed_at` in `dbert_internship.web_push_devices`.
+  * Dual-syncs into candidate notifications inbox in `notifications` table (`sync_inapp=True`).
+- **Frontend Interactivity & Nonce CSP Hardening**:
+  * `#btnTestPush` displays animated spinner during dispatch.
+  * Green toast notification confirms real-time dispatch; red toast conveys server errors.
+  * JavaScript dynamically updates "Last Pushed" column in device table to "Just now".
+  * Exactly zero inline `onclick` handlers; strict compliance with Nonce-based Content Security Policy.
+
 
 

@@ -571,30 +571,86 @@
       alert("Please enable push notifications for this browser first!");
       return;
     }
+
+    const btnTest = document.getElementById("btnTestPush");
+    const origHtml = btnTest ? btnTest.innerHTML : "";
+    if (btnTest) {
+      btnTest.disabled = true;
+      btnTest.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Sending Alert...';
+    }
+
     showToast("Dispatching self-test push alert to this device...", false);
+
+    const csrfMeta = document.querySelector('meta[name="csrf-token"]');
+    const csrfToken = csrfMeta ? csrfMeta.content : "";
+
     try {
-      const res = await fetch("/api/push/broadcast", {
+      const res = await fetch("/api/push/test", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-Token": csrfToken,
+          "X-CSRFToken": csrfToken
+        },
         body: JSON.stringify({
           title: "🔔 DBERT Push Test",
           body: "Your device is connected and receiving real-time cryptographic notifications!",
           url: "/account/notifications"
         })
       });
+
+      if (!res.ok) {
+        let errMsg = "Push server returned an error (" + res.status + ")";
+        try {
+          const errData = await res.json();
+          if (errData && errData.message) errMsg = errData.message;
+        } catch (_) {}
+        showToast(errMsg, true);
+        return;
+      }
+
       const data = await res.json();
       if (data.status === "success") {
-        showToast("Push notification dispatched successfully!", false);
+        showToast("✓ Push notification dispatched to your registered device!", false);
+        // Dynamically update Last Pushed cells in table
+        document.querySelectorAll(".devices-table tbody tr").forEach(function(row) {
+          const cells = row.querySelectorAll("td");
+          if (cells && cells.length >= 5) {
+            const lastPushedCell = cells[4];
+            if (lastPushedCell && (lastPushedCell.textContent.trim() === "None" || lastPushedCell.textContent.trim() === "Never")) {
+              lastPushedCell.textContent = "Just now";
+              lastPushedCell.style.color = "#10B981";
+              lastPushedCell.style.fontWeight = "600";
+            }
+          }
+        });
       } else {
         showToast(data.message || "Push server returned an error.", true);
       }
     } catch (e) {
+      console.warn("Server push dispatch error, attempting local fallback:", e);
       // Local fallback in-browser notification
       if (Notification.permission === "granted") {
-        new Notification("🔔 DBERT Push Test", {
-          body: "Your device is connected and receiving real-time notifications!",
-          icon: "/static/images/dbert_logo.png"
-        });
+        try {
+          const notif = new Notification("🔔 DBERT Push Test", {
+            body: "Your device is connected and receiving real-time notifications!",
+            icon: "/static/img/dbert-logo-192.png"
+          });
+          notif.onclick = function() {
+            window.focus();
+            notif.close();
+          };
+          showToast("Local test notification shown.", false);
+        } catch (notifErr) {
+          showToast("Unable to display desktop notification: " + notifErr.message, true);
+        }
+      } else {
+        showToast("Network error dispatching test push.", true);
+      }
+    } finally {
+      if (btnTest) {
+        btnTest.disabled = false;
+        btnTest.innerHTML = origHtml;
       }
     }
   }
