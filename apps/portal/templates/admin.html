@@ -547,8 +547,8 @@
         <span class="modal-section-label">Admin Note (optional)</span>
         <textarea id="enrNote" class="field-textarea" rows="2" aria-label="Admin Note" placeholder="Note for intern on rejection..."></textarea>
         <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;">
-          <button class="btn-sm green" style="flex:1;padding:12px;" data-act-click="reviewEnrollment" data-arg-click='["accept"]'><i class="fas fa-check"></i> Accept Payment</button>
-          <button class="btn-sm red" style="flex:1;padding:12px;" data-act-click="reviewEnrollment" data-arg-click='["reject"]'><i class="fas fa-times"></i> Reject</button>
+          <button id="btnEnrAccept" class="btn-sm green" style="flex:1;padding:12px;" data-act-click="reviewEnrollment" data-arg-click='["accept"]'><i class="fas fa-check"></i> Accept Payment</button>
+          <button id="btnEnrReject" class="btn-sm red" style="flex:1;padding:12px;" data-act-click="reviewEnrollment" data-arg-click='["reject"]'><i class="fas fa-times"></i> Reject</button>
         </div>
       </div>
     </div>
@@ -857,6 +857,8 @@
 
   // ── API FETCH ─────────────────────────────────────────────────
   async function apiFetch(path, method='GET', body=null){
+    const metaCsrf = document.querySelector('meta[name="csrf-token"]');
+    const csrfTok = metaCsrf ? metaCsrf.getAttribute('content') : '';
     const opts = {
       method, 
       credentials: 'include', 
@@ -865,17 +867,20 @@
         'X-Requested-With': 'XMLHttpRequest'
       }
     };
+    if(csrfTok){
+      opts.headers['X-CSRF-Token'] = csrfTok;
+    }
     if(body){ opts.headers['Content-Type']='application/json'; opts.body=JSON.stringify(body); }
     try {
       const res = await fetch(API(path), opts);
       if(res.status===401){ window.location.href='/admin-login'; return null; }
       const data = await res.json();
       if (!res.ok || data.status === 'error') {
-        alert(data.message || 'An error occurred during the request.');
+        showToast(data.message || 'An error occurred during the request.', 'red');
       }
       return data;
     } catch (e) {
-      alert('Network error. Please try again.');
+      showToast('Network error. Please try again.', 'red');
       return null;
     }
   }
@@ -1047,8 +1052,8 @@
       <td>${r.tutor_completion_pct>0?`<span style="color:#8b5cf6;font-weight:700;font-size:12px;">${Math.round(r.tutor_completion_pct)}%</span>`:'<span style="color:var(--tx-muted);font-size:12px;">—</span>'}</td>
       <td>${payBadge(r.payment_status)}</td>
       <td>${(r.payment_screenshot && (r.payment_screenshot.startsWith('utr_') || r.payment_screenshot.endsWith('.receipt') || (r.utr && !r.payment_screenshot.includes('.'))))
-        ? `<button class="btn-sm ghost" ${actAttr('click','viewScreenshot',[r.payment_screenshot,r.name,r.utr||''])} title="View UPI UTR Digital Receipt" style="color:var(--gold);font-weight:700;"><i class="fas fa-receipt" style="margin-right:4px;"></i>UTR</button>`
-        : (r.payment_screenshot ? `<button class="btn-sm ghost" ${actAttr('click','viewScreenshot',[r.payment_screenshot,r.name,''])} title="View Screenshot"><i class="fas fa-image"></i></button>` : '—')}</td>
+        ? `<button class="btn-sm ghost" ${actAttr('click','viewScreenshot',[r.id,r.payment_screenshot,r.name,r.utr||''])} title="View UPI UTR Digital Receipt" style="color:var(--gold);font-weight:700;"><i class="fas fa-receipt" style="margin-right:4px;"></i>UTR</button>`
+        : (r.payment_screenshot ? `<button class="btn-sm ghost" ${actAttr('click','viewScreenshot',[r.id,r.payment_screenshot,r.name,''])} title="View Screenshot"><i class="fas fa-image"></i></button>` : '—')}</td>
       <td><button class="btn-sm gold" ${actAttr('click','openEnrModal',[r.id])}><i class="fas fa-eye"></i> Review</button> <button class="btn-sm ghost" ${actAttr('click','openEditEnrModal',[r.id])}><i class="fas fa-edit"></i> Edit</button></td>
     </tr>`,
 
@@ -1484,28 +1489,52 @@
   // ── ENROLLMENT ACTIONS ────────────────────────────────────────
   async function openEnrModal(id){
     _currentEnrId = id;
-    document.getElementById('enrNote').value = '';
-    document.getElementById('enrModalDetails').innerHTML = '<p style="color:var(--tx-muted);font-size:13px;">Loading...</p>';
+    const noteEl = document.getElementById('enrNote');
+    if(noteEl) noteEl.value = '';
+    document.getElementById('enrModalDetails').innerHTML = '<p style="color:var(--tx-muted);font-size:13px;"><i class="fas fa-spinner fa-spin"></i> Loading enrollment details...</p>';
     document.getElementById('screenshotImg').src = '';
     const shotLink = document.getElementById('screenshotLink');
     if(shotLink) shotLink.style.display = 'none';
     openModal('enrModal');
-    const data = await apiFetch('/admin/enrollments?status=all');
-    if(!data||!data.enrollments) return;
-    const r = data.enrollments.find(e=>e.id==id); if(!r) return;
+
+    let r = null;
+    if(window.PG && PG['enr'] && Array.isArray(PG['enr'].all)){
+      r = PG['enr'].all.find(e => e.id == id);
+    }
+    if(!r){
+      const data = await apiFetch('/admin/enrollments?status=all');
+      if(data && data.enrollments) r = data.enrollments.find(e => e.id == id);
+    }
+    if(!r){
+      document.getElementById('enrModalDetails').innerHTML = '<p style="color:var(--red,#EF4444);font-size:13px;">Enrollment record not found.</p>';
+      return;
+    }
     document.getElementById('enrModalTitle').textContent = 'Review: '+r.name;
-    document.getElementById('enrModalSub').textContent   = r.domain+' · '+r.email;
+    document.getElementById('enrModalSub').textContent   = r.domain+' · '+r.email+' · ID #'+r.id;
+    const isUtrReceipt = Boolean(r.payment_screenshot && (r.payment_screenshot.startsWith('utr_') || r.payment_screenshot.endsWith('.receipt') || r.utr));
     const shotUrl = r.payment_screenshot ? API('/admin/screenshot/'+r.payment_screenshot) : '';
     document.getElementById('screenshotImg').src = shotUrl;
     if(shotLink && shotUrl){
       shotLink.href = shotUrl;
-      const isUtrReceipt = Boolean(r.payment_screenshot && (r.payment_screenshot.startsWith('utr_') || r.payment_screenshot.endsWith('.receipt') || r.utr));
       shotLink.innerHTML = isUtrReceipt
         ? '<i class="fas fa-external-link-alt"></i> Open Full-Size Digital Voucher'
         : '<i class="fas fa-external-link-alt"></i> Open Full-Size Screenshot';
       shotLink.style.display = 'inline-flex';
     }
-    document.getElementById('enrModalDetails').innerHTML = `
+    let detailsHtml = '';
+    if(isUtrReceipt){
+      const utrDigits = r.utr || (r.payment_screenshot ? r.payment_screenshot.replace('utr_','').replace('.receipt','') : '—');
+      detailsHtml += `
+        <div style="background:rgba(226,185,111,0.08);border:1px solid rgba(226,185,111,0.3);border-radius:var(--r-sm);padding:14px;margin-bottom:14px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+            <span style="font-size:11px;font-weight:700;color:var(--gold);letter-spacing:0.8px;text-transform:uppercase;"><i class="fas fa-receipt"></i> 12-Digit UPI Transaction ID</span>
+            <button type="button" class="btn-sm ghost" style="padding:4px 8px;font-size:11px;" ${actAttr('click','copyUtr',[utrDigits])}><i class="fas fa-copy"></i> Copy UTR</button>
+          </div>
+          <div style="font-family:monospace;font-size:20px;font-weight:800;color:#FCD34D;letter-spacing:2px;">${escHtml(utrDigits)}</div>
+          <div style="font-size:12px;color:var(--tx-muted);margin-top:6px;">Submitted via instant UPI payment gateway verification.</div>
+        </div>`;
+    }
+    detailsHtml += `
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px;margin-bottom:12px;">
         <div style="color:var(--tx-muted);">Product</div><div>${productBadge(r)}</div>
         <div style="color:var(--tx-muted);">Joining Date</div><div style="color:var(--gold);font-weight:700;">${escHtml(r.joining_date||'TBD')}</div>
@@ -1514,13 +1543,22 @@
         <div style="color:var(--tx-muted);">UTR / Trans ID</div><div style="color:var(--gold);font-weight:700;font-family:monospace;letter-spacing:0.5px;">${escHtml(r.utr||'—')}</div>
         <div style="color:var(--tx-muted);">Submitted</div><div style="font-size:12px;">${fmtDate(r.created_at)}</div>
       </div>`;
+    document.getElementById('enrModalDetails').innerHTML = detailsHtml;
   }
 
-  function viewScreenshot(filename, name, utr){
+  function viewScreenshot(id, filename, name, utr){
+    _currentEnrId = id;
+    const noteEl = document.getElementById('enrNote');
+    if(noteEl) noteEl.value = '';
     const isUtr = Boolean((filename && (filename.startsWith('utr_') || filename.endsWith('.receipt'))) || utr);
     document.getElementById('enrModalTitle').textContent = isUtr ? 'UPI UTR Voucher: '+name : 'Screenshot: '+name;
-    document.getElementById('enrModalSub').textContent   = isUtr ? 'Verified Admissions Ledger Record' : 'Payment proof';
+    document.getElementById('enrModalSub').textContent   = isUtr ? 'Verified Admissions Ledger Record · ID #'+id : 'Payment proof · ID #'+id;
     
+    let r = null;
+    if(window.PG && PG['enr'] && Array.isArray(PG['enr'].all)){
+      r = PG['enr'].all.find(e => e.id == id);
+    }
+
     let detailsHtml = '';
     if(isUtr){
       const utrDigits = utr || (filename ? filename.replace('utr_','').replace('.receipt','') : '—');
@@ -1532,6 +1570,17 @@
           </div>
           <div style="font-family:monospace;font-size:20px;font-weight:800;color:#FCD34D;letter-spacing:2px;">${escHtml(utrDigits)}</div>
           <div style="font-size:12px;color:var(--tx-muted);margin-top:6px;">This candidate completed payment using UPI reference recording. The official verification voucher is rendered below.</div>
+        </div>`;
+    }
+    if(r){
+      detailsHtml += `
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:13px;margin-bottom:12px;">
+          <div style="color:var(--tx-muted);">Product</div><div>${productBadge(r)}</div>
+          <div style="color:var(--tx-muted);">Joining Date</div><div style="color:var(--gold);font-weight:700;">${escHtml(r.joining_date||'TBD')}</div>
+          <div style="color:var(--tx-muted);">Batch</div><div style="font-weight:600;">${escHtml(r.batch_label||'—')}</div>
+          <div style="color:var(--tx-muted);">Payment</div><div>${payBadge(r.payment_status)}</div>
+          <div style="color:var(--tx-muted);">UTR / Trans ID</div><div style="color:var(--gold);font-weight:700;font-family:monospace;letter-spacing:0.5px;">${escHtml(r.utr||'—')}</div>
+          <div style="color:var(--tx-muted);">Submitted</div><div style="font-size:12px;">${fmtDate(r.created_at)}</div>
         </div>`;
     }
     document.getElementById('enrModalDetails').innerHTML = detailsHtml;
@@ -1559,11 +1608,40 @@
   }
 
   async function reviewEnrollment(action){
-    if(!_currentEnrId) return;
-    const note = document.getElementById('enrNote').value.trim();
-    const data = await apiFetch('/admin/enrollment/review','POST',{enrollment_id:_currentEnrId,action,note});
-    if(data&&data.status==='success'){ showToast('Enrollment '+action+'ed.','green'); closeModal('enrModal'); loadEnrollments(); loadStats(); }
-    else showToast((data&&data.message)||'Error','red');
+    if(!_currentEnrId){
+      showToast('No enrollment selected for review.', 'red');
+      return;
+    }
+    const btnAccept = document.getElementById('btnEnrAccept');
+    const btnReject = document.getElementById('btnEnrReject');
+    const origAccept = btnAccept ? btnAccept.innerHTML : '';
+    const origReject = btnReject ? btnReject.innerHTML : '';
+
+    if(btnAccept) btnAccept.disabled = true;
+    if(btnReject) btnReject.disabled = true;
+    if(action === 'accept' && btnAccept){
+      btnAccept.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Accepting...';
+    } else if(action === 'reject' && btnReject){
+      btnReject.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Rejecting...';
+    }
+
+    try {
+      const note = document.getElementById('enrNote') ? document.getElementById('enrNote').value.trim() : '';
+      const data = await apiFetch('/admin/enrollment/review','POST',{enrollment_id:_currentEnrId,action,note});
+      if(data && data.status === 'success'){
+        showToast('Enrollment '+action+'ed successfully.','green');
+        closeModal('enrModal');
+        loadEnrollments();
+        loadStats();
+      } else {
+        showToast((data && data.message) || ('Error processing '+action), 'red');
+      }
+    } catch(err) {
+      showToast('Request failed. Please try again.', 'red');
+    } finally {
+      if(btnAccept){ btnAccept.disabled = false; btnAccept.innerHTML = origAccept; }
+      if(btnReject){ btnReject.disabled = false; btnReject.innerHTML = origReject; }
+    }
   }
 
   async function bulkAction(action){

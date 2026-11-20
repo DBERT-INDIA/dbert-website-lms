@@ -538,5 +538,34 @@ flowchart TD
   * JavaScript dynamically updates "Last Pushed" column in device table to "Just now".
   * Exactly zero inline `onclick` handlers; strict compliance with Nonce-based Content Security Policy.
 
+---
+
+## 15. Admin Enrollment Payment Review Pipeline, Synchronous Lifecycle Orchestration & Robust Action Delegation (`/admin`)
+- **Root Cause & Delegated Actions Hardening (`admin.html`)**:
+  * Table row render previously passed `viewScreenshot` without `r.id`, leaving `_currentEnrId` uninitialized (`null`).
+  * `reviewEnrollment(action)` silently exited when `_currentEnrId` was empty, causing clicks on "Accept Payment" or "Reject" to have zero effect.
+  * Table row now passes `[r.id, r.payment_screenshot, r.name, r.utr||'']`.
+  * `viewScreenshot(id, filename, name, utr)` initializes `_currentEnrId = id;` and auto-enriches `enrModalDetails` with candidate product, domain, email, batch, and payment status from local `PG['enr'].all` cache.
+  * Interactive modal buttons (`#btnEnrAccept`, `#btnEnrReject`) disable during network requests, rendering `<i class="fas fa-spinner fa-spin"></i> Accepting...` / `Rejecting...` spinners to eliminate duplicate or silent clicks.
+  * `apiFetch` attaches `X-CSRF-Token` from `<meta name="csrf-token">`.
+- **Backend Multi-Table Synchronous Synchronization (`app.py`)**:
+  * On Accept:
+    1. `enrollments.payment_status = 'Accepted'`.
+    2. `applications.status = 'Accepted'`.
+    3. `intern_offer_letters.caution_deposit_status = 'VERIFIED'`, `pdf_unlocked = 1` (unlocking official signed PDF).
+    4. `intern_accounts.is_active = 1` (activating LMS student workspace).
+    5. Calls `handle_enrollment_accepted(conn, eid)` for ambassador code minting, course enrollment, and referral commission.
+  * On Reject:
+    1. `enrollments.payment_status = 'Rejected'`, saving `admin_note`.
+    2. `applications.status = 'Enrollment Pending'` (or `STATUS_PAID_ENROLLED`).
+    3. `intern_offer_letters.caution_deposit_status = 'REJECTED'`.
+- **Multi-Channel Notification Pipeline & Isolated Resilience**:
+  * All email and push dispatches run within an isolated `try...except` block, guaranteeing external SMTP or push gateway hiccups never trigger 500 errors.
+  * On accept: Dispatches acceptance dossier email + real-time VAPID Web Push notification (`🎉 Enrollment Confirmed & Seat Unlocked!`).
+  * On reject: Dispatches status update email with admin note + real-time VAPID Web Push notification (`⚠️ Caution Deposit Needs Resubmission`).
+- **Production Verification**:
+  * Complete 6-test suite (`apps/portal/tests/test_admin_enrollment_review_flow.py`) passing with 100% success on both local SQLite and live EC2 PostgreSQL production environment.
+
+
 
 

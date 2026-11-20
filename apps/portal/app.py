@@ -19409,22 +19409,59 @@ def admin_enrollment_review():
             reject_status = STATUS_PAID_ENROLLED if is_paid else STATUS_ENROLLMENT_PENDING
             conn.execute("UPDATE enrollments SET payment_status=?,admin_note=?,updated_at=? WHERE id=?",
                          (nps, note, now_str(), eid))
-            conn.execute("UPDATE applications SET status=?,updated_at=? WHERE email=? AND domain=?",
+            conn.execute("UPDATE applications SET status=?,updated_at=? WHERE LOWER(email)=LOWER(?) AND domain=?",
                          (STATUS_ACCEPTED if action == "accept" else reject_status,
                           now_str(), enr["email"], enr["domain"]))
             if action == "accept":
                 handle_enrollment_accepted(conn, eid)
+                conn.execute(
+                    "UPDATE intern_offer_letters SET caution_deposit_status='VERIFIED', pdf_unlocked=1, updated_at=? WHERE LOWER(email)=LOWER(?)",
+                    (now_str(), enr["email"])
+                )
+                conn.execute(
+                    "UPDATE intern_accounts SET is_active=1, updated_at=? WHERE LOWER(email)=LOWER(?)",
+                    (now_str(), enr["email"])
+                )
+            else:
+                conn.execute(
+                    "UPDATE intern_offer_letters SET caution_deposit_status='REJECTED', updated_at=? WHERE LOWER(email)=LOWER(?)",
+                    (now_str(), enr["email"])
+                )
             conn.commit()
         if ops != nps:
             ed = row_to_dict(enr)
             joining_date = ed.get("joining_date", "")
-            if action == "accept":
-                send_enrollment_acceptance_dossier_email(ed)
-            elif is_paid:
-                send_paid_payment_rejected_email(ed["name"], ed["email"], ed["domain"])
-            else:
-                send_status_update_email(ed["name"], ed["email"], ed["domain"], STATUS_ENROLLMENT_PENDING,
-                                         note or "Payment screenshot could not be verified. Please re-submit.")
+            try:
+                if action == "accept":
+                    send_enrollment_acceptance_dossier_email(ed)
+                    send_push_notification(
+                        to_email=ed["email"],
+                        title="🎉 Enrollment Confirmed & Seat Unlocked!",
+                        message=f"Welcome {ed.get('name', 'Intern')}! Your caution deposit has been verified. Your official appointment letter and workstation are now ready.",
+                        url="https://lms.dbert.in/portal/offer",
+                        kind="deposit_verified"
+                    )
+                elif is_paid:
+                    send_paid_payment_rejected_email(ed["name"], ed["email"], ed["domain"])
+                    send_push_notification(
+                        to_email=ed["email"],
+                        title="⚠️ Payment Verification Notice",
+                        message="Your payment screenshot could not be verified. Please review the admin notes and re-upload.",
+                        url="https://lms.dbert.in/portal/offer",
+                        kind="deposit_rejected"
+                    )
+                else:
+                    send_status_update_email(ed["name"], ed["email"], ed["domain"], STATUS_ENROLLMENT_PENDING,
+                                             note or "Payment screenshot could not be verified. Please re-submit.")
+                    send_push_notification(
+                        to_email=ed["email"],
+                        title="⚠️ Caution Deposit Needs Resubmission",
+                        message=f"Payment reference could not be verified: {note or 'Please re-submit your valid 12-digit UTR'}.",
+                        url="https://lms.dbert.in/portal/offer",
+                        kind="deposit_rejected"
+                    )
+            except Exception as notify_err:
+                log_error("admin-enrollment-notification", notify_err)
         return jsonify({"status": "success", "message": f"Enrollment {nps}."})
     except Exception as e:
         log_error("admin-enrollment-review", e)
@@ -19454,21 +19491,58 @@ def admin_enrollment_bulk_review():
                     reject_status = STATUS_PAID_ENROLLED if is_paid else STATUS_ENROLLMENT_PENDING
                     conn.execute("UPDATE enrollments SET payment_status=?,admin_note=?,updated_at=? WHERE id=?",
                                  (nps, note, now_str(), eid))
-                    conn.execute("UPDATE applications SET status=?,updated_at=? WHERE email=? AND domain=?",
+                    conn.execute("UPDATE applications SET status=?,updated_at=? WHERE LOWER(email)=LOWER(?) AND domain=?",
                                  (STATUS_ACCEPTED if action == "accept" else reject_status,
                                   now_str(), enr["email"], enr["domain"]))
                     if action == "accept":
                         handle_enrollment_accepted(conn, eid)
+                        conn.execute(
+                            "UPDATE intern_offer_letters SET caution_deposit_status='VERIFIED', pdf_unlocked=1, updated_at=? WHERE LOWER(email)=LOWER(?)",
+                            (now_str(), enr["email"])
+                        )
+                        conn.execute(
+                            "UPDATE intern_accounts SET is_active=1, updated_at=? WHERE LOWER(email)=LOWER(?)",
+                            (now_str(), enr["email"])
+                        )
+                    else:
+                        conn.execute(
+                            "UPDATE intern_offer_letters SET caution_deposit_status='REJECTED', updated_at=? WHERE LOWER(email)=LOWER(?)",
+                            (now_str(), enr["email"])
+                        )
                     if ops != nps:
                         ed = row_to_dict(enr)
                         joining_date = ed.get("joining_date", "")
-                        if action == "accept":
-                            send_enrollment_acceptance_dossier_email(ed)
-                        elif is_paid:
-                            send_paid_payment_rejected_email(ed["name"], ed["email"], ed["domain"])
-                        else:
-                            send_status_update_email(ed["name"], ed["email"], ed["domain"], STATUS_ENROLLMENT_PENDING,
-                                                     note or "Payment could not be verified. Please re-submit.")
+                        try:
+                            if action == "accept":
+                                send_enrollment_acceptance_dossier_email(ed)
+                                send_push_notification(
+                                    to_email=ed["email"],
+                                    title="🎉 Enrollment Confirmed & Seat Unlocked!",
+                                    message=f"Welcome {ed.get('name', 'Intern')}! Your caution deposit has been verified. Your official appointment letter and workstation are now ready.",
+                                    url="https://lms.dbert.in/portal/offer",
+                                    kind="deposit_verified"
+                                )
+                            elif is_paid:
+                                send_paid_payment_rejected_email(ed["name"], ed["email"], ed["domain"])
+                                send_push_notification(
+                                    to_email=ed["email"],
+                                    title="⚠️ Payment Verification Notice",
+                                    message="Your payment screenshot could not be verified. Please review the admin notes and re-upload.",
+                                    url="https://lms.dbert.in/portal/offer",
+                                    kind="deposit_rejected"
+                                )
+                            else:
+                                send_status_update_email(ed["name"], ed["email"], ed["domain"], STATUS_ENROLLMENT_PENDING,
+                                                         note or "Payment could not be verified. Please re-submit.")
+                                send_push_notification(
+                                    to_email=ed["email"],
+                                    title="⚠️ Caution Deposit Needs Resubmission",
+                                    message=f"Payment reference could not be verified: {note or 'Please re-submit your valid 12-digit UTR'}.",
+                                    url="https://lms.dbert.in/portal/offer",
+                                    kind="deposit_rejected"
+                                )
+                        except Exception as notify_err:
+                            log_error("admin-bulk-notification", notify_err)
                     processed += 1
                 except Exception as row_err:
                     log_error("bulk-row", row_err); continue

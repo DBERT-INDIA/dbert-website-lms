@@ -2375,6 +2375,75 @@ $$\text{Score} = 100 \times \text{certs} + 50 \times \text{tasks} + 25 \times \t
 - **Nonce CSP Compliance**:
   * Zero inline `onclick` or pseudo-URL handlers. Bound programmatically via `addEventListener`.
 
+---
+
+---
+
+## 20. Admin Enrollment Payment Review Pipeline, Synchronous Lifecycle Orchestration & Robust Action Delegation (`/admin`)
+
+### 20.1. Architectural Scope & Root Cause Remediation
+- **Identified Failure Mode**:
+  On `https://lms.dbert.in/admin`, clicking **"Accept Payment"** or **"Reject"** in the enrollment review modal (`enrModal`) previously resulted in no action or visual response.
+  * *Root Cause 1 (Omitted ID Argument)*: In `apps/portal/templates/admin.html`, table row rendering under the payment proof column called `viewScreenshot` with only 3 arguments `[r.payment_screenshot, r.name, r.utr||'']`, completely omitting `r.id`.
+  * *Root Cause 2 (Null State Trap)*: `viewScreenshot` never initialized `_currentEnrId`. In `reviewEnrollment(action)`, `if (!_currentEnrId) return;` silently exited with zero feedback or network activity.
+  * *Root Cause 3 (Missing Loading States)*: Modal buttons lacked spinner feedback and disabled attributes during execution, allowing repeated or silent clicks.
+  * *Root Cause 4 (Database Sync Deficit)*: `admin_enrollment_review` updated `enrollments` and `applications`, but omitted updating `intern_offer_letters.caution_deposit_status` (`'VERIFIED'` / `'REJECTED'`), `pdf_unlocked`, and `intern_accounts.is_active`.
+
+### 20.2. Frontend UI/UX & Delegated Actions Hardening (`admin.html`)
+- **Argument Alignment**:
+  * Table row render now passes `r.id` as the primary argument:
+    `${actAttr('click', 'viewScreenshot', [r.id, r.payment_screenshot, r.name, r.utr||''])}`
+- **Modal State Binding (`viewScreenshot` & `openEnrModal`)**:
+  * `function viewScreenshot(id, filename, name, utr)` immediately binds `_currentEnrId = id;`, resets `enrNote`, displays the full-size receipt or 12-digit UPI voucher, and enriches candidate details from `PG['enr'].all` cache.
+  * `openEnrModal(id)` leverages local cache first before fallback network fetching, displaying candidate domain, email, batch, joining date, and payment status.
+- **Interactive Feedback & Loading Spinners**:
+  * Modal buttons assigned IDs `id="btnEnrAccept"` and `id="btnEnrReject"`.
+  * During API requests, buttons are disabled and render animated spinners:
+    - Accept: `<i class="fas fa-spinner fa-spin"></i> Accepting...`
+    - Reject: `<i class="fas fa-spinner fa-spin"></i> Rejecting...`
+  * Buttons restore original state and text inside a `finally` block.
+- **CSRF & Toast Feedback**:
+  * `apiFetch` automatically detects and attaches `X-CSRF-Token` from `<meta name="csrf-token">`.
+  * Displays user-facing toast alerts (`showToast('Enrollment accepted successfully.', 'green')` or error toast).
+
+### 20.3. Backend Multi-Table Lifecycle Synchronization (`app.py`)
+- **Endpoints**:
+  * `POST /admin/enrollment/review` (Single enrollment decision)
+  * `POST /admin/enrollment/bulk-review` (Bulk enrollment decisions)
+- **State Transition Matrix on Accept (`action == 'accept'`)**:
+  1. `enrollments`: Updates `payment_status = 'Accepted'`, `admin_note = note`, `updated_at = now`.
+  2. `applications`: Updates `status = 'Accepted'`, `updated_at = now` (matching `email` and `domain`).
+  3. `intern_offer_letters`: Updates `caution_deposit_status = 'VERIFIED'`, `pdf_unlocked = 1`, `updated_at = now` (unlocks official appointment letter).
+  4. `intern_accounts`: Updates `is_active = 1`, `updated_at = now` (activates LMS workstation).
+  5. `handle_enrollment_accepted(conn, eid)`: Mints ambassador referral code, auto-enrolls intern into domain curricula, and calculates referral commissions.
+- **State Transition Matrix on Reject (`action == 'reject'`)**:
+  1. `enrollments`: Updates `payment_status = 'Rejected'`, `admin_note = note`, `updated_at = now`.
+  2. `applications`: Reverts `status = 'Enrollment Pending'` (or `STATUS_PAID_ENROLLED` for paid programs).
+  3. `intern_offer_letters`: Updates `caution_deposit_status = 'REJECTED'`, `updated_at = now`.
+
+### 20.4. Dual-Engine Notification Pipeline with Safe Isolation
+- **Resilient Delivery**:
+  * Notification triggers are wrapped in dedicated `try...except` blocks, ensuring external SMTP latency or push gateway errors never fail the admin transaction or return HTTP 500.
+- **Acceptance Dispatch**:
+  * Google Workspace SMTP: Sends official enrollment acceptance dossier email (`send_enrollment_acceptance_dossier_email(ed)`).
+  * Real-Time VAPID Web Push: Dispatches `🎉 Enrollment Confirmed & Seat Unlocked!` notification to candidate's registered devices with deep-link to `https://lms.dbert.in/portal/offer`.
+- **Rejection Dispatch**:
+  * Google Workspace SMTP: Sends status update email with admin note explaining re-submission instructions.
+  * Real-Time VAPID Web Push: Dispatches `⚠️ Caution Deposit Needs Resubmission` notification with admin note.
+
+### 20.5. Automated Test Suite & Production Verification
+- **Automated Test Suite**:
+  * `apps/portal/tests/test_admin_enrollment_review_flow.py` (6 comprehensive test cases):
+    1. `test_unauthorized_review_returns_401`
+    2. `test_invalid_payload_returns_400`
+    3. `test_review_accept_synchronizes_all_tables`
+    4. `test_review_reject_synchronizes_all_tables`
+    5. `test_bulk_review_accept`
+    6. `test_admin_html_markup_compliance`
+- **Verification Environment**:
+  * 100% test pass on local SQLite and live EC2 PostgreSQL production environment.
+
+
 
 
 
