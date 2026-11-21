@@ -1608,5 +1608,15 @@
     "status": "SENT",
     "timestamp": "2026-11-21T17:41:51.188290",
     "details": "Delivered via Account 2"
+  },
+  {
+    "phone": "918591833879",
+    "name": "Ratnadeep manojkumar bamane",
+    "email": "ratnadeepratu737@gmail.com",
+    "account": "Account 2",
+    "campaign": "enrollment_confirmed_499",
+    "status": "SENT",
+    "timestamp": "2026-11-21T17:52:38.372999",
+    "details": "\u20b9499 Payment Reconciled & Enrollment Confirmed via Account 2"
   }
 ]
