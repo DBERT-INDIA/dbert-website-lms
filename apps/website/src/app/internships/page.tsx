@@ -61,6 +61,33 @@ export default function InternshipsHubPage() {
       openings: '580+ Live Openings',
       stipend: '₹6,000 – ₹14,000 / mo',
       cities: 'Remote · Mumbai · Delhi · Bengaluru'
+    },
+    {
+      slug: 'cybersecurity',
+      title: 'Cybersecurity & Threat Defense',
+      badge: 'High Security',
+      desc: 'Audit web endpoints for OWASP Top 10 vulnerabilities, conduct network pen-testing with Burp Suite, and implement SOC log pipelines.',
+      openings: '490+ Live Openings',
+      stipend: '₹8,000 – ₹18,000 / mo',
+      cities: 'Remote · Bengaluru · Hyderabad · Pune'
+    },
+    {
+      slug: 'mobile-app-development',
+      title: 'Mobile App Development (Flutter)',
+      badge: 'Cross-Platform',
+      desc: 'Develop native-grade cross-platform apps with Flutter, Dart, Riverpod state management, and SQLite offline synchronization.',
+      openings: '520+ Live Openings',
+      stipend: '₹7,000 – ₹16,000 / mo',
+      cities: 'Remote · Delhi NCR · Chennai · Bengaluru'
+    },
+    {
+      slug: 'generative-ai',
+      title: 'Generative AI & LLM Systems',
+      badge: 'Deep Tech',
+      desc: 'Fine-tune open-weights LLMs with LoRA/QLoRA, construct dense vector search with Reciprocal Rank Fusion, and deploy vLLM.',
+      openings: '680+ Live Openings',
+      stipend: '₹10,000 – ₹20,000 / mo',
+      cities: 'Remote · Bengaluru · Hyderabad · Mumbai'
     }
   ];
 
@@ -208,7 +235,7 @@ export default function InternshipsHubPage() {
             </p>
             <div className="flex justify-center gap-3 flex-wrap">
               <Link href="/enroll/1999" className="btn btn-primary btn-lg">
-                Complete Fellowship Enrollment (₹1,500 Balance) →
+                Confirm Fellowship Seat (₹1,999 Program) →
               </Link>
               <Link href="/learners/fellowship" className="btn btn-outline btn-lg">
                 Inspect Fellowship Curriculum →

@@ -217,7 +217,7 @@ export default async function ProgrammaticInternshipPage({ params }: PageProps) 
       {/* Primary Conversion & Inbound Lead Capture Section */}
       <div className="section-band" style={{ padding: '60px 0', background: 'rgba(255, 255, 255, 0.015)', borderTop: '1px solid rgba(255, 255, 255, 0.08)', borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: 40, alignItems: 'start' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: 36, alignItems: 'start' }}>
             
             {/* Left Column: LMS Direct Links & Fast-Track Route */}
             <div>
@@ -242,9 +242,9 @@ export default async function ProgrammaticInternshipPage({ params }: PageProps) 
                 <Link 
                   href={`/enroll/1999?domain=${encodeURIComponent(roleData.title)}`} 
                   className="btn btn-outline btn-lg"
-                  style={{ textAlign: 'center' }}
+                  style={{ textAlign: 'center', borderColor: '#f59e0b', color: '#fbbf24' }}
                 >
-                  Confirm Fellowship Seat (₹1,500 Balance) →
+                  Confirm Fellowship Seat (₹1,999 Program) →
                 </Link>
                 <a
                   href={`https://lms.dbert.in/internships/${role}`}

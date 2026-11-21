@@ -1,22 +1,8 @@
 import React from 'react';
 import type { Metadata } from 'next';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import TrackLeadCaptureForm, { DOMAIN_OPTIONS } from '@/components/forms/TrackLeadCaptureForm';
-import { 
-  ShieldCheck, 
-  Award, 
-  GitPullRequest, 
-  Zap, 
-  CheckCircle2, 
-  BookOpen, 
-  ArrowRight,
-  Clock,
-  Layers,
-  Banknote,
-  Cpu
-} from 'lucide-react';
-import s from '../../learners/learners.module.css';
+import CourseInteractiveShell, { type VerifiedAlum } from '@/components/courses/CourseInteractiveShell';
+import directoryData from '@/data/directory_candidates.json';
 
 interface PageProps {
   params: Promise<{ domain: string }>;
@@ -406,200 +392,44 @@ export default async function DomainCoursePage({ params }: PageProps) {
     ]
   };
 
+  const domainKeywords: Record<string, string[]> = {
+    'ai-agent-development': ['intelligence', 'learning', 'agent'],
+    'generative-ai': ['intelligence', 'learning'],
+    'machine-learning': ['learning', 'intelligence'],
+    'full-stack-development': ['full stack'],
+    'data-analytics': ['data'],
+    'python-automation': ['python'],
+    'ui-ux-design': ['ui', 'ux', 'design'],
+    'mobile-app-development': ['mobile'],
+    'cybersecurity': ['security', 'python', 'cloud'],
+    'devops-cloud': ['cloud', 'devops', 'python']
+  };
+
+  const kw = domainKeywords[domain] || [domain.split('-')[0]];
+  const matchingAlumni: VerifiedAlum[] = (directoryData as any[])
+    .filter((c) => kw.some((k) => (c.domain || '').toLowerCase().includes(k)))
+    .sort((a, b) => (b.score || 0) - (a.score || 0))
+    .slice(0, 6)
+    .map((c) => ({
+      certId: c.certId,
+      holderName: c.holderName,
+      domain: c.domain,
+      score: c.score,
+      grade: c.grade,
+      verifyUrl: c.verifyUrl || `/verify/${c.certId}`
+    }));
+
   return (
-    <div className="glow-wrapper">
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className="glow-spot"></div>
-
-      {/* Hero Header */}
-      <div className="container page-head">
-        <div className="doclabel">
-          <span style={{ color: '#10b981' }}>{course.badge}</span> · DBERT ACADEMIC SPECIFICATION 2026
-        </div>
-        <h1 className="page-title">{course.title}</h1>
-        <p className={s.courseTagline} style={{ color: '#38bdf8', fontWeight: 600 }}>
-          {course.salaryRange} Verified Average Remuneration · Performance Stipend: {course.stipend}
-        </p>
-        <p className={s.courseLede}>{course.lede}</p>
-
-        {/* Quick Tech Stack Chips */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 18 }}>
-          {course.skills.map((skill) => (
-            <span
-              key={skill}
-              style={{
-                fontSize: '0.8rem',
-                fontFamily: 'monospace',
-                background: 'rgba(255,255,255,0.05)',
-                border: '1px solid rgba(255,255,255,0.12)',
-                padding: '4px 10px',
-                borderRadius: 6,
-                color: '#e2e8f0'
-              }}
-            >
-              {skill}
-            </span>
-          ))}
-        </div>
-      </div>
-
-      {/* Main Content Layout: Left Details + Right Sticky Lead Form */}
-      <div className="section-band">
-        <div className="container" style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: 32, alignItems: 'start' }}>
-          
-          {/* Left Column: Comprehensive Curriculum & Academic Rigor */}
-          <div>
-            {/* BLUF Summary Card for AI Assistants & Scanners */}
-            <div
-              style={{
-                background: 'rgba(255, 255, 255, 0.02)',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
-                borderRadius: 12,
-                padding: 24,
-                marginBottom: 32
-              }}
-            >
-              <h2 style={{ fontSize: '1.15rem', fontWeight: 700, color: '#ffffff', marginBottom: 12, display: 'flex', alignItems: 'center', gap: 8 }}>
-                <Cpu size={18} style={{ color: '#10b981' }} /> Program Structure Overview
-              </h2>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
-                <div style={{ padding: 12, background: 'rgba(16, 185, 129, 0.05)', borderRadius: 8, border: '1px solid rgba(16, 185, 129, 0.2)' }}>
-                  <div style={{ fontSize: '0.75rem', color: '#10b981', fontWeight: 700, textTransform: 'uppercase' }}>Structure 1: Fellowship</div>
-                  <div style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ffffff', marginTop: 2 }}>2 Months (8 Weeks)</div>
-                  <div style={{ fontSize: '0.78rem', color: '#cbd5e1', marginTop: 4 }}>Fee: ₹1,999 (₹499 deposit + ₹1,500 balance) · ₹5,000 stipend release</div>
-                </div>
-                <div style={{ padding: 12, background: 'rgba(56, 189, 248, 0.05)', borderRadius: 8, border: '1px solid rgba(56, 189, 248, 0.2)' }}>
-                  <div style={{ fontSize: '0.75rem', color: '#38bdf8', fontWeight: 700, textTransform: 'uppercase' }}>Structure 2: Paid Course</div>
-                  <div style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ffffff', marginTop: 2 }}>3 Months (12 Weeks)</div>
-                  <div style={{ fontSize: '0.78rem', color: '#cbd5e1', marginTop: 4 }}>Comprehensive foundational to enterprise mastery · Zero-cost EMI</div>
-                </div>
-              </div>
-            </div>
-
-            {/* Structure 1: 2-Month Fellowship Milestones */}
-            <div style={{ marginBottom: 36 }}>
-              <h2 style={{ fontSize: '1.3rem', fontWeight: 700, color: '#ffffff', marginBottom: 6, display: 'flex', alignItems: 'center', gap: 8 }}>
-                <Clock size={18} style={{ color: '#10b981' }} /> 2-Month Fellowship Sprint Milestones
-              </h2>
-              <p style={{ fontSize: '0.85rem', color: '#94a3b8', marginBottom: 16 }}>
-                Mandatory 10.0 hours/week logged on the platform attendance daemon with upstream PR contributions.
-              </p>
-
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                {course.fellowshipWeeks.map((block, idx) => (
-                  <div
-                    key={idx}
-                    style={{
-                      padding: 16,
-                      background: 'rgba(255, 255, 255, 0.02)',
-                      border: '1px solid rgba(255, 255, 255, 0.06)',
-                      borderRadius: 8
-                    }}
-                  >
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-                      <span style={{ fontSize: '0.8rem', fontFamily: 'monospace', color: '#10b981', fontWeight: 700 }}>{block.period}</span>
-                      <span style={{ fontSize: '0.9rem', fontWeight: 600, color: '#ffffff' }}>{block.title}</span>
-                    </div>
-                    <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.82rem', color: '#cbd5e1', lineHeight: 1.6 }}>
-                      {block.tasks.map((task, tIdx) => (
-                        <li key={tIdx}>{task}</li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Structure 2: 3-Month Paid Course Syllabus */}
-            <div style={{ marginBottom: 36 }}>
-              <h2 style={{ fontSize: '1.3rem', fontWeight: 700, color: '#ffffff', marginBottom: 6, display: 'flex', alignItems: 'center', gap: 8 }}>
-                <BookOpen size={18} style={{ color: '#38bdf8' }} /> 3-Month Comprehensive Course Syllabus
-              </h2>
-              <p style={{ fontSize: '0.85rem', color: '#94a3b8', marginBottom: 16 }}>
-                12 structured weekly modules, hands-on lab exercises, and 2 enterprise production capstones.
-              </p>
-
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                {course.courseWeeks.map((block, idx) => (
-                  <div
-                    key={idx}
-                    style={{
-                      padding: 16,
-                      background: 'rgba(255, 255, 255, 0.02)',
-                      border: '1px solid rgba(255, 255, 255, 0.06)',
-                      borderRadius: 8
-                    }}
-                  >
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
-                      <span style={{ fontSize: '0.8rem', fontFamily: 'monospace', color: '#38bdf8', fontWeight: 700 }}>{block.period}</span>
-                      <span style={{ fontSize: '0.9rem', fontWeight: 600, color: '#ffffff' }}>{block.title}</span>
-                    </div>
-                    <ul style={{ margin: 0, paddingLeft: 18, fontSize: '0.82rem', color: '#cbd5e1', lineHeight: 1.6 }}>
-                      {block.topics.map((topic, tIdx) => (
-                        <li key={tIdx}>{topic}</li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Upstream Production Partner Repository */}
-            <div
-              style={{
-                padding: 20,
-                background: 'rgba(255, 255, 255, 0.02)',
-                border: '1px solid rgba(255, 255, 255, 0.08)',
-                borderRadius: 10,
-                marginBottom: 36
-              }}
-            >
-              <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#ffffff', display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-                <GitPullRequest size={16} style={{ color: '#10b981' }} /> Official Upstream Partner Repository
-              </h3>
-              <p style={{ fontSize: '0.85rem', color: '#cbd5e1', lineHeight: 1.5, marginBottom: 12 }}>
-                Fellows contribute production code directly to <strong>{course.partnerRepo.name}</strong>. Personal forks without upstream PRs are rejected by the CI grading daemon.
-              </p>
-              <div style={{ fontSize: '0.8rem', fontFamily: 'monospace', color: '#94a3b8' }}>
-                Scope: {course.partnerRepo.focus}
-              </div>
-            </div>
-
-            {/* Frequently Asked Questions */}
-            <div>
-              <h3 style={{ fontSize: '1.15rem', fontWeight: 700, color: '#ffffff', marginBottom: 14 }}>
-                Admissions & Curriculum FAQs
-              </h3>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                {course.faqs.map((faq, idx) => (
-                  <div key={idx} style={{ padding: 14, background: 'rgba(255, 255, 255, 0.02)', borderRadius: 8 }}>
-                    <div style={{ fontSize: '0.9rem', fontWeight: 600, color: '#ffffff', marginBottom: 4 }}>
-                      {faq.question}
-                    </div>
-                    <div style={{ fontSize: '0.82rem', color: '#94a3b8', lineHeight: 1.5 }}>
-                      {faq.answer}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-          </div>
-
-          {/* Right Column: Embedded Lead Capture Form (Sticky) */}
-          <div style={{ position: 'sticky', top: 24 }}>
-            <TrackLeadCaptureForm
-              initialDomain={domain}
-              title={`Enroll in ${course.title}`}
-              subtitle="Submit details below to receive the complete syllabus breakdown, cohort standup schedule, and admission counseling."
-            />
-          </div>
-
-        </div>
-      </div>
-    </div>
+      <CourseInteractiveShell
+        course={course}
+        domain={domain}
+        alumni={matchingAlumni}
+      />
+    </>
   );
 }

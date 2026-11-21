@@ -186,8 +186,8 @@ export default async function InternshipSlugDispatcher({ params }: PageProps) {
           )}
         </div>
 
-        {/* 2-Column Split: Detailed Info + Lead Capture Form */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: 40, alignItems: 'start' }}>
+        {/* Responsive 2-Column Split: Detailed Info + Lead Capture Form */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 340px), 1fr))', gap: 36, alignItems: 'start' }}>
           
           {/* Left Column: Curricular & Sprint Details */}
           <div>

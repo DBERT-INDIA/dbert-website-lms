@@ -148,7 +148,7 @@ export default function TrackLeadCaptureForm({
               href={`/enroll/1999?email=${encodeURIComponent(formData.email)}&domain=${encodeURIComponent(formData.domain)}`}
               className={s.fastTrackLink}
             >
-              Already paid ₹499 caution deposit? Complete ₹1,500 balance →
+              Direct Program Seat Confirmation (₹1,999) →
             </Link>
           </div>
         </div>
@@ -290,7 +290,7 @@ export default function TrackLeadCaptureForm({
           href={`/enroll/1999?domain=${encodeURIComponent(formData.domain)}`}
           className={s.fastTrackLink}
         >
-          <Zap size={13} style={{ color: '#10b981' }} /> Direct Incubation Balance Checkout (₹1,500) →
+          <Zap size={13} style={{ color: '#f59e0b' }} /> Direct Fellowship Seat Confirmation (₹1,999) →
         </Link>
       </form>
     </div>

@@ -188,7 +188,7 @@ def main():
         ("https://lms.dbert.in/sitemap.xml", ["<?xml", "https://lms.dbert.in/"]),
         
         # 2. Dynamic Course Pages (All 9 Domains)
-        ("https://dbert.in/courses/ai-agent-development", ["AI Agent & Multi-Agent Systems Engineering", "Structure 1: Fellowship", "Structure 2: Paid Course"]),
+        ("https://dbert.in/courses/ai-agent-development", ["AI Agent & Multi-Agent Systems Engineering", "Structure 1: 2-Month Fellowship", "Structure 2: 3-Month Comprehensive Course"]),
         ("https://dbert.in/courses/full-stack-development", ["Full Stack Web & AI Systems Engineering", "Next.js 16", "2-Month Fellowship"]),
         ("https://dbert.in/courses/data-analytics", ["Data Analytics & Automated Corporate BI", "Power BI", "SQL"]),
         ("https://dbert.in/courses/cybersecurity", ["Cybersecurity & Threat Defense Engineering", "OWASP Top 10", "Burp Suite"]),
@@ -209,7 +209,7 @@ def main():
         ("https://dbert.in/verify/directory/ai-agent-development", ["Pre-Vetted AI Agent Developers", "LangGraph"]),
 
         # 5. Core Incubation, Verification Gates & Intelligence Report
-        ("https://dbert.in/enroll/1999", ["1,999", "1,500"]),
+        ("https://dbert.in/enroll/1999", ["1,999"]),
         ("https://dbert.in/verify/directory", ["Pre-Vetted Software & AI Engineers"]),
         ("https://dbert.in/dbert-online", ["dbert.in"]),
         ("https://dbert.in/reports/growth-intelligence-2026.html", ["DBERT Growth & Marketing Intelligence Audit", "2,834", "10,759"])

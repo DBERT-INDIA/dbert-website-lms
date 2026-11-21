@@ -223,3 +223,32 @@
 .whatsappCta:hover {
   background: #20ba59;
 }
+
+/* ── Mobile Viewport Hardening (iOS Safari 16px auto-zoom fix & 48px touch targets) ── */
+@media (max-width: 768px) {
+  .leadCard {
+    padding: 18px 14px;
+    border-radius: 10px;
+  }
+
+  .input, .select {
+    font-size: 16px !important; /* Critical: stops iOS Safari auto-zoom */
+    min-height: 48px;
+    padding: 12px 14px;
+  }
+
+  .submitBtn {
+    min-height: 48px;
+    font-size: 0.95rem;
+  }
+
+  .radioGroup {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .radioLabel {
+    min-height: 44px;
+    padding: 8px 12px;
+  }
+}
