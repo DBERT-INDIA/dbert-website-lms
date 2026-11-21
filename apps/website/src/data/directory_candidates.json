@@ -1412,7 +1412,11 @@
     "status": "VERIFIED",
     "firstLetter": "D",
     "verifyUrl": "/verify/CERT-DBERT-2026-DA-005",
-    "verified": true
+    "verified": true,
+    "name": "Danisaram Anji",
+    "email": "anjidanisaram@gmail.com",
+    "college": "Balaji institute of technology and science warangal",
+    "previewUrl": "/certificates/previews/CERT-DBERT-2026-DA-005.png"
   },
   {
     "certId": "CERT-DBERT-2026-DA-172",
@@ -2352,7 +2356,11 @@
     "status": "VERIFIED",
     "firstLetter": "J",
     "verifyUrl": "/verify/CERT-DBERT-2026-FSD-051",
-    "verified": true
+    "verified": true,
+    "name": "Jay Kumar",
+    "email": "jk316875@gmail.com",
+    "college": "Excel Engineering College",
+    "previewUrl": "/certificates/previews/CERT-DBERT-2026-FSD-051.png"
   },
   {
     "certId": "CERT-DBERT-2026-FSD-112",
@@ -3598,7 +3606,11 @@
     "status": "VERIFIED",
     "firstLetter": "N",
     "verifyUrl": "/verify/CERT-DBERT-2026-DA-044",
-    "verified": true
+    "verified": true,
+    "name": "Nishant Makwane",
+    "email": "nishantmakwane04@gmail.com",
+    "college": "Asha M Tarsadiya Institute of computer science and technology",
+    "previewUrl": "/certificates/previews/CERT-DBERT-2026-DA-044.png"
   },
   {
     "certId": "CERT-DBERT-2026-DA-128",
@@ -6658,5 +6670,23 @@
     "firstLetter": "H",
     "previewUrl": "/certificates/previews/CERT-DBERT-2026-FSD-342.png",
     "verifyUrl": "/verify/CERT-DBERT-2026-FSD-342"
+  },
+  {
+    "certId": "CERT-DBERT-2026-FSD-343",
+    "internId": "DBERT-2026-INT-3326",
+    "name": "Maroju Prince Karthik",
+    "holderName": "Maroju Prince Karthik",
+    "email": "marojuprincekarthik2007@gmail.com",
+    "college": "Visvesvaraya National Institute of Technology, Nagpur",
+    "domain": "Full Stack Web Development",
+    "duration": "15 July 2026 – 15 September 2026 (2 Months)",
+    "score": 86,
+    "grade": "Grade: A (Very Good Performance)",
+    "isProvisional": false,
+    "status": "VERIFIED",
+    "verified": true,
+    "firstLetter": "M",
+    "previewUrl": "/certificates/previews/CERT-DBERT-2026-FSD-343.png",
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-343"
   }
 ]

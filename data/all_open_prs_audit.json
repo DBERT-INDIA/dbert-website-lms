@@ -1,0 +1,364 @@
+[
+  {
+    "repo": "Alkameinc/alkame-nifty-50-educational",
+    "number": 34,
+    "title": "Add data analysis notebooks and supporting scripts",
+    "author": "nehachoudhary08",
+    "created_at": "2026-11-16T10:22:16Z",
+    "updated_at": "2026-11-21T16:52:30Z",
+    "url": "https://github.com/Alkameinc/alkame-nifty-50-educational/pull/34",
+    "body": "## Description\nThis PR adds data analysis notebooks and supporting Python scripts for the Alkame Nifty 50 project.\n\n## Type of change\n\n- Added Calibration Reliability Analysis notebook.\n\n- Added Backtest Sector Comparison notebook.\n\n- Added Event Impact Study notebook.\n\n- Added db_utils.py for database utilities.\n\n- Added seed_sample_data.py for sample data generation.\n## Verification\n\n- Successfully executed `runtime_validator.py` self-tests.\n- Successfully executed `ensemble_manager.py` self-test.\n- Validated calibration reliability and confidence scoring.\n- Tested positive-edge and no-edge detection scenarios.\n- Verified combined calibration and edge validation logic.\n- Confirmed insufficient-data handling for prediction records.\n- No test failures were reported in the executed self-tests.\n\n\n",
+    "head": "neha-choudhary",
+    "base": "main",
+    "files": [
+      {
+        "filename": "data_analyst/db_utils.py",
+        "status": "modified",
+        "additions": 2,
+        "deletions": 1,
+        "changes": 3,
+        "patch": "@@ -3,7 +3,7 @@\n way, and so switching from sample data to the real live database is a\n one-line change in each notebook, not a copy-pasted block re-written three times.\n \"\"\"\n-\n+ main\n import sqlite3\n import sys\n from pathlib import Path\n@@ -12,6 +12,7 @@\n \n # Make the repo root importable (this file lives one folder below it)\n sys.path.insert(0, str(Path(__file__).resolve().parent.parent))\n+from config import DB_PATH  # noqa: E402 — the REAL live database path, from config.py\n \n SAMPLE_DB_PATH = Path(__file__).resolve().parent / \"sample_history.sqlite3\"\n "
+      },
+      {
+        "filename": "data_analyst/notebooks/01_calibration_reliability.ipynb",
+        "status": "modified",
+        "additions": 8,
+        "deletions": 9,
+        "changes": 17,
+        "patch": ""
+      },
+      {
+        "filename": "data_analyst/notebooks/02_backtest_sector_comparison.ipynb",
+        "status": "modified",
+        "additions": 16,
+        "deletions": 16,
+        "changes": 32,
+        "patch": ""
+      },
+      {
+        "filename": "data_analyst/notebooks/03_event_impact_study.ipynb",
+        "status": "modified",
+        "additions": 291,
+        "deletions": 28,
+        "changes": 319,
+        "patch": "@@ -2,7 +2,7 @@\n  \"cells\": [\n   {\n    \"cell_type\": \"markdown\",\n-   \"id\": \"09ca5246-f4cf-4d79-bb2d-dd5d8e5d9d69\",\n+   \"id\": \"34bae4db\",\n    \"metadata\": {},\n    \"source\": [\n     \"# Event Impact Study — Alkame-Nifty50\\n\",\n@@ -54,31 +54,42 @@\n   },\n   {\n    \"cell_type\": \"code\",\n-   \"execution_count\": 3,\n-   \"id\": \"a6f8600b-656b-4bea-bd9d-0d6d30330b52\",\n+   \"execution_count\": 6,\n+   \"id\": \"ac28d0c8\",\n+   \"metadata\": {},\n+   \"outputs\": [],\n+   \"source\": [\n+    \"import pandas as pd\\n\",\n+    \"import numpy as np\"\n+   ]\n+  },\n+  {\n+   \"cell_type\": \"code\",\n+   \"execution_count\": 10,\n+   \"id\": \"b90eecfa\",\n    \"metadata\": {},\n    \"outputs\": [\n     {\n      \"name\": \"stdout\",\n      \"output_type\": \"stream\",\n      \"text\": [\n-      \"  RELIANCE: 20 events with a resolvable forward return\\n\",\n-      \"  HDFCBANK: 20 events with a resolvable forward return\\n\",\n-      \"  ICICIBANK: 20 events with a resolvable forward return\\n\",\n-      \"  INFY: 20 events with a resolvable forward return\\n\",\n-      \"  TCS: 20 e"
+      },
+      {
+        "filename": "data_analyst/seed_sample_data.py",
+        "status": "modified",
+        "additions": 5,
+        "deletions": 2,
+        "changes": 7,
+        "patch": "@@ -5,7 +5,8 @@\n (data_analyst/sample_history.sqlite3) — this never touches or modifies the\n real db/predictor.sqlite3 that the live engine uses.\n \n-Run once with: python data_analyst/seed_sample_data.py\n+Run once with:\n+python data_analyst/seed_sample_data.py\n \"\"\"\n \n import sys\n@@ -62,7 +63,9 @@ def _simulate_symbol_history(symbol: str, n_predictions: int, rng: np.random.Gen\n         # which is exactly what makes miscalibration visible in the reliability diagram\n         # for low-skill sectors (confidence and real accuracy diverge).\n         is_correct = rng.uniform(0, 1) < skill\n-        actual_class = predicted_class if is_correct else rng.choice([c for c in CLASSES if c != predicted_class])\n+        actual_class = predicted_class if is_correct else rng.choice(\n+            [c for c in CLASSES if c != predicted_class]\n+        )\n \n         action = {\"UP\": \"BUY\", \"DOWN\": \"SELL\", \"FLAT\": \"HOLD\"}[predicted_class]\n "
+      }
+    ]
+  },
+  {
+    "repo": "Gayatri-Education/Gayatri-Demo",
+    "number": 19,
+    "title": "Add constraints section to CONSTRAINTS.md",
+    "author": "shanusrigowtham17-del",
+    "created_at": "2026-11-21T14:19:00Z",
+    "updated_at": "2026-11-21T16:52:32Z",
+    "url": "https://github.com/Gayatri-Education/Gayatri-Demo/pull/19",
+    "body": "Added a constraints section outlining ideas and analysis for the model.",
+    "head": "patch-2",
+    "base": "main",
+    "files": [
+      {
+        "filename": "DEBERT_NEET/CONSTRAINTS.md",
+        "status": "added",
+        "additions": 5,
+        "deletions": 0,
+        "changes": 5,
+        "patch": "@@ -0,0 +1,5 @@\n+This constraint section is put all your ideas, problems, things which need to be included in the model.\n+S.no|| statement || Name\n+1.  || We could analyse the difficulty trends and repetition pattern.\n+       Giving the priority for these concepts might help in predicting accurate questions. || Gowtham\n+2.  || Questions from important topics that haven't come in previous 2-3 years are more likely to come next               year.|| Arijit."
+      },
+      {
+        "filename": "DEBERT_NEET/Gayatri AI Question Generation Pipeline.png",
+        "status": "added",
+        "additions": 0,
+        "deletions": 0,
+        "changes": 0,
+        "patch": ""
+      },
+      {
+        "filename": "DEBERT_NEET/neet_ques.py",
+        "status": "added",
+        "additions": 36,
+        "deletions": 0,
+        "changes": 36,
+        "patch": "@@ -0,0 +1,36 @@\n+import pandas as pd\n+import matplotlib.pyplot as plt\n+data_files=[\"C:\\\\projects\\\\neet pyqs\\\\dbert\\\\neet_pyqs_csv\\\\aiims_2013_questions.csv\",\n+            \"C:\\\\projects\\\\neet pyqs\\\\dbert\\\\neet_pyqs_csv\\\\AIPMT_2014_Questions.csv\",\n+            \"C:\\\\projects\\\\neet pyqs\\\\dbert\\\\neet_pyqs_csv\\\\NEET_AIPMT_2015_Code_A_dataset_final.csv\",\n+            \"C:\\\\projects\\\\neet pyqs\\\\dbert\\\\neet_pyqs_csv\\\\NEET_2016_Phase_1_Code_APW_dataset.csv\",\n+            \"C:\\\\projects\\\\neet pyqs\\\\dbert\\\\neet_pyqs_csv\\\\NEET_2017_Code_A_dataset.csv\",\n+            \"C:\\\\projects\\\\neet pyqs\\\\dbert\\\\neet_pyqs_csv\\\\NEET_2018_Code_AA_dataset.csv\",\n+            \"C:\\\\projects\\\\neet pyqs\\\\dbert\\\\neet_pyqs_csv\\\\NEET_2019_Code_P1_dataset.csv\",\n+            \"C:\\\\projects\\\\neet pyqs\\\\dbert\\\\neet_pyqs_csv\\\\NEET_2020_Code_E1_dataset.csv\",\n+            \"C:\\\\projects\\\\neet pyqs\\\\dbert\\\\neet_pyqs_csv\\\\NEET_2021_Code_M1_dataset.csv\",\n+            \"C:\\\\projects\\\\neet pyqs\\\\dbert\\\\neet_pyqs_csv\\\\neet_2022_q1_dataset_b"
+      },
+      {
+        "filename": "DEBERT_NEET/question_generator.py.rtf",
+        "status": "added",
+        "additions": 178,
+        "deletions": 0,
+        "changes": 178,
+        "patch": "@@ -0,0 +1,178 @@\n+{\\rtf1\\ansi\\ansicpg1252\\cocoartf2870\n+\\cocoatextscaling0\\cocoaplatform0{\\fonttbl\\f0\\fswiss\\fcharset0 Helvetica;}\n+{\\colortbl;\\red255\\green255\\blue255;}\n+{\\*\\expandedcolortbl;;}\n+\\paperw11900\\paperh16840\\margl1440\\margr1440\\vieww11520\\viewh8400\\viewkind0\n+\\pard\\tx720\\tx1440\\tx2160\\tx2880\\tx3600\\tx4320\\tx5040\\tx5760\\tx6480\\tx7200\\tx7920\\tx8640\\pardirnatural\\partightenfactor0\n+\n+\\f0\\fs24 \\cf0 import json\\\n+import logging\\\n+from pathlib import Path\\\n+from typing import Dict, List, Optional\\\n+\\\n+from exam_pipeline import (\\\n+    TopicPriorityModel,\\\n+    QuestionValidator,\\\n+    run_pipeline,\\\n+    make_lm_studio_client,\\\n+)\\\n+\\\n+logging.basicConfig(level=logging.INFO, format=\"%(levelname)s: %(message)s\")\\\n+log = logging.getLogger(\"generator\")\\\n+\\\n+class GroundedQuestionGenerator:\\\n+    def __init__(\\\n+        self,\\\n+        bank_path: str = \"data/Question_Bank/processed/questions.json\",\\\n+        syllabus_dir: str = \"data/syllabus\",\\\n+        lm_url: str = \"http://local"
+      },
+      {
+        "filename": "DEBERT_NEET/validator.py",
+        "status": "added",
+        "additions": 694,
+        "deletions": 0,
+        "changes": 694,
+        "patch": "@@ -0,0 +1,694 @@\n+from __future__ import annotations\n+\n+import argparse\n+import json\n+import logging\n+import re\n+import sys\n+from dataclasses import dataclass, field\n+from pathlib import Path\n+from typing import Callable, Dict, Iterable, List, Literal, Optional, Tuple\n+\n+import numpy as np\n+from pydantic import BaseModel, ConfigDict, Field, ValidationError, field_validator\n+\n+try:\n+    from sentence_transformers import SentenceTransformer\n+except ImportError:\n+    SentenceTransformer = None\n+\n+log = logging.getLogger(\"exam_pipeline\")\n+\n+LEVELS = (\"Easy\", \"Medium\", \"Hard\")\n+_DIFF_SCORE = {\"Easy\": 1.0, \"Medium\": 2.0, \"Hard\": 3.0}\n+TopicKey = Tuple[str, str]\n+\n+@dataclass(frozen=True)\n+class Constraint:\n+    sno: int\n+    statement: str\n+    name: str\n+    implemented_in: str\n+\n+CONSTRAINTS: List[Constraint] = [\n+    Constraint(\n+        1,\n+        \"We could analyse the difficulty trends and repetition pattern. Giving the priority for these concepts might help in predicting accurate que"
+      }
+    ]
+  },
+  {
+    "repo": "Gayatri-Education/Gayatri-AI",
+    "number": 10,
+    "title": "Build NEET exam portal with uploaded question bank and timed practice",
+    "author": "sakthi220107-cmyk",
+    "created_at": "2026-11-10T14:12:16Z",
+    "updated_at": "2026-11-21T16:52:35Z",
+    "url": "https://github.com/Gayatri-Education/Gayatri-AI/pull/10",
+    "body": "",
+    "head": "feat/neet-exam-portal",
+    "base": "main",
+    "files": [
+      {
+        "filename": ".dockerignore",
+        "status": "added",
+        "additions": 10,
+        "deletions": 0,
+        "changes": 10,
+        "patch": "@@ -0,0 +1,10 @@\n+.git\n+.venv\n+var\n+.env\n+legacy\n+frontend/node_modules\n+frontend/dist\n+frontend/test-results\n+**/__pycache__\n+.pytest_cache"
+      },
+      {
+        "filename": ".env.example",
+        "status": "added",
+        "additions": 9,
+        "deletions": 0,
+        "changes": 9,
+        "patch": "@@ -0,0 +1,9 @@\n+# Production: generate a unique value, e.g. python -c 'import secrets; print(secrets.token_hex(32))'\n+PORTAL_SECRET=\n+# Set true only when the browser uses HTTPS. Local HTTP development uses false.\n+COOKIE_SECURE=false\n+# Optional PostgreSQL URL requires installing psycopg separately; pilot defaults to SQLite.\n+# DATABASE_URL=sqlite:///./var/portal.db\n+# LM Studio gap-fill is deferred until a reviewed syllabus and reachable server are supplied.\n+# LM_STUDIO_URL=http://127.0.0.1:1234/v1\n+# LM_STUDIO_MODEL="
+      },
+      {
+        "filename": ".gitattributes",
+        "status": "added",
+        "additions": 3,
+        "deletions": 0,
+        "changes": 3,
+        "patch": "@@ -0,0 +1,3 @@\n+# Preserve supplied CSV bytes, CRLF records and cell whitespace: metadata hashes\n+# depend on the exact question text. Source extraction data is not code formatting.\n+data/question_bank/neet/*.csv -text -whitespace"
+      },
+      {
+        "filename": ".github/workflows/portal.yml",
+        "status": "added",
+        "additions": 46,
+        "deletions": 0,
+        "changes": 46,
+        "patch": "@@ -0,0 +1,46 @@\n+name: Exam portal checks\n+on:\n+  push:\n+  pull_request:\n+jobs:\n+  validate:\n+    runs-on: ubuntu-latest\n+    steps:\n+      - uses: actions/checkout@v4\n+      - uses: actions/setup-python@v5\n+        with:\n+          python-version: '3.12'\n+          cache: pip\n+      - uses: actions/setup-node@v4\n+        with:\n+          node-version: '22'\n+          cache: npm\n+          cache-dependency-path: frontend/package-lock.json\n+      - run: pip install -r requirements-dev.txt\n+      - run: python -m pytest\n+      - run: npm ci\n+        working-directory: frontend\n+      - run: npm audit --audit-level=high\n+        working-directory: frontend\n+      - run: npm run build\n+        working-directory: frontend\n+      - run: npx playwright install --with-deps chromium\n+        working-directory: frontend\n+      - name: Start seeded portal and test browser workflow\n+        shell: bash\n+        run: |\n+          export PORTAL_STATE_DIR=/tmp/gayatri-portal-ci-state\n+          expo"
+      },
+      {
+        "filename": ".gitignore",
+        "status": "added",
+        "additions": 16,
+        "deletions": 0,
+        "changes": 16,
+        "patch": "@@ -0,0 +1,16 @@\n+.env\n+.venv/\n+__pycache__/\n+*.py[cod]\n+.pytest_cache/\n+.coverage\n+htmlcov/\n+node_modules/\n+frontend/dist/\n+var/\n+*.db\n+*.db-shm\n+*.db-wal\n+*.log\n+frontend/test-results/\n+frontend/playwright-report/"
+      },
+      {
+        "filename": "Dockerfile",
+        "status": "added",
+        "additions": 20,
+        "deletions": 0,
+        "changes": 20,
+        "patch": "@@ -0,0 +1,20 @@\n+FROM node:22-bookworm-slim AS frontend\n+WORKDIR /frontend\n+COPY frontend/package*.json ./\n+RUN npm ci\n+COPY frontend/ ./\n+RUN npm run build\n+\n+FROM python:3.12-slim\n+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1\n+WORKDIR /app\n+COPY requirements.txt ./\n+RUN pip install --no-cache-dir -r requirements.txt\n+COPY backend/ backend/\n+COPY scripts/ scripts/\n+COPY data/ data/\n+COPY --from=frontend /frontend/dist/ frontend/dist/\n+RUN useradd --uid 10001 --create-home portal && mkdir var && chown portal:portal var && chmod -R a+rX data\n+USER portal\n+EXPOSE 8000\n+CMD [\"sh\", \"-c\", \"python -m scripts.seed_db && uvicorn backend.main:app --host 0.0.0.0 --port 8000\"]"
+      },
+      {
+        "filename": "README.md",
+        "status": "modified",
+        "additions": 30,
+        "deletions": 130,
+        "changes": 160,
+        "patch": "@@ -1,149 +1,49 @@\n-# 🤖 Gayatri AI\n+# Gayatri Exam Portal\n \n-> A powerful, privacy-first desktop AI assistant built with [Flet](https://flet.dev/) and powered by local LLMs via [LM Studio](https://lmstudio.ai/).\n+A NEET practice portal built from the supplied [15-day conversion plan](docs/Gayatri_Exam_Portal_15Day_Plan.pdf), with FastAPI, SQLAlchemy, SQLite, and React/Vite/Tailwind. This first implementation replaces the desktop entry point with a multi-user web workflow. The original Flet application remains in `legacy/desktop/` for reference; its committed chat database has been removed from the current tree, with a local backup outside the repository.\n \n----\n+## What works\n \n-## 🎓 Built Under the DBert Internship Program\n+- Student registration and sign-in using password hashing and HttpOnly JWT cookies.\n+- A validated bank of **2,240 NEET questions**, covering supplied papers labelled 2015–2026, with **2,240 original source images**. The importer checks row hashes, subjects, years "
+      },
+      {
+        "filename": "backend/__init__.py",
+        "status": "added",
+        "additions": 0,
+        "deletions": 0,
+        "changes": 0,
+        "patch": ""
+      },
+      {
+        "filename": "backend/auth.py",
+        "status": "added",
+        "additions": 77,
+        "deletions": 0,
+        "changes": 77,
+        "patch": "@@ -0,0 +1,77 @@\n+import hashlib\n+import hmac\n+import secrets\n+import time\n+import jwt\n+from fastapi import Depends, HTTPException, Request\n+from sqlalchemy import select\n+from backend.config import signing_key, COOKIE_SECURE\n+from backend.database import get_db\n+from backend.models import User\n+\n+KEY = signing_key()\n+COOKIE_NAME = \"gayatri_session\"\n+\n+\n+def password_hash(password):\n+    salt = secrets.token_hex(16)\n+    digest = hashlib.pbkdf2_hmac(\n+        \"sha256\", password.encode(), salt.encode(), 600_000\n+    ).hex()\n+    return f\"pbkdf2_sha256${salt}${digest}\"\n+\n+\n+def verify_password(password, stored):\n+    try:\n+        _, salt, digest = stored.split(\"$\")\n+        actual = hashlib.pbkdf2_hmac(\n+            \"sha256\", password.encode(), salt.encode(), 600_000\n+        ).hex()\n+        return hmac.compare_digest(digest, actual)\n+    except ValueError:\n+        return False\n+\n+\n+# Equal work for unknown accounts avoids the obvious account timing oracle.\n+DUMMY_HASH = password_hash"
+      },
+      {
+        "filename": "backend/config.py",
+        "status": "added",
+        "additions": 32,
+        "deletions": 0,
+        "changes": 32,
+        "patch": "@@ -0,0 +1,32 @@\n+import os\n+from pathlib import Path\n+\n+ROOT = Path(__file__).resolve().parents[1]\n+DATA_DIR = ROOT / \"data\"\n+STATE_DIR = Path(os.getenv(\"PORTAL_STATE_DIR\", ROOT / \"var\"))\n+DATABASE_URL = os.getenv(\"DATABASE_URL\", f\"sqlite:///{STATE_DIR / 'portal.db'}\")\n+COOKIE_SECURE = os.getenv(\"COOKIE_SECURE\", \"false\").lower() == \"true\"\n+LM_STUDIO_URL = os.getenv(\"LM_STUDIO_URL\", \"http://127.0.0.1:1234/v1\")\n+LM_STUDIO_MODEL = os.getenv(\"LM_STUDIO_MODEL\", \"\")\n+\n+\n+def signing_key():\n+    configured = os.getenv(\"PORTAL_SECRET\")\n+    if configured:\n+        if len(configured) < 32:\n+            raise RuntimeError(\"PORTAL_SECRET must contain at least 32 characters\")\n+        return configured\n+    # A retained development key avoids invalidating sessions after each restart.\n+    # Production and multi-instance deployments must set PORTAL_SECRET.\n+    import secrets\n+\n+    STATE_DIR.mkdir(parents=True, exist_ok=True)\n+    key_file = STATE_DIR / \"session.key\"\n+    try:\n+        with open("
+      },
+      {
+        "filename": "backend/database.py",
+        "status": "added",
+        "additions": 29,
+        "deletions": 0,
+        "changes": 29,
+        "patch": "@@ -0,0 +1,29 @@\n+from sqlalchemy import create_engine, event\n+from sqlalchemy.orm import DeclarativeBase, sessionmaker\n+from backend.config import DATABASE_URL, STATE_DIR\n+\n+STATE_DIR.mkdir(parents=True, exist_ok=True)\n+engine = create_engine(\n+    DATABASE_URL,\n+    connect_args={\"check_same_thread\": False, \"timeout\": 30}\n+    if DATABASE_URL.startswith(\"sqlite\")\n+    else {},\n+)\n+if DATABASE_URL.startswith(\"sqlite\"):\n+\n+    @event.listens_for(engine, \"connect\")\n+    def configure_sqlite(connection, _):\n+        connection.execute(\"PRAGMA foreign_keys=ON\")\n+        connection.execute(\"PRAGMA journal_mode=WAL\")\n+\n+\n+SessionLocal = sessionmaker(bind=engine, expire_on_commit=False)\n+\n+\n+class Base(DeclarativeBase):\n+    pass\n+\n+\n+def get_db():\n+    with SessionLocal() as session:\n+        yield session"
+      },
+      {
+        "filename": "backend/ingestion/__init__.py",
+        "status": "added",
+        "additions": 0,
+        "deletions": 0,
+        "changes": 0,
+        "patch": ""
+      },
+      {
+        "filename": "backend/ingestion/answer_keys.py",
+        "status": "added",
+        "additions": 114,
+        "deletions": 0,
+        "changes": 114,
+        "patch": "@@ -0,0 +1,114 @@\n+\"\"\"Attach public-source proposals without overwriting reviewed keys.\"\"\"\n+\n+import hashlib\n+import json\n+from sqlalchemy import select\n+from backend.config import DATA_DIR\n+from backend.models import Question\n+\n+KEY_DIR = DATA_DIR / \"answer_keys\" / \"neet\"\n+\n+\n+def read_ledger(directory=KEY_DIR):\n+    document = json.loads((directory / \"answer_ledger.json\").read_text())\n+    if document.get(\"schema_version\") != 1:\n+        raise ValueError(\"Unsupported answer ledger schema\")\n+    rows = document[\"questions\"]\n+    sources = {\n+        s[\"id\"]: s\n+        for s in json.loads((directory / \"sources.json\").read_text())[\"sources\"]\n+    }\n+    seen = set()\n+    for row in rows:\n+        if row[\"question_id\"] in seen:\n+            raise ValueError(\"Duplicate question in answer ledger\")\n+        seen.add(row[\"question_id\"])\n+        choices = row[\"accepted_options\"]\n+        if len(set(choices)) != len(choices) or any(\n+            k not in \"ABCD\" or len(k) != 1 for k in choice"
+      },
+      {
+        "filename": "backend/ingestion/bulk_import.py",
+        "status": "added",
+        "additions": 148,
+        "deletions": 0,
+        "changes": 148,
+        "patch": "@@ -0,0 +1,148 @@\n+\"\"\"Validate the supplied NEET package before importing any records.\"\"\"\n+\n+import csv\n+import hashlib\n+import json\n+from pathlib import Path\n+from sqlalchemy import select\n+from backend.config import DATA_DIR\n+from backend.models import Exam, Blueprint, Question\n+\n+COLUMNS = [\n+    \"question\",\n+    \"subjects\",\n+    \"difficulty\",\n+    \"option_a\",\n+    \"option_b\",\n+    \"option_c\",\n+    \"option_d\",\n+    \"year\",\n+]\n+SUBJECTS = {\"Physics\", \"Chemistry\", \"Biology\"}\n+\n+\n+def read_csv(path):\n+    with Path(path).open(encoding=\"utf-8-sig\", newline=\"\") as f:\n+        reader = csv.DictReader(f)\n+        rows = list(reader)\n+        return reader.fieldnames, rows\n+\n+\n+def validate_package(directory, images_dir):\n+    columns, questions = read_csv(directory / \"neet_pyq.csv\")\n+    _, metadata = read_csv(directory / \"question_metadata.csv\")\n+    if columns != COLUMNS:\n+        raise ValueError(\"Question CSV has an unexpected schema\")\n+    if not questions or len(questions) != len(met"
+      },
+      {
+        "filename": "backend/main.py",
+        "status": "added",
+        "additions": 551,
+        "deletions": 0,
+        "changes": 551,
+        "patch": "@@ -0,0 +1,551 @@\n+import asyncio\n+import hashlib\n+import json\n+import logging\n+from contextlib import asynccontextmanager\n+from urllib.parse import urlsplit\n+from fastapi import FastAPI, Depends, HTTPException, Request, Response\n+from fastapi.responses import FileResponse, JSONResponse\n+from fastapi.staticfiles import StaticFiles\n+from sqlalchemy import select, func, text\n+from sqlalchemy.exc import IntegrityError, SQLAlchemyError\n+from backend import models\n+from backend.config import ROOT, DATA_DIR\n+from backend.database import Base, engine, SessionLocal, get_db\n+from backend.models import (\n+    User,\n+    Exam,\n+    Blueprint,\n+    Question,\n+    Paper,\n+    PaperQuestion,\n+    Attempt,\n+    Answer,\n+    Result,\n+    ReviewAudit,\n+    now,\n+)\n+from backend.auth import (\n+    current_user,\n+    admin_user,\n+    password_hash,\n+    verify_password,\n+    DUMMY_HASH,\n+    set_session,\n+    COOKIE_NAME,\n+)\n+from backend.schemas import (\n+    Register,\n+    Credentials,\n+    PaperReques"
+      },
+      {
+        "filename": "backend/models.py",
+        "status": "added",
+        "additions": 130,
+        "deletions": 0,
+        "changes": 130,
+        "patch": "@@ -0,0 +1,130 @@\n+from datetime import datetime, timezone\n+from sqlalchemy import (\n+    Column,\n+    Integer,\n+    String,\n+    Text,\n+    Float,\n+    Boolean,\n+    ForeignKey,\n+    UniqueConstraint,\n+)\n+from backend.database import Base\n+\n+\n+def now():\n+    return datetime.now(timezone.utc).timestamp()\n+\n+\n+class User(Base):\n+    __tablename__ = \"users\"\n+    id = Column(Integer, primary_key=True)\n+    name = Column(String(100), nullable=False)\n+    email = Column(String(254), unique=True, nullable=False, index=True)\n+    password_hash = Column(String(256), nullable=False)\n+    role = Column(String(20), nullable=False, default=\"student\")\n+\n+\n+class Exam(Base):\n+    __tablename__ = \"exams\"\n+    id = Column(Integer, primary_key=True)\n+    name = Column(String(100), unique=True, nullable=False)\n+    category = Column(String(50), nullable=False)\n+    description = Column(Text, nullable=False)\n+    duration_seconds = Column(Integer, nullable=False, default=1200)\n+    marks_per_question = "
+      },
+      {
+        "filename": "backend/schemas.py",
+        "status": "added",
+        "additions": 71,
+        "deletions": 0,
+        "changes": 71,
+        "patch": "@@ -0,0 +1,71 @@\n+from typing import Literal\n+from pydantic import BaseModel, Field, field_validator, model_validator\n+\n+\n+class Credentials(BaseModel):\n+    email: str = Field(min_length=3, max_length=254)\n+    password: str = Field(min_length=10, max_length=128)\n+\n+    @field_validator(\"email\")\n+    @classmethod\n+    def valid_email(cls, value):\n+        value = value.strip().lower()\n+        if (\n+            value.count(\"@\") != 1\n+            or \".\" not in value.split(\"@\")[1]\n+            or any(c.isspace() for c in value)\n+        ):\n+            raise ValueError(\"Enter a valid email address\")\n+        return value\n+\n+\n+class Register(Credentials):\n+    name: str = Field(min_length=1, max_length=100)\n+\n+    @field_validator(\"name\")\n+    @classmethod\n+    def valid_name(cls, value):\n+        if not value.strip():\n+            raise ValueError(\"Name is required\")\n+        return value.strip()\n+\n+\n+class PaperRequest(BaseModel):\n+    exam_id: int\n+    mode: Literal[\"practice\", \"mock\""
+      },
+      {
+        "filename": "backend/services/paper_builder.py",
+        "status": "added",
+        "additions": 89,
+        "deletions": 0,
+        "changes": 89,
+        "patch": "@@ -0,0 +1,89 @@\n+import json\n+import random\n+import secrets\n+from fastapi import HTTPException\n+from sqlalchemy import select\n+from backend.models import Blueprint, Question, Paper, PaperQuestion\n+from backend.ingestion.answer_keys import approved_options\n+\n+\n+def build_paper(db, exam, user_id, mode, year=None):\n+    blueprints = db.scalars(\n+        select(Blueprint).where(Blueprint.exam_id == exam.id).order_by(Blueprint.id)\n+    ).all()\n+    if not blueprints:\n+        raise HTTPException(409, \"No blueprint configured for this exam\")\n+    seed = secrets.token_hex(16)\n+    rng = random.Random(seed)\n+    selected = []\n+    shortages = []\n+    for section in blueprints:\n+        query = select(Question).where(\n+            Question.exam_id == exam.id, Question.subject == section.section\n+        )\n+        if mode == \"mock\":\n+            query = query.where(\n+                Question.approved.is_(True), Question.correct_option.is_not(None)\n+            )\n+        if year:\n+            "
+      },
+      {
+        "filename": "backend/services/scoring.py",
+        "status": "added",
+        "additions": 61,
+        "deletions": 0,
+        "changes": 61,
+        "patch": "@@ -0,0 +1,61 @@\n+import json\n+from sqlalchemy import select\n+from backend.models import Answer, PaperQuestion, Result, Paper\n+\n+\n+def finalize(db, attempt, timestamp, automatic=False):\n+    if attempt.status != \"in_progress\":\n+        return\n+    paper = db.get(Paper, attempt.paper_id)\n+    responses = {\n+        a.question_id: a.selected_option\n+        for a in db.scalars(select(Answer).where(Answer.attempt_id == attempt.id))\n+    }\n+    items = db.scalars(\n+        select(PaperQuestion).where(PaperQuestion.paper_id == paper.id)\n+    ).all()\n+    breakdown = {}\n+    raw = 0.0\n+    for item in items:\n+        q = json.loads(item.snapshot_json)\n+        bucket = breakdown.setdefault(\n+            q[\"subject\"],\n+            {\n+                \"total\": 0,\n+                \"answered\": 0,\n+                \"correct\": 0,\n+                \"incorrect\": 0,\n+                \"unanswered\": 0,\n+                \"ungraded\": 0,\n+            },\n+        )\n+        bucket[\"total\"] += 1\n+        accepte"
+      },
+      {
+        "filename": "backend/services/session_manager.py",
+        "status": "added",
+        "additions": 23,
+        "deletions": 0,
+        "changes": 23,
+        "patch": "@@ -0,0 +1,23 @@\n+from fastapi import HTTPException\n+from sqlalchemy import update\n+from backend.models import Attempt, now\n+from backend.services.scoring import finalize\n+\n+\n+def lock_attempt(db, attempt_id, user_id=None):\n+    # A database write lock serializes answer/submit/expiry on SQLite. On Postgres\n+    # the UPDATE obtains the row lock before the status/deadline is rechecked.\n+    query = update(Attempt).where(Attempt.id == attempt_id)\n+    if user_id is not None:\n+        query = query.where(Attempt.user_id == user_id)\n+    changed = db.execute(query.values(status=Attempt.status))\n+    if not changed.rowcount:\n+        raise HTTPException(404, \"Attempt not found\")\n+    attempt = db.get(Attempt, attempt_id, populate_existing=True)\n+    timestamp = now()\n+    if (\n+        attempt.status == \"in_progress\"\n+        and timestamp >= attempt.started_at + attempt.duration_seconds\n+    ):\n+        finalize(db, attempt, timestamp, automatic=True)\n+    return attempt"
+      },
+      {
+        "filename": "backend/tests/conftest.py",
+        "status": "added",
+        "additions": 79,
+        "deletions": 0,
+        "changes": 79,
+        "patch": "@@ -0,0 +1,79 @@\n+import os\n+import tempfile\n+from pathlib import Path\n+\n+TEST_STATE = tempfile.TemporaryDirectory(prefix=\"gayatri-tests-\")\n+os.environ[\"PORTAL_STATE_DIR\"] = TEST_STATE.name\n+os.environ[\"DATABASE_URL\"] = f\"sqlite:///{Path(TEST_STATE.name) / 'test.db'}\"\n+os.environ[\"PORTAL_SECRET\"] = \"test-only-session-secret-never-used-in-production-123\"\n+\n+import pytest\n+from fastapi.testclient import TestClient\n+from backend.main import app\n+from backend.database import Base, engine, SessionLocal\n+from backend.models import Exam, Blueprint, Question\n+import json\n+\n+\n+@pytest.fixture(autouse=True)\n+def clean_db():\n+    Base.metadata.drop_all(engine)\n+    Base.metadata.create_all(engine)\n+    yield\n+\n+\n+@pytest.fixture\n+def client():\n+    with TestClient(app) as c:\n+        yield c\n+\n+\n+@pytest.fixture\n+def exam():\n+    with SessionLocal() as db:\n+        exam = Exam(\n+            name=\"Test blueprint\",\n+            category=\"NEET\",\n+            description=\"Fixture only\",\n+            "
+      },
+      {
+        "filename": "backend/tests/test_answer_keys.py",
+        "status": "added",
+        "additions": 160,
+        "deletions": 0,
+        "changes": 160,
+        "patch": "@@ -0,0 +1,160 @@\n+import hashlib\n+import json\n+import shutil\n+from pathlib import Path\n+import pytest\n+from sqlalchemy import select\n+from backend.database import SessionLocal\n+from backend.config import DATA_DIR\n+from backend.models import User, Question, ReviewAudit\n+from backend.ingestion.bulk_import import import_neet\n+from backend.ingestion.answer_keys import import_answer_keys, read_ledger\n+from backend.tests.conftest import register\n+\n+KEY_DIR = DATA_DIR / \"answer_keys/neet\"\n+\n+\n+def test_complete_ledger_and_repeat_import_preserve_reviews():\n+    rows = read_ledger()\n+    assert len(rows) == 2240\n+    assert sum(r[\"status\"] == \"sourced_candidate\" for r in rows) == 947\n+    assert sum(r[\"status\"] == \"conflict\" for r in rows) == 74\n+    assert all(not r[\"published\"] for r in rows)\n+    by_id = {r[\"question_id\"]: r for r in rows}\n+    # A real wrong source key must be surfaced as a conflict, not promoted.\n+    coil = by_id[\"NEET_2024_PHYSICS_001\"]\n+    assert coil[\"status\"] == \"co"
+      },
+      {
+        "filename": "backend/tests/test_config.py",
+        "status": "added",
+        "additions": 11,
+        "deletions": 0,
+        "changes": 11,
+        "patch": "@@ -0,0 +1,11 @@\n+import stat\n+from backend import config\n+\n+\n+def test_development_session_key_survives_restart_and_is_private(tmp_path, monkeypatch):\n+    monkeypatch.delenv(\"PORTAL_SECRET\", raising=False)\n+    monkeypatch.setattr(config, \"STATE_DIR\", tmp_path)\n+    first = config.signing_key()\n+    assert len(first) == 64\n+    assert config.signing_key() == first\n+    assert stat.S_IMODE((tmp_path / \"session.key\").stat().st_mode) == 0o600"
+      },
+      {
+        "filename": "backend/tests/test_ingestion.py",
+        "status": "added",
+        "additions": 62,
+        "deletions": 0,
+        "changes": 62,
+        "patch": "@@ -0,0 +1,62 @@\n+import csv\n+import shutil\n+from pathlib import Path\n+import pytest\n+from sqlalchemy import select, func\n+from backend.config import DATA_DIR\n+from backend.database import SessionLocal\n+from backend.ingestion.bulk_import import import_neet, validate_package\n+from backend.models import Question\n+\n+\n+def test_real_dataset_import_is_complete_and_repeatable():\n+    with SessionLocal() as db:\n+        assert import_neet(db) == {\"validated\": 2240, \"inserted\": 2240, \"retained\": 0}\n+        q = db.scalar(select(Question))\n+        q.explanation = \"Keep reviewer work\"\n+        db.commit()\n+        assert import_neet(db)[\"inserted\"] == 0\n+        assert db.get(Question, q.id).explanation == \"Keep reviewer work\"\n+        assert (\n+            db.scalar(\n+                select(func.count())\n+                .select_from(Question)\n+                .where(Question.approved.is_(True))\n+            )\n+            == 0\n+        )\n+        assert (\n+            db.scalar(\n+            "
+      },
+      {
+        "filename": "backend/tests/test_portal.py",
+        "status": "added",
+        "additions": 230,
+        "deletions": 0,
+        "changes": 230,
+        "patch": "@@ -0,0 +1,230 @@\n+import json\n+from concurrent.futures import ThreadPoolExecutor\n+from fastapi.testclient import TestClient\n+from sqlalchemy import select, func\n+from backend.main import app, expire_stale\n+from backend.database import SessionLocal\n+from backend.models import User, Question, Attempt, Answer, Result, ReviewAudit, now\n+from backend.tests.conftest import register\n+\n+\n+def start(client, exam, mode=\"mock\"):\n+    response = client.post(\"/api/attempts\", json={\"exam_id\": exam, \"mode\": mode})\n+    assert response.status_code == 201, response.text\n+    return response.json()\n+\n+\n+def test_auth_roles_csrf_and_student_isolation(client, exam):\n+    first = register(client)\n+    a = start(client, exam)\n+    assert not any(\"correct_option\" in q or \"explanation\" in q for q in a[\"questions\"])\n+    assert client.get(\"/api/admin/questions\").status_code == 403\n+    assert (\n+        client.post(\n+            \"/api/auth/logout\", headers={\"Origin\": \"https://evil.test\"}\n+        ).status_cod"
+      },
+      {
+        "filename": "backend/tests/test_source_matcher.py",
+        "status": "added",
+        "additions": 32,
+        "deletions": 0,
+        "changes": 32,
+        "patch": "@@ -0,0 +1,32 @@\n+\"\"\"Research tooling is optional in runtime, but checked when installed in CI.\"\"\"\n+\n+from scripts.source_neet_answers import (\n+    option_mapping,\n+    parse_key,\n+    parse_options,\n+    option_normal,\n+)\n+\n+\n+def test_option_mapping_preserves_signs_decimals_and_semantic_distractors():\n+    source = {\"A\": \"4.4 mT\", \"B\": \"44 T\", \"C\": \"44 mT\", \"D\": \"4.4 T\"}\n+    target = {\"A\": \"44 mT\", \"B\": \"4.4 mT\", \"C\": \"4.4 T\", \"D\": \"44 T\"}\n+    mapping = option_mapping(target, source)\n+    assert mapping[\"B\"][\"source_option\"] == \"A\"\n+    assert len(mapping) == 4\n+    assert option_normal(\"-30 J\") != option_normal(\"30 J\")\n+    assert option_normal(\"4.4 mT\") != option_normal(\"44 mT\")\n+    assert not option_mapping(\n+        {\"A\": \"Statement I is true but II is false\"},\n+        {\"B\": \"Statement I is false but II is true\"},\n+    )\n+    assert not option_mapping({\"A\": \"[image: diagrams/a.png]\"}, {\"A\": \"1.0\"})\n+\n+\n+def test_ambiguous_options_do_not_get_assigned_by_position():\n+    asser"
+      },
+      {
+        "filename": "data/answer_keys/neet/answer_keys.csv",
+        "status": "added",
+        "additions": 2241,
+        "deletions": 0,
+        "changes": 2241,
+        "patch": ""
+      },
+      {
+        "filename": "data/answer_keys/neet/answer_ledger.json",
+        "status": "added",
+        "additions": 130411,
+        "deletions": 0,
+        "changes": 130411,
+        "patch": ""
+      },
+      {
+        "filename": "data/answer_keys/neet/coverage_report.json",
+        "status": "added",
+        "additions": 74,
+        "deletions": 0,
+        "changes": 74,
+        "patch": "@@ -0,0 +1,74 @@\n+{\n+  \"question_count\": 2240,\n+  \"counts_by_status\": {\n+    \"mapping_required\": 889,\n+    \"sourced_candidate\": 947,\n+    \"no_source_match\": 330,\n+    \"conflict\": 74\n+  },\n+  \"published_count\": 0,\n+  \"by_year\": {\n+    \"2015\": {\n+      \"mapping_required\": 79,\n+      \"sourced_candidate\": 64,\n+      \"no_source_match\": 37\n+    },\n+    \"2016\": {\n+      \"mapping_required\": 64,\n+      \"sourced_candidate\": 97,\n+      \"no_source_match\": 19\n+    },\n+    \"2017\": {\n+      \"sourced_candidate\": 36,\n+      \"no_source_match\": 30,\n+      \"mapping_required\": 114\n+    },\n+    \"2018\": {\n+      \"sourced_candidate\": 143,\n+      \"mapping_required\": 32,\n+      \"conflict\": 4,\n+      \"no_source_match\": 1\n+    },\n+    \"2019\": {\n+      \"sourced_candidate\": 145,\n+      \"mapping_required\": 32,\n+      \"no_source_match\": 3\n+    },\n+    \"2020\": {\n+      \"mapping_required\": 62,\n+      \"no_source_match\": 18,\n+      \"sourced_candidate\": 97,\n+      \"conflict\": 3\n+    },\n+    \"2021\": {\n+      \"sourced_candi"
+      },
+      {
+        "filename": "data/answer_keys/neet/sources.json",
+        "status": "added",
+        "additions": 276,
+        "deletions": 0,
+        "changes": 276,
+        "patch": "@@ -0,0 +1,276 @@\n+{\n+  \"schema_version\": 1,\n+  \"retrieved_on\": \"2026-11-10\",\n+  \"sources\": [\n+    {\n+      \"id\": \"community-bank\",\n+      \"repository\": \"abdulwahid947040-ctrl/Neet-pyq-datasets-\",\n+      \"commit\": \"4261c314de2c86c0b58a8f24075e8aa190cbbf5f\",\n+      \"path\": \"combined_neet_dataset.json\",\n+      \"url\": \"https://raw.githubusercontent.com/abdulwahid947040-ctrl/Neet-pyq-datasets-/4261c314de2c86c0b58a8f24075e8aa190cbbf5f/combined_neet_dataset.json\",\n+      \"sha256\": \"ce563f126c0c17b327a7a49ca2e5dc365e615b1a947603a542eed0a591a06e18\",\n+      \"kind\": \"community_bank\",\n+      \"publisher\": \"Community dataset; contains known incorrect keys; never auto-publish\"\n+    },\n+    {\n+      \"id\": \"jeeneetards-3c48616f-298a-5f69-91d2-bcd59444c455\",\n+      \"repository\": \"skndash96/jeeneetards\",\n+      \"commit\": \"1992ae348d0498b5e49a9f9c6173e055af9984c7\",\n+      \"path\": \"static/pyqs/3c48616f-298a-5f69-91d2-bcd59444c455.json\",\n+      \"url\": \"https://raw.githubusercontent.com/skndash96/jeeneetard"
+      }
+    ]
+  }
+]
