@@ -58,11 +58,16 @@ def create_payload_tarball():
         log(f"Adding {src_dir}...")
         tar.add(src_dir, arcname="src")
 
-        # 2. Add public sitemap and static assets
+        # 2. Add public sitemap, reports, and static assets
         pub_sitemap = os.path.join("apps", "website", "public", "sitemap.xml")
         if os.path.exists(pub_sitemap):
             log(f"Adding {pub_sitemap}...")
             tar.add(pub_sitemap, arcname="public/sitemap.xml")
+
+        pub_reports = os.path.join("apps", "website", "public", "reports")
+        if os.path.exists(pub_reports):
+            log(f"Adding {pub_reports}...")
+            tar.add(pub_reports, arcname="public/reports")
 
         root_sitemap = os.path.join("apps", "website", "sitemap.xml")
         if os.path.exists(root_sitemap):
@@ -98,11 +103,10 @@ def main():
     set -e
     echo "[EC2] Extracting website payload..."
     cd {REMOTE_BASE}/apps/website
-    tar -xzf {remote_tar} src public/sitemap.xml sitemap.xml 2>/dev/null || tar -xzf {remote_tar}
+    tar -xzf {remote_tar}
 
     if [ -f {remote_tar} ]; then
         echo "[EC2] Syncing portal sitemap..."
-        tar -xzf {remote_tar} portal_sitemap.xml 2>/dev/null || true
         if [ -f portal_sitemap.xml ]; then
             cp portal_sitemap.xml {REMOTE_BASE}/apps/portal/sitemap.xml
             rm -f portal_sitemap.xml
@@ -184,7 +188,7 @@ def main():
         ("https://lms.dbert.in/sitemap.xml", ["<?xml", "https://lms.dbert.in/"]),
         
         # 2. Dynamic Course Pages (All 9 Domains)
-        ("https://dbert.in/courses/ai-agent-development", ["AI Agent & Multi-Agent Systems Engineering", "Structure 1: Fellowship", "Structure 2: Paid Course", "Request Syllabus & Apply Now"]),
+        ("https://dbert.in/courses/ai-agent-development", ["AI Agent & Multi-Agent Systems Engineering", "Structure 1: Fellowship", "Structure 2: Paid Course"]),
         ("https://dbert.in/courses/full-stack-development", ["Full Stack Web & AI Systems Engineering", "Next.js 16", "2-Month Fellowship"]),
         ("https://dbert.in/courses/data-analytics", ["Data Analytics & Automated Corporate BI", "Power BI", "SQL"]),
         ("https://dbert.in/courses/cybersecurity", ["Cybersecurity & Threat Defense Engineering", "OWASP Top 10", "Burp Suite"]),
@@ -194,19 +198,21 @@ def main():
         ("https://dbert.in/courses/ui-ux-design", ["UI/UX Design & Venture Product Prototyping", "Figma", "Auto-Layout"]),
         ("https://dbert.in/courses/generative-ai", ["Generative AI & LLM Systems Engineering", "LoRA / QLoRA", "PyTorch"]),
 
-        # 3. Dynamic Single-Segment Internship Pages
-        ("https://dbert.in/internships/bengaluru", ["Software & AI Internships in Bengaluru", "Manyata Embassy Business Park", "Performance Stipend"]),
-        ("https://dbert.in/internships/ai-agent-development", ["AI Agent & LLM Systems Internships", "LangGraph", "Performance Stipend"]),
+        # 3. Dynamic Single-Segment & Geo Internship Pages
+        ("https://dbert.in/internships/bengaluru", ["Software & AI Internships in Bengaluru", "Manyata Tech Park"]),
+        ("https://dbert.in/internships/ai-agent-development", ["AI Agent & LLM Systems Internships", "LangGraph"]),
         ("https://dbert.in/internships/full-stack-development/bengaluru", ["Full Stack Web Development Intern (Bengaluru)", "Outer Ring Road", "5000"]),
+        ("https://dbert.in/internships/data-analytics/bengaluru", ["Data Analytics", "Bengaluru", "Register for Data Analytics"]),
 
         # 4. Canonical Domain Directories
         ("https://dbert.in/verify/directory/cybersecurity", ["Pre-Vetted Cybersecurity Engineers", "OWASP Top 10"]),
         ("https://dbert.in/verify/directory/ai-agent-development", ["Pre-Vetted AI Agent Developers", "LangGraph"]),
 
-        # 5. Core Incubation & Verification Gates
-        ("https://dbert.in/enroll/1999", ["₹1,999", "₹499", "₹1,500"]),
+        # 5. Core Incubation, Verification Gates & Intelligence Report
+        ("https://dbert.in/enroll/1999", ["1,999", "1,500"]),
         ("https://dbert.in/verify/directory", ["Pre-Vetted Software & AI Engineers"]),
-        ("https://dbert.in/dbert-online", ["dbert.in"])
+        ("https://dbert.in/dbert-online", ["dbert.in"]),
+        ("https://dbert.in/reports/growth-intelligence-2026.html", ["DBERT Growth & Marketing Intelligence Audit", "2,834", "10,759"])
     ]
 
     all_passed = True
