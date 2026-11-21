@@ -845,5 +845,57 @@ Applications (5,125) ───► Selected (4,227) ───► Caution Paid (38
   * Compliance: Offer Letter URL placed at Line 8, Registration/Deposit Form URL placed at Line 11 (strict first-15-lines rule).
   * State Tracking: Synced to `data/selected_multi_login_cohort.json`, `data/whatsapp_selected_multi_login_queue.json`, `data/dbert_whatsapp_sent_today.json`, and `data/dispatch_tracking_selected_multi_login.csv`.
 
+---
+
+## Phase 31: GitHub Pull Request & LinkedIn Credential Forensic Audit (Completed - Nov 21, 2026)
+- **Scope & Objectives**:
+  * Strict enforcement of Pull Request (PR) URLs against DBERT's 4 official project repos (*Alkame, Gayatri, Aivara/DBERT Agent, Internship Portal*).
+  * Enforcement of public LinkedIn credential verification with DBERT listed under *Licenses & Certifications*.
+  * Deep audit across **33 pending submissions** (28 unique candidate accounts) and all **143 unique verified interns** scheduled for release on 03 December 2026.
+- **Audit Findings**:
+  * **Qualified & Ready for Staff Approval**: **1 candidate** (Priyanshu Kalondia, `priyanshukalondia@gmail.com`) — verified PR on Alkame (`https://github.com/Alkameinc/alkame-nifty-50-educational/pull/29`) and verified LinkedIn profile.
+  * **Flagged for Resubmission (`changes_requested`)**: **27 candidates** (11 submitted personal forks without an open PR, 11 submitted unrelated personal repositories, 4 pasted base org URLs with zero individual code, 1 submitted an invalid website link; 21 have unverified LinkedIn credentials).
+- **PostgreSQL Database Updates on EC2**:
+  * Transitioned all 27 flagged submissions in `task_submissions` to `status='changes_requested'` and `ai_evaluation_status='CHANGES_REQUESTED'`.
+  * Embedded structured review feedback in `ai_evaluation_notes` detailing the exact 4 repo guidelines, how to open a PR against upstream, and the 1-click LinkedIn certification addition launcher link.
+  * Preserved student submission form unblocking on `https://lms.dbert.in/stipend/tasks` for immediate student revision.
+- **Tier 2 Cohort Readiness (143 Verified Interns)**:
+  * 28 candidates have submitted deliverables (1 passed, 27 changes requested).
+  * 115 candidates have not yet submitted their capstone deliverable.
+  * 83 candidates have not yet configured their encrypted UPI ID on their profile.
+- **State & Artifacts**:
+  * Tracking dataset: `data/github_linkedin_audit_report.json`.
+  * Execution scripts: `scripts/audit_33_github_linkedin.py`, `scripts/apply_resubmission_status.py`.
+  * Walkthrough report: `github_linkedin_audit_walkthrough.md`.
+
+---
+
+## Phase 32: Global LMS Attendance Infrastructure, 10-Hour Weekly Audit & Cross-Page Heartbeat Consolidation (Completed - Nov 21, 2026)
+- **Master Enrollment Volume**: Exactly **464 total enrollments** (390 Accepted, 66 Rejected, 6 Verified, 2 Pending Verification) permanently reconciled in PostgreSQL (`dbert_internship.enrollments`).
+- **Weekly Attendance Tracking Metrics (5,490 Records across 2,801 Distinct Interns)**:
+  * Standard Engagement: **10 hours per week** (600 minutes/week) across each candidate's 8-week cohort tenure (56 calendar days), capped at 80.0 hours for competency scoring.
+  * Recent Cohort Progress:
+    - *Week 2026-11-15 to 2026-11-21 (Current Week)*: 206 active interns logged pings (Max: 252 mins / 4.2 hrs by lead test admin, A Omeshwar Reddy at 3.95 hrs, Molugu Nanda Yasovardhan at 3.90 hrs, Bhargavi Poola at 3.30 hrs).
+    - *Week 2026-11-08 to 2026-11-14*: 295 active interns; **Pulluri Bhargavi completed 600 mins (10.0 hrs)**; Janhvi Singh reached 555 mins (9.25 hrs); Kundan Kumhar reached 222 mins (3.70 hrs).
+    - *Week 2026-09-27 to 2026-10-03*: 2,389 active interns, 20 interns completed $\ge$ 10 hours.
+- **Client Heartbeat Engine (`static/js/attendance-tracker.js`)**:
+  * Global Coverage: Included via `_head.html` across all portal pages (`/portal`, `/courses`, `/tasks`, `/insights`, `/account`).
+  * Persistent Seconds Accumulator: Active seconds accumulate in `localStorage` (`dbert_att_active_sec`). Page navigation across lessons or sprints does not reset progress.
+  * Presence Detection: Pauses accrual when `document.hidden` is true or if 120 seconds elapse without user interaction (mouse, touch, keypress, scroll).
+  * Multi-Tab Concurrency Lock: Timestamp lock (`dbert_att_last_tick_ms`) prevents duplicate time inflation across multiple tabs.
+  * Heartbeat Dispatch: Once 180 active seconds (3 minutes) accumulate, dispatches `POST /attendance/ping`.
+- **Server Ingestion Engine (`POST /attendance/ping` in `app.py`)**:
+  * Authenticates active session and extends sliding expiry in `user_sessions`.
+  * Joining Date Guard (`joining_unlocked`) and 60-day completion cutoff (`today <= joining_date + 60 days`).
+  * Server-side Anti-Tamper Guard: Rejects pings arriving faster than once per 170 seconds.
+  * Increments `attendance.total_minutes += 3` for current Sunday–Saturday week (`get_week_bounds()`).
+  * Triggers `notify_attendance_goal_push` web push notification upon crossing 600 minutes (10.0 hrs).
+- **Visual Pacing & Pacing Policy**:
+  * Dashboard-Only Visual Guidance: Progress and warnings are strictly presented on the intern dashboard (`#nextActionMissionCard` and Weekly Attendance Hub), avoiding intrusive external messages.
+- **Legacy Store Consolidation**:
+  * Early SQLite records (`apps/portal/internship.db` with 4,985 records) have been 100% ingested into PostgreSQL (`dbert_internship.attendance`, 5,490 records). PostgreSQL is the sole authoritative source of truth.
+
+
+
 
 
