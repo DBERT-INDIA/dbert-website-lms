@@ -5472,4 +5472,105 @@ body.portal-light .portal-hero-banner p {
   }
 }
 
+/* ==========================================================================
+   SOVEREIGN MOBILE RESPONSIVE ENGINE (320px - 768px Viewports)
+   Guarantees zero horizontal clipping, fluid button widths, and adaptive containers
+   across ALL LMS frontend pages.
+   ========================================================================== */
+
+/* 1. Global Viewport & Anti-Horizontal Overflow Guard */
+html, body {
+  max-width: 100vw !important;
+  overflow-x: hidden !important;
+  box-sizing: border-box !important;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box !important;
+}
+
+@media (max-width: 768px) {
+  /* 2. Container & Page Padding Adjustments */
+  .main, .content-wrap, .wrap, .content-wide, .content, .panel, .container,
+  body.portal .main, body.portal .content-wrap, body.portal .panel {
+    max-width: 100% !important;
+    width: 100% !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+  }
+
+  body.portal .content-wrap {
+    padding: 16px 12px 64px !important;
+  }
+
+  /* 3. Universal Card Mobile Refinement: Stop Cards From Bursting Viewports */
+  .glass-card, .nextstep-card, .analytics-card, .roadmap-card, .card, .dash-card,
+  body.portal .glass-card, body.portal .nextstep-card, body.portal .analytics-card,
+  body.portal .roadmap-card, body.portal-light .glass-card {
+    max-width: 100% !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    padding: 16px 14px !important;
+    border-radius: 14px !important;
+    overflow: hidden !important;
+  }
+
+  /* 4. Grid System Mobile Stacking */
+  .dash-grid, .overview-cards-grid, .grid-2, .grid-3, .stats-grid,
+  body.portal .dash-grid, body.portal .overview-cards-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* 5. Fluid Responsive Buttons Across All LMS Pages */
+  .btn, .btn-primary, .btn-secondary, .btn-tutor, .cta-pill-btn,
+  .btn-gold, .na-cta-btn, .hero-btn, .action-btn,
+  button.btn, a.btn, button.btn-primary, a.btn-primary,
+  button.btn-secondary, a.btn-secondary, a.btn-tutor,
+  body.portal .btn-primary, body.portal .btn-secondary,
+  body.portal .btn-tutor, body.portal a.btn-tutor, body.portal .cta-pill-btn {
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    white-space: normal !important;
+    text-align: center !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 12px 14px !important;
+    font-size: 13.5px !important;
+  }
+
+  /* 6. Vertical Stacking for Button Clusters & Groups */
+  .btn-cluster, .na-btn-cluster, .cta-group, .action-row, .card-actions, .hero-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 10px !important;
+    align-items: stretch !important;
+  }
+
+  .btn-cluster > *, .na-btn-cluster > *, .cta-group > *, .action-row > *,
+  .card-actions > *, .hero-actions > * {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    justify-content: center !important;
+    display: flex !important;
+  }
+
+  /* 7. Horizontal Scrollable Tables and Steppers */
+  .roadmap-stepper-wrap, .table-responsive-wrapper, .att-table-wrap, .table-wrap, .data-table-wrap {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    box-sizing: border-box !important;
+  }
+}
+
 

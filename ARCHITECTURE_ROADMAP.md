@@ -939,6 +939,31 @@ Applications (5,125) ───► Selected (4,227) ───► Caution Paid (38
   * Verified `/intern/me` returns HTTP 200 with `status: "success"` and safe fallback payload.
   * Captured high-res desktop (1440x960) and mobile (390x844) Playwright screenshots confirming visual layout and responsive stacking.
 
+---
+
+## Phase 35: Universal Mobile Responsive Engine & Button Layout Stabilization (Completed - Nov 21, 2026)
+- **Problem Diagnosis**:
+  * On mobile devices (viewport 390x844), horizontal canvas spill (`bodyScrollWidth` = 598px, 208px wider than viewport) caused buttons, cards, and micro-task badges to be clipped along the right screen margin.
+  * Root causes identified: `.roadmap-stepper` forced 680px width without container overflow constraints; `.na-cta-btn` buttons had `white-space: nowrap !important` and fixed paddings (348px button inside 302px card); `#overviewCardsGrid` cards stretched beyond viewport width.
+- **Global Stylesheet Architecture (`apps/portal/static/css/dbert-theme.css`)**:
+  * Implemented Sovereign Mobile Responsive Engine with anti-horizontal overflow guard: `html, body { max-width: 100vw !important; overflow-x: hidden !important; box-sizing: border-box !important; }` and universal box-sizing `*, *::before, *::after { box-sizing: border-box !important; }`.
+  * Mobile media query (`@media (max-width: 768px)`) enforces:
+    - Fluid button widths on `.btn`, `.btn-primary`, `.btn-secondary`, `.btn-tutor`, `.cta-pill-btn`, `.na-cta-btn` (`width: 100% !important; max-width: 100% !important; white-space: normal !important; text-align: center !important; word-break: break-word !important;`).
+    - Vertical column stacking for button clusters (`.na-btn-cluster`, `.btn-cluster`, `.cta-group`) with 10px gaps.
+    - Card padding normalized to `16px 14px !important` with `overflow: hidden !important`.
+    - Horizontal scrollable containers for steppers and data tables (`.roadmap-stepper-wrap`, `.table-responsive-wrapper`, `.att-table-wrap`) with `-webkit-overflow-scrolling: touch`.
+- **Dashboard Template Refactor (`apps/portal/templates/portal.html`)**:
+  * Refactored `.na-btn-cluster` and `.na-cta-btn` to enforce vertical column stacking on mobile with 100% width and centered text.
+  * Refactored `#overviewCardsGrid` cards, `#ovCourseBtn`, and `View Tasks & Rewards →` with `width: 100%; box-sizing: border-box; overflow: hidden;`.
+  * Refactored `liveTasksCont.innerHTML` dynamic template with `width: 100%; box-sizing: border-box;` and coin badge `flex-shrink: 0;`.
+- **Global Cache Invalidation (`apps/portal/templates/_head.html`)**:
+  * Bumped stylesheet version to `dbert-theme.css?v=20261121v3` across all LMS pages to ensure instant client-side cache refresh.
+- **Production Verification**:
+  * Deployed to EC2 (`ubuntu@3.26.237.171`), restarted `dbert-portal.service`, verified `active`.
+  * Playwright automated mobile layout verification confirmed `windowWidth: 390`, `docScrollWidth: 390`, `bodyScrollWidth: 390` (0px horizontal spill, 100% contained).
+  * Visual inspection confirmed all three user-flagged sections (Next Action Mission buttons, Resume Lesson button, and Micro-Tasks & Rewards box) are perfectly fitted, fully responsive, and completely unclipped.
+
+
 
 
 
