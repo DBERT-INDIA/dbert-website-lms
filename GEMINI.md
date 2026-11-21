@@ -236,6 +236,7 @@ The following table documents completed and ongoing programmatic batch dispatche
 | **Multi-Login Selected & Offer Dispatch (Nov 21, 2026)** | Complete Under Review cohort with multiple logins & unpaid ₹499 (Ratnadeep bamane, Sabreen Saed, Anvisha Raj, Srimathi K, Ritwika Bandyopadhyay, abhinand sagar, Gayathri S R, Karthika Raja, Varanasi Srikari, Muguntharajan K) | 10 promoted to Selected in DB (9 dispatched via WA, 1 deduplicated) | Promoted `status='Selected'` & `signup_stage=3`, generated official deterministic offer letter records (`DBERT-OFR-2026-...`), verified `/portal/offer` rendering, sent selection offer message via Account 2 with 18s–35s pacing | `scripts/promote_under_review_to_selected.py`, `scripts/dispatch_selected_multi_login_whatsapp.py` | `data/selected_multi_login_cohort.json`, `data/whatsapp_selected_multi_login_queue.json`, `data/dispatch_tracking_selected_multi_login.csv` |
 | **GitHub PR & LinkedIn Milestone Audit (Nov 21, 2026)** | 33 Pending Submissions + 143 Verified Interns Scheduled for Release | 28 unique submissions (1 passed, 27 changes requested) + 143 cohort accounts | Audited strict PRs on 4 project repos (Alkame, Gayatri, Aivara, Internship Portal) & LinkedIn certification additions. Only Priyanshu Kalondia passed (PR #29). 27 updated to status='changes_requested' on EC2 with structured feedback. | `scripts/audit_33_github_linkedin.py`, `scripts/apply_resubmission_status.py` | `data/github_linkedin_audit_report.json` |
 | **27 Capstone Revision WhatsApp Outreach (Nov 21, 2026)** | 27 Flagged Milestone Submissions | 25 unique candidate recipients (23 sent via WA, 25 notified via in-app DB) | Sent personalized WhatsApp messages via Account 2 with 18s–35s pacing; Line 7 resubmission URL, Line 8 verification URL; dual-wrote in-app notifications directly to EC2 PostgreSQL notifications table | `scripts/dispatch_resubmission_27_whatsapp.py` | `data/phones_27_resubmission.json`, `data/dispatch_tracking_resubmit_27.csv`, `data/dbert_whatsapp_sent_today.json` |
+| **GitHub Profile & Cross-Platform Backlinks (Nov 21, 2026)** | Founder & Lead Architect Profile & Monorepo Ecosystem | Ecosystem-wide SEO Mesh & Backlinks | Overhauled `https://github.com/ainabhinavsharma` with 4 flagship repos; boosted sitemaps (`/about/team` 0.95, `/labs/opensource` 0.90); dual robots.txt sitemaps; enriched Person & Org JSON-LD; live verified on EC2 | `scripts/deploy_github_and_interconnected_seo_to_ec2.py` | `scratch/ainabhinavsharma/README.md`, `apps/website/src/app/sitemap.ts`, `apps/portal/templates/_footer_seo.html` |
 
 ### 8.2. Operational Protocols & Safety Governance
 1. **409 Provisional Batch Delivery Rules**:
@@ -2365,6 +2366,28 @@ $$\text{Score} = 100 \times \text{certs} + 50 \times \text{tasks} + 25 \times \t
   * Visual Pacing & Pacing Policy: Dashboard-only visual guidance strictly presented on the intern dashboard (`#nextActionMissionCard` and Weekly Attendance Hub), avoiding intrusive external messages.
 - **Legacy Store Consolidation & PostgreSQL Verification**:
   * Early SQLite records (`apps/portal/internship.db` with 4,985 records) have been 100% ingested into PostgreSQL (`dbert_internship.attendance`, 5,492 records). PostgreSQL is the sole authoritative source of truth with 0 duplicates, 0 negative/null minutes, and 0 foreign key violations.
+
+### 17.7. Intern Dashboard UI/UX Modernization, Cognitive Mastery Removal & AI Directives Elevation (`/portal`)
+- **Deprecation & Removal of Cognitive Mastery Card**:
+  * Removed obsolete Card 2 ("Cognitive Progress & Mastery") from `#overviewCardsGrid` (`portal.html`).
+  * Eliminated confusing placeholder metrics (`0% Syllabus Mastery`, `1.0 Recall Index`, `Status: Normal`, `Mentorship: Active`) caused by unpopulated cognitive tables for new candidates.
+  * Safely guarded all legacy DOM lookups (`ovMasteryPct`, `ovRetentionPct`, `ovMasteryLevelBadge`, `ovStruggleIdx`, `ovMentorInt`) with null checks, eliminating JavaScript console warnings.
+- **Elevation of "Current Focus & AI Directives" Front-and-Center**:
+  * Promoted directly beneath the **Growth & Social Bounties Banner**, placing immediate learner directives at eye level upon login.
+  * **Recommended Learning Action**: Dynamically renders active domain track course title and current sprint Day (`statConcept`), tagged with `Interactive Lesson` badge. Primary CTA button (`#ctaLearnAction`) deep-links directly into `/courses/<course_id>/learn` (e.g. `Resume Lesson (Day 1) →`).
+  * **Spaced Reviews Due & Diagnostics**: Displays cognitive recall practice queue (`statReviews`), 1-click `Practice Now →` launcher, last AI session timestamp, and misconception status.
+- **Rebalanced 2-Column Core Sprint Cockpit**:
+  * Restructured `#overviewCardsGrid` from an uneven 3-card layout into a balanced 2-column grid (`repeat(2, 1fr)` at $\ge 992\text{px}$, stacking to 1 column at $\le 640\text{px}$):
+    - **Card 1: Guided Learning Sprint**: Circular progress ring (`#ovCourseProgressFill`), active Day indicator, and 1-click continuation button.
+    - **Card 2: Micro-Tasks & Reward Bounties**: Dynamic live task container (`#liveTasksContainer`) rendering active 50-coin tasks (Reddit/Quora QA Contribution, GitHub Project README Badge), total coins balance (`#ovCoinsVal`), and 1-click link to `/tasks`.
+- **Sleek Learning Analytics & Milestone Progress**:
+  * Retained the horizontal progress bar card (Curriculum Completion, Skill Mastery, Quiz Average, Practice Exercises) below the core cards with a direct link to the full guided curriculum.
+- **Backend API & PostgreSQL Resilience (`GET /intern/me` in `app.py`)**:
+  * Added safe synthetic fallback dictionary for `learning_profile` when PostgreSQL table `gl_student_learning_profile` is uninitialized (`overall_mastery: 0.0`, `retention_index: 1.0`, `recent_struggle_index: 0.0`, `mentor_interventions: 0`, `is_initialized: false`), completely preventing backend 500 errors or frontend `undefined` errors.
+  * Wrapped database queries with explicit transaction rollback guards.
+- **Production Verification**:
+  * Verified live on EC2 (`ubuntu@3.26.237.171`), restarted `dbert-portal.service`, confirmed `active`.
+  * Captured high-res desktop (1440x960) and mobile (390x844) Playwright screenshots confirming visual layout and responsive stacking.
 
 ---
 

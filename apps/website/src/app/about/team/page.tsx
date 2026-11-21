@@ -24,9 +24,20 @@ export default function TeamPage() {
     sameAs: [
       'https://github.com/ainabhinavsharma',
       'https://dbert.in',
+      'https://www.linkedin.com/company/dbert',
+      'https://www.youtube.com/@dbert-india',
+    ],
+    knowsAbout: [
+      'Artificial Intelligence',
+      'Large Language Models',
+      'Multi-Agent Systems',
+      'Retrieval-Augmented Generation',
+      'Conformal Prediction under Covariate Shift',
+      'Distributed Systems & Full-Stack Architecture',
+      'Cryptographic Credential Verification',
     ],
     description:
-      'Principal AI Architect, Founder and CTO at DBERT directing production RAG systems, conformal prediction, and engineering sprints across incubated startups.',
+      'Principal AI Architect, Founder and CTO at DBERT directing production RAG systems, multi-agent pipelines, conformal prediction, and engineering sprints across incubated ventures and 465+ pre-vetted engineers.',
   };
 
   const jsonLdProjects = {
@@ -102,8 +113,22 @@ export default function TeamPage() {
                 <h2 className={styles.name}>Abhinav Sharma</h2>
                 <p className={styles.role}>Founder, CTO &amp; Principal AI Architect</p>
                 <p className={styles.bio}>
-                  Abhinav directs engineering sprints at <Link href="/labs" className="ink-link">DBERT Labs</Link> and oversees system architecture across our incubated ventures. He focuses on production RAG systems, multi-agent orchestration, conformal prediction under covariate shift, and reproducible MLOps pipelines. Under his technical direction, DBERT has built and deployed mission-critical software, open-source AI benchmarks, and trained high-performing pre-vetted engineers.
+                  Abhinav directs engineering sprints at <Link href="/labs" className="ink-link">DBERT Labs</Link> and oversees system architecture across our incubated ventures. He focuses on production RAG systems, multi-agent orchestration, conformal prediction under covariate shift, and reproducible MLOps pipelines. Under his technical direction, DBERT has built and deployed mission-critical software, open-source AI benchmarks, and trained 465+ high-performing pre-vetted engineers.
                 </p>
+                <div className="stack-h gap-2 mt-3 flex-wrap">
+                  <a href="https://github.com/Gayatri-Education/Gayatri-Demo" target="_blank" rel="noopener noreferrer" className="tag-chip text-xs">
+                    Gayatri AI (RAG) ↗
+                  </a>
+                  <a href="https://github.com/Alkameinc/alkame-nifty-50-educational" target="_blank" rel="noopener noreferrer" className="tag-chip text-xs">
+                    Alkame Markets (Quant ML) ↗
+                  </a>
+                  <a href="https://github.com/DBERT-INDIA/dbert-agent" target="_blank" rel="noopener noreferrer" className="tag-chip text-xs">
+                    Aivara Suite (Agentic) ↗
+                  </a>
+                  <a href="https://github.com/DBERT-INDIA/dbert-website-lms" target="_blank" rel="noopener noreferrer" className="tag-chip text-xs">
+                    DBERT Platform (Monorepo) ↗
+                  </a>
+                </div>
                 <div className="stack-h gap-4 mt-4 pt-4 border-t border-line flex-wrap">
                   <a
                     href="https://github.com/ainabhinavsharma"
@@ -111,10 +136,11 @@ export default function TeamPage() {
                     rel="noopener noreferrer"
                     className="accent-link text-sm font-medium"
                   >
-                    GitHub Repositories &rarr;
+                    GitHub Profile &amp; Repos &rarr;
                   </a>
+                  <Link href="/labs/opensource" className="accent-link text-sm font-medium">Open Source Codebases &rarr;</Link>
+                  <Link href="/verify/directory" className="accent-link text-sm font-medium">Pre-Vetted Directory (465+) &rarr;</Link>
                   <Link href="/labs/publications" className="accent-link text-sm font-medium">Read Technical Reports &rarr;</Link>
-                  <Link href="/blog" className="accent-link text-sm font-medium">Explore Engineering Articles &rarr;</Link>
                   <Link href="/about/credentials" className="accent-link text-sm font-medium">View Lab Credentials &rarr;</Link>
                 </div>
               </div>

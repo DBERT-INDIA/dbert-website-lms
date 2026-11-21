@@ -73,8 +73,9 @@ const columns: FooterColumn[] = [
       { label: 'MSME Statutory Audit', href: '/about/credentials' },
       { label: 'Technical Q&A Hub', href: '/qa' },
       { label: 'Open Source Repositories', href: '/labs/opensource' },
+      { label: 'Engineering Team & Leadership', href: '/about/team' },
+      { label: 'Lead Architect GitHub', href: 'https://github.com/ainabhinavsharma', external: true },
       { label: 'Balance Enrollment Portal', href: '/enroll/1999' },
-      { label: 'Engineering Team', href: '/about/team' },
       { label: 'Commercial Retainers', href: '/pricing' },
     ],
   },
@@ -159,6 +160,15 @@ export default function Footer() {
               >
                 GitHub
               </a>
+              <a
+                href="https://github.com/ainabhinavsharma"
+                target="_blank"
+                rel="noopener noreferrer"
+                title="Abhinav Sharma - Lead Architect & Founder GitHub"
+                onClick={() => trackEvent('social_click', { platform: 'github_founder' })}
+              >
+                Architect
+              </a>
             </div>
           </div>
 
@@ -210,6 +220,10 @@ export default function Footer() {
             <Link href="/startups">AI Startup Incubator Delhi NCR</Link>
             <span className={styles.dot}>·</span>
             <Link href="/hire/pre-vetted-engineers">Hire Vetted AI Engineers India</Link>
+            <span className={styles.dot}>·</span>
+            <Link href="/about/team">Engineering Leadership &amp; Mentors</Link>
+            <span className={styles.dot}>·</span>
+            <Link href="/labs/opensource">Open Source Codebases &amp; Repos</Link>
             <span className={styles.dot}>·</span>
             <Link href="/ai-solutions/llm-training/private-hosting">Private Enterprise GPU LLM Hosting</Link>
             <span className={styles.dot}>·</span>

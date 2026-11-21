@@ -131,15 +131,23 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           "alternateName": "DBERT",
           "url": process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.in',
           "logo": `${process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.in'}/logo.svg`,
-          // TODO-CONFIRM: founder's full legal name for the `founder` property.
           "founder": {
             "@type": "Person",
-            "name": "Abhinav"
+            "name": "Abhinav Sharma",
+            "jobTitle": "Founder, CTO & Principal AI Architect",
+            "url": `${process.env.NEXT_PUBLIC_SITE_URL || 'https://dbert.in'}/about/team`,
+            "sameAs": [
+              "https://github.com/ainabhinavsharma",
+              "https://dbert.in",
+              "https://www.linkedin.com/company/dbert",
+              "https://www.youtube.com/@dbert-india"
+            ]
           },
           "sameAs": [
             "https://www.linkedin.com/company/dbert",
             "https://www.youtube.com/@dbert-india",
-            "https://github.com/DBERT-INDIA"
+            "https://github.com/DBERT-INDIA",
+            "https://github.com/ainabhinavsharma"
           ],
           "address": {
             "@type": "PostalAddress",

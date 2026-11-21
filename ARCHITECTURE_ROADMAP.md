@@ -914,6 +914,32 @@ Applications (5,125) ───► Selected (4,227) ───► Caution Paid (38
   * Strictly deduplicated against all 369 past contact records (`data/dbert_whatsapp.db`, `dbert_whatsapp_sent_today.json`, Batch 35, Batch 60, Stipend 41, Wave 1). Zero paid candidates will be contacted.
   * Queue saved in `data/second_wave_299_pending_queue.json`.
 
+---
+
+## Phase 34: Intern Dashboard UI/UX Modernization & AI Directives Elevation (Completed - Nov 21, 2026)
+- **Cognitive Mastery Removal & UI De-cluttering**:
+  * Cleanly removed Card 2 ("Cognitive Progress & Mastery") from `#overviewCardsGrid` in `apps/portal/templates/portal.html`.
+  * Deprecated placeholder metrics (`0% Syllabus Mastery`, `1.0 Recall Index`, `Status: Normal`, `Mentorship: Active`) that previously rendered when the cognitive profile table (`gl_student_learning_profile`) was uninitialized.
+  * Added null-safe guards to `updateOverviewCardsGrid()`, preventing console errors.
+- **Top Cockpit: Current Focus & AI Directives**:
+  * Promoted the AI Directives module front-and-center directly underneath the Growth & Social Bounties Banner.
+  * Recommended Learning Action displays active enrolled course title and sprint Day number (`statConcept`), tagged with `Interactive Lesson` badge. Primary action button (`#ctaLearnAction`) deep-links directly to `/courses/<course_id>/learn` (e.g., `Resume Lesson (Day 1) →`).
+  * Spaced Reviews Due tracker displays active practice items (`statReviews`), 1-click `Practice Now →` launcher, last AI session timestamp, and misconception status.
+- **Balanced 2-Column Core Sprint Cockpit**:
+  * Rebalanced `.overview-cards-grid` to an elegant 2-column layout (`repeat(2, 1fr)` at $\ge 992\text{px}$, stacking to 1 column at $\le 640\text{px}$):
+    - **Card 1: Guided Learning Sprint**: Circular progress ring, active Day indicator, and 1-click lesson resume button.
+    - **Card 2: Micro-Tasks & Reward Bounties**: Dynamic live task container rendering active 50-coin bounties (Reddit/Quora QA Contribution, GitHub Project README Badge), total coins balance, and 1-click link to `/tasks`.
+- **Sleek Learning Analytics & Milestone Progress**:
+  * Retained the clean horizontal progress bar grid (Curriculum Completion, Skill Mastery, Quiz Average, Practice Exercises) in a dedicated section below the sprint cards with a direct link to the full guided curriculum.
+- **Backend API & PostgreSQL Resilience (`GET /intern/me` in `app.py`)**:
+  * Updated `intern_me()` to provide a safe synthetic fallback dictionary when `gl_student_learning_profile` is uninitialized (`overall_mastery: 0.0`, `retention_index: 1.0`, `recent_struggle_index: 0.0`, `mentor_interventions: 0`, `is_initialized: false`), completely preventing backend 500 errors or frontend `undefined` errors.
+  * Wrapped database queries with explicit transaction rollback guards.
+- **Production Verification**:
+  * Deployed to EC2 (`ubuntu@3.26.237.171`), restarted `dbert-portal.service`, verified `active`.
+  * Verified `/intern/me` returns HTTP 200 with `status: "success"` and safe fallback payload.
+  * Captured high-res desktop (1440x960) and mobile (390x844) Playwright screenshots confirming visual layout and responsive stacking.
+
+
 
 
 

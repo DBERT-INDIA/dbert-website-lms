@@ -64,6 +64,12 @@ export const seoConfig: Record<string, SeoEntry> = {
     description:
       'Search the DBERT candidate directory for pre-vetted AI, Full Stack & Data engineers with verified Turnitin rubrics and code dossiers. Connect on LMS.',
   },
+  '/fellows/verified': {
+    keyword: 'DBERT verified fellows',
+    title: 'Verified Fellows & Published Case Studies',
+    description:
+      'Explore DBERT verified fellows, authentic LinkedIn credentials, and published engineering case studies from technical incubation. Inspect proof dossiers.',
+  },
   '/enroll/1999': {
     keyword: 'DBERT incubation enrollment',
     title: 'Incubation Program Enrollment',

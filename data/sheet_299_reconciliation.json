@@ -1,101 +1,8 @@
 {
   "counts": {
-    "VERIFIED": 81,
-    "PROVISIONAL_NEEDS_UPGRADE": 4,
-    "NEW_CANDIDATE": 2
+    "VERIFIED": 89
   },
-  "action_needed": [
-    {
-      "row": 25,
-      "timestamp": "11/14/2026 11:06:49",
-      "email": "aadityakadam432@gmail.com",
-      "name": "Aaditya kadam",
-      "domain": "Data Analyst",
-      "college": "Svvv",
-      "phone": "7974661659",
-      "batch": "Aug to Oct 2026",
-      "fee_proof": "https://drive.google.com/open?id=1qSWKxrDj5xo5ELQinjSbj4cPD3CG4ucl",
-      "project": "Aivara, Gayatri Ai, DBERT",
-      "status_category": "PROVISIONAL_NEEDS_UPGRADE",
-      "cert_id": "CERT-DBERT-2026-DA-024",
-      "current_score": 83
-    },
-    {
-      "row": 27,
-      "timestamp": "11/17/2026 19:23:01",
-      "email": "gurveer3057.beai25@chitkara.edu.in",
-      "name": "Gurveer Singh",
-      "domain": "UI and UX Internship",
-      "college": "Chitkara University",
-      "phone": "6280719402",
-      "batch": "Aug to Oct 2026",
-      "fee_proof": "https://drive.google.com/open?id=1VIwS6muNgqLDDiUwHYJ5dEVrkRx7QRzc",
-      "project": "Gayatri Ai, Alkame",
-      "status_category": "PROVISIONAL_NEEDS_UPGRADE",
-      "cert_id": "CERT-DBERT-2026-UIUX-040",
-      "current_score": 76
-    },
-    {
-      "row": 69,
-      "timestamp": "11/16/2026 16:49:54",
-      "email": "me250003067@iiti.ac.in",
-      "name": "Sakthi P",
-      "domain": "Data Analyst",
-      "college": "Indian Institute of Technology, Indore",
-      "phone": "7540083220",
-      "batch": "Aug to Oct 2026",
-      "fee_proof": "https://drive.google.com/open?id=1Ow2kN7b8kBRJlynPx8QImZ_SgWX2tage",
-      "project": "Gayatri Ai",
-      "status_category": "PROVISIONAL_NEEDS_UPGRADE",
-      "cert_id": "CERT-DBERT-2026-DA-173",
-      "current_score": 88
-    },
-    {
-      "row": 86,
-      "timestamp": "11/14/2026 11:51:01",
-      "email": "chandramahesh736@gmail.com",
-      "name": "Yarlagadda Chandra Mahesh Goud",
-      "domain": "Full Stack Development",
-      "college": "MLRITM",
-      "phone": "7036634243",
-      "batch": "Aug to Oct 2026",
-      "fee_proof": "https://drive.google.com/open?id=1fnCB3_KTnFrWqUWgcSamC-rvPhCkp5lh",
-      "project": "DBERT",
-      "status_category": "NEW_CANDIDATE",
-      "cert_id": null,
-      "current_score": null
-    },
-    {
-      "row": 87,
-      "timestamp": "11/17/2026 19:21:30",
-      "email": "gurveer3057.beai25@chitkara.edu.in",
-      "name": "Gurveer Singh",
-      "domain": "UI and UX Internship",
-      "college": "Chitkara University",
-      "phone": "6280719402",
-      "batch": "Aug to Oct 2026",
-      "fee_proof": "https://drive.google.com/open?id=1ylYRBjcQAPjY0a5H_lLlfSSUzRfsGgjA",
-      "project": "Gayatri Ai, Alkame",
-      "status_category": "PROVISIONAL_NEEDS_UPGRADE",
-      "cert_id": "CERT-DBERT-2026-UIUX-040",
-      "current_score": 76
-    },
-    {
-      "row": 88,
-      "timestamp": "11/17/2026 21:42:58",
-      "email": "monikach575@gmail.com",
-      "name": "CH MONIKA SAI",
-      "domain": "Data Analyst",
-      "college": "MARRI LAXMAN REDDY INSTITUTE OF TECHNOLOGY AND MANAGEMENT",
-      "phone": "8186959486",
-      "batch": "May to July 2026",
-      "fee_proof": "https://drive.google.com/open?id=1zJwD-4EzOPcUh9oGDiSghgIglEQX3AT3",
-      "project": "DBERT",
-      "status_category": "NEW_CANDIDATE",
-      "cert_id": null,
-      "current_score": null
-    }
-  ],
+  "action_needed": [],
   "all_records": [
     {
       "row": 2,
@@ -453,7 +360,7 @@
       "batch": "Aug to Oct 2026",
       "fee_proof": "https://drive.google.com/open?id=1qSWKxrDj5xo5ELQinjSbj4cPD3CG4ucl",
       "project": "Aivara, Gayatri Ai, DBERT",
-      "status_category": "PROVISIONAL_NEEDS_UPGRADE",
+      "status_category": "VERIFIED",
       "cert_id": "CERT-DBERT-2026-DA-024",
       "current_score": 83
     },
@@ -483,7 +390,7 @@
       "batch": "Aug to Oct 2026",
       "fee_proof": "https://drive.google.com/open?id=1VIwS6muNgqLDDiUwHYJ5dEVrkRx7QRzc",
       "project": "Gayatri Ai, Alkame",
-      "status_category": "PROVISIONAL_NEEDS_UPGRADE",
+      "status_category": "VERIFIED",
       "cert_id": "CERT-DBERT-2026-UIUX-040",
       "current_score": 76
     },
@@ -1113,17 +1020,17 @@
       "batch": "Aug to Oct 2026",
       "fee_proof": "https://drive.google.com/open?id=1Ow2kN7b8kBRJlynPx8QImZ_SgWX2tage",
       "project": "Gayatri Ai",
-      "status_category": "PROVISIONAL_NEEDS_UPGRADE",
+      "status_category": "VERIFIED",
       "cert_id": "CERT-DBERT-2026-DA-173",
       "current_score": 88
     },
     {
       "row": 70,
-      "timestamp": "11/6/2026 12:54:05",
+      "timestamp": "11/17/2026 23:05:24",
       "email": "gurkavinay22@gmail.com",
       "name": "GURKA VINAY KUMAR REDDY",
-      "domain": "Artificial Intelligence (AI) and Machine Learning (ML)",
-      "college": "Saveetha school of engineering",
+      "domain": "Full Stack Development",
+      "college": "Engineering college",
       "phone": "9014147134",
       "batch": "July to Sep 2026",
       "fee_proof": "https://drive.google.com/open?id=1PL0VdP25Tr9aH36GxYEBaJ7E8w6ipY1v",
@@ -1368,9 +1275,9 @@
       "batch": "Aug to Oct 2026",
       "fee_proof": "https://drive.google.com/open?id=1fnCB3_KTnFrWqUWgcSamC-rvPhCkp5lh",
       "project": "DBERT",
-      "status_category": "NEW_CANDIDATE",
-      "cert_id": null,
-      "current_score": null
+      "status_category": "VERIFIED",
+      "cert_id": "CERT-DBERT-2026-FSD-071",
+      "current_score": 88
     },
     {
       "row": 87,
@@ -1383,7 +1290,7 @@
       "batch": "Aug to Oct 2026",
       "fee_proof": "https://drive.google.com/open?id=1ylYRBjcQAPjY0a5H_lLlfSSUzRfsGgjA",
       "project": "Gayatri Ai, Alkame",
-      "status_category": "PROVISIONAL_NEEDS_UPGRADE",
+      "status_category": "VERIFIED",
       "cert_id": "CERT-DBERT-2026-UIUX-040",
       "current_score": 76
     },
@@ -1398,9 +1305,39 @@
       "batch": "May to July 2026",
       "fee_proof": "https://drive.google.com/open?id=1zJwD-4EzOPcUh9oGDiSghgIglEQX3AT3",
       "project": "DBERT",
-      "status_category": "NEW_CANDIDATE",
-      "cert_id": null,
-      "current_score": null
+      "status_category": "VERIFIED",
+      "cert_id": "CERT-DBERT-2026-DA-185",
+      "current_score": 87
+    },
+    {
+      "row": 89,
+      "timestamp": "11/18/2026 15:31:40",
+      "email": "tehreemfatimabsmath@gmail.com",
+      "name": "Tehreem Fatima",
+      "domain": "Data Analyst",
+      "college": "Bahauddin Zakariya University Multan",
+      "phone": "+923017836936",
+      "batch": "Aug to Oct 2026",
+      "fee_proof": "https://drive.google.com/open?id=1EXYCh_gsHxL6vf5Y8J42UZrjDIBxiDsK",
+      "project": "DBERT",
+      "status_category": "VERIFIED",
+      "cert_id": "CERT-DBERT-2026-DA-188",
+      "current_score": 85
+    },
+    {
+      "row": 90,
+      "timestamp": "11/19/2026 14:30:41",
+      "email": "bhavyabalchandani23@gmail.com",
+      "name": "Bhavya Balchandani",
+      "domain": "Full Stack Development",
+      "college": "IEC University",
+      "phone": "8860805819",
+      "batch": "Aug to Oct 2026",
+      "fee_proof": "https://drive.google.com/open?id=1ybEVrySKCBmeD487rqTddbecdqik8bSk",
+      "project": "Alkame",
+      "status_category": "VERIFIED",
+      "cert_id": "CERT-DBERT-2026-FSD-072",
+      "current_score": 88
     }
   ]
 }

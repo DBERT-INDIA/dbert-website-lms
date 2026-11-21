@@ -5790,6 +5790,7 @@ def robots_txt():
         "Disallow: /e/\n"
         "Disallow: /cron\n"
         f"Sitemap: {SITE_ORIGIN}/sitemap.xml\n"
+        "Sitemap: https://dbert.in/sitemap.xml\n"
     )
     return Response(body, mimetype="text/plain")
 
@@ -16305,7 +16306,14 @@ def intern_me():
         if course_enrollment_warning or attendance_status == "degraded" or tasks_status == "degraded" or coins_status == "degraded":
             overall_status = "degraded"
 
-        learning_profile = None
+        learning_profile = {
+            "overall_mastery": 0.0,
+            "retention_index": 1.0,
+            "recent_struggle_index": 0.0,
+            "mentor_interventions": 0,
+            "last_learning_at": None,
+            "is_initialized": False,
+        }
         if acct:
             try:
                 lp_row = conn.execute(
@@ -16314,8 +16322,13 @@ def intern_me():
                 ).fetchone()
                 if lp_row:
                     learning_profile = row_to_dict(lp_row)
+                    learning_profile["is_initialized"] = True
             except Exception as _lp_err:
                 log_error("intern-me-learning-profile", _lp_err)
+                try:
+                    conn.rollback()
+                except Exception:
+                    pass
 
         # Fetch up to 3 live micro-tasks available for this intern
         available_tasks = []

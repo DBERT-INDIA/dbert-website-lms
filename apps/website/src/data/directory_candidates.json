@@ -10,7 +10,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-195"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-195",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-155",
@@ -23,7 +24,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-155"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-155",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-143",
@@ -36,7 +38,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-143"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-143",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-024",
@@ -50,7 +53,7 @@
     "status": "VERIFIED",
     "firstLetter": "A",
     "verifyUrl": "/verify/CERT-DBERT-2026-DA-024",
-    "verified": false
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-FSD-141",
@@ -63,7 +66,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-141"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-141",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-151",
@@ -76,7 +80,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-151"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-151",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-058",
@@ -89,7 +94,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-058"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-058",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-108",
@@ -102,7 +108,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-108"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-108",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-164",
@@ -115,7 +122,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-164"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-164",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-080",
@@ -128,7 +136,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-080"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-080",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-126",
@@ -141,7 +150,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-126"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-126",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-128",
@@ -154,7 +164,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-128"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-128",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-030",
@@ -167,7 +178,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-030"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-030",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-AIML-162",
@@ -180,7 +192,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-162"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-162",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-097",
@@ -193,7 +206,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-097"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-097",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-078",
@@ -206,7 +220,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-078"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-078",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-095",
@@ -219,7 +234,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-095"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-095",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-059",
@@ -232,7 +248,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-059"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-059",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-170",
@@ -245,7 +262,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-170"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-170",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-199",
@@ -258,7 +276,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-199"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-199",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-UIUX-035",
@@ -271,7 +290,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-UIUX-035"
+    "verifyUrl": "/verify/CERT-DBERT-2026-UIUX-035",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-055",
@@ -284,7 +304,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-055"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-055",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-FSD-061",
@@ -297,7 +318,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-061"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-061",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-080",
@@ -310,7 +332,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-080"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-080",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-185",
@@ -323,7 +346,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-185"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-185",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-108",
@@ -336,7 +360,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-108"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-108",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-074",
@@ -349,7 +374,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-074"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-074",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-117",
@@ -362,7 +388,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-117"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-117",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-DA-089",
@@ -375,7 +402,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-089"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-089",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-064",
@@ -388,7 +416,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-064"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-064",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-118",
@@ -401,7 +430,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-118"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-118",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-084",
@@ -414,7 +444,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-084"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-084",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-DBB-002",
@@ -427,7 +458,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DBB-002"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DBB-002",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-180",
@@ -440,7 +472,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-180"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-180",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-127",
@@ -453,7 +486,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-127"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-127",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-096",
@@ -466,7 +500,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-096"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-096",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-PA-024",
@@ -479,7 +514,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-PA-024"
+    "verifyUrl": "/verify/CERT-DBERT-2026-PA-024",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-178",
@@ -492,7 +528,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-178"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-178",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-070",
@@ -505,7 +542,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-070"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-070",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-FSD-136",
@@ -518,7 +556,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-136"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-136",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-031",
@@ -531,7 +570,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-031"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-031",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-DA-133",
@@ -544,7 +584,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-133"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-133",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-166",
@@ -557,7 +598,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-166"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-166",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-098",
@@ -570,7 +612,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-098"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-098",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-081",
@@ -583,7 +626,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-081"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-081",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-156",
@@ -596,7 +640,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-156"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-156",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-129",
@@ -609,7 +654,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-129"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-129",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DBB-001",
@@ -622,7 +668,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DBB-001"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DBB-001",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-004",
@@ -635,7 +682,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-004"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-004",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-AIML-110",
@@ -648,7 +696,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-110"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-110",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-163",
@@ -661,7 +710,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-163"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-163",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-057",
@@ -674,7 +724,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-057"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-057",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-062",
@@ -687,7 +738,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-062"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-062",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-AIML-165",
@@ -700,7 +752,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-165"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-165",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-PA-021",
@@ -713,7 +766,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-PA-021"
+    "verifyUrl": "/verify/CERT-DBERT-2026-PA-021",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-AIML-118",
@@ -726,7 +780,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-118"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-118",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-035",
@@ -739,7 +794,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-035"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-035",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-AIML-050",
@@ -752,7 +808,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-050"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-050",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-AIML-178",
@@ -765,7 +822,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-178"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-178",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-AIML-136",
@@ -778,7 +836,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-136"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-136",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-179",
@@ -791,7 +850,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-179"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-179",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-187",
@@ -804,7 +864,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-187"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-187",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-DA-017",
@@ -817,7 +878,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-017"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-017",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-DA-159",
@@ -830,7 +892,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-159"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-159",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-090",
@@ -843,7 +906,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-090"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-090",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-058",
@@ -856,7 +920,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-058"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-058",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-068",
@@ -869,7 +934,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-068"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-068",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-104",
@@ -882,7 +948,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-104"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-104",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-129",
@@ -895,7 +962,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-129"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-129",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-099",
@@ -908,7 +976,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-099"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-099",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-160",
@@ -921,7 +990,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-160"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-160",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-086",
@@ -934,7 +1004,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-086"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-086",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-154",
@@ -947,7 +1018,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-154"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-154",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-148",
@@ -960,7 +1032,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-148"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-148",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-149",
@@ -973,7 +1046,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-149"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-149",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-121",
@@ -986,7 +1060,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "A",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-121"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-121",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-173",
@@ -999,7 +1074,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "B",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-173"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-173",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-197",
@@ -1012,7 +1088,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "B",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-197"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-197",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-057",
@@ -1025,7 +1102,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "B",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-057"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-057",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-137",
@@ -1038,7 +1116,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "B",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-137"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-137",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-109",
@@ -1051,7 +1130,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "B",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-109"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-109",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-112",
@@ -1079,7 +1159,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "B",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-020"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-020",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-FSD-156",
@@ -1092,7 +1173,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "B",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-156"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-156",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-DA-110",
@@ -1105,7 +1187,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "B",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-110"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-110",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-060",
@@ -1118,7 +1201,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "B",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-060"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-060",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-072",
@@ -1131,7 +1215,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "B",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-072"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-072",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-AIML-121",
@@ -1144,7 +1229,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "B",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-121"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-121",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-084",
@@ -1157,7 +1243,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "B",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-084"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-084",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-PA-025",
@@ -1170,7 +1257,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "B",
-    "verifyUrl": "/verify/CERT-DBERT-2026-PA-025"
+    "verifyUrl": "/verify/CERT-DBERT-2026-PA-025",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-105",
@@ -1183,7 +1271,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "B",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-105"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-105",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-023",
@@ -1196,7 +1285,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "B",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-023"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-023",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-FSD-087",
@@ -1209,7 +1299,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "C",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-087"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-087",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-082",
@@ -1222,7 +1313,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "C",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-082"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-082",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-148",
@@ -1235,7 +1327,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "C",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-148"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-148",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-080",
@@ -1248,7 +1341,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "C",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-080"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-080",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-071",
@@ -1261,7 +1355,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "C",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-071"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-071",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-062",
@@ -1274,7 +1369,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "C",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-062"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-062",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-113",
@@ -1287,7 +1383,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "C",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-113"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-113",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-AIML-076",
@@ -1300,7 +1397,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "D",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-076"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-076",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-005",
@@ -1313,7 +1411,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "D",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-005"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-005",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-DA-172",
@@ -1326,7 +1425,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "D",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-172"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-172",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-134",
@@ -1339,7 +1439,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "D",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-134"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-134",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-060",
@@ -1352,7 +1453,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "D",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-060"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-060",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-083",
@@ -1365,7 +1467,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "D",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-083"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-083",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-143",
@@ -1378,7 +1481,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "D",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-143"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-143",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-186",
@@ -1391,7 +1495,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "D",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-186"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-186",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-FSD-057",
@@ -1404,7 +1509,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "D",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-057"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-057",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-UIUX-041",
@@ -1417,7 +1523,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "D",
-    "verifyUrl": "/verify/CERT-DBERT-2026-UIUX-041"
+    "verifyUrl": "/verify/CERT-DBERT-2026-UIUX-041",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-UIUX-036",
@@ -1445,7 +1552,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "D",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-094"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-094",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-098",
@@ -1458,7 +1566,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "D",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-098"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-098",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-179",
@@ -1471,7 +1580,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "D",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-179"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-179",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-065",
@@ -1484,7 +1594,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "D",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-065"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-065",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-177",
@@ -1497,7 +1608,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "D",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-177"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-177",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-PA-026",
@@ -1510,7 +1622,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "D",
-    "verifyUrl": "/verify/CERT-DBERT-2026-PA-026"
+    "verifyUrl": "/verify/CERT-DBERT-2026-PA-026",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-063",
@@ -1523,7 +1636,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "D",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-063"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-063",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-073",
@@ -1536,7 +1650,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "D",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-073"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-073",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-119",
@@ -1549,7 +1664,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "D",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-119"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-119",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-143",
@@ -1562,7 +1678,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "D",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-143"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-143",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-115",
@@ -1575,7 +1692,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "D",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-115"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-115",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-153",
@@ -1588,7 +1706,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "D",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-153"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-153",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-122",
@@ -1601,7 +1720,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "E",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-122"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-122",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-201",
@@ -1614,7 +1734,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "E",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-201"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-201",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DOC-003",
@@ -1627,7 +1748,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "F",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DOC-003"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DOC-003",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-120",
@@ -1640,7 +1762,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "F",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-120"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-120",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-106",
@@ -1653,7 +1776,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "F",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-106"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-106",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-125",
@@ -1666,7 +1790,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "G",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-125"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-125",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-131",
@@ -1679,7 +1804,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "G",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-131"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-131",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-150",
@@ -1692,7 +1818,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "G",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-150"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-150",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-108",
@@ -1705,7 +1832,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "G",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-108"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-108",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-079",
@@ -1718,7 +1846,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "G",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-079"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-079",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-174",
@@ -1731,7 +1860,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "G",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-174"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-174",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-078",
@@ -1744,7 +1874,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "G",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-078"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-078",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-010",
@@ -1757,7 +1888,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "G",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-010"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-010",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-AIML-169",
@@ -1785,7 +1917,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "G",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-175"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-175",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-181",
@@ -1798,7 +1931,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "G",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-181"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-181",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-085",
@@ -1811,7 +1945,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "G",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-085"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-085",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-UIUX-026",
@@ -1824,7 +1959,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "G",
-    "verifyUrl": "/verify/CERT-DBERT-2026-UIUX-026"
+    "verifyUrl": "/verify/CERT-DBERT-2026-UIUX-026",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-UIUX-040",
@@ -1837,7 +1973,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "G",
-    "verifyUrl": "/verify/CERT-DBERT-2026-UIUX-040"
+    "verifyUrl": "/verify/CERT-DBERT-2026-UIUX-040",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-DA-130",
@@ -1850,7 +1987,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "H",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-130"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-130",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-100",
@@ -1863,7 +2001,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "H",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-100"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-100",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-052",
@@ -1876,7 +2015,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "H",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-052"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-052",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-DOC-002",
@@ -1889,7 +2029,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "H",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DOC-002"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DOC-002",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-171",
@@ -1902,7 +2043,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "H",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-171"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-171",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-006",
@@ -1915,7 +2057,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "H",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-006"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-006",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-FSD-133",
@@ -1928,7 +2071,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "H",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-133"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-133",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-UIUX-038",
@@ -1941,7 +2085,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "H",
-    "verifyUrl": "/verify/CERT-DBERT-2026-UIUX-038"
+    "verifyUrl": "/verify/CERT-DBERT-2026-UIUX-038",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-093",
@@ -1954,7 +2099,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "H",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-093"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-093",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-123",
@@ -1967,7 +2113,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "H",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-123"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-123",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-137",
@@ -1980,7 +2127,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "H",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-137"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-137",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-059",
@@ -1993,7 +2141,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "H",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-059"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-059",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-132",
@@ -2006,7 +2155,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "H",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-132"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-132",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-147",
@@ -2019,7 +2169,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "H",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-147"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-147",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-069",
@@ -2032,7 +2183,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "I",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-069"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-069",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-PA-034",
@@ -2045,7 +2197,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "I",
-    "verifyUrl": "/verify/CERT-DBERT-2026-PA-034"
+    "verifyUrl": "/verify/CERT-DBERT-2026-PA-034",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-076",
@@ -2058,7 +2211,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "J",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-076"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-076",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-116",
@@ -2071,7 +2225,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "J",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-116"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-116",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-133",
@@ -2084,7 +2239,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "J",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-133"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-133",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-134",
@@ -2097,7 +2253,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "J",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-134"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-134",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-PA-033",
@@ -2110,7 +2267,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "J",
-    "verifyUrl": "/verify/CERT-DBERT-2026-PA-033"
+    "verifyUrl": "/verify/CERT-DBERT-2026-PA-033",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-066",
@@ -2123,7 +2281,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "J",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-066"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-066",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-184",
@@ -2136,7 +2295,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "J",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-184"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-184",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-AIML-152",
@@ -2149,7 +2309,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "J",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-152"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-152",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-118",
@@ -2162,7 +2323,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "J",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-118"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-118",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-175",
@@ -2175,7 +2337,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "J",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-175"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-175",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-051",
@@ -2188,7 +2351,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "J",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-051"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-051",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-FSD-112",
@@ -2201,7 +2365,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "J",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-112"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-112",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-123",
@@ -2214,7 +2379,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "K",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-123"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-123",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-153",
@@ -2227,7 +2393,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "K",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-153"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-153",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-196",
@@ -2240,7 +2407,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "K",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-196"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-196",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-067",
@@ -2253,7 +2421,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "K",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-067"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-067",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-114",
@@ -2266,7 +2435,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "K",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-114"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-114",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-107",
@@ -2279,7 +2449,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "K",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-107"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-107",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-PA-036",
@@ -2292,7 +2463,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "K",
-    "verifyUrl": "/verify/CERT-DBERT-2026-PA-036"
+    "verifyUrl": "/verify/CERT-DBERT-2026-PA-036",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-011",
@@ -2305,7 +2477,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "K",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-011"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-011",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-DA-075",
@@ -2318,7 +2491,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "K",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-075"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-075",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-MAD-001",
@@ -2331,7 +2505,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "K",
-    "verifyUrl": "/verify/CERT-DBERT-2026-MAD-001"
+    "verifyUrl": "/verify/CERT-DBERT-2026-MAD-001",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-091",
@@ -2344,7 +2519,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "K",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-091"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-091",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-152",
@@ -2357,7 +2533,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "K",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-152"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-152",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-111",
@@ -2370,7 +2547,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "K",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-111"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-111",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-FSD-081",
@@ -2383,7 +2561,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "K",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-081"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-081",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-144",
@@ -2396,7 +2575,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "K",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-144"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-144",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-094",
@@ -2409,7 +2589,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "K",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-094"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-094",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-049",
@@ -2422,7 +2603,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "K",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-049"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-049",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-DA-106",
@@ -2435,7 +2617,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "K",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-106"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-106",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-127",
@@ -2448,7 +2631,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "K",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-127"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-127",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-127",
@@ -2461,7 +2645,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "K",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-127"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-127",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-FSD-132",
@@ -2474,7 +2659,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "K",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-132"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-132",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-111",
@@ -2487,7 +2673,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "K",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-111"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-111",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-092",
@@ -2500,7 +2687,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "K",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-092"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-092",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-114",
@@ -2513,7 +2701,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "K",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-114"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-114",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-165",
@@ -2526,7 +2715,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "K",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-165"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-165",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-200",
@@ -2539,7 +2729,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "K",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-200"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-200",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-147",
@@ -2552,7 +2743,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "K",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-147"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-147",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-036",
@@ -2565,7 +2757,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "K",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-036"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-036",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-AIML-124",
@@ -2578,7 +2771,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "K",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-124"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-124",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-137",
@@ -2591,7 +2785,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "K",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-137"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-137",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-056",
@@ -2604,7 +2799,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "K",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-056"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-056",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-FSD-125",
@@ -2617,7 +2813,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "K",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-125"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-125",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-001",
@@ -2630,7 +2827,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "K",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-001"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-001",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-AIML-097",
@@ -2643,7 +2841,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "L",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-097"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-097",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-184",
@@ -2656,7 +2855,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "L",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-184"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-184",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DOC-001",
@@ -2669,7 +2869,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "L",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DOC-001"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DOC-001",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-PA-023",
@@ -2682,7 +2883,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "L",
-    "verifyUrl": "/verify/CERT-DBERT-2026-PA-023"
+    "verifyUrl": "/verify/CERT-DBERT-2026-PA-023",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-DA-117",
@@ -2695,7 +2897,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "M",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-117"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-117",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-PA-035",
@@ -2708,7 +2911,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "M",
-    "verifyUrl": "/verify/CERT-DBERT-2026-PA-035"
+    "verifyUrl": "/verify/CERT-DBERT-2026-PA-035",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-158",
@@ -2721,7 +2925,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "M",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-158"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-158",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-025",
@@ -2734,7 +2939,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "M",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-025"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-025",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-AIML-138",
@@ -2747,7 +2953,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "M",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-138"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-138",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-150",
@@ -2760,7 +2967,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "M",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-150"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-150",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-MAD-003",
@@ -2773,7 +2981,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "M",
-    "verifyUrl": "/verify/CERT-DBERT-2026-MAD-003"
+    "verifyUrl": "/verify/CERT-DBERT-2026-MAD-003",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-155",
@@ -2786,7 +2995,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "M",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-155"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-155",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-180",
@@ -2799,7 +3009,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "M",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-180"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-180",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-135",
@@ -2812,7 +3023,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "M",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-135"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-135",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-082",
@@ -2825,7 +3037,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "M",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-082"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-082",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-069",
@@ -2838,7 +3051,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "M",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-069"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-069",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-149",
@@ -2851,7 +3065,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "M",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-149"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-149",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-130",
@@ -2864,7 +3079,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "M",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-130"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-130",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-145",
@@ -2877,7 +3093,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "M",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-145"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-145",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-122",
@@ -2890,7 +3107,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "M",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-122"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-122",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-140",
@@ -2903,7 +3121,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "M",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-140"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-140",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-070",
@@ -2916,7 +3135,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "M",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-070"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-070",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-107",
@@ -2929,7 +3149,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "M",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-107"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-107",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-MAD-004",
@@ -2942,7 +3163,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "M",
-    "verifyUrl": "/verify/CERT-DBERT-2026-MAD-004"
+    "verifyUrl": "/verify/CERT-DBERT-2026-MAD-004",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-079",
@@ -2955,7 +3177,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "M",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-079"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-079",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-FSD-140",
@@ -2968,7 +3191,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "M",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-140"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-140",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-PA-022",
@@ -2981,7 +3205,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "M",
-    "verifyUrl": "/verify/CERT-DBERT-2026-PA-022"
+    "verifyUrl": "/verify/CERT-DBERT-2026-PA-022",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-037",
@@ -2994,7 +3219,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "M",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-037"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-037",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-DA-153",
@@ -3007,7 +3233,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "M",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-153"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-153",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DBB-003",
@@ -3020,7 +3247,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "M",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DBB-003"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DBB-003",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-098",
@@ -3033,7 +3261,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "M",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-098"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-098",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-146",
@@ -3046,7 +3275,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "M",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-146"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-146",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-099",
@@ -3059,7 +3289,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "M",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-099"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-099",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-PA-032",
@@ -3072,7 +3303,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "M",
-    "verifyUrl": "/verify/CERT-DBERT-2026-PA-032"
+    "verifyUrl": "/verify/CERT-DBERT-2026-PA-032",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-183",
@@ -3085,7 +3317,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "M",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-183"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-183",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-150",
@@ -3098,7 +3331,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "M",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-150"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-150",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-103",
@@ -3111,7 +3345,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "M",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-103"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-103",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-092",
@@ -3124,7 +3359,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "N",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-092"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-092",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-DA-054",
@@ -3137,7 +3373,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "N",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-054"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-054",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-FSD-145",
@@ -3150,7 +3387,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "N",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-145"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-145",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-157",
@@ -3163,7 +3401,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "N",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-157"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-157",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-194",
@@ -3176,7 +3415,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "N",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-194"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-194",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-102",
@@ -3189,7 +3429,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "N",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-102"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-102",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-126",
@@ -3202,7 +3443,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "N",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-126"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-126",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-109",
@@ -3215,7 +3457,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "N",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-109"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-109",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-003",
@@ -3228,7 +3471,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "N",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-003"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-003",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-FSD-109",
@@ -3241,7 +3485,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "N",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-109"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-109",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-093",
@@ -3254,7 +3499,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "N",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-093"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-093",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-034",
@@ -3267,7 +3513,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "N",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-034"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-034",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-DA-174",
@@ -3280,7 +3527,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "N",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-174"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-174",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-161",
@@ -3293,7 +3541,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "N",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-161"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-161",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-079",
@@ -3306,7 +3555,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "N",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-079"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-079",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-128",
@@ -3319,7 +3569,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "N",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-128"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-128",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-191",
@@ -3332,7 +3583,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "N",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-191"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-191",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-044",
@@ -3345,7 +3597,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "N",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-044"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-044",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-DA-128",
@@ -3358,7 +3611,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "N",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-128"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-128",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-090",
@@ -3371,7 +3625,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "N",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-090"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-090",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-176",
@@ -3384,7 +3639,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "N",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-176"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-176",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-PA-028",
@@ -3397,7 +3653,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "N",
-    "verifyUrl": "/verify/CERT-DBERT-2026-PA-028"
+    "verifyUrl": "/verify/CERT-DBERT-2026-PA-028",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-170",
@@ -3410,7 +3667,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "N",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-170"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-170",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-009",
@@ -3423,7 +3681,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "O",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-009"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-009",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-AIML-151",
@@ -3436,7 +3695,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "O",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-151"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-151",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-083",
@@ -3449,7 +3709,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "O",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-083"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-083",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-DA-148",
@@ -3462,7 +3723,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "P",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-148"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-148",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-063",
@@ -3475,7 +3737,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "P",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-063"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-063",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-096",
@@ -3488,7 +3751,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "P",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-096"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-096",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-111",
@@ -3501,7 +3765,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "P",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-111"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-111",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-UIUX-027",
@@ -3514,7 +3779,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "P",
-    "verifyUrl": "/verify/CERT-DBERT-2026-UIUX-027"
+    "verifyUrl": "/verify/CERT-DBERT-2026-UIUX-027",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-139",
@@ -3527,7 +3793,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "P",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-139"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-139",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-120",
@@ -3540,7 +3807,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "P",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-120"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-120",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-115",
@@ -3553,7 +3821,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "P",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-115"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-115",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-119",
@@ -3566,7 +3835,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "P",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-119"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-119",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-088",
@@ -3579,7 +3849,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "P",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-088"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-088",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-040",
@@ -3592,7 +3863,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "P",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-040"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-040",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-DA-074",
@@ -3605,7 +3877,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "P",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-074"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-074",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-064",
@@ -3618,7 +3891,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "P",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-064"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-064",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-FSD-073",
@@ -3631,7 +3905,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "P",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-073"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-073",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-095",
@@ -3644,7 +3919,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "P",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-095"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-095",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-028",
@@ -3657,7 +3933,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "P",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-028"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-028",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-AIML-087",
@@ -3670,7 +3947,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "P",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-087"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-087",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-089",
@@ -3683,7 +3961,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "P",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-089"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-089",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-154",
@@ -3696,7 +3975,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "P",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-154"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-154",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-136",
@@ -3709,7 +3989,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "P",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-136"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-136",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-068",
@@ -3722,7 +4003,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "P",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-068"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-068",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-094",
@@ -3735,7 +4017,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "P",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-094"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-094",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-152",
@@ -3748,7 +4031,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "P",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-152"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-152",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-066",
@@ -3761,7 +4045,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "P",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-066"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-066",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-099",
@@ -3774,7 +4059,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "P",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-099"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-099",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-065",
@@ -3787,7 +4073,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "P",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-065"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-065",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-070",
@@ -3800,7 +4087,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "P",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-070"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-070",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-073",
@@ -3813,7 +4101,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "P",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-073"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-073",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-082",
@@ -3826,7 +4115,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "P",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-082"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-082",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-088",
@@ -3839,7 +4129,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "P",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-088"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-088",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-142",
@@ -3852,7 +4143,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "P",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-142"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-142",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-187",
@@ -3865,7 +4157,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "P",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-187"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-187",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-189",
@@ -3878,7 +4171,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "P",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-189"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-189",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-029",
@@ -3891,7 +4185,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "P",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-029"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-029",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-FSD-113",
@@ -3904,7 +4199,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "P",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-113"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-113",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-016",
@@ -3917,7 +4213,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "P",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-016"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-016",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-AIML-018",
@@ -3930,7 +4227,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "P",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-018"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-018",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-PA-029",
@@ -3943,7 +4241,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "P",
-    "verifyUrl": "/verify/CERT-DBERT-2026-PA-029"
+    "verifyUrl": "/verify/CERT-DBERT-2026-PA-029",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-182",
@@ -3956,7 +4255,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "P",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-182"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-182",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-182",
@@ -3969,7 +4269,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "P",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-182"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-182",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-088",
@@ -3982,7 +4283,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "P",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-088"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-088",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-048",
@@ -3995,7 +4297,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "P",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-048"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-048",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-AIML-130",
@@ -4008,7 +4311,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "P",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-130"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-130",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-120",
@@ -4021,7 +4325,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "R",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-120"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-120",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-019",
@@ -4034,7 +4339,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "R",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-019"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-019",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-DA-065",
@@ -4047,7 +4353,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "R",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-065"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-065",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-172",
@@ -4060,7 +4367,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "R",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-172"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-172",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-081",
@@ -4073,7 +4381,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "R",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-081"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-081",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-146",
@@ -4086,7 +4395,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "R",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-146"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-146",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-039",
@@ -4099,7 +4409,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "R",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-039"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-039",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-AIML-100",
@@ -4112,7 +4423,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "R",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-100"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-100",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-DA-086",
@@ -4125,7 +4437,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "R",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-086"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-086",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-AIML-190",
@@ -4138,7 +4451,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "R",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-190"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-190",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-014",
@@ -4151,7 +4465,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "R",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-014"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-014",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-AIML-168",
@@ -4164,7 +4479,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "R",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-168"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-168",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-UIUX-037",
@@ -4177,7 +4493,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "R",
-    "verifyUrl": "/verify/CERT-DBERT-2026-UIUX-037"
+    "verifyUrl": "/verify/CERT-DBERT-2026-UIUX-037",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-171",
@@ -4190,7 +4507,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "R",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-171"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-171",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-064",
@@ -4203,7 +4521,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "R",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-064"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-064",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-135",
@@ -4216,7 +4535,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "R",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-135"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-135",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-123",
@@ -4229,7 +4549,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "R",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-123"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-123",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-113",
@@ -4242,7 +4563,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "R",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-113"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-113",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-169",
@@ -4255,7 +4577,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "R",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-169"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-169",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-115",
@@ -4268,7 +4591,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "R",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-115"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-115",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-124",
@@ -4281,7 +4605,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "R",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-124"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-124",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-PA-031",
@@ -4294,7 +4619,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "R",
-    "verifyUrl": "/verify/CERT-DBERT-2026-PA-031"
+    "verifyUrl": "/verify/CERT-DBERT-2026-PA-031",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-086",
@@ -4307,7 +4633,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "R",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-086"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-086",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-UIUX-028",
@@ -4320,7 +4647,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "R",
-    "verifyUrl": "/verify/CERT-DBERT-2026-UIUX-028"
+    "verifyUrl": "/verify/CERT-DBERT-2026-UIUX-028",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-103",
@@ -4333,7 +4661,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "R",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-103"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-103",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-151",
@@ -4346,7 +4675,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "R",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-151"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-151",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-104",
@@ -4359,7 +4689,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "R",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-104"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-104",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-DA-146",
@@ -4372,7 +4703,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "R",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-146"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-146",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-103",
@@ -4385,7 +4717,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "R",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-103"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-103",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-114",
@@ -4398,7 +4731,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-114"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-114",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-083",
@@ -4411,7 +4745,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-083"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-083",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-188",
@@ -4424,7 +4759,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-188"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-188",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-160",
@@ -4437,7 +4773,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-160"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-160",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-089",
@@ -4450,7 +4787,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-089"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-089",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-PA-027",
@@ -4463,7 +4801,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-PA-027"
+    "verifyUrl": "/verify/CERT-DBERT-2026-PA-027",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-141",
@@ -4476,7 +4815,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-141"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-141",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-193",
@@ -4489,7 +4829,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-193"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-193",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-181",
@@ -4502,7 +4843,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-181"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-181",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-022",
@@ -4515,7 +4857,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-022"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-022",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-DA-173",
@@ -4528,7 +4871,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-173"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-173",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-DA-185",
@@ -4541,7 +4885,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "C",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-185"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-185",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-DA-071",
@@ -4554,7 +4899,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-071"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-071",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-069",
@@ -4567,7 +4913,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-069"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-069",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-167",
@@ -4580,7 +4927,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-167"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-167",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-071",
@@ -4593,7 +4941,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "Y",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-071"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-071",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-FSD-060",
@@ -4606,7 +4955,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-060"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-060",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-109",
@@ -4619,7 +4969,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-109"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-109",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-AIML-142",
@@ -4632,7 +4983,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-142"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-142",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-068",
@@ -4645,7 +4997,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-068"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-068",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-141",
@@ -4658,7 +5011,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-141"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-141",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-186",
@@ -4671,7 +5025,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-186"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-186",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-PA-030",
@@ -4684,7 +5039,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-PA-030"
+    "verifyUrl": "/verify/CERT-DBERT-2026-PA-030",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-093",
@@ -4697,7 +5053,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-093"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-093",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-047",
@@ -4710,7 +5067,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-047"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-047",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-AIML-002",
@@ -4723,7 +5081,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-002"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-002",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-AIML-013",
@@ -4736,7 +5095,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-013"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-013",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-AIML-164",
@@ -4749,7 +5109,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-164"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-164",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-156",
@@ -4762,7 +5123,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-156"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-156",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-111",
@@ -4775,7 +5137,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-111"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-111",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-145",
@@ -4788,7 +5151,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-145"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-145",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-033",
@@ -4801,7 +5165,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-033"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-033",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-FSD-067",
@@ -4814,7 +5179,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-067"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-067",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-147",
@@ -4827,7 +5193,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-147"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-147",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-091",
@@ -4840,7 +5207,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-091"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-091",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-140",
@@ -4853,7 +5221,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-140"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-140",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-UIUX-034",
@@ -4866,7 +5235,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-UIUX-034"
+    "verifyUrl": "/verify/CERT-DBERT-2026-UIUX-034",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-FSD-124",
@@ -4879,7 +5249,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-124"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-124",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-162",
@@ -4892,7 +5263,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-162"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-162",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-077",
@@ -4905,7 +5277,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-077"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-077",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-FSD-058",
@@ -4918,7 +5291,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-058"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-058",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-166",
@@ -4931,7 +5305,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-166"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-166",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-085",
@@ -4944,7 +5319,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-085"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-085",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-104",
@@ -4957,7 +5333,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-104"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-104",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-045",
@@ -4970,7 +5347,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-045"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-045",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-UIUX-039",
@@ -4983,7 +5361,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-UIUX-039"
+    "verifyUrl": "/verify/CERT-DBERT-2026-UIUX-039",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-072",
@@ -4996,7 +5375,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-072"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-072",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-139",
@@ -5009,7 +5389,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-139"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-139",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-MAD-006",
@@ -5022,7 +5403,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-MAD-006"
+    "verifyUrl": "/verify/CERT-DBERT-2026-MAD-006",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-135",
@@ -5035,7 +5417,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-135"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-135",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-139",
@@ -5048,7 +5431,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-139"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-139",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-MAD-005",
@@ -5061,7 +5445,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-MAD-005"
+    "verifyUrl": "/verify/CERT-DBERT-2026-MAD-005",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-007",
@@ -5074,7 +5459,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-007"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-007",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-FSD-116",
@@ -5087,7 +5473,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-116"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-116",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-138",
@@ -5100,7 +5487,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-138"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-138",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-067",
@@ -5113,7 +5501,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-067"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-067",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-FSD-102",
@@ -5126,7 +5515,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-102"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-102",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-106",
@@ -5139,7 +5529,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-106"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-106",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-053",
@@ -5152,7 +5543,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-053"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-053",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-AIML-131",
@@ -5165,7 +5557,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-131"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-131",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-129",
@@ -5178,7 +5571,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-129"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-129",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-101",
@@ -5191,7 +5585,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-101"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-101",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-112",
@@ -5204,7 +5599,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-112"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-112",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-059",
@@ -5217,7 +5613,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-059"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-059",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-107",
@@ -5230,7 +5627,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-107"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-107",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-112",
@@ -5243,7 +5641,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-112"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-112",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-077",
@@ -5256,7 +5655,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-077"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-077",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-092",
@@ -5269,7 +5669,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-092"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-092",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-110",
@@ -5282,7 +5683,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-110"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-110",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-061",
@@ -5295,7 +5697,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-061"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-061",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-127",
@@ -5308,7 +5711,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-127"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-127",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-121",
@@ -5321,7 +5725,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-121"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-121",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-177",
@@ -5334,7 +5739,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-177"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-177",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-110",
@@ -5347,7 +5753,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-110"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-110",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-116",
@@ -5360,7 +5767,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-116"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-116",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-043",
@@ -5373,7 +5781,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-043"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-043",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-DA-087",
@@ -5386,7 +5795,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-087"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-087",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-159",
@@ -5399,7 +5809,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-159"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-159",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-061",
@@ -5412,7 +5823,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-061"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-061",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-072",
@@ -5425,7 +5837,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-072"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-072",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-062",
@@ -5438,7 +5851,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-062"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-062",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-042",
@@ -5466,7 +5880,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-144"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-144",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-149",
@@ -5479,7 +5894,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-149"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-149",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-167",
@@ -5492,7 +5908,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-167"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-167",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-108",
@@ -5505,7 +5922,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-108"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-108",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-134",
@@ -5518,7 +5936,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-134"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-134",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-144",
@@ -5531,7 +5950,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "T",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-144"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-144",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-105",
@@ -5544,7 +5964,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "T",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-105"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-105",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-095",
@@ -5557,7 +5978,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "T",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-095"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-095",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-122",
@@ -5570,7 +5992,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "T",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-122"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-122",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-198",
@@ -5583,7 +6006,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "T",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-198"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-198",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-126",
@@ -5596,7 +6020,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "T",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-126"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-126",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-125",
@@ -5609,7 +6034,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "T",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-125"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-125",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-163",
@@ -5622,7 +6048,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "T",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-163"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-163",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-032",
@@ -5635,7 +6062,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "T",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-032"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-032",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-AIML-066",
@@ -5648,7 +6076,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "U",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-066"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-066",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-084",
@@ -5661,7 +6090,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "U",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-084"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-084",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-038",
@@ -5674,7 +6104,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "U",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-038"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-038",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-FSD-105",
@@ -5687,7 +6118,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "U",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-105"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-105",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-085",
@@ -5700,7 +6132,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "V",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-085"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-085",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-063",
@@ -5713,7 +6146,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "V",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-063"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-063",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-192",
@@ -5726,7 +6160,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "V",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-192"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-192",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-155",
@@ -5739,7 +6174,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "V",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-155"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-155",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-142",
@@ -5752,7 +6188,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "V",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-142"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-142",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-012",
@@ -5765,7 +6202,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "V",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-012"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-012",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-DA-015",
@@ -5778,7 +6216,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "V",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-015"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-015",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-AIML-096",
@@ -5791,7 +6230,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "V",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-096"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-096",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-131",
@@ -5804,7 +6244,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "V",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-131"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-131",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-158",
@@ -5817,7 +6258,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "V",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-158"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-158",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-183",
@@ -5830,7 +6272,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "V",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-183"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-183",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-DA-138",
@@ -5843,7 +6286,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "V",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-138"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-138",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-MAD-002",
@@ -5856,7 +6300,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "V",
-    "verifyUrl": "/verify/CERT-DBERT-2026-MAD-002"
+    "verifyUrl": "/verify/CERT-DBERT-2026-MAD-002",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-119",
@@ -5869,7 +6314,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "V",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-119"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-119",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-161",
@@ -5882,7 +6328,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "V",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-161"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-161",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-041",
@@ -5895,7 +6342,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "V",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-041"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-041",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-DA-097",
@@ -5908,7 +6356,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "V",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-097"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-097",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-154",
@@ -5921,7 +6370,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "V",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-154"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-154",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-075",
@@ -5934,7 +6384,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "V",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-075"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-075",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-DA-132",
@@ -5947,7 +6398,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "V",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-132"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-132",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-101",
@@ -5960,7 +6412,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "V",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-101"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-101",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-027",
@@ -5973,7 +6426,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "V",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-027"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-027",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-AIML-090",
@@ -5986,7 +6440,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "V",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-090"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-090",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-101",
@@ -5999,7 +6454,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "Y",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-101"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-101",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-077",
@@ -6012,7 +6468,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "Y",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-077"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-077",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-046",
@@ -6025,7 +6482,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "Y",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-046"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-046",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-DA-157",
@@ -6038,7 +6496,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "Y",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-157"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-157",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-168",
@@ -6051,7 +6510,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "Y",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-168"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-168",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-102",
@@ -6064,7 +6524,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "Y",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-102"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-102",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-008",
@@ -6077,7 +6538,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "Y",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-008"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-008",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-AIML-176",
@@ -6090,7 +6552,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "Y",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-176"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-176",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-100",
@@ -6103,7 +6566,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "Y",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-100"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-100",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-117",
@@ -6116,7 +6580,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "Y",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-117"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-117",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-AIML-091",
@@ -6129,7 +6594,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "Y",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-091"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-091",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-FSD-078",
@@ -6142,7 +6608,8 @@
     "isProvisional": true,
     "status": "PROVISIONAL",
     "firstLetter": "Y",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-078"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-078",
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-188",
@@ -6155,7 +6622,8 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "T",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-188"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-188",
+    "verified": true
   },
   {
     "certId": "CERT-DBERT-2026-FSD-341",
