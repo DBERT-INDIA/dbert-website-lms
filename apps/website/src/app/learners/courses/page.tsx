@@ -275,7 +275,7 @@ export default function CoursesHubPage() {
                 Explore 3,200+ Live Industry Internships &amp; Placements
               </h2>
               <p className="text-xs text-muted max-w-2xl mt-1">
-                Looking for immediate hands-on startup sprints with stipends? Our live portal matches candidates across Mumbai, Bengaluru, Delhi NCR, Pune, and remote teams.
+                Looking for immediate hands-on startup sprints with guaranteed placement? Our live portal matches candidates across Mumbai, Bengaluru, Delhi NCR, Pune, and remote teams.
               </p>
             </div>
             <a

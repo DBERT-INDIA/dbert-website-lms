@@ -216,7 +216,7 @@ export default function MobileAppDevelopmentCoursePage() {
             roleDescription: 'Engineer native-performance cross-platform iOS and Android mobile apps using Flutter, Dart, and React Native. Master mobile state management, REST API integration, and offline persistence.',
             cityTag: 'Remote',
             location: 'India · Remote / Hybrid',
-            stipend: '₹5,000 – ₹18,000 / mo',
+            placement: '100% Guaranteed Placement',
             tags: ['Remote', 'Verified', 'Active Sprint'],
             href: 'https://lms.dbert.in/internships/mobile-app-development',
           }

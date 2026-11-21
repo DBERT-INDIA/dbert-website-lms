@@ -216,7 +216,7 @@ export default function DigitalMarketingCoursePage() {
             roleDescription: 'Master data-driven digital growth: technical on-page and off-page SEO, Google Ads PPC search campaigns, Meta Ads performance acquisition, and Google Analytics 4 (GA4) funnel tracking.',
             cityTag: 'Remote',
             location: 'India · Remote / Hybrid',
-            stipend: '₹5,000 – ₹18,000 / mo',
+            placement: '100% Guaranteed Placement',
             tags: ['Remote', 'Verified', 'Active Sprint'],
             href: 'https://lms.dbert.in/internships/digital-marketing',
           }

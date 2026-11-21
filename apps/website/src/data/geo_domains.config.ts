@@ -37,7 +37,7 @@ export interface GeoRoleMeta {
   slug: string;
   title: string;
   skills: string[];
-  stipend: string;
+  placement: string;
   desc: string;
 }
 
@@ -46,70 +46,70 @@ export const GEO_ROLES: Record<string, GeoRoleMeta> = {
     slug: 'full-stack-development',
     title: 'Full Stack Web Development',
     skills: ['Next.js App Router', 'React 19', 'TypeScript', 'Node.js', 'PostgreSQL', 'Tailwind CSS'],
-    stipend: '₹5,000 fixed + up to ₹18,000 performance incentive (Total up to ₹23,000)',
+    placement: '100% Guaranteed Internship Placement (Internal & External)',
     desc: 'Build full-stack web architectures, implement pgvector similarity search, and deploy production microservices with active users.'
   },
   'ai-agent-development': {
     slug: 'ai-agent-development',
     title: 'AI Agent & LLM Systems',
     skills: ['LangGraph', 'CrewAI', 'Ollama', 'vLLM', 'Python', 'FastAPI', 'RAG'],
-    stipend: '₹5,000 fixed + up to ₹18,000 performance incentive (Total up to ₹23,000)',
+    placement: '100% Guaranteed Internship Placement (Internal & External)',
     desc: 'Construct autonomous agent state machines, tool-calling execution loops, and local open-weights foundation model deployments.'
   },
   'data-analytics': {
     slug: 'data-analytics',
     title: 'Data Analytics & Corporate BI',
     skills: ['SQL', 'Python Pandas', 'Power BI', 'Metabase', 'Data Modeling', 'ETL'],
-    stipend: '₹5,000 fixed + up to ₹18,000 performance incentive (Total up to ₹23,000)',
+    placement: '100% Guaranteed Internship Placement (Internal & External)',
     desc: 'Transform raw corporate transaction records into structured analytical databases, variance decompositions, and executive BI dashboards.'
   },
   'python-automation': {
     slug: 'python-automation',
     title: 'Python Automation & Scraping',
     skills: ['Playwright', 'Scrapy', 'Celery', 'Redis', 'Python Async', 'PostgreSQL'],
-    stipend: '₹5,000 fixed + up to ₹18,000 performance incentive (Total up to ₹23,000)',
+    placement: '100% Guaranteed Internship Placement (Internal & External)',
     desc: 'Deploy resilient web extraction pipelines, headless browser testing harnesses, and automated data synchronization workflows.'
   },
   'devops-cloud': {
     slug: 'devops-cloud',
     title: 'DevOps & Cloud Engineering',
     skills: ['Docker', 'Kubernetes', 'AWS EC2', 'GitHub Actions', 'Terraform', 'CI/CD'],
-    stipend: '₹5,000 fixed + up to ₹18,000 performance incentive (Total up to ₹23,000)',
+    placement: '100% Guaranteed Internship Placement (Internal & External)',
     desc: 'Architect containerized clusters, automated CI/CD deployment pipelines, and secure cloud networking environments.'
   },
   'ui-ux-design': {
     slug: 'ui-ux-design',
     title: 'UI/UX Design & Prototyping',
     skills: ['Figma', 'Auto-Layout', 'Design Systems', 'User Research', 'Wireframing'],
-    stipend: '₹5,000 fixed + up to ₹18,000 performance incentive (Total up to ₹23,000)',
+    placement: '100% Guaranteed Internship Placement (Internal & External)',
     desc: 'Design component tokens, user journey flows, and high-fidelity interactive product prototypes for venture applications.'
   },
   'cybersecurity': {
     slug: 'cybersecurity',
     title: 'Cybersecurity & Threat Defense',
     skills: ['OWASP Top 10', 'Wireshark', 'Burp Suite', 'SIEM Logs', 'SOC Analysis', 'Linux'],
-    stipend: '₹5,000 fixed + up to ₹18,000 performance incentive (Total up to ₹23,000)',
+    placement: '100% Guaranteed Internship Placement (Internal & External)',
     desc: 'Audit web applications for injection vulnerabilities, analyze network packet captures, and harden infrastructure against intrusion.'
   },
   'mobile-app-development': {
     slug: 'mobile-app-development',
     title: 'Mobile App Development',
     skills: ['Flutter', 'Dart', 'React Native', 'Mobile APIs', 'Offline SQLite', 'State Management'],
-    stipend: '₹5,000 fixed + up to ₹18,000 performance incentive (Total up to ₹23,000)',
+    placement: '100% Guaranteed Internship Placement (Internal & External)',
     desc: 'Build cross-platform iOS and Android applications connected to cloud backends with offline local caching.'
   },
   'machine-learning': {
     slug: 'machine-learning',
     title: 'Machine Learning & Generative AI',
     skills: ['PyTorch', 'Transformers', 'LoRA / QLoRA', 'LangChain', 'FastAPI', 'RAG'],
-    stipend: '₹5,000 fixed + up to ₹18,000 performance incentive (Total up to ₹23,000)',
+    placement: '100% Guaranteed Internship Placement (Internal & External)',
     desc: 'Fine-tune open-weights LLMs, construct production RAG vector pipelines, and deploy low-latency inference endpoints.'
   },
   'digital-marketing': {
     slug: 'digital-marketing',
     title: 'Digital Marketing & Growth',
     skills: ['Technical SEO', 'Google Analytics 4', 'Meta Ads', 'CRO', 'Content Marketing'],
-    stipend: '₹5,000 fixed + up to ₹18,000 performance incentive (Total up to ₹23,000)',
+    placement: '100% Guaranteed Internship Placement (Internal & External)',
     desc: 'Optimize organic search acquisition, analyze conversion funnels, and manage targeted growth campaigns across digital channels.'
   }
 };

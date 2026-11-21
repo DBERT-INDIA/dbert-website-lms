@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   const cityName = cityData.name;
   const title = `${roleData.title} Internships in ${cityName} (2026 Batch)`;
-  const description = `Apply for ${roleData.title} internships in ${cityName}. Build live client codebases under senior review, earn ${roleData.stipend} performance stipends, and earn verifiable MSME credentials.`;
+  const description = `Apply for ${roleData.title} internships in ${cityName}. Build live client codebases under senior review, secure 100% guaranteed internship placement (internal & external), and graduate with verifiable MSME credentials.`;
 
   return {
     title: `${title} | DBERT`,
@@ -74,7 +74,7 @@ export default async function ProgrammaticInternshipPage({ params }: PageProps) 
       {
         '@type': 'JobPosting',
         title: `${roleData.title} Intern (${cityName})`,
-        description: `<p>${roleData.desc}</p><p><strong>Required Skills:</strong> ${roleData.skills.join(', ')}</p><p><strong>Stipend:</strong> ${roleData.stipend}</p><p><strong>Location:</strong> ${cityName}</p>`,
+        description: `<p>${roleData.desc}</p><p><strong>Required Skills:</strong> ${roleData.skills.join(', ')}</p><p><strong>Outcome:</strong> 100% Guaranteed Internship Placement (Internal & External)</p><p><strong>Location:</strong> ${cityName}</p>`,
         datePosted: '2026-11-01T00:00:00+05:30',
         validThrough: '2027-06-30T23:59:59+05:30',
         employmentType: 'INTERN',
@@ -154,10 +154,10 @@ export default async function ProgrammaticInternshipPage({ params }: PageProps) 
           },
           {
             '@type': 'Question',
-            name: `Is this ${roleData.title} internship in ${cityName} paid?`,
+            name: `What career outcome is guaranteed for the ${cityName} cohort?`,
             acceptedAnswer: {
               '@type': 'Answer',
-              text: `Yes. Interns receive performance stipends ranging from ${roleData.stipend} paid against milestone deliverables and senior pull request reviews.`
+              text: `Fellows receive 100% guaranteed internship placement across internal DBERT portfolio ventures (Gayatri AI, Alkame, Aivara) or verified corporate hiring partners upon completing sprint milestones.`
             }
           },
           {
@@ -191,7 +191,7 @@ export default async function ProgrammaticInternshipPage({ params }: PageProps) 
             {roleData.title} Internships in {cityName}
           </h1>
           <HandNote tone="amber">
-            stipends ₹5K–₹18K ✎
+            100% guaranteed placement ✎
           </HandNote>
         </div>
         <p className="lede-wide">
@@ -200,7 +200,7 @@ export default async function ProgrammaticInternshipPage({ params }: PageProps) 
 
         <div className="flex justify-center gap-3 flex-wrap mt-4">
           <span className="proof-mark proof-mark-signal">
-            <span>⚡ {roleData.stipend} Stipend</span>
+            <span>⚡ 100% Guaranteed Placement</span>
           </span>
           <span className="proof-mark">
             <span>✓ Verified Turnitin Rubrics</span>

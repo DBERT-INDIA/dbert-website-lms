@@ -14,7 +14,7 @@ export default function JobBoardPage() {
       type: 'Remote / Internship',
       domain: 'AI Agent Development',
       domainSlug: 'ai-agent-development',
-      salary: '₹5,000 – ₹18,000 / month performance stipend',
+      salary: '100% Guaranteed Placement (Internal & External)',
       requirements: 'Python 3.11+, LangChain or LlamaIndex, vector indexing (pgvector/Chroma), Git pull-request workflow.',
       desc: 'Architect and deploy production Retrieval-Augmented Generation retrieval pipelines over complex unstructured enterprise documents.',
       slug: 'rag-pipeline-engineering-intern-remote-1'
@@ -26,7 +26,7 @@ export default function JobBoardPage() {
       type: 'Remote / Internship',
       domain: 'AI Agent Development',
       domainSlug: 'ai-agent-development',
-      salary: '₹5,000 – ₹18,000 / month performance stipend',
+      salary: '100% Guaranteed Placement (Internal & External)',
       requirements: 'FastAPI, CrewAI or LangGraph, structured JSON schema tool-calling, headless browser automation.',
       desc: 'Build multi-agent state machines with tool use, fallback loops, and autonomous browser scraping nodes.',
       slug: 'llm-tool-calling-agent-intern-remote-2'
@@ -74,7 +74,7 @@ export default function JobBoardPage() {
       type: 'Remote / Internship',
       domain: 'AI Agent Development',
       domainSlug: 'ai-agent-development',
-      salary: '₹5,000 – ₹18,000 / month performance stipend',
+      salary: '100% Guaranteed Placement (Internal & External)',
       requirements: 'Python Pandas, prompt tuning, API orchestration, conversation memory state serialization.',
       desc: 'Develop interactive context-aware conversational bots connected to relational databases and live analytics feeds.',
       slug: 'conversational-ai-workflow-intern-remote-3'
@@ -164,7 +164,7 @@ export default function JobBoardPage() {
             <span>💼 3,100+ Full-Time Tech Roles</span>
           </a>
           <a href="https://lms.dbert.in/#signup" target="_blank" rel="noopener noreferrer" className="proof-mark">
-            <span>✓ ₹5,000–₹18,000 Sprints</span>
+            <span>✓ Guaranteed Placement</span>
           </a>
         </div>
         <div style={{ marginTop: '20px' }}>

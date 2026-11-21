@@ -207,7 +207,7 @@ export default function AuthorDossierBox({
             Want to build production projects like {name}?
           </h4>
           <p style={{ color: '#94A3B8', fontSize: '0.8125rem', margin: 0, lineHeight: 1.5 }}>
-            Work 1:1 with practicing Delhi NCR engineers, build verified GitHub codebases, and earn production stipends up to ₹5,000.
+            Work 1:1 with practicing engineers, build verified GitHub codebases, and secure 100% guaranteed internship placement.
           </p>
         </div>
 

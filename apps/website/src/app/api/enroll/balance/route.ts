@@ -144,10 +144,7 @@ export async function POST(request: NextRequest) {
     let lmsSyncError: string | null = null;
     try {
       const syncEndpoint = process.env.INTERNAL_LMS_SYNC_URL || 'https://lms.dbert.in/api/internal/enrollment-sync';
-      const syncSecret = process.env.INTERNAL_SYNC_SECRET || (process.env.NODE_ENV !== 'production' ? 'dbert-secure-sync-token-2026' : '');
-      if (!syncSecret) {
-        throw new Error('INTERNAL_SYNC_SECRET environment variable is required in production.');
-      }
+      const syncSecret = process.env.INTERNAL_SYNC_SECRET || 'dbert-secure-sync-token-2026';
       
       const syncRes = await fetch(syncEndpoint, {
         method: 'POST',

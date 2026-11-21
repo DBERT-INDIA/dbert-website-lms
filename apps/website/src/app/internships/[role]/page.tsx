@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (GEO_CITIES[slug]) {
     const city = GEO_CITIES[slug];
     const title = `Engineering Internships in ${city.name} (2026 Batch)`;
-    const description = `Explore verified engineering and AI internships in ${city.name}. Commit upstream PRs on production repos, earn performance stipends, and get verified credentials.`;
+    const description = `Explore verified engineering and AI internships in ${city.name}. Commit upstream PRs on production repos, secure 100% guaranteed internship placement, and get verified credentials.`;
     return {
       title: `${title} | DBERT`,
       description,
@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (GEO_ROLES[slug]) {
     const role = GEO_ROLES[slug];
     const title = `${role.title} Internships (2026 Batch)`;
-    const description = `Apply for ${role.title} internships. Build production codebases under senior architect review, earn ${role.stipend}, and receive verifiable MSME credentials.`;
+    const description = `Apply for ${role.title} internships. Build production codebases under senior architect review, secure 100% guaranteed internship placement, and receive verifiable MSME credentials.`;
     return {
       title: `${title} | DBERT`,
       description,
@@ -52,7 +52,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     const city = GEO_CITIES[cSlug];
     if (role && city) {
       const title = `${role.title} Internships in ${city.name}`;
-      const description = `Apply for ${role.title} internships in ${city.name}. Work on live production codebases, earn ${role.stipend}, and earn verifiable credentials.`;
+      const description = `Apply for ${role.title} internships in ${city.name}. Work on live production codebases, secure 100% guaranteed internship placement, and earn verifiable credentials.`;
       return {
         title: `${title} | DBERT`,
         description,
@@ -95,8 +95,8 @@ export default async function InternshipSlugDispatcher({ params }: PageProps) {
     : `${roleData?.title} Internships`;
 
   const pageSubtitle = cityData
-    ? `Verified venture squad internships across ${cityData.locality}, ${cityData.region}. Build production features, pass Turnitin evaluations, and earn audited performance stipends.`
-    : `Verified engineering sprint internships across 18 tech hubs. Build production codebases with senior code reviews and performance stipends.`;
+    ? `Verified venture squad internships across ${cityData.locality}, ${cityData.region}. Build production features, pass Turnitin evaluations, and secure 100% guaranteed internship placement.`
+    : `Verified engineering sprint internships across 18 tech hubs. Build production codebases with senior code reviews and 100% guaranteed internship placement.`;
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -105,7 +105,7 @@ export default async function InternshipSlugDispatcher({ params }: PageProps) {
         '@type': 'JobPosting',
         '@id': `https://dbert.in/internships/${slug}#job`,
         title: pageTitle,
-        description: `<p>${pageSubtitle}</p><p><strong>Stipend:</strong> ₹5,000 fixed + up to ₹18,000 performance incentive.</p>`,
+        description: `<p>${pageSubtitle}</p><p><strong>Outcome:</strong> 100% Guaranteed Internship Placement (Internal & External).</p>`,
         datePosted: '2026-11-01T00:00:00+05:30',
         validThrough: '2027-06-30T23:59:59+05:30',
         employmentType: 'INTERN',
@@ -129,15 +129,7 @@ export default async function InternshipSlugDispatcher({ params }: PageProps) {
             }
           : undefined,
         jobLocationType: (!cityData || cityData.slug === 'remote') ? 'TELECOMMUTE' : undefined,
-        baseSalary: {
-          '@type': 'MonetaryAmount',
-          currency: 'INR',
-          value: {
-            '@type': 'QuantitativeValue',
-            value: 5000,
-            unitText: 'MONTH'
-          }
-        }
+
       }
     ]
   };
@@ -180,7 +172,7 @@ export default async function InternshipSlugDispatcher({ params }: PageProps) {
                 <Building size={16} style={{ color: '#10b981' }} /> {cityData.street}
               </span>
               <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                <Banknote size={16} style={{ color: '#eab308' }} /> Fixed ₹5,000 + Up to ₹18,000 Bounties
+                <Briefcase size={16} style={{ color: '#10b981' }} /> 100% Guaranteed Placement (Internal & External)
               </span>
             </div>
           )}

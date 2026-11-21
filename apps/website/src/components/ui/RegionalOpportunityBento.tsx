@@ -10,7 +10,8 @@ export interface OpportunityItem {
   roleDescription: string;
   cityTag: string;
   location: string;
-  stipend: string;
+  placement?: string;
+  stipend?: string;
   href: string;
   tags: string[];
 }
@@ -65,7 +66,7 @@ export default function RegionalOpportunityBento({
               <div>
                 <div className={styles.metaRow}>
                   <span className={styles.cityTag}>{opp.cityTag}</span>
-                  <span className={styles.stipendTag}>{opp.stipend}</span>
+                  <span className={styles.stipendTag}>{opp.placement || opp.stipend || '100% Guaranteed Placement'}</span>
                 </div>
                 <h3 className={styles.roleTitle}>{opp.title}</h3>
                 <p className={styles.roleDesc}>{opp.roleDescription}</p>

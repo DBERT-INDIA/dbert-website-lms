@@ -177,7 +177,7 @@ export default function TrackLeadCaptureForm({
               onClick={() => handleProgramChange('fellowship')}
             >
               <span>2-Mo Fellowship</span>
-              <span>₹1,999 Fee · ₹5,000 Stipend</span>
+              <span>₹1,999 Fellowship · 100% Placement</span>
             </div>
             <div
               className={`${s.radioLabel} ${formData.programInterest === 'course' ? s.radioLabelActive : ''}`}
@@ -281,7 +281,7 @@ export default function TrackLeadCaptureForm({
             'Submitting...'
           ) : (
             <>
-              Request Syllabus & Apply Now <ArrowRight size={16} />
+              Apply for Fellowship (Guaranteed Placement) <ArrowRight size={16} />
             </>
           )}
         </button>
@@ -292,6 +292,18 @@ export default function TrackLeadCaptureForm({
         >
           <Zap size={13} style={{ color: '#f59e0b' }} /> Direct Fellowship Seat Confirmation (₹1,999) →
         </Link>
+
+        <div style={{ marginTop: 14, textAlign: 'center', fontSize: '0.8rem', color: '#94a3b8' }}>
+          Looking for direct internship recruitment?{' '}
+          <a
+            href="https://lms.dbert.in/apply"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: '#38bdf8', textDecoration: 'underline', fontWeight: 600 }}
+          >
+            Direct Internship Applicant Sign-up (LMS) →
+          </a>
+        </div>
       </form>
     </div>
   );

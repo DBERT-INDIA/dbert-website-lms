@@ -15,7 +15,7 @@ interface DomainCourseContent {
   headline: string;
   lede: string;
   salaryRange: string;
-  stipend: string;
+  placement: string;
   skills: string[];
   tools: string[];
   partnerRepo: {
@@ -36,7 +36,7 @@ const COURSES_DATA: Record<string, DomainCourseContent> = {
     headline: 'Master Autonomous Multi-Agent State Machines & Local LLMs',
     lede: 'Engineer production-grade multi-agent architectures, deterministic tool-use pipelines, LangGraph state machines, and air-gapped local model serving via vLLM and Ollama.',
     salaryRange: '₹6,00,000 – ₹16,00,000 LPA',
-    stipend: '₹5,000 fixed + up to ₹18,000 performance incentive',
+    placement: '100% Guaranteed Internship Placement (Internal & External)',
     skills: ['LangGraph', 'CrewAI', 'Ollama', 'vLLM', 'FastAPI', 'pgvector', 'Python Asyncio'],
     tools: ['Docker', 'Langfuse', 'Qdrant', 'Redis', 'GitHub Actions', 'GGUF'],
     partnerRepo: {
@@ -47,7 +47,7 @@ const COURSES_DATA: Record<string, DomainCourseContent> = {
     fellowshipWeeks: [
       { period: 'Weeks 1–2', title: 'Architecture & Local Model Serving', tasks: ['Set up local Ollama & vLLM quantization', 'Build deterministic JSON function calling harness', 'First upstream PR review'] },
       { period: 'Weeks 3–6', title: 'Multi-Agent State Machine Sprints', tasks: ['Construct LangGraph cyclical state graphs', 'Implement CrewAI delegation loops with memory', 'Integrate vector RAG retrieval with hybrid reranking'] },
-      { period: 'Weeks 7–8', title: 'System Hardening & Credential Release', tasks: ['End-to-end stress testing and token latency optimization', 'Submit audited capstone documentation (Turnitin < 5%)', 'Issue 3-document credential packet & ₹5,000 stipend release'] }
+      { period: 'Weeks 7–8', title: 'System Hardening & Credential Release', tasks: ['End-to-end stress testing and token latency optimization', 'Submit audited capstone documentation (Turnitin < 5%)', 'Issue 3-document credential packet & activate guaranteed placement referral'] }
     ],
     courseWeeks: [
       { period: 'Weeks 1–4', title: 'Foundational Systems & Async Python', topics: ['Python 3.12 async mechanics', 'FastAPI microservices', 'PostgreSQL pgvector schemas'] },
@@ -55,7 +55,7 @@ const COURSES_DATA: Record<string, DomainCourseContent> = {
       { period: 'Weeks 9–12', title: 'Enterprise Deployment & Production Capstone', topics: ['Air-gapped deployment with Docker', 'Streaming token WebSocket interfaces', 'Final defense & venture startup placement'] }
     ],
     faqs: [
-      { question: 'What is the difference between the 2-Month Fellowship and 3-Month Course?', answer: 'The 2-Month Fellowship is an intensive sprint program for engineers with prior coding experience contributing directly to partner repositories (₹1,999 fee with ₹5,000 performance stipend). The 3-Month Course is a comprehensive end-to-end curriculum from foundational systems to enterprise production.' },
+      { question: 'What is the difference between the 2-Month Fellowship and 3-Month Course?', answer: 'The 2-Month Fellowship is an intensive sprint program for engineers with prior coding experience contributing directly to partner repositories (₹1,999 fee with 100% guaranteed internship placement across internal DBERT ventures or external partners). The 3-Month Course is a comprehensive end-to-end curriculum from foundational systems to enterprise production.' },
       { question: 'How is the credential verified by recruiters?', answer: 'Every graduate receives an official Certificate of Completion with a unique cryptographic UUID verifiable instantly at dbert.in/verify.' }
     ]
   },
@@ -66,7 +66,7 @@ const COURSES_DATA: Record<string, DomainCourseContent> = {
     headline: 'Fine-Tune Open-Weights LLMs & Architect Hybrid RAG Systems',
     lede: 'Learn parameter-efficient fine-tuning (LoRA/QLoRA), dense vector search, Reciprocal Rank Fusion, and production LLM orchestration on real venture codebases.',
     salaryRange: '₹6,50,000 – ₹18,00,000 LPA',
-    stipend: '₹5,000 fixed + up to ₹18,000 performance incentive',
+    placement: '100% Guaranteed Internship Placement (Internal & External)',
     skills: ['PyTorch', 'Transformers', 'LoRA / QLoRA', 'LangChain', 'FastAPI', 'RAG'],
     tools: ['Hugging Face', 'ChromaDB', 'pgvector', 'vLLM', 'Docker', 'MLflow'],
     partnerRepo: {
@@ -77,7 +77,7 @@ const COURSES_DATA: Record<string, DomainCourseContent> = {
     fellowshipWeeks: [
       { period: 'Weeks 1–2', title: 'Tokenization & Vector Embedding Pipelines', tasks: ['Build dense vector search with cosine similarity', 'Implement hybrid BM25 + dense search', 'PR on Alkame data fetcher'] },
       { period: 'Weeks 3–6', title: 'Fine-Tuning & Evaluation Sprints', tasks: ['Fine-tune Mistral/Llama with QLoRA on domain datasets', 'Build RAG evaluation benchmark with Ragas', 'Deploy FastAPI streaming inference'] },
-      { period: 'Weeks 7–8', title: 'Latency Benchmarking & Credential Release', tasks: ['Optimize KV-cache memory and GPU batching', 'Submit Turnitin-verified research dossier', 'Unlock ₹5,000 stipend release'] }
+      { period: 'Weeks 7–8', title: 'Latency Benchmarking & Credential Release', tasks: ['Optimize KV-cache memory and GPU batching', 'Submit Turnitin-verified research dossier', 'Activate guaranteed internship placement into internal ventures or hiring partners'] }
     ],
     courseWeeks: [
       { period: 'Weeks 1–4', title: 'Transformers & Embedding Foundations', topics: ['Attention mechanisms', 'Sentence transformers', 'Vector database schemas'] },
@@ -95,7 +95,7 @@ const COURSES_DATA: Record<string, DomainCourseContent> = {
     headline: 'Build High-Scale Web Apps with Next.js 16, Node & Postgres',
     lede: 'Develop enterprise-grade full-stack architectures, implement pgvector similarity search, design responsive React 19 UIs, and deploy production microservices with active users.',
     salaryRange: '₹5,50,000 – ₹14,00,000 LPA',
-    stipend: '₹5,000 fixed + up to ₹18,000 performance incentive',
+    placement: '100% Guaranteed Internship Placement (Internal & External)',
     skills: ['Next.js 16', 'React 19', 'TypeScript', 'Node.js', 'PostgreSQL', 'Tailwind CSS'],
     tools: ['Prisma', 'Docker', 'Redis', 'GitHub Actions', 'AWS EC2', 'Nginx'],
     partnerRepo: {
@@ -106,7 +106,7 @@ const COURSES_DATA: Record<string, DomainCourseContent> = {
     fellowshipWeeks: [
       { period: 'Weeks 1–2', title: 'App Router Architecture & DB Migrations', tasks: ['Set up Next.js 16 App Router standalone', 'Write Prisma / PostgreSQL migrations', 'First reviewed PR on portal repo'] },
       { period: 'Weeks 3–6', title: 'API Routes & Authentication Sprints', tasks: ['Build idempotent webhook processing', 'Implement streaming server actions', 'Deploy Redis cache-aside layer'] },
-      { period: 'Weeks 7–8', title: 'Production Hardening & Verification', tasks: ['Audit Web Vitals (LCP < 1.2s)', 'Submit capstone code dossier', 'Receive verified credentials & ₹5,000 stipend'] }
+      { period: 'Weeks 7–8', title: 'Production Hardening & Verification', tasks: ['Audit Web Vitals (LCP < 1.2s)', 'Submit capstone code dossier', 'Receive verified credentials & activate guaranteed internship placement'] }
     ],
     courseWeeks: [
       { period: 'Weeks 1–4', title: 'Modern TypeScript & React 19 Core', topics: ['TypeScript strict mode', 'React Server Components', 'Component design systems'] },
@@ -124,7 +124,7 @@ const COURSES_DATA: Record<string, DomainCourseContent> = {
     headline: 'Transform Raw Data into Actionable Executive Intelligence',
     lede: 'Master SQL data modeling, Python Pandas variance decompositions, Power BI dashboards, and automated ETL pipelines worked through on real corporate financial datasets.',
     salaryRange: '₹5,00,000 – ₹13,00,000 LPA',
-    stipend: '₹5,000 fixed + up to ₹18,000 performance incentive',
+    placement: '100% Guaranteed Internship Placement (Internal & External)',
     skills: ['SQL', 'Python Pandas', 'Power BI', 'Metabase', 'Data Modeling', 'ETL'],
     tools: ['PostgreSQL', 'DuckDB', 'Tableau', 'Excel Advanced', 'Git', 'Airflow'],
     partnerRepo: {
@@ -135,7 +135,7 @@ const COURSES_DATA: Record<string, DomainCourseContent> = {
     fellowshipWeeks: [
       { period: 'Weeks 1–2', title: 'SQL Aggregations & Schema Design', tasks: ['Write complex multi-table window functions', 'Clean corporate transaction logs with Pandas', 'PR on Alkame dataset pipeline'] },
       { period: 'Weeks 3–6', title: 'Automated BI & Cohort Decomposition', tasks: ['Construct live executive dashboards in Metabase', 'Engineer automated variance decomposition models', 'Build weekly email report automation'] },
-      { period: 'Weeks 7–8', title: 'Data Audit & Credential Release', tasks: ['Submit verified portfolio analytical dossier', 'Turnitin originality review (< 5%)', 'Release ₹5,000 performance stipend'] }
+      { period: 'Weeks 7–8', title: 'Data Audit & Credential Release', tasks: ['Submit verified portfolio analytical dossier', 'Turnitin originality review (< 5%)', 'Activate guaranteed internship placement & verified dossier'] }
     ],
     courseWeeks: [
       { period: 'Weeks 1–4', title: 'Advanced SQL & Relational Databases', topics: ['Joins, subqueries, and CTEs', 'Window functions and ranking', 'Database query optimization'] },
@@ -153,7 +153,7 @@ const COURSES_DATA: Record<string, DomainCourseContent> = {
     headline: 'Defend Systems Against Exploitation & Pass Security Audits',
     lede: 'Learn ethical penetration testing, OWASP Top 10 vulnerabilities, packet capture with Wireshark, SIEM log correlation, and Linux defense-in-depth architecture.',
     salaryRange: '₹6,00,000 – ₹15,00,000 LPA',
-    stipend: '₹5,000 fixed + up to ₹18,000 performance incentive',
+    placement: '100% Guaranteed Internship Placement (Internal & External)',
     skills: ['OWASP Top 10', 'Wireshark', 'Burp Suite', 'SIEM Logs', 'SOC Analysis', 'Linux'],
     tools: ['Nmap', 'Metasploit', 'Wazuh', 'Snort', 'Kali Linux', 'Docker'],
     partnerRepo: {
@@ -164,7 +164,7 @@ const COURSES_DATA: Record<string, DomainCourseContent> = {
     fellowshipWeeks: [
       { period: 'Weeks 1–2', title: 'Reconnaissance & Vulnerability Scanning', tasks: ['Nmap port scanning & banner inspection', 'Wireshark network packet analysis', 'PR for security header hardening'] },
       { period: 'Weeks 3–6', title: 'Web App Penetration Testing', tasks: ['Burp Suite proxy intercept & repeater tests', 'Audit OWASP Top 10 web vulnerabilities', 'Formulate CVSS vulnerability remediation pull requests'] },
-      { period: 'Weeks 7–8', title: 'Security Audit & Credential Release', tasks: ['Deliver comprehensive penetration test report', 'Turnitin originality check (< 5%)', 'Receive verified certificate & ₹5,000 stipend'] }
+      { period: 'Weeks 7–8', title: 'Security Audit & Credential Release', tasks: ['Deliver comprehensive penetration test report', 'Turnitin originality check (< 5%)', 'Receive verified certificate & guaranteed placement activation'] }
     ],
     courseWeeks: [
       { period: 'Weeks 1–4', title: 'Network Security & Linux Hardening', topics: ['TCP/IP handshakes & Wireshark', 'Linux permissions & firewalls', 'SSH keys & cryptography'] },
@@ -182,7 +182,7 @@ const COURSES_DATA: Record<string, DomainCourseContent> = {
     headline: 'Architect Automated CI/CD, Docker Clusters & AWS Cloud',
     lede: 'Master Docker containerization, Kubernetes orchestration, GitHub Actions CI/CD pipelines, AWS cloud VPCs, Terraform Infrastructure as Code, and production monitoring.',
     salaryRange: '₹6,50,000 – ₹16,00,000 LPA',
-    stipend: '₹5,000 fixed + up to ₹18,000 performance incentive',
+    placement: '100% Guaranteed Internship Placement (Internal & External)',
     skills: ['Docker', 'Kubernetes', 'AWS EC2', 'GitHub Actions', 'Terraform', 'CI/CD'],
     tools: ['Prometheus', 'Grafana', 'Nginx', 'Linux Shell', 'Bash', 'Terraform'],
     partnerRepo: {
@@ -193,7 +193,7 @@ const COURSES_DATA: Record<string, DomainCourseContent> = {
     fellowshipWeeks: [
       { period: 'Weeks 1–2', title: 'Containerization & Multi-Stage Docker', tasks: ['Build multi-stage Dockerfiles for Node & Python', 'Configure container networking and volume mounts', 'Submit PR on container build optimizations'] },
       { period: 'Weeks 3–6', title: 'CI/CD & Cloud Infrastructure Automation', tasks: ['Build automated GitHub Actions test & deploy pipeline', 'Provision AWS EC2 instances with Terraform', 'Configure Nginx SSL termination with Certbot'] },
-      { period: 'Weeks 7–8', title: 'Cluster Monitoring & Credential Release', tasks: ['Deploy Prometheus & Grafana system telemetry', 'Submit audited cloud infrastructure documentation', 'Receive ₹5,000 performance stipend release'] }
+      { period: 'Weeks 7–8', title: 'Cluster Monitoring & Credential Release', tasks: ['Deploy Prometheus & Grafana system telemetry', 'Submit audited cloud infrastructure documentation', 'Activate guaranteed internship placement & cloud credential dossier'] }
     ],
     courseWeeks: [
       { period: 'Weeks 1–4', title: 'Linux Administration & Shell Scripting', topics: ['Linux system commands & permissions', 'Bash automation scripts', 'Networking, DNS & SSH configuration'] },
@@ -211,7 +211,7 @@ const COURSES_DATA: Record<string, DomainCourseContent> = {
     headline: 'Build Cross-Platform iOS & Android Apps with Flutter',
     lede: 'Engineer production-ready mobile apps with Flutter/Dart and React Native, implementing offline SQLite caching, responsive UI layouts, and native device API bridges.',
     salaryRange: '₹5,50,000 – ₹14,00,000 LPA',
-    stipend: '₹5,000 fixed + up to ₹18,000 performance incentive',
+    placement: '100% Guaranteed Internship Placement (Internal & External)',
     skills: ['Flutter', 'Dart', 'React Native', 'Mobile APIs', 'Offline SQLite', 'State Management'],
     tools: ['Firebase', 'Android Studio', 'Xcode', 'Postman', 'Git', 'Google Play Console'],
     partnerRepo: {
@@ -222,7 +222,7 @@ const COURSES_DATA: Record<string, DomainCourseContent> = {
     fellowshipWeeks: [
       { period: 'Weeks 1–2', title: 'Mobile Architecture & State Management', tasks: ['Set up cross-platform Flutter/React Native project', 'Implement Provider / BLoC state management', 'PR on mobile component library'] },
       { period: 'Weeks 3–6', title: 'Offline Database & REST API Sync', tasks: ['Configure local SQLite offline persistence', 'Connect to authenticated REST backend APIs', 'Implement Firebase Cloud Messaging push alerts'] },
-      { period: 'Weeks 7–8', title: 'App Store Signing & Credential Release', tasks: ['Generate release APK / App Bundle', 'Submit audited capstone documentation (Turnitin < 5%)', 'Receive verified certificate & ₹5,000 stipend'] }
+      { period: 'Weeks 7–8', title: 'App Store Signing & Credential Release', tasks: ['Generate release APK / App Bundle', 'Submit audited capstone documentation (Turnitin < 5%)', 'Receive verified certificate & guaranteed placement activation'] }
     ],
     courseWeeks: [
       { period: 'Weeks 1–4', title: 'Dart Language & Flutter Fundamentals', topics: ['Dart OOP & async programming', 'Flutter widget tree & layout ergonomics', 'Form validation & user input'] },
@@ -240,7 +240,7 @@ const COURSES_DATA: Record<string, DomainCourseContent> = {
     headline: 'Deploy Resilient Web Bots, Scrapers & Distributed Tasks',
     lede: 'Master Playwright and Selenium headless browser automation, Scrapy crawlers, Celery async distributed tasks, Redis queues, and resilient data synchronization workflows.',
     salaryRange: '₹5,00,000 – ₹13,00,000 LPA',
-    stipend: '₹5,000 fixed + up to ₹18,000 performance incentive',
+    placement: '100% Guaranteed Internship Placement (Internal & External)',
     skills: ['Playwright', 'Scrapy', 'Celery', 'Redis', 'Python Async', 'PostgreSQL'],
     tools: ['Selenium', 'Beautiful Soup', 'Docker', 'FastAPI', 'Cron', 'Git'],
     partnerRepo: {
@@ -251,7 +251,7 @@ const COURSES_DATA: Record<string, DomainCourseContent> = {
     fellowshipWeeks: [
       { period: 'Weeks 1–2', title: 'Headless Browser Automation with Playwright', tasks: ['Write Playwright automated session scripts', 'Handle anti-bot challenges and session cookies', 'PR on portal automated testing harness'] },
       { period: 'Weeks 3–6', title: 'Distributed Task Queues with Celery & Redis', tasks: ['Configure asynchronous task workers with Celery', 'Build rate-limiting jitter algorithms', 'Implement idempotent SQLite/PostgreSQL deduplication'] },
-      { period: 'Weeks 7–8', title: 'Pipeline Hardening & Credential Release', tasks: ['Stress test crawling pipelines under high concurrency', 'Submit audited capstone documentation (Turnitin < 5%)', 'Receive verified certificate & ₹5,000 stipend'] }
+      { period: 'Weeks 7–8', title: 'Pipeline Hardening & Credential Release', tasks: ['Stress test crawling pipelines under high concurrency', 'Submit audited capstone documentation (Turnitin < 5%)', 'Receive verified certificate & guaranteed placement activation'] }
     ],
     courseWeeks: [
       { period: 'Weeks 1–4', title: 'Advanced Python & Asyncio Architecture', topics: ['Asyncio event loops & coroutines', 'HTTP clients with httpx & aiohttp', 'Error handling & retry backoffs'] },
@@ -269,7 +269,7 @@ const COURSES_DATA: Record<string, DomainCourseContent> = {
     headline: 'Design High-Fidelity UI Systems & User Journey Flows',
     lede: 'Learn Figma component tokens, auto-layout, atomic design systems, interactive prototypes, user journey mapping, and WCAG accessibility standards for real venture products.',
     salaryRange: '₹5,00,000 – ₹13,00,000 LPA',
-    stipend: '₹5,000 fixed + up to ₹18,000 performance incentive',
+    placement: '100% Guaranteed Internship Placement (Internal & External)',
     skills: ['Figma', 'Auto-Layout', 'Design Systems', 'User Research', 'Wireframing', 'WCAG'],
     tools: ['Figma Tokens', 'FigJam', 'Notion', 'Tailwind Specs', 'Lottie', 'Git'],
     partnerRepo: {
@@ -280,7 +280,7 @@ const COURSES_DATA: Record<string, DomainCourseContent> = {
     fellowshipWeeks: [
       { period: 'Weeks 1–2', title: 'Auto-Layout & Atomic Component Libraries', tasks: ['Design responsive auto-layout components in Figma', 'Build reusable atomic button & input tokens', 'PR on design system component review'] },
       { period: 'Weeks 3–6', title: 'High-Fidelity Interactive Prototyping', tasks: ['Create animated micro-interactions and screen transitions', 'Conduct qualitative user usability sessions', 'Formulate Tailwind CSS utility specifications'] },
-      { period: 'Weeks 7–8', title: 'WCAG Accessibility Audit & Credential Release', tasks: ['Audit color contrast & keyboard navigation accessibility', 'Submit verified design portfolio dossier', 'Receive verified certificate & ₹5,000 stipend'] }
+      { period: 'Weeks 7–8', title: 'WCAG Accessibility Audit & Credential Release', tasks: ['Audit color contrast & keyboard navigation accessibility', 'Submit verified design portfolio dossier', 'Receive verified certificate & guaranteed placement activation'] }
     ],
     courseWeeks: [
       { period: 'Weeks 1–4', title: 'Design Foundations & User Research', topics: ['Visual hierarchy, typography & color theory', 'User persona mapping & user interviews', 'Information architecture & wireframing'] },
@@ -364,7 +364,7 @@ export default async function DomainCoursePage({ params }: PageProps) {
         '@type': 'EducationalOccupationalProgram',
         '@id': `https://dbert.in/courses/${domain}#program`,
         name: `DBERT ${course.title} Incubation Fellowship`,
-        description: `2-Month high-velocity incubation sprint contributing to ${course.partnerRepo.name}. Includes ₹5,000 performance stipend and 3-document credential packet.`,
+        description: `2-Month high-velocity incubation sprint contributing to ${course.partnerRepo.name}. Includes 100% guaranteed internship placement (internal & external) and 3-document credential packet.`,
         provider: {
           '@type': 'Organization',
           name: 'DBERT',

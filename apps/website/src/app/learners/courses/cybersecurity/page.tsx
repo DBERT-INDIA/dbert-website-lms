@@ -216,7 +216,7 @@ export default function CybersecurityCoursePage() {
             roleDescription: 'Master ethical hacking, OWASP Top 10 web vulnerabilities, network packet analysis with Wireshark, SOC incident response, and SIEM security telemetry monitoring.',
             cityTag: 'Remote',
             location: 'India · Remote / Hybrid',
-            stipend: '₹5,000 – ₹18,000 / mo',
+            placement: '100% Guaranteed Placement',
             tags: ['Remote', 'Verified', 'Active Sprint'],
             href: 'https://lms.dbert.in/internships/cybersecurity',
           }

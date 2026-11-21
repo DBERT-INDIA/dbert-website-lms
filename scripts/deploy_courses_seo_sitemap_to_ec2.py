@@ -162,7 +162,7 @@ def main():
     ctx.check_hostname = False
     ctx.verify_mode = ssl.CERT_NONE
 
-    def check_url(url, expected_snippets=None, min_status=200, max_status=200):
+    def check_url(url, expected_snippets=None, forbidden_snippets=None, min_status=200, max_status=200):
         try:
             req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) DBERT-Verification/2.0'})
             with urllib.request.urlopen(req, timeout=20, context=ctx) as response:
@@ -176,6 +176,11 @@ def main():
                         if snippet not in body:
                             log(f"FAIL: {url} missing expected snippet '{snippet}'")
                             return False
+                if forbidden_snippets:
+                    for snippet in forbidden_snippets:
+                        if snippet.lower() in body.lower():
+                            log(f"FAIL: {url} contains forbidden snippet '{snippet}'")
+                            return False
                 log(f"PASS [HTTP {status}]: {url}")
                 return True
         except Exception as e:
@@ -184,40 +189,43 @@ def main():
 
     verifications = [
         # 1. Sitemaps
-        ("https://dbert.in/sitemap.xml", ["<?xml", "https://dbert.in/courses/ai-agent-development", "https://dbert.in/verify/directory/cybersecurity", "https://dbert.in/internships/full-stack-development/bengaluru"]),
-        ("https://lms.dbert.in/sitemap.xml", ["<?xml", "https://lms.dbert.in/"]),
+        ("https://dbert.in/sitemap.xml", ["<?xml", "https://dbert.in/courses/ai-agent-development", "https://dbert.in/verify/directory/cybersecurity", "https://dbert.in/internships/full-stack-development/bengaluru"], None),
+        ("https://lms.dbert.in/sitemap.xml", ["<?xml", "https://lms.dbert.in/"], None),
         
-        # 2. Dynamic Course Pages (All 9 Domains)
-        ("https://dbert.in/courses/ai-agent-development", ["AI Agent & Multi-Agent Systems Engineering", "Structure 1: 2-Month Fellowship", "Structure 2: 3-Month Comprehensive Course"]),
-        ("https://dbert.in/courses/full-stack-development", ["Full Stack Web & AI Systems Engineering", "Next.js 16", "2-Month Fellowship"]),
-        ("https://dbert.in/courses/data-analytics", ["Data Analytics & Automated Corporate BI", "Power BI", "SQL"]),
-        ("https://dbert.in/courses/cybersecurity", ["Cybersecurity & Threat Defense Engineering", "OWASP Top 10", "Burp Suite"]),
-        ("https://dbert.in/courses/devops-cloud", ["DevOps & Cloud Systems Engineering", "Docker", "Kubernetes", "AWS"]),
-        ("https://dbert.in/courses/mobile-app-development", ["Mobile App Development (Flutter & React Native)", "Flutter", "SQLite"]),
-        ("https://dbert.in/courses/python-automation", ["Python Automation & Web Extraction Engineering", "Playwright", "Celery"]),
-        ("https://dbert.in/courses/ui-ux-design", ["UI/UX Design & Venture Product Prototyping", "Figma", "Auto-Layout"]),
-        ("https://dbert.in/courses/generative-ai", ["Generative AI & LLM Systems Engineering", "LoRA / QLoRA", "PyTorch"]),
+        # 2. Dynamic Course Pages (All 9 Domains) - Guaranteed Placement & Zero Stipend Assertions
+        ("https://dbert.in/courses/ai-agent-development", ["AI Agent & Multi-Agent Systems Engineering", "Structure 1: 2-Month Fellowship", "Structure 2: 3-Month Comprehensive Course", "100% Guaranteed Placement", "lms.dbert.in/apply"], ["₹5,000 fixed", "stipend"]),
+        ("https://dbert.in/courses/full-stack-development", ["Full Stack Web & AI Systems Engineering", "Next.js 16", "2-Month Fellowship", "100% Guaranteed Placement"], ["₹5,000 fixed"]),
+        ("https://dbert.in/courses/data-analytics", ["Data Analytics & Automated Corporate BI", "Power BI", "SQL", "100% Guaranteed Placement"], ["₹5,000 fixed"]),
+        ("https://dbert.in/courses/cybersecurity", ["Cybersecurity & Threat Defense Engineering", "OWASP Top 10", "Burp Suite", "100% Guaranteed Placement"], ["₹5,000 fixed"]),
+        ("https://dbert.in/courses/devops-cloud", ["DevOps & Cloud Systems Engineering", "Docker", "Kubernetes", "AWS", "100% Guaranteed Placement"], ["₹5,000 fixed"]),
+        ("https://dbert.in/courses/mobile-app-development", ["Mobile App Development (Flutter & React Native)", "Flutter", "SQLite", "100% Guaranteed Placement"], ["₹5,000 fixed"]),
+        ("https://dbert.in/courses/python-automation", ["Python Automation & Web Extraction Engineering", "Playwright", "Celery", "100% Guaranteed Placement"], ["₹5,000 fixed"]),
+        ("https://dbert.in/courses/ui-ux-design", ["UI/UX Design & Venture Product Prototyping", "Figma", "Auto-Layout", "100% Guaranteed Placement"], ["₹5,000 fixed"]),
+        ("https://dbert.in/courses/generative-ai", ["Generative AI & LLM Systems Engineering", "LoRA / QLoRA", "PyTorch", "100% Guaranteed Placement"], ["₹5,000 fixed"]),
 
         # 3. Dynamic Single-Segment & Geo Internship Pages
-        ("https://dbert.in/internships/bengaluru", ["Software & AI Internships in Bengaluru", "Manyata Tech Park"]),
-        ("https://dbert.in/internships/ai-agent-development", ["AI Agent & LLM Systems Internships", "LangGraph"]),
-        ("https://dbert.in/internships/full-stack-development/bengaluru", ["Full Stack Web Development Intern (Bengaluru)", "Outer Ring Road", "5000"]),
-        ("https://dbert.in/internships/data-analytics/bengaluru", ["Data Analytics", "Bengaluru", "Register for Data Analytics"]),
+        ("https://dbert.in/internships/bengaluru", ["Software & AI Internships in Bengaluru", "Manyata Tech Park"], ["₹5,000 fixed"]),
+        ("https://dbert.in/internships/ai-agent-development", ["AI Agent & LLM Systems Internships", "LangGraph"], ["₹5,000 fixed"]),
+        ("https://dbert.in/internships/full-stack-development/bengaluru", ["Full Stack Web Development Intern (Bengaluru)", "Outer Ring Road", "100% Guaranteed Placement"], ["5000 fixed", "stipends ₹5K"]),
+        ("https://dbert.in/internships/data-analytics/bengaluru", ["Data Analytics", "Bengaluru", "Register for Data Analytics"], ["₹5,000 fixed"]),
 
         # 4. Canonical Domain Directories
-        ("https://dbert.in/verify/directory/cybersecurity", ["Pre-Vetted Cybersecurity Engineers", "OWASP Top 10"]),
-        ("https://dbert.in/verify/directory/ai-agent-development", ["Pre-Vetted AI Agent Developers", "LangGraph"]),
+        ("https://dbert.in/verify/directory/cybersecurity", ["Pre-Vetted Cybersecurity Engineers", "OWASP Top 10"], None),
+        ("https://dbert.in/verify/directory/ai-agent-development", ["Pre-Vetted AI Agent Developers", "LangGraph"], None),
 
         # 5. Core Incubation, Verification Gates & Intelligence Report
-        ("https://dbert.in/enroll/1999", ["1,999"]),
-        ("https://dbert.in/verify/directory", ["Pre-Vetted Software & AI Engineers"]),
-        ("https://dbert.in/dbert-online", ["dbert.in"]),
-        ("https://dbert.in/reports/growth-intelligence-2026.html", ["DBERT Growth & Marketing Intelligence Audit", "2,834", "10,759"])
+        ("https://dbert.in/enroll/1999", ["1,999"], None),
+        ("https://dbert.in/verify/directory", ["Pre-Vetted Software & AI Engineers"], None),
+        ("https://dbert.in/dbert-online", ["dbert.in"], None),
+        ("https://dbert.in/reports/growth-intelligence-2026.html", ["DBERT Growth & Marketing Intelligence Audit", "2,834", "10,759"], None)
     ]
 
     all_passed = True
-    for url, snippets in verifications:
-        if not check_url(url, snippets):
+    for item in verifications:
+        url = item[0]
+        snippets = item[1]
+        forbidden = item[2] if len(item) > 2 else None
+        if not check_url(url, expected_snippets=snippets, forbidden_snippets=forbidden):
             all_passed = False
 
     # 6. Test Lead Ingestion API (POST /api/leads/capture)

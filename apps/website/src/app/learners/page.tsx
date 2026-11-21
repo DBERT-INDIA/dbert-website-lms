@@ -15,9 +15,9 @@ export const metadata = pageMetadata('/learners');
 
 const learnerFaqs = [
   {
-    question: 'Is the DBERT Fellowship really a paid AI internship?',
+    question: 'Does the DBERT Fellowship include Guaranteed Internship Placement?',
     answer:
-      'Yes. Unlike attendance-based online certification programs, our Applied AI Fellowship places candidates into development squads building live software systems for incubated enterprise clients. The stipend ranges from ₹5,000 to ₹18,000 and is paid directly against delivery milestones and code pull requests reviewed by senior engineers.'
+      'Yes. Unlike attendance-based online certification programs, our 2-Month Applied Fellowship guarantees 100% internship placement across internal DBERT portfolio ventures (Gayatri AI, Alkame, Aivara) or verified corporate hiring partners upon successful sprint completion.'
   },
   {
     question: 'Can I skip Launchpad and apply straight to Accelerate or Fellowship?',
@@ -119,10 +119,10 @@ export default function LearnersLandingPage() {
     {
       num: '03',
       tag: 'Experience Track',
-      title: 'DBERT Fellowship (Paid)',
+      title: 'DBERT Fellowship (Guaranteed Placement)',
       price: '₹1,999 / 2 months',
       forText: 'Top-tier graduates from our Accelerate courses are selected through code challenges to work on real client systems.',
-      outcome: 'Earn remote experience letters, contribute directly to live startup products, and receive performance-based stipends.',
+      outcome: 'Earn remote experience letters, contribute directly to live startup products, and receive 100% guaranteed internship placement.',
       ctaText: 'Apply for Fellowship',
       ctaHref: 'https://lms.dbert.in/',
       isFeatured: true
@@ -158,9 +158,9 @@ export default function LearnersLandingPage() {
     },
     {
       kind: 'founder',
-      who: 'Stage 03 · Paid Fellowship',
+      who: 'Stage 03 · Guaranteed Placement Fellowship',
       title: 'Applied AI Fellowship',
-      description: 'Work on live client repositories, earn performance stipends, and ship code directly into production.',
+      description: 'Work on live client repositories, secure guaranteed internship placement, and ship code directly into production.',
       ctaLabel: 'Apply on Portal ↗',
       href: 'https://lms.dbert.in/',
     },
@@ -255,9 +255,9 @@ export default function LearnersLandingPage() {
               Once syntax fluency is established, developers graduate into the <Link href="/learners/accelerate">DBERT Accelerate engineering track</Link>. Here, tutorials terminate and structural building begins. Students implement live Retrieval-Augmented Generation architectures over unformatted PDFs, deploy vector database clusters using pgvector and Milvus, and configure function-calling loops against models locally and via high-throughput endpoints. For a technical deep dive into the exact vector retrieval mechanisms you will master, study our implementation guide on <Link href="/blog/rag-pipeline-tutorial-from-scratch">Building a Production RAG Architecture from Scratch</Link>.
             </p>
 
-            <h3>Rung 3: DBERT Applied Fellowship — Production Code &amp; Stipends</h3>
+            <h3>Rung 3: DBERT Applied Fellowship — Production Code &amp; Guaranteed Placement</h3>
             <p>
-              The transition from student to professional software engineer requires surviving genuine code review on live systems. In our selective <Link href="/learners/fellowship">Paid AI Fellowship</Link>, admitted developers join embedded sprint squads under lead architects to build custom models and data ingestion layers for incubated startups within our <Link href="/startups/portfolio">Venture Portfolio</Link>. Fellows leave with verifiable Git contribution histories, professional experience letters, and earned stipends ranging from ₹5,000 to ₹18,000. Learn how this technical engagement operates in our comprehensive <Link href="/blog/paid-ai-internship-india-guide-2026">2026 Guide to Landing Paid AI Internships in India</Link>.
+              The transition from student to professional software engineer requires surviving genuine code review on live systems. In our selective <Link href="/learners/fellowship">Paid AI Fellowship</Link>, admitted developers join embedded sprint squads under lead architects to build custom models and data ingestion layers for incubated startups within our <Link href="/startups/portfolio">Venture Portfolio</Link>. Fellows leave with verifiable Git contribution histories, professional experience letters, and 100% guaranteed internship placement across internal ventures or corporate hiring partners. Learn how this technical engagement operates in our comprehensive <Link href="/blog/paid-ai-internship-india-guide-2026">2026 Guide to Landing Paid AI Internships in India</Link>.
             </p>
 
             <div className={s.terminalSection}>
@@ -345,7 +345,7 @@ export default function LearnersLandingPage() {
                 <h3 className="card-title-tight mb-0">Browse 3,200+ Live Internships</h3>
                 <span className="tag-chip text-[10px] font-mono text-emerald-400">Live Portal</span>
               </div>
-              <p className={s.nextDesc}>Apply for verified startup internships across Mumbai, Bengaluru, Delhi NCR, and remote roles with verified monthly stipends.</p>
+              <p className={s.nextDesc}>Apply for verified startup internships across Mumbai, Bengaluru, Delhi NCR, and remote roles with guaranteed placement.</p>
               <a href="https://lms.dbert.in/" target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-sm">Open Career Portal ↗</a>
             </div>
           </div>

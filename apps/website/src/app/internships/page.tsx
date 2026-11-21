@@ -14,7 +14,7 @@ export default function InternshipsHubPage() {
       badge: 'Most Popular',
       desc: 'Build production web apps with React 19, Next.js App Router, TypeScript, and PostgreSQL with pgvector indexing.',
       openings: '1,420+ Live Openings',
-      stipend: '₹8,000 – ₹18,000 / mo',
+      placement: '100% Guaranteed Placement',
       cities: 'Remote · Bengaluru · Delhi NCR · Mumbai'
     },
     {
@@ -23,7 +23,7 @@ export default function InternshipsHubPage() {
       badge: 'Trending #1',
       desc: 'Construct autonomous AI workflow agents with LangGraph, CrewAI tool-calling loops, and local vLLM / Ollama runtimes.',
       openings: '890+ Live Openings',
-      stipend: '₹10,000 – ₹18,000 / mo',
+      placement: '100% Guaranteed Placement',
       cities: 'Remote · Bengaluru · Pune · Hyderabad'
     },
     {
@@ -32,7 +32,7 @@ export default function InternshipsHubPage() {
       badge: 'High Demand',
       desc: 'Engineer SQL query pipelines, programmatically normalise datasets with Pandas, and construct interactive Metabase/Power BI dashboards.',
       openings: '1,150+ Live Openings',
-      stipend: '₹6,000 – ₹15,000 / mo',
+      placement: '100% Guaranteed Placement',
       cities: 'Remote · Delhi NCR · Mumbai · Bengaluru'
     },
     {
@@ -41,7 +41,7 @@ export default function InternshipsHubPage() {
       badge: 'Fast-Track',
       desc: 'Write concurrent Playwright scrapers, configure Celery/Redis task workers, and automate high-throughput data extraction.',
       openings: '740+ Live Openings',
-      stipend: '₹7,000 – ₹15,000 / mo',
+      placement: '100% Guaranteed Placement',
       cities: 'Remote · Pune · Hyderabad · Chennai'
     },
     {
@@ -50,7 +50,7 @@ export default function InternshipsHubPage() {
       badge: 'Infrastructure',
       desc: 'Deploy Docker microservices, configure Kubernetes clusters, build automated GitHub Actions CI/CD pipelines, and manage AWS EC2/VPC.',
       openings: '620+ Live Openings',
-      stipend: '₹8,000 – ₹16,000 / mo',
+      placement: '100% Guaranteed Placement',
       cities: 'Remote · Bengaluru · Noida · Hyderabad'
     },
     {
@@ -59,7 +59,7 @@ export default function InternshipsHubPage() {
       badge: 'Design Track',
       desc: 'Design component libraries, auto-layout tokens, UX research journeys, and interactive high-fidelity prototypes in Figma.',
       openings: '580+ Live Openings',
-      stipend: '₹6,000 – ₹14,000 / mo',
+      placement: '100% Guaranteed Placement',
       cities: 'Remote · Mumbai · Delhi · Bengaluru'
     },
     {
@@ -68,7 +68,7 @@ export default function InternshipsHubPage() {
       badge: 'High Security',
       desc: 'Audit web endpoints for OWASP Top 10 vulnerabilities, conduct network pen-testing with Burp Suite, and implement SOC log pipelines.',
       openings: '490+ Live Openings',
-      stipend: '₹8,000 – ₹18,000 / mo',
+      placement: '100% Guaranteed Placement',
       cities: 'Remote · Bengaluru · Hyderabad · Pune'
     },
     {
@@ -77,7 +77,7 @@ export default function InternshipsHubPage() {
       badge: 'Cross-Platform',
       desc: 'Develop native-grade cross-platform apps with Flutter, Dart, Riverpod state management, and SQLite offline synchronization.',
       openings: '520+ Live Openings',
-      stipend: '₹7,000 – ₹16,000 / mo',
+      placement: '100% Guaranteed Placement',
       cities: 'Remote · Delhi NCR · Chennai · Bengaluru'
     },
     {
@@ -86,7 +86,7 @@ export default function InternshipsHubPage() {
       badge: 'Deep Tech',
       desc: 'Fine-tune open-weights LLMs with LoRA/QLoRA, construct dense vector search with Reciprocal Rank Fusion, and deploy vLLM.',
       openings: '680+ Live Openings',
-      stipend: '₹10,000 – ₹20,000 / mo',
+      placement: '100% Guaranteed Placement',
       cities: 'Remote · Bengaluru · Hyderabad · Mumbai'
     }
   ];
@@ -121,11 +121,11 @@ export default function InternshipsHubPage() {
             Remote Internships Across India
           </h1>
           <HandNote tone="amber">
-            live client repos · real stipends ✎
+            live client repos · 100% guaranteed placement ✎
           </HandNote>
         </div>
         <p className="lede-wide">
-          Explore over 10,000 verified internship opportunities and startup engineering sprints. Build production software under senior review, earn performance stipends, and graduate with cryptographic MSME credentials.
+          Explore over 10,000 verified internship opportunities and startup engineering sprints. Build production software under senior review, secure guaranteed internship placement (internal & external), and graduate with cryptographic MSME credentials.
         </p>
 
         <div className="flex justify-center gap-3 flex-wrap mt-4">
@@ -133,7 +133,7 @@ export default function InternshipsHubPage() {
             <span>⚡ 6,700+ Internships on Portal</span>
           </span>
           <span className="proof-mark">
-            <span>₹5,000–₹18,000 Stipends</span>
+            <span>100% Guaranteed Placement</span>
           </span>
           <span className="proof-mark">
             <span>✓ Turnitin Originality Rubrics</span>
@@ -186,7 +186,7 @@ export default function InternshipsHubPage() {
                 <div>
                   <div className="flex justify-between items-center mb-3">
                     <span className="tag-chip text-xs font-mono">{domain.badge}</span>
-                    <span className="text-xs font-mono text-emerald-400 font-semibold">{domain.stipend}</span>
+                    <span className="text-xs font-mono text-emerald-400 font-semibold">{domain.placement}</span>
                   </div>
                   <h3 className="font-mono text-xl font-bold text-white group-hover:text-accent transition-colors mb-2">
                     {domain.title}
@@ -201,7 +201,7 @@ export default function InternshipsHubPage() {
                   </div>
                   <div className="flex flex-col gap-2">
                     <a
-                      href={`https://lms.dbert.in/#signup?domain=${domain.slug}&next=/internships/${domain.slug}`}
+                      href={`https://lms.dbert.in/apply?domain=${domain.slug}&next=/internships/${domain.slug}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="btn btn-primary btn-sm text-center"

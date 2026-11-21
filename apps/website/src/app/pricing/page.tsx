@@ -149,7 +149,7 @@ export default function PricingPage() {
       kind: 'learner',
       who: 'Track 02 · Learners',
       title: 'Academy & Fellowship',
-      description: 'Transparent flat-rate programs from ₹1,599 with 7-day refund guarantee and monthly performance stipends up to ₹18,000.',
+      description: 'Transparent flat-rate programs from ₹1,599 with 7-day refund guarantee and 100% guaranteed internship placement across venture codebases.',
       ctaLabel: 'Explore Course Tiers',
       href: '/learners',
     },

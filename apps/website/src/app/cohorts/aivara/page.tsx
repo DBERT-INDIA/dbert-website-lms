@@ -6,6 +6,7 @@ import {
   Laptop,
   Clock,
   Banknote,
+  Briefcase,
   Globe2,
   GraduationCap,
   Wifi,
@@ -101,13 +102,13 @@ export default function AivaraCohortLandingPage() {
             </p>
           </div>
 
-          {/* 3. Earning Opportunity up to 22k */}
+          {/* 3. Guaranteed Placement */}
           <div className={styles.highlightCard}>
-            <span className="icon-chip"><Banknote size={18} aria-hidden="true" /></span>
-            <span className={styles.tagBadge}>PERFORMANCE STIPEND</span>
-            <h3>Earning Opportunity up to ₹22,000</h3>
+            <span className="icon-chip"><Briefcase size={18} aria-hidden="true" /></span>
+            <span className={styles.tagBadge}>GUARANTEED PLACEMENT</span>
+            <h3>100% Guaranteed Placement</h3>
             <p>
-              Get paid for verified shipping velocity and code quality. Eligible interns unlock milestone-based performance stipends ranging up to ₹22,000 based on sprint outputs.
+              Direct deployment across DBERT portfolio ventures (Gayatri AI, Alkame, Aivara) or verified corporate hiring partners upon sprint completion.
             </p>
           </div>
 

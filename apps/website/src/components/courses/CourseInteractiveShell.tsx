@@ -37,7 +37,7 @@ export interface DomainCourseData {
   headline: string;
   lede: string;
   salaryRange: string;
-  stipend: string;
+  placement: string;
   skills: string[];
   tools: string[];
   partnerRepo: {
@@ -111,8 +111,8 @@ export default function CourseInteractiveShell({ course, domain, alumni = [] }: 
                 <Zap size={18} />
               </div>
               <div>
-                <div className={s.outcomeLabel}>Fellowship Stipend</div>
-                <div className={s.outcomeValue}>{course.stipend}</div>
+                <div className={s.outcomeLabel}>Career Outcome</div>
+                <div className={s.outcomeValue}>{course.placement}</div>
               </div>
             </div>
 
@@ -170,7 +170,7 @@ export default function CourseInteractiveShell({ course, domain, alumni = [] }: 
                 <Zap size={15} style={{ color: '#10b981' }} /> ⚡ Structure 1: 2-Month Fellowship
               </div>
               <div className={s.trackTabSubtitle}>
-                Venture Sprints · Earn ₹5,000 Stipend · Program Fee ₹1,999
+                Venture Sprints · 100% Guaranteed Placement (Internal & External) · ₹1,999
               </div>
             </button>
 
@@ -218,7 +218,7 @@ export default function CourseInteractiveShell({ course, domain, alumni = [] }: 
 
               <p style={{ fontSize: '0.88rem', color: '#cbd5e1', lineHeight: 1.6, marginBottom: 16 }}>
                 {activeTrack === 'fellowship'
-                  ? 'Designed for engineers with foundational syntax competence. Work directly on production codebases, receive senior pull-request evaluations, and earn a ₹5,000 fixed milestone stipend upon completing audited capstone deliverables.'
+                  ? 'Designed for engineers with foundational syntax competence. Work directly on production codebases, receive senior pull-request evaluations, and secure 100% guaranteed internship placement across internal DBERT portfolio ventures (Gayatri AI, Alkame, Aivara) or verified corporate hiring partners.'
                   : 'An intensive, structured journey from foundational computer systems to large-scale enterprise deployment. Includes guided hands-on laboratories, live code walkthroughs, and guaranteed interview preparation sprints.'}
               </p>
 
@@ -238,7 +238,7 @@ export default function CourseInteractiveShell({ course, domain, alumni = [] }: 
                 <div style={{ padding: 12, background: 'rgba(255, 255, 255, 0.03)', borderRadius: 8, border: '1px solid rgba(255, 255, 255, 0.06)' }}>
                   <div style={{ fontSize: '0.72rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 700 }}>Outcome</div>
                   <div style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ffffff', marginTop: 2 }}>
-                    {activeTrack === 'fellowship' ? '₹5,000 Stipend + 3-Doc Packet' : 'Enterprise Placement Ready'}
+                    {activeTrack === 'fellowship' ? '100% Guaranteed Placement + 3-Doc Packet' : 'Enterprise Placement Ready'}
                   </div>
                 </div>
               </div>

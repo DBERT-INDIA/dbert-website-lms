@@ -216,7 +216,7 @@ export default function UiUxDesignCoursePage() {
             roleDescription: 'Master Figma auto-layout, interactive design systems, qualitative user research, wireframing, and usability heuristics. Build production product prototypes ready for design review.',
             cityTag: 'Remote',
             location: 'India · Remote / Hybrid',
-            stipend: '₹5,000 – ₹18,000 / mo',
+            placement: '100% Guaranteed Placement',
             tags: ['Remote', 'Verified', 'Active Sprint'],
             href: 'https://lms.dbert.in/internships/ui-ux-design',
           }

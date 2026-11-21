@@ -26,17 +26,17 @@ const steps = [
   },
   {
     number: '03',
-    title: 'System Hardening, Verifiable Credentials & Stipend Handoff (Weeks 7–8)',
+    title: 'System Hardening, Verifiable Credentials & Guaranteed Placement (Weeks 7–8)',
     description:
-      'Final system hardening, integration tests, and documentation. You receive your official 3-document credential packet (verifiable on /verify and directory), audited performance stipend disbursement, and referrals to hiring partner startups.',
+      'Final system hardening, integration tests, and documentation. You receive your official 3-document credential packet (verifiable on /verify and directory), 100% guaranteed internship placement across internal ventures or external partner network, and pre-vetted directory profile.',
   },
 ];
 
 const faqs = [
   {
-    question: 'Is the DBERT fellowship really a paid AI internship?',
+    question: 'Does the ₹1,999 Fellowship include Guaranteed Placement?',
     answer:
-      'Yes, with an audited performance structure. The stipend ranges from ₹5,000 to ₹18,000 across milestone deliverables, evaluated against 4 objective engineering criteria: code quality, architecture & security, test coverage, and documentation. Approved stipends are credited atomically and disbursed directly to the fellow\'s verified UPI ID via the LMS portal.',
+      'Yes. Fellows receive 100% guaranteed internship placement across internal DBERT portfolio ventures (Gayatri AI, Alkame, Aivara) or verified corporate hiring partners upon successful sprint completion. Direct applicants seeking LMS internship appointments undergo selective recruitment via lms.dbert.in/apply.',
   },
   {
     question: 'Do I have to complete DBERT Accelerate first?',
@@ -56,7 +56,7 @@ const faqs = [
   {
     question: 'How long is the fellowship and what does the ₹1,999 fee cover?',
     answer:
-      'The programme runs 2 months (8 weeks). The one-time fee of ₹1,999 covers 1-on-1 mentorship, senior code reviews, guaranteed assignment to an active production repository, and issuance of the 3-document verifiable credential packet. Performance stipends (₹5,000–₹18,000) are earned separately based on milestone deliverables.',
+      'The programme runs 2 months (8 weeks). The one-time fee of ₹1,999 covers 1-on-1 mentorship, senior code reviews, guaranteed assignment to an active production repository, issuance of the 3-document verifiable credential packet, and 100% guaranteed internship placement across internal or external partner squads.',
   },
   {
     question: 'Is this remote, and does it work alongside a degree or a job?',
@@ -136,13 +136,13 @@ export default function FellowshipProgramPage() {
             A paid AI internship where the code ships
           </h1>
           <HandNote tone="blue">
-            live client repos · real stipends ✎
+            live client repos · 100% guaranteed placement ✎
           </HandNote>
         </div>
         <p className="lede-wide">
           The DBERT Fellowship places you on a real client codebase under senior review — production
           systems for incubated startups, not practice projects. You leave with merged commits, a
-          performance stipend, and an experience letter a recruiter can verify.
+          100% guaranteed placement, and an experience letter a recruiter can verify.
         </p>
         <div className="flex justify-center gap-3 flex-wrap mt-4">
           <Link href="/verify" className="proof-mark">
@@ -152,7 +152,7 @@ export default function FellowshipProgramPage() {
             <span>✓ 465+ Certified Fellows Directory</span>
           </Link>
           <span className="proof-mark proof-mark-signal">
-            <span>₹5,000–₹18,000 Performance Stipend</span>
+            <span>100% Guaranteed Internship Placement</span>
           </span>
           <Link href="/about/credentials" className="proof-mark">
             <span>✓ MSME Registered Entity</span>
@@ -177,8 +177,8 @@ export default function FellowshipProgramPage() {
             </div>
             <div className="bento-card center">
               <span className="icon-chip"><Banknote aria-hidden="true" /></span>
-              <h3 className="accent-note">Performance stipends</h3>
-              <p className="text-sm">₹5,000 to ₹18,000, paid against delivery milestones and code quality rather than hours logged.</p>
+              <h3 className="accent-note">Guaranteed Placement</h3>
+              <p className="text-sm">100% guaranteed internship placement across internal DBERT portfolio ventures or hiring partners upon sprint completion.</p>
             </div>
             <div className="bento-card center">
               <span className="icon-chip"><Scroll aria-hidden="true" /></span>
@@ -215,7 +215,7 @@ export default function FellowshipProgramPage() {
               </div>
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
                 <span className="redline-del">Paying ₹1.5L upfront with empty job guarantees</span>
-                <span className="text-ok font-semibold">&rarr; Performance stipend up to ₹18,000</span>
+                <span className="text-ok font-semibold">&rarr; 100% Guaranteed Placement</span>
               </div>
             </div>
           </div>
@@ -270,10 +270,9 @@ export default function FellowshipProgramPage() {
             submission. That is what the selection decision is made on.
           </p>
 
-          <h3>How the performance stipend works: 4-dimension engineering rubric</h3>
+          <h3>How the Guaranteed Placement Program works</h3>
           <p>
-            The stipend ranges from <strong>₹5,000 to ₹18,000</strong> across delivery milestones. It is performance-based,
-            not an hourly wage. Submissions are made through our LMS technical task engine and audited by senior staff against 4 objective engineering dimensions:
+            Graduates of the 2-month applied fellowship receive <strong>100% Guaranteed Internship Placement</strong> across internal DBERT portfolio ventures (Gayatri AI, Alkame, Aivara) or verified corporate hiring partners. Sprint contributions are audited by senior staff against 4 objective engineering dimensions:
           </p>
           <ul>
             <li><strong>Code Quality &amp; Cleanliness:</strong> Adherence to strict linting (PEP8/ESLint), TypeScript or Python typing, modular architecture, and proper error boundaries.</li>
@@ -282,7 +281,7 @@ export default function FellowshipProgramPage() {
             <li><strong>Technical Documentation:</strong> Clear READMEs, architecture decision records, and endpoint documentation.</li>
           </ul>
           <p>
-            Approved milestone stipends are released atomically and disbursed via UPI directly to the fellow&apos;s verified account.
+            Upon satisfying capstone audit benchmarks, candidates are transitioned directly into active deployment across internal venture repositories or external hiring partner squads.
           </p>
           <p>
             The programme fee is <strong>₹1,999</strong> for the 2 months of technical incubation, covering 1-on-1 mentorship,
@@ -314,16 +313,13 @@ export default function FellowshipProgramPage() {
           <h2>What we guarantee vs what we do not claim</h2>
           <div className="disclosure">
             <p>
-              <strong>✓ What we guarantee:</strong> We guarantee active technical assignment to live venture repositories under senior engineer code review, 1-on-1 technical mentorship, and an independently verifiable credential packet upon milestone completion.
+              <strong>✓ What we guarantee:</strong> We guarantee 100% internship placement across internal DBERT portfolio ventures (Gayatri AI, Alkame, Aivara) or verified corporate hiring partners, active technical assignment to live repositories under senior engineer code review, and an independently verifiable 3-document credential packet upon milestone completion.
             </p>
             <p>
-              <strong>✗ We do not promise unconditional jobs or corporate hiring:</strong> Any programme in India claiming a 100% placement guarantee is either selecting so hard that the guarantee is meaningless or misleading applicants. A startup referral is an earned introduction, not an employment contract.
+              <strong>✓ Internal &amp; External Venture Placement:</strong> Placements are executed directly into active venture projects or partner engineering teams based on technical domain fit.
             </p>
             <p>
-              <strong>✗ We do not promise the top of the stipend band:</strong> Stipends are earned against the 4-dimension engineering rubric. Fellows who consistently ship high-quality code across all milestones achieve the upper band.
-            </p>
-            <p>
-              <strong>✓ Zero application fees:</strong> DBERT never charges application, registration, or interview screening fees.
+              <strong>✓ Zero application fees:</strong> DBERT never charges application, registration, or interview screening fees for candidates applying to the platform.
             </p>
           </div>
         </div>
@@ -352,7 +348,7 @@ export default function FellowshipProgramPage() {
               everyone who applies.
             </p>
             <p>
-              It is also why the stipend is performance-based rather than flat. The programme only
+              It is also why the fellowship is high-velocity and deliverables-oriented. The programme only
               works if fellows ship: a squad carrying someone who does not is a squad missing a client
               deadline.
             </p>

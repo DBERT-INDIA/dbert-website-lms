@@ -46,7 +46,7 @@ export default function TermsPage() {
                 <strong>Incubation Program:</strong> 2-month intensive engineering track with live client code repository assignments, 1:1 mentor code reviews, Turnitin originality evaluation, and guaranteed partner project placement. Total program fee is <strong>₹1,999</strong> (inclusive of taxes).
               </li>
               <li>
-                <strong>Performance Stipend:</strong> Performance stipends (₹5,000–₹18,000) are milestone-based and earned through verified pull requests and technical reports submitted via <a href="https://lms.dbert.in/stipend/tasks" className="text-amber-400 hover:underline">/stipend/tasks</a>, subject to AI screening and senior staff review.
+                <strong>Performance Stipend (LMS Direct Track):</strong> Performance stipends (₹5,000–₹18,000) for candidates enrolled in the direct LMS internship appointment track are milestone-based and earned through verified pull requests and technical reports submitted via <a href="https://lms.dbert.in/stipend/tasks" className="text-amber-400 hover:underline">/stipend/tasks</a>, subject to AI screening and senior staff review.
               </li>
             </ul>
           </div>

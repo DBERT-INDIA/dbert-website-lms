@@ -216,7 +216,7 @@ export default function DevopsCloudCoursePage() {
             roleDescription: 'Master Docker containerization, Kubernetes orchestration, CI/CD automated deployment pipelines, Linux server administration, and AWS cloud infrastructure through live terminal labs.',
             cityTag: 'Remote',
             location: 'India · Remote / Hybrid',
-            stipend: '₹5,000 – ₹18,000 / mo',
+            placement: '100% Guaranteed Placement',
             tags: ['Remote', 'Verified', 'Active Sprint'],
             href: 'https://lms.dbert.in/internships/devops-cloud',
           }
