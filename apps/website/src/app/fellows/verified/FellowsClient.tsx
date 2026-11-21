@@ -120,15 +120,15 @@ export default function FellowsClient({ fellows }: FellowsClientProps) {
           {/* STATS BENTO */}
           <div className={styles.statsGrid}>
             <div className={styles.statCard}>
-              <div className={styles.statVal}>470+</div>
-              <div className={styles.statLabel}>Incubation Fellows</div>
+              <div className={styles.statVal}>{fellows.length}</div>
+              <div className={styles.statLabel}>Verified Alumni</div>
             </div>
             <div className={styles.statCard}>
-              <div className={styles.statVal}>100%</div>
-              <div className={styles.statLabel}>Cryptographic Integrity</div>
+              <div className={styles.statVal}>465+</div>
+              <div className={styles.statLabel}>Incubation Scholars</div>
             </div>
             <div className={styles.statCard}>
-              <div className={styles.statVal}>12+</div>
+              <div className={styles.statVal}>10+</div>
               <div className={styles.statLabel}>Published Case Studies</div>
             </div>
             <div className={styles.statCard}>
@@ -266,7 +266,7 @@ export default function FellowsClient({ fellows }: FellowsClientProps) {
                   </Link>
 
                   <div className={styles.socialRow}>
-                    {hasLinkedIn ? (
+                    {hasLinkedIn && (
                       <a
                         href={fellow.linkedinUrl!}
                         target="_blank"
@@ -276,10 +276,6 @@ export default function FellowsClient({ fellows }: FellowsClientProps) {
                         <LinkedInIcon size={13} />
                         LinkedIn ↗
                       </a>
-                    ) : (
-                      <span className={styles.btnSocial} style={{ opacity: 0.4, cursor: 'default' }}>
-                        LinkedIn N/A
-                      </span>
                     )}
 
                     {hasArticle ? (
@@ -305,9 +301,21 @@ export default function FellowsClient({ fellows }: FellowsClientProps) {
                       <Link
                         href={`/verify/${fellow.certId}`}
                         className={styles.btnSocial}
+                        title="View Official 100-Mark Evaluation Rubric"
                       >
                         <Award size={13} />
                         Rubric ↗
+                      </Link>
+                    )}
+
+                    {!hasLinkedIn && (
+                      <Link
+                        href={`/verify/${fellow.certId}`}
+                        className={styles.btnSocial}
+                        title="View Cryptographically Verified Letter of Recommendation"
+                      >
+                        <ShieldCheck size={13} />
+                        Verified LOR ↗
                       </Link>
                     )}
                   </div>

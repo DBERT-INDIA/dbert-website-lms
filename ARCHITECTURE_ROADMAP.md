@@ -963,6 +963,21 @@ Applications (5,125) ───► Selected (4,227) ───► Caution Paid (38
   * Playwright automated mobile layout verification confirmed `windowWidth: 390`, `docScrollWidth: 390`, `bodyScrollWidth: 390` (0px horizontal spill, 100% contained).
   * Visual inspection confirmed all three user-flagged sections (Next Action Mission buttons, Resume Lesson button, and Micro-Tasks & Rewards box) are perfectly fitted, fully responsive, and completely unclipped.
 
+---
+
+## Phase 36: Verified Fellows Showcase Overhaul & Public Trust Remediation (Completed - Nov 21, 2026)
+- **Root Cause & Vulnerability Audit on `/fellows/verified`**:
+  * **Test Fixture Purge**: Removed 8 internal mock test accounts (`CERT-DBERT-2026-*-901` through `907` with emails `@dbert.test` and names containing admin status markers such as 'Kavya Nair (5,000 Coins in Wallet)', 'Hari Prasad (Gate 3 UPI Missing)', 'Lalit Deshmukh (Payout in Admin Queue)', and 'Jayesh Shah (In Staff Decision Queue)'). Stored safely in `data/test_fixtures_certificates.json`.
+  * **Candidate-Level Deduplication**: Converted dataset generation from certificate-level to unique candidate identity (resolved multi-certificate candidates such as Sakthi P, Priyanshu Kalondia, Gurveer Singh, Arnak Ray, Vansh Choudhary). Total verified alumni cleanly normalized to **92 unique verified fellows**.
+  * **Provisional Filtering**: Strictly excluded unverified provisional interns from the alumni showcase.
+  * **Elimination of 'LinkedIn N/A' Anti-Pattern**: Refactored `FellowsClient.tsx` so that missing LinkedIn URLs never render a negative disabled 'N/A' badge. Replaced with active verified proof links (`Evaluation Rubric ↗`, `Verified LOR ↗`, `GitHub ↗`).
+  * **Hero Metric Harmonization**: Updated hero stats to accurately state: `92 Verified Alumni`, `465+ Incubation Scholars`, `10+ Published Case Studies`, `Govt. MSME UDYAM-UP-29-0109046`.
+  * **Route Collision Resolution**: Resolved Next.js dynamic route segment collision between `/internships/[role]` and `/internships/[slug]` by unifying the single-segment dispatcher into `apps/website/src/app/internships/[role]/page.tsx`.
+- **Production Build & Verification**:
+  * Rebuilt Next.js standalone application on EC2 (`ubuntu@3.26.237.171`), verified `dbert-website.service` active.
+  * Live Playwright audit confirmed `HTTP 200`, exactly `92` unique cards, zero duplicate names, zero test keywords, and zero 'LinkedIn N/A' text across the entire page.
+
+
 
 
 

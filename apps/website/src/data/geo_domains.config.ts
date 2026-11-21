@@ -98,6 +98,13 @@ export const GEO_ROLES: Record<string, GeoRoleMeta> = {
     stipend: '₹5,000 fixed + up to ₹18,000 performance incentive (Total up to ₹23,000)',
     desc: 'Build cross-platform iOS and Android applications connected to cloud backends with offline local caching.'
   },
+  'machine-learning': {
+    slug: 'machine-learning',
+    title: 'Machine Learning & Generative AI',
+    skills: ['PyTorch', 'Transformers', 'LoRA / QLoRA', 'LangChain', 'FastAPI', 'RAG'],
+    stipend: '₹5,000 fixed + up to ₹18,000 performance incentive (Total up to ₹23,000)',
+    desc: 'Fine-tune open-weights LLMs, construct production RAG vector pipelines, and deploy low-latency inference endpoints.'
+  },
   'digital-marketing': {
     slug: 'digital-marketing',
     title: 'Digital Marketing & Growth',

@@ -306,6 +306,90 @@ export const CANONICAL_DOMAINS: Record<string, DomainMeta> = {
         answer: 'Verified mobile developers are ready to integrate into your existing Git workflows within 48 to 72 hours.'
       }
     ]
+  },
+  'ai-agent-development': {
+    slug: 'ai-agent-development',
+    name: 'AI Agent & Multi-Agent Systems',
+    shortName: 'AI Agents',
+    badge: '🤖 Autonomous Multi-Agent Systems',
+    headline: 'Pre-Vetted AI Agent Developers (LangGraph, CrewAI & Local LLMs)',
+    description: 'Browse pre-vetted AI Agent developers evaluated on autonomous multi-agent state machines, LangGraph, CrewAI, local GGUF weight quantization, and tool-calling pipelines. Onboard in 48 hours.',
+    rawMatches: [
+      'AI Agent Development',
+      'AI Agent & LLM Systems',
+      'AI Agent Systems'
+    ],
+    primarySkills: ['LangGraph', 'CrewAI', 'Ollama', 'vLLM', 'Python', 'FastAPI', 'RAG'],
+    secondarySkills: ['State Machines', 'GGUF Quantization', 'Vector DBs', 'Function Calling', 'PostgreSQL', 'Docker'],
+    seoTitle: 'Pre-Vetted AI Agent Developers | DBERT Directory',
+    seoDescription: 'Hire pre-vetted AI Agent engineers evaluated on LangGraph, CrewAI & local open-weights LLMs with Turnitin rubrics and verified pull requests.',
+    keywords: [
+      'Hire AI agent developers India',
+      'LangGraph engineers',
+      'CrewAI specialists',
+      'Multi-agent system developers',
+      'Autonomous AI agents'
+    ],
+    faqs: [
+      {
+        question: 'How does DBERT screen AI Agent developers?',
+        answer: 'Candidates are evaluated on constructing autonomous agent state machines, tool-calling execution loops, and local open-weights model inference (Ollama, vLLM).'
+      },
+      {
+        question: 'What frameworks do our AI Agent engineers master?',
+        answer: 'Core competency covers LangGraph, CrewAI, AutoGen, FastAPI backend integration, pgvector semantic search, and structured JSON tool-calling.'
+      },
+      {
+        question: 'Can candidates deploy air-gapped local AI models?',
+        answer: 'Yes. Candidates are trained to quantize and serve GGUF weights locally to ensure zero recurring API costs and complete corporate privacy.'
+      },
+      {
+        question: 'What is the onboarding turnaround time?',
+        answer: 'Verified AI agent engineers with audited pull requests can be integrated into your development sprints within 48 to 72 hours.'
+      }
+    ]
+  },
+  'cybersecurity': {
+    slug: 'cybersecurity',
+    name: 'Cybersecurity & Threat Defense',
+    shortName: 'Cybersecurity',
+    badge: '🛡️ Threat Defense & Infosec',
+    headline: 'Pre-Vetted Cybersecurity Engineers (OWASP, SIEM & Penetration Testing)',
+    description: 'Deploy pre-vetted Cybersecurity engineers evaluated on OWASP Top 10 web vulnerabilities, Wireshark packet capture, SIEM logging, SOC analysis, and Linux infrastructure hardening. Onboard in 48 hours.',
+    rawMatches: [
+      'Cybersecurity',
+      'Cybersecurity & Threat Defense',
+      'Information Security'
+    ],
+    primarySkills: ['OWASP Top 10', 'Wireshark', 'Burp Suite', 'SIEM Logs', 'SOC Analysis', 'Linux'],
+    secondarySkills: ['Network Security', 'Penetration Testing', 'Nmap', 'Metasploit', 'Incident Response', 'Cryptography'],
+    seoTitle: 'Pre-Vetted Cybersecurity Engineers | DBERT Directory',
+    seoDescription: 'Hire pre-vetted Cybersecurity and threat defense engineers evaluated on OWASP Top 10, penetration testing, and SIEM security audits. Onboard in 48 hours.',
+    keywords: [
+      'Hire cybersecurity engineers India',
+      'OWASP penetration testers',
+      'SOC analysts India',
+      'Information security candidates',
+      'Vetted cybersecurity directory'
+    ],
+    faqs: [
+      {
+        question: 'How are Cybersecurity engineers evaluated at DBERT?',
+        answer: 'Engineers undergo rigorous hands-on assessments covering OWASP Top 10 web vulnerabilities, packet inspection with Wireshark, SIEM incident detection, and Linux system hardening.'
+      },
+      {
+        question: 'Do candidates have experience with real penetration testing?',
+        answer: 'Yes. Candidates perform authorized black-box and grey-box penetration tests, document CVSS vulnerability scores, and formulate remediation pull requests.'
+      },
+      {
+        question: 'Can candidates manage SOC alerts and incident response?',
+        answer: 'Yes. Candidates are trained in log analysis, brute-force detection, intrusion detection systems (IDS/IPS), and containment runbooks.'
+      },
+      {
+        question: 'Is there a risk-free trial for Cybersecurity hires?',
+        answer: 'Yes. All candidate placements come with a 14-day risk-free evaluation guarantee.'
+      }
+    ]
   }
 };
 
