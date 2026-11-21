@@ -105,3 +105,6 @@ Thumbs.db
 
 *.docx
 test_artifacts/
+data/raw_ec2_dashboard_feed.json
+data/realtime_dashboard_summary.json
+data/realtime_system_audit.json

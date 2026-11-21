@@ -130,3 +130,51 @@ def admin_integrity_heal():
         "report": report,
     })
 
+
+@admin_bp.route("/admin/analytics", methods=["GET"])
+def admin_analytics():
+    """Universal Traffic, Device, Landing Page & SEO Keyword Intelligence Dashboard."""
+    import os, json
+    with get_db() as conn:
+        admin_user = AuthService.require_admin(conn)
+        if not admin_user:
+            if request.is_json or request.args.get("format") == "json" or request.headers.get("Accept") == "application/json":
+                return jsonify({"status": "error", "message": "Unauthorized"}), 401
+            return redirect("/admin/login")
+
+    base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    traffic_file = os.path.join(base_dir, "data", "traffic_analytics_summary.json")
+    seo_file = os.path.join(base_dir, "data", "seo_keyword_intelligence.json")
+
+    traffic_data = {}
+    if os.path.exists(traffic_file):
+        try:
+            with open(traffic_file, "r", encoding="utf-8") as f:
+                traffic_data = json.load(f)
+        except Exception:
+            pass
+
+    seo_data = {}
+    if os.path.exists(seo_file):
+        try:
+            with open(seo_file, "r", encoding="utf-8") as f:
+                seo_data = json.load(f)
+        except Exception:
+            pass
+
+    if request.is_json or request.args.get("format") == "json" or request.headers.get("Accept") == "application/json":
+        return jsonify({
+            "status": "success",
+            "traffic": traffic_data,
+            "seo": seo_data,
+            "timestamp": now_str(),
+        })
+
+    return render_template(
+        "admin_analytics.html",
+        traffic=traffic_data,
+        seo=seo_data,
+        now=now_str(),
+    )
+
+

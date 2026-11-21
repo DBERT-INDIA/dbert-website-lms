@@ -230,6 +230,8 @@ The following table documents completed and ongoing programmatic batch dispatche
 | **43 Expiring Posts Renewal (Nov 20, 2026)** | Posts expiring <= 2026-11-27 (IDs 24–33, 37–51, 55–69, 73–75) | 43 internship posts | Extended `apply_by` to 2027-01-15 and `expires_at` to 2027-02-15; refreshed SEO-rich 2026/2027 titles; standardized DBERT Incubation `/enroll/1999` pathway; synced to `https://lms.dbert.in/sitemap.xml` with lastmod `2026-11-20` | `scripts/renew_43_expiring_posts.py` | `data/expiring_43_posts.json` |
 | **14 Verified Candidates Upgrade (Nov 20, 2026)** | Inbound ₹299 Gateway via `/verify/unlock` (Sakthi P, Pulluri Bhargavi, Bhargavi Poola, Yasharth Poddar, Radha Bhamodkar, Shanmukha Sri Saikumar Medisetty, Shanu Sri Gowtham, Kolloju Meghana, M Brahmani, Bhargavi C K, Deepanshu, Siva Sankar Thirumalasetty, Satya Patil, Kundan Kumhar) | 14 candidates upgraded | ₹299 fee verified, official 3-doc PDF credential packets generated, preview PNGs deployed, promoted to Tab 1 (Pre-Vetted Engineers) on `/verify/directory`, synced to PostgreSQL `intern_certificates` with `tier='verified'`, unlocking Gate 1 for stipend release | `scripts/issue_14_verified_certificates.py`, `scripts/deploy_14_verified_certificates_to_ec2.py` | `data/verification_submissions_299.json`, `apps/website/src/data/certificates_registry.json`, `apps/website/src/data/directory_candidates.json` |
 | **4 Verified Candidates Upgrade (Nov 20, 2026 - Evening)** | Inbound ₹299 Gateway via `/verify/unlock` (Suraj Shivsunder Jha, Devanshi Yadav, G.Vinay Kumar Reddy, Bharathan K) & Gate 1 unlock for Subhradip Das, Burra Thanvesh, Shruthi Yuvnuv. V | 4 upgraded + 3 Gate 1 verified | ₹299 fee verified, Devanshi Yadav 3-doc PDF credential packet & preview PNG generated, all 4 promoted to Tab 1 (Pre-Vetted Engineers) on `/verify/directory`, synced to PostgreSQL `intern_certificates` and `intern_accounts` with `tier='verified'` and `stipend_verified=1`, unlocking Gate 1 for stipend release | `scripts/issue_new_batch_299.py`, `scripts/deploy_new_batch_299_to_ec2.py` | `data/verification_submissions_299.json`, `apps/website/src/data/certificates_registry.json`, `apps/website/src/data/directory_candidates.json` |
+| **60 ₹299 Target Queue (Nov 20, 2026)** | High-intent active interns with provisional certs / tasks | 60 candidates (57 sent, 1 failed, 2 skipped) | Sent via dual accounts with 18s–35s pacing; directory and direct unlock URL in first 10 lines | `scripts/dispatch_60_targets_299_whatsapp.py` | `data/whatsapp_299_queue_acc1.json`, `data/whatsapp_299_queue_acc2.json`, `data/whatsapp_dispatch_299.log` |
+| **Batch 35 Locked Interns ₹299 & ₹5,000 Stipend (Nov 21, 2026)** | Active provisional interns with release pending tasks (zero prior contact) | 35 candidates (35 sent, 0 failed, 0 skipped · 100% delivered) | Sent strictly via verified logged-in Account 2 with 18s–35s human pacing; directory and direct unlock URL in first 10 lines; 100% verified zero prior contact in 299/stipend campaigns | `scripts/dispatch_batch35_299_acc2.py` | `data/whatsapp_299_queue_batch35_acc2.json`, `data/dispatch_tracking_batch35_acc2.csv`, `data/dbert_whatsapp_sent_today.json` |
 
 ### 8.2. Operational Protocols & Safety Governance
 1. **409 Provisional Batch Delivery Rules**:
@@ -2832,3 +2834,128 @@ A multi-agent adversarial audit evaluated the DBERT platform from the perspectiv
 - **Phase 2 (Week 1 P1)**: Purge QA test accounts from `llms-full.txt`; add ₹299 verification section to `llms.txt`; document the 4 stipend gates and Dec 3 2026 floor.
 - **Phase 3 (Week 2 P2)**: Add UI/UX track to `/enroll/1999`; harmonize legal entity name to "Digital Blinc Education Research and Technology".
 - **Phase 4 (Month 1 P3)**: Polish recruiter lead routing on LMS; clean prompt leaks in blog metadata.
+
+---
+
+## 29. Production Real-Time Operations Cockpit & 5-Gate Lifecycle Matrix Baseline
+
+### 29.1. Production Database & Registry Baseline (21 Nov 2026 Audit)
+A live multi-tier audit was executed across the production PostgreSQL database (\dbert_lms\ on EC2 .26.237.171\), local registries, and transaction queues:
+
+| Metric Area | Subsystem / Table | Real-Time Value | Operational Status & Action Item |
+|---|---|:---:|---|
+| **LMS Applications** | \pplications\ (PostgreSQL) | **5,125** | 4,227 Selected, 407 Accepted, 331 Rejected, 79 Under Review, 81 Other |
+| **LMS Intern Accounts** | \intern_accounts\ (PostgreSQL) | **2,973** | Active student accounts registered on LMS |
+| **Track A: Caution Deposit (₹499)** | \enrollments\ (PostgreSQL) | **389 Paid** | ₹89,429 recorded revenue; 6 verified, 1 pending |
+| **Track B: Incubation Balance (₹1,500)** | \alance_enrollments_1500.json\ | **8 Total** | 2 Approved, 4 Pending Staff Review, 2 Other |
+| **Track D: Verification Gate (₹299)** | \erification_submissions_299.json\ | **25 Total** | 25 Approved (100% processed, ₹7,475 revenue) |
+| **Master Certificate Registry** | \certificates_registry.json\ | **475 Total** | 101 Verified, **374 Provisional Pending ₹299 Gate** |
+| **Pre-Vetted Engineers Directory** | \directory_candidates.json\ | **473 Total** | 94 Tab 1 (Verified), **379 Tab 2 (Provisional)** |
+| **Stipend Pipeline (Gate 1)** | \intern_certificates\ + \intern_accounts\ | **143 Verified** | All 143 have unlocked Gate 1 credential verification |
+| **Gate 2: Maturation Schedule** | Canonical Formula | **138 on 03 Dec** | 138 maturing on 03 Dec 2026; 5 maturing on 30 Dec 2026 |
+| **Gate 3: Payout Setup (UPI)** | \ia.upi_id_encrypted\ | **53 Set / 90 Missing** | **P1 Action**: 90 verified candidates need UPI configuration nudge |
+| **Gate 4: Capstone Dossier** | \	ask_submissions\ (Tasks 3 & 4) | **28 Submitted** | 20 Pending Review, 8 Revision Needed, 115 Missing |
+| **Gate 5: Ready for Release** | 5-Gate Intersection | **20 Ready** | Verified + Scheduled 03 Dec + UPI Set + Capstone in Queue |
+| **Task Submissions Queue** | \	ask_submissions\ (All tasks) | **69 Total** | 55 Pending Review, 13 Changes Requested, 1 Approved |
+| **Dual Coin Ledgers** | \coin_ledger_mirror\ | **35,130 Coins** | 35,000 Referral (Withdrawable) / 130 Task (Educational) |
+
+### 29.2. Real-Time Introspection & Audit Queries
+\\sql
+-- 1. Verified candidates with gate details
+SELECT DISTINCT ic.cert_id, ic.tier, ic.email as cert_email, 
+       ia.id as intern_id, ia.name, ia.email as acct_email,
+       ia.upi_id_encrypted, ia.stipend_verified, ia.stipend_release_date
+FROM intern_certificates ic
+LEFT JOIN intern_accounts ia ON (LOWER(ia.email) = LOWER(ic.email) OR ia.id = ic.intern_id)
+WHERE ic.tier = 'verified';
+
+-- 2. Capstone task submissions (Tasks 3 and 4)
+SELECT ts.id, ts.task_id, ts.intern_id, ts.status, ts.created_at,
+       ts.ai_evaluation_score, ts.ai_evaluation_status,
+       ia.name, ia.email, ia.upi_id_encrypted,
+       ic.cert_id, ic.tier
+FROM task_submissions ts
+JOIN intern_accounts ia ON ia.id = ts.intern_id
+LEFT JOIN intern_certificates ic ON (LOWER(ic.email) = LOWER(ia.email) OR ic.intern_id = ia.id)
+WHERE ts.task_id IN (3, 4)
+ORDER BY ts.created_at DESC;
+
+-- 3. Dual coin ledger breakdown
+SELECT ledger_kind, count(*) as count, sum(delta) as total_coins 
+FROM coin_ledger_mirror 
+GROUP BY ledger_kind;
+\
+### 29.3. Operational Action Playbook for 03 Dec 2026 Release
+1. **Immediate P0 (Next 48h)**:
+   - Staff review the **20 pending capstone submissions** on \https://lms.dbert.in/staff/tasks\ (Tasks 3 and 4).
+   - Staff evaluate the **4 pending ₹1,500 incubation balance submissions** in \data/balance_enrollments_1500.json\.
+2. **P1 Nudge Campaign (7 Days Before 03 Dec)**:
+   - Dispatch WhatsApp & Email nudge to the **90 verified candidates missing UPI configuration**, directing them to \https://lms.dbert.in/account/profile\ or \https://lms.dbert.in/intern/ambassador/withdraw\.
+   - Dispatch reminder to the **115 verified candidates missing capstone submissions**, directing them to \https://lms.dbert.in/stipend/tasks\.
+3. **P2 Release Day (03 Dec 2026)**:
+   - Batch execute payout for all candidates who meet all 5 gates (eadiness = '100% Ready for Release'\).
+   - Atomically credit 5,000 coins to referral ledger and disburse via single-reveal UPI payout queue.
+
+### 29.4. Batch 35 WhatsApp Outreach Execution & Audit (21 Nov 2026)
+- **Campaign Goal**: Reach high-intent locked provisional interns who have milestone tasks and release pending status, notifying them to complete their official ₹299 credential verification to unlock Gate 1 and release their ₹5,000 milestone stipend.
+- **Strict Deduplication**: All candidates pre-screened against all historical WhatsApp dispatch files (`dbert_whatsapp.db`, `dbert_whatsapp_sent_today.json`, `whatsapp_unlocked_sent.json`, `dispatch_tracking_stipend_299.csv`). 100% guaranteed zero prior WhatsApp contact in 299 or stipend release campaigns.
+- **Account Used**: Strictly **Account 2** (`.chrome_session_account2`), verified active and authenticated. Account 1 bypassed due to session issue.
+- **Delivery Results**:
+  * Total Processed: **35 candidates**
+  * Confirmed Delivered (`SENT`): **35 candidates (100% success rate)**
+  * Skipped: **0**
+  * Failed: **0**
+  * Human Pacing: 18s–35s randomized pause between deliveries.
+  * Audit Artifacts: `data/whatsapp_299_queue_batch35_acc2.json`, `data/dispatch_tracking_batch35_acc2.csv`, `data/whatsapp_dispatch_299.log`, `scripts/dispatch_batch35_299_acc2.py`.
+
+---
+
+## 30. Universal Traffic Attribution, Device Analytics & SEO Keyword Intelligence Architecture
+
+### 30.1. Architectural Mandate & Pipeline Overview
+To maintain complete visibility over candidate acquisition, AI search traffic, device trends, and keyword rankings, DBERT operates a hybrid edge and server-side intelligence pipeline:
+1. **Client-Side First-Touch Attribution (`TrafficAttributionTracker.tsx`)**:
+   - Runs across all public routes on `https://dbert.in`.
+   - Records landing page, referrer domain, channel category, UTM parameters, device type, and screen resolution.
+   - Persists in a 30-day cross-subdomain cookie (`dbert_ft`) with `.dbert.in` scope and `localStorage`.
+   - Fires non-blocking telemetry beacons to `POST /api/telemetry/traffic`.
+2. **Server-Side Nginx Log Intelligence Daemon (`scripts/parse_nginx_traffic.py`)**:
+   - Parses EC2 Nginx access logs (`/var/log/nginx/access.log`), filtering out static assets.
+   - Categorizes incoming traffic into 5 distinct channels:
+     * **AI Assistant Referrals**: Human users clicking recommendations from `chatgpt.com`, `perplexity.ai`, `claude.ai`, `gemini.google.com`, `copilot.microsoft.com`.
+     * **Organic Search**: Visitors from `google.`, `bing.`, `duckduckgo.`, `yahoo.`.
+     * **WhatsApp Outreach**: Visitors arriving with `utm_source=whatsapp` or `wa.me` referrers.
+     * **Direct / Alumni Verification**: Direct navigation or internal certificate verification clicks.
+     * **AI Search Web Crawlers**: Automated indexers including `GPTBot`, `ClaudeBot`, `PerplexityBot`, `Google-Extended`, and `ByteSpider`.
+   - Classifies devices into Mobile, Tablet, and Desktop.
+   - Aggregates metrics into `data/traffic_analytics_summary.json`.
+3. **Database-Backed GSC Keyword Intelligence Engine (`scripts/ingest_gsc_data.py`)**:
+   - Ingests Search Console CSV exports from `data/google/` (`Queries.csv`, `Pages.csv`, `Devices.csv`, `Countries.csv`).
+   - Computes converting queries, CTR optimization targets, and high-potential "Striking-Distance" keywords (ranks 4.0–20.0 with high impression volume).
+   - Generates `data/seo_keyword_intelligence.json`.
+4. **Dual Interface**:
+   - **Admin Web Dashboard**: Accessible at `https://lms.dbert.in/admin/analytics` with responsive dark-theme visual stat cards, traffic channel bars, device visualizers, top landing pages, and GSC keyword tables.
+   - **Unified Agent/CLI Intelligence Tool (`scripts/traffic_and_ranking_intelligence.py`)**:
+     * `python scripts/traffic_and_ranking_intelligence.py --summary`: 24h executive briefing.
+     * `python scripts/traffic_and_ranking_intelligence.py --keywords`: Striking distance opportunities.
+     * `python scripts/traffic_and_ranking_intelligence.py --sitemap-sync`: Compares ranking search queries with `sitemap.ts` and `lms.dbert.in/sitemap.xml` to generate content and keyword recommendations.
+
+### 30.2. Live Production Telemetry Baseline (EC2 Access Logs & GSC)
+- **Total Processed Page Views**: 46,939 views
+- **Total Unique Visitors**: 3,493 visitors
+- **Device Distribution**: Desktop: 38,165 (81.3%) | Mobile: 8,774 (18.7%)
+- **AI Assistant Inbound Referrals**: 599 human user visits referred directly by ChatGPT (`chatgpt.com` / `openai.com`).
+- **AI Web Crawlers & Indexers**: 314 `Chatgpt-user`, 200 `Claudebot`, 82 `Gptbot`, 2 `Perplexitybot`.
+- **Top Inbound Landing Pages**:
+  1. `/attendance/ping` (9,608 views)
+  2. `/intern/me` (3,016 views)
+  3. `/` (2,476 views)
+  4. `/intern/latest-posts` (1,471 views)
+  5. `/verify/directory` (850 views)
+  6. `/hire/pre-vetted-engineers` (692 views)
+  7. `/verify` (689 views)
+  8. `/startups/services/technical` (543 views)
+  9. `/startups/services/funding` (534 views)
+  10. `/startups/services/equity` (531 views)
+- **Top Organic Search Queries**: `dbert` (Rank 1.53, 14 clicks, 72 imp), `dbert company` (Rank 1.95, 3 clicks, 38 imp), `flutter internship` (Rank 2.0, 1 click).
+

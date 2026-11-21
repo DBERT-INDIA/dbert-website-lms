@@ -1,0 +1,428 @@
+{
+  "ingested_at": "2026-11-21T11:14:06.315121+00:00",
+  "total_queries_indexed": 151,
+  "total_organic_clicks": 18,
+  "total_organic_impressions": 476,
+  "top_performing_queries": [
+    {
+      "query": "dbert",
+      "clicks": 14,
+      "impressions": 72,
+      "ctr_pct": 19.44,
+      "position": 1.53,
+      "intent": "Brand",
+      "opportunity_score": 47.06
+    },
+    {
+      "query": "dbert company",
+      "clicks": 3,
+      "impressions": 38,
+      "ctr_pct": 7.89,
+      "position": 1.95,
+      "intent": "Brand",
+      "opportunity_score": 19.49
+    },
+    {
+      "query": "flutter internship",
+      "clicks": 1,
+      "impressions": 1,
+      "ctr_pct": 100.0,
+      "position": 2,
+      "intent": "Internship & Careers",
+      "opportunity_score": 0.5
+    }
+  ],
+  "striking_distance_keywords": [
+    {
+      "query": "thinknovaa",
+      "clicks": 0,
+      "impressions": 92,
+      "ctr_pct": 0.0,
+      "position": 9.07,
+      "intent": "Competitor / Industry",
+      "opportunity_score": 10.14
+    },
+    {
+      "query": "skipto ai international private limited",
+      "clicks": 0,
+      "impressions": 17,
+      "ctr_pct": 0.0,
+      "position": 7.76,
+      "intent": "Internship & Careers",
+      "opportunity_score": 2.19
+    },
+    {
+      "query": "deepthought culturetech ventures private limited internship",
+      "clicks": 0,
+      "impressions": 14,
+      "ctr_pct": 0.0,
+      "position": 9,
+      "intent": "Internship & Careers",
+      "opportunity_score": 1.56
+    },
+    {
+      "query": "innoknowvex coimbatore",
+      "clicks": 0,
+      "impressions": 13,
+      "ctr_pct": 0.0,
+      "position": 8.46,
+      "intent": "Competitor / Industry",
+      "opportunity_score": 1.54
+    },
+    {
+      "query": "how to implement reciprocal rank fusion rrf in python",
+      "clicks": 0,
+      "impressions": 10,
+      "ctr_pct": 0.0,
+      "position": 8,
+      "intent": "Technical & Engineering",
+      "opportunity_score": 1.25
+    },
+    {
+      "query": "ai83649",
+      "clicks": 0,
+      "impressions": 5,
+      "ctr_pct": 0.0,
+      "position": 4.6,
+      "intent": "Technical & Engineering",
+      "opportunity_score": 1.09
+    },
+    {
+      "query": "ai83499",
+      "clicks": 0,
+      "impressions": 5,
+      "ctr_pct": 0.0,
+      "position": 5.2,
+      "intent": "Technical & Engineering",
+      "opportunity_score": 0.96
+    },
+    {
+      "query": "infinexa learning solutions psychology internship",
+      "clicks": 0,
+      "impressions": 9,
+      "ctr_pct": 0.0,
+      "position": 10.11,
+      "intent": "Internship & Careers",
+      "opportunity_score": 0.89
+    }
+  ],
+  "ctr_fix_opportunities": [
+    {
+      "query": "thinknovaa",
+      "clicks": 0,
+      "impressions": 92,
+      "ctr_pct": 0.0,
+      "position": 9.07,
+      "intent": "Competitor / Industry",
+      "opportunity_score": 10.14
+    },
+    {
+      "query": "skipto ai international private limited",
+      "clicks": 0,
+      "impressions": 17,
+      "ctr_pct": 0.0,
+      "position": 7.76,
+      "intent": "Internship & Careers",
+      "opportunity_score": 2.19
+    },
+    {
+      "query": "deepthought culturetech ventures private limited internship",
+      "clicks": 0,
+      "impressions": 14,
+      "ctr_pct": 0.0,
+      "position": 9,
+      "intent": "Internship & Careers",
+      "opportunity_score": 1.56
+    },
+    {
+      "query": "innoknowvex coimbatore",
+      "clicks": 0,
+      "impressions": 13,
+      "ctr_pct": 0.0,
+      "position": 8.46,
+      "intent": "Competitor / Industry",
+      "opportunity_score": 1.54
+    },
+    {
+      "query": "how to implement reciprocal rank fusion rrf in python",
+      "clicks": 0,
+      "impressions": 10,
+      "ctr_pct": 0.0,
+      "position": 8,
+      "intent": "Technical & Engineering",
+      "opportunity_score": 1.25
+    }
+  ],
+  "top_landing_pages": [
+    {
+      "page": "https://dbert.in/",
+      "clicks": 31,
+      "impressions": 242,
+      "ctr_pct": 12.81,
+      "position": 2.15
+    },
+    {
+      "page": "https://dbert.in/verify",
+      "clicks": 4,
+      "impressions": 25,
+      "ctr_pct": 16.0,
+      "position": 4.36
+    },
+    {
+      "page": "https://dbert.in/ai-solutions/llm-training/dbert-ai",
+      "clicks": 2,
+      "impressions": 57,
+      "ctr_pct": 3.51,
+      "position": 5.86
+    },
+    {
+      "page": "https://lms.dbert.in/",
+      "clicks": 2,
+      "impressions": 51,
+      "ctr_pct": 3.92,
+      "position": 8.82
+    },
+    {
+      "page": "https://dbert.in/about/team",
+      "clicks": 2,
+      "impressions": 26,
+      "ctr_pct": 7.69,
+      "position": 6.88
+    },
+    {
+      "page": "https://dbert.in/verify/CERT-DBERT-2026-DA-015",
+      "clicks": 2,
+      "impressions": 4,
+      "ctr_pct": 50.0,
+      "position": 2.25
+    },
+    {
+      "page": "https://dbert.in/about",
+      "clicks": 1,
+      "impressions": 85,
+      "ctr_pct": 1.18,
+      "position": 8.01
+    },
+    {
+      "page": "https://dbert.in/about/credentials",
+      "clicks": 1,
+      "impressions": 23,
+      "ctr_pct": 4.35,
+      "position": 6.52
+    },
+    {
+      "page": "https://lms.dbert.in/internships/data-analyst/india",
+      "clicks": 1,
+      "impressions": 18,
+      "ctr_pct": 5.56,
+      "position": 48.22
+    },
+    {
+      "page": "https://dbert.in/about/careers",
+      "clicks": 1,
+      "impressions": 17,
+      "ctr_pct": 5.88,
+      "position": 7.29
+    },
+    {
+      "page": "https://lms.dbert.in/internships",
+      "clicks": 1,
+      "impressions": 16,
+      "ctr_pct": 6.25,
+      "position": 5.56
+    },
+    {
+      "page": "https://dbert.in/terms",
+      "clicks": 1,
+      "impressions": 15,
+      "ctr_pct": 6.67,
+      "position": 1.93
+    },
+    {
+      "page": "https://lms.dbert.in/job/lead/268/jindal-steel-get-interns-hiring-drive-pan-india-jindal-steel",
+      "clicks": 1,
+      "impressions": 10,
+      "ctr_pct": 10.0,
+      "position": 12.3
+    },
+    {
+      "page": "https://lms.dbert.in/internship/lead/3580/python-development-intern-zenithbyte",
+      "clicks": 1,
+      "impressions": 6,
+      "ctr_pct": 16.67,
+      "position": 5
+    },
+    {
+      "page": "https://www.dbert.in/verify/CERT-DBERT-2026-AIML-106",
+      "clicks": 1,
+      "impressions": 5,
+      "ctr_pct": 20.0,
+      "position": 4
+    },
+    {
+      "page": "https://dbert.in/internships",
+      "clicks": 1,
+      "impressions": 4,
+      "ctr_pct": 25.0,
+      "position": 6.25
+    },
+    {
+      "page": "https://lms.dbert.in/internship/lead/1576/ai-product-manager-aaamt-verticals-private-limited",
+      "clicks": 1,
+      "impressions": 4,
+      "ctr_pct": 25.0,
+      "position": 7.75
+    },
+    {
+      "page": "https://lms.dbert.in/internships/ai-agent-development",
+      "clicks": 1,
+      "impressions": 4,
+      "ctr_pct": 25.0,
+      "position": 9
+    },
+    {
+      "page": "https://lms.dbert.in/internships/cloud-security-threat-hunting-intern-at-crowdstrike-cyb-201",
+      "clicks": 1,
+      "impressions": 3,
+      "ctr_pct": 33.33,
+      "position": 7
+    },
+    {
+      "page": "https://www.dbert.in/verify/CERT-DBERT-2026-DA-149",
+      "clicks": 1,
+      "impressions": 2,
+      "ctr_pct": 50.0,
+      "position": 1
+    },
+    {
+      "page": "https://www.dbert.in/verify/CERT-DBERT-2026-DA-125",
+      "clicks": 1,
+      "impressions": 2,
+      "ctr_pct": 50.0,
+      "position": 2
+    },
+    {
+      "page": "https://lms.dbert.in/internship/lead/2626/flutter-development-attento-technologies-pvt-ltd?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic",
+      "clicks": 1,
+      "impressions": 1,
+      "ctr_pct": 100.0,
+      "position": 2
+    },
+    {
+      "page": "https://lms.dbert.in/internships/paid/ui-ux-design",
+      "clicks": 1,
+      "impressions": 1,
+      "ctr_pct": 100.0,
+      "position": 2
+    },
+    {
+      "page": "https://www.dbert.in/ai-solutions/llm-training/dbert-ai",
+      "clicks": 1,
+      "impressions": 1,
+      "ctr_pct": 100.0,
+      "position": 3
+    },
+    {
+      "page": "https://dbert.in/verify/CERT-DBERT-2026-FSD-025",
+      "clicks": 1,
+      "impressions": 1,
+      "ctr_pct": 100.0,
+      "position": 6
+    }
+  ],
+  "devices": [
+    {
+      "device": "Mobile",
+      "clicks": 36,
+      "impressions": 554,
+      "ctr_pct": 6.5,
+      "position": 7.18
+    },
+    {
+      "device": "Desktop",
+      "clicks": 24,
+      "impressions": 856,
+      "ctr_pct": 2.8,
+      "position": 13.52
+    },
+    {
+      "device": "Tablet",
+      "clicks": 0,
+      "impressions": 9,
+      "ctr_pct": 0.0,
+      "position": 6.67
+    }
+  ],
+  "top_countries": [
+    {
+      "country": "India",
+      "clicks": 55,
+      "impressions": 918,
+      "ctr_pct": 5.99,
+      "position": 10.48
+    },
+    {
+      "country": "United States",
+      "clicks": 1,
+      "impressions": 224,
+      "ctr_pct": 0.45,
+      "position": 11.31
+    },
+    {
+      "country": "Brazil",
+      "clicks": 0,
+      "impressions": 55,
+      "ctr_pct": 0.0,
+      "position": 12.95
+    },
+    {
+      "country": "Germany",
+      "clicks": 0,
+      "impressions": 25,
+      "ctr_pct": 0.0,
+      "position": 9.48
+    },
+    {
+      "country": "Russia",
+      "clicks": 0,
+      "impressions": 18,
+      "ctr_pct": 0.0,
+      "position": 8.17
+    },
+    {
+      "country": "Netherlands",
+      "clicks": 0,
+      "impressions": 13,
+      "ctr_pct": 0.0,
+      "position": 14.38
+    },
+    {
+      "country": "Argentina",
+      "clicks": 0,
+      "impressions": 12,
+      "ctr_pct": 0.0,
+      "position": 6.33
+    },
+    {
+      "country": "Canada",
+      "clicks": 0,
+      "impressions": 10,
+      "ctr_pct": 0.0,
+      "position": 9.1
+    },
+    {
+      "country": "United Kingdom",
+      "clicks": 1,
+      "impressions": 9,
+      "ctr_pct": 11.11,
+      "position": 10.44
+    },
+    {
+      "country": "Switzerland",
+      "clicks": 0,
+      "impressions": 9,
+      "ctr_pct": 0.0,
+      "position": 6.11
+    }
+  ]
+}

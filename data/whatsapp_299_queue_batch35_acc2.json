@@ -1,0 +1,652 @@
+[
+  {
+    "serial_no": 1,
+    "candidate_id": 4705,
+    "name": "Thukakula Gayathree",
+    "first_name": "Thukakula",
+    "email": "gayathreetreddy@gmail.com",
+    "phone": "9182312090",
+    "clean_phone": "919182312090",
+    "domain": "Data Analyst",
+    "cert_id": "CERT-DBERT-2026-DA-032",
+    "intent_score": 55,
+    "intent_reasons": [
+      "Has Certificate Record",
+      "Configured Payout UPI ID"
+    ],
+    "message": "Hello Thukakula,\n\nRegarding your Data Analyst Internship at DBERT:\nYour milestone progress has been verified. To clear Gate 3 (Credential Verification) and unlock your \u20b95,000 Milestone Stipend, please complete your official verification (\u20b9299).\n\n\ud83c\udf10 View Pre-Vetted Engineers Directory:\nhttps://dbert.in/verify/directory\n\n\ud83d\udc49 Instant Verification & Stipend Unlock:\nhttps://dbert.in/verify/unlock?certid=CERT-DBERT-2026-DA-032&email=gayathreetreddy@gmail.com\n\nAdmissions & Verification Concierge (https://dbert.in)",
+    "type": "299_CREDENTIAL_VERIFICATION",
+    "assigned_account": 2
+  },
+  {
+    "serial_no": 2,
+    "candidate_id": 4248,
+    "name": "Komma Hari Kesava",
+    "first_name": "Komma",
+    "email": "kommakesava1@gmail.com",
+    "phone": "6309516281",
+    "clean_phone": "916309516281",
+    "domain": "Data Analyst",
+    "cert_id": "CERT-DBERT-2026-DA-127",
+    "intent_score": 50,
+    "intent_reasons": [
+      "Has Certificate Record",
+      "Active Logins (3)",
+      "Applied to 2 Posts"
+    ],
+    "message": "Hello Komma,\n\nRegarding your Data Analyst Internship at DBERT:\nYour milestone progress has been verified. To clear Gate 3 (Credential Verification) and unlock your \u20b95,000 Milestone Stipend, please complete your official verification (\u20b9299).\n\n\ud83c\udf10 View Pre-Vetted Engineers Directory:\nhttps://dbert.in/verify/directory\n\n\ud83d\udc49 Instant Verification & Stipend Unlock:\nhttps://dbert.in/verify/unlock?certid=CERT-DBERT-2026-DA-127&email=kommakesava1@gmail.com\n\nAdmissions & Verification Concierge (https://dbert.in)",
+    "type": "299_CREDENTIAL_VERIFICATION",
+    "assigned_account": 2
+  },
+  {
+    "serial_no": 3,
+    "candidate_id": 3485,
+    "name": "SIPUN DAS",
+    "first_name": "Sipun",
+    "email": "dsipun8484@gmail.com",
+    "phone": "7327018484",
+    "clean_phone": "917327018484",
+    "domain": "Full Stack Development",
+    "cert_id": "CERT-DBERT-2026-FSD-007",
+    "intent_score": 40,
+    "intent_reasons": [
+      "Has Certificate Record",
+      "Active Logins (2)"
+    ],
+    "message": "Hello Sipun,\n\nRegarding your Full Stack Development Internship at DBERT:\nYour milestone progress has been verified. To clear Gate 3 (Credential Verification) and unlock your \u20b95,000 Milestone Stipend, please complete your official verification (\u20b9299).\n\n\ud83c\udf10 View Pre-Vetted Engineers Directory:\nhttps://dbert.in/verify/directory\n\n\ud83d\udc49 Instant Verification & Stipend Unlock:\nhttps://dbert.in/verify/unlock?certid=CERT-DBERT-2026-FSD-007&email=dsipun8484@gmail.com\n\nAdmissions & Verification Concierge (https://dbert.in)",
+    "type": "299_CREDENTIAL_VERIFICATION",
+    "assigned_account": 2
+  },
+  {
+    "serial_no": 4,
+    "candidate_id": 3874,
+    "name": "PARTH ATRISHI",
+    "first_name": "Parth",
+    "email": "atrishiparth05@gmail.com",
+    "phone": "7464849860",
+    "clean_phone": "917464849860",
+    "domain": "AI Agent Development",
+    "cert_id": "DBERT-VERIFY-3874",
+    "intent_score": 35,
+    "intent_reasons": [
+      "2 Tasks Submitted",
+      "Applied to 1 Posts"
+    ],
+    "message": "Hello Parth,\n\nRegarding your AI Agent Development Internship at DBERT:\nYour milestone progress has been verified. To clear Gate 3 (Credential Verification) and unlock your \u20b95,000 Milestone Stipend, please complete your official verification (\u20b9299).\n\n\ud83c\udf10 View Pre-Vetted Engineers Directory:\nhttps://dbert.in/verify/directory\n\n\ud83d\udc49 Instant Verification & Stipend Unlock:\nhttps://dbert.in/verify/unlock?certid=DBERT-VERIFY-3874&email=atrishiparth05@gmail.com\n\nAdmissions & Verification Concierge (https://dbert.in)",
+    "type": "299_CREDENTIAL_VERIFICATION",
+    "assigned_account": 2
+  },
+  {
+    "serial_no": 5,
+    "candidate_id": 5702,
+    "name": "Harsh kumar",
+    "first_name": "Harsh",
+    "email": "cmathur724@gmail.com",
+    "phone": "9536904639",
+    "clean_phone": "919536904639",
+    "domain": "Full Stack Development",
+    "cert_id": "CERT-DBERT-2026-FSD-052",
+    "intent_score": 30,
+    "intent_reasons": [
+      "Has Certificate Record"
+    ],
+    "message": "Hello Harsh,\n\nRegarding your Full Stack Development Internship at DBERT:\nYour milestone progress has been verified. To clear Gate 3 (Credential Verification) and unlock your \u20b95,000 Milestone Stipend, please complete your official verification (\u20b9299).\n\n\ud83c\udf10 View Pre-Vetted Engineers Directory:\nhttps://dbert.in/verify/directory\n\n\ud83d\udc49 Instant Verification & Stipend Unlock:\nhttps://dbert.in/verify/unlock?certid=CERT-DBERT-2026-FSD-052&email=cmathur724@gmail.com\n\nAdmissions & Verification Concierge (https://dbert.in)",
+    "type": "299_CREDENTIAL_VERIFICATION",
+    "assigned_account": 2
+  },
+  {
+    "serial_no": 6,
+    "candidate_id": 4688,
+    "name": "Yogesh",
+    "first_name": "Yogesh",
+    "email": "yogijangir345@gmail.com",
+    "phone": "7404075475",
+    "clean_phone": "917404075475",
+    "domain": "Full Stack Development",
+    "cert_id": "CERT-DBERT-2026-FSD-008",
+    "intent_score": 30,
+    "intent_reasons": [
+      "Has Certificate Record"
+    ],
+    "message": "Hello Yogesh,\n\nRegarding your Full Stack Development Internship at DBERT:\nYour milestone progress has been verified. To clear Gate 3 (Credential Verification) and unlock your \u20b95,000 Milestone Stipend, please complete your official verification (\u20b9299).\n\n\ud83c\udf10 View Pre-Vetted Engineers Directory:\nhttps://dbert.in/verify/directory\n\n\ud83d\udc49 Instant Verification & Stipend Unlock:\nhttps://dbert.in/verify/unlock?certid=CERT-DBERT-2026-FSD-008&email=yogijangir345@gmail.com\n\nAdmissions & Verification Concierge (https://dbert.in)",
+    "type": "299_CREDENTIAL_VERIFICATION",
+    "assigned_account": 2
+  },
+  {
+    "serial_no": 7,
+    "candidate_id": 4542,
+    "name": "Potnuru Pravallika",
+    "first_name": "Potnuru",
+    "email": "pravallikapotnuru18@gmail.com",
+    "phone": "9618864488",
+    "clean_phone": "919618864488",
+    "domain": "Full Stack Development",
+    "cert_id": "CERT-DBERT-2026-FSD-028",
+    "intent_score": 30,
+    "intent_reasons": [
+      "Has Certificate Record"
+    ],
+    "message": "Hello Potnuru,\n\nRegarding your Full Stack Development Internship at DBERT:\nYour milestone progress has been verified. To clear Gate 3 (Credential Verification) and unlock your \u20b95,000 Milestone Stipend, please complete your official verification (\u20b9299).\n\n\ud83c\udf10 View Pre-Vetted Engineers Directory:\nhttps://dbert.in/verify/directory\n\n\ud83d\udc49 Instant Verification & Stipend Unlock:\nhttps://dbert.in/verify/unlock?certid=CERT-DBERT-2026-FSD-028&email=pravallikapotnuru18@gmail.com\n\nAdmissions & Verification Concierge (https://dbert.in)",
+    "type": "299_CREDENTIAL_VERIFICATION",
+    "assigned_account": 2
+  },
+  {
+    "serial_no": 8,
+    "candidate_id": 4468,
+    "name": "Jay Kumar",
+    "first_name": "Jay",
+    "email": "jk316875@gmail.com",
+    "phone": "9142938667",
+    "clean_phone": "919142938667",
+    "domain": "Full Stack Development",
+    "cert_id": "CERT-DBERT-2026-FSD-051",
+    "intent_score": 30,
+    "intent_reasons": [
+      "Has Certificate Record"
+    ],
+    "message": "Hello Jay,\n\nRegarding your Full Stack Development Internship at DBERT:\nYour milestone progress has been verified. To clear Gate 3 (Credential Verification) and unlock your \u20b95,000 Milestone Stipend, please complete your official verification (\u20b9299).\n\n\ud83c\udf10 View Pre-Vetted Engineers Directory:\nhttps://dbert.in/verify/directory\n\n\ud83d\udc49 Instant Verification & Stipend Unlock:\nhttps://dbert.in/verify/unlock?certid=CERT-DBERT-2026-FSD-051&email=jk316875@gmail.com\n\nAdmissions & Verification Concierge (https://dbert.in)",
+    "type": "299_CREDENTIAL_VERIFICATION",
+    "assigned_account": 2
+  },
+  {
+    "serial_no": 9,
+    "candidate_id": 4914,
+    "name": "Ankit Gupta",
+    "first_name": "Ankit",
+    "email": "guptaankit6630@gmail.com",
+    "phone": "8369521956",
+    "clean_phone": "918369521956",
+    "domain": "Data Analyst",
+    "cert_id": "CERT-DBERT-2026-DA-010",
+    "intent_score": 30,
+    "intent_reasons": [
+      "Has Certificate Record"
+    ],
+    "message": "Hello Ankit,\n\nRegarding your Data Analyst Internship at DBERT:\nYour milestone progress has been verified. To clear Gate 3 (Credential Verification) and unlock your \u20b95,000 Milestone Stipend, please complete your official verification (\u20b9299).\n\n\ud83c\udf10 View Pre-Vetted Engineers Directory:\nhttps://dbert.in/verify/directory\n\n\ud83d\udc49 Instant Verification & Stipend Unlock:\nhttps://dbert.in/verify/unlock?certid=CERT-DBERT-2026-DA-010&email=guptaankit6630@gmail.com\n\nAdmissions & Verification Concierge (https://dbert.in)",
+    "type": "299_CREDENTIAL_VERIFICATION",
+    "assigned_account": 2
+  },
+  {
+    "serial_no": 10,
+    "candidate_id": 5219,
+    "name": "Suraj upadhyay",
+    "first_name": "Suraj",
+    "email": "surajup5756@gmail.com",
+    "phone": "8467013679",
+    "clean_phone": "918467013679",
+    "domain": "AI Agent Development",
+    "cert_id": "DBERT-VERIFY-5219",
+    "intent_score": 25,
+    "intent_reasons": [
+      "High Logins (20)",
+      "Applied to 1 Posts"
+    ],
+    "message": "Hello Suraj,\n\nRegarding your AI Agent Development Internship at DBERT:\nYour milestone progress has been verified. To clear Gate 3 (Credential Verification) and unlock your \u20b95,000 Milestone Stipend, please complete your official verification (\u20b9299).\n\n\ud83c\udf10 View Pre-Vetted Engineers Directory:\nhttps://dbert.in/verify/directory\n\n\ud83d\udc49 Instant Verification & Stipend Unlock:\nhttps://dbert.in/verify/unlock?certid=DBERT-VERIFY-5219&email=surajup5756@gmail.com\n\nAdmissions & Verification Concierge (https://dbert.in)",
+    "type": "299_CREDENTIAL_VERIFICATION",
+    "assigned_account": 2
+  },
+  {
+    "serial_no": 11,
+    "candidate_id": 3326,
+    "name": "Maroju Prince Karthik",
+    "first_name": "Maroju",
+    "email": "marojuprincekarthik2007@gmail.com",
+    "phone": "7093726606",
+    "clean_phone": "917093726606",
+    "domain": "Data Analyst",
+    "cert_id": "DBERT-VERIFY-3326",
+    "intent_score": 25,
+    "intent_reasons": [
+      "High Logins (9)",
+      "Applied to 1 Posts"
+    ],
+    "message": "Hello Maroju,\n\nRegarding your Data Analyst Internship at DBERT:\nYour milestone progress has been verified. To clear Gate 3 (Credential Verification) and unlock your \u20b95,000 Milestone Stipend, please complete your official verification (\u20b9299).\n\n\ud83c\udf10 View Pre-Vetted Engineers Directory:\nhttps://dbert.in/verify/directory\n\n\ud83d\udc49 Instant Verification & Stipend Unlock:\nhttps://dbert.in/verify/unlock?certid=DBERT-VERIFY-3326&email=marojuprincekarthik2007@gmail.com\n\nAdmissions & Verification Concierge (https://dbert.in)",
+    "type": "299_CREDENTIAL_VERIFICATION",
+    "assigned_account": 2
+  },
+  {
+    "serial_no": 12,
+    "candidate_id": 5241,
+    "name": "Ananya Pathak",
+    "first_name": "Ananya",
+    "email": "pathakananya053@gmail.com",
+    "phone": "9758111958",
+    "clean_phone": "919758111958",
+    "domain": "Data Analyst",
+    "cert_id": "DBERT-VERIFY-5241",
+    "intent_score": 25,
+    "intent_reasons": [
+      "High Logins (9)",
+      "Applied to 1 Posts"
+    ],
+    "message": "Hello Ananya,\n\nRegarding your Data Analyst Internship at DBERT:\nYour milestone progress has been verified. To clear Gate 3 (Credential Verification) and unlock your \u20b95,000 Milestone Stipend, please complete your official verification (\u20b9299).\n\n\ud83c\udf10 View Pre-Vetted Engineers Directory:\nhttps://dbert.in/verify/directory\n\n\ud83d\udc49 Instant Verification & Stipend Unlock:\nhttps://dbert.in/verify/unlock?certid=DBERT-VERIFY-5241&email=pathakananya053@gmail.com\n\nAdmissions & Verification Concierge (https://dbert.in)",
+    "type": "299_CREDENTIAL_VERIFICATION",
+    "assigned_account": 2
+  },
+  {
+    "serial_no": 13,
+    "candidate_id": 5395,
+    "name": "C S Kavana",
+    "first_name": "C",
+    "email": "kavana200518@gmail.com",
+    "phone": "7022070395",
+    "clean_phone": "917022070395",
+    "domain": "Cybersecurity",
+    "cert_id": "DBERT-VERIFY-5395",
+    "intent_score": 25,
+    "intent_reasons": [
+      "High Logins (6)",
+      "Applied to 1 Posts"
+    ],
+    "message": "Hello C,\n\nRegarding your Cybersecurity Internship at DBERT:\nYour milestone progress has been verified. To clear Gate 3 (Credential Verification) and unlock your \u20b95,000 Milestone Stipend, please complete your official verification (\u20b9299).\n\n\ud83c\udf10 View Pre-Vetted Engineers Directory:\nhttps://dbert.in/verify/directory\n\n\ud83d\udc49 Instant Verification & Stipend Unlock:\nhttps://dbert.in/verify/unlock?certid=DBERT-VERIFY-5395&email=kavana200518@gmail.com\n\nAdmissions & Verification Concierge (https://dbert.in)",
+    "type": "299_CREDENTIAL_VERIFICATION",
+    "assigned_account": 2
+  },
+  {
+    "serial_no": 14,
+    "candidate_id": 5264,
+    "name": "Lohitha",
+    "first_name": "Lohitha",
+    "email": "lohithabalisetty25@gmail.com",
+    "phone": "9550333587",
+    "clean_phone": "919550333587",
+    "domain": "Data Analyst",
+    "cert_id": "DBERT-VERIFY-5264",
+    "intent_score": 25,
+    "intent_reasons": [
+      "High Logins (5)",
+      "Applied to 1 Posts"
+    ],
+    "message": "Hello Lohitha,\n\nRegarding your Data Analyst Internship at DBERT:\nYour milestone progress has been verified. To clear Gate 3 (Credential Verification) and unlock your \u20b95,000 Milestone Stipend, please complete your official verification (\u20b9299).\n\n\ud83c\udf10 View Pre-Vetted Engineers Directory:\nhttps://dbert.in/verify/directory\n\n\ud83d\udc49 Instant Verification & Stipend Unlock:\nhttps://dbert.in/verify/unlock?certid=DBERT-VERIFY-5264&email=lohithabalisetty25@gmail.com\n\nAdmissions & Verification Concierge (https://dbert.in)",
+    "type": "299_CREDENTIAL_VERIFICATION",
+    "assigned_account": 2
+  },
+  {
+    "serial_no": 15,
+    "candidate_id": 5313,
+    "name": "Archana Sharma",
+    "first_name": "Archana",
+    "email": "archusharma27248@gmail.com",
+    "phone": "9801619908",
+    "clean_phone": "919801619908",
+    "domain": "AI Agent Development",
+    "cert_id": "DBERT-VERIFY-5313",
+    "intent_score": 25,
+    "intent_reasons": [
+      "High Logins (5)",
+      "Applied to 1 Posts"
+    ],
+    "message": "Hello Archana,\n\nRegarding your AI Agent Development Internship at DBERT:\nYour milestone progress has been verified. To clear Gate 3 (Credential Verification) and unlock your \u20b95,000 Milestone Stipend, please complete your official verification (\u20b9299).\n\n\ud83c\udf10 View Pre-Vetted Engineers Directory:\nhttps://dbert.in/verify/directory\n\n\ud83d\udc49 Instant Verification & Stipend Unlock:\nhttps://dbert.in/verify/unlock?certid=DBERT-VERIFY-5313&email=archusharma27248@gmail.com\n\nAdmissions & Verification Concierge (https://dbert.in)",
+    "type": "299_CREDENTIAL_VERIFICATION",
+    "assigned_account": 2
+  },
+  {
+    "serial_no": 16,
+    "candidate_id": 5272,
+    "name": "Chaithra M N",
+    "first_name": "Chaithra",
+    "email": "chaithramn565@gmail.com",
+    "phone": "9108589514",
+    "clean_phone": "919108589514",
+    "domain": "AI Agent Development",
+    "cert_id": "DBERT-VERIFY-5272",
+    "intent_score": 20,
+    "intent_reasons": [
+      "Active Logins (4)",
+      "Applied to 1 Posts"
+    ],
+    "message": "Hello Chaithra,\n\nRegarding your AI Agent Development Internship at DBERT:\nYour milestone progress has been verified. To clear Gate 3 (Credential Verification) and unlock your \u20b95,000 Milestone Stipend, please complete your official verification (\u20b9299).\n\n\ud83c\udf10 View Pre-Vetted Engineers Directory:\nhttps://dbert.in/verify/directory\n\n\ud83d\udc49 Instant Verification & Stipend Unlock:\nhttps://dbert.in/verify/unlock?certid=DBERT-VERIFY-5272&email=chaithramn565@gmail.com\n\nAdmissions & Verification Concierge (https://dbert.in)",
+    "type": "299_CREDENTIAL_VERIFICATION",
+    "assigned_account": 2
+  },
+  {
+    "serial_no": 17,
+    "candidate_id": 5323,
+    "name": "Sneha Bobade",
+    "first_name": "Sneha",
+    "email": "snehabobade231@gmail.com",
+    "phone": "7378475242",
+    "clean_phone": "917378475242",
+    "domain": "AI Agent Development",
+    "cert_id": "DBERT-VERIFY-5323",
+    "intent_score": 20,
+    "intent_reasons": [
+      "Active Logins (3)",
+      "Applied to 1 Posts"
+    ],
+    "message": "Hello Sneha,\n\nRegarding your AI Agent Development Internship at DBERT:\nYour milestone progress has been verified. To clear Gate 3 (Credential Verification) and unlock your \u20b95,000 Milestone Stipend, please complete your official verification (\u20b9299).\n\n\ud83c\udf10 View Pre-Vetted Engineers Directory:\nhttps://dbert.in/verify/directory\n\n\ud83d\udc49 Instant Verification & Stipend Unlock:\nhttps://dbert.in/verify/unlock?certid=DBERT-VERIFY-5323&email=snehabobade231@gmail.com\n\nAdmissions & Verification Concierge (https://dbert.in)",
+    "type": "299_CREDENTIAL_VERIFICATION",
+    "assigned_account": 2
+  },
+  {
+    "serial_no": 18,
+    "candidate_id": 5236,
+    "name": "Shubhi Bajpai",
+    "first_name": "Shubhi",
+    "email": "shubhibajpai2019@gmail.com",
+    "phone": "9214093843",
+    "clean_phone": "919214093843",
+    "domain": "DevOps & Cloud",
+    "cert_id": "DBERT-VERIFY-5236",
+    "intent_score": 20,
+    "intent_reasons": [
+      "Active Logins (3)",
+      "Applied to 2 Posts"
+    ],
+    "message": "Hello Shubhi,\n\nRegarding your DevOps & Cloud Internship at DBERT:\nYour milestone progress has been verified. To clear Gate 3 (Credential Verification) and unlock your \u20b95,000 Milestone Stipend, please complete your official verification (\u20b9299).\n\n\ud83c\udf10 View Pre-Vetted Engineers Directory:\nhttps://dbert.in/verify/directory\n\n\ud83d\udc49 Instant Verification & Stipend Unlock:\nhttps://dbert.in/verify/unlock?certid=DBERT-VERIFY-5236&email=shubhibajpai2019@gmail.com\n\nAdmissions & Verification Concierge (https://dbert.in)",
+    "type": "299_CREDENTIAL_VERIFICATION",
+    "assigned_account": 2
+  },
+  {
+    "serial_no": 19,
+    "candidate_id": 5515,
+    "name": "Danish Ahmad Wani",
+    "first_name": "Danish",
+    "email": "medany0001@gmail.com",
+    "phone": "9086139868",
+    "clean_phone": "919086139868",
+    "domain": "DevOps & Cloud",
+    "cert_id": "DBERT-VERIFY-5515",
+    "intent_score": 20,
+    "intent_reasons": [
+      "Active Logins (2)",
+      "Applied to 1 Posts"
+    ],
+    "message": "Hello Danish,\n\nRegarding your DevOps & Cloud Internship at DBERT:\nYour milestone progress has been verified. To clear Gate 3 (Credential Verification) and unlock your \u20b95,000 Milestone Stipend, please complete your official verification (\u20b9299).\n\n\ud83c\udf10 View Pre-Vetted Engineers Directory:\nhttps://dbert.in/verify/directory\n\n\ud83d\udc49 Instant Verification & Stipend Unlock:\nhttps://dbert.in/verify/unlock?certid=DBERT-VERIFY-5515&email=medany0001@gmail.com\n\nAdmissions & Verification Concierge (https://dbert.in)",
+    "type": "299_CREDENTIAL_VERIFICATION",
+    "assigned_account": 2
+  },
+  {
+    "serial_no": 20,
+    "candidate_id": 5229,
+    "name": "Reeba Ali",
+    "first_name": "Reeba",
+    "email": "alireeba48@gmail.com",
+    "phone": "7895401664",
+    "clean_phone": "917895401664",
+    "domain": "AI Agent Development",
+    "cert_id": "DBERT-VERIFY-5229",
+    "intent_score": 20,
+    "intent_reasons": [
+      "Active Logins (2)",
+      "Applied to 1 Posts"
+    ],
+    "message": "Hello Reeba,\n\nRegarding your AI Agent Development Internship at DBERT:\nYour milestone progress has been verified. To clear Gate 3 (Credential Verification) and unlock your \u20b95,000 Milestone Stipend, please complete your official verification (\u20b9299).\n\n\ud83c\udf10 View Pre-Vetted Engineers Directory:\nhttps://dbert.in/verify/directory\n\n\ud83d\udc49 Instant Verification & Stipend Unlock:\nhttps://dbert.in/verify/unlock?certid=DBERT-VERIFY-5229&email=alireeba48@gmail.com\n\nAdmissions & Verification Concierge (https://dbert.in)",
+    "type": "299_CREDENTIAL_VERIFICATION",
+    "assigned_account": 2
+  },
+  {
+    "serial_no": 21,
+    "candidate_id": 5391,
+    "name": "Apoorva Maheshwari",
+    "first_name": "Apoorva",
+    "email": "apoorvamaheshwari315@gmail.com",
+    "phone": "9555835108",
+    "clean_phone": "919555835108",
+    "domain": "Data Analyst",
+    "cert_id": "DBERT-VERIFY-5391",
+    "intent_score": 20,
+    "intent_reasons": [
+      "Active Logins (2)",
+      "Applied to 1 Posts"
+    ],
+    "message": "Hello Apoorva,\n\nRegarding your Data Analyst Internship at DBERT:\nYour milestone progress has been verified. To clear Gate 3 (Credential Verification) and unlock your \u20b95,000 Milestone Stipend, please complete your official verification (\u20b9299).\n\n\ud83c\udf10 View Pre-Vetted Engineers Directory:\nhttps://dbert.in/verify/directory\n\n\ud83d\udc49 Instant Verification & Stipend Unlock:\nhttps://dbert.in/verify/unlock?certid=DBERT-VERIFY-5391&email=apoorvamaheshwari315@gmail.com\n\nAdmissions & Verification Concierge (https://dbert.in)",
+    "type": "299_CREDENTIAL_VERIFICATION",
+    "assigned_account": 2
+  },
+  {
+    "serial_no": 22,
+    "candidate_id": 5516,
+    "name": "Shaik Mehnaz Hassan",
+    "first_name": "Shaik",
+    "email": "skmehnazhassan@gmail.com",
+    "phone": "8897736485",
+    "clean_phone": "918897736485",
+    "domain": "DevOps & Cloud",
+    "cert_id": "DBERT-VERIFY-5516",
+    "intent_score": 20,
+    "intent_reasons": [
+      "Active Logins (2)",
+      "Applied to 1 Posts"
+    ],
+    "message": "Hello Shaik,\n\nRegarding your DevOps & Cloud Internship at DBERT:\nYour milestone progress has been verified. To clear Gate 3 (Credential Verification) and unlock your \u20b95,000 Milestone Stipend, please complete your official verification (\u20b9299).\n\n\ud83c\udf10 View Pre-Vetted Engineers Directory:\nhttps://dbert.in/verify/directory\n\n\ud83d\udc49 Instant Verification & Stipend Unlock:\nhttps://dbert.in/verify/unlock?certid=DBERT-VERIFY-5516&email=skmehnazhassan@gmail.com\n\nAdmissions & Verification Concierge (https://dbert.in)",
+    "type": "299_CREDENTIAL_VERIFICATION",
+    "assigned_account": 2
+  },
+  {
+    "serial_no": 23,
+    "candidate_id": 5537,
+    "name": "Gayatri Rajendra Shinde",
+    "first_name": "Gayatri",
+    "email": "gaytrishinde112@gmail.com",
+    "phone": "8530203481",
+    "clean_phone": "918530203481",
+    "domain": "AI Agent Development",
+    "cert_id": "DBERT-VERIFY-5537",
+    "intent_score": 20,
+    "intent_reasons": [
+      "Active Logins (2)",
+      "Applied to 1 Posts"
+    ],
+    "message": "Hello Gayatri,\n\nRegarding your AI Agent Development Internship at DBERT:\nYour milestone progress has been verified. To clear Gate 3 (Credential Verification) and unlock your \u20b95,000 Milestone Stipend, please complete your official verification (\u20b9299).\n\n\ud83c\udf10 View Pre-Vetted Engineers Directory:\nhttps://dbert.in/verify/directory\n\n\ud83d\udc49 Instant Verification & Stipend Unlock:\nhttps://dbert.in/verify/unlock?certid=DBERT-VERIFY-5537&email=gaytrishinde112@gmail.com\n\nAdmissions & Verification Concierge (https://dbert.in)",
+    "type": "299_CREDENTIAL_VERIFICATION",
+    "assigned_account": 2
+  },
+  {
+    "serial_no": 24,
+    "candidate_id": 5554,
+    "name": "Mohammed Hisham",
+    "first_name": "Mohammed",
+    "email": "mohammedhisham962@gmail.com",
+    "phone": "9626828157",
+    "clean_phone": "919626828157",
+    "domain": "AI Agent Development",
+    "cert_id": "DBERT-VERIFY-5554",
+    "intent_score": 20,
+    "intent_reasons": [
+      "Active Logins (2)",
+      "Applied to 2 Posts"
+    ],
+    "message": "Hello Mohammed,\n\nRegarding your AI Agent Development Internship at DBERT:\nYour milestone progress has been verified. To clear Gate 3 (Credential Verification) and unlock your \u20b95,000 Milestone Stipend, please complete your official verification (\u20b9299).\n\n\ud83c\udf10 View Pre-Vetted Engineers Directory:\nhttps://dbert.in/verify/directory\n\n\ud83d\udc49 Instant Verification & Stipend Unlock:\nhttps://dbert.in/verify/unlock?certid=DBERT-VERIFY-5554&email=mohammedhisham962@gmail.com\n\nAdmissions & Verification Concierge (https://dbert.in)",
+    "type": "299_CREDENTIAL_VERIFICATION",
+    "assigned_account": 2
+  },
+  {
+    "serial_no": 25,
+    "candidate_id": 5287,
+    "name": "Preetham Visthri",
+    "first_name": "Preetham",
+    "email": "honeypreetham1@gmail.com",
+    "phone": "9398740618",
+    "clean_phone": "919398740618",
+    "domain": "Full Stack Development",
+    "cert_id": "DBERT-VERIFY-5287",
+    "intent_score": 15,
+    "intent_reasons": [
+      "High Logins (11)"
+    ],
+    "message": "Hello Preetham,\n\nRegarding your Full Stack Development Internship at DBERT:\nYour milestone progress has been verified. To clear Gate 3 (Credential Verification) and unlock your \u20b95,000 Milestone Stipend, please complete your official verification (\u20b9299).\n\n\ud83c\udf10 View Pre-Vetted Engineers Directory:\nhttps://dbert.in/verify/directory\n\n\ud83d\udc49 Instant Verification & Stipend Unlock:\nhttps://dbert.in/verify/unlock?certid=DBERT-VERIFY-5287&email=honeypreetham1@gmail.com\n\nAdmissions & Verification Concierge (https://dbert.in)",
+    "type": "299_CREDENTIAL_VERIFICATION",
+    "assigned_account": 2
+  },
+  {
+    "serial_no": 26,
+    "candidate_id": 5368,
+    "name": "Sunil Fagoriya",
+    "first_name": "Sunil",
+    "email": "sunilkumarsk2sf@gmail.com",
+    "phone": "8949609650",
+    "clean_phone": "918949609650",
+    "domain": "AI Agent Development",
+    "cert_id": "DBERT-VERIFY-5368",
+    "intent_score": 15,
+    "intent_reasons": [
+      "High Logins (10)"
+    ],
+    "message": "Hello Sunil,\n\nRegarding your AI Agent Development Internship at DBERT:\nYour milestone progress has been verified. To clear Gate 3 (Credential Verification) and unlock your \u20b95,000 Milestone Stipend, please complete your official verification (\u20b9299).\n\n\ud83c\udf10 View Pre-Vetted Engineers Directory:\nhttps://dbert.in/verify/directory\n\n\ud83d\udc49 Instant Verification & Stipend Unlock:\nhttps://dbert.in/verify/unlock?certid=DBERT-VERIFY-5368&email=sunilkumarsk2sf@gmail.com\n\nAdmissions & Verification Concierge (https://dbert.in)",
+    "type": "299_CREDENTIAL_VERIFICATION",
+    "assigned_account": 2
+  },
+  {
+    "serial_no": 27,
+    "candidate_id": 5296,
+    "name": "Humera Mustafa Sache",
+    "first_name": "Humera",
+    "email": "humerasache@gmail.com",
+    "phone": "8983878644",
+    "clean_phone": "918983878644",
+    "domain": "AI Agent Development",
+    "cert_id": "DBERT-VERIFY-5296",
+    "intent_score": 15,
+    "intent_reasons": [
+      "High Logins (8)"
+    ],
+    "message": "Hello Humera,\n\nRegarding your AI Agent Development Internship at DBERT:\nYour milestone progress has been verified. To clear Gate 3 (Credential Verification) and unlock your \u20b95,000 Milestone Stipend, please complete your official verification (\u20b9299).\n\n\ud83c\udf10 View Pre-Vetted Engineers Directory:\nhttps://dbert.in/verify/directory\n\n\ud83d\udc49 Instant Verification & Stipend Unlock:\nhttps://dbert.in/verify/unlock?certid=DBERT-VERIFY-5296&email=humerasache@gmail.com\n\nAdmissions & Verification Concierge (https://dbert.in)",
+    "type": "299_CREDENTIAL_VERIFICATION",
+    "assigned_account": 2
+  },
+  {
+    "serial_no": 28,
+    "candidate_id": 5522,
+    "name": "Bhavan Kumar G M",
+    "first_name": "Bhavan",
+    "email": "gmbhavankumar@gmail.com",
+    "phone": "9449449529",
+    "clean_phone": "919449449529",
+    "domain": "AI Agent Development",
+    "cert_id": "DBERT-VERIFY-5522",
+    "intent_score": 15,
+    "intent_reasons": [
+      "High Logins (8)"
+    ],
+    "message": "Hello Bhavan,\n\nRegarding your AI Agent Development Internship at DBERT:\nYour milestone progress has been verified. To clear Gate 3 (Credential Verification) and unlock your \u20b95,000 Milestone Stipend, please complete your official verification (\u20b9299).\n\n\ud83c\udf10 View Pre-Vetted Engineers Directory:\nhttps://dbert.in/verify/directory\n\n\ud83d\udc49 Instant Verification & Stipend Unlock:\nhttps://dbert.in/verify/unlock?certid=DBERT-VERIFY-5522&email=gmbhavankumar@gmail.com\n\nAdmissions & Verification Concierge (https://dbert.in)",
+    "type": "299_CREDENTIAL_VERIFICATION",
+    "assigned_account": 2
+  },
+  {
+    "serial_no": 29,
+    "candidate_id": 5365,
+    "name": "meenakshi subramanian",
+    "first_name": "Meenakshi",
+    "email": "meenakshisubramanian82@gmail.com",
+    "phone": "8940722111",
+    "clean_phone": "918940722111",
+    "domain": "AI Agent Development",
+    "cert_id": "DBERT-VERIFY-5365",
+    "intent_score": 15,
+    "intent_reasons": [
+      "High Logins (8)"
+    ],
+    "message": "Hello Meenakshi,\n\nRegarding your AI Agent Development Internship at DBERT:\nYour milestone progress has been verified. To clear Gate 3 (Credential Verification) and unlock your \u20b95,000 Milestone Stipend, please complete your official verification (\u20b9299).\n\n\ud83c\udf10 View Pre-Vetted Engineers Directory:\nhttps://dbert.in/verify/directory\n\n\ud83d\udc49 Instant Verification & Stipend Unlock:\nhttps://dbert.in/verify/unlock?certid=DBERT-VERIFY-5365&email=meenakshisubramanian82@gmail.com\n\nAdmissions & Verification Concierge (https://dbert.in)",
+    "type": "299_CREDENTIAL_VERIFICATION",
+    "assigned_account": 2
+  },
+  {
+    "serial_no": 30,
+    "candidate_id": 5269,
+    "name": "Prajwal Aitawade",
+    "first_name": "Prajwal",
+    "email": "prajwalaitawade@gmail.com",
+    "phone": "8088191971",
+    "clean_phone": "918088191971",
+    "domain": "AI Agent Development",
+    "cert_id": "DBERT-VERIFY-5269",
+    "intent_score": 15,
+    "intent_reasons": [
+      "High Logins (7)"
+    ],
+    "message": "Hello Prajwal,\n\nRegarding your AI Agent Development Internship at DBERT:\nYour milestone progress has been verified. To clear Gate 3 (Credential Verification) and unlock your \u20b95,000 Milestone Stipend, please complete your official verification (\u20b9299).\n\n\ud83c\udf10 View Pre-Vetted Engineers Directory:\nhttps://dbert.in/verify/directory\n\n\ud83d\udc49 Instant Verification & Stipend Unlock:\nhttps://dbert.in/verify/unlock?certid=DBERT-VERIFY-5269&email=prajwalaitawade@gmail.com\n\nAdmissions & Verification Concierge (https://dbert.in)",
+    "type": "299_CREDENTIAL_VERIFICATION",
+    "assigned_account": 2
+  },
+  {
+    "serial_no": 31,
+    "candidate_id": 5341,
+    "name": "Kashish",
+    "first_name": "Kashish",
+    "email": "kashishkashish21089@gmail.com",
+    "phone": "8439075864",
+    "clean_phone": "918439075864",
+    "domain": "AI Agent Development",
+    "cert_id": "DBERT-VERIFY-5341",
+    "intent_score": 15,
+    "intent_reasons": [
+      "High Logins (6)"
+    ],
+    "message": "Hello Kashish,\n\nRegarding your AI Agent Development Internship at DBERT:\nYour milestone progress has been verified. To clear Gate 3 (Credential Verification) and unlock your \u20b95,000 Milestone Stipend, please complete your official verification (\u20b9299).\n\n\ud83c\udf10 View Pre-Vetted Engineers Directory:\nhttps://dbert.in/verify/directory\n\n\ud83d\udc49 Instant Verification & Stipend Unlock:\nhttps://dbert.in/verify/unlock?certid=DBERT-VERIFY-5341&email=kashishkashish21089@gmail.com\n\nAdmissions & Verification Concierge (https://dbert.in)",
+    "type": "299_CREDENTIAL_VERIFICATION",
+    "assigned_account": 2
+  },
+  {
+    "serial_no": 32,
+    "candidate_id": 5400,
+    "name": "CHARITH KALE",
+    "first_name": "Charith",
+    "email": "charithkale@gmail.com",
+    "phone": "9701998229",
+    "clean_phone": "919701998229",
+    "domain": "Full Stack Development",
+    "cert_id": "DBERT-VERIFY-5400",
+    "intent_score": 15,
+    "intent_reasons": [
+      "High Logins (6)"
+    ],
+    "message": "Hello Charith,\n\nRegarding your Full Stack Development Internship at DBERT:\nYour milestone progress has been verified. To clear Gate 3 (Credential Verification) and unlock your \u20b95,000 Milestone Stipend, please complete your official verification (\u20b9299).\n\n\ud83c\udf10 View Pre-Vetted Engineers Directory:\nhttps://dbert.in/verify/directory\n\n\ud83d\udc49 Instant Verification & Stipend Unlock:\nhttps://dbert.in/verify/unlock?certid=DBERT-VERIFY-5400&email=charithkale@gmail.com\n\nAdmissions & Verification Concierge (https://dbert.in)",
+    "type": "299_CREDENTIAL_VERIFICATION",
+    "assigned_account": 2
+  },
+  {
+    "serial_no": 33,
+    "candidate_id": 5369,
+    "name": "KORRA VAMSHIKRISHNA",
+    "first_name": "Korra",
+    "email": "mrg13050@gmail.com",
+    "phone": "9154686840",
+    "clean_phone": "919154686840",
+    "domain": "Cybersecurity",
+    "cert_id": "DBERT-VERIFY-5369",
+    "intent_score": 15,
+    "intent_reasons": [
+      "High Logins (6)"
+    ],
+    "message": "Hello Korra,\n\nRegarding your Cybersecurity Internship at DBERT:\nYour milestone progress has been verified. To clear Gate 3 (Credential Verification) and unlock your \u20b95,000 Milestone Stipend, please complete your official verification (\u20b9299).\n\n\ud83c\udf10 View Pre-Vetted Engineers Directory:\nhttps://dbert.in/verify/directory\n\n\ud83d\udc49 Instant Verification & Stipend Unlock:\nhttps://dbert.in/verify/unlock?certid=DBERT-VERIFY-5369&email=mrg13050@gmail.com\n\nAdmissions & Verification Concierge (https://dbert.in)",
+    "type": "299_CREDENTIAL_VERIFICATION",
+    "assigned_account": 2
+  },
+  {
+    "serial_no": 34,
+    "candidate_id": 5382,
+    "name": "Muguntharajan K",
+    "first_name": "Muguntharajan",
+    "email": "muguntharajank@gmail.com",
+    "phone": "8807216023",
+    "clean_phone": "918807216023",
+    "domain": "AI Agent Development",
+    "cert_id": "DBERT-VERIFY-5382",
+    "intent_score": 15,
+    "intent_reasons": [
+      "High Logins (6)"
+    ],
+    "message": "Hello Muguntharajan,\n\nRegarding your AI Agent Development Internship at DBERT:\nYour milestone progress has been verified. To clear Gate 3 (Credential Verification) and unlock your \u20b95,000 Milestone Stipend, please complete your official verification (\u20b9299).\n\n\ud83c\udf10 View Pre-Vetted Engineers Directory:\nhttps://dbert.in/verify/directory\n\n\ud83d\udc49 Instant Verification & Stipend Unlock:\nhttps://dbert.in/verify/unlock?certid=DBERT-VERIFY-5382&email=muguntharajank@gmail.com\n\nAdmissions & Verification Concierge (https://dbert.in)",
+    "type": "299_CREDENTIAL_VERIFICATION",
+    "assigned_account": 2
+  },
+  {
+    "serial_no": 35,
+    "candidate_id": 5355,
+    "name": "Mansi Agrawal",
+    "first_name": "Mansi",
+    "email": "mansiagarwal166@gmail.com",
+    "phone": "7903083485",
+    "clean_phone": "917903083485",
+    "domain": "AI Agent Development",
+    "cert_id": "DBERT-VERIFY-5355",
+    "intent_score": 15,
+    "intent_reasons": [
+      "High Logins (6)"
+    ],
+    "message": "Hello Mansi,\n\nRegarding your AI Agent Development Internship at DBERT:\nYour milestone progress has been verified. To clear Gate 3 (Credential Verification) and unlock your \u20b95,000 Milestone Stipend, please complete your official verification (\u20b9299).\n\n\ud83c\udf10 View Pre-Vetted Engineers Directory:\nhttps://dbert.in/verify/directory\n\n\ud83d\udc49 Instant Verification & Stipend Unlock:\nhttps://dbert.in/verify/unlock?certid=DBERT-VERIFY-5355&email=mansiagarwal166@gmail.com\n\nAdmissions & Verification Concierge (https://dbert.in)",
+    "type": "299_CREDENTIAL_VERIFICATION",
+    "assigned_account": 2
+  }
+]

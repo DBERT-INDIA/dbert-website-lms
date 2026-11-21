@@ -1,0 +1,72 @@
+{
+  "generated_at": "2026-11-21T11:13:36.602881+00:00",
+  "total_raw_requests": 1420,
+  "total_page_views": 840,
+  "unique_visitors": 412,
+  "devices": {
+    "Mobile": 512,
+    "Desktop": 310,
+    "Tablet": 18
+  },
+  "channels": {
+    "ai_assistant_referral": 148,
+    "organic_search": 290,
+    "whatsapp_campaign": 210,
+    "direct": 145,
+    "ai_crawler": 47
+  },
+  "ai_assistant_referrals": {
+    "ChatGPT": 74,
+    "Perplexity": 42,
+    "Claude": 22,
+    "Gemini": 10
+  },
+  "ai_crawlers": {
+    "Gptbot": 21,
+    "Perplexitybot": 14,
+    "Claudebot": 12
+  },
+  "top_landing_pages": [
+    [
+      "/",
+      312
+    ],
+    [
+      "/enroll/1999",
+      145
+    ],
+    [
+      "/verify",
+      98
+    ],
+    [
+      "/fellows/verified",
+      82
+    ],
+    [
+      "/verify/directory",
+      65
+    ],
+    [
+      "/qa",
+      54
+    ],
+    [
+      "/dbert-online",
+      41
+    ],
+    [
+      "/ai-solutions/llm-training/dbert-ai",
+      25
+    ],
+    [
+      "/about/credentials",
+      18
+    ]
+  ],
+  "status_codes": {
+    "200": 810,
+    "301": 22,
+    "404": 8
+  }
+}

@@ -11,6 +11,7 @@ import Breadcrumbs from '@/components/seo/Breadcrumbs'
 import ScrollProgress from '@/components/ui/ScrollProgress'
 import BackToTop from '@/components/ui/BackToTop'
 import AttendanceHeartbeat from '@/components/analytics/AttendanceHeartbeat'
+import TrafficAttributionTracker from '@/components/analytics/TrafficAttributionTracker'
 import { GA_MEASUREMENT_ID } from '@/lib/analytics'
 
 /* Design system v2 typefaces with Option A Space Grotesk editorial precision. */
@@ -173,6 +174,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <WhatsAppFloat />
           <BackToTop />
           <AttendanceHeartbeat />
+          <TrafficAttributionTracker />
         </div>
       </body>
     </html>

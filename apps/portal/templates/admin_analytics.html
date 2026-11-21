@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% set page_title_full = "DBERT — Traffic, Device & SEO Keyword Intelligence" %}
+{% include "_head.html" %}
+<meta name="robots" content="noindex,nofollow"/>
+<style nonce="{{ csp_nonce() }}">
+  :root {
+    --bg-dark: #0A0D17;
+    --card-bg: #0F172A;
+    --border-color: rgba(255, 255, 255, 0.08);
+    --primary-blue: #38BDF8;
+    --primary-indigo: #6366F1;
+    --emerald-green: #10B981;
+    --amber-gold: #F59E0B;
+    --text-main: #F8FAFC;
+    --text-muted: #94A3B8;
+  }
+
+  body.pg-admin {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+  }
+
+  .analytics-container {
+    max-width: 1240px;
+    margin: 2rem auto;
+    padding: 0 1.25rem 3.5rem;
+    box-sizing: border-box;
+  }
+
+  .header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .title-group h1 {
+    font-size: 1.85rem;
+    font-weight: 850;
+    color: #FFFFFF;
+    margin: 0 0 0.35rem;
+    letter-spacing: -0.5px;
+  }
+
+  .title-group p {
+    color: var(--text-muted);
+    font-size: 0.925rem;
+    margin: 0;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .btn-nav {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.08);
+    color: #E2E8F0;
+    text-decoration: none;
+    padding: 0.55rem 1.1rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    transition: all 0.2s ease;
+  }
+
+  .btn-nav:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: #FFFFFF;
+  }
+
+  /* Metric KPI Cards */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 1.15rem;
+    margin-bottom: 2rem;
+  }
+
+  .kpi-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 1.35rem 1.25rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+  }
+
+  .kpi-label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .kpi-val {
+    font-size: 1.95rem;
+    font-weight: 900;
+    color: #FFFFFF;
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+  }
+
+  .kpi-sub {
+    font-size: 0.775rem;
+    color: var(--text-muted);
+    margin-top: 0.45rem;
+  }
+
+  /* Layout 2-Column Sections */
+  .grid-two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  @media (max-width: 900px) {
+    .grid-two-col {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .section-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
+    margin-bottom: 2rem;
+  }
+
+  .section-card h2 {
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #FFFFFF;
+    margin: 0 0 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  /* Progress Bar List */
+  .bar-item {
+    margin-bottom: 1.1rem;
+  }
+
+  .bar-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+  }
+
+  .bar-track {
+    background: rgba(255, 255, 255, 0.08);
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.4s ease;
+  }
+
+  /* Tables */
+  .table-responsive {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+  }
+
+  .data-table th,
+  .data-table td {
+    padding: 0.75rem 0.9rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .data-table th {
+    background: rgba(255, 255, 255, 0.03);
+    color: var(--text-muted);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.725rem;
+    letter-spacing: 0.5px;
+  }
+
+  .data-table tr:hover td {
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 9999px;
+    font-size: 0.725rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+
+  .badge-emerald { background: rgba(16, 185, 129, 0.2); color: #34D399; border: 1px solid rgba(16, 185, 129, 0.4); }
+  .badge-indigo { background: rgba(99, 102, 241, 0.2); color: #A5B4FC; border: 1px solid rgba(99, 102, 241, 0.4); }
+  .badge-amber { background: rgba(245, 158, 11, 0.2); color: #FBBF24; border: 1px solid rgba(245, 158, 11, 0.4); }
+  .badge-blue { background: rgba(56, 189, 248, 0.2); color: #38BDF8; border: 1px solid rgba(56, 189, 248, 0.4); }
+
+  .pill-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    color: #CBD5E1;
+    font-family: monospace;
+    font-size: 0.8125rem;
+  }
+</style>
+</head>
+<body class="pg-admin">
+  <div class="analytics-container">
+    <div class="header-flex">
+      <div class="title-group">
+        <h1>Universal Traffic, Device &amp; SEO Intelligence</h1>
+        <p>Real-time visibility into Landing Pages, AI Assistant Referrals, Device Viewports &amp; Search Rankings</p>
+      </div>
+      <div class="header-actions">
+        <a href="/admin" class="btn-nav">&larr; Back to Admin</a>
+      </div>
+    </div>
+
+    <!-- 1. Top Level KPI Cards -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">
+          <span>Unique Visitors</span>
+          <i class="fa-solid fa-users" style="color:var(--primary-blue);"></i>
+        </div>
+        <div class="kpi-val">{{ traffic.unique_visitors or 0 }}</div>
+        <div class="kpi-sub">Across dbert.in &amp; LMS</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-label">
+          <span>Total Page Views</span>
+          <i class="fa-solid fa-chart-line" style="color:var(--emerald-green);"></i>
+        </div>
+        <div class="kpi-val" style="color:var(--emerald-green);">{{ traffic.total_page_views or 0 }}</div>
+        <div class="kpi-sub">{{ traffic.total_raw_requests or 0 }} HTTP requests</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-label">
+          <span>Mobile Share</span>
+          <i class="fa-solid fa-mobile-screen" style="color:var(--amber-gold);"></i>
+        </div>
+        {% set mob = traffic.devices.Mobile if traffic.devices and traffic.devices.Mobile else 0 %}
+        {% set desk = traffic.devices.Desktop if traffic.devices and traffic.devices.Desktop else 0 %}
+        {% set total_dev = mob + desk %}
+        {% set mob_pct = (mob / total_dev * 100)|round(1) if total_dev > 0 else 0 %}
+        <div class="kpi-val" style="color:var(--amber-gold);">{{ mob_pct }}%</div>
+        <div class="kpi-sub">{{ mob }} Mobile vs {{ desk }} Desktop</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-label">
+          <span>AI Assistant Visits</span>
+          <i class="fa-solid fa-robot" style="color:var(--primary-indigo);"></i>
+        </div>
+        {% set ai_total = traffic.channels.ai_assistant_referral if traffic.channels and traffic.channels.ai_assistant_referral else 0 %}
+        <div class="kpi-val" style="color:var(--primary-indigo);">{{ ai_total }}</div>
+        <div class="kpi-sub">ChatGPT, Perplexity, Claude</div>
+      </div>
+
+      <div class="kpi-card">
+        <div class="kpi-label">
+          <span>Google Search Clicks</span>
+          <i class="fa-brands fa-google" style="color:#EA4335;"></i>
+        </div>
+        <div class="kpi-val">{{ seo.total_organic_clicks or 0 }}</div>
+        <div class="kpi-sub">{{ seo.total_organic_impressions or 0 }} Impressions</div>
+      </div>
+    </div>
+
+    <!-- 2. Dual Grid: Traffic Channels & Devices -->
+    <div class="grid-two-col">
+      <!-- Left: Channel Attribution -->
+      <div class="section-card">
+        <h2><i class="fa-solid fa-filter" style="color:var(--primary-blue);"></i> Traffic Channel Attribution</h2>
+        {% set ch_tot = traffic.total_page_views or 1 %}
+        
+        <div class="bar-item">
+          <div class="bar-header">
+            <span><i class="fa-solid fa-magnifying-glass" style="color:#38BDF8; margin-right:6px;"></i> Organic Search</span>
+            <span>{{ traffic.channels.organic_search or 0 }}</span>
+          </div>
+          {% set org_p = ((traffic.channels.organic_search or 0) / ch_tot * 100)|round(1) %}
+          <div class="bar-track">
+            <div class="bar-fill" style="width: {{ org_p }}%; background: #38BDF8;"></div>
+          </div>
+        </div>
+
+        <div class="bar-item">
+          <div class="bar-header">
+            <span><i class="fa-brands fa-whatsapp" style="color:#25D366; margin-right:6px;"></i> WhatsApp Campaigns</span>
+            <span>{{ traffic.channels.whatsapp_campaign or 0 }}</span>
+          </div>
+          {% set wa_p = ((traffic.channels.whatsapp_campaign or 0) / ch_tot * 100)|round(1) %}
+          <div class="bar-track">
+            <div class="bar-fill" style="width: {{ wa_p }}%; background: #25D366;"></div>
+          </div>
+        </div>
+
+        <div class="bar-item">
+          <div class="bar-header">
+            <span><i class="fa-solid fa-robot" style="color:#818CF8; margin-right:6px;"></i> AI Assistant Referrals</span>
+            <span>{{ traffic.channels.ai_assistant_referral or 0 }}</span>
+          </div>
+          {% set ai_p = ((traffic.channels.ai_assistant_referral or 0) / ch_tot * 100)|round(1) %}
+          <div class="bar-track">
+            <div class="bar-fill" style="width: {{ ai_p }}%; background: #818CF8;"></div>
+          </div>
+        </div>
+
+        <div class="bar-item">
+          <div class="bar-header">
+            <span><i class="fa-solid fa-compass" style="color:#94A3B8; margin-right:6px;"></i> Direct &amp; Internal Navigation</span>
+            <span>{{ traffic.channels.direct or 0 }}</span>
+          </div>
+          {% set dir_p = ((traffic.channels.direct or 0) / ch_tot * 100)|round(1) %}
+          <div class="bar-track">
+            <div class="bar-fill" style="width: {{ dir_p }}%; background: #94A3B8;"></div>
+          </div>
+        </div>
+
+        {% if traffic.ai_assistant_referrals %}
+        <div style="margin-top:1.5rem; padding-top:1rem; border-top:1px solid rgba(255,255,255,0.08);">
+          <div style="font-size:0.8rem; font-weight:800; text-transform:uppercase; color:#A5B4FC; margin-bottom:0.75rem;">
+            AI Assistant Breakdown (Direct User Recommendations)
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            {% for name, count in traffic.ai_assistant_referrals.items() %}
+              <div class="pill-tag">
+                <i class="fa-solid fa-sparkles" style="color:#A5B4FC;"></i>
+                <span>{{ name }}: <strong>{{ count }}</strong></span>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Right: Device & Viewport Breakdown -->
+      <div class="section-card">
+        <h2><i class="fa-solid fa-display" style="color:var(--amber-gold);"></i> Device &amp; Viewport Distribution</h2>
+        {% set dev_tot = (traffic.devices.Mobile or 0) + (traffic.devices.Desktop or 0) + (traffic.devices.Tablet or 0) or 1 %}
+        
+        <div class="bar-item">
+          <div class="bar-header">
+            <span><i class="fa-solid fa-mobile-screen" style="color:#FBBF24; margin-right:6px;"></i> Mobile Phones</span>
+            <span>{{ traffic.devices.Mobile or 0 }}</span>
+          </div>
+          {% set mob_p = ((traffic.devices.Mobile or 0) / dev_tot * 100)|round(1) %}
+          <div class="bar-track">
+            <div class="bar-fill" style="width: {{ mob_p }}%; background: #FBBF24;"></div>
+          </div>
+        </div>
+
+        <div class="bar-item">
+          <div class="bar-header">
+            <span><i class="fa-solid fa-laptop" style="color:#38BDF8; margin-right:6px;"></i> Desktop / Laptop</span>
+            <span>{{ traffic.devices.Desktop or 0 }}</span>
+          </div>
+          {% set desk_p = ((traffic.devices.Desktop or 0) / dev_tot * 100)|round(1) %}
+          <div class="bar-track">
+            <div class="bar-fill" style="width: {{ desk_p }}%; background: #38BDF8;"></div>
+          </div>
+        </div>
+
+        <div class="bar-item">
+          <div class="bar-header">
+            <span><i class="fa-solid fa-tablet-screen-button" style="color:#A855F7; margin-right:6px;"></i> Tablets</span>
+            <span>{{ traffic.devices.Tablet or 0 }}</span>
+          </div>
+          {% set tab_p = ((traffic.devices.Tablet or 0) / dev_tot * 100)|round(1) %}
+          <div class="bar-track">
+            <div class="bar-fill" style="width: {{ tab_p }}%; background: #A855F7;"></div>
+          </div>
+        </div>
+
+        {% if traffic.ai_crawlers %}
+        <div style="margin-top:1.5rem; padding-top:1rem; border-top:1px solid rgba(255,255,255,0.08);">
+          <div style="font-size:0.8rem; font-weight:800; text-transform:uppercase; color:#34D399; margin-bottom:0.75rem;">
+            AI Search Indexers &amp; Web Crawlers
+          </div>
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            {% for bot, count in traffic.ai_crawlers.items() %}
+              <div class="pill-tag">
+                <i class="fa-solid fa-spider" style="color:#34D399;"></i>
+                <span>{{ bot }}: <strong>{{ count }}</strong></span>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- 3. Top Landing Pages Table -->
+    <div class="section-card">
+      <h2><i class="fa-solid fa-door-open" style="color:var(--emerald-green);"></i> Top Landing Pages (Entry Points)</h2>
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th style="width: 50px;">#</th>
+              <th>Landing Route</th>
+              <th>Total Views</th>
+              <th>Channel Intent</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in traffic.top_landing_pages[:15] %}
+            <tr>
+              <td>{{ loop.index }}</td>
+              <td>
+                <span style="font-family: monospace; color:#FFFFFF; font-weight:700;">{{ item[0] }}</span>
+              </td>
+              <td>
+                <span class="badge badge-emerald">{{ item[1] }} views</span>
+              </td>
+              <td>
+                {% if item[0] == '/enroll/1999' %}
+                  <span class="badge badge-amber">Incubation Admissions</span>
+                {% elif '/verify' in item[0] %}
+                  <span class="badge badge-blue">Credential Verification</span>
+                {% elif '/fellows' in item[0] %}
+                  <span class="badge badge-indigo">Alumni Social Proof</span>
+                {% elif item[0] == '/qa' %}
+                  <span class="badge badge-indigo">AI Knowledge Base</span>
+                {% else %}
+                  <span class="badge badge-blue">Public Gateway</span>
+                {% endif %}
+              </td>
+              <td>
+                <a href="https://dbert.in{{ item[0] }}" target="_blank" rel="noopener" style="color:#38BDF8; font-size:0.8rem; text-decoration:none;">
+                  View Live <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:10px;"></i>
+                </a>
+              </td>
+            </tr>
+            {% else %}
+            <tr>
+              <td colspan="5" style="text-align:center; color:#94A3B8; padding:2rem;">No landing page data recorded yet.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- 4. Google Search Console Keyword Ranking & Striking Distance -->
+    <div class="section-card">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:1.25rem;">
+        <h2 style="margin:0;"><i class="fa-solid fa-key" style="color:var(--amber-gold);"></i> Search Console Keyword Rankings &amp; Striking Distance</h2>
+        <span class="badge badge-amber">{{ seo.striking_distance_keywords|length if seo.striking_distance_keywords else 0 }} Striking Distance Targets</span>
+      </div>
+
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Search Query</th>
+              <th>Avg Rank</th>
+              <th>Clicks</th>
+              <th>Impressions</th>
+              <th>CTR</th>
+              <th>Intent Category</th>
+              <th>Target Strategy</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for q in seo.top_performing_queries[:10] %}
+            <tr>
+              <td><strong style="color:#FFFFFF;">{{ q.query }}</strong></td>
+              <td><span class="badge badge-emerald">#{{ q.position }}</span></td>
+              <td><strong>{{ q.clicks }}</strong></td>
+              <td>{{ q.impressions }}</td>
+              <td>{{ q.ctr_pct }}%</td>
+              <td><span class="badge badge-indigo">{{ q.intent }}</span></td>
+              <td><span style="font-size:0.75rem; color:#94A3B8;">Dominant Rank &mdash; Maintain backlinks</span></td>
+            </tr>
+            {% endfor %}
+
+            {% for q in seo.striking_distance_keywords[:10] %}
+            <tr>
+              <td><strong style="color:#FBBF24;">{{ q.query }}</strong></td>
+              <td><span class="badge badge-amber">#{{ q.position }}</span></td>
+              <td>{{ q.clicks }}</td>
+              <td>{{ q.impressions }}</td>
+              <td>{{ q.ctr_pct }}%</td>
+              <td><span class="badge badge-blue">{{ q.intent }}</span></td>
+              <td><span style="font-size:0.75rem; color:#34D399; font-weight:700;">Striking Distance &rarr; Optimize meta &amp; content</span></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

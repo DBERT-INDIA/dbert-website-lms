@@ -744,3 +744,75 @@ flowchart TD
 
 
 
+
+---
+
+## 26. Production Real-Time Operations Cockpit, 5-Gate Lifecycle Baseline & Funnel Analytics
+
+### 26.1. System Audit Overview & Infrastructure Reality
+A comprehensive multi-tier audit was executed on **21 November 2026** across the live AWS EC2 production server (`ubuntu@3.26.237.171`), local transaction registries, and candidate datasets.
+
+```
+Applications (5,125) ───► Selected (4,227) ───► Caution Paid (389) ───► Verified Gate 1 (143) ───► 03 Dec Ready (20)
+```
+
+### 26.2. Master Lifecycle Funnel Architecture & Metrics
+1. **Funnel 1: Ingestion & Application Stages**:
+   - Total LMS Applications: **5,125**
+   - Selected for Internship: **4,227** (82.5% qualification rate)
+   - Accepted Offer: **407** (7.9%)
+   - Rejected: **331** (6.5%)
+   - Under Review: **79** (1.5%)
+   - Other / Pending Enrollment: **81** (1.6%)
+   - Registered Student Accounts on LMS: **2,973**
+2. **Funnel 2: Monetization & Financial Gate Ledger**:
+   - **Track A (₹499 Caution Deposit)**: **389 paid and accepted** in `enrollments` table (₹89,429 recorded revenue, 6 verified, 1 pending).
+   - **Track B (₹1,500 Incubation Balance)**: **8 submissions** recorded in `balance_enrollments_1500.json` (2 approved, 4 pending staff review).
+   - **Track D (₹299 Credential Verification)**: **25 submissions** recorded in `verification_submissions_299.json` (25 approved, 100% processed).
+   - **Provisional Candidates Pending ₹299 Upgrade**: **374 certificates** in `certificates_registry.json`; **379 candidates** in Directory Tab 2.
+3. **Funnel 3: Academic Sprint & Bounty Submissions**:
+   - Total Task Submissions: **69**
+   - Submissions Pending Staff Review: **55** (20 Capstone Dossiers + 35 General Sprint Bounties)
+   - Changes Requested: **13** (8 Capstones needing student revision + 5 General)
+   - Approved Submissions: **1** (Task 104 Social QA Bounty)
+   - Dual Coin Ledgers:
+     * Withdrawable Referral Ledger: **35,000 coins** (7 transactions)
+     * Educational Task Coins Ledger: **130 coins** (2 transactions)
+4. **Funnel 4: 5-Gate Stipend Release Pipeline (143 Verified Candidates)**:
+   - **Gate 1 (Credential Status)**: **143 candidates** have verified credentials (`tier = 'verified'`, `isProvisional = false`).
+   - **Gate 2 (Maturation Timeline)**:
+     $$\text{Release Date} = \max(\text{End Date} + 60\text{ days}, \text{2026-12-03})$$
+     * **138 candidates** mature on **03 December 2026** (primary release batch).
+     * **5 candidates** mature on **30 December 2026** (late joining cohort).
+   - **Gate 3 (Payout Setup)**: **53 candidates** have encrypted UPI configured; **90 candidates** are missing UPI setup (**Critical Action Item**).
+   - **Gate 4 (Capstone Dossier)**: **28 candidates** submitted (20 pending review, 8 revision needed); **115 candidates** have not yet submitted.
+   - **Gate 5 (Release Readiness)**: **20 candidates** satisfy all prerequisite gates and are **100% Ready for Release on 03 Dec 2026** pending final staff approval.
+
+### 26.3. Interactive Generative UI Artifacts
+- **Standalone Executive Operations Cockpit**:
+  * File: `realtime_operations_dashboard.html`
+  * Features: Full-page operations dashboard with Tailwind styling, 4 interactive tabs, real-time candidate search, filter chips (Ready for Dec 03, Missing UPI, In Review, Needs Revision), interactive SVG/CSS funnels, and 1-click CSV/JSON data export buttons.
+- **Compact Inline Cockpit Widget**:
+  * File: `realtime_operations_cockpit_widget.html`
+  * Features: Responsive inline widget (< 450px) displaying live status pulses, 4 key KPI tiles, a 5-gate visual progress bar, and deep-link triggers.
+
+### 26.4. Batch 35 WhatsApp Outreach Execution & Audit (21 Nov 2026)
+- **Campaign Goal**: Reach high-intent locked provisional interns who have milestone tasks and release pending status, notifying them to complete their official ₹299 credential verification to unlock Gate 1 and release their ₹5,000 milestone stipend.
+- **Strict Deduplication**: All candidates pre-screened against all historical WhatsApp dispatch files (`dbert_whatsapp.db`, `dbert_whatsapp_sent_today.json`, `whatsapp_unlocked_sent.json`, `dispatch_tracking_stipend_299.csv`). 100% guaranteed zero prior WhatsApp contact in 299 or stipend release campaigns.
+- **Account Used**: Strictly **Account 2** (`.chrome_session_account2`), verified active and authenticated. Account 1 bypassed due to session issue.
+- **Delivery Results**:
+  * Total Processed: **35 candidates**
+  * Confirmed Delivered (`SENT`): **35 candidates (100% success rate)**
+  * Skipped: **0**
+  * Failed: **0**
+  * Human Pacing: 18s–35s randomized pause between deliveries.
+  * Audit Artifacts: `data/whatsapp_299_queue_batch35_acc2.json`, `data/dispatch_tracking_batch35_acc2.csv`, `data/whatsapp_dispatch_299.log`, `scripts/dispatch_batch35_299_acc2.py`.
+---
+
+## Phase 28: Universal Traffic Attribution, Device Analytics & SEO Keyword Intelligence (Completed - Nov 21, 2026)
+- **Client-Side Attribution**: Deployed `TrafficAttributionTracker.tsx` on `apps/website`, capturing first-touch landing pages, referrers, UTM parameters, device viewports, and non-blocking beacon to `/api/telemetry/traffic`.
+- **Server-Side Nginx Log Daemon**: Implemented `scripts/parse_nginx_traffic.py` on EC2, extracting 46,939 page views, 3,493 unique visitors, 599 ChatGPT human visits, and device distributions into `data/traffic_analytics_summary.json`.
+- **GSC Keyword Intelligence**: Implemented `scripts/ingest_gsc_data.py`, parsing 151 queries and identifying 8 high-intent striking-distance keywords.
+- **Admin Analytics Dashboard**: Deployed `/admin/analytics` on `https://lms.dbert.in/admin/analytics` with visual KPI stat cards, channel breakdown, device split, and keyword rankings.
+- **Unified Agent CLI**: Built `scripts/traffic_and_ranking_intelligence.py` with `--summary`, `--keywords`, and `--sitemap-sync` flags for Antigravity AI agents.
+
