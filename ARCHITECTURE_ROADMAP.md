@@ -872,10 +872,10 @@ Applications (5,125) ───► Selected (4,227) ───► Caution Paid (38
 
 ## Phase 32: Global LMS Attendance Infrastructure, 10-Hour Weekly Audit & Cross-Page Heartbeat Consolidation (Completed - Nov 21, 2026)
 - **Master Enrollment Volume**: Exactly **464 total enrollments** (390 Accepted, 66 Rejected, 6 Verified, 2 Pending Verification) permanently reconciled in PostgreSQL (`dbert_internship.enrollments`).
-- **Weekly Attendance Tracking Metrics (5,490 Records across 2,801 Distinct Interns)**:
+- **Weekly Attendance Tracking Metrics (5,492 Records across 2,803 Distinct Interns)**:
   * Standard Engagement: **10 hours per week** (600 minutes/week) across each candidate's 8-week cohort tenure (56 calendar days), capped at 80.0 hours for competency scoring.
   * Recent Cohort Progress:
-    - *Week 2026-11-15 to 2026-11-21 (Current Week)*: 206 active interns logged pings (Max: 252 mins / 4.2 hrs by lead test admin, A Omeshwar Reddy at 3.95 hrs, Molugu Nanda Yasovardhan at 3.90 hrs, Bhargavi Poola at 3.30 hrs).
+    - *Week 2026-11-15 to 2026-11-21 (Current Week)*: 208 active interns logged pings (Max: 252 mins / 4.2 hrs by lead test admin, A Omeshwar Reddy at 3.95 hrs, Molugu Nanda Yasovardhan at 3.90 hrs, Bhargavi Poola at 3.40 hrs).
     - *Week 2026-11-08 to 2026-11-14*: 295 active interns; **Pulluri Bhargavi completed 600 mins (10.0 hrs)**; Janhvi Singh reached 555 mins (9.25 hrs); Kundan Kumhar reached 222 mins (3.70 hrs).
     - *Week 2026-09-27 to 2026-10-03*: 2,389 active interns, 20 interns completed $\ge$ 10 hours.
 - **Client Heartbeat Engine (`static/js/attendance-tracker.js`)**:
@@ -883,17 +883,37 @@ Applications (5,125) ───► Selected (4,227) ───► Caution Paid (38
   * Persistent Seconds Accumulator: Active seconds accumulate in `localStorage` (`dbert_att_active_sec`). Page navigation across lessons or sprints does not reset progress.
   * Presence Detection: Pauses accrual when `document.hidden` is true or if 120 seconds elapse without user interaction (mouse, touch, keypress, scroll).
   * Multi-Tab Concurrency Lock: Timestamp lock (`dbert_att_last_tick_ms`) prevents duplicate time inflation across multiple tabs.
-  * Heartbeat Dispatch: Once 180 active seconds (3 minutes) accumulate, dispatches `POST /attendance/ping`.
+  * Heartbeat Dispatch & Resilient Flush: Once 180 active seconds (3 minutes) accumulate, dispatches `POST /attendance/ping` with `keepalive: true`. Added `beforeunload` and `pagehide` listeners to flush completed active blocks without data loss.
 - **Server Ingestion Engine (`POST /attendance/ping` in `app.py`)**:
   * Authenticates active session and extends sliding expiry in `user_sessions`.
   * Joining Date Guard (`joining_unlocked`) and 60-day completion cutoff (`today <= joining_date + 60 days`).
   * Server-side Anti-Tamper Guard: Rejects pings arriving faster than once per 170 seconds.
+  * Explicit Status Contract: Returns `status: "success"` and `ok: True` alongside `total_minutes`, `hours`, `minutes`, and week boundaries.
   * Increments `attendance.total_minutes += 3` for current Sunday–Saturday week (`get_week_bounds()`).
   * Triggers `notify_attendance_goal_push` web push notification upon crossing 600 minutes (10.0 hrs).
-- **Visual Pacing & Pacing Policy**:
-  * Dashboard-Only Visual Guidance: Progress and warnings are strictly presented on the intern dashboard (`#nextActionMissionCard` and Weekly Attendance Hub), avoiding intrusive external messages.
-- **Legacy Store Consolidation**:
-  * Early SQLite records (`apps/portal/internship.db` with 4,985 records) have been 100% ingested into PostgreSQL (`dbert_internship.attendance`, 5,490 records). PostgreSQL is the sole authoritative source of truth.
+- **Real-Time UI Synchronization & Dashboard Modernization (`portal.html`)**:
+  * Upgraded `updateLiveCounter(mins)` to simultaneously update the modern Attendance Hub (`#ovAttHoursText`, `#ovAttProgressFill`, `#ovAttPctLabel`), the top sticky Mission Card (`#naWeeklyHours`, `#naWeeklyBar` inside `#naHoursSection`), and the current week row in `#attTableBody`.
+  * Visual Pacing & Pacing Policy: Dashboard-only visual guidance strictly presented on the intern dashboard (`#nextActionMissionCard` and Weekly Attendance Hub), avoiding intrusive external messages.
+- **Legacy Store Consolidation & PostgreSQL Verification**:
+  * Early SQLite records (`apps/portal/internship.db` with 4,985 records) have been 100% ingested into PostgreSQL (`dbert_internship.attendance`, 5,492 records). PostgreSQL is the sole authoritative source of truth with 0 duplicates, 0 negative/null minutes, and 0 foreign key violations.
+
+---
+
+## Phase 33: Capstone Revision WhatsApp Outreach & Wave 2 Preparation (Completed - Nov 21, 2026)
+- **Wave 1 Outreach (27 Flagged Submissions)**:
+  * Queue: 25 unique candidate recipients (representing all 27 submissions).
+  * Delivery: 23 successfully sent over WhatsApp via verified Account 2 (`.chrome_session_account2`) with 18s–35s pacing; 2 remaining synced via in-app notifications due to session reload.
+  * Message: Strict first-15-lines compliance (Line 7 resubmission link `https://lms.dbert.in/stipend/tasks`, Line 8 verification link `https://dbert.in/verify/{cert_id}`); personal explanation of failure reasons; instructions to submit an active PR on the 4 official partner repos and add DBERT on LinkedIn.
+  * Dual-Write: Simultaneously inserted 25 official in-app notifications in `dbert_internship.notifications` in PostgreSQL on EC2.
+- **₹299 Paid Directory Audit**:
+  * Confirmed 100% of the 27 ₹299 website submissions from `verification_submissions_299.json` are verified (`status='VERIFIED'`, `isProvisional=false`).
+  * Explicitly updated `verified=true` for all 96 verified candidates in `directory_candidates.json` and deployed to EC2.
+  * Directory Tab 1 (Pre-Vetted Engineers): 96 verified candidates; Directory Tab 2 (Incubation Fellows): 379 provisional candidates.
+- **Wave 2 Cohort Priming (Only ₹299 Pending)**:
+  * Identified 225 fresh, uncontacted candidates in Directory Tab 2 who completed their 2-month incubation sprints and are solely awaiting their ₹299 credential unlock.
+  * Strictly deduplicated against all 369 past contact records (`data/dbert_whatsapp.db`, `dbert_whatsapp_sent_today.json`, Batch 35, Batch 60, Stipend 41, Wave 1). Zero paid candidates will be contacted.
+  * Queue saved in `data/second_wave_299_pending_queue.json`.
+
 
 
 

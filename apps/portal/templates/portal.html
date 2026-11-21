@@ -514,11 +514,11 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
             </div>
             <div id="naHoursSection" style="max-width:320px; min-width:220px; display:{% if next_action and next_action.hours_target and next_action.hours_target > 0 %}block{% else %}none{% endif %};">
               <div style="display:flex; justify-content:space-between; font-size:11.5px; color:#94a3b8; margin-bottom:4px;">
-                <span>Weekly Attendance: <strong style="color:#ffffff;">{{ (next_action and next_action.hours_logged) or 0 }} hrs</strong></span>
+                <span>Weekly Attendance: <strong id="naWeeklyHours" style="color:#ffffff;">{{ (next_action and next_action.hours_logged) or 0 }} hrs</strong></span>
                 <span>Target: <strong style="color:#fbbf24;">{{ (next_action and next_action.hours_target) or 10 }} hrs/week</strong></span>
               </div>
               <div style="height:6px; background:rgba(255,255,255,0.1); border-radius:3px; overflow:hidden;">
-                <div style="height:100%; width:{% if next_action and next_action.hours_target and next_action.hours_target > 0 %}{{ [((next_action.hours_logged / next_action.hours_target) * 100) | int, 100] | min }}%{% else %}0%{% endif %}; background:linear-gradient(90deg, #38bdf8, #34d399); border-radius:3px;"></div>
+                <div id="naWeeklyBar" style="height:100%; width:{% if next_action and next_action.hours_target and next_action.hours_target > 0 %}{{ [((next_action.hours_logged / next_action.hours_target) * 100) | int, 100] | min }}%{% else %}0%{% endif %}; background:linear-gradient(90deg, #38bdf8, #34d399); border-radius:3px;"></div>
               </div>
             </div>
           </div>
@@ -4844,19 +4844,58 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
   }
   function renderTutorCard(){const pct=Math.round((_intern&&(_intern.learning_completion_pct||_intern.tutor_completion_pct))||0);const p=document.getElementById('tutorPct');if(p)p.textContent=pct+'%';const b=document.getElementById('tutorProgressBar');if(b)b.style.width=pct+'%';}
   function updateLiveCounter(mins){
-    const h=Math.floor(mins/60),m=mins%60;
-    const lh = document.getElementById('liveHours'), lm = document.getElementById('liveMinutes');
-    if(lh) lh.textContent=h;
-    if(lm) lm.textContent=String(m).padStart(2,'0');
-    const pct=Math.min(100,Math.round((mins/600)*100));
-    const bar=document.getElementById('attProgressBar');
-    if(bar) { bar.style.width=pct+'%'; bar.className='progress-bar-fill '+(mins>=600?'green':mins>=360?'amber':'red'); }
-    const statusEl=document.getElementById('attStatus');
-    if(statusEl){
-      if(mins>=600){statusEl.innerHTML='<span style="color:var(--green);">&#10003; Weekly goal met! Great work.</span>';}
-      else{const rem=600-mins;const rh=Math.floor(rem/60),rm=rem%60;statusEl.innerHTML=`<span style="color:var(--amber);">&#9888; ${rh}h ${rm}m more to reach 10-hour goal</span>`;}
+    const h = Math.floor(mins / 60), m = mins % 60;
+    const hrsFloat = (mins / 60.0).toFixed(1);
+    const pct = Math.min(100, Math.round((mins / 600.0) * 100));
+
+    // Modern Attendance Hub
+    const attHoursEl = document.getElementById('ovAttHoursText');
+    const attFillEl = document.getElementById('ovAttProgressFill');
+    const attPctEl = document.getElementById('ovAttPctLabel');
+    if (attHoursEl) attHoursEl.textContent = `${hrsFloat} / 10.0 hrs`;
+    if (attFillEl) attFillEl.style.width = pct + '%';
+    if (attPctEl) {
+      attPctEl.textContent = pct + '%';
+      attPctEl.className = 'badge ' + (mins >= 600 ? 'b-green' : mins >= 300 ? 'b-blue' : 'b-amber');
     }
-    const summEl=document.getElementById('summThisWeek');if(summEl)summEl.innerHTML=`${h}h ${m}m ${mins>=600?'<span style="color:var(--green);">&#10003;</span>':'<span style="color:var(--amber);">&#9888;</span>'}`;
+
+    // Top Mission Card (#naHoursSection)
+    const naWeeklyHours = document.getElementById('naWeeklyHours');
+    const naWeeklyBar = document.getElementById('naWeeklyBar');
+    if (naWeeklyHours) naWeeklyHours.textContent = `${hrsFloat} hrs`;
+    if (naWeeklyBar) naWeeklyBar.style.width = pct + '%';
+
+    // Legacy fallback elements
+    const lh = document.getElementById('liveHours'), lm = document.getElementById('liveMinutes');
+    if (lh) lh.textContent = h;
+    if (lm) lm.textContent = String(m).padStart(2, '0');
+    const bar = document.getElementById('attProgressBar');
+    if (bar) { bar.style.width = pct + '%'; bar.className = 'progress-bar-fill ' + (mins >= 600 ? 'green' : mins >= 360 ? 'amber' : 'red'); }
+    const statusEl = document.getElementById('attStatus');
+    if (statusEl) {
+      if (mins >= 600) {
+        statusEl.innerHTML = '<span style="color:var(--green);">&#10003; Weekly goal met! Great work.</span>';
+      } else {
+        const rem = 600 - mins;
+        const rh = Math.floor(rem / 60), rm = rem % 60;
+        statusEl.innerHTML = `<span style="color:var(--amber);">&#9888; ${rh}h ${rm}m more to reach 10-hour goal</span>`;
+      }
+    }
+    const summEl = document.getElementById('summThisWeek');
+    if (summEl) summEl.innerHTML = `${h}h ${m}m ${mins >= 600 ? '<span style="color:var(--green);">&#10003;</span>' : '<span style="color:var(--amber);">&#9888;</span>'}`;
+
+    // Update current week in audit table if row exists
+    const curRow = document.querySelector('#attTableBody tr.current-week-row');
+    if (curRow) {
+      const hrsCell = curRow.querySelector('td:nth-child(2)');
+      const statusCell = curRow.querySelector('td:nth-child(3)');
+      if (hrsCell) hrsCell.innerHTML = `<strong style="font-weight:800;color:#0F172A;">${h}h ${m}m</strong><span style="color:#64748B;font-size:11px;margin-left:4px;">/ 10h</span>`;
+      if (statusCell) {
+        statusCell.innerHTML = mins >= 600
+          ? '<span class="badge b-green" style="border-radius:999px;font-weight:800;padding:4px 12px;font-size:11px;display:inline-flex;align-items:center;gap:4px;"><i class="fas fa-check-circle"></i> Compliant (10h+)</span>'
+          : '<span class="badge b-amber" style="border-radius:999px;font-weight:800;padding:4px 12px;font-size:11px;display:inline-flex;align-items:center;gap:4px;"><i class="fas fa-clock"></i> Below 10h</span>';
+      }
+    }
   }
   window.updateLiveCounter = updateLiveCounter;
   window.addEventListener('dbert_attendance_synced', function(e) {
@@ -4909,7 +4948,7 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
 
       if (typeof window.sendAttendancePing === 'function') {
         const res = await window.sendAttendancePing();
-        if (res && res.status === 'success' && !res.skipped) {
+        if (res && (res.status === 'success' || res.status === 'ok') && !res.skipped) {
           updateLiveCounter(res.total_minutes);
           await loadAttendance();
           showToast('✓ Attendance active! +3 minutes logged.', '#10b981');

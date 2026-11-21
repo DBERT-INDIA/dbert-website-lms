@@ -235,6 +235,7 @@ The following table documents completed and ongoing programmatic batch dispatche
 | **2 Verified Candidates Upgrade (Nov 21, 2026)** | Inbound ₹299 Gateway via `/verify/unlock` (Molugu Nanda Yaso Vardhan, H A Uday Bhasker) | 2 candidates upgraded | ₹299 fee verified, official 3-doc PDF credential packets generated, preview PNGs deployed, promoted to Tab 1 (Pre-Vetted Engineers) on `/verify/directory`, synced to PostgreSQL `intern_certificates` and `intern_accounts` with `tier='verified'` and `stipend_verified=1`, unlocking Gate 1 for stipend release (Maturation date: 03 Dec 2026) | `scripts/issue_2_verified_certificates_nov21.py`, `scripts/deploy_2_verified_certificates_to_ec2.py` | `data/verification_submissions_299.json`, `apps/website/src/data/certificates_registry.json`, `apps/website/src/data/directory_candidates.json` |
 | **Multi-Login Selected & Offer Dispatch (Nov 21, 2026)** | Complete Under Review cohort with multiple logins & unpaid ₹499 (Ratnadeep bamane, Sabreen Saed, Anvisha Raj, Srimathi K, Ritwika Bandyopadhyay, abhinand sagar, Gayathri S R, Karthika Raja, Varanasi Srikari, Muguntharajan K) | 10 promoted to Selected in DB (9 dispatched via WA, 1 deduplicated) | Promoted `status='Selected'` & `signup_stage=3`, generated official deterministic offer letter records (`DBERT-OFR-2026-...`), verified `/portal/offer` rendering, sent selection offer message via Account 2 with 18s–35s pacing | `scripts/promote_under_review_to_selected.py`, `scripts/dispatch_selected_multi_login_whatsapp.py` | `data/selected_multi_login_cohort.json`, `data/whatsapp_selected_multi_login_queue.json`, `data/dispatch_tracking_selected_multi_login.csv` |
 | **GitHub PR & LinkedIn Milestone Audit (Nov 21, 2026)** | 33 Pending Submissions + 143 Verified Interns Scheduled for Release | 28 unique submissions (1 passed, 27 changes requested) + 143 cohort accounts | Audited strict PRs on 4 project repos (Alkame, Gayatri, Aivara, Internship Portal) & LinkedIn certification additions. Only Priyanshu Kalondia passed (PR #29). 27 updated to status='changes_requested' on EC2 with structured feedback. | `scripts/audit_33_github_linkedin.py`, `scripts/apply_resubmission_status.py` | `data/github_linkedin_audit_report.json` |
+| **27 Capstone Revision WhatsApp Outreach (Nov 21, 2026)** | 27 Flagged Milestone Submissions | 25 unique candidate recipients (23 sent via WA, 25 notified via in-app DB) | Sent personalized WhatsApp messages via Account 2 with 18s–35s pacing; Line 7 resubmission URL, Line 8 verification URL; dual-wrote in-app notifications directly to EC2 PostgreSQL notifications table | `scripts/dispatch_resubmission_27_whatsapp.py` | `data/phones_27_resubmission.json`, `data/dispatch_tracking_resubmit_27.csv`, `data/dbert_whatsapp_sent_today.json` |
 
 ### 8.2. Operational Protocols & Safety Governance
 1. **409 Provisional Batch Delivery Rules**:
@@ -2340,10 +2341,10 @@ $$\text{Score} = 100 \times \text{certs} + 50 \times \text{tasks} + 25 \times \t
 
 ### 17.6. Attendance Infrastructure, 10-Hour Weekly Tracking & Global Heartbeat Engine
 - **Master Enrollment Volume**: Exactly **464 total enrollments** (390 Accepted, 66 Rejected, 6 Verified, 2 Pending Verification) permanently maintained in PostgreSQL (`dbert_internship.enrollments`).
-- **Weekly Attendance Tracking Metrics (5,490 Records across 2,801 Distinct Interns)**:
+- **Weekly Attendance Tracking Metrics (5,492 Records across 2,803 Distinct Interns)**:
   * Standard Engagement: **10 hours per week** (600 minutes/week) across each candidate's 8-week cohort tenure (56 calendar days), capped at 80.0 hours for competency scoring.
   * Recent Cohort Progress:
-    - *Week 2026-11-15 to 2026-11-21 (Current Week)*: 206 active interns logged pings (Max: 252 mins / 4.2 hrs by lead test admin, A Omeshwar Reddy at 3.95 hrs, Molugu Nanda Yasovardhan at 3.90 hrs, Bhargavi Poola at 3.30 hrs).
+    - *Week 2026-11-15 to 2026-11-21 (Current Week)*: 208 active interns logged pings (Max: 252 mins / 4.2 hrs by lead test admin, A Omeshwar Reddy at 3.95 hrs, Molugu Nanda Yasovardhan at 3.90 hrs, Bhargavi Poola at 3.40 hrs).
     - *Week 2026-11-08 to 2026-11-14*: 295 active interns; **Pulluri Bhargavi completed 600 mins (10.0 hrs)**; Janhvi Singh reached 555 mins (9.25 hrs); Kundan Kumhar reached 222 mins (3.70 hrs).
     - *Week 2026-09-27 to 2026-10-03*: 2,389 active interns, 20 interns completed $\ge$ 10 hours.
 - **Client Heartbeat Engine (`static/js/attendance-tracker.js`)**:
@@ -2351,17 +2352,19 @@ $$\text{Score} = 100 \times \text{certs} + 50 \times \text{tasks} + 25 \times \t
   * Persistent Seconds Accumulator: Active seconds accumulate in `localStorage` (`dbert_att_active_sec`). Page navigation across lessons or sprints does not reset progress.
   * Presence Detection: Pauses accrual when `document.hidden` is true or if 120 seconds elapse without user interaction (mouse, touch, keypress, scroll).
   * Multi-Tab Concurrency Lock: Timestamp lock (`dbert_att_last_tick_ms`) prevents duplicate time inflation across multiple tabs.
-  * Heartbeat Dispatch: Once 180 active seconds (3 minutes) accumulate, dispatches `POST /attendance/ping`.
+  * Heartbeat Dispatch & Resilient Flush: Once 180 active seconds (3 minutes) accumulate, dispatches `POST /attendance/ping` with `keepalive: true`. `beforeunload` and `pagehide` listeners flush pending pings without losing active study time.
 - **Server Ingestion Engine (`POST /attendance/ping` in `app.py`)**:
   * Authenticates active session and extends sliding expiry in `user_sessions`.
   * Joining Date Guard (`joining_unlocked`) and 60-day completion cutoff (`today <= joining_date + 60 days`).
   * Server-side Anti-Tamper Guard: Rejects pings arriving faster than once per 170 seconds.
+  * Explicit Status Contract: Returns `status: "success"` and `ok: True` alongside `total_minutes`, `hours`, `minutes`, and week boundaries.
   * Increments `attendance.total_minutes += 3` for current Sunday–Saturday week (`get_week_bounds()`).
   * Triggers `notify_attendance_goal_push` web push notification upon crossing 600 minutes (10.0 hrs).
-- **Visual Pacing & Pacing Policy**:
-  * Dashboard-Only Visual Guidance: Progress and warnings are strictly presented on the intern dashboard (`#nextActionMissionCard` and Weekly Attendance Hub), avoiding intrusive external messages.
-- **Legacy Store Consolidation**:
-  * Early SQLite records (`apps/portal/internship.db` with 4,985 records) have been 100% ingested into PostgreSQL (`dbert_internship.attendance`, 5,490 records). PostgreSQL is the sole authoritative source of truth.
+- **Real-Time UI Synchronization & Dashboard Modernization (`portal.html`)**:
+  * `updateLiveCounter(mins)`: Dynamically synchronizes modern Attendance Hub (`#ovAttHoursText`, `#ovAttProgressFill`, `#ovAttPctLabel`), the top sticky Mission Card (`#naWeeklyHours`, `#naWeeklyBar` inside `#naHoursSection`), and the current week row in `#attTableBody`.
+  * Visual Pacing & Pacing Policy: Dashboard-only visual guidance strictly presented on the intern dashboard (`#nextActionMissionCard` and Weekly Attendance Hub), avoiding intrusive external messages.
+- **Legacy Store Consolidation & PostgreSQL Verification**:
+  * Early SQLite records (`apps/portal/internship.db` with 4,985 records) have been 100% ingested into PostgreSQL (`dbert_internship.attendance`, 5,492 records). PostgreSQL is the sole authoritative source of truth with 0 duplicates, 0 negative/null minutes, and 0 foreign key violations.
 
 ---
 

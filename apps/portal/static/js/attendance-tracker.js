@@ -65,7 +65,13 @@
             if (isNaN(activeSec)) activeSec = 0;
             if (activeSec < TARGET_ACTIVE_SEC) {
                 _isPinging = false;
-                return { status: 'skipped', reason: 'not_enough_active_time', active_sec: activeSec };
+                return {
+                    status: 'skipped',
+                    reason: 'not_enough_active_time',
+                    active_sec: activeSec,
+                    required_sec: TARGET_ACTIVE_SEC,
+                    message: `Active session running: ${Math.floor(activeSec / 60)}m ${activeSec % 60}s / 3m logged toward next check-in.`
+                };
             }
 
             // Prevent duplicate server calls if another tab or ping occurred in the last 170s
@@ -73,7 +79,13 @@
             const now = Date.now();
             if (now - lastPing < 170000) {
                 _isPinging = false;
-                return { status: 'skipped', reason: 'cooldown_active' };
+                const remCooldown = Math.ceil((170000 - (now - lastPing)) / 1000);
+                return {
+                    status: 'skipped',
+                    reason: 'cooldown_active',
+                    cooldown_remaining_sec: remCooldown,
+                    message: `Attendance cooldown active (${remCooldown}s remaining). Please continue your study session.`
+                };
             }
 
             // Retrieve CSRF token if meta tag exists
@@ -88,7 +100,8 @@
             const res = await fetch('/attendance/ping', {
                 method: 'POST',
                 credentials: 'include',
-                headers: headers
+                headers: headers,
+                keepalive: true
             });
 
             if (res.status === 401) {
@@ -107,7 +120,9 @@
             }
 
             const data = await res.json();
-            if (data.status === 'success' && !data.skipped) {
+            const isSuccess = (data.status === 'success' || data.status === 'ok');
+
+            if (isSuccess && !data.skipped) {
                 localStorage.setItem(KEY_LAST_PING, Date.now().toString());
 
                 // Deduct 180s from accumulated active seconds
@@ -191,6 +206,14 @@
     window.addEventListener('beforeunload', () => {
         try {
             localStorage.setItem(KEY_LAST_TICK, Date.now().toString());
+            checkPendingPing();
+        } catch (e) {}
+    });
+
+    window.addEventListener('pagehide', () => {
+        try {
+            localStorage.setItem(KEY_LAST_TICK, Date.now().toString());
+            checkPendingPing();
         } catch (e) {}
     });
 

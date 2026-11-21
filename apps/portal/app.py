@@ -18409,7 +18409,7 @@ def attendance_ping():
                 (user["email"],)
             ).fetchone()
             if enr and not joining_unlocked(enr["joining_date"]):
-                return jsonify({"status": "ok", "skipped": True,
+                return jsonify({"status": "success", "ok": True, "skipped": True,
                                 "reason": "before_joining_date"})
 
             # End-date guard — no attendance credits after joining_date + 60 days
@@ -18417,7 +18417,7 @@ def attendance_ping():
                 try:
                     jd = datetime.strptime(enr["joining_date"], "%Y-%m-%d").date()
                     if date.today() > jd + timedelta(days=60):
-                        return jsonify({"status": "ok", "skipped": True,
+                        return jsonify({"status": "success", "ok": True, "skipped": True,
                                         "reason": "internship_ended"})
                 except ValueError:
                     pass
@@ -18448,7 +18448,8 @@ def attendance_ping():
                         if elapsed < 170:
                             curr_tot = existing["total_minutes"] or 0
                             return jsonify({
-                                "status": "ok",
+                                "status": "success",
+                                "ok": True,
                                 "skipped": True,
                                 "reason": "cooldown_active",
                                 "elapsed_seconds": int(elapsed),
@@ -18482,7 +18483,8 @@ def attendance_ping():
                 )
                 conn.commit()
                 return jsonify({
-                    "status": "ok",
+                    "status": "success",
+                    "ok": True,
                     "session_started": True,
                     "message": "Study session initiated. Active time is now tracking.",
                     "total_minutes": 0,
@@ -18495,7 +18497,8 @@ def attendance_ping():
         hours   = new_total // 60
         minutes = new_total % 60
         return jsonify({
-            "status":        "ok",
+            "status":        "success",
+            "ok":            True,
             "total_minutes": new_total,
             "hours":         hours,
             "minutes":       minutes,
