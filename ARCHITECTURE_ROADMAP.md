@@ -816,3 +816,34 @@ Applications (5,125) ───► Selected (4,227) ───► Caution Paid (38
 - **Admin Analytics Dashboard**: Deployed `/admin/analytics` on `https://lms.dbert.in/admin/analytics` with visual KPI stat cards, channel breakdown, device split, and keyword rankings.
 - **Unified Agent CLI**: Built `scripts/traffic_and_ranking_intelligence.py` with `--summary`, `--keywords`, and `--sitemap-sync` flags for Antigravity AI agents.
 
+---
+
+## Phase 29: Inbound Website ₹299 Gateway Reconciliation & Stipend Gate 1 Unlock (Completed - Nov 21, 2026)
+- **Audit Scope**: Reconciled inbound ₹299 verification submissions from `/verify/unlock` web gateway against LMS database (`intern_accounts`, `applications`, `intern_certificates`).
+- **Candidates Upgraded**:
+  1. **Molugu Nanda Yaso Vardhan** (`CERT-DBERT-2026-FSD-341`, Account `#5067`, UTR `375725311685`, Score: 87, Grade A, Full Stack Web Development).
+  2. **H A Uday Bhasker** (`CERT-DBERT-2026-FSD-342`, Account `#2089`, UTR `930768222270`, Score: 86, Grade A, Full Stack Web Development).
+- **Deliverables & Production Sync**:
+  * Generated 3-document official PDF credential packets (Completion Certificate, Academic Evaluation, LOR) in `outputs/cohort_2026/`.
+  * Generated and deployed high-resolution preview PNGs to `apps/website/public/certificates/previews/`.
+  * Promoted both candidates to **Tab 1: Pre-Vetted Engineers (Verified · Ready to Hire)** on `https://dbert.in/verify/directory`.
+  * Updated Next.js master registries (`certificates_registry.json`, `directory_candidates.json`) and marked submissions as `APPROVED` in `data/verification_submissions_299.json`.
+  * Synced PostgreSQL on EC2: inserted/updated `intern_certificates` with `tier='verified'` and set `stipend_verified=1` on `intern_accounts`, unlocking Gate 1.
+  * Rebuilt Next.js standalone application on EC2 and verified all live endpoints return `HTTP 200`.
+- **Stipend Maturation Date**: Both candidates completed sprints in October 2026; based on standard maturation $\max(\text{End Date} + 60\text{ days}, \text{2026-12-03})$, both are scheduled for stipend release on **03 December 2026**.
+
+## Phase 30: Multi-Login "Under Review" Cohort Promotion & Selection WhatsApp Campaign (Completed - Nov 21, 2026)
+- **Audit Scope**: Comprehensive audit of 82 applications in `Under Review` status; identified high-intent cohort with multiple session logins (`sessions_count > 1`) and zero prior ₹499 payments (10 candidates).
+- **PostgreSQL Promotion on EC2**:
+  * Promoted 10 applications from `Under Review` to `Selected` (`status='Selected'`, `reviewed_at=NOW()`).
+  * Updated matching `intern_accounts` records: set `signup_stage=3`, `account_status='Selected'`.
+  * Deterministically initialized official appointment records in `intern_offer_letters` (`DBERT-OFR-2026-...`).
+  * Verified live `/portal/offer` access on EC2 (`HTTP 200`, offer ID rendered cleanly in DOM).
+- **Selection WhatsApp Campaign**:
+  * Queue: 9 candidates (10th candidate `Muguntharajan K` safely excluded as duplicate outreach from Batch 35).
+  * Sender: Dedicated Account 2 (`.chrome_session_account2`) with 18s–35s anti-ban human pacing.
+  * Compliance: Offer Letter URL placed at Line 8, Registration/Deposit Form URL placed at Line 11 (strict first-15-lines rule).
+  * State Tracking: Synced to `data/selected_multi_login_cohort.json`, `data/whatsapp_selected_multi_login_queue.json`, `data/dbert_whatsapp_sent_today.json`, and `data/dispatch_tracking_selected_multi_login.csv`.
+
+
+

@@ -1518,5 +1518,95 @@
     "status": "SENT",
     "details": "SENT",
     "timestamp": "2026-11-21T16:46:18.531428"
+  },
+  {
+    "phone": "918591833879",
+    "name": "Ratnadeep manojkumar bamane",
+    "email": "ratnadeepratu737@gmail.com",
+    "account": "Account 2",
+    "campaign": "selected_multi_login_offer",
+    "status": "SENT",
+    "timestamp": "2026-11-21T17:36:13.585225",
+    "details": "Delivered via Account 2"
+  },
+  {
+    "phone": "918958006694",
+    "name": "Sabreen Saed",
+    "email": "sabreensaed861@gmail.com",
+    "account": "Account 2",
+    "campaign": "selected_multi_login_offer",
+    "status": "FAILED",
+    "timestamp": "2026-11-21T17:37:15.741228",
+    "details": "TIMEOUT_SEND_NOT_COMPLETED"
+  },
+  {
+    "phone": "919060662348",
+    "name": "Anvisha Raj",
+    "email": "anvisha70917@gmail.com",
+    "account": "Account 2",
+    "campaign": "selected_multi_login_offer",
+    "status": "SENT",
+    "timestamp": "2026-11-21T17:37:29.706266",
+    "details": "Delivered via Account 2"
+  },
+  {
+    "phone": "917200428978",
+    "name": "Srimathi K",
+    "email": "srimathiece157@gmail.com",
+    "account": "Account 2",
+    "campaign": "selected_multi_login_offer",
+    "status": "SENT",
+    "timestamp": "2026-11-21T17:38:11.850864",
+    "details": "Delivered via Account 2"
+  },
+  {
+    "phone": "918509650077",
+    "name": "Ritwika Bandyopadhyay",
+    "email": "ritwikaabanerjee5@gmail.com",
+    "account": "Account 2",
+    "campaign": "selected_multi_login_offer",
+    "status": "SENT",
+    "timestamp": "2026-11-21T17:38:48.795704",
+    "details": "Delivered via Account 2"
+  },
+  {
+    "phone": "917975942091",
+    "name": "abhinand sagar",
+    "email": "sagarabhinand342@gmail.com",
+    "account": "Account 2",
+    "campaign": "selected_multi_login_offer",
+    "status": "FAILED",
+    "timestamp": "2026-11-21T17:39:58.107160",
+    "details": "TIMEOUT_SEND_NOT_COMPLETED"
+  },
+  {
+    "phone": "916374556955",
+    "name": "Gayathri S R",
+    "email": "srgayathri0519@gmail.com",
+    "account": "Account 2",
+    "campaign": "selected_multi_login_offer",
+    "status": "SENT",
+    "timestamp": "2026-11-21T17:40:14.751705",
+    "details": "Delivered via Account 2"
+  },
+  {
+    "phone": "919080458790",
+    "name": "Karthika Raja",
+    "email": "karthikaraja112008@gmail.com",
+    "account": "Account 2",
+    "campaign": "selected_multi_login_offer",
+    "status": "SENT",
+    "timestamp": "2026-11-21T17:40:59.060633",
+    "details": "Delivered via Account 2"
+  },
+  {
+    "phone": "917672019727",
+    "name": "Varanasi Srikari",
+    "email": "srikarivaranasi05@gmail.com",
+    "account": "Account 2",
+    "campaign": "selected_multi_login_offer",
+    "status": "SENT",
+    "timestamp": "2026-11-21T17:41:51.188290",
+    "details": "Delivered via Account 2"
   }
 ]

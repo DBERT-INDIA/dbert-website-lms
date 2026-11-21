@@ -6156,5 +6156,39 @@
     "status": "VERIFIED",
     "firstLetter": "T",
     "verifyUrl": "/verify/CERT-DBERT-2026-DA-188"
+  },
+  {
+    "certId": "CERT-DBERT-2026-FSD-341",
+    "internId": "DBERT-2026-INT-2345",
+    "holderName": "Molugu Nanda Yaso Vardhan",
+    "email": "nandayasovardhan@gmail.com",
+    "college": "Vishnu Institute of Technology",
+    "domain": "Full Stack Web Development",
+    "duration": "15 August 2026 – 15 October 2026 (2 Months)",
+    "score": 87,
+    "grade": "Grade: A (Very Good Performance)",
+    "isProvisional": false,
+    "status": "VERIFIED",
+    "verified": true,
+    "firstLetter": "M",
+    "previewUrl": "/certificates/previews/CERT-DBERT-2026-FSD-341.png",
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-341"
+  },
+  {
+    "certId": "CERT-DBERT-2026-FSD-342",
+    "internId": "DBERT-2026-INT-2089",
+    "holderName": "H A Uday Bhasker",
+    "email": "ubhoysala@gmail.com",
+    "college": "Geethanjali College of Engineering and Technology",
+    "domain": "Full Stack Web Development",
+    "duration": "15 August 2026 – 15 October 2026 (2 Months)",
+    "score": 86,
+    "grade": "Grade: A (Very Good Performance)",
+    "isProvisional": false,
+    "status": "VERIFIED",
+    "verified": true,
+    "firstLetter": "H",
+    "previewUrl": "/certificates/previews/CERT-DBERT-2026-FSD-342.png",
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-342"
   }
 ]

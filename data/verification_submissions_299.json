@@ -459,5 +459,41 @@
     "status": "APPROVED",
     "ipAddress": "157.51.192.236",
     "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+  },
+  {
+    "id": "DBERT-VER-128605-KWKJ",
+    "submittedAt": "2026-11-21T11:23:36.547Z",
+    "approvedAt": "2026-11-21T11:45:00.000Z",
+    "verifiedAt": "2026-11-21T11:45:00.000Z",
+    "fullName": "MOLUGU NANDA YASOVARDHAN",
+    "email": "nandayasovardhan@gmail.com",
+    "phone": "9493476662",
+    "college": "Vishnu Institute of Technology",
+    "domain": "Full Stack Web Development",
+    "certId": "CERT-DBERT-2026-FSD-341",
+    "internId": "DBERT-2026-INT-2345",
+    "amountExpected": 299,
+    "amountPaid": 299,
+    "utrNumber": "375725311685",
+    "status": "APPROVED",
+    "adminRemarks": "Payment verified, official 3-doc credential packet generated, Tab 1 unlocked, Gate 1 released."
+  },
+  {
+    "id": "DBERT-VER-433495-L1XZ",
+    "submittedAt": "2026-11-21T11:23:43.511Z",
+    "approvedAt": "2026-11-21T11:45:00.000Z",
+    "verifiedAt": "2026-11-21T11:45:00.000Z",
+    "fullName": "H A Uday Bhasker",
+    "email": "ubhoysala@gmail.com",
+    "phone": "7036073368",
+    "college": "Geethanjali College of Engineering and Technology",
+    "domain": "Full Stack Web Development",
+    "certId": "CERT-DBERT-2026-FSD-342",
+    "internId": "DBERT-2026-INT-2089",
+    "amountExpected": 299,
+    "amountPaid": 299,
+    "utrNumber": "930768222270",
+    "status": "APPROVED",
+    "adminRemarks": "Payment verified, official 3-doc credential packet generated, Tab 1 unlocked, Gate 1 released."
   }
 ]
