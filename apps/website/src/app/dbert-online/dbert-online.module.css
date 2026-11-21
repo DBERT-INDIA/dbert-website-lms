@@ -281,4 +281,8 @@
   .domainCompareGrid {
     grid-template-columns: 1fr;
   }
+  .faqSection {
+    padding: 18px 14px;
+    margin-top: var(--space-6);
+  }
 }

@@ -88,8 +88,19 @@ class GeminiProvider:
                 track_generation(model, latency, in_tokens, out_tokens, "success")
                 return GeminiResponse(text=text, input_tokens=in_tokens, output_tokens=out_tokens, model_used=model)
                 
-            except (GeminiAuthError, GeminiModelRetiredError) as e:
-                # Fatal errors for this key
+            except GeminiModelRetiredError as e:
+                # Model not found or retired - try next model in fallback chain
+                track_generation(model, (time.time() - start_ts) * 1000, 0, 0, "failed")
+                last_err = str(e)
+                continue
+            except GeminiAuthError as e:
+                err_text = str(e).lower()
+                # If 403 free-tier or permission issue on this specific model, try next model in chain
+                if "free tier" in err_text or "permission_denied" in err_text:
+                    track_generation(model, (time.time() - start_ts) * 1000, 0, 0, "failed")
+                    last_err = str(e)
+                    continue
+                # Key itself is globally invalid (401 / bad key)
                 raise
             except (GeminiRateLimitError, GeminiTimeoutError, GeminiProviderError) as e:
                 track_generation(model, (time.time() - start_ts) * 1000, 0, 0, "failed")
@@ -127,7 +138,12 @@ class GeminiProvider:
                             except json.JSONDecodeError:
                                 pass
                 return # Successfully streamed from this model, exit
-            except (GeminiAuthError, GeminiModelRetiredError):
+            except GeminiModelRetiredError:
+                continue
+            except GeminiAuthError as e:
+                err_text = str(e).lower()
+                if "free tier" in err_text or "permission_denied" in err_text:
+                    continue
                 raise
             except (GeminiRateLimitError, GeminiTimeoutError, GeminiProviderError):
                 continue # Try next model on failure

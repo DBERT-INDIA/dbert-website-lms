@@ -265,6 +265,65 @@
     border: 1px solid rgba(239, 68, 68, 0.4);
     color: #F87171;
   }
+
+  /* Universal Responsive Upgrades for Notification Settings */
+  @media (max-width: 768px) {
+    .notif-settings-container {
+      padding: 1.25rem 0.75rem 3.5rem;
+    }
+    .notif-header h1 {
+      font-size: 1.45rem;
+    }
+    .notif-status-card {
+      padding: 1.25rem 1rem;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 1rem;
+    }
+    .notif-status-card > div:last-child {
+      flex-direction: column;
+    }
+    .btn-push-action,
+    .btn-push-secondary {
+      width: 100%;
+      justify-content: center;
+      min-height: 44px;
+    }
+    .section-card {
+      padding: 1.25rem 1rem;
+    }
+    .devices-table th {
+      padding: 0.6rem 0.75rem;
+      font-size: 0.75rem;
+      white-space: nowrap;
+    }
+    .devices-table td {
+      padding: 0.75rem;
+      font-size: 0.8125rem;
+      white-space: nowrap;
+    }
+    .devices-table th:first-child,
+    .devices-table td:first-child {
+      position: sticky;
+      left: 0;
+      background: #0B0F19;
+      z-index: 1;
+      box-shadow: 2px 0 6px rgba(0, 0, 0, 0.3);
+    }
+    .pref-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .notif-header h1 {
+      font-size: 1.3rem;
+    }
+    .btn-revoke {
+      min-height: 44px;
+      padding: 0.6rem 1rem;
+    }
+  }
 </style>
 </head>
 <body class="pg-account-notifications has-sidebar">

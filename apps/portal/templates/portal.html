@@ -75,7 +75,7 @@ body.portal .loading-screen{min-height:50vh;display:grid;place-items:center;alig
 body.portal .loading-screen .spinner-lg{margin:0 auto}
 body.portal .scrim{background:rgba(15,23,42,.45)}
 @media(max-width:1100px){body.portal .content-wrap{padding:26px 24px 64px}body.portal .portal-hero-banner{padding:22px}}
-@media(max-width:820px){body.portal .sidebar{transform:translateX(-100%);transition:transform .22s ease;z-index:1000}body.portal .sidebar.open{transform:translateX(0)}body.portal .main{margin-left:0}body.portal .m-topbar{position:sticky;top:0;z-index:900;min-height:58px;display:flex;align-items:center;gap:12px;padding:9px 14px;background:rgba(255,255,255,.94);border-bottom:1px solid var(--portal-line);backdrop-filter:blur(12px)}body.portal .m-burger{width:40px;height:40px;border:1px solid #dbe3ec;border-radius:10px;background:#fff}body.portal .m-title{font-size:14px;font-weight:700;color:#0f172a}body.portal .content-wrap{padding:22px 16px 52px}}
+@media(max-width:820px){body.portal .sidebar{transform:translateX(-100%);transition:transform .22s ease;z-index:1000}body.portal .sidebar.open{transform:translateX(0)}body.portal .main{margin-left:0}body.portal .m-topbar{position:sticky;top:0;z-index:900;min-height:58px;display:flex;align-items:center;gap:12px;padding:9px 14px;background:rgba(255,255,255,.94);border-bottom:1px solid var(--portal-line);backdrop-filter:blur(12px)}body.portal .m-burger{width:44px;height:44px;min-width:44px;min-height:44px;border:1px solid #dbe3ec;border-radius:10px;background:#fff;display:inline-flex;align-items:center;justify-content:center}body.portal .m-title{font-size:14px;font-weight:700;color:#0f172a}body.portal .content-wrap{padding:22px 16px 52px}}
 @media(max-width:640px){body.portal .panel-head h1{font-size:23px}body.portal .portal-hero-banner{padding:20px}body.portal .portal-hero-left,body.portal .portal-hero-right{width:100%}body.portal .portal-hero-right{align-items:flex-start}body.portal .portal-hero-info h1{font-size:20px}body.portal .portal-hero-info p{font-size:12.5px}body.portal .dash-grid,body.portal .overview-cards-grid{grid-template-columns:1fr!important}}
 @media(max-width:420px){body.portal .content-wrap{padding-left:12px;padding-right:12px}body.portal .nextstep-card,body.portal .glass-card{border-radius:14px!important}}
 @media(prefers-reduced-motion:reduce){body.portal *,body.portal *::before,body.portal *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
@@ -86,9 +86,9 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
   inset: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.82);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(15, 23, 42, 0.70);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
   z-index: 100001;
   display: flex;
   align-items: center;
@@ -108,6 +108,7 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
 }
 
 .dbert-push-modal-card {
+  position: relative;
   background: #0F172A;
   border: 1.5px solid rgba(99, 102, 241, 0.45);
   border-radius: 20px;
@@ -120,6 +121,53 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
   margin: auto;
   max-height: calc(100vh - 32px);
   overflow-y: auto;
+}
+
+.dbert-push-modal-close-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #94A3B8;
+  font-size: 20px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 20;
+  transition: all 0.2s ease;
+  padding: 0;
+}
+.dbert-push-modal-close-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+  transform: scale(1.08);
+}
+
+@media (max-width: 600px) {
+  .dbert-push-modal-overlay {
+    padding: 12px;
+  }
+  .dbert-push-modal-card {
+    max-width: 94vw !important;
+    padding: 24px 16px 20px !important;
+    border-radius: 16px !important;
+    max-height: 88vh !important;
+  }
+  .dbert-push-modal-close-btn {
+    top: 10px;
+    right: 10px;
+    width: 34px;
+    height: 34px;
+    font-size: 22px;
+    background: rgba(255, 255, 255, 0.14);
+    color: #F8FAFC;
+  }
 }
 
 /* Push Blocked Dashboard Banner Styling */
@@ -5499,6 +5547,8 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
   <!-- DBERT Sovereign Web Push Notification Modal Prompt -->
   <div id="dbertPushPermissionModal" class="dbert-push-modal-overlay" style="display:none;">
     <div class="dbert-push-modal-card">
+      <!-- Always-Visible Non-Blocking Close (X) Button -->
+      <button type="button" id="dbertPushModalCloseBtn" class="dbert-push-modal-close-btn" aria-label="Close notification prompt">&times;</button>
 
       <!-- STATE 1: DEFAULT PROMO STATE (When permission === 'default') -->
       <div id="pushModalStateDefault">
@@ -5694,23 +5744,47 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
         });
       }
 
+      // Unified Non-Blocking Dismissal Handler (24-Hour Cooldown)
+      function dismissPushModal() {
+        if (modal) modal.style.display = 'none';
+        var cooldown = String(Date.now() + 24 * 3600 * 1000);
+        localStorage.setItem('dbert_push_modal_dismissed_until', cooldown);
+        localStorage.setItem('dbert_push_blocked_dismissed_until', cooldown);
+      }
+
+      // Action: Top-Right (X) Close Button
+      var closeBtn = document.getElementById('dbertPushModalCloseBtn');
+      if (closeBtn) {
+        closeBtn.addEventListener('click', dismissPushModal);
+      }
+
       // Action: Dismiss Default Modal (24-hour cooldown)
       var dismissBtn = document.getElementById('dbertPushDismissBtn');
       if (dismissBtn) {
-        dismissBtn.addEventListener('click', function() {
-          if (modal) modal.style.display = 'none';
-          localStorage.setItem('dbert_push_modal_dismissed_until', String(Date.now() + 24 * 3600 * 1000));
-        });
+        dismissBtn.addEventListener('click', dismissPushModal);
       }
 
       // Action: Dismiss Blocked Modal (24-hour cooldown)
       var blockedDismissBtn = document.getElementById('dbertPushBlockedDismissBtn');
       if (blockedDismissBtn) {
-        blockedDismissBtn.addEventListener('click', function() {
-          if (modal) modal.style.display = 'none';
-          localStorage.setItem('dbert_push_blocked_dismissed_until', String(Date.now() + 24 * 3600 * 1000));
+        blockedDismissBtn.addEventListener('click', dismissPushModal);
+      }
+
+      // Action: Tap-Outside Backdrop Dismissal (Allows user to explore website freely)
+      if (modal) {
+        modal.addEventListener('click', function(e) {
+          if (e.target === modal) {
+            dismissPushModal();
+          }
         });
       }
+
+      // Action: Escape Key Dismissal
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal && modal.style.display === 'flex') {
+          dismissPushModal();
+        }
+      });
 
       // Action: Open Push Help from Dashboard Banner
       var openHelpBtn = document.getElementById('btnOpenPushHelp');

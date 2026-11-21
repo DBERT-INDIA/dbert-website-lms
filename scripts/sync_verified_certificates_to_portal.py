@@ -64,13 +64,21 @@ def sync_verified():
             intern_id = acct["id"] if acct else 0
 
             # Check existing cert
-            existing = conn.execute(
-                "SELECT id FROM intern_certificates WHERE LOWER(cert_id) = LOWER(?) OR (LOWER(email) = LOWER(?) AND tier = 'verified')",
+            existing_rows = conn.execute(
+                "SELECT id, tier FROM intern_certificates WHERE LOWER(cert_id) = LOWER(?) OR LOWER(email) = LOWER(?)",
                 (cert_id, email)
-            ).fetchone()
+            ).fetchall()
 
-            if existing:
-                skipped_count += 1
+            if existing_rows:
+                updated_any = False
+                for row in existing_rows:
+                    if row["tier"] != "verified":
+                        conn.execute("UPDATE intern_certificates SET tier = 'verified' WHERE id = ?", (row["id"],))
+                        updated_any = True
+                if updated_any:
+                    synced_count += 1
+                else:
+                    skipped_count += 1
                 continue
 
             conn.execute(
@@ -85,7 +93,7 @@ def sync_verified():
 
         conn.commit()
 
-    logger.info(f"Sync complete. Verified candidates found: {verified_count}. Newly synced: {synced_count}. Already present: {skipped_count}.")
+    logger.info(f"Sync complete. Verified candidates found: {verified_count}. Newly synced/updated: {synced_count}. Already verified: {skipped_count}.")
     return True
 
 if __name__ == "__main__":

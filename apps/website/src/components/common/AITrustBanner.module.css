@@ -1,0 +1,84 @@
+.trustBanner {
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.9) 100%);
+  border: 1px solid rgba(251, 191, 36, 0.25);
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin: 24px auto;
+  max-width: 1200px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(8px);
+}
+
+.leftCol {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  flex-shrink: 0;
+}
+
+.trustText {
+  color: #e2e8f0;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.trustText strong {
+  color: #fbbf24;
+  font-weight: 700;
+}
+
+.trustCtaBtn {
+  background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+  color: #0b1120;
+  font-weight: 700;
+  font-size: 12px;
+  padding: 10px 18px;
+  border-radius: 8px;
+  text-decoration: none;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.trustCtaBtn:hover {
+  opacity: 0.95;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 768px) {
+  .trustBanner {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px;
+    gap: 14px;
+    margin: 16px;
+  }
+
+  .leftCol {
+    align-items: flex-start;
+  }
+
+  .trustCtaBtn {
+    width: 100%;
+    justify-content: center;
+  }
+}

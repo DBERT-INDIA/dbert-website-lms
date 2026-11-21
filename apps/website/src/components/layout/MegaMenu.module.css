@@ -395,8 +395,10 @@
   background: none;
   border: 1px solid var(--border-strong);
   border-radius: 8px;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
   color: var(--text-primary);
   display: grid;
   place-items: center;
@@ -470,7 +472,7 @@
   color: var(--signal);
 }
 
-@media (max-width: 960px) {
+@media (max-width: 1040px) {
   .navLinks,
   .navActions .ghostAction {
     display: none;
@@ -481,7 +483,7 @@
   }
 }
 
-@media (min-width: 961px) {
+@media (min-width: 1041px) {
   .drawer {
     display: none;
   }
@@ -548,14 +550,28 @@
   .navLogo { gap: 8px; font-size: 1.05rem; }
   .navActions { gap: 8px; }
   .navActions > a {
-    padding: 8px 11px;
-    font-size: .76rem;
+    padding: 9px 12px;
+    min-height: 40px;
+    display: inline-flex;
+    align-items: center;
+    font-size: .78rem;
   }
   .ctaArrow { display: none; }
-  .hamb { width: 36px; height: 36px; }
+  .hamb {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    display: grid;
+    place-items: center;
+  }
 }
 
 @media (max-width: 360px) {
   .navContainer { padding: 0 12px; gap: 8px; }
-  .navActions > a { padding: 8px 8px; font-size: .72rem; }
+  .navActions > a {
+    padding: 8px 10px;
+    min-height: 38px;
+    font-size: .74rem;
+  }
 }

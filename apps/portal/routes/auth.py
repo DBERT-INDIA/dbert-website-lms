@@ -121,6 +121,14 @@ def logout():
     if token:
         with get_db() as conn:
             AuthService.invalidate_session(conn, token)
-    resp = redirect("/")
+    is_ajax_json = (
+        request.is_json
+        or request.headers.get("X-Requested-With") == "XMLHttpRequest"
+        or (request.headers.get("Accept") and "application/json" in request.headers.get("Accept") and "text/html" not in request.headers.get("Accept"))
+    )
+    if is_ajax_json:
+        resp = make_response(jsonify({"status": "success", "message": "Logged out.", "redirect": "/"}))
+    else:
+        resp = make_response(redirect("/"))
     _clear_session_cookie(resp)
     return resp

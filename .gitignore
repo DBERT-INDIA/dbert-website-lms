@@ -104,3 +104,4 @@ cpanel_public_html/
 Thumbs.db
 
 *.docx
+test_artifacts/

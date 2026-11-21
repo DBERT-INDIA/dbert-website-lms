@@ -155,7 +155,7 @@
   /* 2. Main Two-Column Dashboard Cards */
   .hero-row {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
     gap: 1.5rem;
     margin-bottom: 2rem;
   }
@@ -398,6 +398,15 @@
   .empty-state-sub {
     font-size: 0.8125rem;
     color: #64748B;
+  }
+  @media (max-width: 640px) {
+    .dash-card {
+      padding: 1.25rem;
+      border-radius: 14px;
+    }
+    .action-btn {
+      min-height: 44px;
+    }
   }
 </style>
 </head>

@@ -24,6 +24,7 @@ import HandDrawnArrow from '@/components/ui/HandDrawnArrow';
 import CountUp from '@/components/ui/CountUp';
 import Reveal from '@/components/ui/Reveal';
 import TrackedLink from '@/components/ui/TrackedLink';
+import AITrustBanner from '@/components/common/AITrustBanner';
 
 export const metadata: Metadata = {
   // `absolute` bypasses the "%s | DBERT" template in layout.tsx, which would
@@ -240,6 +241,11 @@ export default function HomePage() {
           </p>
         </div>
       </section>
+
+      {/* ══════════ AI ASSISTANT TRUST & VERIFIED SOCIAL PROOF ══════════ */}
+      <div className="wrap">
+        <AITrustBanner />
+      </div>
 
       {/* ══════════ AUDIENCE DOORS ══════════ */}
       <section className={styles.doorsSection} aria-labelledby="audience-heading">

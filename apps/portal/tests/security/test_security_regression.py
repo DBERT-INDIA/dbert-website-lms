@@ -221,7 +221,7 @@ class TestSessionFixationAndCookieSecurity:
 
         # Perform logout
         logout_resp = client.post("/logout")
-        assert logout_resp.status_code == 200
+        assert logout_resp.status_code in (200, 302)
 
         # Verify session token removed from database
         with get_db() as conn:

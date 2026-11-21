@@ -49,7 +49,10 @@
     "doc1Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\02_shanmukha_sri_saikumar_mediset\\1_Certificate_of_Completion_CERT-DBERT-2026-AIML-002.pdf",
     "doc2Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\02_shanmukha_sri_saikumar_mediset\\2_Academic_Project_Evaluation_CERT-DBERT-2026-AIML-002.pdf",
     "doc3Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\02_shanmukha_sri_saikumar_mediset\\3_Letter_of_Recommendation_CERT-DBERT-2026-AIML-002.pdf",
-    "previewUrl": "/certificates/previews/CERT-DBERT-2026-AIML-002.png"
+    "previewUrl": "/certificates/previews/CERT-DBERT-2026-AIML-002.png",
+    "isProvisional": false,
+    "status": "VERIFIED",
+    "verificationDate": "2026-11-20"
   },
   "CERT-DBERT-2026-DA-003": {
     "certId": "CERT-DBERT-2026-DA-003",
@@ -335,7 +338,10 @@
     "doc1Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\13_shanu_sri_gowtham\\1_Certificate_of_Completion_CERT-DBERT-2026-AIML-013.pdf",
     "doc2Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\13_shanu_sri_gowtham\\2_Academic_Project_Evaluation_CERT-DBERT-2026-AIML-013.pdf",
     "doc3Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\13_shanu_sri_gowtham\\3_Letter_of_Recommendation_CERT-DBERT-2026-AIML-013.pdf",
-    "previewUrl": "/certificates/previews/CERT-DBERT-2026-AIML-013.png"
+    "previewUrl": "/certificates/previews/CERT-DBERT-2026-AIML-013.png",
+    "isProvisional": false,
+    "status": "VERIFIED",
+    "verificationDate": "2026-11-20"
   },
   "CERT-DBERT-2026-AIML-014": {
     "certId": "CERT-DBERT-2026-AIML-014",
@@ -491,7 +497,10 @@
     "doc1Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\19_radha_bhamodkar\\1_Certificate_of_Completion_CERT-DBERT-2026-DA-019.pdf",
     "doc2Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\19_radha_bhamodkar\\2_Academic_Project_Evaluation_CERT-DBERT-2026-DA-019.pdf",
     "doc3Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\19_radha_bhamodkar\\3_Letter_of_Recommendation_CERT-DBERT-2026-DA-019.pdf",
-    "previewUrl": "/certificates/previews/CERT-DBERT-2026-DA-019.png"
+    "previewUrl": "/certificates/previews/CERT-DBERT-2026-DA-019.png",
+    "isProvisional": false,
+    "status": "VERIFIED",
+    "verificationDate": "2026-11-20"
   },
   "CERT-DBERT-2026-AIML-020": {
     "certId": "CERT-DBERT-2026-AIML-020",
@@ -517,7 +526,10 @@
     "doc1Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\20_bhargavi_c_k\\1_Certificate_of_Completion_CERT-DBERT-2026-AIML-020.pdf",
     "doc2Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\20_bhargavi_c_k\\2_Academic_Project_Evaluation_CERT-DBERT-2026-AIML-020.pdf",
     "doc3Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\20_bhargavi_c_k\\3_Letter_of_Recommendation_CERT-DBERT-2026-AIML-020.pdf",
-    "previewUrl": "/certificates/previews/CERT-DBERT-2026-AIML-020.png"
+    "previewUrl": "/certificates/previews/CERT-DBERT-2026-AIML-020.png",
+    "isProvisional": false,
+    "status": "VERIFIED",
+    "verificationDate": "2026-11-20"
   },
   "CERT-DBERT-2026-PA-021": {
     "certId": "CERT-DBERT-2026-PA-021",
@@ -595,7 +607,9 @@
     "doc1Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\23_burra_thanvesh\\1_Certificate_of_Completion_CERT-DBERT-2026-AIML-023.pdf",
     "doc2Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\23_burra_thanvesh\\2_Academic_Project_Evaluation_CERT-DBERT-2026-AIML-023.pdf",
     "doc3Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\23_burra_thanvesh\\3_Letter_of_Recommendation_CERT-DBERT-2026-AIML-023.pdf",
-    "previewUrl": "/certificates/previews/CERT-DBERT-2026-AIML-023.png"
+    "previewUrl": "/certificates/previews/CERT-DBERT-2026-AIML-023.png",
+    "isProvisional": false,
+    "status": "VERIFIED"
   },
   "CERT-DBERT-2026-DA-024": {
     "certId": "CERT-DBERT-2026-DA-024",
@@ -1091,7 +1105,10 @@
     "doc1Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\42_suraj_shivsunder_jha\\1_Certificate_of_Completion_CERT-DBERT-2026-FSD-042.pdf",
     "doc2Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\42_suraj_shivsunder_jha\\2_Academic_Project_Evaluation_CERT-DBERT-2026-FSD-042.pdf",
     "doc3Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\42_suraj_shivsunder_jha\\3_Letter_of_Recommendation_CERT-DBERT-2026-FSD-042.pdf",
-    "previewUrl": "/certificates/previews/CERT-DBERT-2026-FSD-042.png"
+    "previewUrl": "/certificates/previews/CERT-DBERT-2026-FSD-042.png",
+    "isProvisional": false,
+    "status": "VERIFIED",
+    "verificationDate": "2026-11-20"
   },
   "CERT-DBERT-2026-FSD-043": {
     "certId": "CERT-DBERT-2026-FSD-043",
@@ -1117,7 +1134,9 @@
     "doc1Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\43_subhradip_das\\1_Certificate_of_Completion_CERT-DBERT-2026-FSD-043.pdf",
     "doc2Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\43_subhradip_das\\2_Academic_Project_Evaluation_CERT-DBERT-2026-FSD-043.pdf",
     "doc3Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\43_subhradip_das\\3_Letter_of_Recommendation_CERT-DBERT-2026-FSD-043.pdf",
-    "previewUrl": "/certificates/previews/CERT-DBERT-2026-FSD-043.png"
+    "previewUrl": "/certificates/previews/CERT-DBERT-2026-FSD-043.png",
+    "isProvisional": false,
+    "status": "VERIFIED"
   },
   "CERT-DBERT-2026-DA-044": {
     "certId": "CERT-DBERT-2026-DA-044",
@@ -1169,7 +1188,9 @@
     "doc1Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\45_shruthi_yuvnuv_v\\1_Certificate_of_Completion_CERT-DBERT-2026-FSD-045.pdf",
     "doc2Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\45_shruthi_yuvnuv_v\\2_Academic_Project_Evaluation_CERT-DBERT-2026-FSD-045.pdf",
     "doc3Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\45_shruthi_yuvnuv_v\\3_Letter_of_Recommendation_CERT-DBERT-2026-FSD-045.pdf",
-    "previewUrl": "/certificates/previews/CERT-DBERT-2026-FSD-045.png"
+    "previewUrl": "/certificates/previews/CERT-DBERT-2026-FSD-045.png",
+    "isProvisional": false,
+    "status": "VERIFIED"
   },
   "CERT-DBERT-2026-FSD-046": {
     "certId": "CERT-DBERT-2026-FSD-046",
@@ -1195,7 +1216,10 @@
     "doc1Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\46_yasharth_poddar\\1_Certificate_of_Completion_CERT-DBERT-2026-FSD-046.pdf",
     "doc2Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\46_yasharth_poddar\\2_Academic_Project_Evaluation_CERT-DBERT-2026-FSD-046.pdf",
     "doc3Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\46_yasharth_poddar\\3_Letter_of_Recommendation_CERT-DBERT-2026-FSD-046.pdf",
-    "previewUrl": "/certificates/previews/CERT-DBERT-2026-FSD-046.png"
+    "previewUrl": "/certificates/previews/CERT-DBERT-2026-FSD-046.png",
+    "isProvisional": false,
+    "status": "VERIFIED",
+    "verificationDate": "2026-11-20"
   },
   "CERT-DBERT-2026-DA-047": {
     "certId": "CERT-DBERT-2026-DA-047",
@@ -1247,7 +1271,10 @@
     "doc1Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\48_pulluri_bhargavi\\1_Certificate_of_Completion_CERT-DBERT-2026-DA-048.pdf",
     "doc2Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\48_pulluri_bhargavi\\2_Academic_Project_Evaluation_CERT-DBERT-2026-DA-048.pdf",
     "doc3Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\48_pulluri_bhargavi\\3_Letter_of_Recommendation_CERT-DBERT-2026-DA-048.pdf",
-    "previewUrl": "/certificates/previews/CERT-DBERT-2026-DA-048.png"
+    "previewUrl": "/certificates/previews/CERT-DBERT-2026-DA-048.png",
+    "isProvisional": false,
+    "status": "VERIFIED",
+    "verificationDate": "2026-11-20"
   },
   "CERT-DBERT-2026-DA-049": {
     "certId": "CERT-DBERT-2026-DA-049",
@@ -1273,7 +1300,10 @@
     "doc1Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\49_kolloju_meghana\\1_Certificate_of_Completion_CERT-DBERT-2026-DA-049.pdf",
     "doc2Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\49_kolloju_meghana\\2_Academic_Project_Evaluation_CERT-DBERT-2026-DA-049.pdf",
     "doc3Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\49_kolloju_meghana\\3_Letter_of_Recommendation_CERT-DBERT-2026-DA-049.pdf",
-    "previewUrl": "/certificates/previews/CERT-DBERT-2026-DA-049.png"
+    "previewUrl": "/certificates/previews/CERT-DBERT-2026-DA-049.png",
+    "isProvisional": false,
+    "status": "VERIFIED",
+    "verificationDate": "2026-11-20"
   },
   "CERT-DBERT-2026-AIML-050": {
     "certId": "CERT-DBERT-2026-AIML-050",
@@ -1455,7 +1485,10 @@
     "doc1Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\56_kundan_kumhar\\1_Certificate_of_Completion_CERT-DBERT-2026-FSD-056.pdf",
     "doc2Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\56_kundan_kumhar\\2_Academic_Project_Evaluation_CERT-DBERT-2026-FSD-056.pdf",
     "doc3Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\56_kundan_kumhar\\3_Letter_of_Recommendation_CERT-DBERT-2026-FSD-056.pdf",
-    "previewUrl": "/certificates/previews/CERT-DBERT-2026-FSD-056.png"
+    "previewUrl": "/certificates/previews/CERT-DBERT-2026-FSD-056.png",
+    "isProvisional": false,
+    "status": "VERIFIED",
+    "verificationDate": "2026-11-20"
   },
   "CERT-DBERT-2026-DA-057": {
     "certId": "CERT-DBERT-2026-DA-057",
@@ -1779,11 +1812,12 @@
     "verificationUrl": "https://dbert.in/verify?certid=CERT-DBERT-2026-DA-067",
     "verified": true,
     "isProvisional": false,
-    "status": "Verified",
+    "status": "VERIFIED",
     "doc1Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\78_siva_sankar_thirumalasetty\\1_Certificate_of_Completion_CERT-DBERT-2026-DA-067.pdf",
     "doc2Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\78_siva_sankar_thirumalasetty\\2_Academic_Project_Evaluation_CERT-DBERT-2026-DA-067.pdf",
     "doc3Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\78_siva_sankar_thirumalasetty\\3_Letter_of_Recommendation_CERT-DBERT-2026-DA-067.pdf",
-    "previewUrl": "/certificates/previews/CERT-DBERT-2026-DA-067.png"
+    "previewUrl": "/certificates/previews/CERT-DBERT-2026-DA-067.png",
+    "verificationDate": "2026-11-20"
   },
   "CERT-DBERT-2026-DA-068": {
     "certId": "CERT-DBERT-2026-DA-068",
@@ -4231,11 +4265,12 @@
     "verificationUrl": "https://dbert.in/verify?certid=CERT-DBERT-2026-DA-109",
     "verified": true,
     "isProvisional": false,
-    "status": "Verified",
+    "status": "VERIFIED",
     "doc1Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\64_satya_patil\\1_Certificate_of_Completion_CERT-DBERT-2026-DA-109.pdf",
     "doc2Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\64_satya_patil\\2_Academic_Project_Evaluation_CERT-DBERT-2026-DA-109.pdf",
     "doc3Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\64_satya_patil\\3_Letter_of_Recommendation_CERT-DBERT-2026-DA-109.pdf",
-    "previewUrl": "/certificates/previews/CERT-DBERT-2026-DA-109.png"
+    "previewUrl": "/certificates/previews/CERT-DBERT-2026-DA-109.png",
+    "verificationDate": "2026-11-20"
   },
   "CERT-DBERT-2026-FSD-069": {
     "certId": "CERT-DBERT-2026-FSD-069",
@@ -4549,11 +4584,12 @@
     "verificationUrl": "https://dbert.in/verify?certid=CERT-DBERT-2026-DA-112",
     "verified": true,
     "isProvisional": false,
-    "status": "Verified",
+    "status": "VERIFIED",
     "doc1Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\72_bharathan_k\\1_Certificate_of_Completion_CERT-DBERT-2026-DA-112.pdf",
     "doc2Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\72_bharathan_k\\2_Academic_Project_Evaluation_CERT-DBERT-2026-DA-112.pdf",
     "doc3Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\72_bharathan_k\\3_Letter_of_Recommendation_CERT-DBERT-2026-DA-112.pdf",
-    "previewUrl": "/certificates/previews/CERT-DBERT-2026-DA-112.png"
+    "previewUrl": "/certificates/previews/CERT-DBERT-2026-DA-112.png",
+    "verificationDate": "2026-11-20"
   },
   "CERT-DBERT-2026-DA-113": {
     "certId": "CERT-DBERT-2026-DA-113",
@@ -4780,11 +4816,12 @@
     "verificationUrl": "https://dbert.in/verify?certid=CERT-DBERT-2026-DA-117",
     "verified": true,
     "isProvisional": false,
-    "status": "Verified",
+    "status": "VERIFIED",
     "doc1Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\58_m_brahmani\\1_Certificate_of_Completion_CERT-DBERT-2026-DA-117.pdf",
     "doc2Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\58_m_brahmani\\2_Academic_Project_Evaluation_CERT-DBERT-2026-DA-117.pdf",
     "doc3Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\58_m_brahmani\\3_Letter_of_Recommendation_CERT-DBERT-2026-DA-117.pdf",
-    "previewUrl": "/certificates/previews/CERT-DBERT-2026-DA-117.png"
+    "previewUrl": "/certificates/previews/CERT-DBERT-2026-DA-117.png",
+    "verificationDate": "2026-11-20"
   },
   "CERT-DBERT-2026-FSD-072": {
     "certId": "CERT-DBERT-2026-FSD-072",
@@ -5467,14 +5504,20 @@
     "issueDate": "2026-11-04",
     "evalDate": "2026-11-04",
     "score": 83,
-    "grade": "Grade A (Very Good)",
+    "grade": "Grade: A (Very Good Performance)",
     "signatory": "Mr. Abhinav Sharma",
     "signatoryTitle": "Program Head & Project Mentor",
     "organization": "DBERT",
     "verificationUrl": "https://dbert.in/verify?certid=CERT-DBERT-2026-UIUX-036",
-    "previewUrl": "/certificates/previews/sample_certificate_locked.png",
-    "isProvisional": true,
-    "status": "PENDING_ACTIVATION"
+    "previewUrl": "/certificates/previews/CERT-DBERT-2026-UIUX-036.png",
+    "isProvisional": false,
+    "status": "VERIFIED",
+    "verified": true,
+    "verificationDate": "2026-11-20",
+    "doc1Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\76_devanshi_yadav\\1_Certificate_of_Completion_CERT-DBERT-2026-UIUX-036.pdf",
+    "doc2Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\76_devanshi_yadav\\2_Academic_Project_Evaluation_CERT-DBERT-2026-UIUX-036.pdf",
+    "doc3Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\76_devanshi_yadav\\3_Letter_of_Recommendation_CERT-DBERT-2026-UIUX-036.pdf",
+    "topics": "Figma, User Research, Wireframing, High-Fidelity Prototyping, Usability Testing, Visual Design Systems"
   },
   "CERT-DBERT-2026-FSD-083": {
     "certId": "CERT-DBERT-2026-FSD-083",
@@ -10029,11 +10072,12 @@
     "verificationUrl": "https://dbert.in/verify?certid=CERT-DBERT-2026-AIML-169",
     "verified": true,
     "isProvisional": false,
-    "status": "Verified",
+    "status": "VERIFIED",
     "doc1Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\70_gurka_vinay_kumar_reddy\\1_Certificate_of_Completion_CERT-DBERT-2026-AIML-169.pdf",
     "doc2Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\70_gurka_vinay_kumar_reddy\\2_Academic_Project_Evaluation_CERT-DBERT-2026-AIML-169.pdf",
     "doc3Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\70_gurka_vinay_kumar_reddy\\3_Letter_of_Recommendation_CERT-DBERT-2026-AIML-169.pdf",
-    "previewUrl": "/certificates/previews/CERT-DBERT-2026-AIML-169.png"
+    "previewUrl": "/certificates/previews/CERT-DBERT-2026-AIML-169.png",
+    "verificationDate": "2026-11-20"
   },
   "CERT-DBERT-2026-DA-171": {
     "certId": "CERT-DBERT-2026-DA-171",
@@ -10592,7 +10636,8 @@
     "doc1Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\67_sakthi_p\\1_Certificate_of_Completion_CERT-DBERT-2026-DA-173.pdf",
     "doc2Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\67_sakthi_p\\2_Academic_Project_Evaluation_CERT-DBERT-2026-DA-173.pdf",
     "doc3Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\67_sakthi_p\\3_Letter_of_Recommendation_CERT-DBERT-2026-DA-173.pdf",
-    "previewUrl": "/certificates/previews/CERT-DBERT-2026-DA-173.png"
+    "previewUrl": "/certificates/previews/CERT-DBERT-2026-DA-173.png",
+    "verificationDate": "2026-11-20"
   },
   "CERT-DBERT-2026-DA-174": {
     "certId": "CERT-DBERT-2026-DA-174",
@@ -11698,8 +11743,12 @@
     "verificationUrl": "https://dbert.in/verify?certid=CERT-DBERT-2026-FSD-156",
     "verified": true,
     "isProvisional": false,
-    "status": "Verified",
-    "previewUrl": "/certificates/previews/sample_certificate_locked.png"
+    "status": "VERIFIED",
+    "previewUrl": "/certificates/previews/CERT-DBERT-2026-FSD-156.png",
+    "verificationDate": "2026-11-20",
+    "doc1Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\75_bhargavi_poola\\1_Certificate_of_Completion_CERT-DBERT-2026-FSD-156.pdf",
+    "doc2Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\75_bhargavi_poola\\2_Academic_Project_Evaluation_CERT-DBERT-2026-FSD-156.pdf",
+    "doc3Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\75_bhargavi_poola\\3_Letter_of_Recommendation_CERT-DBERT-2026-FSD-156.pdf"
   },
   "CERT-DBERT-2026-DA-185": {
     "certId": "CERT-DBERT-2026-DA-185",
@@ -11779,11 +11828,12 @@
     "verificationUrl": "https://dbert.in/verify?certid=CERT-DBERT-2026-DA-186",
     "verified": true,
     "isProvisional": false,
-    "status": "Verified",
+    "status": "VERIFIED",
     "doc1Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\81_deepanshu\\1_Certificate_of_Completion_CERT-DBERT-2026-DA-186.pdf",
     "doc2Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\81_deepanshu\\2_Academic_Project_Evaluation_CERT-DBERT-2026-DA-186.pdf",
     "doc3Pdf": "C:\\Users\\user\\Desktop\\dbert-website-lms\\outputs\\cohort_2026\\81_deepanshu\\3_Letter_of_Recommendation_CERT-DBERT-2026-DA-186.pdf",
-    "previewUrl": "/certificates/previews/CERT-DBERT-2026-DA-186.png"
+    "previewUrl": "/certificates/previews/CERT-DBERT-2026-DA-186.png",
+    "verificationDate": "2026-11-20"
   },
   "CERT-DBERT-2026-DA-187": {
     "certId": "CERT-DBERT-2026-DA-187",

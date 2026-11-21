@@ -7,6 +7,7 @@ import s from './enroll.module.css';
 import { PRICING_CONFIG, formatINR } from '@/config/pricing.config';
 import { getNextCohortStandup } from '@/lib/cohortCalendar';
 import { trackEvent } from '@/lib/analytics';
+import AITrustBanner from '@/components/common/AITrustBanner';
 
 interface CandidateData {
   certId: string;
@@ -667,6 +668,8 @@ export default function EnrollmentClient() {
       <Link href="/verify" className={s.breadcrumb}>
         ← Back to Verification Engine
       </Link>
+
+      <AITrustBanner />
 
       {/* Main Header & Ledger */}
       <div className={s.headerCard}>

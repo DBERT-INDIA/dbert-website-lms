@@ -846,12 +846,13 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
-  font-size: 0.78rem;
+  font-size: 0.82rem;
   font-weight: 600;
   color: #38BDF8;
   text-decoration: none;
   border: 1px solid rgba(56, 189, 248, 0.3);
-  padding: 6px 12px;
+  padding: 10px 14px;
+  min-height: 40px;
   border-radius: 6px;
   background: rgba(56, 189, 248, 0.05);
   transition: all 0.15s ease;
@@ -889,10 +890,12 @@
 
 .comparisonTableWrap {
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .comparisonTable {
   width: 100%;
+  min-width: 440px;
   border-collapse: collapse;
   font-size: 0.84rem;
 }
@@ -929,4 +932,25 @@
   background: rgba(16, 185, 129, 0.05);
   font-weight: 600;
   width: 30%;
+}
+
+@media (max-width: 768px) {
+  .lookupInput,
+  .formInput,
+  .utrInput {
+    font-size: 16px !important;
+  }
+  .lookupBtn {
+    min-height: 44px;
+    padding: 12px 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .comparisonSection {
+    padding: 18px 14px;
+  }
+  .comparisonTitle {
+    font-size: 1.1rem;
+  }
 }

@@ -82,6 +82,14 @@
   --space-11: 88px;
   --space-12: 96px;
   --space-16: 128px;
+
+  /* Universal 5-Tier Responsive Breakpoint Tokens */
+  --bp-xs: 480px;
+  --bp-sm: 768px;
+  --bp-md: 1024px;
+  --bp-lg: 1440px;
+  --touch-target-min: 44px;
+  --touch-target-comfortable: 48px;
 }
 
 body[data-theme="enterprise"],
@@ -1852,6 +1860,97 @@ code { font-family: var(--font-m); font-size: .9em; }
 
 .subpage-section.band-alt,
 .section.band { background: var(--surface-raised); }
+
+/* ==========================================================================
+   UNIVERSAL 5-TIER RESPONSIVE ARCHITECTURE (SECTION 17)
+   Standardized Breakpoints:
+     XS: < 480px   - Compact Mobile (iPhone SE, Galaxy Fold)
+     SM: 480-768px - Large Smartphones & Phablets
+     MD: 769-1024px - Tablets & Small Laptops
+     LG: 1025-1440px - Standard Desktop
+     XL: > 1440px  - Ultrawide & 4K
+   ========================================================================== */
+
+/* Fluid Bento Grid */
+.bento-fluid-grid,
+.grid-auto-fit {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)) !important;
+  gap: clamp(16px, 2.5vw, 28px) !important;
+}
+
+/* Horizontal Touch-Scroll Pill Strips */
+.pill-scroll-container {
+  display: flex;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  gap: 8px;
+  padding: 4px 2px 10px;
+  scrollbar-width: none;
+}
+.pill-scroll-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* 1-Tap UPI FastPay Grid */
+.upi-fastpay-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+@media (max-width: 480px) {
+  .upi-fastpay-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+}
+.upi-fastpay-btn {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+/* Universal Touch Target Compliance */
+@media (pointer: coarse), (max-width: 768px) {
+  button,
+  .btn,
+  a.btn,
+  input[type="button"],
+  input[type="submit"] {
+    min-height: 44px;
+    box-sizing: border-box;
+  }
+}
+
+/* iOS Safari 16px Font Auto-Zoom Prevention */
+@media (max-width: 768px) {
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="number"],
+  input[type="password"],
+  select,
+  textarea {
+    font-size: 16px !important;
+  }
+}
+
+/* Ultrawide 4K Layout Protection */
+@media (min-width: 1441px) {
+  .wrap,
+  .container {
+    max-width: 1360px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
 
 
 

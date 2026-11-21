@@ -90,18 +90,28 @@ def stipend_tasks():
         )
         # Stipend Manual Verification & Payout Scheduling metadata
         stipend_verified = bool(acct and (acct.get("stipend_verified") == 1 or acct.get("stipend_verified") is True))
-        stipend_release_date = (acct.get("stipend_release_date") if acct else "") or ""
+        raw_db_release = (acct.get("stipend_release_date") if acct else "") or ""
         stipend_amount = (acct.get("stipend_amount") if acct else 5499) or 5499
         verified_github_org = (acct.get("verified_github_org") if acct else "") or ""
         verified_github_repo = (acct.get("verified_github_repo") if acct else "") or ""
         
-        stipend_release_date_display = ""
-        if stipend_release_date:
-            try:
-                dt_obj = datetime.strptime(stipend_release_date[:10], "%Y-%m-%d")
-                stipend_release_date_display = dt_obj.strftime("%A, %d %B %Y")
-            except Exception:
-                stipend_release_date_display = stipend_release_date
+        # Enforce canonical 60-day post-end-date rule with 2026-12-03 floor
+        calc_iso, calc_disp = CertificateService.calculate_payout_release_date(comp_info.get("completion_date"))
+        
+        if raw_db_release:
+            if raw_db_release < "2026-12-03":
+                stipend_release_date = "2026-12-03"
+                stipend_release_date_display = "Thursday, 03 December 2026"
+            else:
+                stipend_release_date = raw_db_release
+                try:
+                    dt_obj = datetime.strptime(stipend_release_date[:10], "%Y-%m-%d")
+                    stipend_release_date_display = dt_obj.strftime("%A, %d %B %Y")
+                except Exception:
+                    stipend_release_date_display = stipend_release_date
+        else:
+            stipend_release_date = calc_iso
+            stipend_release_date_display = calc_disp
 
         active_task = None
         if all_gates_passed:

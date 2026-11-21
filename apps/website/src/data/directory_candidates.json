@@ -1064,7 +1064,9 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "B",
-    "verifyUrl": "/verify/CERT-DBERT-2026-DA-112"
+    "verifyUrl": "/verify/CERT-DBERT-2026-DA-112",
+    "verified": true,
+    "previewUrl": "/certificates/previews/CERT-DBERT-2026-DA-112.png"
   },
   {
     "certId": "CERT-DBERT-2026-AIML-020",
@@ -1425,10 +1427,12 @@
     "duration": "15 Jul 2026 – 15 Sep 2026",
     "score": 83,
     "grade": "Grade A (Very Good)",
-    "isProvisional": true,
-    "status": "PROVISIONAL",
+    "isProvisional": false,
+    "status": "VERIFIED",
     "firstLetter": "D",
-    "verifyUrl": "/verify/CERT-DBERT-2026-UIUX-036"
+    "verifyUrl": "/verify/CERT-DBERT-2026-UIUX-036",
+    "verified": true,
+    "previewUrl": "/certificates/previews/CERT-DBERT-2026-UIUX-036.png"
   },
   {
     "certId": "CERT-DBERT-2026-FSD-094",
@@ -1766,7 +1770,9 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "G",
-    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-169"
+    "verifyUrl": "/verify/CERT-DBERT-2026-AIML-169",
+    "verified": true,
+    "previewUrl": "/certificates/previews/CERT-DBERT-2026-AIML-169.png"
   },
   {
     "certId": "CERT-DBERT-2026-AIML-175",
@@ -5445,7 +5451,9 @@
     "isProvisional": false,
     "status": "VERIFIED",
     "firstLetter": "S",
-    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-042"
+    "verifyUrl": "/verify/CERT-DBERT-2026-FSD-042",
+    "verified": true,
+    "previewUrl": "/certificates/previews/CERT-DBERT-2026-FSD-042.png"
   },
   {
     "certId": "CERT-DBERT-2026-FSD-144",

@@ -276,11 +276,7 @@ def csp_policy_for(nonce):
         if not nonce else
         f"script-src 'self' 'nonce-{nonce}' {_CSP_SCRIPT_ORIGINS}"
     )
-    style_src = (
-        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com"
-        if not nonce else
-        f"style-src 'self' 'unsafe-inline' 'nonce-{nonce}' https://fonts.googleapis.com https://cdnjs.cloudflare.com"
-    )
+    style_src = "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com"
     
     return (
         "default-src 'self'; "
@@ -1230,6 +1226,15 @@ def _validate_gemini_key_live(raw_key: str):
         if r.status_code == 200:
             data = r.json()
             models = [m.get("name") for m in data.get("models", []) if "generateContent" in m.get("supportedGenerationMethods", [])]
+            if not models:
+                return False, None, "This key authenticated, but Google returned no compatible text generation models."
+
+            from services.ai.gemini_discovery import probe_first_working_model
+            working_default, verified_models, probe_err = probe_first_working_model(clean_key, candidate_models=models)
+            if working_default:
+                return True, verified_models, None
+            if probe_err:
+                return False, None, probe_err
             return True, models, None
 
         # Parse Google's error response details
@@ -3456,6 +3461,41 @@ def init_db():
             );
             CREATE INDEX IF NOT EXISTS idx_offer_letters_email ON intern_offer_letters(email);
             CREATE INDEX IF NOT EXISTS idx_offer_letters_offer_id ON intern_offer_letters(offer_letter_id);
+
+            -- UP5.8: Coin Perks Catalog & Redemptions
+            CREATE TABLE IF NOT EXISTS coin_perks_catalog (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                slug TEXT UNIQUE NOT NULL,
+                title TEXT NOT NULL,
+                description TEXT NOT NULL,
+                coin_price INTEGER NOT NULL CHECK (coin_price > 0),
+                category TEXT NOT NULL DEFAULT 'career',
+                action_type TEXT NOT NULL DEFAULT 'instant_token',
+                badge_label TEXT,
+                icon_class TEXT DEFAULT 'fa-solid fa-gift',
+                metadata_json TEXT DEFAULT '{}',
+                is_active INTEGER DEFAULT 1,
+                created_at TEXT DEFAULT (datetime('now','localtime'))
+            );
+            CREATE INDEX IF NOT EXISTS idx_coin_perks_active ON coin_perks_catalog(is_active, category);
+
+            CREATE TABLE IF NOT EXISTS coin_perk_redemptions (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                redemption_code TEXT UNIQUE NOT NULL,
+                intern_id INTEGER NOT NULL,
+                email TEXT NOT NULL,
+                perk_id INTEGER NOT NULL,
+                perk_slug TEXT NOT NULL,
+                coins_spent INTEGER NOT NULL,
+                status TEXT NOT NULL DEFAULT 'active',
+                voucher_token TEXT UNIQUE,
+                details_json TEXT DEFAULT '{}',
+                idem_key TEXT UNIQUE NOT NULL,
+                created_at TEXT DEFAULT (datetime('now','localtime')),
+                used_at TEXT
+            );
+            CREATE INDEX IF NOT EXISTS idx_perk_redemptions_intern ON coin_perk_redemptions(intern_id, status);
+            CREATE INDEX IF NOT EXISTS idx_perk_redemptions_email ON coin_perk_redemptions(email);
         """)
         # Auto-ensure 'program' column exists in SQLite for courses and intern_accounts
         try:
@@ -6648,8 +6688,8 @@ def _intern_payment_verified(email):
         return False
     with get_db() as conn:
         row = conn.execute(
-            "SELECT 1 FROM applications WHERE LOWER(email)=? AND status IN (?, ?) LIMIT 1",
-            (email.strip().lower(), STATUS_ACCEPTED, STATUS_PAID_ENROLLED),
+            "SELECT 1 FROM applications WHERE LOWER(email)=? AND status IN (?, ?, ?) LIMIT 1",
+            (email.strip().lower(), STATUS_ACCEPTED, STATUS_PAID_ENROLLED, STATUS_ENROLLED),
         ).fetchone()
     return row is not None
 
@@ -9638,20 +9678,87 @@ def tasks_list():
         pagination = paginate(conn, q, params=params, page=page, per_page=per_page)
 
         user_submissions = {}
-        if intern:
-            subs = conn.execute(
-                "SELECT task_id, status FROM task_submissions WHERE intern_id = ? OR (email IS NOT NULL AND LOWER(email) = LOWER(?)) ORDER BY id DESC",
-                (intern["id"], intern.get("email") or "")
+        my_submissions = []
+        pending_submissions = []
+        completed_submissions = []
+        task_earned = 0
+        task_balance = 0
+        perks = []
+        my_redemptions = []
+
+        try:
+            perks_rows = conn.execute(
+                "SELECT * FROM coin_perks_catalog WHERE is_active = 1 ORDER BY coin_price ASC, id ASC"
             ).fetchall()
-            for s in subs:
-                if s["task_id"] not in user_submissions:
-                    user_submissions[s["task_id"]] = s["status"]
+            perks = [dict(p) for p in perks_rows]
+        except Exception as e_perks:
+            log_error("tasks_list_perks", e_perks)
+
+        if intern:
+            email = (intern.get("email") or "").strip().lower()
+            try:
+                subs = conn.execute(
+                    "SELECT s.*, t.title, t.description, t.task_type, t.target_domain, t.coin_reward, t.submission_type, t.payment_type "
+                    "FROM task_submissions s "
+                    "JOIN tasks t ON s.task_id = t.id "
+                    "WHERE s.intern_id = ? OR (s.email IS NOT NULL AND LOWER(s.email) = LOWER(?)) "
+                    "ORDER BY s.id DESC",
+                    (intern["id"], email)
+                ).fetchall()
+                for s in subs:
+                    sd = dict(s)
+                    my_submissions.append(sd)
+                    if sd["task_id"] not in user_submissions:
+                        user_submissions[sd["task_id"]] = sd.get("status")
+                    if sd.get("status") == "pending":
+                        pending_submissions.append(sd)
+                    elif sd.get("status") == "approved":
+                        completed_submissions.append(sd)
+            except Exception as e_subs:
+                log_error("tasks_list_subs", e_subs)
+
+            try:
+                task_earned_row = conn.execute(
+                    "SELECT COALESCE(SUM(delta), 0) AS val FROM coin_ledger_mirror "
+                    "WHERE (intern_id = ? OR (email IS NOT NULL AND LOWER(email) = LOWER(?))) AND ledger_kind = 'task'",
+                    (intern["id"], email)
+                ).fetchone()
+                task_earned = int(task_earned_row["val"] if task_earned_row else 0)
+            except Exception as e_earned:
+                log_error("tasks_list_earned", e_earned)
+
+            try:
+                task_balance = get_task_balance(conn, intern["id"], email=email)
+            except Exception as e_bal:
+                log_error("tasks_list_balance", e_bal)
+
+            try:
+                red_rows = conn.execute(
+                    "SELECT r.*, p.title as perk_title, p.icon_class, p.badge_label FROM coin_perk_redemptions r "
+                    "JOIN coin_perks_catalog p ON r.perk_id = p.id "
+                    "WHERE r.intern_id = ? OR (r.email IS NOT NULL AND LOWER(r.email) = LOWER(?)) "
+                    "ORDER BY r.id DESC LIMIT 10",
+                    (intern["id"], email)
+                ).fetchall()
+                my_redemptions = [dict(r) for r in red_rows]
+            except Exception as e_red:
+                log_error("tasks_list_redemptions", e_red)
 
     return render_template(
         "tasks_list.html",
         tasks=pagination["items"],
         pagination=pagination,
-        user_submissions=user_submissions
+        user_submissions=user_submissions,
+        my_submissions=my_submissions,
+        pending_submissions=pending_submissions,
+        completed_submissions=completed_submissions,
+        total_available=pagination.get("total", len(pagination.get("items", []))),
+        earned_coins=task_earned,
+        task_balance=task_balance,
+        perks=perks,
+        my_redemptions=my_redemptions,
+        user=user,
+        intern=intern
     )
 
 
@@ -9745,6 +9852,17 @@ def task_submit(task_id):
 
         if not content and not sub_file:
             return jsonify({"status": "error", "message": "Submission content (URL/text) or uploaded file is required."}), 400
+
+        # Platform URL validation for Omnichannel Social Bounties (§3.6)
+        content_lower = content.lower()
+        if task_id == 101 and "linkedin.com" not in content_lower:
+            return jsonify({"status": "error", "message": "Please provide a valid public LinkedIn post URL (e.g. https://www.linkedin.com/posts/...)."}), 400
+        elif task_id == 102 and not ("x.com" in content_lower or "twitter.com" in content_lower):
+            return jsonify({"status": "error", "message": "Please provide a valid public X (Twitter) post URL (e.g. https://x.com/.../status/...)."}), 400
+        elif task_id == 103 and "github.com" not in content_lower:
+            return jsonify({"status": "error", "message": "Please provide a valid public GitHub repository URL (e.g. https://github.com/username/repo)."}), 400
+        elif task_id == 104 and not ("reddit.com" in content_lower or "quora.com" in content_lower):
+            return jsonify({"status": "error", "message": "Please provide a valid public Reddit or Quora submission URL (e.g. https://www.reddit.com/r/.../comments/...)."}), 400
 
         latest_version = conn.execute(
             "SELECT id FROM task_versions WHERE task_id = ? ORDER BY version_number DESC LIMIT 1",
@@ -9861,10 +9979,12 @@ def task_generate_content(task_id):
             "redirect": f"/account/gemini-key?next=/tasks/{task_id}/guide"
         }), 400
 
+    intern_data = dict(intern)
+    intern_data["available_models"] = ctx.get("available_models") or []
     from services.ai.bounty_content_generator import generate_bounty_post_copy
     ok, copy_text, angle = generate_bounty_post_copy(
         task_id=task_id,
-        intern_data=intern,
+        intern_data=intern_data,
         api_key=ctx["api_key"],
         model=ctx.get("default_model")
     )
@@ -10216,7 +10336,129 @@ def account_coins_ledger():
     )
 
 
-# â”€â”€ UP7.2: Mentor Slot Management & Booking Routes â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+# ── UP5.8: Coin Perks Catalog & Redemption API Routes ───────────────────
+@app.route("/api/coins/perks", methods=["GET"])
+def api_coins_perks():
+    intern = current_intern()
+    with get_db() as conn:
+        try:
+            perks = conn.execute(
+                "SELECT * FROM coin_perks_catalog WHERE is_active = 1 ORDER BY coin_price ASC, id ASC"
+            ).fetchall()
+            perks_list = [dict(p) for p in perks]
+        except Exception as e:
+            log_error("api_coins_perks_catalog", e)
+            perks_list = []
+
+        task_balance = 0
+        my_redemptions = []
+        if intern:
+            email = (intern.get("email") or "").strip().lower()
+            task_balance = get_task_balance(conn, intern["id"], email=email)
+            try:
+                reds = conn.execute(
+                    "SELECT r.*, p.title as perk_title, p.icon_class, p.badge_label FROM coin_perk_redemptions r "
+                    "JOIN coin_perks_catalog p ON r.perk_id = p.id "
+                    "WHERE r.intern_id = ? OR (r.email IS NOT NULL AND LOWER(r.email) = LOWER(?)) "
+                    "ORDER BY r.id DESC LIMIT 20",
+                    (intern["id"], email)
+                ).fetchall()
+                my_redemptions = [dict(r) for r in reds]
+            except Exception as e_red:
+                log_error("api_coins_perks_redemptions", e_red)
+
+    return jsonify({
+        "status": "success",
+        "perks": perks_list,
+        "task_balance": task_balance,
+        "my_redemptions": my_redemptions
+    })
+
+
+@app.route("/api/coins/redeem", methods=["POST"])
+def api_coins_redeem():
+    intern = current_intern()
+    if not intern:
+        return jsonify({"status": "error", "message": "Authentication required. Please sign in to redeem perks."}), 401
+
+    data = request.get_json(silent=True) or {}
+    perk_id = data.get("perk_id")
+    perk_slug = (data.get("perk_slug") or "").strip()
+
+    if not perk_id and not perk_slug:
+        return jsonify({"status": "error", "message": "Please specify a perk to redeem."}), 400
+
+    email = (intern.get("email") or "").strip().lower()
+
+    with get_db() as conn:
+        if perk_id:
+            perk = conn.execute("SELECT * FROM coin_perks_catalog WHERE id = ? AND is_active = 1", (perk_id,)).fetchone()
+        else:
+            perk = conn.execute("SELECT * FROM coin_perks_catalog WHERE slug = ? AND is_active = 1", (perk_slug,)).fetchone()
+
+        if not perk:
+            return jsonify({"status": "error", "message": "Perk not found or inactive."}), 404
+
+        price = int(perk["coin_price"])
+        cur_bal = get_task_balance(conn, intern["id"], email=email)
+
+        if cur_bal < price:
+            return jsonify({
+                "status": "error",
+                "message": f"Insufficient task coins. This perk costs {price} coins, but your current balance is {cur_bal} coins. Complete more bounty tasks to earn coins!"
+            }), 400
+
+        redemption_code = f"DBERT-PRK-{uuid.uuid4().hex[:8].upper()}"
+        voucher_token = f"VCHR-{secrets.token_hex(6).upper()}"
+        now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        idem_key = f"perk_redemption_{redemption_code}"
+
+        details = {
+            "perk_title": perk["title"],
+            "category": perk["category"],
+            "action_type": perk["action_type"],
+            "redeemed_by_name": intern.get("name"),
+            "redeemed_by_email": email
+        }
+
+        # 1. Insert redemption voucher
+        conn.execute(
+            "INSERT INTO coin_perk_redemptions (redemption_code, intern_id, email, perk_id, perk_slug, coins_spent, status, voucher_token, details_json, idem_key, created_at) "
+            "VALUES (?, ?, ?, ?, ?, ?, 'active', ?, ?, ?, ?)",
+            (redemption_code, intern["id"], email, perk["id"], perk["slug"], price, voucher_token, json.dumps(details), idem_key, now_str)
+        )
+
+        # 2. Debit coin_ledger_mirror with ledger_kind='spent'
+        new_bal = cur_bal - price
+        spend_idem = f"perk_spend_{redemption_code}"
+        conn.execute(
+            "INSERT INTO coin_ledger_mirror (intern_id, ledger_kind, delta, balance_after, reason, event_ts, idem_key, email) "
+            "VALUES (?, 'spent', ?, ?, ?, ?, ?, ?)",
+            (intern["id"], -price, new_bal, f"Redeemed perk: {perk['title']} ({redemption_code})", now_str, spend_idem, email)
+        )
+
+        conn.commit()
+
+    target_url = "/portal"
+    try:
+        meta = json.loads(perk["metadata_json"] or "{}")
+        target_url = meta.get("target_url", "/portal")
+    except Exception:
+        pass
+
+    return jsonify({
+        "status": "success",
+        "message": f"Successfully redeemed '{perk['title']}' for {price} DBERT coins!",
+        "redemption_code": redemption_code,
+        "voucher_token": voucher_token,
+        "coins_spent": price,
+        "new_balance": new_bal,
+        "action_type": perk["action_type"],
+        "target_url": target_url
+    })
+
+
+# ── UP7.2: Mentor Slot Management & Booking Routes ──────────────────────
 @app.route("/staff/mentor-slots", methods=["GET", "POST"])
 def staff_mentor_slots():
     staff = current_staff()
@@ -12474,12 +12716,30 @@ def company_login():
         return jsonify({"status": "error", "message": "Error"}), 500
 
 
-@app.route("/company/logout", methods=["POST"])
+@app.route("/company/logout", methods=["GET", "POST"])
 def company_logout():
-    invalidate_session(get_session_token_from_request())
-    resp = make_response(jsonify({"status": "success"}))
-    _clear_session_cookie(resp)
-    return resp
+    try:
+        invalidate_session(get_session_token_from_request())
+        try:
+            session.clear()
+        except Exception:
+            pass
+        is_ajax_json = (
+            request.is_json
+            or request.headers.get("X-Requested-With") == "XMLHttpRequest"
+            or (request.headers.get("Accept") and "application/json" in request.headers.get("Accept") and "text/html" not in request.headers.get("Accept"))
+        )
+        if is_ajax_json:
+            resp = make_response(jsonify({"status": "success", "redirect": "/company/login"}))
+        else:
+            resp = make_response(redirect("/company/login"))
+        _clear_session_cookie(resp)
+        return resp
+    except Exception as e:
+        log_error("company-logout", e)
+        if request.is_json or (request.headers.get("Accept") and "application/json" in request.headers.get("Accept") and "text/html" not in request.headers.get("Accept")):
+            return jsonify({"status": "error"}), 500
+        return redirect("/company/login")
 
 
 POST_TYPES = ("job", "internship")
@@ -15783,17 +16043,22 @@ def logout():
             session.clear()
         except Exception:
             pass
-        if request.method == "GET":
-            resp = make_response(redirect("/"))
+        is_ajax_json = (
+            request.is_json
+            or request.headers.get("X-Requested-With") == "XMLHttpRequest"
+            or (request.headers.get("Accept") and "application/json" in request.headers.get("Accept") and "text/html" not in request.headers.get("Accept"))
+        )
+        if is_ajax_json:
+            resp = make_response(jsonify({"status": "success", "message": "Logged out.", "redirect": "/"}))
         else:
-            resp = make_response(jsonify({"status": "success", "message": "Logged out."}))
+            resp = make_response(redirect("/"))
         _clear_session_cookie(resp)
         return resp
     except Exception as e:
         log_error("logout", e)
-        if request.method == "GET":
-            return redirect("/")
-        return jsonify({"status": "error", "message": "Error"}), 500
+        if request.is_json or (request.headers.get("Accept") and "application/json" in request.headers.get("Accept") and "text/html" not in request.headers.get("Accept")):
+            return jsonify({"status": "error", "message": "Error"}), 500
+        return redirect("/")
 
 
 @app.route("/intern/latest-posts")

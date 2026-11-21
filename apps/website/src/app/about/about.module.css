@@ -107,6 +107,10 @@
 @media (max-width: 620px) {
   .profile {
     flex-direction: column;
+    padding: 18px 16px;
+  }
+  .panel {
+    padding: 18px 16px;
   }
 }
 

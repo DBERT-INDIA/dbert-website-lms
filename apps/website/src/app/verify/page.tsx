@@ -7,6 +7,7 @@ import s from './verify.module.css';
 import CertificatePreviewFrame from './CertificatePreviewFrame';
 import { trackEvent } from '@/lib/analytics';
 import { getProjectRepoInfo, MENTOR_PROFILE, getIssueYearMonth, type ProjectRepoInfo } from '@/lib/verification';
+import AITrustBanner from '@/components/common/AITrustBanner';
 
 interface VerificationResult {
   certId: string;
@@ -158,6 +159,8 @@ function VerifyFormContent() {
               </div>
             )}
           </div>
+
+          <AITrustBanner />
 
           {/* PROVISIONAL RECORD / URGENT ACTION BANNER */}
           {result.isProvisional && (
@@ -736,6 +739,7 @@ function VerifyFormContent() {
       {/* 4. MANUAL SEARCH FALLBACK VIEW (Only shown if no certid in URL or user clicked verify another) */}
       {showManualSearch && (
         <div className={s.manualSearchSection}>
+          <AITrustBanner />
           <div className="mb-lg center">
             <div className="doclabel justify-center">
               § 01 — CRYPTOGRAPHIC VERIFICATION <span className="rev">rev: 2026.2</span>

@@ -221,6 +221,32 @@
     padding: 24px;
     margin-bottom: 24px;
   }
+  @media (max-width: 768px) {
+    .guide-textarea,
+    #submissionUrl,
+    .form-input {
+      font-size: 16px !important;
+    }
+  }
+  @media (max-width: 640px) {
+    .guide-header-hero {
+      padding: 18px 16px;
+      border-radius: 16px;
+    }
+    .guide-title {
+      font-size: 20px;
+    }
+    .guide-step-card {
+      padding: 18px 16px;
+      border-radius: 14px;
+    }
+    .guide-btn-primary,
+    .guide-btn-secondary {
+      min-height: 44px;
+      width: 100%;
+      justify-content: center;
+    }
+  }
 </style>
 </head>
 <body class="has-sidebar portal portal-light">
@@ -341,11 +367,27 @@
             <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
               <div style="font-size:13px; color:#334155;">
                 <i class="fa-solid fa-shield-halved" style="color:#10B981;"></i> 
-                Connected Key: <strong>Active</strong> &bull; Engine: <strong>{{ gemini_ctx.default_model if gemini_ctx else 'Google Gemini' }}</strong>
+                Connected Key: <strong>Active</strong> &bull; Engine: <strong id="engineNameBadge">{{ gemini_ctx.default_model if gemini_ctx else 'Google Gemini' }}</strong>
               </div>
-              <button type="button" id="btnGeneratePost" onclick="generateGuidePost()" class="guide-btn-primary">
+              <button type="button" id="btnGeneratePost" class="guide-btn-primary">
                 <i class="fa-solid fa-wand-magic-sparkles"></i> Generate Custom Post Copy
               </button>
+            </div>
+          </div>
+
+          <!-- Error Alert Area -->
+          <div id="aiErrorContainer" style="display:none; margin-top:14px; background:#FEF2F2; border:1.5px solid #FCA5A5; border-radius:12px; padding:14px 16px;">
+            <div style="display:flex; align-items:flex-start; gap:12px;">
+              <i class="fa-solid fa-circle-exclamation" style="color:#DC2626; font-size:18px; margin-top:2px;"></i>
+              <div style="flex:1;">
+                <div id="aiErrorTitle" style="font-size:13.5px; font-weight:800; color:#991B1B; margin-bottom:4px;">Generation Failed</div>
+                <div id="aiErrorMessage" style="font-size:12.5px; color:#7F1D1D; line-height:1.5;"></div>
+                <div id="aiErrorCta" style="margin-top:10px; display:none;">
+                  <a href="/account/gemini-key?next=/tasks/{{ task.id }}/guide" class="guide-btn-primary" style="display:inline-block; padding:7px 16px; font-size:12px; text-decoration:none;">
+                    <i class="fa-solid fa-key"></i> Update Gemini Key at /account/gemini-key &rarr;
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -357,13 +399,13 @@
               </label>
               <div style="display:flex; align-items:center; gap:12px;">
                 <span id="charCountLabel" style="font-size:12px; font-weight:700; color:#64748B;">0 chars</span>
-                <button type="button" id="btnCopyPost" onclick="copyGuidePost()" class="guide-btn-secondary" style="padding:6px 14px; font-size:12px;">
+                <button type="button" id="btnCopyPost" class="guide-btn-secondary" style="padding:6px 14px; font-size:12px;">
                   <i class="fa-regular fa-copy"></i> Copy to Clipboard
                 </button>
               </div>
             </div>
 
-            <textarea id="guideGeneratedCopy" class="guide-textarea" rows="9" oninput="updateCharCount()"></textarea>
+            <textarea id="guideGeneratedCopy" class="guide-textarea" rows="9"></textarea>
 
             <div style="display:flex; justify-content:space-between; align-items:center; margin-top:8px; font-size:12px; color:#64748B;">
               <span>✅ Includes direct steering to the ₹1,999 Incubation Fellowship &amp; sovereign verification.</span>
@@ -424,7 +466,7 @@
             </div>
           </div>
 
-          <form id="guideSubmitForm" onsubmit="submitGuideTask(event)">
+          <form id="guideSubmitForm" class="guide-submit-form">
             {{ csrf_field() }}
             <input type="hidden" id="guideTaskId" value="{{ task.id }}">
 
@@ -497,7 +539,7 @@
             </div>
           </div>
 
-          <form id="guideSubmitForm" onsubmit="submitGuideTask(event)">
+          <form id="guideSubmitForm" class="guide-submit-form">
             {{ csrf_field() }}
             <input type="hidden" id="guideTaskId" value="{{ task.id }}">
 
@@ -530,10 +572,13 @@
 
 <script nonce="{{ csp_nonce() }}">
   function updateCharCount() {
-    const text = document.getElementById('guideGeneratedCopy').value;
+    const textEl = document.getElementById('guideGeneratedCopy');
+    if (!textEl) return;
+    const text = textEl.value || '';
     const countEl = document.getElementById('charCountLabel');
     if (countEl) {
-      countEl.textContent = `${text.length} chars (${text.trim().split(/\s+/).filter(Boolean).length} words)`;
+      const words = text.trim() ? text.trim().split(/\s+/).filter(Boolean).length : 0;
+      countEl.textContent = `${text.length} chars (${words} words)`;
     }
   }
 
@@ -547,12 +592,33 @@
     return '';
   }
 
+  function showAiError(title, msg, showCta) {
+    const errBox = document.getElementById('aiErrorContainer');
+    const errTitle = document.getElementById('aiErrorTitle');
+    const errMsg = document.getElementById('aiErrorMessage');
+    const errCta = document.getElementById('aiErrorCta');
+    if (errBox && errMsg) {
+      if (errTitle) errTitle.textContent = title || 'Generation Notice';
+      errMsg.textContent = msg || 'An unexpected error occurred while generating copy.';
+      if (errCta) errCta.style.display = showCta ? 'block' : 'none';
+      errBox.style.display = 'block';
+    }
+  }
+
+  function hideAiError() {
+    const errBox = document.getElementById('aiErrorContainer');
+    if (errBox) errBox.style.display = 'none';
+  }
+
   function generateGuidePost() {
-    const taskId = document.getElementById('guideTaskId').value;
+    const taskIdEl = document.getElementById('guideTaskId');
+    const taskId = taskIdEl ? taskIdEl.value : '{{ task.id }}';
     const btn = document.getElementById('btnGeneratePost');
+    if (!btn) return;
     const origHtml = btn.innerHTML;
     btn.disabled = true;
     btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Generating with Gemini...';
+    hideAiError();
 
     const csrf = getGuideCsrfToken();
 
@@ -568,12 +634,13 @@
         csrf_token: csrf
       })
     })
-    .then(r => r.json())
-    .then(data => {
+    .then(r => r.json().then(data => ({ status: r.status, data })))
+    .then(({ status, data }) => {
       btn.disabled = false;
       btn.innerHTML = origHtml;
 
       if (data.status === 'success') {
+        hideAiError();
         const outContainer = document.getElementById('aiOutputContainer');
         const txt = document.getElementById('guideGeneratedCopy');
         if (outContainer) outContainer.style.display = 'block';
@@ -581,16 +648,21 @@
           txt.value = data.copy;
           updateCharCount();
         }
-      } else if (data.redirect) {
-        window.location.href = data.redirect;
+        if (data.model_used) {
+          const badge = document.getElementById('engineNameBadge');
+          if (badge) badge.textContent = data.model_used;
+        }
+      } else if (data.status === 'needs_key') {
+        showAiError('Gemini API Key Required', data.message || 'Please connect your free Gemini API key to unlock the AI generator.', true);
       } else {
-        alert(data.message || 'Error generating copy. Please ensure your Gemini API key is valid.');
+        const isKeyIssue = (data.message && (data.message.includes('free tier') || data.message.includes('API key') || data.message.includes('PERMISSION_DENIED')));
+        showAiError('Generation Notice', data.message || 'Unable to generate copy. Please verify your Gemini API key.', isKeyIssue);
       }
     })
     .catch(err => {
       btn.disabled = false;
       btn.innerHTML = origHtml;
-      alert('Network error while generating content. Please try again.');
+      showAiError('Network Error', 'Network error while contacting AI service. Please verify your connection and retry.', false);
     });
   }
 
@@ -605,12 +677,21 @@
         msg.style.display = 'inline';
         setTimeout(() => { msg.style.display = 'none'; }, 3000);
       }
+    }).catch(() => {
+      // Fallback for older browsers
+      document.execCommand('copy');
+      const msg = document.getElementById('copySuccessMsg');
+      if (msg) {
+        msg.style.display = 'inline';
+        setTimeout(() => { msg.style.display = 'none'; }, 3000);
+      }
     });
   }
 
   function submitGuideTask(e) {
-    e.preventDefault();
-    const taskId = document.getElementById('guideTaskId').value;
+    if (e && e.preventDefault) e.preventDefault();
+    const taskIdEl = document.getElementById('guideTaskId');
+    const taskId = taskIdEl ? taskIdEl.value : '{{ task.id }}';
     const btn = document.getElementById('btnSubmitGuide');
     const msgEl = document.getElementById('guideSubmitMsg');
     const csrf = getGuideCsrfToken();
@@ -627,8 +708,10 @@
       return;
     }
 
-    btn.disabled = true;
-    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...';
+    if (btn) {
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Submitting...';
+    }
 
     fetch(`/tasks/${taskId}/submit`, {
       method: 'POST',
@@ -644,10 +727,12 @@
         csrf_token: csrf
       })
     })
-    .then(r => r.json())
-    .then(data => {
-      btn.disabled = false;
-      btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Submit Work';
+    .then(r => r.json().then(data => ({ status: r.status, data })))
+    .then(({ status, data }) => {
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Submit Work';
+      }
 
       if (data.status === 'success') {
         if (msgEl) {
@@ -665,14 +750,39 @@
       }
     })
     .catch(() => {
-      btn.disabled = false;
-      btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Submit Work';
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Submit Work';
+      }
       if (msgEl) {
         msgEl.style.color = '#DC2626';
         msgEl.textContent = 'Network error submitting task. Please retry.';
       }
     });
   }
+
+  // Programmatic Strict-Nonce CSP Event Binding
+  document.addEventListener('DOMContentLoaded', function() {
+    const btnGen = document.getElementById('btnGeneratePost');
+    if (btnGen) {
+      btnGen.addEventListener('click', generateGuidePost);
+    }
+
+    const btnCopy = document.getElementById('btnCopyPost');
+    if (btnCopy) {
+      btnCopy.addEventListener('click', copyGuidePost);
+    }
+
+    const txtArea = document.getElementById('guideGeneratedCopy');
+    if (txtArea) {
+      txtArea.addEventListener('input', updateCharCount);
+    }
+
+    const forms = document.querySelectorAll('.guide-submit-form, #guideSubmitForm');
+    forms.forEach(function(form) {
+      form.addEventListener('submit', submitGuideTask);
+    });
+  });
 </script>
 </body>
 </html>

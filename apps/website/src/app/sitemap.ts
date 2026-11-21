@@ -16,7 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const getPriority = (route: string): number => {
     if (route === '') return 1.0;
-    if (['/startups', '/ai-solutions', '/learners', '/labs', '/learners/courses', '/learners/jobs', '/internships', '/cohorts/aivara', '/verify/directory', '/hire/pre-vetted-engineers', '/qa'].includes(route)) return 0.95;
+    if (['/startups', '/ai-solutions', '/learners', '/labs', '/learners/courses', '/learners/jobs', '/internships', '/cohorts/aivara', '/verify/directory', '/hire/pre-vetted-engineers', '/fellows/verified', '/qa'].includes(route)) return 0.95;
     if (route.startsWith('/verify/directory/')) return 0.90;
     if (['/verify', '/about/careers'].includes(route)) return 0.9;
     if (route.startsWith('/learners/courses/')) return 0.9;
@@ -34,7 +34,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const getChangeFrequency = (route: string): 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' => {
     if (route === '') return 'daily';
-    if (['/learners/jobs', '/cohorts/aivara', '/verify/directory', '/hire/pre-vetted-engineers', '/qa'].includes(route) || route.startsWith('/verify/directory/')) return 'daily';
+    if (['/learners/jobs', '/cohorts/aivara', '/verify/directory', '/hire/pre-vetted-engineers', '/fellows/verified', '/qa'].includes(route) || route.startsWith('/verify/directory/')) return 'daily';
     if (route.startsWith('/learners/courses') || route.startsWith('/internships/') || route.startsWith('/blog/') || route.startsWith('/verify/')) return 'weekly';
     if (['/startups', '/ai-solutions', '/learners', '/verify', '/enroll/1999', '/about/careers'].includes(route)) return 'weekly';
     if (['/privacy', '/terms', '/refund'].includes(route)) return 'yearly';
@@ -56,6 +56,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const routes = [
     '',
+    '/fellows/verified',
     ...Object.entries(seoConfig)
       .filter(([, entry]) => !entry.noindex)
       .map(([route]) => route),

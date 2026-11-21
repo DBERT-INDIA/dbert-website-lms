@@ -25,7 +25,42 @@
 
     @media (max-width: 820px) {
       .leaderboard-container {
-        padding: 4.5rem 1.25rem 4rem;
+        padding: clamp(1.25rem, 3vw, 2rem) clamp(0.75rem, 2vw, 1.25rem) 4rem;
+      }
+      .lb-header h1 {
+        font-size: clamp(1.35rem, 4vw, 1.75rem);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .my-standing-banner {
+        padding: 1.25rem 1rem !important;
+      }
+      .standing-stat-pill {
+        padding: 0.5rem 0.75rem !important;
+      }
+      .lb-table th:first-child,
+      .lb-table td:first-child {
+        position: sticky;
+        left: 0;
+        z-index: 2;
+        background: #F8FAFC !important;
+      }
+      .lb-table td:first-child {
+        background: #FFFFFF !important;
+      }
+      .lb-table tr.my-row td:first-child {
+        background: #EFF6FF !important;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .podium-card {
+        padding: 1.25rem 1rem !important;
+      }
+      .metric-badge {
+        font-size: 0.75rem !important;
+        padding: 4px 8px !important;
       }
     }
 

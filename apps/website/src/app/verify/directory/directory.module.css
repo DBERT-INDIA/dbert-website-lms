@@ -334,7 +334,7 @@
 /* Candidates Grid */
 .candidatesGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
   gap: 18px;
   margin-bottom: 32px;
 }
@@ -581,12 +581,22 @@
   cursor: pointer;
 }
 
+@media (max-width: 1024px) {
+  .employerHero {
+    padding: 28px 24px;
+    gap: 24px;
+  }
+  .candidatesGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 900px) {
   .employerHero {
     flex-direction: column;
     align-items: flex-start;
     padding: 24px 20px;
-    gap: 24px;
+    gap: 20px;
   }
   .heroActions {
     width: 100%;
@@ -594,25 +604,38 @@
   .btnPrimaryCta {
     width: 100%;
     justify-content: center;
+    min-height: 44px;
   }
 }
 
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .candidatesGrid {
     grid-template-columns: 1fr;
   }
   .controlsBlock {
     flex-direction: column;
     align-items: stretch;
+    gap: 12px;
+  }
+  .searchInput {
+    min-height: 44px;
+    font-size: 16px !important; /* iOS zoom prevention */
   }
   .cardFooter {
     grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .btnProofDossier,
+  .btnConnectLms {
+    min-height: 44px;
+    justify-content: center;
   }
   .heroTitle {
-    font-size: 1.45rem;
+    font-size: clamp(1.35rem, 4vw, 1.75rem);
   }
   .metricsRow {
     gap: 12px;
+    flex-wrap: wrap;
   }
   .metricDivider {
     display: none;
@@ -627,14 +650,39 @@
   .tabShell::-webkit-scrollbar {
     display: none;
   }
+  .skillFilterChip {
+    padding: 8px 14px;
+    min-height: 38px;
+    font-size: 0.82rem;
+  }
+  .skillsClearBtn {
+    padding: 8px 12px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+  .linkedinFilterBtn {
+    min-height: 44px;
+    padding: 10px 16px;
+  }
 }
 
 @media (max-width: 480px) {
   .container {
-    padding: 20px 12px 48px;
+    padding: 16px 12px 48px;
   }
   .employerHero {
-    padding: 20px 16px;
+    padding: 18px 14px;
+    border-radius: 12px;
+  }
+  .heroTitle {
+    font-size: 1.25rem;
+  }
+  .heroSub {
+    font-size: 0.85rem;
+  }
+  .candidateCard {
+    padding: 16px;
   }
 }
 

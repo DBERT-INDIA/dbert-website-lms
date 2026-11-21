@@ -208,11 +208,40 @@ class CertificateService:
                 pass
         return None
 
+    MIN_STIPEND_PAYOUT_DATE = date(2026, 12, 3)  # Earliest inaugural disbursement date
+
+    @classmethod
+    def calculate_payout_release_date(cls, end_date_raw: Any) -> tuple[str, str]:
+        """Calculates payout date as strictly 60 days after end date, with a strict floor of 2026-12-03.
+        
+        Formula: max(end_date + 60 days, 2026-12-03)
+        Returns:
+            (payout_date_iso, payout_date_display) e.g. ("2026-12-03", "Thursday, 03 December 2026")
+        """
+        if not end_date_raw:
+            return cls.MIN_STIPEND_PAYOUT_DATE.strftime("%Y-%m-%d"), cls.MIN_STIPEND_PAYOUT_DATE.strftime("%A, %d %B %Y")
+        
+        end_dt = None
+        if isinstance(end_date_raw, str):
+            end_dt = cls.parse_flexible_date(end_date_raw)
+        elif isinstance(end_date_raw, datetime):
+            end_dt = end_date_raw.date()
+        elif isinstance(end_date_raw, date):
+            end_dt = end_date_raw
+
+        if not end_dt:
+            return cls.MIN_STIPEND_PAYOUT_DATE.strftime("%Y-%m-%d"), cls.MIN_STIPEND_PAYOUT_DATE.strftime("%A, %d %B %Y")
+
+        raw_payout = end_dt + timedelta(days=60)
+        final_payout = max(raw_payout, cls.MIN_STIPEND_PAYOUT_DATE)
+        return final_payout.strftime("%Y-%m-%d"), final_payout.strftime("%A, %d %B %Y")
+
     @staticmethod
     def get_intern_completion_info(conn, intern_id: Optional[int] = None, email: Optional[str] = None) -> Dict[str, Any]:
         """
         Determines the intern's completion date and eligibility.
         Rule: Enrollment Table First (joining_date + 60 days). Fallback: Certificate registry endDate.
+        Payout Date Rule: Strictly 60 days after completion date, floored at 2026-12-03.
         """
         clean_email = (email or "").strip().lower()
         if not clean_email and intern_id and conn:
@@ -247,10 +276,13 @@ class CertificateService:
                         comp_date = jd + timedelta(days=60)
                         is_comp = today >= comp_date
                         days_rem = max(0, (comp_date - today).days)
+                        p_iso, p_disp = CertificateService.calculate_payout_release_date(comp_date)
                         return {
                             "joining_date": jd.strftime("%Y-%m-%d"),
                             "completion_date": comp_date.strftime("%Y-%m-%d"),
                             "completion_date_display": comp_date.strftime("%d %b %Y"),
+                            "payout_date": p_iso,
+                            "payout_date_display": p_disp,
                             "is_completed": is_comp,
                             "days_remaining": days_rem,
                             "source": "enrollment"
@@ -280,10 +312,13 @@ class CertificateService:
             if cd:
                 is_comp = today >= cd
                 days_rem = max(0, (cd - today).days)
+                p_iso, p_disp = CertificateService.calculate_payout_release_date(cd)
                 return {
                     "joining_date": jd.strftime("%Y-%m-%d") if jd else (cd - timedelta(days=60)).strftime("%Y-%m-%d"),
                     "completion_date": cd.strftime("%Y-%m-%d"),
                     "completion_date_display": cd.strftime("%d %b %Y"),
+                    "payout_date": p_iso,
+                    "payout_date_display": p_disp,
                     "is_completed": is_comp,
                     "days_remaining": days_rem,
                     "source": "certificate_registry"
@@ -302,10 +337,13 @@ class CertificateService:
                         comp_date = cad + timedelta(days=60)
                         is_comp = today >= comp_date
                         days_rem = max(0, (comp_date - today).days)
+                        p_iso, p_disp = CertificateService.calculate_payout_release_date(comp_date)
                         return {
                             "joining_date": cad.strftime("%Y-%m-%d"),
                             "completion_date": comp_date.strftime("%Y-%m-%d"),
                             "completion_date_display": comp_date.strftime("%d %b %Y"),
+                            "payout_date": p_iso,
+                            "payout_date_display": p_disp,
                             "is_completed": is_comp,
                             "days_remaining": days_rem,
                             "source": "account_creation"
@@ -314,10 +352,13 @@ class CertificateService:
                 pass
 
         # Default fallback: Strictly fail closed if dates cannot be verified
+        p_iso, p_disp = CertificateService.calculate_payout_release_date(None)
         return {
             "joining_date": "",
             "completion_date": "",
             "completion_date_display": "Pending Date Verification",
+            "payout_date": p_iso,
+            "payout_date_display": p_disp,
             "is_completed": False,
             "days_remaining": None,
             "source": "none",

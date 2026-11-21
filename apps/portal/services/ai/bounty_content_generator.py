@@ -197,7 +197,17 @@ Return ONLY the final ready-to-copy post text without conversational filler.
 
     try:
         from services.ai.gemini_provider import GeminiProvider
-        models_list = [model] if model else None
+        from services.ai.model_registry import get_fallback_chain
+
+        user_models = intern_data.get("available_models") or []
+        fallback_models = get_fallback_chain(user_models=user_models, api_key=api_key)
+        if model and model not in fallback_models:
+            models_list = [model] + fallback_models
+        elif model:
+            models_list = [model] + [m for m in fallback_models if m != model]
+        else:
+            models_list = fallback_models
+
         provider = GeminiProvider(api_key=api_key, available_models=models_list)
         resp = provider.generate_content(prompt, temperature=0.3, max_tokens=1500)
         if resp.error:

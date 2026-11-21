@@ -175,11 +175,11 @@ flowchart TD
         C3 --> C4["Records UTR in balance_enrollments_1500.json"]
     end
 
-    subgraph Track_D ["Track D: Verified Credential Ingestion (₹299)"]
-        D1["Provisional Certificate Holder"] --> D2["Fills Google Form + Uploads ₹299 Proof"]
-        D2 --> D3["Python Ingestion Script Reconciles Sheet"]
-        D3 --> D4["Upgrades to status='VERIFIED', isProvisional=false"]
-        D4 --> D5["Full 3-Doc PDF Packet Deployed to Production"]
+    subgraph Track_D ["Track D: Verified Credential Ingestion & Gate 1 Unlock (₹299)"]
+        D1["Provisional Certificate Holder"] --> D2["Visits /verify/unlock + Submits ₹299 UPI UTR"]
+        D2 --> D3["Python Ingestion Script Reconciles Submission Ledger"]
+        D3 --> D4["Upgrades to status='VERIFIED', isProvisional=false in Registries & DB"]
+        D4 --> D5["Full 3-Doc PDF Packet Deployed to Production & Gate 1 Unlocked"]
     end
 ```
 
@@ -252,6 +252,120 @@ flowchart TD
     Withdraw --> PayoutAdmin["Admin reviews decrypted UPI in /admin/ambassador-payouts\nExecutes bank transfer & marks Disbursed"]
 ```
 
+> [!IMPORTANT]
+> **Canonical Payout Date Formula & Internal Staging Policy**:
+> - **Public Communication Standard**: Payouts are scheduled strictly as **60 days after official internship end date** (end_date + 60 days). Public text, UI banners, and AI knowledge bases describe the maturation timeline as standard 60-day post-completion review and audit.
+> - **Internal Operational Policy (Admin Only)**: Administrative disbursements are processed with an internal floor of **03 December 2026** (\text{Payout Date} = \max(\text{End Date} + 60\text{ days}, \text{2026-12-03})). This date is strictly an internal batch staging policy and is NOT to be broadcasted or displayed to interns or visitors on user-facing screens or sitemaps.
+
+### 3.6. Sprint Tasks & Database-Level Coin Perks Lifecycle (`/tasks`)
+
+```mermaid
+flowchart TD
+    Tasks["Intern visits /tasks"] --> StatusNav{"Select Status Tab"}
+    
+    StatusNav -- "Tab 1" --> OpenTasks["All Open Bounties Grid\n• Domain-filtered tasks\n• Social growth bounties (Tasks 101-104 with BYOK Gemini)\n• View & Submit guide CTA"]
+    StatusNav -- "Tab 2" --> PendingTasks["In Review Submissions\n• Real-time queue status\n• Awaiting staff evaluation"]
+    StatusNav -- "Tab 3" --> ApprovedTasks["Completed & Approved Sprints\n• Proof-of-work archive\n• Awarded coin badges (+XX coins)"]
+    StatusNav -- "Tab 4" --> PerksStore["Redeem Coin Perks Store\n• Live spendable task coin balance\n• 1-Click instant redemption"]
+    
+    OpenTasks --> SubmitWork["Submit task code/URL/file\nSingle-submission constraint enforced"]
+    SubmitWork --> StaffReview["Staff Review Queue (/staff/tasks/<id>/decision)"]
+    StaffReview --> StaffApprove["Staff Approves Task\n• Atomically credits coin_ledger_mirror (ledger_kind='task')\n• Emits EVENT_TASK_REVIEWED to event_outbox"]
+    
+    StaffApprove --> EarnedBal["Task Balance Increases (Spendable Coins)"]
+    EarnedBal --> PerksStore
+    
+    PerksStore --> ChoosePerk{"Choose Perk"}
+    ChoosePerk -- "100 Coins" --> PerkATS["AI ATS Resume Screener Pass\nUnlocks 1 comprehensive audit on /portal/cv"]
+    ChoosePerk -- "100 Coins" --> PerkMock["1-on-1 AI Mock Interview Pass\nUnlocks 1 interactive technical simulator"]
+    ChoosePerk -- "500 Coins" --> PerkMentor["1-on-1 Senior Mentor Session\nCredits 30-min strategy session on /mentors/slots"]
+    ChoosePerk -- "1 Coin = ₹1" --> PerkCourse["Course Fee Discount\nUp to 50% discount on advanced career tracks"]
+    
+    PerkATS & PerkMock & PerkMentor & PerkCourse --> RedeemAction["POST /api/coins/redeem\n• Validates task balance >= coin_price\n• Generates unique voucher code DBERT-PRK-XXXXX\n• Debits coin_ledger_mirror (ledger_kind='spent')\n• Inserts record into coin_perk_redemptions"]
+```
+
+> [!NOTE]
+> **Strict Dual-Ledger Separation Principle**:
+> - **Task Ledger (`task` / `spent`)**: Earned from sprint tasks, quizzes, streaks. Redeemable ONLY for perks and course tuition discounts.
+> - **Referral Ledger (`referral` / `withdrawal`)**: Earned from ambassador referrals and ₹5,000 Capstone Stipend. Withdrawable ONLY to bank account via UPI.
+> - **Zero Cross-Pollination**: Task coins cannot be withdrawn as cash; referral coins cannot be spent on courses or perks.
+
+### 3.7. Comprehensive Seeded QA Personas Directory & Multi-Device Testing Matrix
+
+To enable deterministic end-to-end verification across every stage of the student and recruiter lifecycle, 12 master test accounts are permanently seeded and maintained on production EC2 PostgreSQL (`dbert_internship` schema).
+
+> [!IMPORTANT]
+> **Uniform Master Password**: All test and QA personas share the exact master credentials: `TestPass123!`.
+
+#### 3.7.1. Master QA Personas Matrix
+
+| Persona ID | Lifecycle Stage / Role | Seeded Email / Username | Password | State / Characteristics | Canonical Live Route |
+|---|---|---|:---:|---|---|
+| **ADM** | **Super Administrator** | `dbert_admin@dbert.test` | `TestPass123!` | System Superuser (`role: admin`); Full access to all controls | `/admin` |
+| **STF** | **Staff Reviewer** | `mentor_staff@dbert.test` | `TestPass123!` | Sprint & Capstone Evaluator (`role: staff`); Staff review queue | `/staff/tasks`, `/admin/push-broadcast` |
+| **STG-1** | **Stage 1: Apply Pending** | `stage1_apply@dbert.test` | `TestPass123!` | Incomplete academic profile; Inbound application gate | `/portal` |
+| **STG-2** | **Stage 2: Under Review** | `stage2_review@dbert.test` | `TestPass123!` | Applied; Technical Council Review; Fast-track badge | `/portal` |
+| **STG-3A** | **Stage 3: Selected (Deposit Due)** | `stage3_selected@dbert.test` | `TestPass123!` | Appointment Issued; ₹499 Caution Deposit payable | `/portal` |
+| **STG-3B** | **Stage 3: Offer Pending** | `offer_pending@dbert.test` | `TestPass123!` | Digital Offer `DBERT-OFR-2026-PA-991` awaiting signature | `/portal/offer` |
+| **STG-4** | **Stage 4: Deposit In Review** | `stage4_pending@dbert.test` | `TestPass123!` | ₹499 UTR submitted; Bank reconciliation pending | `/portal` |
+| **STG-5A** | **Stage 5A: Confirmed Fellow** | `fellow_enrolled@dbert.test` | `TestPass123!` | ₹499 verified; Day 2 of Full Stack Sprint active | `/portal`, `/tasks` |
+| **STG-5B** | **Stage 5B: Grace Expired** | `stage5_grace_expired@dbert.test` | `TestPass123!` | 7-day orientation ended; Net ₹1,500 balance payable | `/portal`, `/enroll/1999` |
+| **STG-5C** | **Stage 5C: Fully Paid Fellow** | `fellow_paid_1999@dbert.test` | `TestPass123!` | ₹1,999 fully settled; All sprints & badges unlocked | `/portal`, `/tasks`, `/certificates` |
+| **STG-5D** | **Stage 5D: Gate 1 Locked** | `stipend_gate1_locked@dbert.test` | `TestPass123!` | Holds Provisional Cert (`CERT-DBERT-2026-FSD-901`); Gate 1 Locked | `/stipend/tasks` |
+| **STG-5E** | **Stage 5E: Stipend Ready** | `stipend_ready@dbert.test` | `TestPass123!` | Distinction (`AIML-904`), 65+ days elapsed, UPI ready | `/stipend/tasks` |
+| **STG-5F** | **Stage 5F: Withdrawable Wallet** | `stipend_wallet@dbert.test` | `TestPass123!` | 5,000 Coins credited to referral ledger; Bank UPI cashout | `/account/coins`, `/intern/ambassador/withdraw` |
+
+#### 3.7.2. Multi-Device Viewport Verification Matrix
+Every feature, modal, and data table must be verified across three canonical viewport standards:
+1. **Desktop**: `1280px × 900px` (Sidebar fixed at 260px, content width 1020px).
+2. **Tablet / iPad**: `820px × 1180px` (Sidebar collapsed into hamburger menu, main width 100vw).
+3. **Mobile / iPhone**: `390px × 844px` (Single-column layout, touch padding `calc(env(safe-area-inset-bottom) + 80px)`, min 44px touch targets).
+
+#### 3.7.3. Generative UI Interactive QA Launcher
+An interactive Generative UI testing console is maintained at:
+- Standalone Tool: [`multi_stage_device_launcher.html`](file:///C:/Users/user/.gemini/antigravity/brain/db340522-3de4-46ab-8736-005fb1623326/multi_stage_device_launcher.html)
+- Inline Embed Widget: [`inline_persona_launcher_widget.html`](file:///C:/Users/user/.gemini/antigravity/brain/db340522-3de4-46ab-8736-005fb1623326/inline_persona_launcher_widget.html)
+Enables 1-click credential copying, device dimension switching, and direct target route launching.
+
+### 3.8. Omnichannel Social Bounty Tasks & BYOK Gemini Engine Architecture (`/tasks/<id>/guide`)
+
+The platform implements 4 official 50-Coin Omnichannel Social Bounty Tasks (Tasks 101–104) enabling candidates to build in public and steer organic traffic to the ₹1,999 Incubation Fellowship:
+
+```mermaid
+flowchart TD
+    Guide["Intern visits /tasks/104/guide"] --> GenCTA["Click 'Generate Custom Post Copy'\n(Strict Nonce addEventListener)"]
+    GenCTA --> API["POST /api/tasks/104/generate-content"]
+    API --> ResolveKey["get_intern_active_gemini_context()\nDecrypts BYOK key from user_api_keys"]
+    ResolveKey --> AssignAngle["bounty_content_generator.py\nAssigns 1 of 15 topic angles from TOPIC_POOL"]
+    AssignAngle --> LiveProbe["GeminiProvider.generate_content()\nTries dynamic fallback chain:\ngemini-2.5-flash -> gemini-2.0-flash -> gemini-1.5-flash"]
+    LiveProbe --> Output["Populates editable textarea\nwith live word & char count"]
+    
+    Output --> Publish["Intern copies copy & publishes on Reddit / Quora"]
+    Publish --> Submit["Submit live URL on /tasks/104/guide\n(POST /tasks/104/submit)"]
+    Submit --> Whitelist{"Platform URL Whitelist Check\nreddit.com or quora.com?"}
+    
+    Whitelist -- "No" --> Err["Reject with HTTP 400\n'Please provide a valid public Reddit/Quora URL'"]
+    Whitelist -- "Yes" --> Enqueue["Insert into task_submissions (status='pending')\nEmit outbox & web push notification"]
+    
+    Enqueue --> StaffQueue["Staff Queue (/staff/tasks?status=pending)"]
+    StaffQueue --> Review{"Staff Decision"}
+    Review -- "Approve" --> Credit["Atomically credit 50 Coins to coin_ledger_mirror\n(ledger_kind='task')"]
+    Review -- "Reject" --> Notify["Send revision push notification with reason code"]
+```
+
+#### 3.8.1. Omnichannel Task Domain Whitelist Matrix
+| Task ID | Channel Platform | Purpose & Focus | Enforced URL Domain Filter | Coin Reward |
+|:---:|---|---|---|:---:|
+| **101** | LinkedIn Post / Carousel | Technical Case Study & Incubation Value | `linkedin.com` | 50 Coins |
+| **102** | X (Twitter) Thread | Architecture Breakdown & Tech Salaries | `x.com`, `twitter.com` | 50 Coins |
+| **103** | GitHub Repository README | Official DBERT Verified Credential Badge | `github.com` | 50 Coins |
+| **104** | Reddit / Quora Q&A | Objective Engineering Review & Advice | `reddit.com`, `quora.com` | 50 Coins |
+
+#### 3.8.2. BYOK Gemini Discovery & Free-Tier Resilience Standards
+1. **Strict Nonce-CSP Compliance**: Zero inline event handlers (`onclick`, `onsubmit`) in `task_guide.html`. All listeners registered in `DOMContentLoaded` within `<script nonce="{{ csp_nonce() }}">`.
+2. **Dynamic Live Model Probing (`probe_first_working_model`)**: Tests candidate models with a 1-token prompt on key registration at `/account/gemini-key`, ensuring unreleased preview strings (e.g. `gemini-3.8-flash`) are never selected over stable flash models (`gemini-2.5-flash`, `gemini-2.0-flash`, `gemini-1.5-flash`).
+3. **Resilient Provider Fallbacks**: `GeminiProvider` catches 403 free-tier/permission denials and 404 retired model errors, automatically iterating down the fallback chain instead of immediately failing.
+
 ---
 
 ## 4. Comprehensive Dead-End & Drop-Off Audit
@@ -265,7 +379,7 @@ The following matrix documents critical points across the platform where users b
 | **D3** | `/portal/offer` | **P2 / P3** | Previously returned raw `Error 404 Page Not Found` if the candidate had not yet reached Stage 3 (Selected). | Candidate panicked thinking their account was corrupted. | Show an explanatory "Offer Not Yet Generated" status card with their current stage and next milestones. |
 | **D4** | `/stipend/tasks` | **P5** | Provisional candidates were previously able to see submission inputs or received ambiguous rejections without a direct link to resolve their status. | Frustrated interns raising support tickets regarding locked stipends. | Display prominent "Verification Required" card with 1-click upgrade button to `/enroll/1999?email={email}`. |
 | **D5** | `/jobs` (External Posts) | **P1** | Candidates clicked "Apply Now" on external job posts and were redirected away without DBERT recording their intent or capturing lead data. | Zero application analytics; lost user attribution. | Intercept with "Suitability Pitch" modal, save pitch in DB, then redirect in a new tab. |
-| **D6** | `/account/gemini-key` | **P6** | Intern enters a revoked or non-whitelisted Gemini key. Previous code saved it blindly; tasks failed downstream during sprint execution. | Silent failure during AI evaluations and case study generation. | Pre-flight probe key against `GET /v1beta/models` before saving; show immediate green badge or inline error. |
+| **D6** | `/account/gemini-key` | **P6** | Intern enters a key with Google Cloud free-tier restrictions. Previous code only checked `GET /models`; text generation failed downstream with 403. | Silent failure during AI evaluations and case study generation. | Live-probe key with a 1-token generation prompt before saving; automatically pin the highest-version working flash model. |
 | **D7** | `/admin/ambassador-payouts` | **P8** | If an admin rejects a payout request, no automated notification is sent to the intern, leaving the withdrawal in perpetual limbo. | Distrust in referral coin economy. | Trigger automated webhook / transactional email explaining rejection reason and unlocking coins for correction. |
 
 ---
@@ -429,18 +543,22 @@ flowchart TD
   * **Incubation Fellows In-Sprints (383 Candidates)**: High-merit evaluation score badge (88/100, etc.), watermarked preview, and prominent upgrade gateway card with direct links for ₹299 Project Verification Fee (`/enroll/1999?fee=299`) or ₹1,500 Incubation Balance.
   * **LMS Course Micro-Certifications**: Grid of auto-healed certificates for completed LMS courses with print and verify actions.
 
-### 10.4. Universal Web Push Notification Approval Modal
+### 10.4. Universal Web Push Notification Approval Modal & Non-Blocking Governance
 - Sovereign RFC 8292 NIST P-256 VAPID web push modal (`#dbertPushPermissionModal`) in `portal.html`.
-- Prompts interns on first entry (`Notification.permission === 'default'`), highlighting mentor review, bounty approval, and stipend alerts.
+- Prompts interns on entry (`Notification.permission === 'default'`), highlighting mentor review, bounty approval, and stipend alerts.
 - Subscribes device via `DBERTPush.requestPermissionAndSubscribe()` and persists endpoint in PostgreSQL `web_push_devices`.
+- **Non-Blocking Mobile & Desktop UX Mandate**:
+  * **Never Blocks User**: Modal is completely dismissible at all times; never traps or prevents exploring website/LMS features.
+  * **Triple Dismissal Protection**: Top-right high-contrast close button (`#dbertPushModalCloseBtn`), tap-outside backdrop dismissal, and keyboard `Escape` dismissal.
+  * **24-Hour Periodic Re-Prompt Cadence**: Dismissal sets a 24-hour timestamp in `localStorage` (`dbert_push_modal_dismissed_until` / `dbert_push_blocked_dismissed_until`). The user enjoys clean, uninterrupted browsing for the rest of today's session, with gentle checks on future visits.
 - **Anti-Overlap & Viewport Hardening**:
-  * Elevated stacking priority (`z-index: 100001`) with dark blurred backdrop (`rgba(0, 0, 0, 0.82)`, `backdrop-filter: blur(8px)`).
+  * Softened backdrop overlay with `rgba(15, 23, 42, 0.70)` and `backdrop-filter: blur(5px)` at `z-index: 100001`.
   * Desktop sidebar compensation (`@media (min-width: 821px)`): Insets left padding by `calc(var(--portal-sidebar, 260px) + 24px)` and right by `24px` to center the card within the active workspace area, preventing any visual overlap with the fixed 260px sidebar.
-  * Mobile resilience (`@media (max-width: 820px)`): Uses 16px padding and full screen centering.
+  * Mobile resilience (`@media (max-width: 600px)`): Fluid card width `max-width: 94vw`, comfortable touch padding (`24px 16px 20px`), `max-height: 88vh` with internal scrolling to prevent mobile screen cut-offs.
   * Vertical scroll safety (`overflow-y: auto`, max-height ceiling) prevents button clipping on short screens.
 - **Dual-State Dynamic Prompt & Blocked Address Bar Guide**:
   * **State 1 (`#pushModalStateDefault`)**: Value proposition card when permission is `default`.
-  * **State 2 (`#pushModalStateBlocked`)**: Shown when permission is `denied` or when the candidate clicks "Block" in the browser prompt. Shows an illustrated 3-step guide directing the user to the address bar Lock 🔒 icon to set Notifications to "Allow", with an "I've Enabled It — Refresh Page" button.
+  * **State 2 (`#pushModalStateBlocked`)**: Shown when permission is `denied` or when the candidate clicks "Block" in the browser prompt. Shows an illustrated 3-step guide directing the user to the address bar Lock 🔒 icon to set Notifications to "Allow", with an "I've Enabled It — Refresh Page" button and a non-blocking "Dismiss for Now" button.
 - **Persistent Dashboard Alert Banner (`#pushBlockedBanner`)**:
   * Rendered at the top of `#panel-overview` above `#nextActionMissionCard` whenever browser notifications are blocked.
   * Warns interns that they will miss ₹5,000 stipend release alerts and mentor code reviews, with an "Unblock Notifications" trigger to open the guidance modal.
@@ -565,6 +683,63 @@ flowchart TD
   * On reject: Dispatches status update email with admin note + real-time VAPID Web Push notification (`⚠️ Caution Deposit Needs Resubmission`).
 - **Production Verification**:
   * Complete 6-test suite (`apps/portal/tests/test_admin_enrollment_review_flow.py`) passing with 100% success on both local SQLite and live EC2 PostgreSQL production environment.
+
+---
+
+## 21. Universal 5-Tier Responsive & Cross-Device UI/UX Architecture (Website & LMS)
+- **Standardized Breakpoint Hierarchy**:
+  * XS (`< 480px`): Compact Mobile (iPhone SE, Galaxy Fold)
+  * SM (`480px – 768px`): Large Mobile & Phablet (iPhone 14/15/16 Pro Max, Pixel)
+  * MD (`769px – 1024px`): Tablet & Small Laptop (iPad Air/Pro, Surface)
+  * LG (`1025px – 1440px`): Standard Desktop (1080p, MacBook)
+  * XL (`> 1440px`): Ultrawide & 4K (constrained container widths, fluid typography)
+- **Core Component Enhancements**:
+  * Dense administrative and student tables convert into responsive hybrid cards or touch scroll with sticky identifier columns.
+  * Landscape certificates and parchment appointment letters utilize proportional `aspect-ratio: 640 / 495` fluid containers.
+  * 1-Tap UPI Launchers adapt into 2×2 mobile grids with minimum 44px touch targets.
+  * Admin review modals (`#enrModal`, `#appModal`) transform into native mobile bottom sheets on screens `< 768px`.
+  * Universal iOS Safari 16px auto-zoom prevention enforced on all input fields.
+- **Automated Verification**:
+  * Automated Playwright test script (`scripts/test_universal_responsiveness.py`) auditing 6 viewports across both `https://dbert.in` and `https://lms.dbert.in` with zero horizontal overflow.
+
+---
+
+## 22. Mobile Responsiveness Hardening Baseline & 27-Defect Remediation Catalog
+- **Audit Scope & Scope Boundaries**:
+  * Complete 27-item defect audit across public Next.js website (`apps/website`) and Flask LMS Portal (`apps/portal`).
+  * Addressed WCAG 2.1 AA touch target violations (< 44px), iOS Safari auto-zoom triggers (input font-size < 16px), 320px viewport grid blowout (`minmax(320px, 1fr)`), 100vh virtual keyboard displacement (`100dvh`), and unscrollable modal dialogs.
+- **Key Remediations Delivered**:
+  1. **MegaMenu & Global Shell** (`MegaMenu.module.css`): Hamburger button (`.hamb`) and drawer close button (`.drawerClose`) upgraded to `44px × 44px` minimum touch target.
+  2. **Modals & Popovers** (`modal.module.css`, `WhatsAppFloat.module.css`): `.box` max-height constrained to `88dvh` with smooth `-webkit-overflow-scrolling: touch;`. Modal close button widened to `44px × 44px`. Floating WhatsApp widget clearance adjusted on mobile to prevent overlaying primary submit CTAs.
+  3. **Candidate Verification & Unlock** (`verify.module.css`, `unlock.module.css`): Locked certificate unlock CTA (`.lockedUnlockBtn`) enlarged to `44px` touch target with high contrast. Candidate Cert ID/Email/UTR inputs enforced to `16px !important` on screens `< 768px` to stop iOS Safari auto-zoom. Value comparison matrix table wrapped with horizontal touch scroll and `min-width: 440px`.
+  4. **MultiStep Enrollment & Form Flow** (`MultiStepForm.module.css`, `CohortBanner.module.css`): Form inputs and selects enforced to `16px` on mobile. Cohort banner made wrapping (`flex-wrap: wrap;`) for 320px screen clearance.
+  5. **Directory Skills & Filter Bar** (`directory.module.css`): Technical skill chips (`.skillFilterChip`), clear button (`.skillsClearBtn`), and LinkedIn filter button upgraded to `44px` touch targets on mobile.
+  6. **LMS Shell & Navigation** (`portal.html`, `dbert-theme.css`): Mobile topbar hamburger (`.m-burger`) and floating shell burger (`.app-burger`) set to `44px × 44px`. Admin and mentor `.btn-sm` actions enforced to `40px–44px` touch targets on screens `< 768px`. Threaded messaging wrapper updated to `100dvh` with 16px input font sizing.
+  7. **Grid Blowout Elimination** (`ambassador.html`, `certificates.html`): Replaced fixed `minmax(320px, 1fr)` grids with fluid `minmax(min(100%, 280px), 1fr)` for flawless rendering on 320px devices.
+  8. **Student Guided Bounties & Stipend Tasks** (`task_guide.html`, `stipend_tasks.html`, `account_notifications.html`): Mobile hero and card paddings reduced from 28px/32px to 18px/16px; inputs updated to 16px font-size; submit buttons adapted to 100% full-width `min-height: 44px;`.
+- **Deployment & Production Verification**:
+  * Deployed live to AWS EC2 (`ubuntu@3.26.237.171`), Next.js standalone rebuilt, `dbert-website.service` and `dbert-portal.service` restarted.
+  * Verified via automated Playwright test suite (`scripts/test_universal_responsiveness.py`) and Flask LMS test suite (`test_qa_remediation_suite.py`).
+
+---
+
+## 25. LMS Session Invalidation & Browser Logout Redirect Architecture (`/logout`, `/company/logout`)
+- **Defect Remediation & Incident Context**:
+  * Visiting or submitting to `https://lms.dbert.in/logout` rendered raw JSON payload `{"message":"Logged out.","status":"success"}` in the viewport instead of redirecting the user back to the LMS homepage (`https://lms.dbert.in/`).
+  * Root cause:
+    1. In `_app_shell.html` (used by 20+ intern, mentor, and company pages including `courses`, `tasks`, `certificates`, `stipend_tasks`, `ambassador`), the sidebar logout button is a standard HTML POST form with CSRF token:
+       `<form method="post" action="{{ logout.href }}">{{ csrf_field() }}<button type="submit" class="btn-logout">Logout</button></form>`.
+    2. Legacy `logout()` route in `apps/portal/app.py` returned `jsonify({"status": "success", "message": "Logged out."})` for any `POST` request, mistakenly assuming all POST calls were headless AJAX requests.
+    3. The browser rendered the raw JSON payload and remained stranded on `https://lms.dbert.in/logout`.
+- **Architectural Solution & Client Content Negotiation**:
+  * Upgraded `logout()` in `apps/portal/app.py` and `apps/portal/routes/auth.py` with multi-client content negotiation:
+    - If caller explicitly requests JSON (`request.is_json`, `X-Requested-With: XMLHttpRequest`, or `Accept: application/json` without `text/html`): returns `jsonify({"status": "success", "message": "Logged out.", "redirect": "/"})`.
+    - For all browser requests (HTML form POST, GET direct navigation, address bar visit): invalidates session token in DB, clears session cookies via `_clear_session_cookie(resp)`, and issues an HTTP `302 Found` redirect to `"/"` (`https://lms.dbert.in/`).
+    - Parity hardening applied to `/company/logout` to redirect browser companies to `/company/login` while preserving JSON responses for API clients.
+- **Production Verification**:
+  * Deployed to AWS EC2 (`ubuntu@3.26.237.171`) and restarted `dbert-portal.service`.
+  * Verified with live authenticated student session (`stage1_apply@dbert.test`): submitting sidebar form POST to `https://lms.dbert.in/logout` yields HTTP `302 Found` and lands at `https://lms.dbert.in/` (HTTP `200 OK`) with full UI and zero raw JSON.
+  * Verified unit and regression test suites (`test_security_regression.py`, `test_auth_regression.py`).
 
 
 

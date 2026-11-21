@@ -71,7 +71,8 @@ def _rank_models(model_names: List[str]) -> Tuple[Optional[str], List[str]]:
             continue
 
         version = _extract_model_version(clean)
-        is_experimental = 1 if ("exp" in lower or "preview" in lower or "8b" in lower or "customtools" in lower) else 0
+        # Experimental or unreleased preview models (> 2.5) are marked experimental
+        is_experimental = 1 if ("exp" in lower or "preview" in lower or "8b" in lower or "customtools" in lower or version > 2.5) else 0
 
         if "flash" in lower:
             flash_models.append((version, is_experimental, clean))
@@ -89,6 +90,110 @@ def _rank_models(model_names: List[str]) -> Tuple[Optional[str], List[str]]:
     best_default = ordered[0] if ordered else None
 
     return best_default, ordered
+
+
+def probe_first_working_model(
+    api_key: str,
+    candidate_models: Optional[List[str]] = None,
+    timeout: int = 8
+) -> Tuple[Optional[str], List[str], Optional[str]]:
+    """
+    Live generation probe:
+    Tests candidate models in order with a minimal 1-token prompt to identify the highest-priority
+    model that actually generates content without 403 free-tier or 404 retired errors.
+    Returns: (working_default_model, working_models_list, error_message)
+    """
+    if not api_key:
+        return None, [], "No Gemini API key provided."
+
+    clean_key = api_key.strip().strip('"\'`')
+
+    # Preferred stable production flash models
+    preferred_stable = ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-flash", "gemini-flash-latest"]
+
+    models_to_test = []
+    if candidate_models:
+        for m in candidate_models:
+            clean = m.replace("models/", "").strip()
+            if not any(kw in clean.lower() for kw in NON_TEXT_KEYWORDS) and clean not in models_to_test:
+                models_to_test.append(clean)
+
+    # Ensure preferred stable models are in the pool
+    for sm in preferred_stable:
+        if sm not in models_to_test:
+            models_to_test.append(sm)
+
+    # Sort so stable models (version <= 2.5) are tested before experimental/unreleased (> 2.5)
+    def _test_priority(m: str):
+        v = _extract_model_version(m)
+        is_preview = 1 if (any(kw in m.lower() for kw in ("preview", "exp", "customtools")) or v > 2.5) else 0
+        is_flash = 0 if "flash" in m.lower() else 1
+        return (is_preview, is_flash, -v if v <= 2.5 else 99)
+
+    models_to_test.sort(key=_test_priority)
+
+    body = {
+        "contents": [{"parts": [{"text": "Hi"}]}],
+        "generationConfig": {
+            "maxOutputTokens": 1,
+            "temperature": 0.1
+        }
+    }
+
+    working_models = []
+    first_working = None
+    last_err_msg = ""
+
+    for model in models_to_test:
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
+        try:
+            r = requests.post(url, params={"key": clean_key}, json=body, timeout=timeout)
+            if r.status_code == 200:
+                working_models.append(model)
+                if not first_working:
+                    first_working = model
+                    logger.info(f"[probe_first_working_model] Successfully verified working model: {model}")
+                    # Retain remaining candidates in fallback chain
+                    for rem in models_to_test:
+                        if rem != model and rem not in working_models:
+                            working_models.append(rem)
+                    return first_working, working_models, None
+            elif r.status_code in (401, 400):
+                try:
+                    err_data = r.json().get("error", {})
+                    last_err_msg = err_data.get("message") or r.text
+                except Exception:
+                    last_err_msg = r.text
+                if "API_KEY_INVALID" in last_err_msg or "not valid" in last_err_msg.lower():
+                    return None, [], f"Google API authentication failed: {last_err_msg}"
+            elif r.status_code == 403:
+                try:
+                    err_data = r.json().get("error", {})
+                    last_err_msg = err_data.get("message") or r.text
+                except Exception:
+                    last_err_msg = r.text
+                logger.warning(f"[probe_first_working_model] Model {model} returned 403: {last_err_msg[:100]}")
+                continue
+            elif r.status_code == 404:
+                logger.warning(f"[probe_first_working_model] Model {model} returned 404 (retired/not found).")
+                continue
+            else:
+                last_err_msg = f"HTTP {r.status_code}: {r.text[:100]}"
+                continue
+        except Exception as e:
+            last_err_msg = str(e)
+            continue
+
+    if first_working:
+        return first_working, working_models, None
+
+    if "free tier" in last_err_msg.lower() or "permission_denied" in last_err_msg.lower():
+        return None, [], (
+            "The Gemini API free tier is not available for this Google Cloud project. "
+            "Please create a free API key on Google AI Studio (aistudio.google.com) without project billing restrictions."
+        )
+
+    return None, [], f"Could not verify text generation on this key: {last_err_msg or 'All candidate models failed.'}"
 
 
 def discover_gemini_models(
@@ -156,6 +261,14 @@ def discover_gemini_models(
             if not ordered_models:
                 # If Google returned no compatible generation models
                 return None, [], "Key authenticated successfully, but no compatible text generation models were returned."
+
+            # Live-probe candidate models to guarantee generation succeeds without 403 free-tier errors
+            probed_default, probed_models, probe_err = probe_first_working_model(clean_key, candidate_models=ordered_models)
+            if probed_default:
+                best_default = probed_default
+                ordered_models = probed_models
+            elif probe_err and "free tier" in probe_err.lower():
+                return None, [], probe_err
 
             # Update cache
             _MODEL_CACHE[key_hash] = (now, best_default, ordered_models)
