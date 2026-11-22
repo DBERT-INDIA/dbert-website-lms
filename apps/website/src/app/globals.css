@@ -17,13 +17,13 @@
    which is why there is no @import url(...) at the top of this file.
    ═══════════════════════════════════════════════════════════ */
 
-/* ── 1. Design tokens (DBERT studio — slate, porcelain and copper) ── */
+/* ── 1. Design tokens (DBERT Cyber-Industrial Obsidian Studio) ── */
 :root {
-  --surface-base: #f6f8fa;
-  --surface-raised: #edf2f6;
-  --surface-card: #ffffff;
-  --surface-card-hover: #f5f8fb;
-  --surface-overlay: rgba(246, 248, 250, 0.97);
+  --surface-base: #050811;
+  --surface-raised: #0b1120;
+  --surface-card: #0f172a;
+  --surface-card-hover: #16223b;
+  --surface-overlay: rgba(5, 8, 17, 0.96);
 
   /* Legacy base aliases */
   --ink: var(--surface-base);
@@ -34,40 +34,39 @@
   --surface: var(--surface-card);
   --fg: var(--text-primary);
 
-  --border-subtle: #dce4eb;
-  --border-strong: #bccbd6;
-  --border-focus: #245a7c;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.16);
+  --border-focus: #38bdf8;
   --line: var(--border-subtle);
   --line-strong: var(--border-strong);
 
-  --accent: #245a7c;
-  --accent-soft: rgba(36, 90, 124, 0.08);
-  --signal: #bd6948;
-  --ok: #3d765c;
-  --err: #a9473d;
+  --accent: #38bdf8;
+  --accent-soft: rgba(56, 189, 248, 0.12);
+  --signal: #f59e0b;
+  --ok: #10b981;
+  --err: #ef4444;
 
   /* Typography & Foreground Contrast Hierarchy */
-  --text-primary: #192b39;
-  --text-secondary: #405362;
-  --text-muted: #586b79;
-  --text-faint: #74828d;
-  --text-on-accent: #ffffff;
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --text-faint: #64748b;
+  --text-on-accent: #050811;
   --text: var(--text-primary);
   --muted: var(--text-muted);
   --faint: var(--text-faint);
 
-  /* A bookish display face against the clean interface sans gives the site a
-     more authored, studio-journal voice without relying on remote font files. */
-  --font-d: 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua', Georgia, 'Times New Roman', serif;
-  --font-b: var(--font-inter-src), Inter, Arial, sans-serif;
-  --font-tech: var(--font-inter-src), Inter, Arial, sans-serif;
-  --font-m: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
-  --font-h: var(--font-d);
+  /* Modern high-velocity typography connected to next/font/google */
+  --font-d: var(--font-bricolage-src), var(--font-space-src), -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-b: var(--font-inter-src), Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-tech: var(--font-space-src), var(--font-inter-src), sans-serif;
+  --font-m: var(--font-jetbrains-src), 'SFMono-Regular', Consolas, monospace;
+  --font-h: var(--font-space-src), var(--font-bricolage-src), sans-serif;
 
   --max: 1200px;
-  --r-sm: 4px;
-  --r-md: 7px;
-  --r-lg: 10px;
+  --r-sm: 6px;
+  --r-md: 10px;
+  --r-lg: 16px;
   --ease: cubic-bezier(.22, 1, .36, 1);
 
   /* 8px spacing scale */
@@ -92,21 +91,38 @@
   --touch-target-comfortable: 48px;
 }
 
-body[data-theme="enterprise"],
+body[data-theme="enterprise"] {
+  --surface-base: #050811;
+  --surface-raised: #0b1120;
+  --surface-card: #0f172a;
+  --surface-card-hover: #16223b;
+  --accent: #38bdf8;
+  --accent-soft: rgba(56, 189, 248, 0.12);
+  --signal: #f59e0b;
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --text-faint: #64748b;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.16);
+  --line: var(--border-subtle);
+  --line-strong: var(--border-strong);
+}
+
 body[data-theme="learner"] {
-  --surface-base: #f6f8fa;
-  --surface-raised: #edf2f6;
-  --surface-card: #ffffff;
-  --surface-card-hover: #f5f8fb;
-  --accent: #245a7c;
-  --accent-soft: rgba(36, 90, 124, 0.08);
-  --signal: #bd6948;
-  --text-primary: #192b39;
-  --text-secondary: #405362;
-  --text-muted: #586b79;
-  --text-faint: #74828d;
-  --border-subtle: #dce4eb;
-  --border-strong: #bccbd6;
+  --surface-base: #050811;
+  --surface-raised: #0b1120;
+  --surface-card: #0f172a;
+  --surface-card-hover: #16223b;
+  --accent: #38bdf8;
+  --accent-soft: rgba(56, 189, 248, 0.12);
+  --signal: #f59e0b;
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --text-faint: #64748b;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.16);
   --line: var(--border-subtle);
   --line-strong: var(--border-strong);
 }
@@ -228,13 +244,13 @@ code { font-family: var(--font-m); font-size: .9em; }
   background: var(--surface-card);
   border: 1px solid var(--border-subtle);
   border-radius: var(--r-md);
-  box-shadow: 0 5px 18px rgba(36, 42, 33, 0.035);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
   transition: border-color 0.25s var(--ease), background 0.25s var(--ease), transform 0.25s var(--ease);
 }
 .cyber-panel:hover {
-  border-color: var(--border-strong);
+  border-color: rgba(56, 189, 248, 0.35);
   transform: translateY(-2px);
-  box-shadow: 0 10px 24px rgba(36, 42, 33, 0.07);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(56, 189, 248, 0.08);
 }
 
 /* Human Field Note Annotation */
@@ -289,24 +305,29 @@ code { font-family: var(--font-m); font-size: .9em; }
 }
 .btn-primary {
   background: var(--accent);
-  color: var(--text-on-accent);
+  color: #050811;
+  font-weight: 700;
   border-color: var(--accent);
+  box-shadow: 0 0 16px rgba(56, 189, 248, 0.25);
 }
 .btn-primary:hover {
-  background: #244b3b;
+  background: #7dd3fc;
+  border-color: #7dd3fc;
+  color: #050811;
   transform: translateY(-1px);
-  box-shadow: 0 5px 14px rgba(36, 75, 59, 0.15);
+  box-shadow: 0 0 24px rgba(56, 189, 248, 0.45);
 }
 .btn-ghost, .btn-outline {
-  background: transparent;
-  color: var(--accent);
-  border-color: var(--border-strong);
+  background: rgba(255, 255, 255, 0.04);
+  color: #f8fafc;
+  border-color: rgba(255, 255, 255, 0.18);
 }
 .btn-ghost:hover, .btn-outline:hover {
   border-color: var(--accent);
   color: var(--accent);
   background: var(--accent-soft);
   transform: translateY(-1px);
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
 }
 .btn .arr { transition: transform .25s var(--ease); }
 .btn:hover .arr { transform: translateX(3px); }
@@ -737,16 +758,17 @@ code { font-family: var(--font-m); font-size: .9em; }
 
 
 .btn-outline {
-  background: rgba(255, 255, 255, .02);
-  color: var(--text);
-  border: 1px solid var(--line-strong);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+  background: rgba(255, 255, 255, .04);
+  color: #f8fafc;
+  border: 1px solid rgba(255, 255, 255, .18);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
 }
 .btn-outline:hover {
-  background: rgba(255, 255, 255, .06);
+  background: var(--accent-soft);
   border-color: var(--accent);
-  color: var(--text);
+  color: var(--accent);
   transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
 }
 .btn-lg { padding: 15px 34px; font-size: 1rem; }
 .btn-sm { padding: 10px 20px; font-size: .86rem; }
@@ -757,13 +779,13 @@ code { font-family: var(--font-m); font-size: .9em; }
   border-radius: var(--r-md);
   padding: var(--space-4);
   transition: all .3s var(--ease);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, .4);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .45);
 }
 .card:hover {
-  border-color: var(--line-strong);
+  border-color: rgba(56, 189, 248, 0.35);
   background: var(--card-hi);
   transform: translateY(-4px);
-  box-shadow: 0 18px 44px rgba(0, 0, 0, .4);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, .6), 0 0 20px rgba(56, 189, 248, 0.08);
 }
 
 .section-tag {

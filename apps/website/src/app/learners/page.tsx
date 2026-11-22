@@ -68,7 +68,7 @@ const jsonLd = {
         {
           '@type': 'ListItem',
           position: 3,
-          name: 'DBERT Fellowship (Paid AI Internship)',
+          name: 'DBERT Fellowship (Guaranteed AI Internship Placement)',
           url: 'https://dbert.in/learners/fellowship',
         },
         {
@@ -184,7 +184,7 @@ export default function LearnersLandingPage() {
               AI career programs built as a progressive engineering ladder
             </h1>
             <p className="intro-copy">
-              Four structured rungs, executed sequentially: your very first validated Python script, a production applied RAG training pipeline, an embedded paid engineering fellowship on live venture repositories, and a curated jobs board restricted strictly to verified contributors.
+              Four structured rungs, executed sequentially: your very first validated Python script, a production applied RAG training pipeline, an embedded engineering fellowship with 100% guaranteed placement on live venture repositories, and a curated jobs board restricted strictly to verified contributors.
             </p>
             <div className="stack-h gap-3 mt-6 flex-wrap">
               <a href="#ladder" className="btn btn-primary">
@@ -257,7 +257,7 @@ export default function LearnersLandingPage() {
 
             <h3>Rung 3: DBERT Applied Fellowship — Production Code &amp; Guaranteed Placement</h3>
             <p>
-              The transition from student to professional software engineer requires surviving genuine code review on live systems. In our selective <Link href="/learners/fellowship">Paid AI Fellowship</Link>, admitted developers join embedded sprint squads under lead architects to build custom models and data ingestion layers for incubated startups within our <Link href="/startups/portfolio">Venture Portfolio</Link>. Fellows leave with verifiable Git contribution histories, professional experience letters, and 100% guaranteed internship placement across internal ventures or corporate hiring partners. Learn how this technical engagement operates in our comprehensive <Link href="/blog/paid-ai-internship-india-guide-2026">2026 Guide to Landing Paid AI Internships in India</Link>.
+              The transition from student to professional software engineer requires surviving genuine code review on live systems. In our selective <Link href="/learners/fellowship">Applied AI Fellowship</Link>, admitted developers join embedded sprint squads under lead architects to build custom models and data ingestion layers for incubated startups within our <Link href="/startups/portfolio">Venture Portfolio</Link>. Fellows leave with verifiable Git contribution histories, professional experience letters, and 100% guaranteed internship placement across internal ventures or corporate hiring partners. Learn how this technical engagement operates in our comprehensive <Link href="/blog/paid-ai-internship-india-guide-2026">2026 Guide to Landing AI Internships in India</Link>.
             </p>
 
             <div className={s.terminalSection}>
