@@ -10,7 +10,7 @@ Bug Register, Dead Code Audit, Feature Clubbing Plan & AI Agent Operations Manua
 *Active Sovereign Domains*:
 - Public Venture Studio & Verification Engine: `https://dbert.in` (Next.js Standalone · Port 3001)
 - Production LMS & Intern Workspace: `https://lms.dbert.in` (Flask / Gunicorn · Port 5001)
-- Sovereign REST API Backend: `https://api.dbert.in` (FastAPI / Uvicorn · Port 8000)
+- Sovereign REST API Backend: `https://api.dbert.in` (Decommissioned / Masked Nov 23, 2026; endpoints consolidated into Next.js & Flask)
 *Legacy Retired Domain*: `dbert.online` (Strict 1-hop 301 Permanent Redirect to `dbert.in`)  
 *Google Analytics 4 (GA4)*: Strictly `G-MN7ME9X518` across all subdomains and deployment templates.
 
@@ -61,7 +61,7 @@ Any AI agent or software engineer beginning work on DBERT must follow these six 
 > 2. **Port Allocation Invariant**:
 >    - `dbert.in` $	o$ **Port 3001** (Next.js standalone Node server). *Note: Nginx proxies to 3001, NOT 3000.*
 >    - `lms.dbert.in` $	o$ **Port 5001** (Flask + Gunicorn WSGI with 4 workers).
->    - `api.dbert.in` $	o$ **Port 8000** (FastAPI + Uvicorn ASGI with 4 workers).
+>    - `api.dbert.in` $\to$ **Port 8000** (Decommissioned & masked on EC2 as part of Purge Manifest; services centralized into Next.js and Flask).
 > 3. **PostgreSQL Schema Isolation**: Database is `dbert_lms` on PostgreSQL 16. All application tables reside in the `dbert_internship` schema. Always execute `SET search_path TO dbert_internship, public;` or prefix tables with `dbert_internship.<table_name>`.
 > 4. **Zero Dead-End Guarantee**: Every gate, locked screen, or pending state MUST provide at least one primary action CTA guiding the user to the exact route required to unlock progression.
 > 5. **Dual-Monorepo Data Awareness**: Website balance submissions are written to disk (`data/balance_enrollments_1500.json`) and reconciled via crontab every 15 minutes (`sync_enrollments_to_postgres.py`) into PostgreSQL. Never overwrite remote data with empty local files during deployment.
@@ -145,7 +145,7 @@ data/dbert_whatsapp.db (Dispatch Log)"]
 - **Active Systemd Daemons**:
   * `dbert-website.service`: Next.js 14 Standalone (`node .next/standalone/server.js`, PORT=3001)
   * `dbert-portal.service`: Flask WSGI (`gunicorn --workers 4 --bind 127.0.0.1:5001 wsgi:app`)
-  * `dbert-api.service`: FastAPI ASGI (`uvicorn backend.main:app --port 8000 --workers 4`)
+  * `dbert-api.service`: FastAPI ASGI (`uvicorn backend.main:app --port 8000 --workers 4`) [DECOMMISSIONED & MASKED on Nov 23, 2026; package archived to `data/archive/dbert-api-package/`]
   * `nginx.service`: Edge reverse proxy, SSL termination, and rate limiting (`auth_limit: 5r/m`).
 - **Ubuntu Crontab (`crontab -l`)**:
   * `*/15 * * * * /var/www/dbert-website-lms/deploy/run_cron_tasks.sh >> /var/log/dbert_cron.log 2>&1`
@@ -1763,6 +1763,9 @@ The following table documents all completed and ongoing programmatic batch dispa
 | **Guaranteed Placement & Zero Public Stipend Mandate (Nov 22, 2026)** | All Public Marketing & SEO Pages across Website (`dbert.in`) | Candidate Inbound Conversion & Placement Architecture | Completely eliminated all occurrences of '₹5,000 stipend', '₹18,000 performance incentive', and monthly stipend ranges from public pages; established 100% Guaranteed Internship Placement across internal DBERT portfolio ventures (Gayatri AI, Alkame, Aivara) and verified corporate hiring partners; added direct LMS application routing (`https://lms.dbert.in/apply`) for direct candidates seeking the ₹499 caution deposit track; verified 0 errors on EC2 | `scripts/deploy_courses_seo_sitemap_to_ec2.py` | `apps/website/src/app/courses/[domain]/page.tsx`, `apps/website/src/components/courses/CourseInteractiveShell.tsx`, `apps/website/src/components/forms/TrackLeadCaptureForm.tsx`, `apps/website/src/data/geo_domains.config.ts`, `apps/website/src/app/internships/` |
 | **125 Under Review Cohort Promotion to Selected (Nov 23, 2026)** | 125 Under Review Candidates on EC2 PostgreSQL | Intake Admissions & Conversion Pipeline | Promoted 125 candidate applications to `status='Selected'`, `signup_stage=3`, generated official deterministic offer letter records (`DBERT-OFR-2026-{DOMAIN}-{APP_ID:04d}`), batch dates 2026-11-23 to 2027-01-22, synced live to EC2 PostgreSQL; prepared WhatsApp selection campaign | `scripts/promote_all_under_review_to_selected.py` | `data/selected_under_review_cohort_125.json`, `data/ec2_under_review_audit_report.json` |
 | **Ratnadeep Bamane ₹499 Reconciliation (Nov 22, 2026)** | ₹499 Caution Deposit Candidate | Candidate Admissions | Verified payment, updated `signup_stage=5`, `account_status='Confirmed Fellow'`, unlocked full LMS sprint workspace, dispatched personalized WhatsApp confirmation | `scripts/confirm_ratnadeep_enrollment.py` | `data/dbert_whatsapp_sent_today.json` |
+| **Master Monorepo Production Deployment & Debris Purge (Nov 23, 2026)** | Full Monorepo Architecture & P0–P3 Bug Resolutions | Ecosystem-Wide (Public + LMS + API) | Archived `dbert-api-package/` to `data/archive/`, masked `dbert-api.service` on EC2, executed remote Next.js standalone build on EC2, synced public assets & sitemaps, restarted services. Verified 100% of live smoke test endpoints (HTTP 200), including direct vector PDF streaming (`/portal/certificate/.../pdf` - 807 KB) | `scripts/deploy_monorepo_master_to_ec2.py` | Git Commits `a56b885`, `9bfb5dc`, `02a9d64`, `c8b0569` |
+| **Stalled Stage 3 Candidate Recovery Queue (Nov 23, 2026)** | Selected Cohorts with Issued Offers pending ₹499 Caution Deposit | 194 qualified candidates | Automated recovery queue generator; Formatted dual WhatsApp + Email templates with Offer URL (Line 9), Verification URL (Line 12), 14-day academic exam pause policy, zero-holding direct UPI transfer guarantee; 18s–35s human pacing | `scripts/build_stalled_stage3_recovery_queue.py`, `scripts/dispatch_stalled_stage3_recovery.py` | `data/stalled_stage3_recovery_queue.json`, `data/dbert_whatsapp_sent_today.json` |
+| **5-Gate Stipend Maturation Audit (Dec 03, 2026 Cohort)** | 143 Verified Interns (`phones_143_verified_broadcast.json`) | 143 verified accounts (₹715,000 commitment) | Automated 5-Gate evaluation engine verifying Gate 1 (Verified Credential), Gate 2 (Tenure maturing 2026-12-03), Gate 3 (Encrypted UPI), Gate 4 (Capstone PR approved). Generated structured ledger report: 52 cleared for instant batch payout (₹260,000), 83 pending UPI only, 8 pending PR revision | `scripts/evaluate_stipend_cohort_dec3.py` | `data/stipend_cohort_dec3_readiness_report.json` |
 
 ---
 
@@ -1920,7 +1923,7 @@ DBERT's production infrastructure is hosted on AWS EC2 running Ubuntu Linux, orc
 - **Managed Systemd Services**:
   - `dbert-website.service`: Next.js 14/16 App Router (Standalone Node server on port 3000).
   - `dbert-portal.service`: Flask LMS Gunicorn server (WSGI on port 5001).
-  - `dbert-api.service`: FastAPI Uvicorn server (ASGI on port 8000).
+  - `dbert-api.service`: FastAPI Uvicorn server (Decommissioned & masked Nov 23, 2026; archived to `data/archive/dbert-api-package/`).
   - `nginx.service`: Reverse proxy for `dbert.in`, `lms.dbert.in`, `api.dbert.in`.
 
 #### 8.3.2. Next.js Website Deployment Sequence
@@ -2182,7 +2185,7 @@ gantt
 - **Objective:** Track candidate drop-offs across both monorepos and deploy automated recovery triggers to boost payment conversions.
 - **Deliverables:**
   1. **Universal GA4 Server-Side Measurement Protocol:** Standardize server-side event tracking across Next.js and Flask dispatching to `G-MN7ME9X518` (events: `application_started`, `sop_submitted`, `offer_viewed`, `utr_submitted`, `payment_verified`, `lesson_completed`).
-  2. **Automated Funnel Abandonment Triggers:** Implement background daemon checking candidates stalled in Stage 3 (offer viewed but ₹499 unpaid after 48h). Trigger automated, personalized WhatsApp/email recovery notices via verified Account 2.
+  2. **Automated Funnel Abandonment Triggers [COMPLETED - Nov 23, 2026]:** Built `scripts/build_stalled_stage3_recovery_queue.py` generating a targeted queue of 194 stalled Stage 3 candidates (`data/stalled_stage3_recovery_queue.json`). Implemented `scripts/dispatch_stalled_stage3_recovery.py` with multi-channel WhatsApp (Account 2) and Google SMTP email delivery, enforcing verification and offer URLs on lines 9 and 12, 14-day academic exam pause policy, zero-holding direct UPI transfer guarantee, and 18s–35s humanized pacing.
   3. **Turnitin & AI Similarity Telemetry:** Integrate automated Turnitin plagiarism and AI generation similarity scores directly into recruiter proof dossiers on `/verify/[certId]`.
 
 ---
@@ -2190,7 +2193,7 @@ gantt
 ### Phase 5: Deep Service Unification & Monorepo Micro-Frontend Architecture (Target: Weeks 5–7)
 - **Objective:** Decommission orphaned backend services, converge split APIs, and eliminate data store divergence.
 - **Deliverables:**
-  1. **Decommission Orphaned FastAPI Backend:** Mask and terminate `dbert-api.service`, purge `dbert-api-package/`, and reclaim EC2 compute resources.
+  1. **Decommission Orphaned FastAPI Backend [COMPLETED - Nov 23, 2026]:** Masked and stopped `dbert-api.service` on production AWS EC2, safely archived `dbert-api-package/` into `data/archive/dbert-api-package/` (Commit `9bfb5dc`), and reclaimed server compute/memory resources without impacting any user-facing endpoints.
   2. **Prisma-to-PostgreSQL Convergence:** Replace Next.js flat-file JSON reads (`certificates_registry.json`, `balance_enrollments_1500.json`) with direct PostgreSQL queries via Prisma client.
   3. **Decompose `apps/portal/app.py`:** Extract the remaining monolithic route handlers into the 13 modular blueprints in `apps/portal/routes/`, reducing `app.py` from 23,534 lines to a clean `< 500-line` application factory.
 
@@ -2199,8 +2202,8 @@ gantt
 ### Phase 6: Automated Credential & Ledger Minting Engine (Target: Weeks 8–10)
 - **Objective:** Zero-touch credential generation, instant vector PDF downloads, and automated stipend maturation disbursements.
 - **Deliverables:**
-  1. **Direct Binary Credential Packet Streaming:** Connect `certificate_packet_service.py` to public verification and student certificates routes. Interns and recruiters can download the full 3-document signed vector PDF dossier in 1 click.
-  2. **Zero-Touch Stipend Maturation Pipeline:** Automate the 5-Gate stipend release verification. For candidates maturing on **03 December 2026**, auto-verify Gate 1 (Credential), Gate 2 (Tenure), Gate 3 (UPI), Gate 4 (Capstone PR), and queue Gate 5 for 1-click batch payout.
+  1. **Direct Binary Credential Packet Streaming [COMPLETED - Nov 23, 2026]:** Connected `CertificatePacketService` directly to `@app.route("/portal/certificate/<cert_id>/pdf")` and `@app.route("/certificate/<cert_id>/pdf")` via Flask `send_file()` and `BytesIO`. Verified live streaming of crisp 3-document vector PDF (807 KB) on production EC2 (Commit `02a9d64`).
+  2. **Zero-Touch Stipend Maturation Pipeline [AUDITED & DEPLOYED - Nov 23, 2026]:** Implemented `scripts/evaluate_stipend_cohort_dec3.py` auditing all 143 verified intern accounts against the 5-Gate ledger for Dec 03, 2026 maturation. Generated `data/stipend_cohort_dec3_readiness_report.json` confirming 52 accounts cleared for instant ₹5,000 payout (₹260,000 total commitment), 83 pending UPI setup, and 8 pending capstone PR revision.
   3. **Dual Coin Ledger Minting:** Enforce strict cryptographic separation between educational task coins (redeemable for mock interviews and resume reviews) and withdrawable referral coins (redeemable for INR cash payouts).
 
 ---
