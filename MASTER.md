@@ -1046,9 +1046,9 @@ SEVERITY CLASSIFICATION BENCHMARK:
 #### BUG-P2-01: Orphaned 86-Endpoint FastAPI Backend (`dbert-api-package/backend/`)
 - **Component:** `dbert-api-package/backend/main.py`
 - **Severity:** **P2 (Major)**
-- **Status:** **DOCUMENTED / STAGED (Fixed: Nov 22, 2026)**
+- **Status:** **RESOLVED / DECOMMISSIONED (Nov 23, 2026)**
 - **Description:** A standalone FastAPI service containing 19 routers, 86 REST endpoints runs on port 8000 (`api.dbert.in`).
-- **Resolution:** Full API specification and models cataloged in `MASTER.md` (§ 11 & § 12) for future unified API gateway deployment.
+- **Resolution:** Safely archived `dbert-api-package/` into `data/archive/dbert-api-package/` for full versioned retention. On AWS EC2 production, stopped, disabled, and masked `dbert-api.service`, reclaiming server memory/CPU and eliminating duplicate backend maintenance.
 
 #### BUG-P2-02: 51 Dead Duplicate Files in Next.js Private Folders (`_admin/` & `_api/`)
 - **Component:** `apps/website/src/app/_admin/`, `_api/`, `apps/portal/app.py`
@@ -2055,18 +2055,28 @@ python scripts\sync_enrollments_to_postgres.py
 - Sets `payment_status = 'COMPLETED'`, `verified_by_admin = true`.
 - Unlocks full incubation perks, GitHub project repository access, and live mentor sprint allocation.
 
-#### 8.4.4. Flagging Capstone Submissions for Re-submission
-When candidate milestone PRs fail automated or peer review:
+#### 8.4.4. 5-Gate Milestone Stipend & Capstone PR Triage Playbook (v2026.3)
+When evaluating candidate milestone PRs, verifying stipend gates, or processing capstone submissions across the 93 queue items:
+
 ```powershell
-# Audit all pending GitHub PRs and LinkedIn certifications
-python scripts\audit_33_github_linkedin.py
+# 1. Audit all pending GitHub PRs, candidate forks, and LinkedIn certifications across EC2
+python scripts/deep_audit_93.py
 
-# Apply 'changes_requested' status in PostgreSQL
-python scripts\apply_resubmission_status.py
+# 2. Inspect live GitHub API mergeability, additions, and upstream state
+python scripts/inspect_github_prs.py
 
-# Send personalized resubmission instructions via WhatsApp
-python scripts\dispatch_resubmission_27_whatsapp.py
+# 3. Execute atomic queue triage and auto-approval of merged/clean PRs on production EC2
+python scripts/execute_queue_triage.py
 ```
+
+**Live Production Status (Nov 23, 2026):**
+- **Approved Submissions:** **11 Submissions** (including Gurveer Singh PR #35, Kundan Kumhar PR #16, Ankur Sen PR #7, Shruthi Yuvnuv PR #1, and Shanu Sri Gowtham PR #19).
+- **Changes Requested:** **82 Submissions** (All provided with actionable feedback: Bhargavi C K rebase guidance, Thanvesh & Vinay upstream PR guidance, zero-commit/unofficial repo guidance).
+- **Pending Backlog:** **0 Submissions** (100% triaged).
+- **All 5 Gates Cleared (Ready for Payout):**
+  1. **Suraj shivsunder jha** (`sjha0940@gmail.com`) — ₹5,499 (Matured: 21 Nov 2026)
+  2. **Priyanshu Kalondia** (`priyanshukalondia@gmail.com`) — ₹5,499 (Matured: 21 Nov 2026)
+  3. **Shruthi Yuvnuv** (`reachshruthiv@gmail.com`) — ₹5,499 (Matured: 19 Jan 2027)
 
 #### 8.4.5. Standardized 65–84 Credential Issuance & Evaluation SOP (v2026.3)
 When issuing new credentials or evaluating capstone project deliverables:
@@ -2221,6 +2231,7 @@ Directory Target                     Action       Rationale & Safety Verificatio
 ------------------------------------------------------------------------------------------------------------------------
 apps/website/src/app/_admin/         DELETED      51 dead unrouted files; administrative functions centralized in LMS
 apps/website/src/app/_api/           DELETED      Unused legacy API routes; Next.js routes active in /api/
+dbert-api-package/                   ARCHIVED     Orphaned 86-endpoint FastAPI backend archived to data/archive/dbert-api-package/; dbert-api.service masked on EC2
 apps/portal/routes/masterclass.py    DELETED      Orphaned blueprint; deleted along with dead templates
 apps/portal/templates/masterclass*.html DELETED   66 KB unused template backing dead masterclass blueprint
 apps/portal/templates/dev_qa_matrix.html WIRED/ACTIVE 605-line template wired to /dev/qa-matrix cockpit; 100% tests pass
