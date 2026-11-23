@@ -144,7 +144,8 @@ def probe_first_working_model(
     first_working = None
     last_err_msg = ""
 
-    for model in models_to_test:
+    # Test top candidates (max 4) to ensure prompt returns within browser timeout
+    for model in models_to_test[:4]:
         url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
         try:
             r = requests.post(url, params={"key": clean_key}, json=body, timeout=timeout)

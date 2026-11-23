@@ -30,6 +30,7 @@ function resolveServerAuthoritativeAmount(programName: string, requestedAmount?:
 }
 
 export async function POST(request: Request) {
+  let serverAuthoritativePaise = 49900;
   try {
     const body = await request.json();
     const { programName, domain, amount, name, email, phone } = body;
@@ -39,7 +40,7 @@ export async function POST(request: Request) {
     }
 
     // Server-side authoritative price determination (Finding DBERT-007)
-    const serverAuthoritativePaise = resolveServerAuthoritativeAmount(
+    serverAuthoritativePaise = resolveServerAuthoritativeAmount(
       programName,
       Number.isInteger(Number(amount)) ? Number(amount) : undefined
     );
@@ -82,7 +83,18 @@ export async function POST(request: Request) {
     }, { status: 201 });
 
   } catch (err) {
-    console.error('Order creation error:', err);
-    return NextResponse.json({ error: 'Failed to create order' }, { status: 500 });
+    console.warn('[Razorpay Gateway Fallback Triggered]', err);
+    // Graceful UPI Fallback (Resolves Dead-End D2 & Silent Fail S2)
+    return NextResponse.json({
+      success: false,
+      fallback_upi: true,
+      vpa: 'Q652429146@ybl',
+      merchantName: 'DBERT Admissions',
+      amount: serverAuthoritativePaise / 100,
+      currency: 'INR',
+      qr_url: '/images/qrcode.jpeg',
+      redirect_url: '/enroll/1999',
+      message: 'Razorpay gateway temporarily unreachable. Seamlessly routed to 1-Tap UPI / QR payment gateway.'
+    }, { status: 200 });
   }
 }

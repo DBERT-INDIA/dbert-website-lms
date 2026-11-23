@@ -145,11 +145,48 @@ export async function POST(request: NextRequest) {
     submissions.push(newEntry);
     saveSubmissions(submissions);
 
+    // Real-Time Convergence: Synchronize atomically to LMS PostgreSQL (BUG-P1-06)
+    let lmsSynced = false;
+    try {
+      const syncEndpoint = process.env.INTERNAL_LMS_SYNC_URL || 'https://lms.dbert.in/api/internal/enrollment-sync';
+      const syncSecret = process.env.INTERNAL_SYNC_SECRET || 'dbert-secure-sync-token-2026';
+
+      const syncRes = await fetch(syncEndpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-DBERT-Internal-Secret': syncSecret
+        },
+        body: JSON.stringify({
+          name: fullName.trim(),
+          email: email.trim().toLowerCase(),
+          phone: phone.trim(),
+          college: college ? college.trim() : 'Verified Candidate',
+          domain: domain ? domain.trim() : 'Engineering Track',
+          amount: 299,
+          payment_type: 'verification_299',
+          utr: cleanUtr,
+          submission_id: submissionId,
+          cert_id: certId ? certId.trim() : undefined
+        }),
+        signal: AbortSignal.timeout(5000)
+      });
+
+      if (syncRes.ok) {
+        lmsSynced = true;
+      } else {
+        console.warn(`[LMS Sync Warning] Status: ${syncRes.status}`);
+      }
+    } catch (syncErr: unknown) {
+      console.warn('[LMS Sync Network]', syncErr instanceof Error ? syncErr.message : syncErr);
+    }
+
     return NextResponse.json({
       success: true,
       alreadySubmitted: false,
       submissionId,
       amountPaid: 299,
+      lmsSynced,
       message: '₹299 Project Verification submission successfully recorded. Credential issuance and evaluation dossier review initiated.',
       data: newEntry
     });

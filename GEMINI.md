@@ -1,5 +1,13 @@
 # DBERT Engineering & Agent Brain (AGENTS.md)
 ================================================================================
+> [!IMPORTANT]
+> **CANONICAL SOVEREIGN MASTER DOCUMENT**:
+> All engineering directives, complete sitemaps, system topology, bug registers,
+> dead-ends, silent fails, database dictionaries, and operations playbooks
+> have been consolidated into **[MASTER.md](./MASTER.md)** at the repository root.
+> 
+> **Refer to [MASTER.md](./MASTER.md) as the PRIMARY SOVEREIGN SOURCE OF TRUTH.**
+================================================================================
 Universal Context, Architectural Rules, and Operational Playbook for Antigravity & AI Agents
 ================================================================================
 

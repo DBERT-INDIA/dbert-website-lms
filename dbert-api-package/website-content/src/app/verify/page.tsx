@@ -173,14 +173,12 @@ function VerifyFormContent() {
                 <p className={s.provisionalBannerDesc}>
                   Action Required: Your credential authentication and stipend release are currently on hold pending submission of your final project verification form.
                 </p>
-                <a
-                  href="https://docs.google.com/forms/d/e/1FAIpQLSeHCTK_HO5ZbNHNcPiyW-04Y4bBeZ0RvQP7I4koQnW91d6phA/viewform?usp=header"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  href={`/verify/unlock?certid=${encodeURIComponent(result.certId)}`}
                   className={s.provisionalFormBtn}
                 >
-                  Complete Verification Form to Activate Certificate &amp; Release Stipend &rarr;
-                </a>
+                  Complete Verification &amp; Unlock Official Credentials (₹299) &rarr;
+                </Link>
               </div>
             </div>
           )}

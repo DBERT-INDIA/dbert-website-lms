@@ -23,3 +23,7 @@ curl -s -X POST "http://127.0.0.1:8000/api/v1/cron/clean-tokens" \
 # Call expire marketplace posts
 curl -s -X POST "http://127.0.0.1:8000/api/v1/cron/expire-posts" \
   -H "X-Cron-Secret: $CRON_SECRET" > /dev/null || true
+
+# Continuous Data Convergence: Sync balance submissions & verified certificates to PostgreSQL
+/var/www/dbert-website-lms/apps/portal/.venv/bin/python /var/www/dbert-website-lms/scripts/sync_enrollments_to_postgres.py >> /var/log/dbert_sync.log 2>&1 || true
+/var/www/dbert-website-lms/apps/portal/.venv/bin/python /var/www/dbert-website-lms/scripts/sync_verified_certificates_to_portal.py >> /var/log/dbert_sync.log 2>&1 || true

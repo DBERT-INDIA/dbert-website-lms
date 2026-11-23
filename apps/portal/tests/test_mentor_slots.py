@@ -2,6 +2,7 @@ import os
 import sys
 import unittest
 from pathlib import Path
+from datetime import datetime, timedelta
 
 # Add portal root to sys.path
 PORTAL_DIR = Path(__file__).resolve().parent.parent
@@ -22,14 +23,18 @@ class TestMentorSlots(unittest.TestCase):
 
         with get_db() as conn:
             conn.execute("DELETE FROM mentor_session_bookings WHERE intern_id IN (9101, 9102)")
+            conn.execute("DELETE FROM attendance WHERE intern_id IN (9101, 9102)")
+            conn.execute("DELETE FROM notifications WHERE intern_id IN (9101, 9102)")
+            conn.execute("DELETE FROM intern_offer_letters WHERE intern_id IN (9101, 9102)")
+            conn.execute("DELETE FROM course_enrollments WHERE intern_id IN (9101, 9102)")
             conn.execute("DELETE FROM enrollments WHERE id IN (9101, 9102)")
             conn.execute("DELETE FROM intern_accounts WHERE id IN (9101, 9102)")
             conn.execute("DELETE FROM user_sessions WHERE email LIKE '%@test.dbert.in'")
 
             # Intern 1: With regular domain
             conn.execute("""
-                INSERT INTO enrollments (id, name, email, phone, college, domain, joining_date, payment_status, amount)
-                VALUES (9101, 'Aditi Rao', 'aditi.slots@test.dbert.in', '9876543210', 'IIT Madras', 'Full Stack Web Development', '2026-11-09', 'Verified', 499)
+                INSERT INTO enrollments (id, name, email, phone, college, domain, joining_date, payment_status, amount, timestamp)
+                VALUES (9101, 'Aditi Rao', 'aditi.slots@test.dbert.in', '9876543210', 'IIT Madras', 'Full Stack Web Development', '2026-11-09', 'Verified', 499, '2026-11-09 10:00:00')
             """)
             conn.execute("""
                 INSERT INTO intern_accounts (id, name, email, domain, is_active)
@@ -38,25 +43,31 @@ class TestMentorSlots(unittest.TestCase):
 
             # Intern 2: Without domain (NULL domain)
             conn.execute("""
-                INSERT INTO enrollments (id, name, email, phone, college, domain, joining_date, payment_status, amount)
-                VALUES (9102, 'Varun Nair', 'varun.nodomain@test.dbert.in', '9876543211', 'NIT Trichy', NULL, '2026-11-09', 'Verified', 499)
+                INSERT INTO enrollments (id, name, email, phone, college, domain, joining_date, payment_status, amount, timestamp)
+                VALUES (9102, 'Varun Nair', 'varun.nodomain@test.dbert.in', '9876543211', 'NIT Trichy', NULL, '2026-11-09', 'Verified', 499, '2026-11-09 10:00:00')
             """)
             conn.execute("""
                 INSERT INTO intern_accounts (id, name, email, domain, is_active)
                 VALUES (9102, 'Varun Nair', 'varun.nodomain@test.dbert.in', NULL, 1)
             """)
             # Create a test mentor availability slot
+            future_start = (datetime.now() + timedelta(days=2)).strftime('%Y-%m-%d 15:00:00')
+            future_end = (datetime.now() + timedelta(days=2)).strftime('%Y-%m-%d 15:45:00')
             conn.execute("DELETE FROM mentor_availability_slots WHERE id = 9999")
             conn.execute("""
                 INSERT INTO mentor_availability_slots (id, mentor_staff_id, start_time, end_time, topic, domain, capacity, seats_booked, is_booked)
-                VALUES (9999, 1, '2026-11-20 15:00:00', '2026-11-20 15:45:00', 'Test Architecture Session', 'Full Stack Web Development', 30, 0, 0)
-            """)
+                VALUES (9999, 1, ?, ?, 'Test Architecture Session', 'Full Stack Web Development', 30, 0, 0)
+            """, (future_start, future_end))
             conn.commit()
 
     def tearDown(self):
         with get_db() as conn:
             conn.execute("DELETE FROM mentor_session_bookings WHERE intern_id IN (9101, 9102)")
             conn.execute("DELETE FROM mentor_availability_slots WHERE id = 9999")
+            conn.execute("DELETE FROM attendance WHERE intern_id IN (9101, 9102)")
+            conn.execute("DELETE FROM notifications WHERE intern_id IN (9101, 9102)")
+            conn.execute("DELETE FROM intern_offer_letters WHERE intern_id IN (9101, 9102)")
+            conn.execute("DELETE FROM course_enrollments WHERE intern_id IN (9101, 9102)")
             conn.execute("DELETE FROM enrollments WHERE id IN (9101, 9102)")
             conn.execute("DELETE FROM intern_accounts WHERE id IN (9101, 9102)")
             conn.execute("DELETE FROM user_sessions WHERE email LIKE '%@test.dbert.in'")

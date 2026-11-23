@@ -1665,9 +1665,9 @@
               {% if ver_info.verified %}
                 Official credential verified: <code>{{ ver_info.cert_id }}</code>. Domain curriculum, capstone evaluation, and verified credential complete. Full stipend eligibility unlocked.
               {% elif ver_info.is_provisional %}
-                Course completed! Your credential is currently <strong>Provisional (<code>{{ ver_info.cert_id }}</code>)</strong>. You have already paid the ₹499 caution deposit. Complete your remaining <strong>₹1,500 balance</strong> to unlock your Official 3-Document Verified Dossier &amp; enable the ₹5,000 stipend release.
+                Course completed! Your credential is currently <strong>Provisional (<code>{{ ver_info.cert_id }}</code>)</strong>. Complete your <strong>₹299 official credential verification</strong> to unlock your Official 3-Document Verified Dossier &amp; enable the ₹5,000 stipend release.
               {% else %}
-                Complete your domain curriculum &amp; quizzes on LMS to earn your Certificate of Completion, then finalize your incubation balance to unlock stipend rights.
+                Complete your domain curriculum &amp; quizzes on LMS to earn your Certificate of Completion, then complete your ₹299 verification to unlock stipend rights.
               {% endif %}
             </p>
             <div class="gate-footer" style="display:flex; flex-direction:column; gap:12px; margin-top:16px;">
@@ -1679,14 +1679,14 @@
               {% elif ver_info.is_provisional %}
                 <div style="background:rgba(245,158,11,0.12); border:1.5px solid #d97706; border-radius:12px; padding:14px; width:100%; box-sizing:border-box;">
                   <div style="font-size:11px; font-weight:800; color:#fbbf24; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px;">
-                    <i class="fa-solid fa-bolt"></i> OPTION A: UPGRADE CREDENTIAL &amp; UNLOCK STIPEND
+                    <i class="fa-solid fa-bolt"></i> OPTION A: COMPLETE ₹299 VERIFICATION &amp; UNLOCK STIPEND
                   </div>
                   <div style="font-size:12.5px; color:#FDE68A; margin-bottom:10px; line-height:1.4;">
-                    Pay remaining <strong>₹1,500 balance</strong> (net of ₹499 credit) to unlock official 3-doc credential packet and earn ₹5,000 stipend.
+                    Complete official <strong>₹299 project verification</strong> to unlock your 3-document credential packet, Turnitin rubric, and enable ₹5,000 stipend release.
                   </div>
-                  <a href="https://dbert.in/enroll/1999?email={{ intern.email }}" target="_blank" rel="noopener" class="stipend-cta-btn stipend-cta-gold" style="width:100%; justify-content:center; text-decoration:none;">
+                  <a href="https://dbert.in/verify/unlock?certid={{ ver_info.cert_id }}&amp;email={{ intern.email }}" target="_blank" rel="noopener" class="stipend-cta-btn stipend-cta-gold" style="width:100%; justify-content:center; text-decoration:none;">
                     <i class="fa-solid fa-unlock"></i>
-                    <span>Complete ₹1,500 Balance &amp; Unlock Stipend &rarr;</span>
+                    <span>Complete ₹299 Verification &amp; Unlock Stipend &rarr;</span>
                   </a>
                 </div>
 
@@ -1702,9 +1702,9 @@
                   </a>
                 </div>
               {% else %}
-                <a href="https://dbert.in/enroll/1999?email={{ intern.email }}" target="_blank" rel="noopener" class="stipend-cta-btn stipend-cta-gold" style="width:100%; justify-content:center; text-decoration:none;">
+                <a href="https://dbert.in/verify/unlock?{% if ver_info and ver_info.cert_id %}certid={{ ver_info.cert_id }}&amp;{% endif %}email={{ intern.email }}" target="_blank" rel="noopener" class="stipend-cta-btn stipend-cta-gold" style="width:100%; justify-content:center; text-decoration:none;">
                   <i class="fa-solid fa-bolt"></i>
-                  <span>Complete Incubation Verification &rarr;</span>
+                  <span>Complete ₹299 Credential Verification &rarr;</span>
                 </a>
                 <a href="/courses" class="stipend-cta-btn stipend-cta-emerald" style="width:100%; justify-content:center; text-decoration:none;">
                   <i class="fa-solid fa-graduation-cap"></i>

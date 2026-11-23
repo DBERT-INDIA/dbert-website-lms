@@ -27,6 +27,16 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 import fitz  # PyMuPDF
 
+try:
+    from services.grading_service import calculate_project_grade, generate_9_rubric_marks, get_grade_tier
+except ImportError:
+    try:
+        from apps.portal.services.grading_service import calculate_project_grade, generate_9_rubric_marks, get_grade_tier
+    except ImportError:
+        import sys
+        sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+        from services.grading_service import calculate_project_grade, generate_9_rubric_marks, get_grade_tier
+
 
 # Asset path resolution
 PORTAL_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
@@ -223,14 +233,16 @@ class CertificatePacketService:
         }
         topics = (reg_data.get("topics") if reg_data else None) or topics_map.get(domain, "Core Architecture, Practical Implementation, Production Deployments, Best Practices")
         
-        score = int(reg_data.get("score", 84) if reg_data else 84)
-        grade = (reg_data.get("grade") if reg_data else None) or "Grade: A (Very Good Performance)"
-        
-        # Calculate rubric breakdown summing to score
-        rubrics = [17, 9, 8, 8, 8, 9, 8, 8, 9]
-        if score != 84:
-            diff = score - 84
-            rubrics[0] = max(10, min(20, rubrics[0] + diff))
+        if reg_data and "score" in reg_data and reg_data["score"] is not None:
+            score = int(reg_data["score"])
+            grade = reg_data.get("grade") or get_grade_tier(score)
+        else:
+            calc = calculate_project_grade(project, candidate_identifier=clean_cert)
+            score = calc["score"]
+            grade = calc["grade"]
+
+        # Calculate authentic rubric breakdown guaranteed to sum exactly to score
+        rubrics = generate_9_rubric_marks(score)
 
         return {
             "name": name,

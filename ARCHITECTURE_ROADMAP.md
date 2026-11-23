@@ -1,5 +1,10 @@
 # DBERT Production Architecture Roadmap & User Flow Audit
 ================================================================================
+> [!IMPORTANT]
+> **SUPERSEDED BY MASTER.MD**:
+> This document has been synthesized and expanded into the comprehensive **[MASTER.md](./MASTER.md)** (Sections § 1, § 5, § 7, and § 13).
+> Please refer to `MASTER.md` for the latest sovereign architecture, bug register, and operational roadmap.
+================================================================================
 Comprehensive System Topology, End-to-End User Journeys, Dead-End Audits,
 Silent-Fail Remediation & Engineering Roadmap for Antigravity & AI Agents
 ================================================================================
@@ -436,10 +441,12 @@ flowchart LR
 - [x] **Task 1.3**: Strict mutual exclusivity on `/portal/offer`: eliminate Step 3 QR code and UTR submission forms from DOM when caution deposit is verified (`caution_deposit_status == 'VERIFIED'`).
 - [x] **Task 1.4**: Eliminate ghost card `👋 — —` by hiding `#nextStepCard` by default and isolating to `__JOB_ONLY__` applicants.
 
-### Phase 2: Dual-Monorepo Data Convergence (Target: 1 Week)
-- **Task 2.1**: Author automated reconciliation daemon `scripts/sync_enrollments_to_postgres.py` to continuously parse `data/balance_enrollments_1500.json` and upsert matching candidate records into PostgreSQL `enrollments` and `intern_accounts`.
-- **Task 2.2**: Unify user authentication session between Next.js and Flask using signed cross-domain JWT cookies or shared Redis session store.
-- **Task 2.3**: Eliminate flat JSON reliance for verified certificates by migrating master records into PostgreSQL `intern_certificates` as single source of truth.
+### Phase 2: Dual-Monorepo Data Convergence (Target: 1 Week) - COMPLETED & DEPLOYED (2026-11-22)
+- [x] **Task 2.1**: Authored and deployed automated reconciliation daemon `scripts/sync_enrollments_to_postgres.py` to continuously parse `data/balance_enrollments_1500.json` and upsert matching candidate records into PostgreSQL `enrollments` and `intern_accounts`. Added to continuous 15-minute cron runner.
+- [x] **Task 2.2**: Unified internal communication: Next.js `/api/enroll/balance` immediately notifies Flask LMS `/api/internal/enrollment-sync` with fallback `INTERNAL_SYNC_SECRET`, achieving real-time instant cross-monorepo synchronization.
+- [x] **Task 2.3**: Synchronized all 97 verified certificate records from `certificates_registry.json` into PostgreSQL `intern_certificates` table as single operational source of truth.
+- [x] **Task 2.4**: Updated `POSTGRES_SCHEMA.sql` to include all 83 verified tables (`scraped_internships`, `scraped_jobs`, `intern_articles`, `intern_offer_letters`, `coin_perks_catalog`, `coin_perk_redemptions`).
+- [x] **Task 2.5**: Purged 100+ legacy cPanel zip archives, PHP/CGI relics, empty 0-byte database files, and duplicate `_admin`/`_api` Next.js folders.
 
 ### Phase 3: BYOK Resilience & Self-Healing AI Pipeline (Target: 2 Weeks)
 - **Task 3.1**: Implement proactive key validation: ping `GET /v1beta/models` on save in `/account/gemini-key` and reject invalid keys before storing.

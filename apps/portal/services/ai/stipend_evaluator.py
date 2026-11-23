@@ -256,6 +256,17 @@ class StipendEvaluator:
 You are the Chief Academic & Technical Evaluator at DBERT (Digital Blinc Education Research and Technology).
 Evaluate the following intern technical contribution for the domain: '{domain}'.
 
+DBERT Standardized Capstone Grading Scale (v2026.3):
+- Total score must be strictly bounded between 65 and 84 points (out of 100).
+- Baseline Passing Bar: 65 points (for completed sprints & baseline submissions).
+- Maximum Capstone Distinction: 84 points (exceptional architecture, live demo, and originality).
+- Four Core Dimension Criteria:
+  1. {rubric['criteria'][0]} (Weight: 16 to 21 points)
+  2. {rubric['criteria'][1]} (Weight: 16 to 21 points)
+  3. {rubric['criteria'][2]} (Weight: 16 to 21 points)
+  4. {rubric['criteria'][3]} (Weight: 17 to 21 points)
+  Sum of sub-scores must equal total_score, strictly within [65, 84].
+
 Deliverables Submitted:
 - Candidate Name: {submission_data.get('holder_name', 'Student')}
 - GitHub Repository URL: {submission_data.get('github_repo_url', 'N/A')}
@@ -264,21 +275,22 @@ Deliverables Submitted:
 - Architectural Notes / Overview:
 \"\"\"{submission_data.get('submission_content', 'N/A')}\"\"\"
 
-Evaluation Rubric for {domain}:
-1. {rubric['criteria'][0]} (Weight: 25 points)
-2. {rubric['criteria'][1]} (Weight: 25 points)
-3. {rubric['criteria'][2]} (Weight: 25 points)
-4. {rubric['criteria'][3]} (Weight: 25 points)
+Grade Tiers:
+- 80 to 84: Grade: A (High Merit)
+- 75 to 79: Grade: B+ (Merit)
+- 70 to 74: Grade: B (Proficient)
+- 65 to 69: Grade: C+ (Satisfactory)
 
 Instructions:
 Evaluate the submission thoroughly. Be constructive and objective.
 Respond with a JSON object adhering to this schema:
 {{
-    "code_architecture_score": <int 0-25>,
-    "documentation_score": <int 0-25>,
-    "deployment_quality_score": <int 0-25>,
-    "domain_relevance_score": <int 0-25>,
-    "total_score": <int 0-100>,
+    "code_architecture_score": <int 16-21>,
+    "documentation_score": <int 16-21>,
+    "deployment_quality_score": <int 16-21>,
+    "domain_relevance_score": <int 17-21>,
+    "total_score": <int 65-84>,
+    "grade_tier": "<'Grade: A (High Merit)' | 'Grade: B+ (Merit)' | 'Grade: B (Proficient)' | 'Grade: C+ (Satisfactory)'>",
     "verdict": "<'RECOMMENDED_APPROVE' or 'RECOMMENDED_REVISION'>",
     "summary_notes": "<2-3 sentence executive evaluation summary>",
     "strengths": ["<strength 1>", "<strength 2>"],
@@ -303,9 +315,21 @@ Respond with a JSON object adhering to this schema:
                 cleaned_json = cleaned_json.split("```")[1].split("```")[0].strip()
 
             eval_dict = json.loads(cleaned_json)
-            total_score = int(eval_dict.get("total_score", 75))
+            raw_score = int(eval_dict.get("total_score", 75))
+            # Strict calibration between 65 and 84
+            total_score = max(65, min(84, raw_score))
+            eval_dict["total_score"] = total_score
+
+            try:
+                from services.grading_service import get_grade_tier
+            except ImportError:
+                from apps.portal.services.grading_service import get_grade_tier
+            grade = get_grade_tier(total_score)
+            eval_dict["grade_tier"] = eval_dict.get("grade_tier") or grade
+
             return {
                 "score": total_score,
+                "grade": grade,
                 "status": "evaluated",
                 "notes": eval_dict.get("summary_notes", "Evaluation completed successfully."),
                 "rubric_breakdown": eval_dict,

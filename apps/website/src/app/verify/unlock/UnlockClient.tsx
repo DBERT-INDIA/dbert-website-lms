@@ -99,6 +99,7 @@ export default function UnlockClient() {
   const [errorMsg, setErrorMsg] = useState('');
   const [copiedVpa, setCopiedVpa] = useState(false);
   const [submittedResult, setSubmittedResult] = useState<SubmissionResult | null>(null);
+  const [rejectionAlert, setRejectionAlert] = useState('');
 
   const VPA = 'Q652429146@ybl';
   const MERCHANT_NAME = 'DBERT Admissions';
@@ -137,18 +138,30 @@ export default function UnlockClient() {
         // Check if already submitted
         if (data.verificationSubmission) {
           const vs = data.verificationSubmission;
-          setSubmittedResult({
-            submissionId: vs.id,
-            utrNumber: vs.utrNumber,
-            amountPaid: vs.amountPaid || 299,
-            fullName: vs.fullName,
-            email: vs.email,
-            phone: vs.phone,
-            domain: vs.domain,
-            certId: vs.certId,
-            submittedAt: vs.submittedAt,
-            alreadySubmitted: true
-          });
+          if (vs.status === 'REJECTED' || data.verificationStatus === 'REJECTED') {
+            setRejectionAlert(
+              data.rejectionRemarks ||
+              vs.adminRemarks ||
+              'Action Required: Your previous ₹299 verification fee payment could not be verified in the bank audit. Please complete repayment of ₹299 below and submit your updated 12-digit UTR.'
+            );
+            setSubmittedResult(null);
+          } else {
+            setRejectionAlert('');
+            setSubmittedResult({
+              submissionId: vs.id,
+              utrNumber: vs.utrNumber,
+              amountPaid: vs.amountPaid || 299,
+              fullName: vs.fullName,
+              email: vs.email,
+              phone: vs.phone,
+              domain: vs.domain,
+              certId: vs.certId,
+              submittedAt: vs.submittedAt,
+              alreadySubmitted: true
+            });
+          }
+        } else {
+          setRejectionAlert('');
         }
       } else {
         // Fallback: if query looks like a Cert ID, set it
@@ -337,6 +350,31 @@ export default function UnlockClient() {
           </button>
         </div>
       </div>
+
+      {/* Rejection / Repayment Alert (If payment failed bank audit) */}
+      {rejectionAlert && (
+        <div style={{
+          backgroundColor: 'rgba(239, 68, 68, 0.1)',
+          border: '1px solid rgba(239, 68, 68, 0.4)',
+          borderRadius: '12px',
+          padding: '1rem 1.25rem',
+          marginBottom: '1.5rem',
+          display: 'flex',
+          alignItems: 'flex-start',
+          gap: '0.75rem',
+          color: '#FCA5A5'
+        }}>
+          <span style={{ fontSize: '1.25rem', lineHeight: '1' }}>⚠️</span>
+          <div>
+            <div style={{ fontWeight: 700, color: '#EF4444', marginBottom: '0.25rem' }}>
+              Verification Payment Not Verified — Repayment Required
+            </div>
+            <div style={{ fontSize: '0.88rem', color: '#FEE2E2', lineHeight: '1.4' }}>
+              {rejectionAlert}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* SUCCESS RECEIPT (If Submitted) */}
       {submittedResult ? (

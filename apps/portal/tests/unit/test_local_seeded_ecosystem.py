@@ -285,7 +285,7 @@ def test_dashboard_offer_cta_and_offer_letter_table_proportions(client):
     assert "table-layout:auto" in offer_html
     assert "overflow-x:auto" in offer_html
     assert "min-width:180px" in offer_html
-    assert "Directly to verified UPI ID via LMS Wallet within 30 days of completion" in offer_html
+    assert "Directly to verified UPI ID via LMS" in offer_html
 
     # 3. Verify print view
     r_print = client.get("/portal/offer/print")

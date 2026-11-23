@@ -961,19 +961,19 @@ export default function EnrollmentClient() {
         </div>
       </div>
 
-      {/* Secondary Google Form Link */}
+      {/* Secondary Admissions Verification Support */}
       <div className={s.fallbackSection}>
-        <div className={s.fallbackTitle}>Prefer Google Forms Alternative?</div>
+        <div className={s.fallbackTitle}>Prefer WhatsApp Verification Support?</div>
         <p className={s.fallbackDesc}>
-          If your bank app requires desktop screenshot uploads, you may also complete the standard Google Form alternative.
+          If your bank app requires manual screenshot submission or you need immediate admissions assistance, you can submit your transaction proof directly to our admissions desk.
         </p>
         <a
-          href="https://docs.google.com/forms/d/e/1FAIpQLSeHCTK_HO5ZbNHNcPiyW-04Y4bBeZ0RvQP7I4koQnW91d6phA/viewform?usp=header"
+          href={`https://wa.me/918192911360?text=Hi%20Admissions%20Team%2C%20I%20am%20submitting%20my%20%E2%82%B91%2C999%20incubation%20enrollment%20proof%20manually%20(Email%3A%20${encodeURIComponent(email || 'candidate')}).`}
           target="_blank"
           rel="noopener noreferrer"
           className={s.fallbackBtn}
         >
-          Open Google Form Alternative ↗
+          Submit Proof to Admissions (+91 81929 11360) ↗
         </a>
       </div>
     </div>

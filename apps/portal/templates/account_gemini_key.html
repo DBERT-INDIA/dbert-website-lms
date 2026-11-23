@@ -8,7 +8,6 @@
 {% set active_page = 'gemini_key' %}
 {% include '_intern_sidebar.html' %}
 
-
     <div class="settings-container">
         <div class="header-box">
             <h1>Gemini API Key Configuration</h1>
@@ -46,15 +45,15 @@
             {% if key_info %}
             <div style="font-size: 0.875rem; color: var(--tx-muted); margin-bottom: 1.5rem; background: var(--bg-app); padding: 0.85rem; border-radius: var(--r-sm);">
                 <div>Validated At: <strong style="color: var(--tx-head);">{{ key_info.validated_at or 'N/A' }}</strong></div>
-                <div>Connected Models: <strong style="color: var(--tx-head);">Gemini 3.5 Flash-Lite / 3.5 Flash</strong></div>
+                <div>Connected Models: <strong style="color: var(--tx-head);">Gemini 2.5 Flash / 2.0 Flash / 1.5 Flash</strong></div>
             </div>
             {% endif %}
 
-            <form id="keyForm" data-act-submit="saveKey" data-arg-submit='["$event"]'>
+            <form id="keyForm" data-act-submit="saveKey" data-arg-submit='["$event"]' data-prevent-submit="true">
                 <div class="form-group">
                     <label for="apiKey">Enter Google Gemini API Key</label>
                     <div style="position: relative; display: flex; align-items: center;">
-                        <input type="password" id="apiKey" name="api_key" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-lpignore="true" data-1p-ignore="true" data-form-type="other" placeholder="Enter key (e.g. AIzaSy... or AQ...)" required style="padding-right: 2.75rem;">
+                        <input type="password" id="apiKey" name="api_key" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-lpignore="true" data-1p-ignore="true" data-form-type="other" placeholder="Enter key (e.g. AIzaSy...)" required style="padding-right: 2.75rem;">
                         <button type="button" data-act-click="toggleKeyVis" style="position: absolute; right: 0.6rem; background: none; border: none; cursor: pointer; color: var(--tx-muted); padding: 0.4rem; font-size: 1rem;" aria-label="Toggle key visibility" title="Show/Hide API Key">
                             <i class="fa-regular fa-eye" id="toggleKeyIcon"></i>
                         </button>
@@ -62,7 +61,7 @@
                 </div>
 
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 1.5rem; flex-wrap: wrap; gap: 1rem;">
-                    <a href="https://aistudio.google.com/app/apikey" target="_blank" class="link-get-key">
+                    <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" class="link-get-key">
                         <i class="fa-solid fa-key"></i> Get Free Key from Google AI Studio ↗
                     </a>
                     <button type="submit" class="btn btn-primary" id="saveKeyBtn">
@@ -74,12 +73,29 @@
         </div>
 
         <div class="guide-box">
-            <h4>How to get your free key (30 seconds):</h4>
+            <h4><i class="fa-solid fa-bolt" style="color: #F59E0B; margin-right: 0.4rem;"></i> How to get your free key (30 seconds):</h4>
+            <p style="margin: 0 0 0.75rem 0; font-size: 0.875rem; color: var(--tx-muted);">
+                Google provides <strong>15 free requests per minute</strong> on the Gemini Flash model — completely free forever with no credit card or billing required.
+            </p>
             <ol>
-                <li>Visit <a href="https://aistudio.google.com/app/apikey" target="_blank">aistudio.google.com/app/apikey</a> and log in with Google.</li>
-                <li>Click <strong>"Create API Key"</strong>.</li>
-                <li>Copy the generated API key (e.g. <code>AIzaSy...</code> or <code>AQ...</code>) and paste it above.</li>
+                <li>Visit <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer"><strong>aistudio.google.com/app/apikey ↗</strong></a> and sign in with your Google account.</li>
+                <li>Click the blue <strong>"Create API key"</strong> button.</li>
+                <li>Select <strong>"Create API key in new project"</strong> (or choose an existing Google Cloud project).</li>
+                <li>Copy the generated key (starts with <code>AIzaSy...</code>) and paste it into the input box above.</li>
+                <li>Click <strong>"Validate & Save Key →"</strong> to connect your key securely.</li>
             </ol>
+            <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid var(--border);">
+                <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" class="btn btn-sm" style="background: var(--bg-surface-2, #F8FAFC); border: 1px solid var(--border, #E2E8F0); font-size: 0.82rem; padding: 0.45rem 0.85rem; display: inline-flex; align-items: center; gap: 0.4rem; color: var(--tx-head); text-decoration: none; border-radius: var(--r-sm);">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Open Google AI Studio in New Tab
+                </a>
+                <button type="button" data-act-click="fillDevKey" class="btn btn-sm" style="background: rgba(14,165,233,0.08); border: 1px solid rgba(14,165,233,0.25); color: #0284C7; font-size: 0.82rem; padding: 0.45rem 0.85rem; border-radius: var(--r-sm); cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem;">
+                    <i class="fa-solid fa-flask"></i> Fill Dev Mock Key (For Testing)
+                </button>
+            </div>
+            <div style="margin-top: 0.75rem; font-size: 0.8rem; color: var(--tx-muted); display: flex; align-items: center; gap: 0.4rem;">
+                <i class="fa-solid fa-shield-halved" style="color: #10B981;"></i>
+                <span><strong>Encrypted & Private:</strong> Keys are encrypted at rest with AES-256 (Fernet) and never shared or logged.</span>
+            </div>
         </div>
     </div>
 
@@ -97,47 +113,95 @@
             }
         };
 
+        window.fillDevKey = function() {
+            const input = document.getElementById('apiKey');
+            const msg = document.getElementById('formMsg');
+            if (input) {
+                input.value = 'AQ.MOCK_TEST_KEY_DEV_ONLY_000000000000000000000000';
+                input.focus();
+                if (msg) {
+                    msg.className = 'form-msg-box msg-loading';
+                    msg.innerHTML = '<i class="fa-solid fa-flask"></i> Dev mock key filled! Click "Validate & Save Key" to test.';
+                }
+            }
+        };
+
         window.saveKey = function(e) {
-            e.preventDefault();
+            if (e && e.preventDefault) e.preventDefault();
             const input = document.getElementById('apiKey');
             const msg = document.getElementById('formMsg');
             const btn = document.getElementById('saveKeyBtn');
-            const raw = input.value.trim().replace(/^["'`]|["'`]$/g, '');
+            const raw = (input ? input.value : '').trim().replace(/^["'`]|["'`]$/g, '');
 
             if (!raw) {
-                msg.className = 'form-msg-box msg-error';
-                msg.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Please enter an API key.';
+                if (msg) {
+                    msg.className = 'form-msg-box msg-error';
+                    msg.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Please enter an API key.';
+                }
                 return;
             }
 
             const nextUrl = new URLSearchParams(window.location.search).get('next') || '{{ next_url or "" }}';
-            msg.className = 'form-msg-box msg-loading';
-            msg.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Verifying key live with Google Generative Language API...';
+            if (msg) {
+                msg.className = 'form-msg-box msg-loading';
+                msg.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Verifying key live with Google Generative Language API...';
+            }
             if (btn) btn.disabled = true;
+
+            const csrfMeta = document.querySelector('meta[name="csrf-token"]');
+            const csrfToken = csrfMeta ? csrfMeta.getAttribute('content') : '';
 
             fetch('/account/gemini-key' + (nextUrl ? '?next=' + encodeURIComponent(nextUrl) : ''), {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ api_key: raw, next: nextUrl })
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                    ...(csrfToken ? { 'X-CSRF-Token': csrfToken } : {})
+                },
+                body: JSON.stringify({
+                    api_key: raw,
+                    next: nextUrl,
+                    _csrf_token: csrfToken,
+                    csrf_token: csrfToken
+                })
             })
-            .then(r => r.json().then(data => ({ status: r.status, data })))
-            .then(res => {
+            .then(async function(r) {
+                let data = null;
+                const text = await r.text();
+                try {
+                    data = JSON.parse(text);
+                } catch (parseErr) {
+                    data = { status: 'error', message: text || ('Server error (HTTP ' + r.status + ')') };
+                }
+                return { ok: r.ok, status: r.status, data: data };
+            })
+            .then(function(res) {
                 if (btn) btn.disabled = false;
-                if (res.data.status === 'success') {
+                if (!msg) return;
+
+                if (res.ok && res.data && res.data.status === 'success') {
                     msg.className = 'form-msg-box msg-success';
                     msg.innerHTML = '<i class="fa-solid fa-circle-check"></i> ' + (res.data.message || 'Key validated successfully!');
-                    setTimeout(() => {
+                    setTimeout(function() {
                         window.location.href = res.data.redirect || nextUrl || '/portal';
                     }, 1200);
+                } else if (res.status === 401) {
+                    msg.className = 'form-msg-box msg-error';
+                    msg.innerHTML = '<i class="fa-solid fa-lock"></i> Session expired. Please <a href="/#signin" style="color:var(--brand);text-decoration:underline;">sign in</a> to save your key.';
+                } else if (res.status === 403) {
+                    msg.className = 'form-msg-box msg-error';
+                    msg.innerHTML = '<i class="fa-solid fa-shield-halved"></i> Security check failed (CSRF token mismatch). Please refresh the page and try again.';
                 } else {
                     msg.className = 'form-msg-box msg-error';
-                    msg.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> ' + (res.data.message || 'Validation failed.');
+                    var errMsg = (res.data && res.data.message) ? res.data.message : ('Validation failed (HTTP ' + res.status + ').');
+                    msg.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> ' + errMsg;
                 }
             })
-            .catch(() => {
+            .catch(function(err) {
                 if (btn) btn.disabled = false;
+                if (!msg) return;
                 msg.className = 'form-msg-box msg-error';
-                msg.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Server or network error during key validation. Please try again.';
+                msg.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Connection error: ' + (err.message || 'Could not connect to validation server. Please try again.');
             });
         };
     </script>

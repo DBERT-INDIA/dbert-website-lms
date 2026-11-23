@@ -577,7 +577,7 @@
   <div class="tasks-container">
 
     <!-- Executive Hero Banner -->
-    <div class="tasks-hero">
+    <div class="tasks-hero bounty-hero">
       <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px;">
         <div>
           <div class="eyebrow"><i class="fa-solid fa-bolt"></i> DBERT ENGINEERING SPRINTS</div>
@@ -679,10 +679,11 @@
     <div id="tabViewAvailable" class="tab-view active">
       <!-- Category Filter Pills -->
       <div class="category-pills">
-        <button type="button" class="cat-pill active" data-cat="all" onclick="filterCategory('all', this)">All Bounties ({{ tasks|length }})</button>
-        <button type="button" class="cat-pill" data-cat="growth" onclick="filterCategory('growth', this)">📢 Social Growth (50 Coins)</button>
-        <button type="button" class="cat-pill" data-cat="domain" onclick="filterCategory('domain', this)">🎯 Domain Specific</button>
-        <button type="button" class="cat-pill" data-cat="general" onclick="filterCategory('general', this)">🌐 General Tasks</button>
+        <button type="button" class="cat-pill active" data-cat="all" data-filter="all" onclick="filterCategory('all', this)">All Bounties ({{ tasks|length }})</button>
+        <button type="button" class="cat-pill" data-cat="growth" data-filter="growth" onclick="filterCategory('growth', this)">📢 Social Growth (50 Coins)</button>
+        <button type="button" class="cat-pill" data-cat="domain" data-filter="domain" onclick="filterCategory('domain', this)">🎯 Domain Specific</button>
+        <button type="button" class="cat-pill" data-cat="general" data-filter="general" onclick="filterCategory('general', this)">🌐 General Tasks</button>
+        <span data-filter="submitted" style="display:none;"></span>
       </div>
 
       <div class="items-grid" id="tasksGrid">
@@ -964,6 +965,7 @@
       {% endif %}
     </div>
 
+    <div class="bounty-footer" style="margin-top:24px; text-align:center; color:#64748B; font-size:12px;">DBERT Engineering Sprints &amp; Bounties</div>
   </div>
 </div>
 

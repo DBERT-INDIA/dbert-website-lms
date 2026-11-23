@@ -235,6 +235,7 @@ export async function GET(request: NextRequest) {
         isApproved: false,
         verificationStatus: verMatch ? verMatch.status : (match.isProvisional ? 'UNVERIFIED' : 'VERIFIED'),
         verificationSubmission: verMatch || null,
+        rejectionRemarks: verMatch?.status === 'REJECTED' ? (verMatch.adminRemarks || 'Payment not verified. Repayment required.') : null,
         candidate: {
           certId: match.certId,
           internId: match.internId || '',

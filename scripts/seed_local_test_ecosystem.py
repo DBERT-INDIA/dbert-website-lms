@@ -387,7 +387,7 @@ def sync_website_registries():
             "certId": "CERT-DBERT-2026-AIML-902", "internId": "DBERT-2026-INT-9202",
             "holderName": "Gauri Menon (Gate 2 Date Locked)", "email": "stipend_gate2_date@dbert.test",
             "phone": "+91 98765 11111", "domain": "AI & Machine Learning", "college": "BITS Pilani",
-            "status": "VERIFIED", "isProvisional": False, "score": 96, "grade": "Distinction",
+            "status": "VERIFIED", "isProvisional": False, "score": 82, "grade": "Grade: A (High Merit)",
             "issueDate": "2026-10-25", "endDate": "2026-12-25"
         },
         {

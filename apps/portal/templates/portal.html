@@ -82,13 +82,10 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
   body.portal .portal-hero-banner{padding:18px 14px !important; border-radius:14px !important;}
   body.portal .portal-hero-left,body.portal .portal-hero-right{width:100%}
   body.portal .portal-hero-right{align-items:flex-start}
-  body.portal .portal-hero-right #heroResumeCta, body.portal #heroResumeCta { width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; text-align: center !important; justify-content: center !important; }
   body.portal .portal-hero-info h1{font-size:19px !important; word-break: break-word !important;}
   body.portal .portal-hero-info p{font-size:12px !important;}
   body.portal .dash-grid,body.portal .overview-cards-grid,body.portal #overviewCardsGrid{grid-template-columns:1fr!important; gap:16px !important; width:100% !important; max-width:100% !important;}
   body.portal .glass-card, body.portal .nextstep-card, body.portal .analytics-card, body.portal .roadmap-card { padding: 16px 14px !important; border-radius: 14px !important; width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; overflow: hidden !important; }
-  body.portal .bounty-accelerator-banner { padding: 16px 14px !important; flex-direction: column !important; align-items: stretch !important; gap: 14px !important; width: 100% !important; box-sizing: border-box !important; }
-  body.portal .bounty-accelerator-banner a { width: 100% !important; box-sizing: border-box !important; text-align: center !important; justify-content: center !important; }
   body.portal #ovCourseBtn, body.portal .btn-tutor, body.portal a.btn-tutor { width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; white-space: normal !important; text-align: center !important; justify-content: center !important; padding: 12px 14px !important; font-size: 13px !important; }
   body.portal #ctaLearnAction, body.portal #ctaPracticeAction, body.portal .cta-pill-btn { width: 100% !important; max-width: 100% !important; box-sizing: border-box !important; white-space: normal !important; text-align: center !important; justify-content: center !important; padding: 12px 14px !important; font-size: 13px !important; }
   body.portal .roadmap-card { overflow: hidden !important; max-width: 100% !important; width: 100% !important; box-sizing: border-box !important; padding: 16px 14px !important; }
@@ -104,9 +101,9 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
   inset: 0;
   width: 100%;
   height: 100%;
-  background: rgba(15, 23, 42, 0.70);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   z-index: 100001;
   display: flex;
   align-items: center;
@@ -114,6 +111,7 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
   padding: 16px;
   overflow-y: auto;
   box-sizing: border-box;
+  color-scheme: dark;
 }
 
 /* On desktop viewports where sidebar is docked (width: 260px),
@@ -127,29 +125,31 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
 
 .dbert-push-modal-card {
   position: relative;
-  background: #0F172A;
-  border: 1.5px solid rgba(99, 102, 241, 0.45);
-  border-radius: 20px;
+  background: #0F172A !important;
+  color: #F8FAFC !important;
+  border: 1.5px solid rgba(99, 102, 241, 0.5) !important;
+  border-radius: 24px;
   max-width: 480px;
   width: 100%;
-  padding: 28px;
-  box-shadow: 0 24px 60px -10px rgba(0, 0, 0, 0.85), 0 0 35px rgba(99, 102, 241, 0.2);
+  padding: 28px 24px 24px;
+  box-shadow: 0 24px 60px -10px rgba(0, 0, 0, 0.85), 0 0 35px rgba(99, 102, 241, 0.25);
   text-align: center;
   box-sizing: border-box;
   margin: auto;
   max-height: calc(100vh - 32px);
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .dbert-push-modal-close-btn {
   position: absolute;
   top: 14px;
   right: 14px;
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   color: #94A3B8;
   font-size: 20px;
   line-height: 1;
@@ -162,31 +162,165 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
   padding: 0;
 }
 .dbert-push-modal-close-btn:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.22);
   color: #FFFFFF;
   transform: scale(1.08);
 }
 
-@media (max-width: 600px) {
+.dbert-push-drag-handle {
+  display: none;
+}
+
+/* Mobile Native Bottom-Sheet Transformation (< 768px) */
+@media (max-width: 768px) {
   .dbert-push-modal-overlay {
-    padding: 12px;
+    padding: 0 !important;
+    align-items: flex-end !important;
+    justify-content: center !important;
+    z-index: 1000005 !important;
   }
   .dbert-push-modal-card {
-    max-width: 94vw !important;
-    padding: 24px 16px 20px !important;
-    border-radius: 16px !important;
-    max-height: 88vh !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    max-height: 86vh !important;
+    border-radius: 24px 24px 0 0 !important;
+    border-bottom: none !important;
+    border-left: none !important;
+    border-right: none !important;
+    margin: 0 !important;
+    padding: 12px 18px max(24px, env(safe-area-inset-bottom)) !important;
+    box-shadow: 0 -12px 40px rgba(0, 0, 0, 0.7), 0 0 30px rgba(99, 102, 241, 0.25) !important;
+    animation: dbertPushSlideUp 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+  .dbert-push-drag-handle {
+    display: block !important;
+    width: 42px;
+    height: 4.5px;
+    background: rgba(255, 255, 255, 0.28);
+    border-radius: 999px;
+    margin: 4px auto 12px !important;
   }
   .dbert-push-modal-close-btn {
-    top: 10px;
-    right: 10px;
-    width: 34px;
-    height: 34px;
-    font-size: 22px;
-    background: rgba(255, 255, 255, 0.14);
-    color: #F8FAFC;
+    top: 12px;
+    right: 14px;
+    width: 32px;
+    height: 32px;
+    font-size: 20px;
+  }
+  .dbert-push-icon-box {
+    width: 44px !important;
+    height: 44px !important;
+    font-size: 19px !important;
+    margin-bottom: 8px !important;
+    border-radius: 12px !important;
+  }
+  .dbert-push-title {
+    font-size: 16px !important;
+    margin-bottom: 4px !important;
+  }
+  .dbert-push-desc {
+    font-size: 11.5px !important;
+    line-height: 1.4 !important;
+    margin-bottom: 10px !important;
+  }
+  .dbert-push-features-box {
+    padding: 8px 12px !important;
+    margin-bottom: 12px !important;
+    border-radius: 10px !important;
+  }
+  .dbert-push-feature-item {
+    font-size: 11px !important;
+    margin-bottom: 5px !important;
+    gap: 7px !important;
+  }
+  .dbert-push-feature-item:last-child {
+    margin-bottom: 0 !important;
+  }
+  .dbert-push-btn-primary {
+    padding: 11px 16px !important;
+    font-size: 13px !important;
+    min-height: 42px !important;
+  }
+  .dbert-push-btn-secondary {
+    padding: 8px 12px !important;
+    font-size: 11.5px !important;
+    min-height: 36px !important;
   }
 }
+
+/* Compact screens & short viewports (iPhone SE / Small Androids) */
+@media (max-width: 480px), (max-height: 680px) {
+  .dbert-push-modal-card {
+    padding: 10px 14px max(18px, env(safe-area-inset-bottom)) !important;
+    max-height: 90vh !important;
+  }
+  .dbert-push-icon-box {
+    width: 38px !important;
+    height: 38px !important;
+    font-size: 17px !important;
+    margin-bottom: 6px !important;
+  }
+  .dbert-push-title {
+    font-size: 15px !important;
+    margin-bottom: 3px !important;
+  }
+  .dbert-push-desc {
+    font-size: 11px !important;
+    line-height: 1.35 !important;
+    margin-bottom: 8px !important;
+  }
+  .dbert-push-features-box {
+    padding: 7px 10px !important;
+    margin-bottom: 10px !important;
+  }
+  .dbert-push-feature-item {
+    font-size: 10.5px !important;
+    margin-bottom: 4px !important;
+  }
+  .push-guide-step {
+    padding: 6px 10px !important;
+    margin-bottom: 5px !important;
+  }
+  .push-step-num {
+    width: 20px !important;
+    height: 20px !important;
+    font-size: 10px !important;
+  }
+  .push-step-txt {
+    font-size: 11px !important;
+    line-height: 1.3 !important;
+  }
+  .dbert-push-btn-primary {
+    padding: 9px 14px !important;
+    font-size: 12.5px !important;
+    min-height: 38px !important;
+  }
+  .dbert-push-btn-secondary {
+    padding: 7px 10px !important;
+    font-size: 11px !important;
+    min-height: 32px !important;
+  }
+}
+
+/* Temporarily suppress floating WhatsApp button while notification modal is active */
+body.has-push-modal-open .wa-floating-btn,
+body.has-push-modal-open .wa-widget-root {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
+@keyframes dbertPushSlideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0.85;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
 
 /* Push Blocked Dashboard Banner Styling */
 .push-blocked-banner {
@@ -339,7 +473,7 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
   font-family: 'Plus Jakarta Sans', sans-serif !important;
 }
 #nextActionMissionCard #naDescription {
-  color: #cbd5e1 !important;
+  color: #f1f5f9 !important;
   font-size: 14px !important;
   line-height: 1.6 !important;
   margin: 0 !important;
@@ -402,6 +536,11 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
   max-width: 100% !important;
   text-align: center !important;
   word-break: break-word !important;
+}
+.na-cta-btn.hidden,
+.na-cta-btn[style*="display:none"],
+.na-cta-btn[style*="display: none"] {
+  display: none !important;
 }
 .na-cta-btn:hover {
   transform: translateY(-2px) scale(1.02) !important;
@@ -544,6 +683,55 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
 .na-btn-emerald:hover {
   box-shadow: 0 10px 28px rgba(16, 185, 129, 0.6) !important;
 }
+
+/* Flagship Stage 3 Selection Dossier Typography Enforcement */
+body.portal-light #ovSelected,
+body #ovSelected {
+  color: #ffffff !important;
+}
+body.portal-light #ovSelected h2,
+body #ovSelected h2 {
+  color: #ffffff !important;
+  font-weight: 900 !important;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.45) !important;
+}
+body.portal-light #ovSelected h3,
+body #ovSelected h3 {
+  color: #ffffff !important;
+  font-weight: 800 !important;
+}
+body.portal-light #ovSelected p,
+body #ovSelected p {
+  color: #f1f5f9 !important;
+}
+body.portal-light #ovSelected .sel-lead-text,
+body #ovSelected .sel-lead-text {
+  color: #f8fafc !important;
+  font-weight: 500 !important;
+}
+body.portal-light #ovSelected .sel-quote-text,
+body #ovSelected .sel-quote-text {
+  color: #f1f5f9 !important;
+  font-style: italic !important;
+  font-weight: 500 !important;
+}
+body.portal-light #ovSelected .sel-desc-text,
+body #ovSelected .sel-desc-text {
+  color: #e2e8f0 !important;
+}
+body.portal-light #ovSelected .sel-label-text,
+body #ovSelected .sel-label-text {
+  color: #cbd5e1 !important;
+  font-weight: 700 !important;
+}
+body.portal-light #ovSelected .sel-quote-author,
+body #ovSelected .sel-quote-author {
+  color: #fbbf24 !important;
+}
+body.portal-light #ovSelected .sel-quote-title,
+body #ovSelected .sel-quote-title {
+  color: #cbd5e1 !important;
+}
 </style>
 </head>
 <body class="has-sidebar portal portal-light">
@@ -589,12 +777,12 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
               <span class="badge badge-gold" id="naStageBadge" style="background:rgba(217,119,6,0.25); border:1px solid #d97706; color:#fbbf24; font-weight:800; text-transform:uppercase; font-size:11px; padding:4px 12px; border-radius:99px; letter-spacing:0.5px;">
                 {{ (next_action and next_action.stage_badge) or 'Stage 1: Under Evaluation' }}
               </span>
-              <span style="font-size:11.5px; font-weight:700; color:#94a3b8; text-transform:uppercase; letter-spacing:0.7px;">
+              <span style="font-size:11.5px; font-weight:700; color:#cbd5e1; text-transform:uppercase; letter-spacing:0.7px;">
                 <i class="fas fa-compass" style="color:#fbbf24; margin-right:4px;"></i> Your Immediate Next Action
               </span>
             </div>
             <div id="naHoursSection" style="max-width:320px; min-width:220px; display:{% if next_action and next_action.hours_target and next_action.hours_target > 0 %}block{% else %}none{% endif %};">
-              <div style="display:flex; justify-content:space-between; font-size:11.5px; color:#94a3b8; margin-bottom:4px;">
+              <div style="display:flex; justify-content:space-between; font-size:11.5px; color:#cbd5e1; margin-bottom:4px;">
                 <span>Weekly Attendance: <strong id="naWeeklyHours" style="color:#ffffff;">{{ (next_action and next_action.hours_logged) or 0 }} hrs</strong></span>
                 <span>Target: <strong style="color:#fbbf24;">{{ (next_action and next_action.hours_target) or 10 }} hrs/week</strong></span>
               </div>
@@ -626,7 +814,7 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
 
               {% set s_type = (next_action and next_action.secondary_cta_type) or 'blue' %}
               {% set s_cls = 'na-btn-whatsapp' if s_type == 'whatsapp' else ('na-btn-gold' if s_type == 'gold' else ('na-btn-dark' if s_type == 'dark' else 'na-btn-blue')) %}
-              <a id="naSecondaryBtn" href="{{ (next_action and next_action.secondary_cta_url) or '/courses' }}" class="na-cta-btn {{ s_cls }}" {% if 'wa.me' in ((next_action and next_action.secondary_cta_url) or '') or 'http' in ((next_action and next_action.secondary_cta_url) or '') %}target="_blank" rel="noopener"{% endif %} style="display:{% if next_action and next_action.secondary_cta_url %}inline-flex{% else %}none{% endif %};">
+              <a id="naSecondaryBtn" href="{{ (next_action and next_action.secondary_cta_url) or '/courses' }}" class="na-cta-btn {{ s_cls }} {% if not (next_action and next_action.secondary_cta_url) %}hidden{% endif %}" {% if 'wa.me' in ((next_action and next_action.secondary_cta_url) or '') or 'http' in ((next_action and next_action.secondary_cta_url) or '') %}target="_blank" rel="noopener"{% endif %} style="display:{% if next_action and next_action.secondary_cta_url %}inline-flex{% else %}none !important{% endif %};">
                 <i class="fas {{ (next_action and next_action.secondary_cta_icon) or 'fa-graduation-cap' }}" id="naSecondaryIcon"></i>
                 <span id="naSecondaryText">{{ (next_action and next_action.secondary_cta_label) or 'Explore Curriculum &amp; Projects &rarr;' }}</span>
               </a>
@@ -637,7 +825,7 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
                 <span id="naTertiaryText">{{ next_action.tertiary_cta_label or 'Explore Paid Track &rarr;' }}</span>
               </a>
               {% else %}
-              <a id="naTertiaryBtn" href="/program" class="na-cta-btn na-btn-gold" style="display:none;">
+              <a id="naTertiaryBtn" href="/program" class="na-cta-btn na-btn-gold hidden" style="display:none !important;">
                 <i class="fas fa-rocket" id="naTertiaryIcon"></i>
                 <span id="naTertiaryText">Explore Paid Track &rarr;</span>
               </a>
@@ -690,28 +878,31 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
           </div>
         </div>
 
-        <!-- Accepted welcome banner -->
+        <!-- Accepted welcome banner (Unified Welcome & Milestone Roadmap Hero) -->
         <div class="portal-hero-banner hidden" id="ovWelcomeBanner">
-          <div class="portal-hero-left">
-            <div class="portal-avatar-circle" id="ovAvatarInitials">IN</div>
-            <div class="portal-hero-info">
-              <h1 id="wbHeading">Welcome back, Intern! 👋</h1>
-              <p id="wbSubHeading">Track your attendance, launch interactive classes, and monitor your AI skill mastery.</p>
+          <div class="portal-hero-top">
+            <div class="portal-hero-left">
+              <div class="portal-avatar-circle" id="ovAvatarInitials">IN</div>
+              <div class="portal-hero-info">
+                <h1 id="wbHeading">Welcome back, Intern! 👋</h1>
+                <p id="wbSubHeading">Active 8-Week Incubation Sprint &middot; AI Engineering &amp; Production Deliverables</p>
+              </div>
+            </div>
+            <div class="portal-hero-right">
+              <div class="portal-hero-tags">
+                <span class="hero-tag tag-gold" id="wbBatchTag"><i class="fas fa-layer-group"></i> Active Intern</span>
+                <span class="hero-tag tag-blue" id="wbDomainTag"><i class="fas fa-laptop-code"></i> Engineering</span>
+                <span class="hero-tag tag-green" id="wbJoiningTag"><i class="fas fa-calendar-check"></i> Joining</span>
+                <span class="hero-tag tag-amber" id="wbDaysLeftTag"><i class="fas fa-clock"></i> Active Track</span>
+              </div>
             </div>
           </div>
-          <div class="portal-hero-right">
-            <div class="portal-hero-tags">
-              <span class="hero-tag tag-gold" id="wbBatchTag"><i class="fas fa-layer-group"></i> Active Intern</span>
-              <span class="hero-tag tag-blue" id="wbDomainTag"><i class="fas fa-laptop-code"></i> Engineering</span>
-              <span class="hero-tag tag-green" id="wbJoiningTag"><i class="fas fa-calendar-check"></i> Joining</span>
-              <span class="hero-tag tag-amber" id="wbDaysLeftTag"><i class="fas fa-clock"></i> Active Track</span>
-            </div>
-            <div style="margin-top:10px;display:flex;justify-content:flex-end;">
-              <a href="/courses" id="heroResumeCta" style="background:linear-gradient(135deg, #2563eb, #1d4ed8);color:#ffffff !important;font-weight:800;font-size:13.5px;padding:11px 22px;border-radius:99px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 16px rgba(37,99,235,0.45);border:1.5px solid rgba(255,255,255,0.3);">
-                <i class="fas fa-play"></i> <span id="heroResumeCtaText">Resume Lesson (Day 1) →</span>
-              </a>
-            </div>
-          </div>
+
+          <!-- Integrated Divider -->
+          <div class="portal-hero-divider"></div>
+
+          <!-- Integrated 8-Week Milestone Roadmap -->
+          <div id="welcomeRoadmapSection" class="portal-hero-roadmap"></div>
         </div>
 
         <!-- Status + Next-step card (Kept for external job-board applicants only) -->
@@ -737,117 +928,354 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
         <!-- Step bar -->
         <div class="step-bar hidden" id="overviewStepBar"></div>
 
-        <!-- SELECTED: payment block -->
-        <div class="glass-card hidden" id="ovSelected" style="margin-bottom:20px; max-width:640px;">
-          <!-- Dedicated Offer Letter Preview Callout -->
-          <div style="margin-bottom:18px; padding:14px 18px; background:linear-gradient(135deg, rgba(217,119,6,0.14), rgba(15,23,42,0.6)); border:1.5px solid #d97706; border-radius:10px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
-            <div style="display:flex; align-items:center; gap:12px;">
-              <div style="width:38px; height:38px; border-radius:8px; background:rgba(217,119,6,0.22); color:#fbbf24; display:flex; align-items:center; justify-content:center; font-size:18px;">
-                <i class="fas fa-file-contract"></i>
-              </div>
+        <!-- SELECTED: 2-Step Progressive Seat Confirmation & Value Showcase -->
+        <div class="glass-card hidden" id="ovSelected" style="margin-bottom:24px; max-width:780px; padding:0; overflow:hidden; background:linear-gradient(135deg, #0b132b 0%, #111827 50%, #1e293b 100%) !important; border:2px solid rgba(245, 158, 11, 0.45) !important; border-left:6px solid #f59e0b !important; border-radius:16px !important; box-shadow:0 14px 40px rgba(0, 0, 0, 0.35), 0 0 20px rgba(245, 158, 11, 0.15) !important; color:#ffffff !important;">
+          <!-- Progressive Stepper Header -->
+          <div style="background:linear-gradient(90deg, rgba(11, 19, 43, 0.95) 0%, rgba(17, 24, 39, 0.95) 100%); border-bottom:1px solid rgba(245, 158, 11, 0.25); padding:16px 22px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <span style="display:inline-flex; align-items:center; justify-content:center; width:28px; height:28px; border-radius:50%; background:linear-gradient(135deg, #f59e0b, #d97706); color:#0b1120; font-weight:900; font-size:13px; box-shadow:0 2px 8px rgba(245,158,11,0.4);">3</span>
               <div>
-                <strong style="color:var(--tx-head); font-size:14px; display:block;">Your Letter of Offer &amp; Terms Are Ready</strong>
-                <span style="color:var(--tx-muted); font-size:12px;">Review appointment terms, ₹5,000 fixed milestone stipend, and workstation provisions.</span>
+                <span style="font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:0.8px; color:#fbbf24; display:block;">Stage 3: Selection &amp; Appointment</span>
+                <span style="font-size:11px; color:#cbd5e1;">You're Selected &bull; Confirm Your Seat to Join</span>
               </div>
             </div>
-            <a href="/portal/offer" class="btn-primary" style="text-decoration:none; display:inline-flex; align-items:center; justify-content:center; gap:10px; font-weight:900; font-size:14.5px; background:linear-gradient(135deg, #fbbf24, #d97706); color:#0b1120 !important; border:none; padding:13px 26px; border-radius:10px; box-shadow:0 6px 20px rgba(217,119,6,0.45); text-transform:uppercase; letter-spacing:0.4px;">
-              <i class="fas fa-file-signature" style="font-size:17px;"></i> View Offer Letter &amp; Terms &rarr;
-            </a>
+            <!-- Interactive Stepper Pills -->
+            <div style="display:flex; align-items:center; gap:8px;">
+              <button type="button" id="selStepTab1" onclick="goToStep1()" style="cursor:pointer; display:flex; align-items:center; gap:6px; font-size:12px; font-weight:700; color:#fbbf24; background:rgba(245,158,11,0.2); padding:6px 14px; border-radius:99px; border:1px solid #f59e0b; transition:all 0.2s;">
+                <span id="selPillNum1" style="width:16px; height:16px; border-radius:50%; background:#fbbf24; color:#0b1120; display:inline-flex; align-items:center; justify-content:center; font-size:10px; font-weight:900;">1</span>
+                <span>Selection Perks &amp; Stipend</span>
+              </button>
+              <i class="fas fa-chevron-right" style="font-size:10px; color:#94a3b8;"></i>
+              <a href="/portal/offer" id="selStepTab2" style="cursor:pointer; display:flex; align-items:center; gap:6px; font-size:12px; font-weight:600; color:#cbd5e1; background:rgba(255,255,255,0.06); padding:6px 14px; border-radius:99px; border:1px solid rgba(255,255,255,0.18); transition:all 0.2s; text-decoration:none;">
+                <span id="selPillNum2" style="width:16px; height:16px; border-radius:50%; background:#475569; color:#f8fafc; display:inline-flex; align-items:center; justify-content:center; font-size:10px; font-weight:900;">2</span>
+                <span>Sign Offer &amp; Confirm Seat</span>
+              </a>
+            </div>
           </div>
 
-          <h3 style="color:var(--tx-head);font-size:16px;font-weight:800;margin-bottom:16px;"><i class="fas fa-lock" style="color:var(--green);margin-right:8px;"></i>Confirm Your Seat &mdash; Finalize Enrollment</h3>
-          <ul class="perks">
-            <li class="perks-title"><i class="fas fa-gift"></i> What you get when you enroll</li>
-            <li><i class="fas fa-bolt"></i><span><strong>Offer letter within 2 hours</strong> of enrollment &mdash; delivered straight to your inbox.</span></li>
-            <li><i class="fas fa-certificate"></i><span><strong>Certificate of Completion</strong> &mdash; verifiable for academic &amp; industry use.</span></li>
-            <li><i class="fas fa-user-tie"></i><span><strong>Mentor-guided</strong>, hands-on internship in your chosen domain.</span></li>
-            <li><i class="fas fa-laptop-code"></i><span>Work on <strong>real projects</strong> &mdash; practical experience, not just theory.</span></li>
-            <li><i class="fas fa-check-circle"></i><span>Direct onboarding to live sprint deliverables and technical mentorship.</span></li>
-          </ul>
-          <div class="upi-card">
-            <div class="upi-qr"><img src="/static/img/qrcode.jpeg" alt="UPI QR" onerror="this.onerror=null;this.src='/static/qr.jpg';" /></div>
-            <div class="upi-info">
-              <p>Scan QR or pay to UPI ID:</p>
-              <div class="upi-id-box"><span id="upiIdDisplay">Q652429146@ybl</span><button data-act-click="copyUPI" aria-label="Copy UPI"><i class="fas fa-copy"></i></button></div>
-              <p class="amount-tag">Committed Seat Confirmation</p>
-              <p style="color:var(--tx-muted);font-size:11px;margin-top:4px;">Use PhonePe, GPay, Paytm or any UPI app</p>
-            </div>
-          </div>
-          <!-- 1-Tap Mobile UPI App Launchers -->
-          <div class="upi-apps-launcher" style="margin-top:12px;padding:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(226,185,111,0.2);border-radius:12px;">
-            <div style="font-size:12.5px;color:var(--tx-head);margin-bottom:10px;font-weight:700;display:flex;align-items:center;gap:6px;">
-              <i class="fas fa-bolt" style="color:var(--gold);"></i> <span>1-Tap Fast Pay (₹499 Pre-filled):</span>
-            </div>
-            <div class="upi-apps-grid" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(110px, 1fr));gap:8px;">
-              <a href="intent://pay?pa=Q652429146@ybl&pn=DBERT%20Admissions&am=499&cu=INR&tn=DBERT-COHORT-ENROLL#Intent;scheme=upi;package=com.google.android.apps.nbu.paisa.user;end" class="btn-upi-app" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 12px;background:#18181b;border:1px solid #3f3f46;border-radius:8px;color:#ffffff !important;text-decoration:none;font-size:13px;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,0.25);transition:.2s;">
-                <i class="fab fa-google-pay" style="font-size:20px;color:#4285F4;"></i> GPay
-              </a>
-              <a href="phonepe://pay?pa=Q652429146@ybl&pn=DBERT%20Admissions&am=499&cu=INR&tn=DBERT-COHORT-ENROLL" class="btn-upi-app" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 12px;background:#5f259f;border:1px solid #7c3aed;border-radius:8px;color:#ffffff !important;text-decoration:none;font-size:13px;font-weight:700;box-shadow:0 2px 6px rgba(95,37,159,0.3);transition:.2s;">
-                <i class="fas fa-mobile-screen" style="font-size:14px;color:#ffffff;"></i> PhonePe
-              </a>
-              <a href="paytmmp://pay?pa=Q652429146@ybl&pn=DBERT%20Admissions&am=499&cu=INR&tn=DBERT-COHORT-ENROLL" class="btn-upi-app" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 12px;background:#002970;border:1px solid #00baf2;border-radius:8px;color:#ffffff !important;text-decoration:none;font-size:13px;font-weight:700;box-shadow:0 2px 6px rgba(0,186,242,0.25);transition:.2s;">
-                <i class="fas fa-wallet" style="font-size:14px;color:#00baf2;"></i> Paytm
-              </a>
-              <a href="upi://pay?pa=Q652429146@ybl&pn=DBERT%20Admissions&am=499&cu=INR&tn=DBERT-COHORT-ENROLL" class="btn-upi-app" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 12px;background:#1e293b;border:1px solid rgba(226,185,111,0.5);border-radius:8px;color:#ffffff !important;text-decoration:none;font-size:13px;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,0.25);transition:.2s;">
-                <i class="fas fa-qrcode" style="font-size:14px;color:var(--gold);"></i> Other UPI
-              </a>
-            </div>
-          </div>
-          <div class="joining-section" id="ovDomainSection">
-            <label for="ovDomainSelect">Select Your Internship Domain *</label>
-            <select id="ovDomainSelect" class="field-input" style="width:100%;margin-top:6px;background:rgba(255,255,255,0.06);color:var(--tx-head);border:1px solid var(--border);border-radius:var(--r-sm);padding:10px 12px;font-size:14px;">
-              <option value="">-- Choose Specialization Track --</option>
-              <option value="AI Agent Development">🤖 AI Agent Development</option>
-              <option value="Data Analyst">📊 Data Analyst</option>
-              <option value="Full Stack Development">💻 Full Stack Development</option>
-              <option value="Python Automation">⚡ Python Automation</option>
-            </select>
-            <p style="color:var(--tx-muted);font-size:11px;margin-top:4px;">Choose the domain for your curriculum, assignments, and verified certificate.</p>
-          </div>
-          <div class="joining-section">
-            <label>Choose Your Joining Date (Monday) *</label>
-            <div id="calendarWidget" class="cal-widget">
-              <div class="cal-header">
-                <button type="button" id="calPrev" class="cal-nav" data-act-click="calNav" data-arg-click='[-1]' aria-label="Previous month">&#8249;</button>
-                <span id="calMonthLabel" class="cal-month"></span>
-                <button type="button" id="calNext" class="cal-nav" data-act-click="calNav" data-arg-click='[1]' aria-label="Next month">&#8250;</button>
+          <div style="padding:24px 26px;">
+            <!-- ================= STEP 1: SELECTION PERKS & STIPEND ROADMAP ================= -->
+            <div id="selWizardStep1">
+              <!-- Founder & Architect Welcome Callout -->
+              <div style="margin-bottom:20px; padding:18px 20px; background:linear-gradient(135deg, rgba(37, 99, 235, 0.14) 0%, rgba(15, 23, 42, 0.92) 50%, rgba(245, 158, 11, 0.12) 100%); border:1.5px solid rgba(245,158,11,0.45); border-left:4px solid #f59e0b; border-radius:14px; position:relative; overflow:hidden; box-shadow:0 8px 24px rgba(0,0,0,0.25);">
+                <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+                  <span style="display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.8px; background:rgba(245,158,11,0.22); color:#fbbf24; border:1px solid rgba(245,158,11,0.4); padding:4px 12px; border-radius:99px;">
+                    <i class="fas fa-award"></i> Selection Confirmed &bull; Top 5% Candidates
+                  </span>
+                </div>
+                <h2 style="font-size:19px; font-weight:900; color:#ffffff !important; margin:0 0 8px; line-height:1.35; text-shadow:0 2px 8px rgba(0,0,0,0.45);">
+                  Congratulations! You're Selected for the Internship 🎉
+                </h2>
+                <p class="sel-lead-text" style="font-size:13.5px; color:#f8fafc !important; line-height:1.6; margin:0 0 14px;">
+                  Great news! You cleared the selection process for the DBERT Internship Fellowship. Review your offer letter below, see how easily you can earn your ₹5,000 stipend, and confirm your seat with the ₹499 refundable deposit (credited 100% back to you).
+                </p>
+                <!-- Architect Quote & Verified Mentor GitHub Link -->
+                <div style="background:rgba(15, 23, 42, 0.92); border:1.5px solid rgba(245, 158, 11, 0.45); border-left:5px solid #f59e0b; border-radius:10px; padding:16px 20px; box-shadow:0 4px 16px rgba(0,0,0,0.3);">
+                  <p class="sel-quote-text" style="font-size:13.5px; font-style:italic; color:#f1f5f9 !important; line-height:1.7; margin:0 0 12px; letter-spacing:0.2px;">
+                    &ldquo;At DBERT, we do not build dummy tutorials. Our fellows commit live production code and build alongside core systems. Your evaluation showed the problem-solving rigor we look for in our engineering cohort.&rdquo;
+                  </p>
+                  <div style="font-size:12px; font-weight:700; color:#fbbf24; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+                    <div style="display:inline-flex; align-items:center; gap:6px;">
+                      <span class="sel-quote-author" style="color:#fbbf24 !important;">&mdash;</span>
+                      <a href="https://github.com/ainabhinavsharma" target="_blank" rel="noopener" class="sel-quote-author" style="color:#fbbf24 !important; text-decoration:underline; font-weight:800; display:inline-flex; align-items:center; gap:5px;">
+                        <i class="fab fa-github" style="font-size:14px; color:#ffffff;"></i> Abhinav Sharma
+                      </a>
+                      <span class="sel-quote-title" style="font-weight:500; color:#cbd5e1 !important;">&bull; Lead Architect &amp; Founder, DBERT Admissions Council</span>
+                    </div>
+                    <a href="https://github.com/ainabhinavsharma" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:6px; font-size:11.5px; font-weight:700; color:#7dd3fc !important; text-decoration:none; background:rgba(56,189,248,0.18); border:1px solid rgba(56,189,248,0.45); padding:4px 12px; border-radius:6px; transition:0.2s;">
+                      <i class="fab fa-github"></i> <span>github.com/ainabhinavsharma</span> &rarr;
+                    </a>
+                  </div>
+                </div>
               </div>
-              <div class="cal-dow"><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span></div>
-              <div id="calGrid" class="cal-grid" role="grid" aria-label="Available joining Mondays"></div>
-              <div id="calSelected" class="cal-selected" aria-live="polite"></div>
-            </div>
-            <div style="margin-top:10px;">
-              <label for="ovMondaySelect" style="font-size:12px;color:var(--tx-muted);display:block;margin-bottom:4px;">Or Quick-Select Monday:</label>
-              <select id="ovMondaySelect" class="field-input" style="width:100%;background:rgba(255,255,255,0.06);color:var(--tx-head);border:1px solid var(--border);border-radius:var(--r-sm);padding:8px 10px;font-size:13px;" data-act-change="onMondaySelectChange" data-arg-change='["$el"]'>
-                <option value="">-- Select Monday Date --</option>
-              </select>
-            </div>
-            <input type="hidden" id="joiningDateValue" value=""/>
-            <p style="color:var(--tx-muted);font-size:11px;margin-top:6px;"><i class="fas fa-info-circle" style="color:var(--gold);margin-right:4px;"></i>Highlighted Mondays are available. You may select the last 2 Mondays (for instant access) or upcoming batches.</p>
-          </div>
-          <div class="joining-section">
-            <label class="file-label" for="paymentFile">Upload Payment Screenshot *</label>
-            <div class="file-input-wrap" id="fileDropZone">
-              <input type="file" id="paymentFile" aria-label="Upload Payment Screenshot" accept=".png,.jpg,.jpeg,.pdf" data-act-change="onFileChange" data-arg-change='["$el"]'/>
-              <div id="fileUploadPrompt">
-                <div class="file-icon"><i class="fas fa-cloud-upload-alt"></i></div>
-                <p>Click or drag &amp; drop your payment screenshot</p>
-                <p style="font-size:10px;margin-top:4px;">PNG, JPG, PDF &bull; Max 6MB</p>
-              </div>
-              <div class="file-name hidden" id="fileNameDisplay" style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:8px 0;"></div>
-            </div>
-          </div>
-          <div class="joining-section" style="margin-top:14px;">
-            <label class="field-label" for="enrollUtr">12-Digit UPI Transaction ID / UTR <span style="color:var(--gold);font-size:11px;">(Recommended for instant auto-verification)</span></label>
-            <input type="text" id="enrollUtr" maxlength="12" class="field-input" placeholder="e.g. 432109876543 (from payment receipt)" style="width:100%;margin-top:6px;background:rgba(255,255,255,0.06);color:var(--tx-head);border:1px solid var(--border);border-radius:var(--r-sm);padding:10px 12px;font-size:14px;letter-spacing:1px;" />
-            <p style="color:var(--tx-muted);font-size:11px;margin-top:4px;">Enter the 12-digit UPI UTR from your payment confirmation screen for instant ledger reconciliation.</p>
-          </div>
 
-          <div class="form-error" id="enrollError" role="alert"><i class="fa fa-circle-exclamation"></i><span id="enrollErrorText"></span></div>
-          <button class="btn-enroll" id="enrollBtn" data-act-click="submitEnrollment">
-            <span class="btn-lbl"><i class="fas fa-check-circle"></i> &nbsp;Confirm Enrollment</span>
-            <span class="btn-spinner-sm"></span>
-          </button>
+              <!-- Inline Offer Letter Summary Dossier -->
+              <div style="background:rgba(15,23,42,0.92); border:1px solid rgba(255,255,255,0.16); border-radius:12px; padding:18px 20px; margin-bottom:22px;">
+                <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:14px; border-bottom:1px solid rgba(255,255,255,0.12); padding-bottom:12px;">
+                  <div style="display:flex; align-items:center; gap:10px;">
+                    <div style="width:36px; height:36px; border-radius:8px; background:rgba(245,158,11,0.22); color:#fbbf24; display:flex; align-items:center; justify-content:center; font-size:16px;">
+                      <i class="fas fa-file-contract"></i>
+                    </div>
+                    <div>
+                      <div style="font-size:13.5px; font-weight:800; color:#ffffff;">Official Appointment Summary</div>
+                      <div style="font-size:11px; color:#cbd5e1; font-weight:500;">Digitally Issued by DBERT Admissions Council</div>
+                    </div>
+                  </div>
+                  <a href="/portal/offer" class="btn-primary" style="text-decoration:none; display:inline-flex; align-items:center; gap:8px; font-weight:800; font-size:12.5px; background:linear-gradient(135deg, #fbbf24, #d97706); color:#0b1120 !important; border:none; padding:9px 18px; border-radius:8px; box-shadow:0 4px 14px rgba(217,119,6,0.35); text-transform:uppercase; letter-spacing:0.3px;">
+                    <i class="fas fa-file-signature"></i> View &amp; Sign Full Offer Letter &rarr;
+                  </a>
+                </div>
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); gap:12px;">
+                  <div>
+                    <div style="font-size:11px; text-transform:uppercase; color:#cbd5e1; font-weight:700;">Candidate</div>
+                    <div id="selDossierName" style="font-size:13px; font-weight:800; color:#ffffff; margin-top:2px;">Fellow</div>
+                  </div>
+                  <div>
+                    <div style="font-size:11px; text-transform:uppercase; color:#cbd5e1; font-weight:700;">Approved Domain</div>
+                    <div id="selDossierDomain" style="font-size:13px; font-weight:800; color:#fbbf24; margin-top:2px;">Engineering Track</div>
+                  </div>
+                  <div>
+                    <div style="font-size:11px; text-transform:uppercase; color:#cbd5e1; font-weight:700;">Milestone Stipend</div>
+                    <div style="font-size:13px; font-weight:800; color:#34d399; margin-top:2px;">₹5,000 Milestone</div>
+                  </div>
+                  <div>
+                    <div style="font-size:11px; text-transform:uppercase; color:#cbd5e1; font-weight:700;">Format &amp; Hours</div>
+                    <div style="font-size:13px; font-weight:800; color:#38bdf8; margin-top:2px;">100% Remote &bull; Flexible</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Gamified 3-Gate ₹5,000 Stipend Roadmap ("Smooth Pass Guarantee") -->
+              <div style="background:rgba(16,185,129,0.08); border:1.5px solid rgba(16,185,129,0.4); border-radius:12px; padding:20px; margin-bottom:22px;">
+                <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:12px;">
+                  <div style="display:flex; align-items:center; gap:8px;">
+                    <div style="width:30px; height:30px; border-radius:8px; background:rgba(16,185,129,0.25); color:#34d399; display:flex; align-items:center; justify-content:center; font-size:14px;">
+                      <i class="fas fa-route"></i>
+                    </div>
+                    <div style="font-size:14px; font-weight:800; color:#ffffff;">How to Earn Your ₹5,000 Milestone Stipend (Smooth Pass Guarantee)</div>
+                  </div>
+                  <span style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; background:rgba(16,185,129,0.22); color:#6ee7b7; padding:4px 12px; border-radius:99px; border:1px solid rgba(16,185,129,0.45);">
+                    <i class="fas fa-check-circle" style="margin-right:4px;"></i> 100% Guaranteed Disbursement
+                  </span>
+                </div>
+                <p style="font-size:13px; color:#f8fafc; line-height:1.6; margin:0 0 14px;">
+                  We believe in total clarity with zero ambiguity. Your ₹5,000 stipend is unlocked across 3 straightforward milestone gates. Our technical mentors guide you every week through office hours so completing each gate is smooth and achievable:
+                </p>
+                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:12px; margin-bottom:14px;">
+                  <!-- Gate 1 -->
+                  <div style="background:#0f172a; border:1px solid rgba(16,185,129,0.35); border-radius:10px; padding:14px;">
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+                      <span style="display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:50%; background:#10b981; color:#0b1120; font-size:11px; font-weight:900;">1</span>
+                      <strong style="color:#ffffff; font-size:12.5px;">Active Engagement</strong>
+                    </div>
+                    <div style="font-size:14px; font-weight:800; color:#34d399; margin-bottom:4px;">10 Hours / Week</div>
+                    <div style="font-size:12px; color:#e2e8f0; line-height:1.5;">Platform sprint time logged. Flexible 24/7 anytime from home.</div>
+                  </div>
+                  <!-- Gate 2 -->
+                  <div style="background:#0f172a; border:1px solid rgba(16,185,129,0.35); border-radius:10px; padding:14px;">
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+                      <span style="display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:50%; background:#10b981; color:#0b1120; font-size:11px; font-weight:900;">2</span>
+                      <strong style="color:#ffffff; font-size:12.5px;">Task Milestones</strong>
+                    </div>
+                    <div style="font-size:14px; font-weight:800; color:#34d399; margin-bottom:4px;">75%+ Completion</div>
+                    <div style="font-size:12px; color:#e2e8f0; line-height:1.5;">Weekly practical tasks and assignments in your domain.</div>
+                  </div>
+                  <!-- Gate 3 -->
+                  <div style="background:#0f172a; border:1px solid rgba(16,185,129,0.35); border-radius:10px; padding:14px;">
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+                      <span style="display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:50%; background:#10b981; color:#0b1120; font-size:11px; font-weight:900;">3</span>
+                      <strong style="color:#ffffff; font-size:12.5px;">Open Source Impact</strong>
+                    </div>
+                    <div style="font-size:14px; font-weight:800; color:#34d399; margin-bottom:4px;">1 Merged GitHub PR</div>
+                    <div style="font-size:12px; color:#e2e8f0; line-height:1.5;">Code reviewed and merged into DBERT open-source flagship repos.</div>
+                  </div>
+                </div>
+                <div style="display:flex; align-items:center; gap:8px; font-size:12.5px; color:#6ee7b7;">
+                  <i class="fas fa-shield-alt"></i>
+                  <span><strong style="color:#a7f3d0;">Disbursement SLA:</strong> <span style="color:#f8fafc;">Direct bank / UPI transfer immediately upon sprint completion.</span></span>
+                </div>
+              </div>
+
+              <!-- 4-Pillar Fellowship Benefits Grid -->
+              <div style="font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:0.8px; color:#f8fafc; margin-bottom:12px; display:flex; align-items:center; gap:6px;">
+                <i class="fas fa-star" style="color:#fbbf24;"></i> Core Fellowship Benefits &amp; Working Flexibility:
+              </div>
+              <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:14px; margin-bottom:22px;">
+                <!-- Pillar 1: 100% Remote & Flexible Hours -->
+                <div style="background:#131c2e; border:1px solid #334155; border-radius:10px; padding:16px;">
+                  <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+                    <div style="width:34px; height:34px; border-radius:8px; background:rgba(56,189,248,0.2); color:#38bdf8; display:flex; align-items:center; justify-content:center; font-size:16px;">
+                      <i class="fas fa-globe"></i>
+                    </div>
+                    <div>
+                      <div style="font-size:13.5px; font-weight:800; color:#ffffff;">100% Remote &amp; Flexible Hours</div>
+                      <div style="font-size:11px; color:#7dd3fc; font-weight:700;">Work anytime 24/7</div>
+                    </div>
+                  </div>
+                  <p style="font-size:12.5px; color:#e2e8f0; line-height:1.55; margin:0;">
+                    Work from anywhere in India. Zero rigid 9-to-5 punches. Complete your weekly sprint hours and deliverables self-paced whenever it fits your academic or personal schedule.
+                  </p>
+                </div>
+                <!-- Pillar 2: Fixed ₹5,000 Milestone Stipend -->
+                <div style="background:#131c2e; border:1px solid #334155; border-radius:10px; padding:16px;">
+                  <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+                    <div style="width:34px; height:34px; border-radius:8px; background:rgba(16,185,129,0.2); color:#34d399; display:flex; align-items:center; justify-content:center; font-size:16px;">
+                      <i class="fas fa-wallet"></i>
+                    </div>
+                    <div>
+                      <div style="font-size:13.5px; font-weight:800; color:#ffffff;">₹5,000 Milestone Stipend</div>
+                      <div style="font-size:11px; color:#6ee7b7; font-weight:700;">Direct UPI/Bank Disbursement</div>
+                    </div>
+                  </div>
+                  <p style="font-size:12.5px; color:#e2e8f0; line-height:1.55; margin:0;">
+                    Performance-backed milestone payout released directly upon sprint deliverables clearance. Transparent release criteria with zero hidden fee deductions.
+                  </p>
+                </div>
+                <!-- Pillar 3: Verifiable Credential Packet -->
+                <div style="background:#131c2e; border:1px solid #334155; border-radius:10px; padding:16px;">
+                  <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+                    <div style="width:34px; height:34px; border-radius:8px; background:rgba(245,158,11,0.2); color:#fbbf24; display:flex; align-items:center; justify-content:center; font-size:16px;">
+                      <i class="fas fa-certificate"></i>
+                    </div>
+                    <div>
+                      <div style="font-size:13.5px; font-weight:800; color:#ffffff;">Verifiable Certificate + LOR</div>
+                      <div style="font-size:11px; color:#fde68a; font-weight:700;">Academic &amp; Industry Valid</div>
+                    </div>
+                  </div>
+                  <p style="font-size:12.5px; color:#e2e8f0; line-height:1.55; margin:0;">
+                    Cryptographically verifiable completion certificate on dbert.in/verify, architect-signed LOR detailing your merged PRs, and Turnitin originality audit report.
+                  </p>
+                </div>
+                <!-- Pillar 4: Real Sprints & Mentorship -->
+                <div style="background:#131c2e; border:1px solid #334155; border-radius:10px; padding:16px;">
+                  <div style="display:flex; align-items:center; gap:10px; margin-bottom:8px;">
+                    <div style="width:34px; height:34px; border-radius:8px; background:rgba(168,85,247,0.2); color:#c084fc; display:flex; align-items:center; justify-content:center; font-size:16px;">
+                      <i class="fas fa-laptop-code"></i>
+                    </div>
+                    <div>
+                      <div style="font-size:13.5px; font-weight:800; color:#ffffff;">Live Production Sprints</div>
+                      <div style="font-size:11px; color:#d8b4fe; font-weight:700;">1-on-1 Architect Guidance</div>
+                    </div>
+                  </div>
+                  <p style="font-size:12.5px; color:#e2e8f0; line-height:1.55; margin:0;">
+                    Contribute to live open-source flagship codebases with weekly mentor office hours and fast-track recruiter promotion on the Pre-Vetted Engineers Directory.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Step 1 Action CTA -->
+              <div style="text-align:center;">
+                <a href="/portal/offer" class="btn-primary" style="width:100%; justify-content:center; font-size:15px; font-weight:900; padding:15px 24px; background:linear-gradient(135deg, #fbbf24, #d97706); color:#0b1120 !important; border:none; border-radius:10px; box-shadow:0 6px 20px rgba(217,119,6,0.45); cursor:pointer; text-transform:uppercase; letter-spacing:0.5px; text-decoration:none; display:inline-flex; align-items:center; gap:10px;">
+                  <i class="fas fa-file-signature"></i> Review &amp; Sign Offer Letter to Confirm Seat &rarr;
+                </a>
+                <div style="font-size:12px; color:#cbd5e1; margin-top:10px;">
+                  <i class="fas fa-shield-halved" style="color:#10b981; margin-right:4px;"></i> Digital Signature Required &bull; ₹499 Refundable Caution Deposit &bull; 100% Credited towards Fellowship
+                </div>
+              </div>
+            </div>
+
+            <!-- ================= STEP 2: SEAT CONFIRMATION & PAYMENT ENGINE ================= -->
+            <div id="selWizardStep2" class="hidden">
+              <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px; margin-bottom:16px;">
+                <div>
+                  <h3 style="color:var(--tx-head);font-size:17px;font-weight:800;margin:0 0 4px;"><i class="fas fa-lock" style="color:var(--green);margin-right:8px;"></i>Step 2: Confirm Your Seat &mdash; Finalize Enrollment</h3>
+                  <p style="color:#cbd5e1;font-size:12.5px;margin:0;">Lock your cohort seat, select your specialization, and choose your starting Monday.</p>
+                </div>
+                <button type="button" onclick="goToStep1()" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.22); color:#f8fafc; font-size:12px; font-weight:700; padding:7px 14px; border-radius:8px; cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:0.2s;">
+                  <i class="fas fa-arrow-left"></i> &nbsp;Back to Selection Perks
+                </button>
+              </div>
+
+              <!-- Reassurance Callout -->
+              <div style="background:rgba(245,158,11,0.09); border:1px solid rgba(245,158,11,0.35); border-radius:10px; padding:12px 16px; margin-bottom:18px; font-size:12.5px; color:#fef3c7; display:flex; align-items:center; gap:10px;">
+                <i class="fas fa-shield-halved" style="font-size:18px; color:#fbbf24; flex-shrink:0;"></i>
+                <div>
+                  <strong>100% Refundable Deposit:</strong> The ₹499 deposit simply confirms your seat and mentor allocation. It is credited 100% towards your fellowship (with the remaining ₹1,500 due 7 days after batch kickoff), so you risk nothing.
+                </div>
+              </div>
+
+              <!-- UPI Payment Card -->
+              <div class="upi-card">
+                <div class="upi-qr"><img src="/static/img/qrcode.jpeg" alt="UPI QR" onerror="this.onerror=null;this.src='/static/qr.jpg';" /></div>
+                <div class="upi-info">
+                  <p>Scan QR or pay to UPI ID:</p>
+                  <div class="upi-id-box"><span id="upiIdDisplay">Q652429146@ybl</span><button data-act-click="copyUPI" aria-label="Copy UPI"><i class="fas fa-copy"></i></button></div>
+                  <p class="amount-tag">Committed Seat Confirmation</p>
+                  <p style="color:#cbd5e1;font-size:11px;margin-top:4px;">Use PhonePe, GPay, Paytm or any UPI app</p>
+                </div>
+              </div>
+
+              <!-- 1-Tap Mobile UPI App Launchers -->
+              <div class="upi-apps-launcher" style="margin-top:12px;padding:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(226,185,111,0.2);border-radius:12px;">
+                <div style="font-size:12.5px;color:var(--tx-head);margin-bottom:10px;font-weight:700;display:flex;align-items:center;gap:6px;">
+                  <i class="fas fa-bolt" style="color:var(--gold);"></i> <span>1-Tap Fast Pay (₹499 Pre-filled):</span>
+                </div>
+                <div class="upi-apps-grid" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(110px, 1fr));gap:8px;">
+                  <a href="intent://pay?pa=Q652429146@ybl&pn=DBERT%20Admissions&am=499&cu=INR&tn=DBERT-COHORT-ENROLL#Intent;scheme=upi;package=com.google.android.apps.nbu.paisa.user;end" class="btn-upi-app" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 12px;background:#18181b;border:1px solid #3f3f46;border-radius:8px;color:#ffffff !important;text-decoration:none;font-size:13px;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,0.25);transition:.2s;">
+                    <i class="fab fa-google-pay" style="font-size:20px;color:#4285F4;"></i> GPay
+                  </a>
+                  <a href="phonepe://pay?pa=Q652429146@ybl&pn=DBERT%20Admissions&am=499&cu=INR&tn=DBERT-COHORT-ENROLL" class="btn-upi-app" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 12px;background:#5f259f;border:1px solid #7c3aed;border-radius:8px;color:#ffffff !important;text-decoration:none;font-size:13px;font-weight:700;box-shadow:0 2px 6px rgba(95,37,159,0.3);transition:.2s;">
+                    <i class="fas fa-mobile-screen" style="font-size:14px;color:#ffffff;"></i> PhonePe
+                  </a>
+                  <a href="paytmmp://pay?pa=Q652429146@ybl&pn=DBERT%20Admissions&am=499&cu=INR&tn=DBERT-COHORT-ENROLL" class="btn-upi-app" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 12px;background:#002970;border:1px solid #00baf2;border-radius:8px;color:#ffffff !important;text-decoration:none;font-size:13px;font-weight:700;box-shadow:0 2px 6px rgba(0,186,242,0.25);transition:.2s;">
+                    <i class="fas fa-wallet" style="font-size:14px;color:#00baf2;"></i> Paytm
+                  </a>
+                  <a href="upi://pay?pa=Q652429146@ybl&pn=DBERT%20Admissions&am=499&cu=INR&tn=DBERT-COHORT-ENROLL" class="btn-upi-app" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 12px;background:#1e293b;border:1px solid rgba(226,185,111,0.5);border-radius:8px;color:#ffffff !important;text-decoration:none;font-size:13px;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,0.25);transition:.2s;">
+                    <i class="fas fa-qrcode" style="font-size:14px;color:var(--gold);"></i> Other UPI
+                  </a>
+                </div>
+              </div>
+
+              <!-- Domain Selection -->
+              <div class="joining-section" id="ovDomainSection">
+                <label for="ovDomainSelect">Select Your Internship Domain *</label>
+                <select id="ovDomainSelect" class="field-input" style="width:100%;margin-top:6px;background:rgba(255,255,255,0.06);color:var(--tx-head);border:1px solid var(--border);border-radius:var(--r-sm);padding:10px 12px;font-size:14px;">
+                  <option value="">-- Choose Specialization Track --</option>
+                  <option value="AI Agent Development">🤖 AI Agent Development</option>
+                  <option value="Data Analyst">📊 Data Analyst</option>
+                  <option value="Full Stack Development">💻 Full Stack Development</option>
+                  <option value="Python Automation">⚡ Python Automation</option>
+                </select>
+                <p style="color:var(--tx-muted);font-size:11px;margin-top:4px;">Choose the domain for your curriculum, assignments, and verified certificate.</p>
+              </div>
+
+              <!-- Monday Joining Date Calendar -->
+              <div class="joining-section">
+                <label>Choose Your Joining Date (Monday) *</label>
+                <div id="calendarWidget" class="cal-widget">
+                  <div class="cal-header">
+                    <button type="button" id="calPrev" class="cal-nav" data-act-click="calNav" data-arg-click='[-1]' aria-label="Previous month">&#8249;</button>
+                    <span id="calMonthLabel" class="cal-month"></span>
+                    <button type="button" id="calNext" class="cal-nav" data-act-click="calNav" data-arg-click='[1]' aria-label="Next month">&#8250;</button>
+                  </div>
+                  <div class="cal-dow"><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span></div>
+                  <div id="calGrid" class="cal-grid" role="grid" aria-label="Available joining Mondays"></div>
+                  <div id="calSelected" class="cal-selected" aria-live="polite"></div>
+                </div>
+                <div style="margin-top:10px;">
+                  <label for="ovMondaySelect" style="font-size:12px;color:var(--tx-muted);display:block;margin-bottom:4px;">Or Quick-Select Monday:</label>
+                  <select id="ovMondaySelect" class="field-input" style="width:100%;background:rgba(255,255,255,0.06);color:var(--tx-head);border:1px solid var(--border);border-radius:var(--r-sm);padding:8px 10px;font-size:13px;" data-act-change="onMondaySelectChange" data-arg-change='["$el"]'>
+                    <option value="">-- Select Monday Date --</option>
+                  </select>
+                </div>
+                <input type="hidden" id="joiningDateValue" value=""/>
+                <p style="color:var(--tx-muted);font-size:11px;margin-top:6px;"><i class="fas fa-info-circle" style="color:var(--gold);margin-right:4px;"></i>Highlighted Mondays are available. You may select the last 2 Mondays (for instant access) or upcoming batches.</p>
+              </div>
+
+              <!-- Payment Screenshot Upload -->
+              <div class="joining-section">
+                <label class="file-label" for="paymentFile">Upload Payment Screenshot *</label>
+                <div class="file-input-wrap" id="fileDropZone">
+                  <input type="file" id="paymentFile" aria-label="Upload Payment Screenshot" accept=".png,.jpg,.jpeg,.pdf" data-act-change="onFileChange" data-arg-change='["$el"]'/>
+                  <div id="fileUploadPrompt">
+                    <div class="file-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                    <p>Click or drag &amp; drop your payment screenshot</p>
+                    <p style="font-size:10px;margin-top:4px;">PNG, JPG, PDF &bull; Max 6MB</p>
+                  </div>
+                  <div class="file-name hidden" id="fileNameDisplay" style="display:flex;flex-direction:column;align-items:center;gap:8px;padding:8px 0;"></div>
+                </div>
+              </div>
+
+              <!-- 12-Digit UTR -->
+              <div class="joining-section" style="margin-top:14px;">
+                <label class="field-label" for="enrollUtr">12-Digit UPI Transaction ID / UTR <span style="color:var(--gold);font-size:11px;">(Recommended for instant auto-verification)</span></label>
+                <input type="text" id="enrollUtr" maxlength="12" class="field-input" placeholder="e.g. 432109876543 (from payment receipt)" style="width:100%;margin-top:6px;background:rgba(255,255,255,0.06);color:var(--tx-head);border:1px solid var(--border);border-radius:var(--r-sm);padding:10px 12px;font-size:14px;letter-spacing:1px;" />
+                <p style="color:#cbd5e1;font-size:11px;margin-top:4px;">Enter the 12-digit UPI UTR from your payment confirmation screen for instant ledger reconciliation.</p>
+              </div>
+
+              <div class="form-error" id="enrollError" role="alert"><i class="fa fa-circle-exclamation"></i><span id="enrollErrorText"></span></div>
+              <button class="btn-enroll" id="enrollBtn" data-act-click="submitEnrollment">
+                <span class="btn-lbl"><i class="fas fa-check-circle"></i> &nbsp;Confirm Enrollment</span>
+                <span class="btn-spinner-sm"></span>
+              </button>
+
+              <div style="text-align:center; margin-top:16px;">
+                <button type="button" onclick="goToStep1()" style="background:transparent; border:none; color:#cbd5e1; font-size:12.5px; text-decoration:underline; cursor:pointer;">
+                  <i class="fas fa-arrow-left"></i> &nbsp;Review Selection Perks &amp; Stipend Roadmap
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- Track 5: ₹499 deposit for a job-board Hired applicant (separate from the
@@ -934,28 +1362,6 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
 
         <!-- ACCEPTED: attendance + enrollment details -->
         <div id="ovAccepted" class="hidden">
-
-          <!-- Growth & Social Bounties Banner (Earn 200 Coins) -->
-          <div class="bounty-accelerator-banner" style="background:linear-gradient(135deg, rgba(212,175,55,0.14) 0%, rgba(15,23,42,0.85) 100%); border:1.5px solid rgba(212,175,55,0.35); border-radius:16px; padding:20px 24px; margin-bottom:24px; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; box-shadow:0 10px 30px -10px rgba(0,0,0,0.5); width:100%; box-sizing:border-box;">
-            <div style="display:flex; align-items:center; gap:16px;">
-              <div style="width:48px; height:48px; border-radius:12px; background:rgba(212,175,55,0.2); border:1px solid rgba(212,175,55,0.4); display:flex; align-items:center; justify-content:center; color:var(--gold); font-size:22px; flex-shrink:0;">
-                <i class="fas fa-coins"></i>
-              </div>
-              <div>
-                <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
-                  <span style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.05em; background:rgba(212,175,55,0.2); color:#e5b842; padding:3px 8px; border-radius:4px; border:1px solid rgba(212,175,55,0.4);">Bounty Accelerator</span>
-                  <h3 style="color:#ffffff; font-size:16px; font-weight:800; margin:0;">Earn 200 Coins: Growth &amp; Social Bounties</h3>
-                </div>
-                <p style="color:#94a3b8; font-size:13px; margin:0; line-height:1.5;">Complete the 4 social tasks (LinkedIn, X/Twitter, GitHub, Reddit/Quora) for 50 coins each using your Gemini API key!</p>
-              </div>
-            </div>
-            <div style="display:flex; align-items:center; gap:12px;">
-              <a href="/tasks" style="background:linear-gradient(135deg,#e5b842 0%,#d4af37 100%); color:#0b0f19; font-weight:800; font-size:13.5px; padding:10px 20px; border-radius:8px; text-decoration:none; display:inline-flex; align-items:center; gap:6px; box-shadow:0 4px 15px rgba(212,175,55,0.3); max-width:100%; box-sizing:border-box;">
-                <span>Open Bounties (50 Coins ea.)</span>
-                <i class="fas fa-arrow-right"></i>
-              </a>
-            </div>
-          </div>
 
           <!-- 1. TOP COCKPIT: Current Focus & AI Directives (Elevated Mission Launchpad) -->
           <div class="section-container" style="margin-bottom: 24px; width: 100%; box-sizing: border-box;">
@@ -1178,12 +1584,9 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
                 </div>
               </div>
 
-              <div style="display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;">
-                <a href="/courses" id="ovAttCardBtn" class="cta-pill-btn cta-pill-primary" style="flex:1 1 200px;">
-                  <i class="fas fa-play-circle"></i> &nbsp;<span>Launch Interactive Class →</span>
-                </a>
-                <button id="ovAttPingBtn" onclick="manualPingAttendance()" data-act-click="manualPingAttendance" class="cta-pill-btn cta-pill-secondary" style="flex:0 0 auto;min-width:110px;">
-                  <i class="fas fa-satellite-dish"></i> <span>Check In</span>
+              <div style="margin-top:20px;">
+                <button id="ovAttPingBtn" onclick="manualPingAttendance()" data-act-click="manualPingAttendance" class="cta-pill-btn cta-pill-primary" style="width:100%;justify-content:center;padding:12px 20px;font-size:13.5px;font-weight:700;">
+                  <i class="fas fa-satellite-dish"></i> <span>Check In &amp; Log Active Attendance</span>
                 </button>
               </div>
             </div>
@@ -1336,7 +1739,7 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
                   <!-- Terms Matrix Mini-Grid -->
                   <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;">
                     <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;padding:10px 12px;">
-                      <div style="font-size:11px;color:#64748B;font-weight:600;">Fixed Stipend</div>
+                      <div style="font-size:11px;color:#64748B;font-weight:600;">Milestone Stipend</div>
                       <div style="font-size:14px;font-weight:800;color:#059669;margin-top:2px;">₹5,000 / Sprint</div>
                     </div>
                     <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;padding:10px 12px;">
@@ -1650,7 +2053,7 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
           </div>
           <div class="glass-card learning-section">
             <div class="section-title"><i class="fas fa-list-check" style="color:var(--violet);"></i>Lessons</div>
-            <div class="att-table-wrap"><table class="data-table"><thead><tr><th>Day</th><th>Title</th><th>Status</th><th>Time Spent</th><th>Completed</th></tr></thead><tbody id="lessonsBody"><tr><td colspan="5" style="padding:20px;"><div id="lessonsSkel"></div></td></tr></tbody></table></div>
+            <div class="att-table-wrap"><table class="data-table"><thead><tr><th>Day</th><th>Title</th><th>Status</th><th>Time Spent</th><th>Action</th></tr></thead><tbody id="lessonsBody"><tr><td colspan="5" style="padding:20px;"><div id="lessonsSkel"></div></td></tr></tbody></table></div>
           </div>
           <div class="glass-card learning-section">
             <div class="section-title"><i class="fas fa-question-circle" style="color:var(--violet);"></i>Quiz History</div>
@@ -1922,8 +2325,8 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
   /* ════ MODERN PORTAL UI / UX ENHANCEMENTS ════ */
   .portal-hero-banner {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    align-items: stretch;
     background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
     border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: var(--r-lg);
@@ -1932,8 +2335,154 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 0 20px rgba(99, 102, 241, 0.15);
     position: relative;
     overflow: hidden;
+    gap: 0;
+    box-sizing: border-box;
+    width: 100%;
+  }
+  .portal-hero-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
     gap: 20px;
     flex-wrap: wrap;
+  }
+  .portal-hero-divider {
+    border-top: 1px solid #E2E8F0;
+    margin: 22px 0 20px 0;
+    width: 100%;
+  }
+  .portal-hero-roadmap {
+    width: 100%;
+    box-sizing: border-box;
+  }
+  body.portal .portal-hero-banner .roadmap-card,
+  body.portal-light .portal-hero-banner .roadmap-card {
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  body.portal-light .portal-hero-banner .portal-hero-divider {
+    border-top-color: #E2E8F0 !important;
+  }
+  body.portal-light .portal-hero-banner .roadmap-header h3 {
+    color: #0F172A !important;
+    font-size: 17px !important;
+    font-weight: 800 !important;
+    margin: 0 !important;
+  }
+  body.portal-light .portal-hero-banner .roadmap-header p {
+    color: #64748B !important;
+    font-size: 13px !important;
+    margin: 2px 0 0 !important;
+  }
+  body.portal-light .portal-hero-banner .hero-tag.tag-gold {
+    background: rgba(245, 158, 11, 0.12) !important;
+    border: 1px solid rgba(245, 158, 11, 0.4) !important;
+    color: #B45309 !important;
+    font-weight: 700 !important;
+  }
+  body.portal-light .portal-hero-banner .hero-tag.tag-gold i {
+    color: #D97706 !important;
+  }
+  body.portal-light .portal-hero-banner .hero-tag.tag-blue {
+    background: rgba(59, 130, 246, 0.12) !important;
+    border: 1px solid rgba(59, 130, 246, 0.4) !important;
+    color: #1D4ED8 !important;
+    font-weight: 700 !important;
+  }
+  body.portal-light .portal-hero-banner .hero-tag.tag-blue i {
+    color: #2563EB !important;
+  }
+  body.portal-light .portal-hero-banner .hero-tag.tag-green {
+    background: rgba(16, 185, 129, 0.12) !important;
+    border: 1px solid rgba(16, 185, 129, 0.4) !important;
+    color: #047857 !important;
+    font-weight: 700 !important;
+  }
+  body.portal-light .portal-hero-banner .hero-tag.tag-green i {
+    color: #059669 !important;
+  }
+  body.portal-light .portal-hero-banner .hero-tag.tag-amber {
+    background: rgba(245, 158, 11, 0.12) !important;
+    border: 1px solid rgba(245, 158, 11, 0.4) !important;
+    color: #B45309 !important;
+    font-weight: 700 !important;
+  }
+  body.portal-light .portal-hero-banner .hero-tag.tag-amber i {
+    color: #D97706 !important;
+  }
+  body.portal-light .portal-hero-banner .roadmap-line-track {
+    background: #E2E8F0 !important;
+  }
+  body.portal-light .portal-hero-banner .roadmap-node {
+    background: #F8FAFC !important;
+    border-color: #CBD5E1 !important;
+    color: #475569 !important;
+    box-shadow: 0 0 0 4px #FFFFFF !important;
+  }
+  body.portal-light .portal-hero-banner .roadmap-step-badge {
+    color: #0F172A !important;
+    font-weight: 600 !important;
+  }
+  body.portal-light .portal-hero-banner .roadmap-step-wk {
+    color: #64748B !important;
+    font-weight: 700 !important;
+  }
+  body.portal-light .portal-hero-banner .roadmap-step-item.active .roadmap-step-wk {
+    color: #D97706 !important;
+    font-weight: 800 !important;
+  }
+  body.portal-light .portal-hero-banner .roadmap-step-item.done .roadmap-step-wk {
+    color: #059669 !important;
+  }
+  body.portal-light .portal-hero-banner .roadmap-pill {
+    background: rgba(245, 158, 11, 0.12) !important;
+    border: 1px solid rgba(245, 158, 11, 0.35) !important;
+    color: #B45309 !important;
+    font-weight: 800 !important;
+  }
+  .portal-hero-banner .roadmap-header h3 {
+    color: #0F172A;
+  }
+  .portal-hero-banner .roadmap-header p {
+    color: #64748B;
+  }
+  .portal-hero-banner .roadmap-node {
+    background: #1e293b;
+    border-color: rgba(255, 255, 255, 0.25);
+    color: #94a3b8;
+    box-shadow: 0 0 0 4px #0f172a;
+  }
+  .portal-hero-banner .roadmap-step-item.active .roadmap-node {
+    background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+    border-color: #f59e0b !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 16px rgba(245, 158, 11, 0.5) !important;
+  }
+  .portal-hero-banner .roadmap-step-item.done .roadmap-node {
+    background: #10b981 !important;
+    border-color: #10b981 !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 12px rgba(16, 185, 129, 0.4) !important;
+  }
+  .portal-hero-banner .roadmap-step-badge {
+    color: #E2E8F0 !important;
+  }
+  .portal-hero-banner .roadmap-step-wk {
+    color: #94A3B8 !important;
+  }
+  .portal-hero-banner .roadmap-step-item.active .roadmap-step-wk {
+    color: #FBBF24 !important;
+  }
+  .portal-hero-banner .roadmap-step-item.done .roadmap-step-wk {
+    color: #34D399 !important;
+  }
+  .portal-hero-banner .roadmap-line-track {
+    background: rgba(255, 255, 255, 0.12) !important;
   }
   .portal-hero-banner.hidden { display: none !important; }
   .portal-hero-banner::before {
@@ -1989,13 +2538,14 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
   }
   .portal-hero-right {
     display: flex;
-    flex-direction: column;
-    align-items: flex-end;
+    align-items: center;
+    justify-content: flex-end;
     gap: 10px;
   }
   @media (max-width: 768px) {
     .portal-hero-right {
       align-items: flex-start;
+      justify-content: flex-start;
       width: 100%;
     }
   }
@@ -2612,7 +3162,7 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
           </div>
           <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
             <div class="roadmap-pill"><i class="fas fa-flag-checkered"></i> &nbsp;Week ${currentWeek} of 8 (${progressPct}% Completed)</div>
-            <button class="btn-sm btn-pulse" onclick="switchTab('learning')" data-act-click="switchTab" data-arg-click='["learning"]' style="background:linear-gradient(135deg,#f59e0b,#d97706);color:#ffffff !important;font-weight:800;font-size:13px;padding:9px 20px;border-radius:99px;border:1px solid rgba(255,255,255,0.4);cursor:pointer;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 16px rgba(245,158,11,0.4);"><i class="fas fa-tasks"></i> Launch Week ${currentWeek} Deliverables →</button>
+            <button class="btn-sm btn-pulse" data-act-click="launchWeekDeliverables" data-arg-click='[${currentWeek}]' style="background:linear-gradient(135deg,#f59e0b,#d97706);color:#ffffff !important;font-weight:800;font-size:13px;padding:9px 20px;border-radius:99px;border:1px solid rgba(255,255,255,0.4);cursor:pointer;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 16px rgba(245,158,11,0.4);"><i class="fas fa-tasks"></i> Launch Week ${currentWeek} Deliverables →</button>
           </div>
         </div>
         <div class="roadmap-stepper-wrap">
@@ -2625,10 +3175,30 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
         </div>
       </div>
     `;
-    el.className = '';
-    el.style = 'margin-bottom:24px;';
+    if (elId === 'welcomeRoadmapSection') {
+      el.className = 'portal-hero-roadmap';
+      el.style = '';
+    } else {
+      el.className = '';
+      el.style = 'margin-bottom:24px;';
+    }
     el.classList.remove('hidden');
   }
+
+  function launchWeekDeliverables(weekNum) {
+    switchTab('learning');
+    setTimeout(function() {
+      const targetDay = (weekNum && weekNum > 1) ? ((weekNum - 1) * 7 + 1) : 1;
+      const dayRow = document.getElementById('lesson-day-' + targetDay) || document.querySelector('#lessonsBody tr') || document.getElementById('lessonsBody');
+      if (dayRow) {
+        dayRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else {
+        const learnCard = document.querySelector('#learnUnlockedWrap .learning-section:nth-of-type(2)');
+        if (learnCard) learnCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 280);
+  }
+  window.launchWeekDeliverables = launchWeekDeliverables;
 
   /* ════ NOTIFICATION DOT ════════════════════════════════════════════════
      Also undefined, and called at the top of loadPortal() — so it threw
@@ -2657,6 +3227,7 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
   let _currentJobAppId=null,_jobDepositFile=null;
   let _joiningDate=null,_joiningDateStr='',_internshipEndDate=null,_internshipEndDateStr='',_isUnlocked=false,_allWeeks=[];
   let _attSummary={},_courseEnrs=[],_tasksCount=0,_totalCoins=0,_learningProfile=null,_availableTasks=[];
+  let _spacedReviewsCount=0,_strugglesCount=0,_learningLoaded=false;
   let _acceptedInit=false,_pingInterval=null,_countdownInterval=null;
   function badgeClass(s){const m={'Apply Pending':'badge-muted','Under Review':'badge-blue','On Hold':'badge-amber','Selected':'badge-gold','Selected - Pending Certifications':'badge-green','Pending-Certifications':'badge-gold','Shortlisted':'badge-blue','Hired':'badge-green','Applied':'badge-muted','Enrollment Pending':'badge-amber','Enrolled':'badge-blue','Accepted':'badge-green','Rejected':'badge-red','Paid-Enrolled':'badge-blue'};return m[s]||'badge-muted';}
 
@@ -3824,6 +4395,8 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
       _jobApps = data.job_applications || [];
       _enr     = data.enrollment;
       _courseEnrs = data.course_enrollments || [];
+      _spacedReviewsCount = data.spaced_reviews_count || 0;
+      _strugglesCount = data.struggles_count || 0;
       _attSummary = data.attendance_summary || null;
       _tasksCount = data.tasks_completed_count || 0;
       _totalCoins = data.total_coins || 0;
@@ -4001,22 +4574,16 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
          the --pct custom property rather than a width. */
       if (courseFillEl) courseFillEl.style.setProperty('--pct', pct);
       if (courseBtnEl) {
-        courseBtnEl.href = `/courses/${c.course_id}/learn`;
-        courseBtnEl.innerHTML = `<i class="fas fa-play-circle"></i> &nbsp;Resume Lesson (Day ${dayNum}) →`;
+        courseBtnEl.href = '/courses';
+        courseBtnEl.innerHTML = '<i class="fas fa-book-open"></i> &nbsp;Explore Full Curriculum →';
         courseBtnEl.style.background = 'linear-gradient(135deg, var(--violet), #2563eb)';
         courseBtnEl.style.setProperty('color', '#ffffff', 'important');
-      }
-      const heroResumeCta = document.getElementById('heroResumeCta');
-      const heroResumeCtaText = document.getElementById('heroResumeCtaText');
-      if (heroResumeCta) {
-        heroResumeCta.href = `/courses/${c.course_id}/learn`;
-        if (heroResumeCtaText) heroResumeCtaText.textContent = `Resume Lesson (Day ${dayNum}) →`;
       }
       const ctaLearn = document.getElementById('ctaLearnAction');
       const ctaLearnText = document.getElementById('ctaLearnActionText');
       if (ctaLearn) {
         ctaLearn.href = `/courses/${c.course_id}/learn`;
-        if (ctaLearnText) ctaLearnText.textContent = `Resume Lesson (Day ${dayNum}) →`;
+        if (ctaLearnText) ctaLearnText.textContent = `Start Concept Review (Day ${dayNum}) →`;
       }
     } else {
       if (courseTitleEl) courseTitleEl.textContent = 'Guided Learning Workspace';
@@ -4025,19 +4592,13 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
       if (courseFillEl) courseFillEl.style.setProperty('--pct', 0);
       if (courseBtnEl) {
         courseBtnEl.href = '/courses';
-        courseBtnEl.innerHTML = '<span>Continue Learning →</span>';
-      }
-      const heroResumeCta = document.getElementById('heroResumeCta');
-      const heroResumeCtaText = document.getElementById('heroResumeCtaText');
-      if (heroResumeCta) {
-        heroResumeCta.href = '/courses';
-        if (heroResumeCtaText) heroResumeCtaText.textContent = 'Explore Courses →';
+        courseBtnEl.innerHTML = '<i class="fas fa-compass"></i> &nbsp;<span>Explore Courses →</span>';
       }
       const ctaLearn = document.getElementById('ctaLearnAction');
       const ctaLearnText = document.getElementById('ctaLearnActionText');
       if (ctaLearn) {
         ctaLearn.href = '/courses';
-        if (ctaLearnText) ctaLearnText.textContent = 'Start Lesson →';
+        if (ctaLearnText) ctaLearnText.textContent = 'Start Concept Review →';
       }
     }
 
@@ -4098,23 +4659,42 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
     if (barQuizAvg) barQuizAvg.style.width = quizAvg + '%';
 
     const statReviewsEl = document.getElementById('statReviews');
-    if (statReviewsEl) statReviewsEl.textContent = '0';
+    if (statReviewsEl) statReviewsEl.textContent = String(_spacedReviewsCount);
 
     const statMiscEl = document.getElementById('statMisconceptions');
-    if (statMiscEl) statMiscEl.textContent = _learningProfile ? Math.round((_learningProfile.recent_struggle_index || 0) * 10) : '0';
+    if (statMiscEl) statMiscEl.textContent = String(_strugglesCount);
 
     const statLastSessEl = document.getElementById('statLastSession');
     if (statLastSessEl) {
-      statLastSessEl.textContent = (_learningProfile && _learningProfile.last_learning_at)
-        ? _learningProfile.last_learning_at.substring(0, 10)
-        : 'Active';
+      if (_courseEnrs && _courseEnrs.length > 0 && _courseEnrs[0].last_accessed_at) {
+        statLastSessEl.textContent = fmtDate(_courseEnrs[0].last_accessed_at);
+      } else if (_learningProfile && _learningProfile.last_learning_at) {
+        statLastSessEl.textContent = _learningProfile.last_learning_at.substring(0, 10);
+      } else {
+        statLastSessEl.textContent = 'Active';
+      }
     }
 
     const statConceptEl = document.getElementById('statConcept');
     if (statConceptEl) {
-      statConceptEl.textContent = (_courseEnrs && _courseEnrs.length > 0)
-        ? (_courseEnrs[0].title || ('Day ' + (_courseEnrs[0].current_day || 1)))
-        : 'General Concepts';
+      if (_courseEnrs && _courseEnrs.length > 0) {
+        const c0 = _courseEnrs[0];
+        const dayNum = c0.current_day || 1;
+        statConceptEl.textContent = c0.active_chapter_title
+          ? `Day ${dayNum}: ${c0.active_chapter_title}`
+          : (c0.title || `Day ${dayNum}`);
+      } else {
+        statConceptEl.textContent = 'General Concepts';
+      }
+    }
+
+    const ctaPractice = document.getElementById('ctaPracticeAction');
+    if (ctaPractice) {
+      if (_courseEnrs && _courseEnrs.length > 0 && _courseEnrs[0].course_id) {
+        ctaPractice.href = `/courses/${_courseEnrs[0].course_id}/learn`;
+      } else {
+        ctaPractice.href = '/courses';
+      }
     }
 
     const statActionEl = document.getElementById('statAction');
@@ -4289,8 +4869,11 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
           sBtn.removeAttribute('target');
           sBtn.removeAttribute('rel');
         }
+        sBtn.classList.remove('hidden');
+        sBtn.style.setProperty('display', 'inline-flex', 'important');
       } else {
-        sBtn.style.display = 'none';
+        sBtn.classList.add('hidden');
+        sBtn.style.setProperty('display', 'none', 'important');
       }
     }
 
@@ -4301,14 +4884,16 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
       if (na.tertiary_cta_url) {
         tBtn.href = na.tertiary_cta_url;
         tBtn.className = btnClassForType(na.tertiary_cta_type, 'na-cta-btn na-btn-gold');
-        tBtn.style.display = 'inline-flex';
+        tBtn.classList.remove('hidden');
+        tBtn.style.setProperty('display', 'inline-flex', 'important');
         if (tText && na.tertiary_cta_label) tText.textContent = na.tertiary_cta_label;
         if (tIcon && na.tertiary_cta_icon) {
           const tIconCls = na.tertiary_cta_icon.includes('fab') || na.tertiary_cta_icon.includes('fa-brands') ? na.tertiary_cta_icon : 'fas ' + na.tertiary_cta_icon;
           tIcon.className = tIconCls;
         }
       } else {
-        tBtn.style.display = 'none';
+        tBtn.classList.add('hidden');
+        tBtn.style.setProperty('display', 'none', 'important');
       }
     }
 
@@ -4458,15 +5043,21 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
       nsAction.innerHTML = `
         <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:14px;">
           <a class="na-cta-btn na-btn-gold" href="/portal/offer" style="text-decoration:none;">
-            <i class="fas fa-file-signature"></i>&nbsp; View Letter of Offer & Confirm Seat &rarr;
+            <i class="fas fa-file-signature"></i>&nbsp; View Letter of Offer &amp; Confirm Seat &rarr;
           </a>
-          <button class="na-cta-btn na-btn-emerald" onclick="document.getElementById('ovSelected').scrollIntoView({behavior:'smooth'})">
-            <i class="fas fa-credit-card"></i>&nbsp; Confirm Seat (₹499 Deposit) &darr;
-          </button>
+          <a class="na-cta-btn na-btn-emerald" href="/portal/offer" style="text-decoration:none;">
+            <i class="fas fa-credit-card"></i>&nbsp; Sign Offer &amp; Confirm Seat (₹499) &rarr;
+          </a>
         </div>
       `;
       buildStepBar('overviewStepBar','Selected');
       showOvBlock('ovSelected');loadUpcomingMondays();
+      if(_intern){
+        const dName=document.getElementById('selDossierName');
+        if(dName) dName.textContent=_intern.name||'Fellow';
+        const dDom=document.getElementById('selDossierDomain');
+        if(dDom) dDom.textContent=_intern.domain||'Engineering Track';
+      }
     }else if(_status==='Enrolled'){
       nsIcon.innerHTML='&#9889;';nsTitle.textContent='Payment under review — we\'ll confirm shortly';
       nsMsg.textContent='We typically verify within 24 hours and email you once your enrollment is confirmed.';
@@ -4516,7 +5107,10 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
       // card for accepted interns — the welcome banner + #ovAccepted (countdown + Launch
       // Online Classes) already convey joining/unlock. Notifications live in their own tab now.
       document.getElementById('nextStepCard').classList.add('hidden');
-      buildInternshipProgress('overviewStepBar');showOvBlock('ovAccepted');
+      const sbEl = document.getElementById('overviewStepBar');
+      if (sbEl) sbEl.classList.add('hidden');
+      buildInternshipProgress('welcomeRoadmapSection');
+      showOvBlock('ovAccepted');
 
       // Clean up legacy dynamic duplicate balance banner if present (now officially handled by #nextActionMissionCard)
       const existingBalBanner = document.getElementById('ovBalanceGraceBanner');
@@ -4639,6 +5233,27 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
       if(prompt) prompt.classList.remove('hidden');
     }
   }
+
+  function goToStep1(){
+    const s1=document.getElementById('selWizardStep1'), s2=document.getElementById('selWizardStep2');
+    const t1=document.getElementById('selStepTab1'), t2=document.getElementById('selStepTab2');
+    const p1=document.getElementById('selPillNum1'), p2=document.getElementById('selPillNum2');
+    if(s1) s1.classList.remove('hidden');
+    if(s2) s2.classList.add('hidden');
+    if(t1){ t1.style.color='#fbbf24'; t1.style.background='rgba(245,158,11,0.2)'; t1.style.borderColor='#f59e0b'; }
+    if(t2){ t2.style.color='#cbd5e1'; t2.style.background='rgba(255,255,255,0.06)'; t2.style.borderColor='rgba(255,255,255,0.18)'; }
+    if(p1){ p1.style.background='#fbbf24'; p1.style.color='#0b1120'; }
+    if(p2){ p2.style.background='#475569'; p2.style.color='#f8fafc'; }
+    const ov=document.getElementById('ovSelected');
+    if(ov) ov.scrollIntoView({behavior:'smooth', block:'start'});
+  }
+  window.goToStep1 = goToStep1;
+
+  function goToStep2(){
+    window.location.href = '/portal/offer';
+  }
+  window.goToStep2 = goToStep2;
+
   function showEnrollError(msg){const el=document.getElementById('enrollError');el.querySelector('span').textContent=msg;el.classList.add('visible');}
   function hideEnrollError(){document.getElementById('enrollError').classList.remove('visible');}
   async function submitEnrollment(){
@@ -5142,7 +5757,19 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
     document.getElementById('learnProgress').innerHTML=`<div class="completion-hero"><div class="completion-ring"><svg width="72" height="72" viewBox="0 0 72 72"><circle cx="36" cy="36" r="26" fill="none" stroke="rgba(139,92,246,0.12)" stroke-width="7"/><circle cx="36" cy="36" r="26" fill="none" stroke="var(--violet)" stroke-width="7" stroke-dasharray="${dash.toFixed(1)} ${circ.toFixed(1)}" stroke-linecap="round"/></svg><div class="completion-ring-pct">${pct}%</div></div><div class="completion-meta"><h4>${d.done_lessons} / ${d.total_lessons} Lessons Completed</h4><p>${d.total_lessons-d.done_lessons} lessons remaining</p><div class="last-updated">Last synced: ${d.updated_at?fmtDate(d.updated_at):'Never'}</div></div></div>`;
     const lb=document.getElementById('lessonsBody');
     if(!d.lessons||!d.lessons.length){lb.innerHTML='<tr><td colspan="5" style="text-align:center;color:var(--tx-muted);padding:20px;">No lesson data yet.</td></tr>';}
-    else{lb.innerHTML=d.lessons.map(l=>{const sb=l.status==='completed'?'<span class="badge badge-green"><i class="fas fa-check"></i> Done</span>':l.status==='in_progress'?'<span class="badge badge-amber"><i class="fas fa-spinner"></i> In Progress</span>':'<span class="badge badge-muted">Not Started</span>';return `<tr><td style="color:var(--tx-muted);">Day ${escHtml(l.day_number)}</td><td>${escHtml(l.title)}</td><td>${sb}</td><td>${fmtSecs(l.time_spent_sec)}</td><td style="color:var(--tx-muted);font-size:12px;">${l.completed_at?fmtDate(l.completed_at):'—'}</td></tr>`;}).join('');}
+    else{
+      const cId = d.course_id || _selectedCourseId || (_courseEnrs && _courseEnrs[0] ? _courseEnrs[0].course_id : null);
+      const learnUrl = cId ? `/courses/${cId}/learn` : '/courses';
+      lb.innerHTML=d.lessons.map(l=>{
+        const sb=l.status==='completed'?'<span class="badge badge-green"><i class="fas fa-check"></i> Done</span>':l.status==='in_progress'?'<span class="badge badge-amber"><i class="fas fa-spinner"></i> In Progress</span>':'<span class="badge badge-muted">Not Started</span>';
+        const actBtn = l.status==='completed'
+          ? `<a href="${learnUrl}" class="btn-xs btn-ghost" style="text-decoration:none;display:inline-flex;align-items:center;gap:4px;padding:5px 12px;border-radius:6px;font-size:12px;font-weight:700;"><i class="fas fa-rotate-left"></i> Review</a>`
+          : (l.status==='in_progress'
+            ? `<a href="${learnUrl}" class="btn-xs btn-primary" style="text-decoration:none;display:inline-flex;align-items:center;gap:4px;padding:5px 12px;border-radius:6px;font-size:12px;font-weight:700;box-shadow:0 2px 8px rgba(139,92,246,0.3);"><i class="fas fa-play"></i> Resume Lesson &rarr;</a>`
+            : `<a href="${learnUrl}" class="btn-xs btn-ghost" style="text-decoration:none;display:inline-flex;align-items:center;gap:4px;padding:5px 12px;border-radius:6px;font-size:12px;font-weight:600;"><i class="fas fa-arrow-right"></i> Start</a>`);
+        return `<tr id="lesson-day-${l.day_number}"><td style="color:var(--tx-muted);font-weight:600;">Day ${escHtml(l.day_number)}</td><td><a href="${learnUrl}" style="color:var(--tx-head);font-weight:600;text-decoration:none;" onmouseover="this.style.color='var(--violet)'" onmouseout="this.style.color='var(--tx-head)'">${escHtml(l.title)}</a></td><td>${sb}</td><td>${fmtSecs(l.time_spent_sec)}</td><td>${actBtn}</td></tr>`;
+      }).join('');
+    }
     const qb=document.getElementById('quizzesBody');
     if(!d.quizzes||!d.quizzes.length){qb.innerHTML='<tr><td colspan="5" style="text-align:center;color:var(--tx-muted);padding:20px;">No quizzes taken yet.</td></tr>';}
     else{qb.innerHTML=d.quizzes.map(q=>{const res=q.passed?'<span class="badge badge-green">Passed</span>':'<span class="badge badge-red">Failed</span>';const score=q.total_questions?`${q.correct_answers||q.score||0}/${q.total_questions}`:(q.score||0)+'%';return `<tr><td>${escHtml(q.title)}</td><td style="font-weight:700;">${escHtml(score)}</td><td>${res}</td><td style="color:var(--tx-muted);">#${escHtml(q.attempt_number||1)}</td><td style="color:var(--tx-muted);font-size:12px;">${q.completed_at?fmtDate(q.completed_at):'—'}</td></tr>`;}).join('');}
@@ -5641,37 +6268,40 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
   <!-- DBERT Sovereign Web Push Notification Modal Prompt -->
   <div id="dbertPushPermissionModal" class="dbert-push-modal-overlay" style="display:none;">
     <div class="dbert-push-modal-card">
+      <!-- Mobile Drag Handle -->
+      <div class="dbert-push-drag-handle"></div>
+
       <!-- Always-Visible Non-Blocking Close (X) Button -->
       <button type="button" id="dbertPushModalCloseBtn" class="dbert-push-modal-close-btn" aria-label="Close notification prompt">&times;</button>
 
       <!-- STATE 1: DEFAULT PROMO STATE (When permission === 'default') -->
       <div id="pushModalStateDefault">
-        <div style="width:56px; height:56px; border-radius:16px; background:linear-gradient(135deg, rgba(99,102,241,0.2), rgba(79,70,229,0.3)); border:1px solid #6366F1; color:#818CF8; display:flex; align-items:center; justify-content:center; font-size:24px; margin:0 auto 16px;">
+        <div class="dbert-push-icon-box" style="width:52px; height:52px; border-radius:14px; background:linear-gradient(135deg, rgba(99,102,241,0.2), rgba(79,70,229,0.3)); border:1.5px solid #6366F1; color:#818CF8; display:flex; align-items:center; justify-content:center; font-size:22px; margin:0 auto 14px;">
           <i class="fas fa-bell"></i>
         </div>
-        <h3 style="margin:0 0 8px; color:#F8FAFC; font-size:18px; font-weight:800;">Enable Sprint &amp; Stipend Alerts</h3>
-        <p style="margin:0 0 18px; color:#94A3B8; font-size:13px; line-height:1.5;">
+        <h3 class="dbert-push-title" style="margin:0 0 8px; color:#F8FAFC !important; font-size:18px; font-weight:800;">Enable Sprint &amp; Stipend Alerts</h3>
+        <p class="dbert-push-desc" style="margin:0 0 16px; color:#94A3B8 !important; font-size:13px; line-height:1.5;">
           Never miss a milestone. Receive instant browser notifications when mentors review your code, sprint bounty tasks are approved, and your &#8377;5,000 stipend is credited.
         </p>
-        <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06); border-radius:12px; padding:12px 16px; margin-bottom:20px; text-align:left;">
-          <div style="display:flex; align-items:center; gap:10px; font-size:12px; color:#CBD5E1; margin-bottom:8px;">
-            <i class="fas fa-check-circle" style="color:#10B981;"></i>
-            <span>Instant alert when code bounties are approved</span>
+        <div class="dbert-push-features-box" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:12px 14px; margin-bottom:18px; text-align:left;">
+          <div class="dbert-push-feature-item" style="display:flex; align-items:center; gap:10px; font-size:12px; color:#CBD5E1 !important; margin-bottom:8px;">
+            <i class="fas fa-check-circle" style="color:#10B981; flex-shrink:0;"></i>
+            <span style="color:#CBD5E1 !important;">Instant alert when code bounties are approved</span>
           </div>
-          <div style="display:flex; align-items:center; gap:10px; font-size:12px; color:#CBD5E1; margin-bottom:8px;">
-            <i class="fas fa-check-circle" style="color:#10B981;"></i>
-            <span>Direct notification when mentors review your work</span>
+          <div class="dbert-push-feature-item" style="display:flex; align-items:center; gap:10px; font-size:12px; color:#CBD5E1 !important; margin-bottom:8px;">
+            <i class="fas fa-check-circle" style="color:#10B981; flex-shrink:0;"></i>
+            <span style="color:#CBD5E1 !important;">Direct notification when mentors review your work</span>
           </div>
-          <div style="display:flex; align-items:center; gap:10px; font-size:12px; color:#CBD5E1;">
-            <i class="fas fa-check-circle" style="color:#10B981;"></i>
-            <span>Wallet confirmation for &#8377;5,000 stipend release</span>
+          <div class="dbert-push-feature-item" style="display:flex; align-items:center; gap:10px; font-size:12px; color:#CBD5E1 !important;">
+            <i class="fas fa-check-circle" style="color:#10B981; flex-shrink:0;"></i>
+            <span style="color:#CBD5E1 !important;">Wallet confirmation for &#8377;5,000 stipend release</span>
           </div>
         </div>
         <div style="display:flex; flex-direction:column; gap:10px;">
-          <button type="button" id="dbertPushEnableBtn" style="background:linear-gradient(135deg, #6366F1, #4F46E5); color:#fff; font-weight:800; padding:12px 20px; border-radius:10px; border:none; cursor:pointer; font-size:14px; box-shadow:0 4px 15px rgba(99,102,241,0.4); display:flex; align-items:center; justify-content:center; gap:8px;">
-            <i class="fas fa-bell"></i> Enable Instant Notifications
+          <button type="button" id="dbertPushEnableBtn" class="dbert-push-btn-primary" style="background:linear-gradient(135deg, #6366F1, #4F46E5); color:#ffffff !important; font-weight:800; padding:12px 20px; border-radius:12px; border:none; cursor:pointer; font-size:14px; box-shadow:0 4px 15px rgba(99,102,241,0.4); display:flex; align-items:center; justify-content:center; gap:8px;">
+            <i class="fas fa-bell"></i> <span>Enable Instant Notifications</span>
           </button>
-          <button type="button" id="dbertPushDismissBtn" style="background:transparent; border:1px solid rgba(255,255,255,0.12); color:#94A3B8; padding:9px 16px; border-radius:8px; cursor:pointer; font-size:12.5px;">
+          <button type="button" id="dbertPushDismissBtn" class="dbert-push-btn-secondary" style="background:transparent; border:1px solid rgba(255,255,255,0.14); color:#94A3B8 !important; padding:9px 16px; border-radius:10px; cursor:pointer; font-size:12.5px;">
             Remind Me Later
           </button>
         </div>
@@ -5679,42 +6309,82 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
 
       <!-- STATE 2: BLOCKED / UNBLOCK GUIDE STATE (When permission === 'denied') -->
       <div id="pushModalStateBlocked" style="display:none;">
-        <div style="width:56px; height:56px; border-radius:16px; background:linear-gradient(135deg, rgba(239,68,68,0.2), rgba(220,38,38,0.3)); border:1.5px solid #EF4444; color:#F87171; display:flex; align-items:center; justify-content:center; font-size:24px; margin:0 auto 16px;">
+        <div class="dbert-push-icon-box" style="width:52px; height:52px; border-radius:14px; background:linear-gradient(135deg, rgba(239,68,68,0.2), rgba(220,38,38,0.3)); border:1.5px solid #EF4444; color:#F87171; display:flex; align-items:center; justify-content:center; font-size:22px; margin:0 auto 12px;">
           <i class="fa-solid fa-bell-slash"></i>
         </div>
         <div style="display:inline-block; background:rgba(239,68,68,0.15); border:1px solid rgba(239,68,68,0.35); color:#FCA5A5; font-size:11px; font-weight:800; padding:3px 10px; border-radius:99px; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">
           Action Required: Browser Blocked
         </div>
-        <h3 style="margin:0 0 8px; color:#F8FAFC; font-size:18px; font-weight:800;">How to Unblock Notifications</h3>
-        <p style="margin:0 0 16px; color:#94A3B8; font-size:12.5px; line-height:1.5;">
+        <h3 class="dbert-push-title" style="margin:0 0 8px; color:#F8FAFC !important; font-size:18px; font-weight:800;">How to Unblock Notifications</h3>
+        <p class="dbert-push-desc" style="margin:0 0 16px; color:#94A3B8 !important; font-size:12.5px; line-height:1.5;">
           Your browser is blocking notifications for <code>lms.dbert.in</code>. Due to browser security restrictions, we cannot unblock them automatically. Please follow these 3 quick steps:
         </p>
         <div style="margin-bottom:18px;">
           <div class="push-guide-step">
             <div class="push-step-num">1</div>
-            <div class="push-step-txt">
-              Look at the left side of your browser address bar next to <code>lms.dbert.in</code>. Click the <strong>Lock 🔒 or Settings / Tune 🎛️ icon</strong>.
+            <div class="push-step-txt" style="color:#CBD5E1 !important;">
+              <span class="desktop-only-step">Look at the left side of your browser address bar next to <code>lms.dbert.in</code>. Click the <strong>Lock 🔒 or Settings / Tune 🎛️ icon</strong>.</span>
+              <span class="mobile-only-step" style="display:none;">Open your browser menu (<strong>⋮ or Settings</strong>) &rarr; tap <strong>Permissions / Site Settings</strong>.</span>
             </div>
           </div>
           <div class="push-guide-step">
             <div class="push-step-num">2</div>
-            <div class="push-step-txt">
+            <div class="push-step-txt" style="color:#CBD5E1 !important;">
               Find <strong>Notifications</strong> in the permissions list and change it from <strong>Block</strong> to <strong>Allow</strong>.
             </div>
           </div>
           <div class="push-guide-step">
             <div class="push-step-num">3</div>
-            <div class="push-step-txt">
+            <div class="push-step-txt" style="color:#CBD5E1 !important;">
               Click the button below to refresh the page and activate your instant real-time alerts.
             </div>
           </div>
         </div>
         <div style="display:flex; flex-direction:column; gap:10px;">
-          <button type="button" id="dbertPushReloadBtn" style="background:linear-gradient(135deg, #10B981, #059669); color:#fff; font-weight:800; padding:12px 20px; border-radius:10px; border:none; cursor:pointer; font-size:14px; box-shadow:0 4px 15px rgba(16,185,129,0.4); display:flex; align-items:center; justify-content:center; gap:8px;">
+          <button type="button" id="dbertPushReloadBtn" class="dbert-push-btn-primary" style="background:linear-gradient(135deg, #10B981, #059669); color:#fff !important; font-weight:800; padding:12px 20px; border-radius:12px; border:none; cursor:pointer; font-size:14px; box-shadow:0 4px 15px rgba(16,185,129,0.4); display:flex; align-items:center; justify-content:center; gap:8px;">
             <i class="fa-solid fa-rotate-right"></i> <span>I've Enabled It &mdash; Refresh Page</span>
           </button>
-          <button type="button" id="dbertPushBlockedDismissBtn" style="background:transparent; border:1px solid rgba(255,255,255,0.12); color:#94A3B8; padding:9px 16px; border-radius:8px; cursor:pointer; font-size:12.5px;">
+          <button type="button" id="dbertPushBlockedDismissBtn" class="dbert-push-btn-secondary" style="background:transparent; border:1px solid rgba(255,255,255,0.14); color:#94A3B8 !important; padding:9px 16px; border-radius:10px; cursor:pointer; font-size:12.5px;">
             Dismiss for Now
+          </button>
+        </div>
+      </div>
+
+      <!-- STATE 3: IOS SAFARI / PWA GUIDE (When on iOS non-standalone) -->
+      <div id="pushModalStateIOS" style="display:none;">
+        <div class="dbert-push-icon-box" style="width:52px; height:52px; border-radius:14px; background:linear-gradient(135deg, rgba(99,102,241,0.2), rgba(79,70,229,0.3)); border:1.5px solid #6366F1; color:#818CF8; display:flex; align-items:center; justify-content:center; font-size:22px; margin:0 auto 12px;">
+          <i class="fas fa-mobile-screen"></i>
+        </div>
+        <div style="display:inline-block; background:rgba(99,102,241,0.18); border:1px solid rgba(99,102,241,0.4); color:#A5B4FC; font-size:11px; font-weight:800; padding:3px 10px; border-radius:99px; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:8px;">
+          iPhone / iPad Setup
+        </div>
+        <h3 class="dbert-push-title" style="margin:0 0 6px; color:#F8FAFC !important; font-size:17.5px; font-weight:800;">Install App for Instant Alerts</h3>
+        <p class="dbert-push-desc" style="margin:0 0 14px; color:#94A3B8 !important; font-size:12.5px; line-height:1.5;">
+          Apple iOS requires adding DBERT to your Home Screen to deliver real-time stipend and milestone notifications. Follow these 2 quick steps:
+        </p>
+        <div style="margin-bottom:16px;">
+          <div class="push-guide-step" style="padding:10px 12px; margin-bottom:8px;">
+            <div class="push-step-num" style="width:24px; height:24px; font-size:11px;">1</div>
+            <div class="push-step-txt" style="font-size:12px; color:#CBD5E1 !important;">
+              Tap the <strong>Share button <i class="fas fa-arrow-up-from-bracket" style="color:#38BDF8;"></i></strong> in Safari toolbar.
+            </div>
+          </div>
+          <div class="push-guide-step" style="padding:10px 12px; margin-bottom:8px;">
+            <div class="push-step-num" style="width:24px; height:24px; font-size:11px;">2</div>
+            <div class="push-step-txt" style="font-size:12px; color:#CBD5E1 !important;">
+              Scroll down and tap <strong>Add to Home Screen <i class="fas fa-plus-square" style="color:#34D399;"></i></strong>.
+            </div>
+          </div>
+          <div class="push-guide-step" style="padding:10px 12px; margin-bottom:0;">
+            <div class="push-step-num" style="width:24px; height:24px; font-size:11px;">3</div>
+            <div class="push-step-txt" style="font-size:12px; color:#CBD5E1 !important;">
+              Open <strong>DBERT</strong> from your Home Screen &mdash; alerts will activate instantly.
+            </div>
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <button type="button" id="dbertPushIOSDismissBtn" class="dbert-push-btn-secondary" style="background:transparent; border:1px solid rgba(255,255,255,0.18); color:#CBD5E1 !important; padding:10px 16px; border-radius:10px; cursor:pointer; font-size:13px; font-weight:600;">
+            Got It, I'll Add It
           </button>
         </div>
       </div>
@@ -5727,22 +6397,48 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
       var modal = document.getElementById('dbertPushPermissionModal');
       var stateDefault = document.getElementById('pushModalStateDefault');
       var stateBlocked = document.getElementById('pushModalStateBlocked');
+      var stateIOS = document.getElementById('pushModalStateIOS');
       var banner = document.getElementById('pushBlockedBanner');
+
+      var isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+      var isStandalone = ('standalone' in window.navigator && window.navigator.standalone) ||
+                         (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches);
 
       function setPushModalState(state) {
         if (!modal) return;
+        if (stateDefault) stateDefault.style.display = 'none';
+        if (stateBlocked) stateBlocked.style.display = 'none';
+        if (stateIOS) stateIOS.style.display = 'none';
+
         if (state === 'blocked') {
-          if (stateDefault) stateDefault.style.display = 'none';
           if (stateBlocked) stateBlocked.style.display = 'block';
-          modal.style.display = 'flex';
+          var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
+          var dSteps = modal.querySelectorAll('.desktop-only-step');
+          var mSteps = modal.querySelectorAll('.mobile-only-step');
+          dSteps.forEach(function(el) { el.style.display = isMobile ? 'none' : 'inline'; });
+          mSteps.forEach(function(el) { el.style.display = isMobile ? 'inline' : 'none'; });
+        } else if (state === 'ios') {
+          if (stateIOS) stateIOS.style.display = 'block';
         } else {
-          if (stateBlocked) stateBlocked.style.display = 'none';
           if (stateDefault) stateDefault.style.display = 'block';
-          modal.style.display = 'flex';
         }
+        modal.style.display = 'flex';
+        document.body.classList.add('has-push-modal-open');
       }
+      window.setPushModalState = setPushModalState;
 
       function updatePushState() {
+        // iOS Safari non-PWA special handling: guide intern to Add to Home Screen
+        if (isIOS && !isStandalone) {
+          var iosDismissed = localStorage.getItem('dbert_push_modal_dismissed_until');
+          if (!iosDismissed || Date.now() >= parseInt(iosDismissed, 10)) {
+            setTimeout(function() {
+              setPushModalState('ios');
+            }, 3500);
+          }
+          return;
+        }
+
         if (!('Notification' in window)) return;
 
         if (Notification.permission === 'granted') {
@@ -5810,6 +6506,10 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
       var enableBtn = document.getElementById('dbertPushEnableBtn');
       if (enableBtn) {
         enableBtn.addEventListener('click', async function() {
+          if (isIOS && !isStandalone) {
+            setPushModalState('ios');
+            return;
+          }
           if (!('Notification' in window)) return;
           try {
             var permission = await Notification.requestPermission();
@@ -5841,6 +6541,7 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
       // Unified Non-Blocking Dismissal Handler (24-Hour Cooldown)
       function dismissPushModal() {
         if (modal) modal.style.display = 'none';
+        document.body.classList.remove('has-push-modal-open');
         var cooldown = String(Date.now() + 24 * 3600 * 1000);
         localStorage.setItem('dbert_push_modal_dismissed_until', cooldown);
         localStorage.setItem('dbert_push_blocked_dismissed_until', cooldown);
@@ -5862,6 +6563,12 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
       var blockedDismissBtn = document.getElementById('dbertPushBlockedDismissBtn');
       if (blockedDismissBtn) {
         blockedDismissBtn.addEventListener('click', dismissPushModal);
+      }
+
+      // Action: Dismiss iOS Guide Modal (24-hour cooldown)
+      var iosDismissBtn = document.getElementById('dbertPushIOSDismissBtn');
+      if (iosDismissBtn) {
+        iosDismissBtn.addEventListener('click', dismissPushModal);
       }
 
       // Action: Tap-Outside Backdrop Dismissal (Allows user to explore website freely)

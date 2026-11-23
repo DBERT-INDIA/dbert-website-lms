@@ -433,9 +433,11 @@ export default function DirectoryClient({
           onChange={(e) => setMinScore(e.target.value)}
         >
           <option value="ALL">All Evaluation Scores</option>
-          <option value="90">Top Tier: 90+ Score (Distinction)</option>
-          <option value="85">High Merit: 85+ Score</option>
-          <option value="80">Proficient: 80+ Score</option>
+          <option value="85">Legacy Top: 85+ Score</option>
+          <option value="80">Top Tier: 80+ Score (High Merit)</option>
+          <option value="75">Merit Tier: 75+ Score</option>
+          <option value="70">Proficient: 70+ Score</option>
+          <option value="65">Passing Bar: 65+ Score</option>
         </select>
 
         {/* LinkedIn Experience Verified Filter Button */}

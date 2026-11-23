@@ -7,6 +7,7 @@ import CertificatePreviewFrame from '../CertificatePreviewFrame';
 import { normalizeDomainToSlug, CANONICAL_DOMAINS } from '@/data/domains.config';
 import type { ProjectRepoInfo } from '@/lib/verification';
 import publishedArticles from '@/data/published_articles.json';
+import { generate9RubricMarks, getGradeTier } from '@/lib/grading';
 
 export interface RegistryRecord {
   certId: string;
@@ -55,6 +56,8 @@ export default function CandidateProfileClient({
   const domainMeta = domainSlug ? CANONICAL_DOMAINS[domainSlug] : null;
 
   const scoreNum = Number(cert.score) || 84;
+  const displayGrade = cert.grade || getGradeTier(scoreNum);
+  const rubrics = generate9RubricMarks(scoreNum);
   const isVerified = !cert.isProvisional;
 
   const connectLmsUrl = `https://lms.dbert.in/company/signup?ref=profile&candidate=${encodeURIComponent(cert.certId)}`;
@@ -185,7 +188,7 @@ export default function CandidateProfileClient({
                   {scoreNum}<span style={{ fontSize: '0.75rem', fontWeight: 500, color: '#94a3b8' }}>/100</span>
                 </span>
                 <span className={s.tileSub} style={{ color: '#34d399' }}>
-                  {cert.grade || 'Grade A+ (Outstanding)'}
+                  {displayGrade}
                 </span>
               </div>
 
@@ -544,39 +547,39 @@ export default function CandidateProfileClient({
           <div className={s.rubricsGrid}>
             <div className={s.rubricItem}>
               <span className={s.rubricName}>1. Problem Formulation &amp; Spec</span>
-              <span className={s.rubricScore}>18/20</span>
+              <span className={s.rubricScore}>{rubrics[0]}/20</span>
             </div>
             <div className={s.rubricItem}>
               <span className={s.rubricName}>2. Schema &amp; Architecture Design</span>
-              <span className={s.rubricScore}>9/10</span>
+              <span className={s.rubricScore}>{rubrics[1]}/10</span>
             </div>
             <div className={s.rubricItem}>
               <span className={s.rubricName}>3. Code Rigor &amp; Scalability</span>
-              <span className={s.rubricScore}>9/10</span>
+              <span className={s.rubricScore}>{rubrics[2]}/10</span>
             </div>
             <div className={s.rubricItem}>
               <span className={s.rubricName}>4. Testing &amp; Edge-Case Coverage</span>
-              <span className={s.rubricScore}>8/10</span>
+              <span className={s.rubricScore}>{rubrics[3]}/10</span>
             </div>
             <div className={s.rubricItem}>
               <span className={s.rubricName}>5. Originality &amp; Plagiarism Index</span>
-              <span className={s.rubricScore}>10/10</span>
+              <span className={s.rubricScore}>{rubrics[4]}/10</span>
             </div>
             <div className={s.rubricItem}>
               <span className={s.rubricName}>6. Technical Problem-Solving</span>
-              <span className={s.rubricScore}>9/10</span>
+              <span className={s.rubricScore}>{rubrics[5]}/10</span>
             </div>
             <div className={s.rubricItem}>
               <span className={s.rubricName}>7. Documentation &amp; Git Hygiene</span>
-              <span className={s.rubricScore}>8/10</span>
+              <span className={s.rubricScore}>{rubrics[6]}/10</span>
             </div>
             <div className={s.rubricItem}>
               <span className={s.rubricName}>8. API / Interface Completeness</span>
-              <span className={s.rubricScore}>8/10</span>
+              <span className={s.rubricScore}>{rubrics[7]}/10</span>
             </div>
             <div className={s.rubricItem}>
               <span className={s.rubricName}>9. Architectural Execution</span>
-              <span className={s.rubricScore}>8/10</span>
+              <span className={s.rubricScore}>{rubrics[8]}/10</span>
             </div>
           </div>
         )}

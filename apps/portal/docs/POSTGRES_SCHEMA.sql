@@ -1301,3 +1301,149 @@ CREATE TABLE IF NOT EXISTS gl_teacher_learning_instructions (
     FOREIGN KEY(course_id) REFERENCES courses(id)
 );
 CREATE INDEX IF NOT EXISTS idx_gl_teacher_inst_student ON gl_teacher_learning_instructions(student_id, course_id, concept_id);
+
+
+-- ----------------------------------------------------------------------------
+-- ACTIVE CATALOG & SEARCH TABLES (Added from live SQLite audit)
+-- ----------------------------------------------------------------------------
+
+-- Table: scraped_internships
+CREATE TABLE IF NOT EXISTS scraped_internships (
+    id SERIAL PRIMARY KEY,
+    "Domain" TEXT,
+    "Company" TEXT,
+    "Role" TEXT,
+    "Location" TEXT,
+    "Is_Remote" TEXT,
+    "Start_Date" TEXT,
+    "End_Date" TEXT,
+    "Stipend" TEXT,
+    "URL" TEXT,
+    "Description" TEXT,
+    "Source" TEXT,
+    "Region" TEXT,
+    "Stipend_Normalized" TEXT,
+    "Work_Model" TEXT,
+    "City" TEXT,
+    "Clicks" INTEGER DEFAULT 0
+);
+CREATE INDEX IF NOT EXISTS idx_scraped_internships_domain ON scraped_internships("Domain");
+CREATE INDEX IF NOT EXISTS idx_scraped_internships_city ON scraped_internships("City");
+
+-- Table: scraped_jobs
+CREATE TABLE IF NOT EXISTS scraped_jobs (
+    id SERIAL PRIMARY KEY,
+    "Domain" TEXT,
+    "Company" TEXT,
+    "Role" TEXT,
+    "Location" TEXT,
+    "Is_Remote" TEXT,
+    "Start_Date" TEXT,
+    "End_Date" TEXT,
+    "Stipend" TEXT,
+    "URL" TEXT,
+    "Description" TEXT,
+    "Source" TEXT,
+    "Region" TEXT,
+    "Stipend_Normalized" TEXT,
+    "Work_Model" TEXT,
+    "City" TEXT,
+    "Clicks" INTEGER DEFAULT 0
+);
+CREATE INDEX IF NOT EXISTS idx_scraped_jobs_domain ON scraped_jobs("Domain");
+CREATE INDEX IF NOT EXISTS idx_scraped_jobs_city ON scraped_jobs("City");
+
+-- Table: intern_articles
+CREATE TABLE IF NOT EXISTS intern_articles (
+    id SERIAL PRIMARY KEY,
+    intern_id INTEGER NOT NULL,
+    domain TEXT,
+    title TEXT NOT NULL,
+    content_markdown TEXT NOT NULL,
+    status TEXT DEFAULT 'DRAFT',
+    mentor_feedback TEXT,
+    published_url TEXT,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    task_submission_id INTEGER,
+    cert_id TEXT,
+    github_repo_url TEXT,
+    live_demo_url TEXT,
+    rubric_score INTEGER,
+    stipend_status TEXT DEFAULT 'PENDING',
+    views_count INTEGER DEFAULT 0
+);
+CREATE INDEX IF NOT EXISTS idx_intern_articles_intern ON intern_articles(intern_id);
+
+-- Table: intern_offer_letters
+CREATE TABLE IF NOT EXISTS intern_offer_letters (
+    id SERIAL PRIMARY KEY,
+    offer_letter_id TEXT UNIQUE NOT NULL,
+    intern_id INTEGER,
+    enrollment_id INTEGER,
+    email TEXT NOT NULL,
+    name TEXT NOT NULL,
+    domain TEXT NOT NULL,
+    college TEXT,
+    batch_start_date TEXT NOT NULL,
+    batch_end_date TEXT NOT NULL,
+    tenure_months INTEGER DEFAULT 2,
+    stipend_amount INTEGER DEFAULT 5000,
+    login_hours_per_week INTEGER DEFAULT 10,
+    required_certifications INTEGER DEFAULT 2,
+    required_bounty_tasks INTEGER DEFAULT 75,
+    caution_deposit_amount INTEGER DEFAULT 499,
+    caution_deposit_status TEXT DEFAULT 'VERIFIED',
+    signature_name TEXT,
+    accepted_at TEXT,
+    pdf_unlocked INTEGER DEFAULT 0,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX IF NOT EXISTS idx_offer_letters_email ON intern_offer_letters(email);
+CREATE INDEX IF NOT EXISTS idx_offer_letters_id ON intern_offer_letters(offer_letter_id);
+
+-- Table: coin_perks_catalog
+CREATE TABLE IF NOT EXISTS coin_perks_catalog (
+    id SERIAL PRIMARY KEY,
+    slug TEXT UNIQUE NOT NULL,
+    title TEXT NOT NULL,
+    description TEXT NOT NULL,
+    coin_price INTEGER NOT NULL CHECK (coin_price > 0),
+    category TEXT NOT NULL DEFAULT 'career',
+    action_type TEXT NOT NULL DEFAULT 'instant_token',
+    badge_label TEXT,
+    icon_class TEXT DEFAULT 'fa-solid fa-gift',
+    metadata_json TEXT DEFAULT '{}',
+    is_active INTEGER DEFAULT 1,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Table: coin_perk_redemptions
+CREATE TABLE IF NOT EXISTS coin_perk_redemptions (
+    id SERIAL PRIMARY KEY,
+    redemption_code TEXT UNIQUE NOT NULL,
+    intern_id INTEGER NOT NULL,
+    email TEXT NOT NULL,
+    perk_id INTEGER NOT NULL REFERENCES coin_perks_catalog(id),
+    perk_slug TEXT NOT NULL,
+    coins_spent INTEGER NOT NULL,
+    status TEXT NOT NULL DEFAULT 'active',
+    voucher_token TEXT UNIQUE,
+    details_json TEXT DEFAULT '{}',
+    idem_key TEXT UNIQUE NOT NULL,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+    used_at TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_perk_redemptions_intern ON coin_perk_redemptions(intern_id, email);
+
+-- Table: scraped_internship_comments
+CREATE TABLE IF NOT EXISTS scraped_internship_comments (
+    id SERIAL PRIMARY KEY,
+    job_id INTEGER NOT NULL,
+    intern_id INTEGER NOT NULL,
+    intern_name TEXT NOT NULL,
+    body TEXT NOT NULL,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP
+);
+CREATE INDEX IF NOT EXISTS idx_scraped_comments_job ON scraped_internship_comments(job_id);

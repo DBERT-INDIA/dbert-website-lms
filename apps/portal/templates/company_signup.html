@@ -13,6 +13,12 @@
     <h1>Post jobs &amp; internships on DBERT</h1>
     <p class="sub">Create a company account. Posts go live after a quick admin approval.</p>
 
+    {% if candidate %}
+    <div style="background: rgba(56, 189, 248, 0.12); border: 1px solid rgba(56, 189, 248, 0.4); border-radius: 8px; padding: 12px 16px; margin-bottom: 16px; font-size: 13.5px; color: #38BDF8;">
+      <i class="fa-solid fa-user-check" style="margin-right: 6px;"></i> Connecting with Pre-Vetted Candidate: <strong>{{ candidate }}</strong>
+    </div>
+    {% endif %}
+
     <form id="f" data-prevent-submit>
       <div class="field">
         <label for="suName">Company name *</label>
@@ -52,6 +58,9 @@
 <script nonce="{{ csp_nonce() }}">
     document.getElementById('f').addEventListener('submit', function(){
       var fd=new FormData(this), body={}; fd.forEach(function(v,k){ body[k]=v; });
+      var urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('candidate')) body.candidate = urlParams.get('candidate');
+      if (urlParams.get('ref')) body.ref = urlParams.get('ref');
       var msg=document.getElementById('msg'); msg.className='msg'; msg.textContent='…';
       fetch('/company/signup', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)})
         .then(function(r){ return r.json(); })

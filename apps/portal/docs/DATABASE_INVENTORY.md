@@ -1,53 +1,96 @@
 # DBERT LMS — Comprehensive Database Inventory (INV-003)
 
-**Database:** `internship_live.db` (SQLite 3)  
-**Total Tables:** 57  
-**Analysis Date:** 2026-09-23  
+**Authoritative Production Database:** PostgreSQL (`dbert_lms` on AWS EC2, schema: `dbert_internship`)  
+**Total Production Tables:** 83  
+**Analysis & Verification Date:** November 22, 2026  
+**Status:** Unified Single-Database Architecture  
 
 ## 1. Executive Summary & Table Metrics
 
 | Table Name | Row Count | Primary Key | Foreign Key Count | Index Count |
 |---|---|---|---|---|
-| `abuse_log` | 1082 | `id` | 0 | 1 |
-| `ambassador_withdrawals` | 0 | `id` | 0 | 1 |
-| `applications` | 4395 | `id` | 0 | 1 |
-| `attendance` | 458 | `id` | 1 | 1 |
+| `abuse_log` | 1743 | `id` | 0 | 1 |
+| `ambassador_withdrawals` | 2 | `id` | 0 | 1 |
+| `application_status_history` | 120 | `id` | 0 | 1 |
+| `applications` | 5140 | `id` | 0 | 1 |
+| `attendance` | 4985 | `id` | 1 | 1 |
 | `check_log` | 0 | `id` | 0 | 0 |
 | `cohort_enrollments` | 1 | `id` | 2 | 2 |
 | `cohorts` | 1 | `id` | 1 | 2 |
-| `coin_ledger_mirror` | 1 | `id` | 0 | 3 |
-| `companies` | 3 | `id` | 0 | 2 |
+| `coin_ledger_mirror` | 37 | `id` | 0 | 3 |
+| `coin_perk_redemptions` | 0 | `id` | 1 | 1 |
+| `coin_perks_catalog` | 4 | `id` | 0 | 1 |
+| `companies` | 119 | `id` | 0 | 2 |
 | `company_follows` | 0 | `id` | 2 | 3 |
-| `conversations` | 93 | `id` | 0 | 3 |
-| `course_chapters` | 10 | `id` | 1 | 1 |
-| `course_day_quizzes` | 0 | `id` | 1 | 1 |
-| `course_enrollments` | 0 | `id` | 2 | 2 |
+| `conversations` | 122 | `id` | 0 | 3 |
+| `course_chapters` | 90 | `id` | 1 | 1 |
+| `course_day_quizzes` | 87 | `id` | 1 | 1 |
+| `course_enrollments` | 585 | `id` | 2 | 2 |
 | `course_payments` | 0 | `id` | 0 | 1 |
 | `course_projects` | 0 | `id` | 1 | 1 |
 | `course_subtopic_chats` | 0 | `id` | 2 | 1 |
-| `course_subtopics` | 26 | `id` | 1 | 1 |
-| `courses` | 2 | `id` | 0 | 1 |
-| `cvs` | 140 | `id` | 1 | 3 |
-| `day_quiz_attempts` | 0 | `id` | 2 | 1 |
-| `dbert_fallback_usage` | 0 | `id` | 1 | 2 |
-| `device_profiles` | 6356 | `id` | 0 | 1 |
-| `email_log` | 6157 | `id` | 0 | 0 |
-| `enrollments` | 308 | `id` | 0 | 0 |
-| `intern_accounts` | 2230 | `id` | 1 | 2 |
-| `intern_certificates` | 3 | `id` | 0 | 2 |
+| `course_subtopics` | 254 | `id` | 1 | 1 |
+| `courses` | 14 | `id` | 0 | 1 |
+| `cvs` | 149 | `id` | 1 | 3 |
+| `day_quiz_attempts` | 965 | `id` | 2 | 1 |
+| `dbert_fallback_usage` | 71 | `id` | 1 | 2 |
+| `device_profiles` | 7035 | `id` | 0 | 1 |
+| `ecosystem_spotlights` | 0 | `id` | 0 | 1 |
+| `email_log` | 6831 | `id` | 0 | 0 |
+| `enrollment_status_history` | 0 | `id` | 0 | 1 |
+| `enrollments` | 464 | `id` | 0 | 0 |
+| `event_outbox` | 0 | `id` | 0 | 1 |
+| `gl_concepts` | 0 | `id` | 0 | 1 |
+| `gl_course_chunks` | 0 | `id` | 0 | 1 |
+| `gl_learning_events` | 0 | `id` | 0 | 1 |
+| `gl_learning_sessions` | 0 | `id` | 0 | 1 |
+| `gl_learning_turns` | 0 | `id` | 0 | 1 |
+| `gl_misconception_catalog` | 0 | `id` | 0 | 1 |
+| `gl_student_learning_profile` | 0 | `id` | 0 | 1 |
+| `gl_student_mastery` | 0 | `id` | 0 | 1 |
+| `gl_teacher_learning_instructions` | 0 | `id` | 3 | 1 |
+| `intern_accounts` | 2988 | `id` | 1 | 2 |
+| `intern_articles` | 11 | `id` | 0 | 1 |
+| `intern_certificates` | 129 | `id` | 0 | 2 |
+| `intern_offer_letters` | 5 | `id` | 0 | 2 |
 | `interviews` | 576 | `id` | 0 | 1 |
 | `mentor_availability_slots` | 0 | `id` | 1 | 1 |
 | `mentor_session_bookings` | 0 | `id` | 2 | 2 |
 | `mentors` | 4 | `id` | 0 | 1 |
-| `messages` | 105 | `id` | 1 | 1 |
+| `messages` | 128 | `id` | 1 | 1 |
 | `mobile_refresh_tokens` | 0 | `id` | 0 | 3 |
-| `notifications` | 5047 | `id` | 0 | 1 |
-| `password_resets` | 359 | `id` | 0 | 1 |
+| `notifications` | 6078 | `id` | 0 | 1 |
+| `password_resets` | 383 | `id` | 0 | 1 |
+| `payment_events` | 0 | `id` | 0 | 1 |
 | `payments` | 0 | `id` | 0 | 0 |
-| `platform_config` | 10 | `key` | 0 | 1 |
-| `post_applications` | 508 | `id` | 2 | 3 |
+| `platform_config` | 11 | `key` | 0 | 1 |
+| `post_applications` | 636 | `id` | 2 | 3 |
 | `post_comments` | 14 | `id` | 2 | 1 |
 | `post_hire_deposits` | 0 | `id` | 0 | 1 |
+| `post_questions` | 0 | `id` | 1 | 1 |
+| `posts` | 235 | `id` | 1 | 2 |
+| `project_submissions` | 0 | `id` | 4 | 2 |
+| `rate_events` | 12 | `id` | 0 | 1 |
+| `referrals` | 57 | `id` | 0 | 3 |
+| `resume_ats_audits` | 0 | `id` | 0 | 1 |
+| `review_log` | 0 | `id` | 1 | 2 |
+| `scraped_internship_comments` | 36 | `id` | 0 | 1 |
+| `scraped_internships` | 6733 | `id` | 0 | 2 |
+| `scraped_job_comments` | 0 | `id` | 0 | 1 |
+| `scraped_jobs` | 3105 | `id` | 0 | 2 |
+| `security_deposits` | 52 | `id` | 0 | 0 |
+| `signup_otps` | 0 | `id` | 0 | 1 |
+| `spotlight_clicks` | 0 | `id` | 0 | 1 |
+| `staff_accounts` | 10 | `id` | 0 | 2 |
+| `staff_queue_roles` | 13 | `id` | 1 | 2 |
+| `task_submissions` | 40 | `id` | 4 | 2 |
+| `task_versions` | 3 | `id` | 1 | 2 |
+| `tasks` | 8 | `id` | 0 | 1 |
+| `tutor_progress` | 0 | `id` | 1 | 1 |
+| `user_api_keys` | 144 | `id` | 1 | 2 |
+| `user_sessions` | 1193 | `id` | 0 | 1 |
+| `web_push_delivery_logs` | 0 | `id` | 0 | 1 |
+| `web_push_devices` | 0 | `id` | 0 | 1 |
 | `post_questions` | 0 | `id` | 1 | 1 |
 | `posts` | 75 | `id` | 1 | 2 |
 | `project_submissions` | 0 | `id` | 4 | 2 |

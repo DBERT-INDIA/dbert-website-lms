@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import s from './verify.module.css';
 
 interface Props {
@@ -96,14 +97,12 @@ export default function CertificatePreviewFrame({
           <div className={s.lockedSubText}>
             Form Submission Required to Validate &amp; Release Stipend
           </div>
-          <a
-            href="https://docs.google.com/forms/d/e/1FAIpQLSeHCTK_HO5ZbNHNcPiyW-04Y4bBeZ0RvQP7I4koQnW91d6phA/viewform?usp=header"
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href={`/verify/unlock?certid=${encodeURIComponent(certId || '')}`}
             className={s.lockedUnlockBtn}
           >
-            Complete Form to Unlock &rarr;
-          </a>
+            Verify &amp; Unlock Official Credentials (₹299) &rarr;
+          </Link>
         </div>
       )}
     </div>
