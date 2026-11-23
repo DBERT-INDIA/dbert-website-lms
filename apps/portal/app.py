@@ -1,12 +1,13 @@
 # Canonical app â€” promoted from templates/app.py on 2026-06-04
 from services.intern_profile import AttendanceService, TaskSummaryService, ApplicationSummaryService
-from flask import Flask, render_template, request, jsonify, send_from_directory, Response, make_response, redirect, session, abort, g, has_request_context, flash, stream_with_context
+from flask import Flask, render_template, request, jsonify, send_file, send_from_directory, Response, make_response, redirect, session, abort, g, has_request_context, flash, stream_with_context
 from urllib.parse import quote
 from markupsafe import Markup, escape
 import os
 import sys
 sys.modules.setdefault("app", sys.modules[__name__])
 import io
+from io import BytesIO
 import csv
 import re
 import html
