@@ -4348,11 +4348,11 @@
     "duration": "August to October 2026 (2 Months)",
     "score": 87,
     "grade": "Grade: A+ (Outstanding Performance)",
-    "isProvisional": false,
-    "status": "VERIFIED",
+    "isProvisional": true,
+    "status": "PROVISIONAL",
     "firstLetter": "R",
     "verifyUrl": "/verify/CERT-DBERT-2026-DA-019",
-    "verified": true
+    "verified": false
   },
   {
     "certId": "CERT-DBERT-2026-DA-065",

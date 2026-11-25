@@ -142,23 +142,82 @@ def admin_analytics():
                 return jsonify({"status": "error", "message": "Unauthorized"}), 401
             return redirect("/admin/login")
 
-    base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    traffic_file = os.path.join(base_dir, "data", "traffic_analytics_summary.json")
-    seo_file = os.path.join(base_dir, "data", "seo_keyword_intelligence.json")
+    # Locate data/ directory dynamically (supports monorepo root & standalone deployments)
+    curr = os.path.abspath(__file__)
+    repo_root = curr
+    for _ in range(4):
+        repo_root = os.path.dirname(repo_root)
 
-    traffic_data = {}
+    data_dir = os.path.join(repo_root, "data")
+    if not os.path.isdir(data_dir):
+        candidate = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..", "data"))
+        if os.path.isdir(candidate):
+            data_dir = candidate
+        else:
+            candidate2 = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "data"))
+            if os.path.isdir(candidate2):
+                data_dir = candidate2
+
+    traffic_file = os.path.join(data_dir, "traffic_analytics_summary.json")
+    seo_file = os.path.join(data_dir, "seo_keyword_intelligence.json")
+
+    # Defensive default traffic schema so template never crashes on missing keys
+    traffic_data = {
+        "generated_at": now_str(),
+        "total_raw_requests": 0,
+        "total_page_views": 0,
+        "unique_visitors": 0,
+        "devices": {"Mobile": 0, "Desktop": 0, "Tablet": 0},
+        "channels": {
+            "ai_assistant_referral": 0,
+            "organic_search": 0,
+            "whatsapp_campaign": 0,
+            "direct": 0,
+            "ai_crawler": 0,
+        },
+        "ai_assistant_referrals": {},
+        "ai_crawlers": {},
+        "top_landing_pages": [],
+    }
     if os.path.exists(traffic_file):
         try:
             with open(traffic_file, "r", encoding="utf-8") as f:
-                traffic_data = json.load(f)
+                loaded = json.load(f)
+                if isinstance(loaded, dict):
+                    traffic_data.update(loaded)
         except Exception:
             pass
 
-    seo_data = {}
+    default_channels = {
+        "ai_assistant_referral": 0,
+        "organic_search": 0,
+        "whatsapp_campaign": 0,
+        "direct": 0,
+        "ai_crawler": 0,
+    }
+    if not isinstance(traffic_data.get("channels"), dict):
+        traffic_data["channels"] = default_channels.copy()
+    else:
+        for ck, cv in default_channels.items():
+            if ck not in traffic_data["channels"]:
+                traffic_data["channels"][ck] = cv
+
+    if not isinstance(traffic_data.get("devices"), dict):
+        traffic_data["devices"] = {"Mobile": 0, "Desktop": 0, "Tablet": 0}
+
+    # Defensive default SEO schema
+    seo_data = {
+        "total_organic_clicks": 0,
+        "total_organic_impressions": 0,
+        "striking_distance_keywords": [],
+        "top_performing_queries": [],
+    }
     if os.path.exists(seo_file):
         try:
             with open(seo_file, "r", encoding="utf-8") as f:
-                seo_data = json.load(f)
+                loaded_seo = json.load(f)
+                if isinstance(loaded_seo, dict):
+                    seo_data.update(loaded_seo)
         except Exception:
             pass
 

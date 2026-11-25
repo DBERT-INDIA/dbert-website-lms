@@ -6,7 +6,14 @@
   font-size: 1.0625rem;
   line-height: 1.85;
   letter-spacing: -0.003em;
-  max-width: 100%;
+  max-width: 74ch;
+  width: 100%;
+  margin-inline: auto;
+}
+
+.articleRoot ::selection {
+  background: rgba(37, 99, 235, 0.18);
+  color: #0f172a;
 }
 
 /* Headings with crisp, dark slate contrast and clear hierarchy */
@@ -47,11 +54,13 @@
 
 /* Body Paragraphs */
 .articleP {
-  color: #334155 !important;
+  color: #1e293b !important;
   font-size: 1.0625rem;
   line-height: 1.85;
+  text-align: justify;
+  text-justify: inter-word;
   margin-top: 0;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.35rem;
   word-break: break-word;
 }
 
@@ -98,17 +107,19 @@
 /* Lists */
 .articleUl,
 .articleOl {
-  margin-top: 0.25rem;
-  margin-bottom: 1.35rem;
-  padding-left: 1.6rem;
+  margin-top: 0.35rem;
+  margin-bottom: 1.5rem;
+  padding-left: 1.65rem;
   display: flex;
   flex-direction: column;
-  gap: 0.45rem;
+  gap: 0.65rem;
 }
 
 .articleLi {
-  color: #334155 !important;
-  line-height: 1.75;
+  color: #1e293b !important;
+  line-height: 1.85;
+  text-align: justify;
+  text-justify: inter-word;
 }
 
 .articleUl .articleLi::marker {
@@ -231,9 +242,11 @@
 }
 
 .articleTable td {
-  padding: 0.75rem 1rem;
+  padding: 0.85rem 1rem;
   border-bottom: 1px solid #e2e8f0;
-  color: #334155;
+  color: #1e293b;
+  line-height: 1.65;
+  vertical-align: top;
 }
 
 .articleTable tr:last-child td {
@@ -242,4 +255,11 @@
 
 .articleTable tr:nth-child(even) td {
   background: #fbfcfe;
+}
+
+@media (max-width: 768px) {
+  .articleP,
+  .articleLi {
+    text-align: left;
+  }
 }

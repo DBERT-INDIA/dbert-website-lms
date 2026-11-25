@@ -34,21 +34,21 @@ export default function StartupRegisterForm() {
   // "subscribe to an external system on mount" case the rule's own docs allow;
   // it cannot move into a useState initialiser without breaking SSR hydration,
   // and React batches these three updates into a single render anyway.
-  /* eslint-disable react-hooks/set-state-in-effect -- see note above */
   useEffect(() => {
     const savedData = sessionStorage.getItem('dbert_startup_form');
     const savedStep = sessionStorage.getItem('dbert_startup_step');
-    if (savedData) {
-      try {
-        setFormData(JSON.parse(savedData));
-      } catch (e) {}
-    }
-    if (savedStep) {
-      setStep(parseInt(savedStep, 10));
-    }
-    setIsHydrated(true);
+    queueMicrotask(() => {
+      if (savedData) {
+        try {
+          setFormData(JSON.parse(savedData));
+        } catch (e) {}
+      }
+      if (savedStep) {
+        setStep(parseInt(savedStep, 10));
+      }
+      setIsHydrated(true);
+    });
   }, []);
-  /* eslint-enable react-hooks/set-state-in-effect */
 
   useEffect(() => {
     if (isHydrated) {

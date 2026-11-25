@@ -64,11 +64,11 @@
              data-title="{{ course.title | lower }}">
           <div class="card-banner"{% if course.banner_gradient %} style="background: {{ course.banner_gradient }}"{% endif %}>
             <div class="row" style="gap:8px">
-              <span class="badge">{{ course.level or 'Beginner' }}</span>
+              <span class="badge" style="color:#FFFFFF;">{{ course.level or 'Beginner' }}</span>
               {% if course.is_paid %}
-                <span class="badge">₹{{ course.price_inr | formatINR }}</span>
+                <span class="badge" style="color:#FFFFFF;">₹{{ course.price_inr | formatINR }}</span>
               {% else %}
-                <span class="badge b-green">Free</span>
+                <span class="badge b-green" style="color:#FFFFFF;">Free</span>
               {% endif %}
             </div>
           </div>

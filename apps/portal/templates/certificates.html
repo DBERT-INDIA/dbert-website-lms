@@ -358,6 +358,24 @@
       <p>Cryptographically verifiable micro-credentials, sprint achievements, and sovereign 3-document applied engineering credential dossiers.</p>
     </div>
 
+    {% if not is_graduated %}
+    <!-- Inline Graduation Required Notice (Right-hand section, no popup modal) -->
+    <div id="graduation-required-notice" style="background:#1e293b;border:1px solid rgba(239,68,68,0.35);border-radius:16px;padding:20px 24px;margin-bottom:24px;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;color:#f1f5f9;">
+      <div style="display:flex;align-items:flex-start;gap:14px;flex:1 1 320px;">
+        <span style="display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);color:#ef4444;font-size:15px;flex-shrink:0;margin-top:2px;">
+          <i class="fa-solid fa-lock"></i>
+        </span>
+        <div>
+          <h3 style="color:#f8fafc;font-size:16.5px;font-weight:750;margin:0 0 6px;">Degree/Cohort Graduation Required</h3>
+          <p style="color:#cbd5e1;font-size:13.5px;line-height:1.6;margin:0;">
+            Official verified credentials and completion certificates are cryptographically minted upon successful graduation and submission of all production capstone milestones.
+          </p>
+        </div>
+      </div>
+      <a href="/tasks" style="background:#2563eb;color:#ffffff;border-radius:10px;padding:10px 18px;font-weight:700;font-size:13.5px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;white-space:nowrap;align-self:center;">Go to Production Sprints &rarr;</a>
+    </div>
+    {% endif %}
+
     <!-- Section 1: Official Internship Credential Dossier -->
     <div class="section-headline">
       <i class="fa-solid fa-file-contract" style="color: #6366F1;"></i> Official Technical Internship Credential
@@ -469,21 +487,41 @@
             </p>
 
             <div class="upgrade-options-grid">
-              <div class="upgrade-opt-card">
+              {% if is_paid_1999 %}
+              <div class="upgrade-opt-card" style="grid-column: 1 / -1;">
                 <div>
                   <span class="upgrade-opt-badge" style="background: rgba(16, 185, 129, 0.2); color: #10B981;">
-                    Option 1 · Fast Track
+                    ₹1,999 Fellowship Settled
                   </span>
                   <div style="font-weight: 800; color: #fff; font-size: 1.05rem; margin-bottom: 2px;">
-                    ₹299 Project Verification Fee
+                    Complete 4-Pillar Sprint Milestones
                   </div>
                   <div style="font-size: 0.8125rem; color: #94A3B8; line-height: 1.4;">
-                    Instant evaluation verification, official 3-doc vector PDFs, Turnitin report seal, and verified recruiter directory badge.
+                    Your ₹1,999 All-Inclusive Fellowship is already settled. Complete your 80h attendance, 75 tasks, 1 merged PR, and Turnitin &lt; 3% capstone to unlock your official 3-document credential packet.
                   </div>
                 </div>
                 <div style="margin-top: 1rem;">
-                  <a href="https://dbert.in/verify/unlock?certid={{ cert_id }}" target="_blank" class="btn-amber" style="width: 100%; justify-content: center;">
-                    Unlock for ₹299 &rarr;
+                  <a href="/tasks" class="btn-amber" style="width: 100%; justify-content: center; background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #fff;">
+                    Continue Sprint Milestones (/tasks) &rarr;
+                  </a>
+                </div>
+              </div>
+              {% else %}
+              <div class="upgrade-opt-card">
+                <div>
+                  <span class="upgrade-opt-badge" style="background: rgba(16, 185, 129, 0.2); color: #10B981;">
+                    Option 1 · Sprint Track
+                  </span>
+                  <div style="font-weight: 800; color: #fff; font-size: 1.05rem; margin-bottom: 2px;">
+                    Complete 4-Pillar Sprint Milestones
+                  </div>
+                  <div style="font-size: 0.8125rem; color: #94A3B8; line-height: 1.4;">
+                    Finish 80h attendance, 75 tasks, 1 merged PR, and Turnitin &lt; 3% capstone to earn your verified 3-document credential packet.
+                  </div>
+                </div>
+                <div style="margin-top: 1rem;">
+                  <a href="/tasks" class="btn-amber" style="width: 100%; justify-content: center;">
+                    Go to Sprint Tasks (/tasks) &rarr;
                   </a>
                 </div>
               </div>
@@ -491,21 +529,22 @@
               <div class="upgrade-opt-card">
                 <div>
                   <span class="upgrade-opt-badge" style="background: rgba(99, 102, 241, 0.2); color: #818CF8;">
-                    Option 2 · Full Fellowship
+                    Option 2 · All-Inclusive Fellowship
                   </span>
                   <div style="font-weight: 800; color: #fff; font-size: 1.05rem; margin-bottom: 2px;">
-                    ₹1,500 Incubation Balance
+                    ₹1,999 All-Inclusive Fellowship
                   </div>
                   <div style="font-size: 0.8125rem; color: #94A3B8; line-height: 1.4;">
-                    Complete remaining incubation balance. Unlocks verified credentials, 1:1 mentor booking, and ₹5,000 milestone stipend eligibility.
+                    Enroll in the ₹1,999 All-Inclusive Fellowship for 1:1 mentor PR review, official 3-doc credential packet, and dedicated placement assistance.
                   </div>
                 </div>
                 <div style="margin-top: 1rem;">
                   <a href="https://dbert.in/enroll/1999?certid={{ cert_id }}" target="_blank" class="btn-secondary" style="width: 100%; justify-content: center; background: rgba(99, 102, 241, 0.2); border-color: #6366F1;">
-                    Complete ₹1,500 Balance &rarr;
+                    Upgrade to ₹1,999 Fellowship &rarr;
                   </a>
                 </div>
               </div>
+              {% endif %}
             </div>
           </div>
 

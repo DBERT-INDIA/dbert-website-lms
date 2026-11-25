@@ -17,6 +17,10 @@ dbert-api-package/databases/*.db*
 databases/*.db*
 
 # Environment & Secrets (Strictly kept locally - never committed)
+*.pem
+*.key
+.vapid/
+apps/portal/.vapid/
 .env
 .env.local
 .env.*.local

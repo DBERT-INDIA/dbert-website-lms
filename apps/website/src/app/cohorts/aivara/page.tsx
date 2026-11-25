@@ -6,6 +6,7 @@ import {
   Laptop,
   Clock,
   Banknote,
+  Briefcase,
   Globe2,
   GraduationCap,
   Wifi,
@@ -20,7 +21,7 @@ export default function AivaraCohortLandingPage() {
     '@context': 'https://schema.org',
     '@type': 'JobPosting',
     title: 'Aivara Technologies Remote Internship Cohort (2026)',
-    description: '<p>A production-level technical internship designed specifically for college students and emerging developers. Build real systems, receive senior engineering code reviews, and earn performance-linked stipends from anywhere in India.</p><p><strong>Tracks:</strong> AI Agent Development, Full Stack Web Development, Python Automation, Data Analytics, and Machine Learning.</p><p><strong>Requirements:</strong> Laptop with internet connection, commitment of 10 hours per week, foundational programming knowledge.</p>',
+    description: '<p>A production-level technical internship designed specifically for college students and emerging developers. Build real systems, receive senior engineering code reviews, and secure 100% Guaranteed Production Internship with Dedicated Placement Assistance from anywhere in India.</p><p><strong>Tracks:</strong> AI Agent Development, Full Stack Web Development, Python Automation, Data Analytics, and Machine Learning.</p><p><strong>Requirements:</strong> Laptop with internet connection, commitment of 10 hours per week, foundational programming knowledge.</p>',
     datePosted: '2026-10-01T00:00:00+05:30',
     validThrough: '2027-06-30T23:59:59+05:30',
     employmentType: 'INTERN',
@@ -36,16 +37,6 @@ export default function AivaraCohortLandingPage() {
     applicantLocationRequirements: {
       '@type': 'Country',
       name: 'IN',
-    },
-    baseSalary: {
-      '@type': 'MonetaryAmount',
-      currency: 'INR',
-      value: {
-        '@type': 'QuantitativeValue',
-        minValue: 10000,
-        maxValue: 22000,
-        unitText: 'MONTH',
-      },
     },
     directApply: true,
   };
@@ -66,7 +57,7 @@ export default function AivaraCohortLandingPage() {
           </div>
           <h1>Aivara Technologies Remote Internship Cohort</h1>
           <p className={styles.heroLede}>
-            A production-level technical internship designed specifically for college students and emerging developers. Build real systems, receive senior engineering code reviews, and earn performance-linked stipends from anywhere in India.
+            A production-level technical internship designed specifically for college students and emerging developers. Build real systems, receive senior engineering code reviews, and secure 100% Guaranteed Production Internship with Dedicated Placement Assistance from anywhere in India.
           </p>
 
           {/* Expandable Application Form Section */}
@@ -101,13 +92,13 @@ export default function AivaraCohortLandingPage() {
             </p>
           </div>
 
-          {/* 3. Earning Opportunity up to 22k */}
+          {/* 3. Guaranteed Production Internship */}
           <div className={styles.highlightCard}>
-            <span className="icon-chip"><Banknote size={18} aria-hidden="true" /></span>
-            <span className={styles.tagBadge}>PERFORMANCE STIPEND</span>
-            <h3>Earning Opportunity up to ₹22,000</h3>
+            <span className="icon-chip"><Briefcase size={18} aria-hidden="true" /></span>
+            <span className={styles.tagBadge}>GUARANTEED PRODUCTION INTERNSHIP</span>
+            <h3>100% Guaranteed Production Internship with Dedicated Placement Assistance</h3>
             <p>
-              Get paid for verified shipping velocity and code quality. Eligible interns unlock milestone-based performance stipends ranging up to ₹22,000 based on sprint outputs.
+              Direct deployment across DBERT portfolio ventures (Gayatri AI, Alkame, Aivara) or verified corporate hiring partners upon sprint completion.
             </p>
           </div>
 
@@ -192,7 +183,7 @@ export default function AivaraCohortLandingPage() {
               <ul>
                 <li><strong>Sprint Planning:</strong> Receive weekly project deliverables broken down into bite-sized GitHub issues and tickets.</li>
                 <li><strong>10-Hour Weekly Cadence:</strong> Complete your contributions on weekday evenings or weekends at your own pace.</li>
-                <li><strong>Performance Stipends:</strong> As your milestone pull requests get approved and merged, you earn performance stipends up to ₹22,000.</li>
+                <li><strong>Performance Bounties:</strong> As your milestone pull requests get approved and merged, you earn internal merit milestone rewards.</li>
                 <li><strong>Zero Sourcing Commission:</strong> 100% direct evaluation—no recruitment agencies, middlemen, or hidden fees.</li>
               </ul>
             </div>

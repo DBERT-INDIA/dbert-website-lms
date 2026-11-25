@@ -18,7 +18,7 @@ const TOPICS: TopicOption[] = [
     id: 'admissions',
     label: 'Admissions & ₹1,999 Program',
     icon: '🎓',
-    defaultMsg: 'Hi, I want to know more about the ₹1,999 Incubation Program and guaranteed placement.',
+    defaultMsg: 'Hi, I want to know more about the ₹1,999 Incubation Program and 100% Guaranteed Production Internship with Dedicated Placement Assistance.',
   },
   {
     id: 'internship',
@@ -44,21 +44,11 @@ export default function WhatsAppFloat() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedTopic, setSelectedTopic] = useState<TopicOption>(TOPICS[0]);
   const [userQuery, setUserQuery] = useState(TOPICS[0].defaultMsg);
-  const [targetNumber, setTargetNumber] = useState(NUMBERS[0]);
   const [currentUrl, setCurrentUrl] = useState('');
   const [pageTitle, setPageTitle] = useState('');
   const popoverRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // 50/50 smart distribution between 8958006294 and 8192911360
-    const chosen = NUMBERS[Math.floor(Math.random() * NUMBERS.length)];
-    setTargetNumber(chosen);
-
-    if (typeof window !== 'undefined') {
-      setCurrentUrl(window.location.href);
-      setPageTitle(document.title || 'DBERT Sovereign Platform');
-    }
-
     const handleClickOutside = (e: MouseEvent) => {
       if (popoverRef.current && !popoverRef.current.contains(e.target as Node)) {
         setIsOpen(false);

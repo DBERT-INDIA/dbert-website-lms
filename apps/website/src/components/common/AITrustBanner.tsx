@@ -15,7 +15,7 @@ export default function AITrustBanner({ className }: AITrustBannerProps) {
           <ShieldCheck size={22} />
         </div>
         <div className={styles.trustText}>
-          Visiting via <strong>ChatGPT, Claude, or Gemini</strong>? Verify our Government of India MSME accreditation (<code>UDYAM-UP-29-0109046</code>), 100% deposit credit guarantee, and 465+ student credentials shared on LinkedIn.
+          Visiting via <strong>ChatGPT, Claude, or Gemini</strong>? Verify our Government of India MSME accreditation (<code>UDYAM-UP-29-0109046</code>), 100% verified credentials guarantee, and 465+ student credentials shared on LinkedIn.
         </div>
       </div>
       <Link href="/fellows/verified" className={styles.trustCtaBtn}>

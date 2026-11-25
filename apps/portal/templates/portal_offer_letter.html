@@ -152,6 +152,28 @@
     color: #ffffff !important;
     transform: translateY(-1px);
   }
+  .btn-theme-outline {
+    background: var(--brand-light, #eff6ff);
+    color: var(--brand, #2563eb) !important;
+    font-weight: 700;
+    font-size: 13px;
+    padding: 10px 18px;
+    border-radius: 8px;
+    border: 1.5px solid var(--brand, #2563eb);
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+  }
+  .btn-theme-outline:hover {
+    background: var(--brand, #2563eb);
+    color: #ffffff !important;
+    border-color: var(--brand-deep, #1d4ed8);
+    transform: translateY(-1px);
+  }
   .offer-stepper-card {
     background: #ffffff;
     border: 1px solid #e2e8f0;
@@ -629,48 +651,7 @@
   }
   {% if preview_mode %}
   .offer-preview-locked-doc {
-    user-select: none !important;
-    -webkit-user-select: none !important;
-    -moz-user-select: none !important;
-    -ms-user-select: none !important;
     position: relative !important;
-  }
-  .offer-preview-watermark-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    pointer-events: none;
-    z-index: 5;
-    background: repeating-linear-gradient(
-      -45deg,
-      rgba(217, 119, 6, 0.015),
-      rgba(217, 119, 6, 0.015) 120px,
-      rgba(217, 119, 6, 0.035) 120px,
-      rgba(217, 119, 6, 0.035) 240px
-    );
-    overflow: hidden;
-  }
-  .preview-watermark-stamp {
-    position: absolute;
-    top: 38%;
-    left: 50%;
-    transform: translate(-50%, -50%) rotate(-25deg);
-    border: 2.5px dashed rgba(217, 119, 6, 0.22);
-    background: rgba(254, 243, 199, 0.10);
-    color: rgba(180, 83, 9, 0.20);
-    padding: 20px 40px;
-    font-size: 26px;
-    font-weight: 900;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    text-align: center;
-    border-radius: 12px;
-    pointer-events: none;
-    user-select: none;
-    box-shadow: none;
-    backdrop-filter: none !important;
   }
   @media print {
     html, body {
@@ -790,49 +771,329 @@
     <div class="offer-page-container" style="max-width:940px; margin:24px auto 60px; padding:0 16px; font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color:#0f172a;">
 
       {% if locked %}
-      <!-- ── LOCKED STATE: ₹499 CAUTION DEPOSIT NOT YET VERIFIED ── -->
-      <div class="no-print" style="background:#ffffff; border:1px solid #e2e8f0; border-top:4px solid #d97706; border-radius:14px; padding:44px 36px; text-align:center; box-shadow:0 10px 25px -5px rgba(0,0,0,0.06); margin-top:20px;">
-        <div style="width:72px; height:72px; border-radius:50%; background:#fef3c7; color:#d97706; display:flex; align-items:center; justify-content:center; font-size:32px; margin:0 auto 18px; box-shadow:0 4px 12px rgba(217, 119, 6, 0.15);">
-          <i class="fa-solid fa-lock"></i>
-        </div>
-        <div style="display:inline-block; padding:4px 12px; background:#fef3c7; color:#b45309; border-radius:9999px; font-size:11px; font-weight:800; letter-spacing:1px; text-transform:uppercase; margin-bottom:12px;">
-          Seat Confirmation Required
-        </div>
-        <h2 style="font-size:24px; font-weight:900; color:#0f172a; margin:0 0 12px; font-family:'Georgia', serif;">
-          Official Offer Letter Gated
-        </h2>
-        <p style="font-size:14.5px; color:#475569; max-width:560px; margin:0 auto 24px; line-height:1.65;">
-          Official appointment and internship offer letters are issued strictly to candidates who have confirmed their cohort seat via the <strong>₹499 refundable caution deposit</strong>.
-        </p>
+      <!-- ── UNDER REVIEW / REJECTED & INCUBATION UPGRADE HUB ── -->
 
-        {% if enrollment %}
-        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:18px 24px; max-width:500px; margin:0 auto 28px; text-align:left; font-size:13.5px; color:#334155;">
-          <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
-            <span style="color:#64748b; font-weight:600;">Candidate:</span>
-            <strong>{{ enrollment.name }}</strong>
+      <!-- Module 1: Admissions Review Status & Urgency Banner -->
+      <div class="no-print portal-header-banner" style="background:linear-gradient(135deg, #0b1120 0%, #1e293b 100%); border:1px solid #334155; border-radius:14px; padding:28px 32px; margin-bottom:20px; box-shadow:0 10px 25px -5px rgba(0, 0, 0, 0.25);">
+        <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:14px;">
+          {% if is_rejected %}
+          <span style="display:inline-flex; align-items:center; gap:6px; padding:5px 14px; border-radius:9999px; font-size:11.5px; font-weight:800; letter-spacing:0.8px; text-transform:uppercase; background:rgba(239, 68, 68, 0.2); border:1px solid #ef4444; color:#fca5a5;">
+            <i class="fa-solid fa-circle-xmark"></i> Application Not Selected (Free Track)
+          </span>
+          <span style="display:inline-flex; align-items:center; gap:6px; padding:5px 14px; border-radius:9999px; font-size:11.5px; font-weight:800; letter-spacing:0.8px; text-transform:uppercase; background:rgba(16, 185, 129, 0.18); border:1px solid #10b981; color:#6ee7b7;">
+            <i class="fa-solid fa-bolt"></i> Direct ₹1,999 Fellowship Available
+          </span>
+          {% else %}
+          <span style="display:inline-flex; align-items:center; gap:6px; padding:5px 14px; border-radius:9999px; font-size:11.5px; font-weight:800; letter-spacing:0.8px; text-transform:uppercase; background:rgba(245, 158, 11, 0.2); border:1px solid #f59e0b; color:#fbbf24;">
+            <i class="fa-solid fa-hourglass-half fa-spin"></i> Application Under Active Mentor Review
+          </span>
+          <span style="display:inline-flex; align-items:center; gap:6px; padding:5px 14px; border-radius:9999px; font-size:11.5px; font-weight:800; letter-spacing:0.8px; text-transform:uppercase; background:rgba(56, 189, 248, 0.18); border:1px solid #38bdf8; color:#7dd3fc;">
+            <i class="fa-solid fa-users"></i> Queue Position: #{{ queue_position or 18 }} in {{ candidate_domain or enrollment.domain or 'Full Stack Development' }}
+          </span>
+          <span style="display:inline-flex; align-items:center; gap:6px; padding:5px 14px; border-radius:9999px; font-size:11.5px; font-weight:800; letter-spacing:0.8px; text-transform:uppercase; background:rgba(255, 255, 255, 0.08); border:1px solid rgba(255, 255, 255, 0.15); color:#e2e8f0; font-family:ui-monospace, monospace;">
+            <i class="fa-solid fa-bolt" style="color:#fbbf24;"></i> Decision SLA: 24–48 Hours
+          </span>
+          {% endif %}
+        </div>
+
+        {% if is_rejected %}
+        <h1 style="color:#ffffff; font-size:26px; font-weight:800; margin:0 0 12px; font-family:'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; letter-spacing:-0.5px;">
+          Application Status: <span style="color:#fca5a5;">Not Selected for Free Track</span>
+        </h1>
+        <p style="color:#cbd5e1; font-size:14.5px; margin:0; line-height:1.65; max-width:820px; font-family:'Plus Jakarta Sans', sans-serif;">
+          Hello <strong style="color:#ffffff;">{{ enrollment.name or user.name or 'Candidate' }}</strong>, your free-track application for <strong style="color:#38bdf8;">{{ candidate_domain or enrollment.domain or 'Full Stack Web Development' }}</strong> was not shortlisted in this cycle. You may re-apply after 30 days on your <a href="/portal" style="color:#7dd3fc; text-decoration:underline;">Dashboard</a>, or enroll directly in the ₹1,999 Incubation Fellowship below with immediate seat confirmation.
+        </p>
+        {% else %}
+        <h1 style="color:#ffffff; font-size:26px; font-weight:800; margin:0 0 12px; font-family:'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; letter-spacing:-0.5px;">
+          Application Status: <span style="color:#fbbf24;">Under Technical Screening</span>
+        </h1>
+        <p style="color:#cbd5e1; font-size:14.5px; margin:0; line-height:1.65; max-width:820px; font-family:'Plus Jakarta Sans', sans-serif;">
+          Hello <strong style="color:#ffffff;">{{ enrollment.name or user.name or 'Candidate' }}</strong>, your standard internship application for the <strong style="color:#38bdf8;">{{ candidate_domain or enrollment.domain or 'Full Stack Web Development' }}</strong> track has been logged into the admissions review pipeline. Our technical screening mentors are auditing prerequisite qualifications, portfolio links, and sprint seat availability.
+        </p>
+        {% endif %}
+      </div>
+
+      <!-- Module 5: Visual Application Status Stepper -->
+      <div class="no-print" style="background:#ffffff; border:1px solid #e2e8f0; border-radius:12px; padding:18px 24px; margin-bottom:24px; display:flex; align-items:center; justify-content:space-between; gap:16px; box-shadow:0 2px 8px rgba(0, 0, 0, 0.04); flex-wrap:wrap;">
+        <!-- Step 1 -->
+        <div style="display:flex; align-items:center; gap:12px; flex:1; min-width:200px;">
+          <div style="width:34px; height:34px; border-radius:50%; background:#10b981; color:#ffffff; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:800; flex-shrink:0;">
+            <i class="fa-solid fa-check"></i>
           </div>
-          <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
-            <span style="color:#64748b; font-weight:600;">Registered Email:</span>
-            <span>{{ enrollment.email }}</span>
+          <div>
+            <div style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.6px; color:#10b981;">Step 1 &bull; Complete</div>
+            <div style="font-size:13.5px; font-weight:700; color:#0f172a;">Application Submitted</div>
           </div>
-          <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
-            <span style="color:#64748b; font-weight:600;">Domain Track:</span>
-            <strong>{{ enrollment.domain }}</strong>
+        </div>
+        <div style="width:32px; height:2px; background:#cbd5e1; flex-shrink:0;"></div>
+        <!-- Step 2 -->
+        {% if is_rejected %}
+        <div style="display:flex; align-items:center; gap:12px; flex:1; min-width:200px;">
+          <div style="width:34px; height:34px; border-radius:50%; background:#ef4444; color:#ffffff; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:800; flex-shrink:0; box-shadow:0 0 0 4px rgba(239, 68, 68, 0.18);">
+            <i class="fa-solid fa-xmark"></i>
           </div>
-          <div style="display:flex; justify-content:space-between; padding-top:8px; border-top:1px dashed #cbd5e1;">
-            <span style="color:#64748b; font-weight:600;">Caution Deposit:</span>
-            <span style="color:#d97706; font-weight:800;">{{ enrollment.payment_status or 'Pending Submission' }}</span>
+          <div>
+            <div style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.6px; color:#dc2626;">Step 2 &bull; Screening Closed</div>
+            <div style="font-size:13.5px; font-weight:700; color:#0f172a;">Not Selected (Free Track)</div>
+          </div>
+        </div>
+        <div style="width:32px; height:2px; background:#cbd5e1; flex-shrink:0;"></div>
+        <!-- Step 3 -->
+        <div style="display:flex; align-items:center; gap:12px; flex:1; min-width:200px;">
+          <div style="width:34px; height:34px; border-radius:50%; background:#10b981; color:#ffffff; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:800; flex-shrink:0;">
+            <i class="fa-solid fa-rocket"></i>
+          </div>
+          <div>
+            <div style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.6px; color:#059669;">Step 3 &bull; Available Now</div>
+            <div style="font-size:13.5px; font-weight:700; color:#0f172a;">Direct ₹1,999 Fellowship or 30-Day Re-apply</div>
+          </div>
+        </div>
+        {% else %}
+        <div style="display:flex; align-items:center; gap:12px; flex:1; min-width:200px;">
+          <div style="width:34px; height:34px; border-radius:50%; background:#f59e0b; color:#ffffff; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:800; flex-shrink:0; box-shadow:0 0 0 4px rgba(245, 158, 11, 0.2);">
+            <i class="fa-solid fa-hourglass-half"></i>
+          </div>
+          <div>
+            <div style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.6px; color:#d97706;">Step 2 &bull; Active Screening</div>
+            <div style="font-size:13.5px; font-weight:700; color:#0f172a;">Mentor Review (Queue #{{ queue_position or 18 }})</div>
+          </div>
+        </div>
+        <div style="width:32px; height:2px; background:#cbd5e1; flex-shrink:0;"></div>
+        <!-- Step 3 -->
+        <div style="display:flex; align-items:center; gap:12px; flex:1; min-width:200px;">
+          <div style="width:34px; height:34px; border-radius:50%; background:#e2e8f0; color:#94a3b8; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:800; flex-shrink:0;">
+            <i class="fa-solid fa-lock"></i>
+          </div>
+          <div>
+            <div style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.6px; color:#94a3b8;">Step 3 &bull; Next</div>
+            <div style="font-size:13.5px; font-weight:700; color:#64748b;">Official Offer Letter Unlock</div>
           </div>
         </div>
         {% endif %}
+      </div>
 
-        <div style="display:flex; justify-content:center; gap:14px; flex-wrap:wrap;">
-          <a href="https://docs.google.com/forms/d/e/1FAIpQLSeHCTK_HO5ZbNHNcPiyW-04Y4bBeZ0RvQP7I4koQnW91d6phA/viewform?usp=header" target="_blank" class="btn-gold" style="background:linear-gradient(135deg, #fbbf24 0%, #d97706 100%); color:#0b1120 !important; font-weight:800; font-size:13.5px; text-decoration:none; padding:12px 24px; border-radius:9px; display:inline-flex; align-items:center; gap:9px; box-shadow:0 4px 14px rgba(245, 158, 11, 0.35); border:1.5px solid #fde68a;">
-            <i class="fa-solid fa-clipboard-check"></i> Complete Verification Form &rarr;
+      <!-- Module 2: The ₹1,999 Technical Incubation Showcase (Engineering Student-Centric Architecture) -->
+      <div class="no-print" style="background:#ffffff; border:1px solid #e2e8f0; border-radius:14px; padding:32px 28px; margin-bottom:24px; box-shadow:0 10px 25px -5px rgba(0,0,0,0.05);">
+        
+        <div style="text-align:center; max-width:780px; margin:0 auto 24px;">
+          <div style="display:inline-block; padding:5px 14px; background:rgba(217, 119, 6, 0.12); color:#b45309; border-radius:9999px; font-size:11.5px; font-weight:800; letter-spacing:0.8px; text-transform:uppercase; margin-bottom:10px;">
+            Industry Incubation &bull; Technical Training &amp; Paid Internship Fellowship
+          </div>
+          <h2 style="font-size:24px; font-weight:900; color:#0f172a; margin:0 0 10px; font-family:'Plus Jakarta Sans', -apple-system, sans-serif; letter-spacing:-0.5px;">
+            Fast-Track into DBERT Industry Incubation &amp; Paid Fellowship
+          </h2>
+          <p style="font-size:14.5px; color:#475569; line-height:1.6; margin:0;">
+            Bypass the standard screening waitlist. The <strong>₹1,999 Incubation Program</strong> combines comprehensive production engineering training with a guaranteed paid internship, dedicated 1-on-1 architect mentorship, verified credentials, and a fixed ₹5,000 performance stipend upon milestone clearance.
+          </p>
+        </div>
+
+        <!-- 1. TOP EXECUTIVE HIGHLIGHT RIBBON (PLACED ABOVE CARDS) -->
+        <div style="background:linear-gradient(135deg, #0b1120 0%, #151d2a 100%); border:1px solid #243042; border-radius:12px; padding:16px 20px; margin-bottom:16px; box-shadow:0 6px 20px rgba(0,0,0,0.18);">
+          <div style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.8px; color:#fbbf24; margin-bottom:12px; text-align:center;">
+            <i class="fa-solid fa-crown" style="color:#fbbf24;"></i> Everything Included in Your ₹1,999 Incubation Fellowship
+          </div>
+          <div style="display:flex; align-items:center; justify-content:center; gap:12px 18px; flex-wrap:wrap; font-size:12.5px; font-weight:700; color:#f0f4f8;">
+            <div style="display:inline-flex; align-items:center; gap:6px; background:rgba(16, 185, 129, 0.12); border:1px solid rgba(16, 185, 129, 0.35); padding:5px 12px; border-radius:99px; color:#34d399;">
+              <i class="fa-solid fa-check"></i>
+              <span>Guaranteed Monday Kickoff</span>
+            </div>
+            <div style="display:inline-flex; align-items:center; gap:6px; background:rgba(245, 158, 11, 0.12); border:1px solid rgba(245, 158, 11, 0.35); padding:5px 12px; border-radius:99px; color:#fbbf24;">
+              <i class="fa-solid fa-check"></i>
+              <span>₹5,000 Milestone Stipend (Hours + Tasks + PRs)</span>
+            </div>
+            <div style="display:inline-flex; align-items:center; gap:6px; background:rgba(56, 189, 248, 0.12); border:1px solid rgba(56, 189, 248, 0.35); padding:5px 12px; border-radius:99px; color:#7dd3fc;">
+              <i class="fa-solid fa-check"></i>
+              <span>1-on-1 Live Mentor Sessions</span>
+            </div>
+            <div style="display:inline-flex; align-items:center; gap:6px; background:rgba(168, 85, 247, 0.12); border:1px solid rgba(168, 85, 247, 0.35); padding:5px 12px; border-radius:99px; color:#c084fc;">
+              <i class="fa-solid fa-check"></i>
+              <span>Official Certificate of Completion</span>
+            </div>
+            <div style="display:inline-flex; align-items:center; gap:6px; background:rgba(56, 189, 248, 0.12); border:1px solid rgba(56, 189, 248, 0.35); padding:5px 12px; border-radius:99px; color:#7dd3fc;">
+              <i class="fa-solid fa-check"></i>
+              <span>Architect-Signed LOR</span>
+            </div>
+            <div style="display:inline-flex; align-items:center; gap:6px; background:rgba(234, 179, 8, 0.12); border:1px solid rgba(234, 179, 8, 0.35); padding:5px 12px; border-radius:99px; color:#facc15;">
+              <i class="fa-solid fa-check"></i>
+              <span>Turnitin Rubric</span>
+            </div>
+            <div style="display:inline-flex; align-items:center; gap:6px; background:rgba(16, 185, 129, 0.12); border:1px solid rgba(16, 185, 129, 0.35); padding:5px 12px; border-radius:99px; color:#34d399;">
+              <i class="fa-solid fa-check"></i>
+              <span>Tab 1 Placement Assistance</span>
+            </div>
+            <div style="display:inline-flex; align-items:center; gap:6px; background:rgba(255, 255, 255, 0.08); border:1px solid rgba(255, 255, 255, 0.15); padding:5px 12px; border-radius:99px; color:#e2e8f0; font-family:ui-monospace, monospace;">
+              <i class="fa-solid fa-tag" style="color:#fbbf24;"></i>
+              <span>₹1,999 All-Inclusive (Zero Extra Fee)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. DEDICATED CURRICULUM & LEARNING OUTCOMES EXPLORE BAR -->
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:12px 18px; margin-bottom:24px; display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap; font-size:13px;">
+          <div style="display:flex; align-items:center; gap:8px; font-weight:800; color:#334155;">
+            <i class="fa-solid fa-compass" style="color:#2563eb;"></i>
+            <span>Explore Engineering Tracks &amp; Outcomes:</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:16px; flex-wrap:wrap; font-weight:700;">
+            <a href="https://dbert.in/learners/courses" target="_blank" rel="noopener" style="color:#2563eb; text-decoration:none; display:inline-flex; align-items:center; gap:5px; transition:color 0.15s ease;">
+              <i class="fa-solid fa-graduation-cap"></i> Track Curriculum <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:10px;"></i>
+            </a>
+            <span style="color:#cbd5e1;">&bull;</span>
+            <a href="https://dbert.in/learners/launchpad" target="_blank" rel="noopener" style="color:#2563eb; text-decoration:none; display:inline-flex; align-items:center; gap:5px; transition:color 0.15s ease;">
+              <i class="fa-solid fa-route"></i> Production Roadmap <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:10px;"></i>
+            </a>
+            <span style="color:#cbd5e1;">&bull;</span>
+            <a href="https://dbert.in/fellows" target="_blank" rel="noopener" style="color:#2563eb; text-decoration:none; display:inline-flex; align-items:center; gap:5px; transition:color 0.15s ease;">
+              <i class="fa-solid fa-users"></i> Alumni Outcomes &amp; Placements <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:10px;"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- 3. 4 HIGH-IMPACT MEGA CARDS GRID -->
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap:20px; margin-bottom:24px;">
+
+          <!-- Mega Card 1: Real Production Work & GitHub Merges -->
+          <div style="background:#0b1120; border:1px solid #1e293b; border-radius:14px; padding:24px; display:flex; flex-direction:column; box-shadow:0 8px 22px rgba(0,0,0,0.2);">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px;">
+              <div style="width:46px; height:46px; border-radius:12px; background:rgba(14, 165, 233, 0.18); color:#38bdf8; display:flex; align-items:center; justify-content:center; font-size:20px;">
+                <i class="fa-solid fa-code-merge"></i>
+              </div>
+              <span style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; background:rgba(14, 165, 233, 0.2); color:#38bdf8; border:1px solid rgba(14, 165, 233, 0.35); padding:4px 12px; border-radius:99px;">
+                Real Microservices &amp; CI/CD
+              </span>
+            </div>
+            <div style="font-size:17px; font-weight:800; color:#ffffff; margin-bottom:8px;">Real Production Work &amp; GitHub Merges</div>
+            <p style="font-size:13px; color:#94a3b8; line-height:1.6; margin:0 0 14px;">Skip simulated tasks and mock exercises. Ship live microservices, FastAPI backends, and Next.js interfaces to production staging.</p>
+            <ul style="font-size:12.5px; color:#cbd5e1; line-height:1.65; padding-left:18px; margin:0; flex-grow:1;">
+              <li style="margin-bottom:6px;"><strong style="color:#ffffff;">Live Production Repositories:</strong> Contribute code to flagship DBERT platforms.</li>
+              <li style="margin-bottom:6px;"><strong style="color:#ffffff;">Automated CI/CD &amp; Docker:</strong> Learn real industry DevOps pipelines &amp; PostgreSQL.</li>
+              <li><strong style="color:#ffffff;">Public GitHub PR Commits:</strong> Tangible open-source proof of engineering merit.</li>
+            </ul>
+          </div>
+
+          <!-- Mega Card 2: 1-on-1 Live Mentorship & Office Hours -->
+          <div style="background:#0b1120; border:1px solid #1e293b; border-radius:14px; padding:24px; display:flex; flex-direction:column; box-shadow:0 8px 22px rgba(0,0,0,0.2);">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px;">
+              <div style="width:46px; height:46px; border-radius:12px; background:rgba(56, 189, 248, 0.18); color:#38bdf8; display:flex; align-items:center; justify-content:center; font-size:20px;">
+                <i class="fa-solid fa-headset"></i>
+              </div>
+              <span style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; background:rgba(56, 189, 248, 0.2); color:#7dd3fc; border:1px solid rgba(56, 189, 248, 0.35); padding:4px 12px; border-radius:99px;">
+                Direct Senior Mentorship
+              </span>
+            </div>
+            <div style="font-size:17px; font-weight:800; color:#ffffff; margin-bottom:8px;">1-on-1 Live Mentorship &amp; Office Hours</div>
+            <p style="font-size:13px; color:#94a3b8; line-height:1.6; margin:0 0 14px;">Direct access to Principal AI Architects and Senior Mentors for 1-on-1 video calls, system design teardowns, and career strategy.</p>
+            <ul style="font-size:12.5px; color:#cbd5e1; line-height:1.65; padding-left:18px; margin:0; flex-grow:1;">
+              <li style="margin-bottom:6px;"><strong style="color:#ffffff;">Weekly 1-on-1 Video Calls:</strong> Direct office hours booking via the LMS mentor calendar.</li>
+              <li style="margin-bottom:6px;"><strong style="color:#ffffff;">Line-by-Line PR Audits:</strong> Personalized code optimization, security, and scalability advice.</li>
+              <li><strong style="color:#ffffff;">Career &amp; Portfolio Coaching:</strong> 1-on-1 resume review and mock technical interview drills.</li>
+            </ul>
+          </div>
+
+          <!-- Mega Card 3: Fixed ₹5,000 Milestone-Based Stipend Guarantee -->
+          <div style="background:#0b1120; border:1px solid #1e293b; border-radius:14px; padding:24px; display:flex; flex-direction:column; box-shadow:0 8px 22px rgba(0,0,0,0.2);">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px;">
+              <div style="width:46px; height:46px; border-radius:12px; background:rgba(245, 158, 11, 0.18); color:#fbbf24; display:flex; align-items:center; justify-content:center; font-size:20px;">
+                <i class="fa-solid fa-wallet"></i>
+              </div>
+              <span style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; background:rgba(245, 158, 11, 0.2); color:#fbbf24; border:1px solid rgba(245, 158, 11, 0.35); padding:4px 12px; border-radius:99px;">
+                Performance Guaranteed
+              </span>
+            </div>
+            <div style="font-size:17px; font-weight:800; color:#ffffff; margin-bottom:8px;">₹5,000 Milestone Stipend</div>
+            <p style="font-size:13px; color:#94a3b8; line-height:1.6; margin:0 0 14px;">Earn a guaranteed ₹5,000 stipend upon meeting your engineering sprint deliverables. Zero ambiguity with clear transparent release criteria.</p>
+            <div style="background:#141d2b; border:1px solid #233045; border-radius:10px; padding:12px 14px; margin-bottom:12px; font-size:12px; color:#cbd5e1;">
+              <div style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.6px; color:#fbbf24; margin-bottom:6px;">
+                <i class="fa-solid fa-list-check"></i> 3-Gate Release Checklist:
+              </div>
+              <div style="margin-bottom:4px; display:flex; align-items:center; gap:6px;">
+                <i class="fa-solid fa-check" style="color:#10b981; font-size:11px;"></i>
+                <span><strong>10 Login Hours / Week:</strong> Active platform sprint time logged.</span>
+              </div>
+              <div style="margin-bottom:4px; display:flex; align-items:center; gap:6px;">
+                <i class="fa-solid fa-check" style="color:#10b981; font-size:11px;"></i>
+                <span><strong>Sprint Milestone Tasks:</strong> Mandatory bounty &amp; domain tasks completed.</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:6px;">
+                <i class="fa-solid fa-check" style="color:#10b981; font-size:11px;"></i>
+                <span><strong>GitHub Pull Request Merged:</strong> Verified PR merge in flagship repos.</span>
+              </div>
+            </div>
+            <div style="font-size:11.5px; color:#94a3b8;">
+              <i class="fa-solid fa-shield-check" style="color:#10b981;"></i> Direct bank / UPI disbursement upon Gate 4 clearance.
+            </div>
+          </div>
+
+          <!-- Mega Card 4: Complete Career Credential Packet & Placement -->
+          <div style="background:#0b1120; border:1px solid #1e293b; border-radius:14px; padding:24px; display:flex; flex-direction:column; box-shadow:0 8px 22px rgba(0,0,0,0.2);">
+            <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:14px;">
+              <div style="width:46px; height:46px; border-radius:12px; background:rgba(16, 185, 129, 0.18); color:#34d399; display:flex; align-items:center; justify-content:center; font-size:20px;">
+                <i class="fa-solid fa-certificate"></i>
+              </div>
+              <span style="font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; background:rgba(16, 185, 129, 0.2); color:#34d399; border:1px solid rgba(16, 185, 129, 0.35); padding:4px 12px; border-radius:99px;">
+                Official Credential Packet
+              </span>
+            </div>
+            <div style="font-size:17px; font-weight:800; color:#ffffff; margin-bottom:8px;">Complete Career Packet &amp; Placement</div>
+            <p style="font-size:13px; color:#94a3b8; line-height:1.6; margin:0 0 14px;">Graduate with industry-recognized credentials, academic proof of originality, and prioritized recruiter placement.</p>
+            <ul style="font-size:12.5px; color:#cbd5e1; line-height:1.65; padding-left:18px; margin:0; flex-grow:1;">
+              <li style="margin-bottom:6px;"><strong style="color:#ffffff;">Certificate of Completion:</strong> Verifiable on <strong style="color:#38bdf8;">dbert.in/verify</strong> with QR scan.</li>
+              <li style="margin-bottom:6px;"><strong style="color:#ffffff;">Architect-Signed LOR:</strong> Formal recommendation letter detailing PR contributions.</li>
+              <li style="margin-bottom:6px;"><strong style="color:#ffffff;">Turnitin Academic Rubric:</strong> Originality report verifying 100% plagiarism-free code.</li>
+              <li><strong style="color:#ffffff;">Tab 1 Placement Directory:</strong> Direct recruiter messaging via LMS Company Portal.</li>
+            </ul>
+          </div>
+
+        </div>
+
+        <!-- Module 4: High-Converting Dual Conversion CTAs (Single Clean Box) -->
+        {% if is_paid_1999 %}
+        <div style="background:#0b1120; border:1px solid rgba(16,185,129,0.4); border-radius:14px; padding:24px; text-align:center;">
+          <div style="font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:0.8px; color:#34d399; margin-bottom:8px;">
+            <i class="fa-solid fa-circle-check"></i> ₹1,999 All-Inclusive Fellowship Settled
+          </div>
+          <h3 style="font-size:18px; font-weight:800; color:#ffffff; margin:0 0 10px; font-family:'Plus Jakarta Sans', sans-serif;">
+            Your Fellowship Seat &amp; Sprints Are Active
+          </h3>
+          <p style="font-size:13.5px; color:#94a3b8; max-width:600px; margin:0 auto 18px; line-height:1.6;">
+            You have completed the ₹1,999 All-Inclusive Fellowship enrollment. Proceed to your sprint workspace to complete your 4-pillar milestones.
+          </p>
+          <a href="/tasks" style="display:inline-flex; align-items:center; justify-content:center; gap:10px; background:linear-gradient(135deg, #10b981 0%, #059669 100%); color:#ffffff !important; font-size:14px; font-weight:800; padding:13px 26px; border-radius:10px; text-decoration:none;">
+            <i class="fa-solid fa-list-check"></i> Proceed to Sprint Tasks (/tasks) &rarr;
           </a>
-          <a href="https://wa.me/918192911360?text=Hi%20Admissions%20Team%2C%20I%20am%20checking%20my%20%E2%82%B9499%20deposit%20verification%20status%20for%20offer%20letter%20unlock%20(Email%3A%20{{ user.email }})." target="_blank" class="btn-whatsapp" style="background:linear-gradient(135deg, #25D366 0%, #128C7E 100%); color:#ffffff !important; font-weight:800; font-size:13.5px; padding:12px 24px; border-radius:10px; border:2px solid #86EFAC; text-decoration:none; display:inline-flex; align-items:center; gap:8px; box-shadow:0 6px 18px rgba(37,211,102,0.45);">
-            <i class="fa-brands fa-whatsapp" style="font-size:16px;"></i> Chat with Admissions Desk
-          </a>
+        </div>
+        {% else %}
+        <div style="background:#0b1120; border:1px solid #1e293b; border-radius:14px; padding:28px 24px; text-align:center;">
+          <div style="font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:0.8px; color:#fbbf24; margin-bottom:8px;">
+            Immediate Incubation &amp; Paid Fellowship Enrollment
+          </div>
+          <h3 style="font-size:20px; font-weight:800; color:#ffffff; margin:0 0 10px; font-family:'Plus Jakarta Sans', sans-serif;">
+            Ready to Start Industry Training &amp; Paid Sprints?
+          </h3>
+          <p style="font-size:13.5px; color:#94a3b8; max-width:620px; margin:0 auto 20px; line-height:1.6;">
+            One-time enrollment fee of ₹1,999 unlocks full production engineering training, 1-on-1 architect mentoring, and eligibility for the ₹5,000 milestone stipend upon sprint deliverables.
+          </p>
+
+          <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:14px;">
+            <!-- Primary Option 1 -->
+            <a href="https://dbert.in/enroll/1999?email={{ enrollment.email or user.email }}&name={{ (enrollment.name or user.name or 'Candidate') | urlencode }}&domain={{ (candidate_domain or enrollment.domain or user.domain or 'Full Stack Development') | urlencode }}" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; justify-content:center; gap:10px; background:linear-gradient(135deg, #fbbf24 0%, #d97706 100%); color:#0b1120 !important; font-size:14.5px; font-weight:900; text-transform:uppercase; letter-spacing:0.5px; padding:15px 28px; border-radius:10px; text-decoration:none; box-shadow:0 6px 22px rgba(245, 158, 11, 0.45); transition:transform 0.15s ease;">
+              <i class="fa-solid fa-rocket" style="font-size:18px;"></i> Enroll in Incubation &amp; Paid Fellowship (₹1,999) &rarr;
+            </a>
+
+            <!-- Instant Desk Option 3 -->
+            <a href="https://wa.me/918192911360?text=Hi%20Admissions%20Team%2C%20I%20want%20to%20enroll%20in%20the%20%E2%82%B91%2C999%20DBERT%20Incubation%20%26%20Paid%20Internship%20Fellowship%20({{ enrollment.email or user.email }}%2C%20{{ (candidate_domain or enrollment.domain or user.domain or 'Full Stack Development') | urlencode }}).%20Please%20confirm%20seat%20availability." target="_blank" rel="noopener" style="display:inline-flex; align-items:center; justify-content:center; gap:10px; background:#25D366; color:#ffffff !important; font-size:14.5px; font-weight:900; padding:15px 26px; border-radius:10px; text-decoration:none; box-shadow:0 6px 20px rgba(37, 211, 102, 0.4); transition:transform 0.15s ease;">
+              <i class="fa-brands fa-whatsapp" style="font-size:20px;"></i> Instant WhatsApp Admissions Desk &rarr;
+            </a>
+          </div>
+
+          <div style="margin-top:16px; font-size:12px; color:#64748b; display:flex; align-items:center; justify-content:center; gap:8px; flex-wrap:wrap;">
+            <span><i class="fa-solid fa-bolt" style="color:#fbbf24;"></i> Guaranteed Monday Sprint Kickoff</span>
+            <span>&bull;</span>
+          </div>
+        </div>
+        {% endif %}
+            <span><i class="fa-solid fa-shield-check" style="color:#10b981;"></i> Verified Placement &amp; ₹5,000 Stipend on Milestone Clearance</span>
+          </div>
         </div>
       </div>
 
@@ -843,32 +1104,27 @@
       <div class="no-print portal-header-banner" style="background:linear-gradient(135deg, #0b1120 0%, #1e293b 100%); border:1px solid #334155; border-radius:14px; padding:26px 30px; margin-bottom:22px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:18px; box-shadow:0 10px 25px -5px rgba(0, 0, 0, 0.25);">
         <div>
           <div class="banner-badge-row" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
-            {% if preview_mode %}
-            <span class="banner-badge badge-pending" style="background:rgba(245, 158, 11, 0.2); border:1px solid #f59e0b; color:#fbbf24;">
-              <i class="fa-solid fa-eye"></i> Appointment Terms Preview
-            </span>
-            {% if enrollment and (enrollment.utr or enrollment.payment_status in ('Pending', 'Submitted', 'Under Review')) %}
-            <span class="banner-badge" style="background:rgba(59,130,246,0.2); border:1px solid #3b82f6; color:#93c5fd;">
-              <i class="fa-solid fa-hourglass-half fa-spin"></i> Deposit Under Verification
-            </span>
-            {% else %}
-            <span class="banner-badge badge-pending" style="background:rgba(239,68,68,0.18); border:1px solid #ef4444; color:#fca5a5;">
-              <i class="fa-solid fa-lock"></i> Seat Confirmation Pending (₹499)
-            </span>
-            {% endif %}
-            {% else %}
             <span class="banner-badge badge-verified" style="display:inline-flex; align-items:center; gap:6px; padding:4px 12px; border-radius:9999px; font-size:11px; font-weight:700; letter-spacing:0.8px; text-transform:uppercase; background:rgba(16, 185, 129, 0.18); border:1px solid #10b981; color:#34d399;">
               <i class="fa-solid fa-circle-check"></i> Official Selection &amp; Appointment
             </span>
-            {% if offer.pdf_unlocked %}
+            {% if is_deposit_verified %}
             <span class="banner-badge badge-verified" style="display:inline-flex; align-items:center; gap:6px; padding:4px 12px; border-radius:9999px; font-size:11px; font-weight:700; letter-spacing:0.8px; text-transform:uppercase; background:rgba(16, 185, 129, 0.18); border:1px solid #10b981; color:#34d399;">
-              <i class="fa-solid fa-shield-halved"></i> STATUS: ACCEPTED &amp; SIGNED
+              <i class="fa-solid fa-shield-halved"></i> STATUS: ENROLLED &amp; CONFIRMED
             </span>
+            {% elif is_signed %}
+              {% if enrollment and (enrollment.utr or enrollment.payment_status in ('Pending', 'Submitted', 'Under Review')) %}
+              <span class="banner-badge" style="background:rgba(59,130,246,0.2); border:1px solid #3b82f6; color:#93c5fd;">
+                <i class="fa-solid fa-hourglass-half fa-spin"></i> Deposit Under Verification
+              </span>
+              {% else %}
+              <span class="banner-badge badge-pending" style="background:rgba(245, 158, 11, 0.2); border:1px solid #f59e0b; color:#fbbf24;">
+                <i class="fa-solid fa-credit-card"></i> Step 3: Seat Confirmation Pending (₹499)
+              </span>
+              {% endif %}
             {% else %}
             <span class="banner-badge badge-pending" style="display:inline-flex; align-items:center; gap:6px; padding:4px 12px; border-radius:9999px; font-size:11px; font-weight:700; letter-spacing:0.8px; text-transform:uppercase; background:rgba(245, 158, 11, 0.2); border:1px solid #f59e0b; color:#fbbf24;">
-              <i class="fa-solid fa-clock"></i> Awaiting Candidate Signature
+              <i class="fa-solid fa-clock"></i> Step 2: Awaiting Candidate Signature
             </span>
-            {% endif %}
             {% endif %}
             <span class="banner-badge badge-ref" style="display:inline-flex; align-items:center; gap:6px; padding:4px 12px; border-radius:9999px; font-size:11px; font-weight:700; letter-spacing:0.8px; text-transform:uppercase; background:rgba(255, 255, 255, 0.08); border:1px solid rgba(255, 255, 255, 0.15); color:#e2e8f0; font-family:ui-monospace, monospace;">
               REF: {{ offer.offer_letter_id }}
@@ -964,21 +1220,7 @@
       <!-- ── SCREEN 1: OFFICIAL APPOINTMENT LETTER REVIEW ── -->
       <div id="screenOfferReview" class="offer-screen-view" style="display:{% if is_signed and not is_deposit_verified %}none{% else %}block{% endif %};">
         <div class="official-offer-letter-wrapper" style="width:100%; max-width:100%; margin:0 auto; box-sizing:border-box;">
-          <div class="offer-letter-document {% if preview_mode %}offer-preview-locked-doc{% endif %}" id="printable-offer-letter" style="background:#ffffff; border:2px solid #0f172a; outline:1px solid rgba(217, 119, 6, 0.4); outline-offset:-8px; border-radius:12px; padding:42px 38px; box-shadow:0 15px 35px -5px rgba(0, 0, 0, 0.08); line-height:1.7; font-size:13.5px; color:#1e293b; box-sizing:border-box; width:100%; max-width:100%; overflow:hidden;">
-
-          {% if preview_mode %}
-          <!-- Watermark Stamp & Diagonal Mesh -->
-          <div class="offer-preview-watermark-overlay">
-            <div class="preview-watermark-stamp">
-              PREVIEW ONLY<br><span style="font-size:14px; letter-spacing:2px; font-weight:800; display:block; margin-top:6px;">PENDING ₹499 ENROLLMENT DEPOSIT</span>
-            </div>
-          </div>
-          <!-- Document Top Warning Pill -->
-          <div style="background:linear-gradient(135deg, #fef3c7, #fde68a); border:1.5px solid #d97706; border-radius:8px; padding:10px 16px; margin-bottom:20px; text-align:center; color:#92400e; font-weight:700; font-size:12.5px; display:flex; align-items:center; justify-content:center; gap:8px;">
-            <i class="fa-solid fa-triangle-exclamation" style="font-size:15px; color:#d97706;"></i>
-            <span><strong>APPOINTMENT TERMS PREVIEW ONLY:</strong> Right-click and copying are disabled. Complete your ₹499 caution deposit above to unlock digital signature and official executive A4 PDF download.</span>
-          </div>
-          {% endif %}
+          <div class="offer-letter-document" id="printable-offer-letter" style="background:#ffffff; border:2px solid #0f172a; outline:1px solid rgba(217, 119, 6, 0.4); outline-offset:-8px; border-radius:12px; padding:42px 38px; box-shadow:0 15px 35px -5px rgba(0, 0, 0, 0.08); line-height:1.7; font-size:13.5px; color:#1e293b; box-sizing:border-box; width:100%; max-width:100%; overflow:hidden;">
 
           <!-- LETTERHEAD HEADER -->
           <div class="letterhead-header" style="text-align:center; border-bottom:2px solid #0f172a; padding-bottom:18px; margin-bottom:24px;">
@@ -987,12 +1229,12 @@
               <div class="letterhead-fullform" style="font-size:11px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:#475569; margin-top:5px;">Digital Blinc Education Research and Technology</div>
             </div>
             <div class="letterhead-subtitle" style="font-size:12px; font-weight:600; letter-spacing:0.8px; color:#64748b; text-transform:uppercase; margin:4px 0 6px;">
-              Directorate of Applied Research &amp; Technology Incubation
+              Directorate of Applied Research &amp; Engineering Fellowship
             </div>
             <div class="letterhead-meta" style="font-size:11px; color:#64748b; display:flex; align-items:center; justify-content:center; gap:8px; flex-wrap:wrap;">
               <span>Govt. of India MSME Registered: UDYAM-UP-29-0109046</span>
               <span>&bull;</span>
-              <span>National Technology Incubation Initiative</span>
+              <span>DBERT Applied Engineering Fellowship</span>
               <span>&bull;</span>
               <span>Official Portal: https://dbert.in</span>
             </div>
@@ -1005,7 +1247,7 @@
               OFFICIAL INTERNSHIP OFFER &amp; APPOINTMENT LETTER
             </h2>
             <div style="font-size:12px; color:#64748b; font-weight:600; letter-spacing:0.5px;">
-              National Engineering Incubation Initiative &bull; Cohort 2026–2027
+              DBERT Applied Engineering Fellowship &bull; Cohort 2026–2027
             </div>
           </div>
 
@@ -1076,34 +1318,34 @@
                   <td style="width:72%; padding:8px 12px; border-bottom:1px solid #e2e8f0; color:#1e293b; overflow-wrap:break-word; word-break:normal;">Minimum <strong>10 hours per week</strong> logged platform engagement</td>
                 </tr>
                 <tr>
-                  <td class="col-label" style="width:28%; min-width:180px; max-width:240px; background:#f8fafc; font-weight:700; color:#475569; padding:8px 12px; border-bottom:1px solid #e2e8f0; white-space:nowrap;">Fixed Milestone Stipend</td>
+                  <td class="col-label" style="width:28%; min-width:180px; max-width:240px; background:#f8fafc; font-weight:700; color:#475569; padding:8px 12px; border-bottom:1px solid #e2e8f0; white-space:nowrap;">Milestone Stipend</td>
                   <td style="width:72%; padding:8px 12px; border-bottom:1px solid #e2e8f0; color:#1e293b; overflow-wrap:break-word; word-break:normal;"><strong style="color:#0f172a; font-size:12.5px;">₹5,000</strong>, earned upon milestone achievements per Section 6.1</td>
                 </tr>
                 <tr>
-                  <td class="col-label" style="width:28%; min-width:180px; max-width:240px; background:#f8fafc; font-weight:700; color:#475569; padding:8px 12px; border-bottom:1px solid #e2e8f0; white-space:nowrap;">Variable Incentive</td>
-                  <td style="width:72%; padding:8px 12px; border-bottom:1px solid #e2e8f0; color:#1e293b; overflow-wrap:break-word; word-break:normal;"><strong style="color:#d97706; font-size:12.5px;">Up to ₹18,000</strong>, performance-based incentive per Section 6.2</td>
+                  <td class="col-label" style="width:28%; min-width:180px; max-width:240px; background:#f8fafc; font-weight:700; color:#475569; padding:8px 12px; border-bottom:1px solid #e2e8f0; white-space:nowrap;">Campus Ambassador Incentive</td>
+                  <td style="width:72%; padding:8px 12px; border-bottom:1px solid #e2e8f0; color:#1e293b; overflow-wrap:break-word; word-break:normal;"><strong style="color:#d97706; font-size:12.5px;">Up to ₹18,000</strong>, performance-based incentive via College Ambassador Program (Section 6.2)</td>
                 </tr>
                 <tr>
                   <td class="col-label" style="width:28%; min-width:180px; max-width:240px; background:#f8fafc; font-weight:700; color:#475569; padding:8px 12px; border-bottom:1px solid #e2e8f0; white-space:nowrap;">Total Potential</td>
-                  <td style="width:72%; padding:8px 12px; border-bottom:1px solid #e2e8f0; color:#1e293b; overflow-wrap:break-word; word-break:normal;"><strong style="color:#16a34a; font-size:12.5px;">Up to ₹23,000</strong> (₹5,000 Fixed + up to ₹18,000 Performance Incentive)</td>
+                  <td style="width:72%; padding:8px 12px; border-bottom:1px solid #e2e8f0; color:#1e293b; overflow-wrap:break-word; word-break:normal;"><strong style="color:#16a34a; font-size:12.5px;">₹5,000 + ₹18,000</strong> (Total Earning Potential up to ₹23,000)</td>
                 </tr>
                 <tr>
                   <td class="col-label" style="width:28%; min-width:180px; max-width:240px; background:#f8fafc; font-weight:700; color:#475569; padding:8px 12px; border-bottom:1px solid #e2e8f0; white-space:nowrap;">Caution Deposit</td>
                   <td style="width:72%; padding:8px 12px; border-bottom:1px solid #e2e8f0; color:#1e293b; overflow-wrap:break-word; word-break:normal;">
-                    {% if preview_mode %}
-                    <strong style="color:#d97706;">₹499 (Pending Confirmation)</strong> &bull; 100% credited / refundable per Section 5
-                    {% else %}
+                    {% if is_deposit_verified %}
                     <strong style="color:#16a34a;">₹499 (Verified &amp; Reconciled)</strong> &bull; 100% credited / refundable per Section 5
+                    {% else %}
+                    <strong style="color:#d97706;">₹499 (Pending Confirmation)</strong> &bull; 100% credited / refundable per Section 5
                     {% endif %}
                   </td>
                 </tr>
                 <tr>
-                  <td class="col-label" style="width:28%; min-width:180px; max-width:240px; background:#f8fafc; font-weight:700; color:#475569; padding:8px 12px; border-bottom:1px solid #e2e8f0; white-space:nowrap;">Incubation Fee</td>
+                  <td class="col-label" style="width:28%; min-width:180px; max-width:240px; background:#f8fafc; font-weight:700; color:#475569; padding:8px 12px; border-bottom:1px solid #e2e8f0; white-space:nowrap;">Fellowship Program Fee</td>
                   <td style="width:72%; padding:8px 12px; border-bottom:1px solid #e2e8f0; color:#1e293b; overflow-wrap:break-word; word-break:normal;"><strong style="color:#16a34a;">₹0 (Fully Sponsored)</strong> &bull; Covered in full by DBERT Technical Council</td>
                 </tr>
                 <tr>
-                  <td class="col-label" style="width:28%; min-width:180px; max-width:240px; background:#f8fafc; font-weight:700; color:#475569; padding:8px 12px; white-space:nowrap;">Disbursement Window</td>
-                  <td style="width:72%; padding:8px 12px; color:#1e293b; overflow-wrap:break-word; word-break:normal;">Directly to verified UPI ID via LMS Wallet within 30 days of completion</td>
+                  <td class="col-label" style="width:28%; min-width:180px; max-width:240px; background:#f8fafc; font-weight:700; color:#475569; padding:8px 12px; white-space:nowrap;">Disbursement into UPI</td>
+                  <td style="width:72%; padding:8px 12px; color:#1e293b; overflow-wrap:break-word; word-break:normal;">Directly to verified UPI ID via LMS Portal upon milestone verification</td>
                 </tr>
               </tbody>
             </table>
@@ -1124,6 +1366,9 @@
           <p style="margin:0 0 14px; font-size:13px; line-height:1.65; color:#334155; word-break:break-word;">
             We seek candidates who treat this opportunity with professional diligence and integrity. You are not expected to arrive with mastery; rather, we expect consistent curiosity, responsiveness to mentor critique, active adherence to project deadlines, and a minimum of 10 logged hours weekly on the LMS platform.
           </p>
+          <div style="background:#f8fafc; border:1px solid #e2e8f0; border-left:4px solid #2563eb; padding:12px 16px; border-radius:6px; margin:12px 0 16px; font-size:12.5px; color:#334155; line-height:1.6;">
+            <strong>3.1 Academic Flexibility &amp; Exam Pause Policy:</strong> We recognize that fellows are active university students. Interns encountering midterm exams, semester finals, or mandatory campus evaluations may request an academic pause of up to fourteen (14) calendar days by submitting notification via the LMS, without forfeiture of fellowship status or milestone progress.
+          </div>
 
           <!-- SECTION 4: 4-STAGE PROGRESSION PATHWAY -->
           <div class="doc-section-heading" style="font-size:13.5px; font-weight:800; color:#0f172a; border-bottom:1.5px solid #cbd5e1; padding-bottom:6px; margin:26px 0 12px; text-transform:uppercase; letter-spacing:0.6px; display:flex; align-items:center; gap:8px;">
@@ -1169,15 +1414,15 @@
             Allocating dedicated mentors, computational sandboxes, and repository permissions commits immediate organizational resources. To secure candidate commitment, DBERT records a ₹499 Refundable Caution Deposit upon admission.
           </p>
           <div class="notice-box-gold" style="background:#fefce8; border:1px solid #fef08a; border-left:4px solid #d97706; padding:13px 16px; border-radius:6px; margin:14px 0 18px; font-size:13px; font-weight:600; color:#713f12; line-height:1.6; box-sizing:border-box;">
-            <i class="fa-solid fa-shield-halved"></i> <strong>Refund &amp; Credit Guarantee:</strong> The ₹499 deposit is a refundable commitment deposit only. It is 100% credited against your program ledger or fully refundable within 30 days of completing your 2-month tenure and required exit formalities. DBERT never charges candidates for the right to work.
+            <i class="fa-solid fa-shield-halved"></i> <strong>Refund &amp; Credit Guarantee:</strong> The ₹499 deposit is a refundable commitment deposit only. It is 100% credited against your program ledger or fully refundable directly into your verified UPI ID upon completing your 2-month tenure and required exit formalities. DBERT never charges candidates for the right to work.
           </div>
 
-          <!-- SECTION 6: THE ₹5,000 FIXED STIPEND & ₹18,000 PERFORMANCE INCENTIVE -->
+          <!-- SECTION 6: STIPEND STRUCTURE & CAMPUS AMBASSADOR INCENTIVE (₹5,000 + UP TO ₹18,000) -->
           <div class="doc-section-heading" style="font-size:13.5px; font-weight:800; color:#0f172a; border-bottom:1.5px solid #cbd5e1; padding-bottom:6px; margin:26px 0 12px; text-transform:uppercase; letter-spacing:0.6px; display:flex; align-items:center; gap:8px;">
-            <span>6. THE ₹5,000 FIXED STIPEND &amp; UP TO ₹18,000 PERFORMANCE INCENTIVE</span>
+            <span>6. STIPEND STRUCTURE &amp; CAMPUS AMBASSADOR INCENTIVE (₹5,000 + UP TO ₹18,000)</span>
           </div>
           <p style="margin:0 0 14px;">
-            Your internship compensation comprises a guaranteed fixed milestone stipend of <strong>₹5,000</strong> plus an additional performance-based variable incentive of up to <strong>₹18,000</strong>, delivering a total earning potential of up to <strong>₹23,000</strong> across your 2-month tenure:
+            Your internship compensation comprises a milestone stipend of <strong>₹5,000</strong> plus an additional performance-linked incentive of up to <strong>₹18,000</strong> via the College Ambassador Program, delivering a total earning potential of <strong>₹5,000 + ₹18,000</strong> (up to ₹23,000) across your 2-month tenure:
           </p>
 
           <!-- 4 Visual Compensation Cards -->
@@ -1214,21 +1459,21 @@
 
             <div class="criteria-card" style="border-color:#fbbf24; background:linear-gradient(180deg, #fffbeb 0%, #ffffff 100%); border-radius:8px; padding:14px 16px; box-shadow:0 2px 4px rgba(0, 0, 0, 0.02); box-sizing:border-box;">
               <div class="criteria-header" style="color:#b45309; display:flex; align-items:center; gap:6px; font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px;">
-                <i class="fa-solid fa-trophy"></i> Performance Incentive
+                <i class="fa-solid fa-bullhorn"></i> Campus Ambassador Incentive
               </div>
               <div class="criteria-val" style="color:#b45309; font-size:17px; font-weight:900; margin-bottom:4px;">Up to ₹18,000</div>
               <div class="criteria-desc" style="font-size:12px; color:#475569; line-height:1.45;">
-                Variable performance incentive earned upon technical milestones, code quality, and sprint reviews.
+                Performance-linked incentive earned through campus leadership, student outreach, and tech event advocacy via the College Ambassador Program.
               </div>
             </div>
           </div>
 
           <div style="background:#f8fafc; border:1px solid #e2e8f0; border-left:4px solid #d97706; padding:12px 16px; border-radius:6px; margin:14px 0 16px; font-size:13px; color:#334155; line-height:1.6;">
-            <strong>6.2 Variable Performance Incentive Terms:</strong> In addition to the fixed milestone stipend, interns are eligible to earn a performance-based variable incentive of up to <strong>₹18,000</strong>. The evaluation criteria, sprint milestones, and rubric benchmarks governing this performance incentive are determined and awarded by the engineering evaluation committee based on sprint execution, repository contributions, and mentor assessments.
+            <strong>6.2 College Ambassador Performance-Linked Incentive (Up to ₹18,000):</strong> In addition to the ₹5,000 milestone stipend, fellows are eligible to earn a performance-based variable incentive of up to <strong>₹18,000</strong> through the DBERT College Ambassador Program. This incentive is awarded based on campus outreach, tech community leadership, hackathon/workshop organization, and peer engineering referrals. Complete operational guidelines, tier levels, milestone rubrics, and real-time earnings tracking are accessible under the <strong>College Ambassador Program</strong> section of the LMS Portal.
           </div>
 
           <p style="margin:0 0 18px; font-size:13px; color:#475569;">
-            <strong>6.3 Payout Disbursement:</strong> Upon audit and verification of deliverables, the ₹5,000 fixed milestone stipend will be disbursed directly to your verified UPI ID via the LMS Wallet within 30 calendar days of tenure completion. Performance-based variable incentives will be disbursed following formal sprint evaluation approvals.
+            <strong>6.3 Payout Disbursement into UPI:</strong> Upon audit and review clearance of milestone deliverables, the stipend and eligible ambassador incentives are disbursed directly into your verified UPI ID via the LMS Portal. Payouts are initiated seamlessly without artificial holding periods upon verification.
           </p>
 
           <!-- SECTION 7: CONFIDENTIALITY & IP -->
@@ -1247,12 +1492,15 @@
             DBERT maintains a zero-tolerance policy regarding harassment, discrimination, plagiarism, unauthorized sharing of credentials, or malicious manipulation of platform data. Violations result in immediate termination of the internship and forfeiture of credentials.
           </p>
 
-          <!-- SECTION 9: CREDENTIALS & GOVERNING LAW -->
+          <!-- SECTION 9: CREDENTIALS, EXIT SLA & GOVERNING LAW -->
           <div class="doc-section-heading" style="font-size:13.5px; font-weight:800; color:#0f172a; border-bottom:1.5px solid #cbd5e1; padding-bottom:6px; margin:26px 0 12px; text-transform:uppercase; letter-spacing:0.6px; display:flex; align-items:center; gap:8px;">
-            <span>9. CREDENTIALS &amp; GOVERNING LAW</span>
+            <span>9. CREDENTIALS, EXIT SLA &amp; GOVERNING LAW</span>
           </div>
+          <p style="margin:0 0 14px;">
+            Upon successful tenure completion and milestone sign-off, DBERT issues an official cryptographic Certificate of Completion and Letter of Recommendation (LOR) verifiable at <code>https://dbert.in/verify</code>. Credential activation and deposit clearance are executed within <strong>3 to 5 business days</strong> of final sprint sign-off.
+          </p>
           <p style="margin:0 0 24px;">
-            Upon successful tenure completion, DBERT issues an official cryptographic Certificate of Completion and Letter of Recommendation (LOR) verifiable at <code>https://dbert.in/verify</code>. This letter is governed by the laws of India, with exclusive jurisdiction in the courts of Ghaziabad, Uttar Pradesh.
+            This letter is governed by the laws of India, with exclusive jurisdiction in the courts of Ghaziabad, Uttar Pradesh.
           </p>
 
           <!-- SECTION 10: FORMAL SIGNATORY EXECUTION -->
@@ -1353,7 +1601,7 @@
 
         <!-- BACK TO REVIEW OFFER LETTER NAVIGATION -->
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; padding-bottom:14px; border-bottom:1px solid #e2e8f0; flex-wrap:wrap; gap:12px;">
-          <button type="button" id="btnBackToReview" class="btn-secondary" style="padding:10px 18px; font-size:13px; font-weight:700; border-radius:8px; cursor:pointer; display:inline-flex; align-items:center; gap:8px;">
+          <button type="button" id="btnBackToReview" class="btn-theme-outline">
             <i class="fa-solid fa-arrow-left"></i> Review Appointment Letter
           </button>
           <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">

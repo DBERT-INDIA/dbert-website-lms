@@ -3,31 +3,30 @@
 {% set brand = {'mark': 'D', 'title': 'DBERT', 'sub': 'LMS & Learning'} %}
 
 {% set nav_groups = [
-  {'label': 'Learn', 'items': [
-    {'href': '/portal',            'icon': 'fa-solid fa-gauge',          'label': 'Learning Dashboard', 'match': ['dashboard', 'portal']},
-    {'href': '/courses',           'icon': 'fa-solid fa-graduation-cap', 'label': 'Course Catalog',     'match': ['courses']},
-    {'href': '/mentors/slots',     'icon': 'fa-solid fa-calendar-check', 'label': '1:1 Mentorship',    'match': ['sessions']}
+  {'label': 'Core Workspace', 'items': [
+    {'href': '/portal',            'icon': 'fa-solid fa-gauge',          'label': 'Learning Dashboard',   'match': ['dashboard', 'portal']},
+    {'href': '/portal/offer',      'icon': 'fa-solid fa-file-signature', 'label': 'Offer Letter & Seat',  'match': ['offer'], 'locked': is_tenure_expired, 'badge': None if is_tenure_expired else (offer_badge or 'OFFICIAL'), 'pulse': (is_selected_unpaid and not is_tenure_expired)},
+    {'href': '/courses',           'icon': 'fa-solid fa-graduation-cap', 'label': 'Course Catalog & Labs','match': ['courses']}
   ]},
-  {'label': 'Practice & Earn', 'items': [
-    {'href': '/stipend/tasks',     'icon': 'fa-solid fa-money-bill-wave','label': 'Stipend Milestone', 'match': ['stipend'], 'badge': '₹5,000'},
-    {'href': '/tasks',             'icon': 'fa-solid fa-list-check',     'label': 'Sprint Tasks',       'match': ['tasks']},
-    {'href': '/account/coins',     'icon': 'fa-solid fa-coins',          'label': 'Coins Ledger',       'match': ['coins']},
-    {'href': '/ambassador',        'icon': 'fa-solid fa-gift',           'label': 'Ambassador Program', 'match': ['ambassador'], 'badge': 'NEW'}
+  {'label': 'Production Sprints', 'items': [
+    {'href': '/tasks',             'icon': 'fa-solid fa-list-check',     'label': 'Sprint Tasks & Bounties','match': ['tasks'],   'locked': is_locked_pre_payment or is_tenure_expired, 'badge': None if is_tenure_expired else sprint_task_badge},
+    {'href': '/mentors/slots',     'icon': 'fa-solid fa-calendar-check', 'label': '1:1 Architect Mentorship','match': ['sessions'],'locked': is_locked_pre_payment or is_tenure_expired},
+    {'href': '/stipend/tasks',     'icon': 'fa-solid fa-money-bill-wave','label': 'Stipend Milestone',    'match': ['stipend'],  'locked': is_locked_pre_payment, 'badge': 'EXPIRED' if is_tenure_expired else '₹5,000'}
   ]},
-  {'label': 'Recognition & Credentials', 'items': [
-    {'href': '/portal/offer',      'icon': 'fa-solid fa-file-signature', 'label': 'Offer Letter',       'match': ['offer'], 'badge': 'OFFICIAL'},
-    {'href': '/leaderboard',       'icon': 'fa-solid fa-trophy',         'label': 'Cohort Leaderboard', 'match': ['leaderboard']},
-    {'href': '/certificates',      'icon': 'fa-solid fa-award',          'label': 'My Certificates',    'match': ['certificates', 'certificate']}
+  {'label': 'Career & Outcomes', 'items': [
+    {'href': '/jobs',              'icon': 'fa-solid fa-briefcase',      'label': 'Placements & Hiring',  'match': ['jobs', 'internships']},
+    {'href': '/certificates',      'icon': 'fa-solid fa-award',          'label': 'Verified Credentials', 'match': ['certificates', 'certificate'], 'locked': False if (signup_stage or 2) >= 5 else (not is_graduated)},
+    {'href': '/leaderboard',       'icon': 'fa-solid fa-trophy',         'label': 'Cohort Leaderboard',   'match': ['leaderboard']}
   ]},
-  {'label': 'Career Outcomes', 'items': [
-    {'href': '/jobs',              'icon': 'fa-solid fa-briefcase',      'label': 'Placements & Jobs',  'match': ['jobs', 'internships']},
-    {'href': '/intern/articles',   'icon': 'fa-solid fa-feather-pointed','label': 'Engineering Articles', 'match': ['articles'], 'badge': 'NEW'}
+  {'label': 'Community & Rewards', 'items': [
+    {'href': '/account/coins',     'icon': 'fa-solid fa-coins',          'label': 'Coins Ledger & Perks', 'match': ['coins']},
+    {'href': '/ambassador',        'icon': 'fa-solid fa-gift',           'label': 'Ambassador (₹18k)',   'match': ['ambassador'], 'locked': is_locked_pre_payment, 'badge': '₹18,000'},
+    {'href': '/intern/articles',   'icon': 'fa-solid fa-feather-pointed','label': 'Engineering Articles', 'match': ['articles']}
   ]},
-  {'label': 'Account', 'items': [
-    {'href': '/account/gemini-key','icon': 'fa-solid fa-key',            'label': 'AI Tutor API Key',   'match': ['gemini_key']},
-    {'href': '/account/notifications','icon': 'fa-solid fa-bell',        'label': 'Push Notifications', 'match': ['notifications']},
-    {'href': '/portal#messages',  'icon': 'fa-solid fa-comments',       'label': 'Messages',           'match': ['messages']},
-    {'href': '/profile',           'icon': 'fa-solid fa-user',           'label': 'My Profile',         'match': ['profile']}
+  {'label': 'Account & Settings', 'items': [
+    {'href': '/account/gemini-key','icon': 'fa-solid fa-key',            'label': 'AI Tutor BYOK Key',    'match': ['gemini_key']},
+    {'href': '/account/notifications','icon': 'fa-solid fa-bell',        'label': 'Push Notifications',   'match': ['notifications']},
+    {'href': '/profile',           'icon': 'fa-solid fa-user-gear',      'label': 'My Profile & Domain',  'match': ['profile', 'editprofile']}
   ]}
 ] %}
 

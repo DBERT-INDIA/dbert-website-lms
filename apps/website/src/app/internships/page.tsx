@@ -14,7 +14,7 @@ export default function InternshipsHubPage() {
       title: 'Full Stack Web Development',
       badge: 'Most Popular',
       desc: 'Build production web apps with React 19, Next.js App Router, TypeScript, and PostgreSQL with pgvector indexing.',
-      stipend: '₹8,000 – ₹18,000 / mo',
+      placement: '100% Guaranteed Production Internship with Dedicated Placement Assistance',
       cities: 'Remote · Bengaluru · Delhi NCR · Mumbai'
     },
     {
@@ -22,7 +22,7 @@ export default function InternshipsHubPage() {
       title: 'AI Agent & LLM Systems',
       badge: 'Trending #1',
       desc: 'Construct autonomous AI workflow agents with LangGraph, CrewAI tool-calling loops, and local vLLM / Ollama runtimes.',
-      stipend: '₹10,000 – ₹18,000 / mo',
+      placement: '100% Guaranteed Production Internship with Dedicated Placement Assistance',
       cities: 'Remote · Bengaluru · Pune · Hyderabad'
     },
     {
@@ -30,7 +30,7 @@ export default function InternshipsHubPage() {
       title: 'Data Analytics & Corporate BI',
       badge: 'High Demand',
       desc: 'Engineer SQL query pipelines, programmatically normalise datasets with Pandas, and construct interactive Metabase/Power BI dashboards.',
-      stipend: '₹6,000 – ₹15,000 / mo',
+      placement: '100% Guaranteed Production Internship with Dedicated Placement Assistance',
       cities: 'Remote · Delhi NCR · Mumbai · Bengaluru'
     },
     {
@@ -38,7 +38,7 @@ export default function InternshipsHubPage() {
       title: 'Python Automation & Scraping',
       badge: 'Fast-Track',
       desc: 'Write concurrent Playwright scrapers, configure Celery/Redis task workers, and automate high-throughput data extraction.',
-      stipend: '₹7,000 – ₹15,000 / mo',
+      placement: '100% Guaranteed Production Internship with Dedicated Placement Assistance',
       cities: 'Remote · Pune · Hyderabad · Chennai'
     },
     {
@@ -46,7 +46,7 @@ export default function InternshipsHubPage() {
       title: 'DevOps & Cloud Engineering',
       badge: 'Infrastructure',
       desc: 'Deploy Docker microservices, configure Kubernetes clusters, build automated GitHub Actions CI/CD pipelines, and manage AWS EC2/VPC.',
-      stipend: '₹8,000 – ₹16,000 / mo',
+      placement: '100% Guaranteed Production Internship with Dedicated Placement Assistance',
       cities: 'Remote · Bengaluru · Noida · Hyderabad'
     },
     {
@@ -54,8 +54,32 @@ export default function InternshipsHubPage() {
       title: 'UI/UX Design & Prototyping',
       badge: 'Design Track',
       desc: 'Design component libraries, auto-layout tokens, UX research journeys, and interactive high-fidelity prototypes in Figma.',
-      stipend: '₹6,000 – ₹14,000 / mo',
+      placement: '100% Guaranteed Production Internship with Dedicated Placement Assistance',
       cities: 'Remote · Mumbai · Delhi · Bengaluru'
+    },
+    {
+      slug: 'cybersecurity',
+      title: 'Cybersecurity & Threat Defense',
+      badge: 'High Security',
+      desc: 'Audit web endpoints for OWASP Top 10 vulnerabilities, conduct network pen-testing with Burp Suite, and implement SOC log pipelines.',
+      placement: '100% Guaranteed Production Internship with Dedicated Placement Assistance',
+      cities: 'Remote · Bengaluru · Hyderabad · Pune'
+    },
+    {
+      slug: 'mobile-app-development',
+      title: 'Mobile App Development (Flutter)',
+      badge: 'Cross-Platform',
+      desc: 'Develop native-grade cross-platform apps with Flutter, Dart, Riverpod state management, and SQLite offline synchronization.',
+      placement: '100% Guaranteed Production Internship with Dedicated Placement Assistance',
+      cities: 'Remote · Delhi NCR · Chennai · Bengaluru'
+    },
+    {
+      slug: 'generative-ai',
+      title: 'Generative AI & LLM Systems',
+      badge: 'Deep Tech',
+      desc: 'Fine-tune open-weights LLMs with LoRA/QLoRA, construct dense vector search with Reciprocal Rank Fusion, and deploy vLLM.',
+      placement: '100% Guaranteed Production Internship with Dedicated Placement Assistance',
+      cities: 'Remote · Bengaluru · Hyderabad · Mumbai'
     }
   ];
 
@@ -89,11 +113,11 @@ export default function InternshipsHubPage() {
             Remote Internships Across India
           </h1>
           <HandNote tone="amber">
-            live client repos · real stipends ✎
+            live client repos · 100% Guaranteed Production Internship with Dedicated Placement Assistance ✎
           </HandNote>
         </div>
         <p className="lede-wide">
-          Explore internship opportunities and startup engineering sprints. Build production software under senior review, earn performance stipends, and graduate with cryptographic MSME credentials.
+          Explore internship opportunities and startup engineering sprints. Build production software under senior review, secure 100% Guaranteed Production Internship with Dedicated Placement Assistance, and graduate with cryptographic MSME credentials.
         </p>
 
         <div className="flex justify-center gap-3 flex-wrap mt-4">
@@ -101,7 +125,7 @@ export default function InternshipsHubPage() {
             <span>Current listings on the LMS</span>
           </span>
           <span className="proof-mark">
-            <span>₹5,000–₹18,000 Stipends</span>
+            <span>100% Guaranteed Production Internship with Dedicated Placement Assistance</span>
           </span>
           <span className="proof-mark">
             <span>✓ Turnitin Originality Rubrics</span>
@@ -118,7 +142,7 @@ export default function InternshipsHubPage() {
           <div className="doclabel mb-2">§ 02 — LIVE SPRINT GATEWAY</div>
           <h2 className="section-title mb-2">Find current internship openings</h2>
           <p className="band-lede mb-6">
-            Check the LMS for current openings and application details. After applying, you can follow your progress there.
+            Browse current openings and follow your application on the LMS.
           </p>
           <div className="flex justify-center gap-4 flex-wrap">
             <a
@@ -154,7 +178,7 @@ export default function InternshipsHubPage() {
                 <div>
                   <div className="flex justify-between items-center mb-3">
                     <span className="tag-chip text-xs font-mono">{domain.badge}</span>
-                    <span className="text-xs font-mono text-emerald-400 font-semibold">{domain.stipend}</span>
+                    <span className="text-xs font-mono text-emerald-400 font-semibold">{domain.placement}</span>
                   </div>
                   <h3 className="font-mono text-xl font-bold text-white group-hover:text-accent transition-colors mb-2">
                     {domain.title}
@@ -197,16 +221,30 @@ export default function InternshipsHubPage() {
         <div className="container">
           <div className="doclabel mb-2">§ 04 — INCUBATION FELLOWSHIP &amp; SEAT CONFIRMATION</div>
           <div className="bento-card cta-panel text-center">
-            <h2 className="card-title">Join the Paid Applied AI Fellowship</h2>
+            <h2 className="card-title">Join the Applied AI Fellowship</h2>
             <p className="page-lede max-w-2xl mx-auto mb-6">
               Skip traditional queues and join an embedded venture sprint building live production systems for incubated startups. 2-month sprints, senior pull request code reviews, and guaranteed MSME credential issuance.
             </p>
             <div className="flex justify-center gap-3 flex-wrap">
               <Link href="/enroll/1999" className="btn btn-primary btn-lg">
-                Complete Fellowship Enrollment (₹1,500 Balance) →
+                Confirm Fellowship Seat (₹1,999 Program) →
               </Link>
               <Link href="/learners/fellowship" className="btn btn-outline btn-lg">
                 Inspect Fellowship Curriculum →
+              </Link>
+            </div>
+            <div className="mt-6 pt-5 border-t border-line/50 flex justify-center gap-4 flex-wrap text-xs">
+              <Link href="/blog/inside-dbert-engineering-sprints-rag-saas-security-qa-ocr-bots" className="text-accent hover:underline">
+                Inside DBERT Sprints (RAG, SaaS, OWASP, QA, OCR, Bots) →
+              </Link>
+              <Link href="/blog/dbert-unpaid-internship-vs-paid-corporate-vs-self-learning" className="text-accent hover:underline">
+                Unpaid vs. Paid vs. Self-Learning Comparison →
+              </Link>
+              <Link href="/blog/dbert-1999-program-non-refundable-value-breakdown" className="text-accent hover:underline">
+                ₹1,999 Fee &amp; Deliverables Breakdown →
+              </Link>
+              <Link href="/blog/how-to-verify-dbert-internship-and-get-hired" className="text-accent hover:underline">
+                How to Verify &amp; Get Hired →
               </Link>
             </div>
           </div>

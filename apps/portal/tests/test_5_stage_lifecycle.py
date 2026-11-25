@@ -14,7 +14,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 
 from app import (
     app, get_db, init_db, create_session, AUTH_COOKIE,
-    get_intern_flow_state, auto_enroll_intern_in_domain_courses, ensure_application_record,
+    get_intern_flow_state, auto_enroll_intern_in_domain_courses, ensure_application_record, get_selectable_mondays,
     STAGE_APP_REQUIRED, STAGE_UNDER_REVIEW, STAGE_SELECTED, STAGE_PAYMENT_PENDING, STAGE_CONFIRMED, STAGE_REJECTED,
     STATUS_UNDER_REVIEW, STATUS_SELECTED, STATUS_ACCEPTED, STATUS_REJECTED,
     PLATFORM_DOMAIN_COURSES, VALID_DOMAINS
@@ -51,6 +51,7 @@ class Test5StageLifecycle(unittest.TestCase):
         iid_rows = conn.execute("SELECT id FROM intern_accounts WHERE email=?", (email,)).fetchall()
         iids = [r["id"] for r in iid_rows]
         for iid in iids:
+            conn.execute("DELETE FROM user_api_keys WHERE intern_id=?", (iid,))
             conn.execute("DELETE FROM attendance WHERE intern_id=?", (iid,))
             conn.execute("DELETE FROM task_submissions WHERE intern_id=?", (iid,))
             conn.execute("DELETE FROM post_applications WHERE intern_id=?", (iid,))
@@ -111,12 +112,14 @@ class Test5StageLifecycle(unittest.TestCase):
         # Valid PNG magic bytes for upload testing
         valid_png = b"\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR" + b"\x00" * 50
 
+        valid_monday = get_selectable_mondays()[0]
+
         # Attempt deposit in Stage 1 -> MUST BE BLOCKED
         bad_enroll = self.post("/enroll", data={
             "name": "Arjun Sharma",
             "email": email,
             "phone": "9876543210",
-            "joining_date": "2026-10-05",
+            "joining_date": valid_monday,
             "domain": "AI Agent Development",
             "payment_screenshot": (io.BytesIO(valid_png), "receipt.png")
         }, content_type="multipart/form-data")
@@ -137,19 +140,7 @@ class Test5StageLifecycle(unittest.TestCase):
             st2 = get_intern_flow_state(conn, email)
             self.assertEqual(st2["stage"], STAGE_UNDER_REVIEW)
             self.assertEqual(st2["stage_num"], 2)
-            self.assertFalse(st2["can_upload_payment"])
-
-        # Attempt deposit in Stage 2 -> MUST BE BLOCKED (403 Under Review)
-        bad_enroll2 = self.post("/enroll", data={
-            "name": "Arjun Sharma",
-            "email": email,
-            "phone": "9876543210",
-            "joining_date": "2026-10-05",
-            "domain": "AI Agent Development",
-            "payment_screenshot": (io.BytesIO(valid_png), "receipt.png")
-        }, content_type="multipart/form-data")
-        self.assertEqual(bad_enroll2.status_code, 403)
-        self.assertIn("under review", json.loads(bad_enroll2.data)["message"].lower())
+            self.assertTrue(st2["can_upload_payment"])
 
         # STAGE 3: ADMIN APPROVES APPLICATION (SELECTED)
         with get_db() as conn:
@@ -165,15 +156,14 @@ class Test5StageLifecycle(unittest.TestCase):
         wiz_res3 = self.client.get("/intern/wizard-status")
         wiz_data3 = json.loads(wiz_res3.data)
         self.assertEqual(wiz_data3["stage_num"], 3)
-        step_keys = [s["key"] for s in wiz_data3["steps"]]
-        self.assertIn("payment_screenshot", step_keys)
+        self.assertFalse(wiz_data3["payment_locked"])
 
         # STAGE 4: INTERN UPLOADS DEPOSIT RECEIPT
         enr_res = self.post("/enroll", data={
             "name": "Arjun Sharma",
             "email": email,
             "phone": "9876543210",
-            "joining_date": "2026-10-05",
+            "joining_date": valid_monday,
             "domain": "AI Agent Development",
             "payment_screenshot": (io.BytesIO(valid_png), "receipt.png")
         }, content_type="multipart/form-data")
@@ -219,20 +209,22 @@ class Test5StageLifecycle(unittest.TestCase):
                 self._cleanup_intern(conn, em)
 
             # Create Python intern
-            conn.execute("""
+            cur_py = conn.execute("""
                 INSERT INTO intern_accounts (name, email, password_hash, domain, is_active, created_at)
                 VALUES ('Python Intern', ?, 'fake', 'Python Automation', 1, datetime('now'))
             """, (email_py,))
+            conn.execute("INSERT INTO user_api_keys (intern_id, encrypted_key) VALUES (?, 'mock_key_py')", (cur_py.lastrowid,))
             conn.execute("""
                 INSERT INTO applications (name, email, phone, city, college, course, semester, year_of_passing, domain, why_join, status, created_at)
                 VALUES ('Python Intern', ?, '9876543211', 'Pune', 'COEP', 'B.Tech', '6th', '2026', 'Python Automation', 'Passionate about Python automation', 'Accepted', datetime('now'))
             """, (email_py,))
 
             # Create AI intern
-            conn.execute("""
+            cur_ai = conn.execute("""
                 INSERT INTO intern_accounts (name, email, password_hash, domain, is_active, created_at)
                 VALUES ('AI Intern', ?, 'fake', 'AI Agent Development', 1, datetime('now'))
             """, (email_ai,))
+            conn.execute("INSERT INTO user_api_keys (intern_id, encrypted_key) VALUES (?, 'mock_key_ai')", (cur_ai.lastrowid,))
             conn.execute("""
                 INSERT INTO applications (name, email, phone, city, college, course, semester, year_of_passing, domain, why_join, status, created_at)
                 VALUES ('AI Intern', ?, '9876543212', 'Delhi', 'IITD', 'B.Tech', '6th', '2026', 'AI Agent Development', 'Passionate about AI agents', 'Accepted', datetime('now'))

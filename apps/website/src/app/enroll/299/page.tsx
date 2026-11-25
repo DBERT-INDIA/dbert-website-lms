@@ -13,5 +13,5 @@ export default async function Enroll299RedirectPage({
     }
   }
   const qs = query.toString();
-  redirect(`/verify/unlock${qs ? `?${qs}` : ''}`);
+  redirect(`/enroll/1999${qs ? `?${qs}` : ''}`);
 }

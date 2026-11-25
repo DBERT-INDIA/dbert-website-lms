@@ -195,7 +195,8 @@ export const CANONICAL_DOMAINS: Record<string, DomainMeta> = {
     rawMatches: [
       'UI/UX Design',
       'UI and UX Internship',
-      'UI & UX Design'
+      'UI & UX Design',
+      'UI/UX Prototyping & Design'
     ],
     primarySkills: ['Figma', 'Auto-Layout', 'Design Systems', 'Wireframing', 'WCAG', 'User Journeys'],
     secondarySkills: ['Interactive Prototyping', 'Component Tokens', 'Design Tokens', 'Usability Testing', 'Mobile UI'],

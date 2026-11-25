@@ -205,3 +205,36 @@
     justify-content: center;
   }
 }
+
+.migrationBanner {
+  margin-top: 24px;
+  padding: 16px 20px;
+  background: rgba(6, 182, 212, 0.06);
+  border: 1px solid rgba(6, 182, 212, 0.25);
+  border-radius: var(--r-sm, 6px);
+  text-align: left;
+}
+
+.migrationBannerTitle {
+  font-family: var(--font-m, monospace);
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--accent, #38bdf8);
+  margin-bottom: 6px;
+}
+
+.migrationBannerText {
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: #cbd5e1;
+  margin: 0;
+}
+
+.migrationBannerText a {
+  color: var(--accent, #38bdf8);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-weight: 600;
+}

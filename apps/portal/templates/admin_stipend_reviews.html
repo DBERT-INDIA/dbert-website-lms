@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+{% set page_title_full = "₹5,000 Stipend Review & Comments — Admin Portal" %}
+{% include "_head.html" %}
+<style nonce="{{ csp_nonce() }}">
+  .sr-wrap { max-width: 1440px; margin: 0 auto; padding: 1.5rem; }
+  .sr-head { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.25rem; }
+  .sr-head h1 { margin: 0; font-size: 1.55rem; font-weight: 800; color: var(--tx-head); }
+  .sr-sub { margin: 0.3rem 0 0; font-size: 0.85rem; color: var(--tx-muted); }
+  .sr-kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 0.85rem; margin-bottom: 1.25rem; }
+  .sr-kpi { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 12px; padding: 0.9rem 1rem; }
+  .sr-kpi-lbl { font-size: 0.75rem; color: var(--tx-muted); font-weight: 600; text-transform: uppercase; }
+  .sr-kpi-val { font-size: 1.5rem; font-weight: 800; color: var(--tx-head); margin-top: 0.25rem; }
+  .sr-toolbar { display: flex; flex-wrap: wrap; gap: 0.65rem; align-items: center; margin-bottom: 1rem; background: var(--bg-surface); border: 1px solid var(--border); border-radius: 12px; padding: 0.75rem 1rem; }
+  .sr-tabs { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .sr-tab { padding: 0.45rem 0.85rem; border-radius: 8px; border: 1px solid var(--border); background: transparent; color: var(--tx-muted); font-size: 0.8rem; font-weight: 600; cursor: pointer; }
+  .sr-tab.active { background: var(--primary, #2563eb); color: #fff; border-color: transparent; }
+  .sr-input, .sr-select { padding: 0.45rem 0.75rem; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-base, #fff); color: var(--tx-head); font-size: 0.82rem; }
+  .sr-table-wrap { overflow-x: auto; background: var(--bg-surface); border: 1px solid var(--border); border-radius: 12px; }
+  table.sr-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  table.sr-table th { text-align: left; padding: 0.75rem; border-bottom: 1px solid var(--border); color: var(--tx-muted); font-size: 0.75rem; text-transform: uppercase; white-space: nowrap; }
+  table.sr-table td { padding: 0.75rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .sr-badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 0.72rem; font-weight: 700; white-space: nowrap; }
+  .b-ok { background: rgba(16,185,129,0.14); color: #047857; }
+  .b-warn { background: rgba(245,158,11,0.16); color: #b45309; }
+  .b-err { background: rgba(239,68,68,0.14); color: #b91c1c; }
+  .b-info { background: rgba(37,99,235,0.14); color: #1d4ed8; }
+  .sr-comment { width: 240px; min-height: 58px; padding: 0.4rem 0.55rem; border-radius: 8px; border: 1px solid var(--border); background: var(--bg-base, #fff); color: var(--tx-head); font-size: 0.8rem; resize: vertical; }
+  .sr-date { width: 128px; padding: 0.35rem 0.5rem; border-radius: 6px; border: 1px solid var(--border); background: var(--bg-base, #fff); color: var(--tx-head); font-size: 0.78rem; }
+  .sr-save-btn { padding: 0.42rem 0.8rem; border-radius: 8px; border: none; background: #2563eb; color: #fff; font-size: 0.78rem; font-weight: 700; cursor: pointer; }
+  .sr-save-btn:hover { opacity: 0.9; }
+  .sr-link { color: #2563eb; text-decoration: none; font-weight: 600; word-break: break-all; }
+  .sr-link:hover { text-decoration: underline; }
+  .sr-toast { position: fixed; bottom: 20px; right: 20px; background: #0f172a; color: #fff; padding: 0.65rem 1rem; border-radius: 10px; font-size: 0.82rem; font-weight: 600; display: none; z-index: 9999; }
+</style>
+</head>
+<body>
+<div class="sr-wrap">
+  <div class="sr-head">
+    <div>
+      <h1>₹5,000 Stipend Review &amp; Comment Dashboard</h1>
+      <p class="sr-sub">Rule: Approved ₹5,000 stipend requires LinkedIn Certification URL added + Merged Pull Request on official DBERT repos (Alkameinc, Gayatri-Education, Aivaratechinfomatics, DBERT-INDIA).</p>
+    </div>
+    <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+      <a href="/admin" class="sr-tab" style="text-decoration:none;">← Admin Home</a>
+      <a href="/admin/stipend-funnel" class="sr-tab" style="text-decoration:none;">Stipend Funnel</a>
+      <button id="btnExportCsv" class="sr-save-btn" type="button">Export Finalized CSV</button>
+    </div>
+  </div>
+
+  <div class="sr-kpis">
+    <div class="sr-kpi">
+      <div class="sr-kpi-lbl">Total Loaded</div>
+      <div class="sr-kpi-val" id="kpiTotal">{{ candidates|length }}</div>
+    </div>
+    <div class="sr-kpi">
+      <div class="sr-kpi-lbl">Gate 1 (₹299 Verified)</div>
+      <div class="sr-kpi-val" id="kpiGate1">{{ candidates|selectattr('stipend_verified', 'equalto', 1)|list|length }}</div>
+    </div>
+    <div class="sr-kpi">
+      <div class="sr-kpi-lbl">DBERT /pull/ Submitted</div>
+      <div class="sr-kpi-val" id="kpiPr">{{ candidates|selectattr('has_dbert_pr')|list|length }}</div>
+    </div>
+    <div class="sr-kpi">
+      <div class="sr-kpi-lbl">₹5,000 Approved</div>
+      <div class="sr-kpi-val" id="kpiApproved">{{ candidates|selectattr('stipend_5000_status', 'equalto', 'Approved')|list|length }}</div>
+    </div>
+  </div>
+
+  <div class="sr-toolbar">
+    <div class="sr-tabs" id="srTabs">
+      <button type="button" class="sr-tab active" data-tab="gate1">Gate 1 ({{ candidates|selectattr('stipend_verified', 'equalto', 1)|list|length }})</button>
+      <button type="button" class="sr-tab" data-tab="pr">All PR Submitters ({{ candidates|selectattr('has_dbert_pr')|list|length }})</button>
+      <button type="button" class="sr-tab" data-tab="approved">Approved ₹5,000</button>
+      <button type="button" class="sr-tab" data-tab="needs">Needs PR / LinkedIn</button>
+      <button type="button" class="sr-tab" data-tab="all">All ({{ candidates|length }})</button>
+    </div>
+    <input id="srSearch" type="text" class="sr-input" placeholder="Search name, email, project..." style="flex:1;min-width:200px;" />
+    <span id="srCount" style="font-size:0.8rem;color:var(--tx-muted);font-weight:600;"></span>
+  </div>
+
+  <div class="sr-table-wrap">
+    <table class="sr-table">
+      <thead>
+        <tr>
+          <th>Intern</th>
+          <th>Project &amp; GitHub PR</th>
+          <th>LinkedIn Cert</th>
+          <th>299 Gate &amp; 65d End</th>
+          <th>Release Date &amp; ₹5,000 Status</th>
+          <th>Admin Comment (EC2 Sync)</th>
+        </tr>
+      </thead>
+      <tbody id="srBody">
+        {% for c in candidates %}
+        <tr class="sr-row"
+            data-id="{{ c.id }}"
+            data-gate1="{{ c.stipend_verified }}"
+            data-pr="{{ 1 if c.has_dbert_pr else 0 }}"
+            data-status="{{ c.stipend_5000_status }}"
+            data-search="{{ (c.id|string ~ ' ' ~ c.name ~ ' ' ~ c.email ~ ' ' ~ c.domain ~ ' ' ~ c.project)|lower }}">
+          <td>
+            <div style="font-weight:700;color:var(--tx-head);">#{{ c.id }} {{ c.name }}</div>
+            <div style="color:var(--tx-muted);font-size:0.76rem;">{{ c.email }}</div>
+            <div style="margin-top:4px;"><span class="sr-badge b-info">{{ c.domain }}</span></div>
+          </td>
+          <td style="max-width:260px;">
+            <div style="font-weight:600;">{{ c.project or '—' }}</div>
+            {% if c.github_url %}
+              <div style="margin-top:3px;"><a class="sr-link" href="{{ c.github_url }}" target="_blank" rel="noopener">{{ c.github_url }}</a></div>
+            {% else %}
+              <div style="color:var(--tx-muted);">No GitHub URL</div>
+            {% endif %}
+            <div style="margin-top:4px;display:flex;gap:4px;flex-wrap:wrap;">
+              {% if c.has_dbert_pr %}
+                <span class="sr-badge b-ok">DBERT PR</span>
+              {% else %}
+                <span class="sr-badge b-err">No DBERT /pull/</span>
+              {% endif %}
+              {% if c.sub_status %}
+                <span class="sr-badge {{ 'b-ok' if c.sub_status == 'approved' else 'b-warn' }}">Task: {{ c.sub_status }}</span>
+              {% endif %}
+            </div>
+          </td>
+          <td style="max-width:210px;">
+            {% if c.linkedin_url %}
+              <a class="sr-link" href="{{ c.linkedin_url }}" target="_blank" rel="noopener">LinkedIn Profile</a>
+            {% else %}
+              <span style="color:var(--tx-muted);">Not submitted</span>
+            {% endif %}
+            <div style="margin-top:4px;">
+              {% if c.linkedin_verified %}
+                <span class="sr-badge b-ok">LinkedIn Verified</span>
+              {% elif c.has_linkedin %}
+                <span class="sr-badge b-warn">URL Added (Unverified)</span>
+              {% else %}
+                <span class="sr-badge b-err">Missing LinkedIn</span>
+              {% endif %}
+            </div>
+          </td>
+          <td>
+            <div><span class="sr-badge {{ 'b-ok' if 'PASS' in c.gate_299 else 'b-err' }}">{{ c.gate_299 }}</span></div>
+            <div style="margin-top:6px;font-size:0.78rem;">
+              <strong>65d End:</strong> {{ c.end_date_65d or '—' }}
+              {% if c.is_expired %}
+                <span class="sr-badge b-warn">Expired</span>
+              {% else %}
+                <span class="sr-badge b-ok">Active</span>
+              {% endif %}
+            </div>
+          </td>
+          <td>
+            <div style="margin-bottom:6px;">
+              <label style="display:block;font-size:0.72rem;color:var(--tx-muted);margin-bottom:2px;">Release Date</label>
+              <input type="text" class="sr-date js-release-date" value="{{ c.release_date }}" placeholder="YYYY-MM-DD" />
+            </div>
+            <div>
+              <label style="display:block;font-size:0.72rem;color:var(--tx-muted);margin-bottom:2px;">₹5,000 Audit Status</label>
+              <select class="sr-select js-audit-status">
+                <option value="Pending Audit" {{ 'selected' if c.stipend_5000_status == 'Pending Audit' else '' }}>Pending Audit</option>
+                <option value="Approved" {{ 'selected' if c.stipend_5000_status == 'Approved' else '' }}>Approved</option>
+                <option value="Needs PR or LinkedIn" {{ 'selected' if c.stipend_5000_status == 'Needs PR or LinkedIn' else '' }}>Needs PR or LinkedIn</option>
+              </select>
+            </div>
+          </td>
+          <td>
+            <textarea class="sr-comment js-comment" placeholder="Enter review comment for this intern...">{{ c.admin_comment }}</textarea>
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:6px;">
+              <label style="font-size:0.74rem;color:var(--tx-muted);display:flex;align-items:center;gap:4px;cursor:pointer;">
+                <input type="checkbox" class="js-visible" {{ 'checked' if c.visible_to_intern == 1 else '' }} />
+                Show on Intern Dashboard
+              </label>
+              <button type="button" class="sr-save-btn js-save-row">Save &amp; Update</button>
+            </div>
+            <div class="js-saved-at" style="font-size:0.72rem;color:var(--tx-muted);margin-top:3px;">
+              {% if c.admin_comment_at %}Last updated: {{ c.admin_comment_at }}{% endif %}
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div id="srToast" class="sr-toast"></div>
+
+<script nonce="{{ csp_nonce() }}">
+(function () {
+  let activeTab = 'gate1';
+  const rows = Array.from(document.querySelectorAll('.sr-row'));
+  const toast = document.getElementById('srToast');
+
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.style.display = 'block';
+    clearTimeout(toast._t);
+    toast._t = setTimeout(() => { toast.style.display = 'none'; }, 2400);
+  }
+
+  function applyFilters() {
+    const q = (document.getElementById('srSearch').value || '').trim().toLowerCase();
+    let vis = 0;
+    rows.forEach(tr => {
+      const gate1 = tr.dataset.gate1 === '1';
+      const pr = tr.dataset.pr === '1';
+      const st = tr.dataset.status || 'Pending Audit';
+      let ok = true;
+      if (activeTab === 'gate1' && !gate1) ok = false;
+      if (activeTab === 'pr' && !pr) ok = false;
+      if (activeTab === 'approved' && st !== 'Approved') ok = false;
+      if (activeTab === 'needs' && st !== 'Needs PR or LinkedIn') ok = false;
+      if (q && !(tr.dataset.search || '').includes(q)) ok = false;
+      tr.style.display = ok ? '' : 'none';
+      if (ok) vis++;
+    });
+    document.getElementById('srCount').textContent = vis + ' showing';
+  }
+
+  document.querySelectorAll('#srTabs .sr-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#srTabs .sr-tab').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeTab = btn.dataset.tab;
+      applyFilters();
+    });
+  });
+
+  document.getElementById('srSearch').addEventListener('input', applyFilters);
+
+  document.querySelectorAll('.js-save-row').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const tr = btn.closest('.sr-row');
+      const id = Number(tr.dataset.id);
+      const releaseDate = tr.querySelector('.js-release-date').value.trim();
+      const status = tr.querySelector('.js-audit-status').value;
+      const comment = tr.querySelector('.js-comment').value.trim();
+      const visible = tr.querySelector('.js-visible').checked ? 1 : 0;
+
+      btn.disabled = true;
+      btn.textContent = 'Saving...';
+      try {
+        const res = await fetch('/admin/stipend-reviews/comment', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            intern_id: id,
+            release_date: releaseDate,
+            stipend_5000_status: status,
+            comment: comment,
+            visible_to_intern: visible
+          })
+        });
+        const data = await res.json();
+        if (!res.ok || data.status !== 'success') throw new Error(data.message || 'Save failed');
+        tr.dataset.status = data.stipend_5000_status;
+        tr.querySelector('.js-saved-at').textContent = 'Last updated: ' + data.updated_at;
+        document.getElementById('kpiApproved').textContent = rows.filter(r => r.dataset.status === 'Approved').length;
+        showToast('Saved #' + id + ' to EC2');
+      } catch (e) {
+        showToast('Error: ' + e.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Save & Update';
+      }
+    });
+  });
+
+  document.getElementById('btnExportCsv').addEventListener('click', () => {
+    const visibleRows = rows.filter(r => r.style.display !== 'none');
+    const lines = [['id', 'name_email', 'release_date', 'stipend_5000_status', 'comment'].join(',')];
+    visibleRows.forEach(tr => {
+      const id = tr.dataset.id;
+      const who = tr.querySelector('td')?.innerText.replace(/\s+/g, ' ').trim() || '';
+      const rel = tr.querySelector('.js-release-date').value.trim();
+      const st = tr.querySelector('.js-audit-status').value;
+      const cm = tr.querySelector('.js-comment').value.trim();
+      lines.push([id, who, rel, st, cm].map(v => '"' + String(v).replace(/"/g, '""') + '"').join(','));
+    });
+    const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'dbert_stipend_reviews_' + activeTab + '.csv';
+    a.click();
+  });
+
+  applyFilters();
+})();
+</script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-# DBERT website, learning portal, and API
+# DBERT website and learning portal
 
 DBERT supports course learning, mentorship, credential verification, and internship hiring. This implementation connects course cohorts to a source-grounded study classroom, mentor follow-ups, and credentials tied to learner progress.
 
@@ -21,8 +21,7 @@ Cohort milestones can use passed quizzes, approved capstones, distinct lessons d
 | --- | --- |
 | [apps/portal](apps/portal) | Flask learning portal, staff and mentor tools, Jinja templates, and portal tests |
 | [apps/website](apps/website) | Next.js public website, course discovery, résumé checker, and certificate verification |
-| [dbert-api-package](dbert-api-package) | FastAPI service with its own [setup guide](dbert-api-package/README.md) |
-| [scripts/verify_offline.py](scripts/verify_offline.py) | Offline checks for the portal, website, and Compose configuration |
+| [scripts/verify_offline.py](scripts/verify_offline.py) | Offline checks for the portal and website |
 
 ## Run locally
 
@@ -61,15 +60,15 @@ Open `http://127.0.0.1:3000`. Public pages can build without a database. For fea
 
 ### Enrollment payment claims
 
-The website sends deposit and balance claims to the Flask portal. Set the same randomly generated, server-only `INTERNAL_SYNC_SECRET` in both services. Set `INTERNAL_LMS_SYNC_URL` on the website to the portal's full `/api/internal/enrollment-sync` endpoint. The website's example points to the local portal on port 5000. For Vercel, use the HTTPS endpoint of the portal assigned to that deployment and set the secret in the same Vercel environment.
+The website sends payment claims for the deposit and legacy balance flows to the Flask portal. Set the same randomly generated, server-only `INTERNAL_SYNC_SECRET` in both services. Set `INTERNAL_LMS_SYNC_URL` on the website to the portal's full `/api/internal/enrollment-sync` endpoint. The website's example points to the local portal on port 5000. For Vercel, use the HTTPS endpoint of the portal assigned to that deployment and set the secret in the same Vercel environment.
 
 Roll out the portal endpoint and configure both services before switching the website payment forms. The website acknowledges submissions after the portal returns a saved claim receipt.
 
-The unified EC2 installer generates a shared secret on fresh installs. Before upgrading an existing deployment, configure both services with the same secret. The installer checks the values before making changes.
+On EC2, set the shared secret in the website and portal `.env` files used by the systemd services.
 
 ## Production architecture
 
-The [EC2 deployment guide](deploy/FIRST_TIME_EC2_DEPLOYMENT.md) covers infrastructure setup. Nginx routes `dbert.in` to the standalone Next.js website, `lms.dbert.in` to the Gunicorn-hosted Flask portal, and `api.dbert.in` to the FastAPI service. Production uses PostgreSQL. The [deployment directory](deploy) contains Nginx and systemd configuration. See the [engineering playbook](AGENTS.md) for the application lifecycle and production workflows.
+Nginx routes `dbert.in` to the standalone Next.js website and `lms.dbert.in` to the Gunicorn-hosted Flask portal. Production uses PostgreSQL. The [deployment directory](deploy) contains Nginx and systemd configuration. See the [engineering playbook](AGENTS.md) for the application lifecycle and production workflows.
 
 ## Demo walkthrough
 
@@ -90,7 +89,7 @@ python -B scripts/verify_offline.py
 python -B scripts/verify_offline.py --browser
 ```
 
-The recorded offline run passed **130 Python tests, 4 Node tests, 8 Chromium tests, and SEO checks for 82 routes**. The Next.js production build also passed with `DATABASE_URL` unset. The portal checks use synthetic data and SQLite, with a simulated PostgreSQL connection for startup checks. Full Flask startup and live PostgreSQL and Gemini still need verification in a configured environment.
+The portal checks use synthetic data and SQLite, with a simulated PostgreSQL connection for startup checks. Verify live PostgreSQL, payment, and Gemini integrations in a configured staging environment.
 
 ## Implementation reports
 

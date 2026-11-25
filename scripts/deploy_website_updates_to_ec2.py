@@ -105,9 +105,13 @@ def main():
     export NODE_ENV=production
     npm run build
 
-    echo "[EC2] Syncing public assets to standalone..."
+    echo "[EC2] Syncing public and static assets to standalone..."
     cp -r public .next/standalone/ 2>/dev/null || true
     cp -r public .next/standalone/apps/website/ 2>/dev/null || true
+    mkdir -p .next/standalone/.next 2>/dev/null || true
+    cp -r .next/static .next/standalone/.next/ 2>/dev/null || true
+    mkdir -p .next/standalone/apps/website/.next 2>/dev/null || true
+    cp -r .next/static .next/standalone/apps/website/.next/ 2>/dev/null || true
 
     if [ -f .next/server/app/sitemap.xml.body ]; then
         echo "[EC2] Syncing generated sitemap.xml..."

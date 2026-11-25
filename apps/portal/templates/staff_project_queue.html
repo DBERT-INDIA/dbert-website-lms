@@ -8,8 +8,8 @@
 {% set active_page = 'staff_projects' %}
 {% include '_staff_sidebar.html' %}
 
-
-    <div class="queue-container">
+<main class="main content-wrap" id="main-content">
+    <div class="wrap queue-container">
         <header class="header-bar">
             <div>
                 <h1>Capstone Project Review Queue</h1>
@@ -71,6 +71,7 @@
             </div>
         {% endif %}
     </div>
+</main>
 
     <script nonce="{{ csp_nonce() }}">
         function makeDecision(subId, decision) {

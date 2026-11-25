@@ -1453,7 +1453,32 @@
 <div class="main">
   <div class="content">
     <div class="stipend-container">
-      
+
+      {% if is_tenure_expired %}
+        <!-- Stage 5B: Dedicated Tenure Expired View (Hides 5,000-coin hero, progress bar, and 4-gate checklist) -->
+        <div class="locked-card" style="margin-top: 1.5rem;">
+          <div class="locked-icon-bubble" style="background: rgba(245, 158, 11, 0.14); border-color: rgba(245, 158, 11, 0.35); color: #FBBF24;">
+            <i class="fa-solid fa-calendar-xmark"></i>
+          </div>
+          <div class="hero-pill" style="background: rgba(245, 158, 11, 0.14); border-color: rgba(245, 158, 11, 0.35); color: #FBBF24; margin: 0 auto 14px;">
+            <i class="fa-solid fa-clock-rotate-left"></i> Tenure Expired
+          </div>
+          <h1 class="locked-title" style="font-size: 1.65rem; margin-bottom: 12px;">
+            Tenure Expired for Previous Internship Program
+          </h1>
+          <p class="locked-desc" style="max-width: 640px; margin: 0 auto;">
+            Your 60-day sprint tenure and 5-day grace period for your previous internship cohort ended on <strong>{{ grace_end_display }}</strong>.
+            Cohort Tenure Expired — stipend and milestone submissions for the previous program are closed. Any earned credentials remain permanently valid and verifiable on <code>dbert.in/verify</code>.
+          </p>
+          <div class="locked-actions" style="margin-top: 24px; display: flex; gap: 14px; flex-wrap: wrap; justify-content: center;">
+            <a href="{{ rejoin_enroll_url }}" class="btn-verify-cta" style="background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%); color: #0b1120 !important; font-weight: 900; font-size: 15px; padding: 15px 32px; border-radius: 10px; box-shadow: 0 6px 22px rgba(245,158,11,0.45); text-transform: uppercase; letter-spacing: 0.4px; display: inline-flex; align-items: center; gap: 10px; text-decoration: none;">
+              <span>Join New Cohort</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </a>
+          </div>
+        </div>
+      {% else %}
+
       <!-- ====================================================================
            1. HERO BANNER & BOUNTY COUNTER
            ==================================================================== -->
@@ -1657,7 +1682,7 @@
                 {% endif %}
               </div>
               <span class="gate-status-pill {% if ver_info.verified %}status-passed{% else %}status-warning{% endif %}">
-                {{ ver_info.status }}
+                {{ ver_info.status_label or ver_info.status }}
               </span>
             </div>
             <h3 class="gate-title">Step 1: Course Certificate &amp; Verification</h3>
@@ -1665,9 +1690,11 @@
               {% if ver_info.verified %}
                 Official credential verified: <code>{{ ver_info.cert_id }}</code>. Domain curriculum, capstone evaluation, and verified credential complete. Full stipend eligibility unlocked.
               {% elif ver_info.is_provisional %}
-                Course completed! Your credential is currently <strong>Provisional (<code>{{ ver_info.cert_id }}</code>)</strong>. You have already paid the ₹499 caution deposit. Complete your remaining <strong>₹1,500 balance</strong> to unlock your Official 3-Document Verified Dossier &amp; enable the ₹5,000 stipend release.
+                Course completed! Your credential is currently <strong>Provisional (<code>{{ ver_info.cert_id }}</code>)</strong>. Complete the 4-pillar graduation standard (80h attendance, 75 tasks, 1 merged PR, Turnitin &lt; 3%) or enroll in the <strong>₹1,999 All-Inclusive Fellowship</strong> to unlock your Verified 3-Document Dossier.
+              {% elif is_paid_1999 %}
+                Your ₹1,999 All-Inclusive Fellowship is settled. Complete your 4-pillar sprint milestones on LMS (80h attendance, 75 tasks, 1 merged PR, Turnitin &lt; 3%) to unlock your Verified Credential.
               {% else %}
-                Complete your domain curriculum &amp; quizzes on LMS to earn your Certificate of Completion, then finalize your incubation balance to unlock stipend rights.
+                Complete your 4-pillar sprint milestones on LMS (80h attendance, 75 tasks, 1 merged PR, Turnitin &lt; 3%) or enroll in the ₹1,999 All-Inclusive Fellowship to earn your Verified Credential.
               {% endif %}
             </p>
             <div class="gate-footer" style="display:flex; flex-direction:column; gap:12px; margin-top:16px;">
@@ -1676,61 +1703,74 @@
                   <i class="fa-solid fa-file-shield"></i>
                   <span>View Verified Dossier &rarr;</span>
                 </a>
+              {% elif is_paid_1999 %}
+                <div style="background:rgba(16,185,129,0.12); border:1px solid rgba(16,185,129,0.35); border-radius:10px; padding:10px 12px; font-size:12px; font-weight:700; color:#34d399; display:flex; align-items:center; gap:8px;">
+                  <i class="fa-solid fa-circle-check"></i>
+                  <span>₹1,999 Fellowship Settled</span>
+                </div>
+                <a href="/tasks" class="stipend-cta-btn stipend-cta-emerald" style="width:100%; justify-content:center; text-decoration:none;">
+                  <i class="fa-solid fa-list-check"></i>
+                  <span>Complete Sprint Milestones (/tasks) &rarr;</span>
+                </a>
               {% elif ver_info.is_provisional %}
                 <div style="background:rgba(245,158,11,0.12); border:1.5px solid #d97706; border-radius:12px; padding:14px; width:100%; box-sizing:border-box;">
                   <div style="font-size:11px; font-weight:800; color:#fbbf24; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px;">
-                    <i class="fa-solid fa-bolt"></i> OPTION A: UPGRADE CREDENTIAL &amp; UNLOCK STIPEND
+                    <i class="fa-solid fa-bolt"></i> OPTION A: ₹1,999 ALL-INCLUSIVE FELLOWSHIP
                   </div>
                   <div style="font-size:12.5px; color:#FDE68A; margin-bottom:10px; line-height:1.4;">
-                    Pay remaining <strong>₹1,500 balance</strong> (net of ₹499 credit) to unlock official 3-doc credential packet and earn ₹5,000 stipend.
+                    Enroll in the <strong>₹1,999 All-Inclusive Fellowship</strong> for dedicated mentor PR review, verified 3-document credential packet, and placement assistance.
                   </div>
-                  <a href="https://dbert.in/enroll/1999?email={{ intern.email }}" target="_blank" rel="noopener" class="stipend-cta-btn stipend-cta-gold" style="width:100%; justify-content:center; text-decoration:none;">
+                  <a href="https://dbert.in/enroll/1999?certid={{ ver_info.cert_id }}&amp;email={{ intern.email }}" target="_blank" rel="noopener" class="stipend-cta-btn stipend-cta-gold" style="width:100%; justify-content:center; text-decoration:none;">
                     <i class="fa-solid fa-unlock"></i>
-                    <span>Complete ₹1,500 Balance &amp; Unlock Stipend &rarr;</span>
+                    <span>Enroll in ₹1,999 Fellowship &rarr;</span>
                   </a>
                 </div>
 
                 <div style="background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.1); border-radius:12px; padding:12px 14px; width:100%; box-sizing:border-box;">
                   <div style="font-size:11px; font-weight:700; color:#94A3B8; text-transform:uppercase; margin-bottom:2px;">
-                    OPTION B: RE-TAKE SPRINT EVALUATION (FREE)
+                    OPTION B: COMPLETE SPRINT PILLARS ON LMS
                   </div>
                   <div style="font-size:12px; color:#64748B; margin-bottom:8px;">
-                    Re-enroll in next cohort without mentor review or stipend rights.
+                    Finish 80h attendance, 75 tasks, 1 merged PR, and Turnitin &lt; 3% capstone.
                   </div>
                   <a href="/tasks" class="stipend-cta-btn stipend-cta-dark" style="width:100%; justify-content:center; text-decoration:none;">
-                    <span>Continue Sprint Practice &rarr;</span>
+                    <span>Continue Sprint Tasks &rarr;</span>
                   </a>
                 </div>
               {% else %}
-                <a href="https://dbert.in/enroll/1999?email={{ intern.email }}" target="_blank" rel="noopener" class="stipend-cta-btn stipend-cta-gold" style="width:100%; justify-content:center; text-decoration:none;">
-                  <i class="fa-solid fa-bolt"></i>
-                  <span>Complete Incubation Verification &rarr;</span>
+                <a href="/tasks" class="stipend-cta-btn stipend-cta-emerald" style="width:100%; justify-content:center; text-decoration:none;">
+                  <i class="fa-solid fa-list-check"></i>
+                  <span>Complete Sprint Milestones (/tasks) &rarr;</span>
                 </a>
-                <a href="/courses" class="stipend-cta-btn stipend-cta-emerald" style="width:100%; justify-content:center; text-decoration:none;">
-                  <i class="fa-solid fa-graduation-cap"></i>
-                  <span>Resume Course Curriculum &rarr;</span>
+                <a href="https://dbert.in/enroll/1999?email={{ intern.email }}" target="_blank" rel="noopener" class="stipend-cta-btn stipend-cta-gold" style="width:100%; justify-content:center; text-decoration:none; font-size:10.5px;">
+                  <i class="fa-solid fa-bolt"></i>
+                  <span>Upgrade to ₹1,999 Fellowship &rarr;</span>
                 </a>
               {% endif %}
             </div>
           </div>
 
-          <!-- Gate 2: Completion Date -->
-          <div class="gate-card {% if comp_info.is_completed %}gate-card-passed{% else %}gate-card-info{% endif %}">
+          <!-- Gate 2: Completion Date & Invariant 7 Tenure Expiration -->
+          <div class="gate-card {% if is_tenure_expired %}gate-card-warning{% elif comp_info.is_completed %}gate-card-passed{% else %}gate-card-info{% endif %}">
             <div class="gate-card-top">
-              <div class="gate-icon-badge {% if comp_info.is_completed %}icon-passed{% else %}icon-info{% endif %}">
-                {% if comp_info.is_completed %}
+              <div class="gate-icon-badge {% if is_tenure_expired %}icon-warning{% elif comp_info.is_completed %}icon-passed{% else %}icon-info{% endif %}">
+                {% if is_tenure_expired %}
+                  <i class="fa-solid fa-calendar-xmark"></i>
+                {% elif comp_info.is_completed %}
                   <i class="fa-solid fa-calendar-check"></i>
                 {% else %}
                   <i class="fa-solid fa-hourglass-half"></i>
                 {% endif %}
               </div>
-              <span class="gate-status-pill {% if comp_info.is_completed %}status-passed{% else %}status-info{% endif %}">
-                {% if comp_info.is_completed %}Completed{% else %}In Progress{% endif %}
+              <span class="gate-status-pill {% if is_tenure_expired %}status-warning{% elif comp_info.is_completed %}status-passed{% else %}status-info{% endif %}">
+                {% if is_tenure_expired %}Tenure Expired{% elif comp_info.is_completed %}Completed{% else %}In Progress{% endif %}
               </span>
             </div>
             <h3 class="gate-title">Step 2: Internship Duration</h3>
             <p class="gate-text">
-              {% if comp_info.is_completed %}
+              {% if is_tenure_expired %}
+                Your 60-day sprint tenure and 5-day grace period ended on <strong>{{ grace_end_display }}</strong>. Stipend submissions are permanently closed for this cohort. Your earned credentials remain valid on <code>dbert.in/verify</code>.
+              {% elif comp_info.is_completed %}
                 Official duration completed on <strong>{{ comp_info.completion_date_display }}</strong>. Submissions are open.
               {% elif comp_info.days_remaining is not none and comp_info.days_remaining < 900 %}
                 Internship is active. Stipend application unlocks upon completion date: <strong>{{ comp_info.completion_date_display }}</strong> ({{ comp_info.days_remaining }} days remaining).
@@ -1738,7 +1778,13 @@
                 Internship tenure is active. Completion milestone establishes 60 days from sprint enrollment.
               {% endif %}
             </p>
-            {% if not comp_info.is_completed %}
+            {% if is_tenure_expired %}
+              <div class="gate-footer">
+                <a href="/apply" class="stipend-cta-btn stipend-cta-dark" style="width:100%; justify-content:center; text-decoration:none;">
+                  <span>Re-Apply for Next Cohort &rarr;</span>
+                </a>
+              </div>
+            {% elif not comp_info.is_completed %}
               <div class="gate-footer">
                 <span class="gate-link" style="color:#38BDF8; font-weight:700; font-size:12px; display:inline-flex; align-items:center; gap:6px;">
                   <i class="fa-regular fa-clock"></i>
@@ -1920,6 +1966,32 @@
                 </div>
               </div>
             {% endif %}
+
+            <!-- Real-Time URL & Gate Validation Strip -->
+            <div style="display:flex; flex-wrap:wrap; gap:8px; margin: 14px 0 18px;">
+              <span class="gate-status-pill {% if verified_github_org or (github_validation and github_validation.status == 'OFFICIAL_PR') %}status-passed{% else %}status-warning{% endif %}" style="font-size: 0.75rem;">
+                <i class="fa-brands fa-github"></i>
+                {% if verified_github_org %}
+                  GitHub Verified ({{ verified_github_org }})
+                {% elif github_validation and github_validation.status == 'OFFICIAL_PR' %}
+                  Official PR Detected (#{{ github_validation.pr_number }})
+                {% elif github_validation %}
+                  GitHub: {{ github_validation.status | replace('_', ' ') }}
+                {% else %}
+                  GitHub PR Pending
+                {% endif %}
+              </span>
+              <span class="gate-status-pill {% if linkedin_verified %}status-passed{% elif has_linkedin %}status-warning{% else %}status-locked{% endif %}" style="font-size: 0.75rem;">
+                <i class="fa-brands fa-linkedin"></i>
+                {% if linkedin_verified %}
+                  LinkedIn Verified
+                {% elif has_linkedin %}
+                  LinkedIn Added (Verification Pending)
+                {% else %}
+                  LinkedIn Missing
+                {% endif %}
+              </span>
+            </div>
 
             <!-- 5-Step Review Timeline Visualizer -->
             <div class="timeline-grid">
@@ -2175,26 +2247,47 @@
           <div class="locked-icon-bubble">
             <i class="fa-solid fa-lock"></i>
           </div>
-          <h3 class="locked-title">Stipend Submission Form is Currently Locked</h3>
-          <p class="locked-desc">
-            To maintain academic integrity and financial compliance, all three prerequisite criteria in the checklist above must be completed before submitting your capstone contribution.
-          </p>
-
-          <div class="locked-actions" style="margin-top:20px; display:flex; gap:14px; flex-wrap:wrap; justify-content:center;">
-            {% if not ver_info.verified %}
-              <a href="https://dbert.in/verify/unlock?{% if ver_info and ver_info.cert_id %}certid={{ ver_info.cert_id }}&{% endif %}email={{ intern.email }}" target="_blank" rel="noopener" class="btn-verify-cta" style="background:linear-gradient(135deg, #fbbf24 0%, #d97706 100%); color:#0b1120 !important; font-weight:900; font-size:15px; padding:15px 30px; border-radius:10px; box-shadow:0 6px 22px rgba(245,158,11,0.5); text-transform:uppercase; letter-spacing:0.4px; display:inline-flex; align-items:center; gap:10px; text-decoration:none;">
-                <span>Complete Official ₹299 Verification Form</span>
-                <i class="fa-solid fa-arrow-up-right-from-square"></i>
-              </a>
-            {% endif %}
-            {% if not has_upi %}
-              <a href="/ambassador" class="btn-upi-cta" style="background:linear-gradient(135deg, #a855f7 0%, #7c3aed 100%); color:#ffffff !important; font-weight:800; font-size:14px; padding:15px 26px; border-radius:10px; box-shadow:0 4px 16px rgba(168,85,247,0.4); display:inline-flex; align-items:center; gap:8px; text-decoration:none;">
-                <span>Configure Payout UPI ID</span>
+          {% if is_tenure_expired %}
+            <h3 class="locked-title">Cohort Tenure Expired — Stipend Submissions Closed</h3>
+            <p class="locked-desc">
+              Your 60-day sprint tenure and 5-day grace period ended on <strong>{{ grace_end_display }}</strong>. Stipend eligibility for this cohort has closed, though your verified credentials remain permanently valid on <code>dbert.in/verify</code>. You may re-apply to join a new active cohort.
+            </p>
+            <div class="locked-actions" style="margin-top:20px; display:flex; gap:14px; flex-wrap:wrap; justify-content:center;">
+              <a href="/apply" class="btn-verify-cta" style="background:linear-gradient(135deg, #fbbf24 0%, #d97706 100%); color:#0b1120 !important; font-weight:900; font-size:15px; padding:15px 30px; border-radius:10px; box-shadow:0 6px 22px rgba(245,158,11,0.5); text-transform:uppercase; letter-spacing:0.4px; display:inline-flex; align-items:center; gap:10px; text-decoration:none;">
+                <span>Re-Apply for Next Cohort</span>
                 <i class="fa-solid fa-arrow-right"></i>
               </a>
-            {% endif %}
-          </div>
+            </div>
+          {% else %}
+            <h3 class="locked-title">Stipend Submission Form is Currently Locked</h3>
+            <p class="locked-desc">
+              To maintain academic integrity and financial compliance, all prerequisite criteria in the checklist above must be completed before submitting your capstone contribution.
+            </p>
+
+            <div class="locked-actions" style="margin-top:20px; display:flex; gap:14px; flex-wrap:wrap; justify-content:center;">
+              {% if not ver_info.verified %}
+                {% if not is_paid_1999 %}
+                  <a href="https://dbert.in/enroll/1999?{% if ver_info and ver_info.cert_id %}certid={{ ver_info.cert_id }}&amp;{% endif %}email={{ intern.email }}" target="_blank" rel="noopener" class="btn-verify-cta" style="background:linear-gradient(135deg, #fbbf24 0%, #d97706 100%); color:#0b1120 !important; font-weight:900; font-size:15px; padding:15px 30px; border-radius:10px; box-shadow:0 6px 22px rgba(245,158,11,0.5); text-transform:uppercase; letter-spacing:0.4px; display:inline-flex; align-items:center; gap:10px; text-decoration:none;">
+                    <span>Enroll in ₹1,999 Fellowship</span>
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                  </a>
+                {% endif %}
+                <a href="/tasks" class="btn-upi-cta" style="background:linear-gradient(135deg, #10b981 0%, #059669 100%); color:#ffffff !important; font-weight:800; font-size:14px; padding:15px 26px; border-radius:10px; display:inline-flex; align-items:center; gap:8px; text-decoration:none;">
+                  <span>Complete Sprint Milestones</span>
+                  <i class="fa-solid fa-arrow-right"></i>
+                </a>
+              {% endif %}
+              {% if not has_upi %}
+                <a href="/ambassador" class="btn-upi-cta" style="background:linear-gradient(135deg, #a855f7 0%, #7c3aed 100%); color:#ffffff !important; font-weight:800; font-size:14px; padding:15px 26px; border-radius:10px; box-shadow:0 4px 16px rgba(168,85,247,0.4); display:inline-flex; align-items:center; gap:8px; text-decoration:none;">
+                  <span>Configure Payout UPI ID</span>
+                  <i class="fa-solid fa-arrow-right"></i>
+                </a>
+              {% endif %}
+            </div>
+          {% endif %}
         </div>
+
+      {% endif %}
 
       {% endif %}
 

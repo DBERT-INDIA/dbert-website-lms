@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { getPublishedTracks } from '@/data/courses.config';
 import navigation from '@/data/nav.config.json';
 import { pageMetadata } from '@/lib/seo';
-import { courses } from '../learners/courses/catalog';
 import styles from './search.module.css';
 
 export const metadata: Metadata = {
@@ -34,13 +34,13 @@ for (const item of navigation.items) {
     }
   }
 }
-for (const course of courses) {
-  index.set(course.href, {
-    href: course.href,
-    label: course.title,
+for (const course of getPublishedTracks()) {
+  index.set(course.canonicalPath, {
+    href: course.canonicalPath,
+    label: course.name,
     area: 'Course',
-    description: course.description,
-    keywords: course.tech,
+    description: course.shortDescription,
+    keywords: course.technologies.map(({ name }) => name).join(' '),
   });
 }
 

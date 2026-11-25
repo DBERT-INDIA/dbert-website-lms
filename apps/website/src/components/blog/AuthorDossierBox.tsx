@@ -186,7 +186,7 @@ export default function AuthorDossierBox({
             fontWeight: 700,
           }}
         >
-          <CheckCircle2 size={15} /> ₹5,000 Production Milestone Disbursed
+          <CheckCircle2 size={15} /> Production Milestone Verified
         </span>
       </div>
 
@@ -207,7 +207,7 @@ export default function AuthorDossierBox({
             Want to build production projects like {name}?
           </h4>
           <p style={{ color: '#94A3B8', fontSize: '0.8125rem', margin: 0, lineHeight: 1.5 }}>
-            Work 1:1 with practicing Delhi NCR engineers, build verified GitHub codebases, and earn production stipends up to ₹5,000.
+            Work 1:1 with practicing engineers, build verified GitHub codebases, and secure 100% Guaranteed Production Internship with Dedicated Placement Assistance.
           </p>
         </div>
 

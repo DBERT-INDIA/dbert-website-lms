@@ -10,7 +10,12 @@
     "relatedBlogTitle": "Gayatri AI — Enterprise Educational Intelligence Platform",
     "relatedCertId": "CERT-DBERT-2026-AIML-169",
     "author": "GURKA VINAY KUMAR REDDY",
-    "tags": ["AI Agent Development", "FastAPI", "Railway", "LLM Orchestration"],
+    "tags": [
+      "AI Agent Development",
+      "FastAPI",
+      "Railway",
+      "LLM Orchestration"
+    ],
     "ctaText": "Build Enterprise AI Agents in the ₹1,999 Incubation Fellowship",
     "ctaUrl": "/enroll/1999"
   },
@@ -25,7 +30,12 @@
     "relatedBlogTitle": "Alkame NIFTY 50 – AI-Powered Market Intelligence",
     "relatedCertId": "CERT-DBERT-2026-DA-019",
     "author": "Radha Praful Bhamodkar & Suraj Jha",
-    "tags": ["Data Analytics", "Financial Engineering", "Streamlit", "Python"],
+    "tags": [
+      "Data Analytics",
+      "Financial Engineering",
+      "Streamlit",
+      "Python"
+    ],
     "ctaText": "Master Financial Data Analytics in the ₹1,999 Program",
     "ctaUrl": "/enroll/1999"
   },
@@ -40,7 +50,12 @@
     "relatedBlogTitle": "Architecting Incubacloud: Production Full Stack Development",
     "relatedCertId": "CERT-DBERT-2026-FSD-056",
     "author": "Kundan Kumhar",
-    "tags": ["Full Stack Development", "Microservices", "Docker", "PostgreSQL"],
+    "tags": [
+      "Full Stack Development",
+      "Microservices",
+      "Docker",
+      "PostgreSQL"
+    ],
     "ctaText": "Enroll in Full Stack Cloud Architecture Incubation",
     "ctaUrl": "/enroll/1999"
   },
@@ -55,7 +70,12 @@
     "relatedBlogTitle": "Reducing API Response Time by 90% with Redis Caching",
     "relatedCertId": "",
     "author": "Maroju Prince Karthik",
-    "tags": ["Backend Engineering", "Redis", "Performance", "System Design"],
+    "tags": [
+      "Backend Engineering",
+      "Redis",
+      "Performance",
+      "System Design"
+    ],
     "ctaText": "Learn Production Backend Optimization at DBERT",
     "ctaUrl": "/enroll/1999"
   },
@@ -70,7 +90,12 @@
     "relatedBlogTitle": "DBERT Credential Verification Dossier",
     "relatedCertId": "",
     "author": "DBERT Academic Directorate",
-    "tags": ["Legitimacy", "Verification", "Turnitin", "Accreditation"],
+    "tags": [
+      "Legitimacy",
+      "Verification",
+      "Turnitin",
+      "Accreditation"
+    ],
     "ctaText": "Verify an Official DBERT Certificate Instantly",
     "ctaUrl": "/verify"
   },
@@ -85,7 +110,12 @@
     "relatedBlogTitle": "Paid AI Internship India Guide 2026",
     "relatedCertId": "",
     "author": "DBERT Admissions Directorate",
-    "tags": ["Incubation", "Enrollment", "Stipend", "Admissions"],
+    "tags": [
+      "Incubation",
+      "Enrollment",
+      "Stipend",
+      "Admissions"
+    ],
     "ctaText": "Confirm Your Incubation Seat & Complete ₹1,500 Balance",
     "ctaUrl": "/enroll/1999"
   },
@@ -100,7 +130,12 @@
     "relatedBlogTitle": "AI Agent Developer Salary 2026 Guide",
     "relatedCertId": "",
     "author": "DBERT Industry Research",
-    "tags": ["AI Agents", "Salaries", "Careers", "Hiring"],
+    "tags": [
+      "AI Agents",
+      "Salaries",
+      "Careers",
+      "Hiring"
+    ],
     "ctaText": "Train as an AI Agent Developer for ₹1,999",
     "ctaUrl": "/enroll/1999"
   },
@@ -115,7 +150,12 @@
     "relatedBlogTitle": "RAG Pipeline Tutorial from Scratch",
     "relatedCertId": "",
     "author": "DBERT Applied AI Labs",
-    "tags": ["RAG", "LLM", "Vector Search", "Reciprocal Rank Fusion"],
+    "tags": [
+      "RAG",
+      "LLM",
+      "Vector Search",
+      "Reciprocal Rank Fusion"
+    ],
     "ctaText": "Master RAG Architectures in DBERT Incubation",
     "ctaUrl": "/enroll/1999"
   },
@@ -123,16 +163,21 @@
     "id": "stipend-milestone-payout-system",
     "domain": "Incubation & Careers",
     "domainSlug": "incubation-careers",
-    "question": "How do DBERT interns qualify for and receive the 5,000 coins stipend payout?",
-    "shortAnswer": "Interns who hold a verified certificate submit an open-source technical contribution (GitHub repo, live deployment, and technical report). Upon staff approval, 5,000 coins are credited to their LMS wallet and scheduled for direct UPI disbursement according to the completion timeline.",
-    "detailedMarkdown": "DBERT operates a merit-based stipend reward engine:\n\n1. **Eligibility Gate**: Intern must hold a verified credential (`status: VERIFIED`, `isProvisional: false`). Provisional candidates unlock eligibility by finalizing verification at `https://dbert.in/enroll/1999`.\n2. **Completion Milestone**: Submissions open on or after the official 60-day completion date.\n3. **Technical Contribution**: Candidate delivers a domain project with public GitHub code, live URL, and an engineering article published to the DBERT blog.\n4. **AI & Staff Review**: Submissions are screened against domain rubrics by Gemini AI and reviewed by staff.\n5. **Scheduled UPI Disbursement**: Upon review approval, 5,000 coins are credited to the intern's LMS wallet and scheduled for direct UPI disbursement according to the standard 60-day post-completion timeline.\n\nAll candidate payout transactions and verification states are permanently logged.",
+    "question": "What is the difference between the ₹1,999 Fellowship and the Direct LMS Internship track?",
+    "shortAnswer": "The ₹1,999 Applied Fellowship provides 100% Guaranteed Production Internship with Dedicated Placement Assistance across internal DBERT portfolio ventures (Gayatri AI, Alkame, Aivara) or external hiring partners upon sprint completion. Direct applicants admitted on the LMS internship track participate in merit-based milestone gates to unlock official credentials and internal performance bounties.",
+    "detailedMarkdown": "DBERT partitions candidates into two specialized tracks:\n\n1. **₹1,999 Applied Fellowship (100% Guaranteed Production Internship with Dedicated Placement Assistance)**: A 2-month engineering sprint on venture codebases. Fellows receive senior code reviews, a 3-document cryptographic credential packet, and 100% guaranteed production internship with dedicated placement assistance across internal ventures or external partner squads.\n2. **Direct LMS Internship Track (₹499 Caution Deposit)**: Selective recruitment administered through LMS (lms.dbert.in/apply). Interns complete 60-day capstones and earn performance-indexed internal merit bounties upon meeting strict engineering rubrics.",
     "relatedBlogSlug": "",
     "relatedBlogTitle": "DBERT Stipend & Ambassador Program",
     "relatedCertId": "",
     "author": "DBERT Academic Directorate",
-    "tags": ["Stipend", "UPI Payout", "LMS Wallet", "Milestones"],
-    "ctaText": "Verify Your Credential to Unlock Stipend Eligibility",
-    "ctaUrl": "/enroll/1999"
+    "tags": [
+      "Fellowship",
+      "Guaranteed Placement",
+      "LMS Track",
+      "Milestones"
+    ],
+    "ctaText": "Explore Fellowship Programs (Guaranteed Placement)",
+    "ctaUrl": "/learners/courses/ai-agent-development"
   },
   {
     "id": "fastapi-microservices-scalability",
@@ -145,7 +190,12 @@
     "relatedBlogTitle": "Building Scalable Microservices with FastAPI",
     "relatedCertId": "",
     "author": "Aman Singh",
-    "tags": ["FastAPI", "Microservices", "Python", "Cloud Architecture"],
+    "tags": [
+      "FastAPI",
+      "Microservices",
+      "Python",
+      "Cloud Architecture"
+    ],
     "ctaText": "Build FastAPI Microservices in DBERT Sprints",
     "ctaUrl": "/enroll/1999"
   },
@@ -160,7 +210,12 @@
     "relatedBlogTitle": "Pre-Vetted Engineers Directory",
     "relatedCertId": "",
     "author": "DBERT Talent Network",
-    "tags": ["Hiring", "Recruiters", "Pre-Vetted Talent", "Directory"],
+    "tags": [
+      "Hiring",
+      "Recruiters",
+      "Pre-Vetted Talent",
+      "Directory"
+    ],
     "ctaText": "Explore Pre-Vetted Engineers Directory",
     "ctaUrl": "/verify/directory"
   },
@@ -175,8 +230,75 @@
     "relatedBlogTitle": "DBERT Sovereign Domain Migration Notice",
     "relatedCertId": "",
     "author": "DBERT Engineering Directorate",
-    "tags": ["Domain Migration", "Security", "SEO", "Compliance"],
+    "tags": [
+      "Domain Migration",
+      "Security",
+      "SEO",
+      "Compliance"
+    ],
     "ctaText": "Learn More About the Domain Migration at /dbert-online",
     "ctaUrl": "/dbert-online"
+  },
+  {
+    "id": "dbert-1999-non-refundable-breakdown",
+    "domain": "Legitimacy & Accreditation",
+    "domainSlug": "legitimacy-verification",
+    "question": "Why is the ₹1,999 DBERT incubation fee non-refundable and what deliverables are included?",
+    "shortAnswer": "The ₹1,999 fee (₹499 caution deposit + ₹1,500 balance) provisions active private repository access, 1:1 mentor code reviews, structured 2-month training, live sprint assignments, project placement, and verifiable credentials.",
+    "detailedMarkdown": "Unlike passive video courses, DBERT allocates human engineering bandwidth and private infrastructure the moment your seat is confirmed:\n\n1. **Active Client Repository**: Guaranteed assignment to a live production codebase.\n2. **Individual Mentor Code Reviews**: Senior engineers review and grade your pull requests.\n3. **Structured 2-Month Sprints**: Live production tickets across Hybrid RAG, Multi-Tenant SaaS, OAuth2/OWASP, Playwright QA, OCR, and Bot APIs.\n4. **Placement & Credentials**: Project placement with DBERT or a hiring/channel partner plus an offer letter and verifiable credentials at `https://dbert.in/verify`.\n\nRead the complete transparent breakdown in our guide: [Is the ₹1,999 DBERT Incubation Worth It?](/blog/dbert-1999-program-non-refundable-value-breakdown).",
+    "relatedBlogSlug": "dbert-1999-program-non-refundable-value-breakdown",
+    "relatedBlogTitle": "Is the ₹1,999 DBERT Incubation Worth It? Transparent Fee, Deliverables & Policy Breakdown",
+    "relatedCertId": "",
+    "author": "DBERT Engineering Staff",
+    "tags": [
+      "DBERT 1999",
+      "Fee Breakdown",
+      "Non-Refundable Policy",
+      "Incubation"
+    ],
+    "ctaText": "Complete Your ₹1,999 / ₹1,500 Enrollment",
+    "ctaUrl": "/enroll/1999"
+  },
+  {
+    "id": "unpaid-internship-vs-solo-learning",
+    "domain": "Legitimacy & Accreditation",
+    "domainSlug": "legitimacy-verification",
+    "question": "How does DBERT's 2-month project-based internship compare to a paid corporate internship or 2 months of solo self-learning?",
+    "shortAnswer": "While a paid corporate internship offers an upfront stipend, DBERT bridges the experience gap against solo self-learning by providing a real repository, meaningful tasks, mentor feedback, and a verifiable contribution history.",
+    "detailedMarkdown": "Spending two months learning alone without an assigned team or production repo leaves you with unverified toy projects and zero code review feedback. DBERT's 2-month incubation provides:\n\n- **Real Repository Workflows**: Branching, migrations, and CI checks inside active codebases.\n- **Actionable PR Reviews**: Direct feedback from senior engineering staff.\n- **Verifiable Proof**: Publicly auditable dossier on `https://dbert.in/verify/directory`.\n\nCompare all three paths in detail: [DBERT Unpaid Internship vs. Paid Corporate Internship vs. 2 Months Self-Learning](/blog/dbert-unpaid-internship-vs-paid-corporate-vs-self-learning).",
+    "relatedBlogSlug": "dbert-unpaid-internship-vs-paid-corporate-vs-self-learning",
+    "relatedBlogTitle": "DBERT Unpaid Internship vs. Paid Corporate Internship vs. 2 Months Self-Learning",
+    "relatedCertId": "",
+    "author": "DBERT Engineering Staff",
+    "tags": [
+      "Career Strategy",
+      "Internship Comparison",
+      "Self-Learning",
+      "Portfolio"
+    ],
+    "ctaText": "Compare Pathways & Join the Next Cohort",
+    "ctaUrl": "/enroll/1999"
+  },
+  {
+    "id": "real-technical-work-evidence",
+    "domain": "AI Agent Development",
+    "domainSlug": "ai-agent-development",
+    "question": "What real technical work and engineering skills do DBERT interns ship during the 2-month sprints?",
+    "shortAnswer": "Fellows ship production modules across Hybrid RAG (vector search, retrieval pipelines), Multi-Tenant SaaS APIs, Auth & Web Security (JWT, OAuth2, OWASP), QA Automation (PyTest, Postman, Playwright), Tesseract OCR, and Bot APIs (Telegram, WhatsApp, Discord).",
+    "detailedMarkdown": "DBERT sprint tickets map directly to production engineering tracks:\n\n- **Hybrid RAG Engineering**: Vector search (`pgvector`, Qdrant), BM25 + dense retrieval, reranking.\n- **SaaS Feature Development**: Multi-tenant PostgreSQL schemas and streaming APIs.\n- **Auth & Web Security**: JWT rotation, OAuth2 PKCE, OWASP Top 10 hardening.\n- **QA Automation**: PyTest fixtures, Postman contract suites, Playwright E2E checks.\n- **Document Processing & Bots**: Python + Tesseract OCR pipelines and WhatsApp/Telegram/Discord bot webhooks.\n\nExplore the full technical evidence: [Inside DBERT's Real Engineering Sprints](/blog/inside-dbert-engineering-sprints-rag-saas-security-qa-ocr-bots).",
+    "relatedBlogSlug": "inside-dbert-engineering-sprints-rag-saas-security-qa-ocr-bots",
+    "relatedBlogTitle": "Inside DBERT’s Real Engineering Sprints: Hybrid RAG, Multi-Tenant SaaS, Security, QA, OCR & Bots",
+    "relatedCertId": "",
+    "author": "DBERT AI Research Staff",
+    "tags": [
+      "Hybrid RAG",
+      "Multi-Tenant SaaS",
+      "OWASP",
+      "Playwright QA",
+      "OCR",
+      "Bots"
+    ],
+    "ctaText": "Inspect Verified Engineers in the Directory",
+    "ctaUrl": "/verify/directory"
   }
 ]

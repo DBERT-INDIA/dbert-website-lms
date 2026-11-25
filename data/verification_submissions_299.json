@@ -158,14 +158,16 @@
     "domain": "Data Analyst",
     "certId": "CERT-DBERT-2026-DA-019",
     "amountExpected": 299,
-    "amountPaid": 299,
+    "amountPaid": 0,
     "utrNumber": "956584485560",
-    "status": "APPROVED",
+    "status": "REJECTED",
     "ipAddress": "103.127.35.2",
     "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36",
     "approvedAt": "2026-11-20T16:31:53.000Z",
     "verifiedAt": "2026-11-20T17:57:00.000Z",
-    "adminRemarks": "Payment verified, certificate officially upgraded to VERIFIED, and Gate 1 unlocked."
+    "adminRemarks": "Payment not received in bank ledger (UTR 956584485560 audit failed). Repayment of ₹299 required to unlock official credentials and Gate 1 stipend release.",
+    "repaymentRequired": true,
+    "rejectedAt": "2026-11-23T19:38:40.451045"
   },
   {
     "id": "DBERT-VER-245045-S50V",

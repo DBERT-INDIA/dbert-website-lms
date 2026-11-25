@@ -1,18 +1,23 @@
 @echo off
 chcp 65001 >nul
-title DBERT WhatsApp Account 2 Login
+title DBERT WhatsApp Account 2 Login Helper
 color 0E
 echo ==============================================================================
 echo   DBERT WHATSAPP LOGIN - ACCOUNT 2
 echo   Session Directory: C:\Users\user\Desktop\aivara\aivara\.chrome_session_account2
 echo ==============================================================================
 echo.
-echo Launching Google Chrome directly with Account 2 profile...
-echo.
+echo Launching visible browser window for Account 2...
 echo 1. Scan the QR code using WhatsApp on your phone (Linked Devices).
-echo 2. Once your chat list is displayed, your session is saved.
-echo 3. You may then close the Chrome browser.
+echo 2. Once linked, the helper will automatically detect your login and save the session.
 echo.
-start "" "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --user-data-dir="C:\Users\user\Desktop\aivara\aivara\.chrome_session_account2" --no-first-run --no-default-browser-check https://web.whatsapp.com
-echo Browser window launched. Press any key to exit this console.
-pause >nul
+
+if exist "C:\Users\user\AppData\Local\Programs\Python\Python312\python.exe" (
+    set "PY_BIN=C:\Users\user\AppData\Local\Programs\Python\Python312\python.exe"
+) else (
+    set "PY_BIN=python"
+)
+
+"%PY_BIN%" scripts\login_whatsapp_helper.py --account 2
+echo.
+pause

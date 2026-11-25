@@ -72,8 +72,8 @@ export default function PricingPage() {
             '@type': 'Offer',
             itemOffered: {
               '@type': 'Course',
-              name: 'DBERT Paid Program (Guaranteed Placement)',
-              description: '2-Month immersive program with guaranteed internship placement working directly on live repositories.'
+              name: 'DBERT Fellowship (100% Guaranteed Production Internship)',
+              description: '2-Month immersive program with 100% Guaranteed Production Internship with Dedicated Placement Assistance working directly on live repositories.'
             },
             price: '1999',
             priceCurrency: 'INR'
@@ -103,9 +103,9 @@ export default function PricingPage() {
     },
     {
       time: '10:05:40',
-      tag: 'stipend',
-      message: 'fellowship milestone payout disbursed to 18 engineering fellows',
-      detail: '· ₹12,500/fellow',
+      tag: 'verify',
+      message: 'production sprint milestone approved for 18 engineering fellows',
+      detail: '· verified PR merges',
     },
     {
       time: '10:09:12',
@@ -149,7 +149,7 @@ export default function PricingPage() {
       kind: 'learner',
       who: 'Track 02 · Learners',
       title: 'Academy & Fellowship',
-      description: 'Transparent flat-rate programs from ₹1,599 with 7-day refund guarantee and monthly performance stipends up to ₹18,000.',
+      description: 'Transparent flat-rate programs from ₹1,999 with 7-day refund guarantee and 100% Guaranteed Production Internship with Dedicated Placement Assistance across venture codebases.',
       ctaLabel: 'Explore Course Tiers',
       href: '/learners',
     },
@@ -284,13 +284,18 @@ export default function PricingPage() {
               },
               { 
                 title: 'DBERT Fellowship', 
-                feeLabel: 'Selective Stipend Cohort',
-                badge: 'Live Squad Placement',
-                duration: '3 Months (Sprints)', 
+                feeLabel: '₹1,999 Fellowship Program',
+                badge: 'Production Squad Placement',
+                duration: '2 Months (8 Weeks)', 
                 audience: 'High-performing Contributors',
                 desc: 'Work directly on live client codebases under senior venture architects, submit evaluated PRs, and gain verifiable experience.',
-                href: '/learners/fellowship',
-                cta: 'Apply for Fellowship &rarr;'
+                href: '/enroll/1999',
+                cta: 'Enroll in Fellowship (₹1,999) &rarr;',
+                bullets: [
+                  'Production Internship Guarantee',
+                  'Dedicated Placement Assistance',
+                  'Zero Public Cash Handout / Performance-indexed internal bounties only'
+                ]
               }
             ].map((tier, idx) => (
               <div key={idx} className={`card card-lift ${s.tierCard}${tier.featured ? ` ${s.tierCardFeatured}` : ''}`}>
@@ -300,6 +305,13 @@ export default function PricingPage() {
                   <div className="font-mono text-sm text-accent my-2 font-medium">{tier.feeLabel}</div>
                   <div className={s.tierDuration}>Duration: <strong>{tier.duration}</strong></div>
                   <p className={s.tierDesc}>{tier.desc}</p>
+                  {tier.bullets && (
+                    <ul className="mt-3 space-y-1.5 text-xs text-muted list-disc list-inside">
+                      {tier.bullets.map((b, bIdx) => (
+                        <li key={bIdx} className="text-[var(--text-secondary)]">{b}</li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
                 <TrackedLink
                   href={tier.href}

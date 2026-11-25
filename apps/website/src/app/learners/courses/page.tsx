@@ -4,23 +4,25 @@ import { pageMetadata } from '@/lib/seo';
 import HandNote from '@/components/ui/HandNote';
 import s from '../learners.module.css';
 import Reveal from '@/components/ui/Reveal';
-import CourseCatalog from './CourseCatalog';
-import { courses } from './catalog';
+import CoursesCatalogueClient from '@/components/courses/CoursesCatalogueClient';
+import { getPublishedTracks, FELLOWSHIP_FEE } from '@/data/courses.config';
 
 export const metadata = pageMetadata('/learners/courses');
+
+const publishedTracks = getPublishedTracks();
 
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'ItemList',
-  name: 'DBERT Production AI & Engineering Skill Tracks',
-  itemListElement: courses.map((course, index) => ({
+  name: 'DBERT Production AI & Engineering Fellowship Tracks',
+  itemListElement: publishedTracks.map((track, index) => ({
     '@type': 'ListItem',
     position: index + 1,
     item: {
       '@type': 'Course',
-      name: course.title,
-      description: course.description,
-      url: new URL(course.href, 'https://dbert.in').href,
+      name: track.name,
+      description: track.shortDescription,
+      url: new URL(track.canonicalPath, 'https://dbert.in').href,
       provider: { '@type': 'Organization', name: 'DBERT', url: 'https://dbert.in' },
     },
   })),
@@ -36,16 +38,16 @@ export default function CoursesHubPage() {
       <div className="wrap">
         <Reveal className="section-head">
           <div className="doclabel">
-            § 01 — COURSES <span className="rev">skill tracks</span>
+            § 01 — COURSES <span className="rev">{publishedTracks.length} fellowship tracks</span>
           </div>
           <div className="stack-h align-baseline gap-3 flex-wrap">
-            <h1>AI and engineering courses with verifiable certificates</h1>
+            <h1>AI and engineering fellowship tracks with verifiable credentials</h1>
             <HandNote tone="amber">
               production code · real pull requests ✍
             </HandNote>
           </div>
           <p className="body-copy">
-            {courses.length} focused tracks built around production engineering practices. Complete them through guided sprints, merge pull requests against real codebases, and verify your credentials on-chain. If you want the full sequence from beginner to paid fellowship, explore the{' '}
+            {publishedTracks.length} focused technical tracks built around production engineering practices ({FELLOWSHIP_FEE.formattedTotal} total program fee · 2 months). Complete them through guided sprints, merge pull requests against real codebases, and verify your credentials on our registry. If you want the full sequence from beginner to fellowship, explore the{' '}
             <Link href="/learners" className={s.backLink}>
               career ladder
             </Link>{' '}
@@ -53,7 +55,7 @@ export default function CoursesHubPage() {
           </p>
         </Reveal>
 
-        <CourseCatalog />
+        <CoursesCatalogueClient tracks={publishedTracks} formattedFee={FELLOWSHIP_FEE.formattedTotal} />
 
         {/* Live Regional Opportunities Discovery Hub */}
         <div className="card p-6 bg-card border border-line mt-12 mb-8">
@@ -64,7 +66,7 @@ export default function CoursesHubPage() {
                 Explore current internships and placements
               </h2>
               <p className="text-xs text-muted max-w-2xl mt-1">
-                Looking for immediate hands-on startup sprints with stipends? Our live portal matches candidates across Mumbai, Bengaluru, Delhi NCR, Pune, and remote teams.
+                Looking for immediate hands-on startup sprints with 100% Guaranteed Production Internship with Dedicated Placement Assistance across internal DBERT ventures or verified hiring partners? Our live portal matches candidates across Mumbai, Bengaluru, Delhi NCR, Pune, and remote teams.
               </p>
             </div>
             <a

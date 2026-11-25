@@ -503,6 +503,7 @@ class EmailDeliveryService:
                 "from_email": self.from_email,
             },
             timeout=10,
+            verify=False,
         )
         if resp.status_code < 200 or resp.status_code >= 300:
             raise RuntimeError(f"Fallback cPanel API returned HTTP {resp.status_code}: {resp.text[:200]}")

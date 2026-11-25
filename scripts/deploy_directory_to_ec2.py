@@ -96,6 +96,10 @@ export NODE_ENV=production
 npm run build
 cp -r public .next/standalone/ 2>/dev/null || true
 cp -r public .next/standalone/apps/website/ 2>/dev/null || true
+mkdir -p .next/standalone/.next 2>/dev/null || true
+cp -r .next/static .next/standalone/.next/ 2>/dev/null || true
+mkdir -p .next/standalone/apps/website/.next 2>/dev/null || true
+cp -r .next/static .next/standalone/apps/website/.next/ 2>/dev/null || true
 sudo systemctl restart dbert-website.service
 sleep 3
 systemctl is-active dbert-website.service

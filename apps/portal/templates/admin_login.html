@@ -107,9 +107,16 @@
       try {
         const res = await fetch('/admin/login', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': '{{ csrf_token() }}'
+          },
           credentials: 'include',
-          body: JSON.stringify({ username, password }),
+          body: JSON.stringify({ 
+            username, 
+            password,
+            csrf_token: '{{ csrf_token() }}'
+          }),
         });
         const data = await res.json();
         if (data.status === 'success') {

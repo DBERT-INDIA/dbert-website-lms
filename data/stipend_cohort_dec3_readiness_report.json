@@ -1,0 +1,2776 @@
+{
+  "audit_timestamp": "2026-11-23T21:10:02.699876+05:30",
+  "maturation_milestone_date": "2026-12-03",
+  "cohort_size": 143,
+  "total_stipend_commitment_inr": 715000,
+  "ready_for_payout_count": 52,
+  "ready_for_payout_liability_inr": 260000,
+  "pending_upi_only_count": 83,
+  "pending_pr_revision_only_count": 8,
+  "pending_both_count": 0,
+  "breakdown": {
+    "tier_ready_for_payout": [
+      {
+        "intern_id": 1473,
+        "name": "Burra Thanvesh",
+        "email": "thanveshburra@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-AIML-023",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 2089,
+        "name": "H A UDAY BHASKER",
+        "email": "ubhoysala@gmail.com",
+        "domain": "Full Stack Development",
+        "cert_id": "CERT-DBERT-2026-FSD-342",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 3035,
+        "name": "M Brahmani",
+        "email": "chinniprincess842@gmail.com",
+        "domain": "Data Analyst",
+        "cert_id": "CERT-DBERT-2026-DA-117",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 3269,
+        "name": "Suraj shivsunder jha",
+        "email": "sjha0940@gmail.com",
+        "domain": "Full Stack Development",
+        "cert_id": "CERT-DBERT-2026-FSD-042",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 3485,
+        "name": "SIPUN DAS",
+        "email": "dsipun8484@gmail.com",
+        "domain": "Full Stack Development",
+        "cert_id": "CERT-DBERT-2026-FSD-007",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 4083,
+        "name": "Kethavath Sruthi",
+        "email": "24211a7259@bvrit.ac.in",
+        "domain": "Data Analyst",
+        "cert_id": "CERT-DBERT-2026-DA-111",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 4125,
+        "name": "Neha Choudhary",
+        "email": "nehachoudhary29337@gmail.com",
+        "domain": "Data Analyst",
+        "cert_id": "CERT-DBERT-2026-DA-003",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 4349,
+        "name": "GURKA VINAY KUMAR REDDY",
+        "email": "gurkavinay22@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-AIML-169",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 4442,
+        "name": "Priyanshu Kalondia",
+        "email": "priyanshukalondia@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-AIML-016",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-30",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 4450,
+        "name": "Gurveer Singh",
+        "email": "gurveer3057.beai25@chitkara.edu.in",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-UIUX-040",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 4468,
+        "name": "Jay Kumar",
+        "email": "jk316875@gmail.com",
+        "domain": "Full Stack Development",
+        "cert_id": "CERT-DBERT-2026-FSD-051",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 4473,
+        "name": "Meghana Kolloju",
+        "email": "kollojumeghana@gmail.com",
+        "domain": "Data Analyst",
+        "cert_id": "CERT-DBERT-2026-DA-049",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 4492,
+        "name": "Sakthi P",
+        "email": "sakthi220107@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-DA-022",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-30",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 4499,
+        "name": "Arman Shrama",
+        "email": "as6130457@gmail.com",
+        "domain": "Full Stack Development",
+        "cert_id": "CERT-DBERT-2026-FSD-035",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 4542,
+        "name": "Potnuru Pravallika",
+        "email": "pravallikapotnuru18@gmail.com",
+        "domain": "Full Stack Development",
+        "cert_id": "CERT-DBERT-2026-FSD-028",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 4585,
+        "name": "RAPOLU ABHISHEK",
+        "email": "abhirapolu08@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-AIML-014",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 4598,
+        "name": "SHANMUKHA SRI SAIKUMAR MEDISETTY",
+        "email": "medisettyshanmukh@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-AIML-002",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-30",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 4614,
+        "name": "ARCHITA BAJPAI",
+        "email": "architabajpai4332stella@gmail.com",
+        "domain": "Full Stack Development",
+        "cert_id": "CERT-DBERT-2026-AIML-039",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 4689,
+        "name": "Sakthi P",
+        "email": "me250003067@iiti.ac.in",
+        "domain": "Data Analyst",
+        "cert_id": "CERT-DBERT-2026-DA-173",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 4700,
+        "name": "Upputhalla Kavya Sri",
+        "email": "kavyaupputhalla@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-AIML-038",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 4705,
+        "name": "Thukakula Gayathree",
+        "email": "gayathreetreddy@gmail.com",
+        "domain": "Data Analyst",
+        "cert_id": "CERT-DBERT-2026-DA-032",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 4744,
+        "name": "Amrita Ramparia",
+        "email": "amritarampariya@gmail.com",
+        "domain": "Data Analyst",
+        "cert_id": "CERT-DBERT-2026-DA-086",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 4745,
+        "name": "N Deekshitha",
+        "email": "ndeekshitha07.24@kgpian.iitkgp.ac.in",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-AIML-092",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 4807,
+        "name": "Om vinayak tripathy",
+        "email": "omvinayak94@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-DA-083",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 4840,
+        "name": "ARYAN BHAKUNI",
+        "email": "aryanbhakuni2006@gmail.com",
+        "domain": "Data Analyst",
+        "cert_id": "CERT-DBERT-2026-DA-017",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 4942,
+        "name": "Aditya Chauhan",
+        "email": "chauhanaditya1112006@gmail.com",
+        "domain": "Full Stack Development",
+        "cert_id": "CERT-DBERT-2026-FSD-030",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 4945,
+        "name": "Siva Sankar Thirumalasetty",
+        "email": "sivasankar.t1606@gmail.com",
+        "domain": "Data Analyst",
+        "cert_id": "CERT-DBERT-2026-DA-067",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 4952,
+        "name": "Bhargavi C K",
+        "email": "bhargavick1@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-AIML-020",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 4971,
+        "name": "Malavika S",
+        "email": "malavikasanthikrishna06@gmail.com",
+        "domain": "Full Stack Development",
+        "cert_id": "CERT-DBERT-2026-FSD-025",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 4976,
+        "name": "Satya Patil",
+        "email": "patilsatya004@gmail.com",
+        "domain": "Data Analyst",
+        "cert_id": "CERT-DBERT-2026-DA-109",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 4979,
+        "name": "Radha Praful Bhamodkar",
+        "email": "radhabhamodkar@gmail.com",
+        "domain": "Data Analyst",
+        "cert_id": "CERT-DBERT-2026-DA-019",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 5016,
+        "name": "Nishant Makwane",
+        "email": "nishantmakwane04@gmail.com",
+        "domain": "Data Analyst",
+        "cert_id": "CERT-DBERT-2026-DA-044",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 5022,
+        "name": "Anushka",
+        "email": "anushkachaudhary0988@gmail.com",
+        "domain": "Data Analyst",
+        "cert_id": "CERT-DBERT-2026-DA-004",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 5025,
+        "name": "Harshpreet Singh",
+        "email": "harshssandhu2003@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-AIML-006",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 5030,
+        "name": "Aaditya kadam",
+        "email": "aadityakadam432@gmail.com",
+        "domain": "Data Analyst",
+        "cert_id": "CERT-DBERT-2026-DA-024",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 5032,
+        "name": "Subhradip Das",
+        "email": "subhradipd40@gmail.com",
+        "domain": "Full Stack Development",
+        "cert_id": "CERT-DBERT-2026-FSD-043",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 5035,
+        "name": "Naincy Srivastava",
+        "email": "srivastavanaincy5@gmail.com",
+        "domain": "Data Analyst",
+        "cert_id": "CERT-DBERT-2026-DA-054",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 5037,
+        "name": "Janhvi Singh",
+        "email": "janhvichandel3@gmail.com",
+        "domain": "Data Analyst",
+        "cert_id": "CERT-DBERT-2026-DA-184",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 5041,
+        "name": "DANISARAM ANJI",
+        "email": "anjidanisaram@gmail.com",
+        "domain": "Data Analyst",
+        "cert_id": "CERT-DBERT-2026-DA-005",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 5057,
+        "name": "Pulluri Bhargavi",
+        "email": "pulluribhargavi30@gmail.com",
+        "domain": "Data Analyst",
+        "cert_id": "CERT-DBERT-2026-DA-048",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 5060,
+        "name": "Shruthi Yuvnuv",
+        "email": "reachshruthiv@gmail.com",
+        "domain": "Full Stack Development",
+        "cert_id": "CERT-DBERT-2026-FSD-045",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 5065,
+        "name": "vansh choudhary",
+        "email": "iamvansh22@gmail.com",
+        "domain": "Data Analyst",
+        "cert_id": "CERT-DBERT-2026-DA-015",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 5066,
+        "name": "Ajay Mishra",
+        "email": "mishraharshu624@gmail.com",
+        "domain": "Full Stack Development",
+        "cert_id": "CERT-DBERT-2026-FSD-055",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 5067,
+        "name": "MOLUGU NANDA YASOVARDHAN",
+        "email": "nandayasovardhan@gmail.com",
+        "domain": "Full Stack Development",
+        "cert_id": "CERT-DBERT-2026-FSD-341",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 5068,
+        "name": "Yasharth poddar",
+        "email": "yasharth.poddar24@spit.ac.in",
+        "domain": "Full Stack Development",
+        "cert_id": "CERT-DBERT-2026-FSD-046",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 5071,
+        "name": "Deepanshu",
+        "email": "hey.deepanshu2006@gmail.com",
+        "domain": "Data Analyst",
+        "cert_id": "CERT-DBERT-2026-DA-186",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 5151,
+        "name": "Bharathan K",
+        "email": "bharathan45k@gmail.com",
+        "domain": "Data Analyst",
+        "cert_id": "CERT-DBERT-2026-DA-112",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 5216,
+        "name": "Smit Ritesh Shah",
+        "email": "smitrshah86@gmail.com",
+        "domain": "Data Analyst",
+        "cert_id": "CERT-DBERT-2026-DA-053",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 5218,
+        "name": "Rohit Ranjan Tiwari",
+        "email": "piyush2100a@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-DA-124",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 5222,
+        "name": "Bhargavi Poola",
+        "email": "bhargavi13032007@gmail.com",
+        "domain": "Full Stack Development",
+        "cert_id": "CERT-DBERT-2026-FSD-156",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 9204,
+        "name": "Ishita Roy",
+        "email": "stipend_ready@dbert.test",
+        "domain": "AI & Machine Learning",
+        "cert_id": "CERT-DBERT-2026-AIML-904",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      },
+      {
+        "intern_id": 9206,
+        "name": "Kavya Nair",
+        "email": "stipend_wallet@dbert.test",
+        "domain": "AI Agent Development",
+        "cert_id": null,
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": true
+        },
+        "action_required": []
+      }
+    ],
+    "tier_pending_upi": [
+      {
+        "intern_id": 2395,
+        "name": "Ch monika sai",
+        "email": "monikach575@gmail.com",
+        "domain": "Data Analyst",
+        "cert_id": "CERT-DBERT-2026-DA-185",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 3258,
+        "name": "Roshan Kumar",
+        "email": "roshangupta7479@gmail.com",
+        "domain": "Full Stack Development",
+        "cert_id": "CERT-DBERT-2026-FSD-042",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 3435,
+        "name": "Yarlagadda Chanandra Mahesh Goud",
+        "email": "chandramahesh736@gmail.com",
+        "domain": "Full Stack Development",
+        "cert_id": "CERT-DBERT-2026-FSD-071",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 3460,
+        "name": "Shaik Sajida",
+        "email": "sajidashaikssa786@gmail.com",
+        "domain": "Full Stack Development",
+        "cert_id": "CERT-DBERT-2026-FSD-007",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 3470,
+        "name": "Nitin Birajdar",
+        "email": "11nitinbirajdar@gmail.com",
+        "domain": "Full Stack Development",
+        "cert_id": "CERT-DBERT-2026-FSD-037",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 3496,
+        "name": "Mood Rajesh",
+        "email": "moodrajesh290@gmail.com",
+        "domain": "Full Stack Development",
+        "cert_id": "CERT-DBERT-2026-FSD-037",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 3899,
+        "name": "Ankit Singh Yadav",
+        "email": "ankitsinghyadav5580@gmail.com",
+        "domain": "Full Stack Development",
+        "cert_id": "CERT-DBERT-2026-DA-040",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 3905,
+        "name": "Utkarsh Gupta",
+        "email": "gutkarsh702@gmail.com",
+        "domain": "Full Stack Development",
+        "cert_id": "CERT-DBERT-2026-DA-031",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 3908,
+        "name": "Aniket Das",
+        "email": "aniketdas1711@gmail.com",
+        "domain": "Full Stack Development",
+        "cert_id": "CERT-DBERT-2026-DA-003",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 3919,
+        "name": "Prashant Mishra",
+        "email": "mishraprashant2003@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-DA-009",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 3920,
+        "name": "Aswini K",
+        "email": "kalaiaswini115@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-AIML-016",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 3940,
+        "name": "Divya",
+        "email": "sneha1234.2005@gmail.com",
+        "domain": null,
+        "cert_id": "CERT-DBERT-2026-FSD-051",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 3943,
+        "name": "Pradeep reddy kankanala",
+        "email": "23ra1a6670@kpritech.ac.in",
+        "domain": null,
+        "cert_id": "CERT-DBERT-2026-DA-049",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 3957,
+        "name": "Vedatam Santhosh Kumar",
+        "email": "vedanthamsanthosh0126@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-DA-022",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 3963,
+        "name": "Saptarshi Shanku Kar",
+        "email": "saptarshi.shanku.kar@gmail.com",
+        "domain": null,
+        "cert_id": "CERT-DBERT-2026-FSD-035",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 3983,
+        "name": "Prudhvinarayana Sunkuvenkata",
+        "email": "prudhvisunku@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-DA-027",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4000,
+        "name": "Yaswada Sravanthi",
+        "email": "sravss7170@gmail.com",
+        "domain": "",
+        "cert_id": "CERT-DBERT-2026-FSD-028",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4016,
+        "name": "Amit Yadav",
+        "email": "amityadav1275a@gmail.com",
+        "domain": "Full Stack Development",
+        "cert_id": "CERT-DBERT-2026-FSD-084",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4040,
+        "name": "samatha middela",
+        "email": "middelasamatha650@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-AIML-014",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4053,
+        "name": "Pulkit Nanda",
+        "email": "pulkitnanda8@gmail.com",
+        "domain": null,
+        "cert_id": "CERT-DBERT-2026-AIML-002",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4106,
+        "name": "Piyush",
+        "email": "piyushdahiya9125@gmail.com",
+        "domain": "Data Analyst",
+        "cert_id": "CERT-DBERT-2026-DA-040",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4128,
+        "name": "BALRAM RAGHUVANSHI",
+        "email": "raghuvanshibalram8@gmail.com",
+        "domain": null,
+        "cert_id": "CERT-DBERT-2026-FSD-008",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4145,
+        "name": "Srishti Kumari",
+        "email": "bwubtd23252@brainwareuniversity.ac.in",
+        "domain": null,
+        "cert_id": "CERT-DBERT-2026-DA-032",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4146,
+        "name": "Ritika Gupta",
+        "email": "ritikabgupta2005@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-DA-041",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4153,
+        "name": "Thakur Swetha Bai",
+        "email": "thakurswetha96@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-AIML-038",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4248,
+        "name": "Komma Hari Kesava",
+        "email": "kommakesava1@gmail.com",
+        "domain": "Data Analyst",
+        "cert_id": "CERT-DBERT-2026-DA-127",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4249,
+        "name": "Nityam Goel",
+        "email": "nityamgoel33@gmail.com",
+        "domain": "",
+        "cert_id": "CERT-DBERT-2026-AIML-013",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4250,
+        "name": "Shrey Patel",
+        "email": "shreyn18007@gmail.com",
+        "domain": "UI/UX Development",
+        "cert_id": "CERT-DBERT-2026-UIUX-034",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4251,
+        "name": "Chandra Mohan",
+        "email": "chandramohan180117@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-PA-021",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4254,
+        "name": "DEVANSHI YADAV",
+        "email": "devanshiyadav9131@gmail.com",
+        "domain": "UI/UX Development",
+        "cert_id": "CERT-DBERT-2026-UIUX-036",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4259,
+        "name": "V.Saivarun Reddy",
+        "email": "varunsai25102@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-AIML-029",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4262,
+        "name": "Nitish Kumar",
+        "email": "nkumar29122005@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-DA-017",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4334,
+        "name": "Dhanush K",
+        "email": "kdhanush681@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-DA-010",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4368,
+        "name": "Kritagya",
+        "email": "aggarwalkritagya@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-AIML-020",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4378,
+        "name": "Sushmitha M",
+        "email": "sushmithamaddipudi@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-AIML-036",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4381,
+        "name": "Gayathri R",
+        "email": "gowrigayu2005@gmail.com",
+        "domain": null,
+        "cert_id": "CERT-DBERT-2026-FSD-025",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4389,
+        "name": "Vivan Chaudhary",
+        "email": "vivanchaudhary81072@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-DA-019",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4414,
+        "name": "Mohammad Jeelani",
+        "email": "md.jeelani1971@gmail.com",
+        "domain": null,
+        "cert_id": "CERT-DBERT-2026-FSD-046",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4415,
+        "name": "Lovekush kumar",
+        "email": "lovekush.2428cs2468@kiet.edu",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-DA-004",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4417,
+        "name": "Aparna Sahu",
+        "email": "aparnasahu288@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-DA-015",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4418,
+        "name": "Shubham Mhaske",
+        "email": "shubhammhaske347@gmail.com",
+        "domain": null,
+        "cert_id": "CERT-DBERT-2026-DA-048",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4421,
+        "name": "shaik imtiyaz",
+        "email": "shaikimtiyaz567@gmail.com",
+        "domain": null,
+        "cert_id": "CERT-DBERT-2026-FSD-045",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4422,
+        "name": "Poorna Chandra Reddy Kummitha",
+        "email": "purnachandra1619@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-FSD-043",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4425,
+        "name": "Dhanush H",
+        "email": "dhanushhise2025@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-DA-024",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4430,
+        "name": "Shivam Deshmukh",
+        "email": "shivamjain1081@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-DA-054",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4440,
+        "name": "Oishani Majumder",
+        "email": "majumderoishani@gmail.com",
+        "domain": "Data Analyst",
+        "cert_id": "CERT-DBERT-2026-DA-009",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4455,
+        "name": "Mokshitha Ram",
+        "email": "mollimokshitharam2006@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-AIML-079",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4461,
+        "name": "Chandra Prakash",
+        "email": "choudharycp763@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-AIML-006",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4467,
+        "name": "BONASI GOVARDHAN",
+        "email": "bonasug@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-DA-044",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4478,
+        "name": "Pushkar Tiwari",
+        "email": "pushkart03@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-FSD-030",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4513,
+        "name": "Kushal Agarwal",
+        "email": "kushalagarwal27496@gmail.com",
+        "domain": "Data Analyst",
+        "cert_id": "CERT-DBERT-2026-DA-001",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4608,
+        "name": "Vaibhav Sudhakar Pawar",
+        "email": "vp104556@gmail.com",
+        "domain": null,
+        "cert_id": "CERT-DBERT-2026-AIML-011",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4609,
+        "name": "Gayatri Dakle",
+        "email": "gayatridakle9@gmail.com",
+        "domain": null,
+        "cert_id": "CERT-DBERT-2026-DA-012",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4610,
+        "name": "Aman Jha",
+        "email": "jhaa06346@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-AIML-018",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4611,
+        "name": "Dhairysheel Chandrakant chavan",
+        "email": "chavanujwala628@gmail.com",
+        "domain": null,
+        "cert_id": "CERT-DBERT-2026-UIUX-026",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4612,
+        "name": "KAVIYA SNEKA M",
+        "email": "kaviyasnekamuthu@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-DA-033",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4613,
+        "name": "Adyansh Bhardwaj",
+        "email": "adibhardwaj3027@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-AIML-034",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4615,
+        "name": "harshit katiyar",
+        "email": "2k23.it1a.2314125@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-DA-047",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4616,
+        "name": "Balkrishan Chamariya",
+        "email": "spamuseandthrow@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-AIML-050",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4617,
+        "name": "Divanshi Sachdeva",
+        "email": "sachdevadivanshi0@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-FSD-052",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4618,
+        "name": "Lavanya Chinnala",
+        "email": "lavanyachinnala8@gmail.com",
+        "domain": null,
+        "cert_id": "CERT-DBERT-2026-DA-053",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4619,
+        "name": "vaishnavi Honrao",
+        "email": "vaishnavihonrao13@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-FSD-056",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4640,
+        "name": "Oishani Majumder",
+        "email": "skylvies@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-DA-009",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4688,
+        "name": "Yogesh",
+        "email": "yogijangir345@gmail.com",
+        "domain": "Full Stack Development",
+        "cert_id": "CERT-DBERT-2026-FSD-008",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4786,
+        "name": "Arnak Ray",
+        "email": "arnakrayofficial@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-AIML-178",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4836,
+        "name": "Piyush",
+        "email": "piyushsolanki6569@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-AIML-064",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4837,
+        "name": "Priyanshi Choudhary",
+        "email": "priv0907@gmail.com",
+        "domain": "Data Analyst",
+        "cert_id": "CERT-DBERT-2026-AIML-029",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4914,
+        "name": "Ankit Gupta",
+        "email": "guptaankit6630@gmail.com",
+        "domain": "Data Analyst",
+        "cert_id": "CERT-DBERT-2026-DA-010",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4931,
+        "name": "Pravallika Potnuru",
+        "email": "pravallikapotnuru1816@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-FSD-028",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4946,
+        "name": "Rajkumar Ahirwar",
+        "email": "rajkumarahirwar95547@gmail.com",
+        "domain": null,
+        "cert_id": "CERT-DBERT-2026-AIML-039",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4949,
+        "name": "Siva Sankar Thirumalasetty",
+        "email": "t.sivasankardell@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-DA-067",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4967,
+        "name": "Kshitiz Malviya",
+        "email": "kshitiz.cloud@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-AIML-036",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4978,
+        "name": "ANKIT SAINI",
+        "email": "ankitsaini9438@gmail.com",
+        "domain": "Full Stack Development",
+        "cert_id": "CERT-DBERT-2026-FSD-070",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 4980,
+        "name": "Rajveer Singh Popli",
+        "email": "rajveerpopli1@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-AIML-100",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 5046,
+        "name": "Tehreem Fatima",
+        "email": "tehreemfatimabsmath@gmail.com",
+        "domain": "Data Analyst",
+        "cert_id": "CERT-DBERT-2026-DA-188",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 5082,
+        "name": "Arya Nitin Pawar",
+        "email": "aryapawar1805@gmail.com",
+        "domain": "Data Analyst",
+        "cert_id": "CERT-DBERT-2026-DA-187",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 5093,
+        "name": "Rukanana Mounika",
+        "email": "rm7104586@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-AIML-104",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 5197,
+        "name": "CHINTHALA SATHISH KUMAR",
+        "email": "chinthalasathishkumar9@gmail.com",
+        "domain": "Data Analyst",
+        "cert_id": "CERT-DBERT-2026-DA-113",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 5232,
+        "name": "Aman Garg",
+        "email": "aman.garg1861@gmail.com",
+        "domain": "Full Stack Web Development",
+        "cert_id": "CERT-DBERT-2026-FSD-117",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 5233,
+        "name": "Devanshi Yadac",
+        "email": "devu004066@gmail.com",
+        "domain": "UI/UX Prototyping & Design",
+        "cert_id": "CERT-DBERT-2026-UIUX-041",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 5238,
+        "name": "Smit Ritesh Shah",
+        "email": "smitshah86@gmail.com",
+        "domain": "Data Analyst",
+        "cert_id": "CERT-DBERT-2026-DA-053",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 5385,
+        "name": "Bhavya Balchandani",
+        "email": "bhavyabalchandani23@gmail.com",
+        "domain": "Full Stack Development",
+        "cert_id": "CERT-DBERT-2026-FSD-072",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      },
+      {
+        "intern_id": 5702,
+        "name": "Harsh kumar",
+        "email": "cmathur724@gmail.com",
+        "domain": "Full Stack Development",
+        "cert_id": "CERT-DBERT-2026-FSD-052",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": false,
+          "gate4_capstone_pr_cleared": true,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Configure Encrypted UPI ID in LMS Account Settings"
+        ]
+      }
+    ],
+    "tier_pending_pr": [
+      {
+        "intern_id": 4252,
+        "name": "Ankur Sen",
+        "email": "ankur.24bai10281@vitbhopal.ac.in",
+        "domain": "Data Analyst",
+        "cert_id": "CERT-DBERT-2026-DA-031",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": false,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Resolve Capstone PR Review Comments on GitHub Repo"
+        ]
+      },
+      {
+        "intern_id": 4522,
+        "name": "Vishwajeet Shinde",
+        "email": "vishvajeetshinde2005@gmail.com",
+        "domain": "Data Analyst",
+        "cert_id": "CERT-DBERT-2026-DA-027",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": false,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Resolve Capstone PR Review Comments on GitHub Repo"
+        ]
+      },
+      {
+        "intern_id": 4709,
+        "name": "Vikram Jangir",
+        "email": "vjangir402@gmail.com",
+        "domain": "Data Analyst",
+        "cert_id": "CERT-DBERT-2026-DA-041",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": false,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Resolve Capstone PR Review Comments on GitHub Repo"
+        ]
+      },
+      {
+        "intern_id": 4811,
+        "name": "Shreyash Sambhaji Kamble",
+        "email": "shreyashk07004@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-DA-077",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": false,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Resolve Capstone PR Review Comments on GitHub Repo"
+        ]
+      },
+      {
+        "intern_id": 4825,
+        "name": "SHANU SRI GOWTHAM",
+        "email": "shanusrigowtham17@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-AIML-013",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": false,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Resolve Capstone PR Review Comments on GitHub Repo"
+        ]
+      },
+      {
+        "intern_id": 4828,
+        "name": "Arijit Shaw",
+        "email": "arijitshaw2112@gmail.com",
+        "domain": "Data Analyst",
+        "cert_id": "CERT-DBERT-2026-PA-021",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": false,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Resolve Capstone PR Review Comments on GitHub Repo"
+        ]
+      },
+      {
+        "intern_id": 4962,
+        "name": "Sakthi P",
+        "email": "sakthifriendofgowtham@gmail.com",
+        "domain": "AI Agent Development",
+        "cert_id": "CERT-DBERT-2026-DA-185",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": false,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Resolve Capstone PR Review Comments on GitHub Repo"
+        ]
+      },
+      {
+        "intern_id": 5220,
+        "name": "Kundan kumhar",
+        "email": "kundankumhar966@gmail.com",
+        "domain": "Full Stack Development",
+        "cert_id": "CERT-DBERT-2026-FSD-056",
+        "stipend_amount": 5000,
+        "currency": "INR",
+        "maturation_date": "2026-12-03",
+        "gates": {
+          "gate1_credential_verified": true,
+          "gate2_tenure_maturing_dec3": true,
+          "gate3_upi_configured": true,
+          "gate4_capstone_pr_cleared": false,
+          "gate5_ready_for_payout": false
+        },
+        "action_required": [
+          "Resolve Capstone PR Review Comments on GitHub Repo"
+        ]
+      }
+    ],
+    "tier_pending_both": []
+  }
+}

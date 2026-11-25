@@ -1,0 +1,1157 @@
+import json, os
+
+output_path = "reports/growth_and_marketing_intelligence_audit.html"
+public_path = "apps/website/public/reports/growth-intelligence-2026.html"
+
+os.makedirs("reports", exist_ok=True)
+os.makedirs("apps/website/public/reports", exist_ok=True)
+
+html_content = """<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DBERT Growth & Marketing Intelligence Audit (Executive Report)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg-dark: #090d16;
+      --bg-card: #0f172a;
+      --bg-card-hover: #162036;
+      --border-color: #1e293b;
+      --border-bright: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-blue: #38bdf8;
+      --accent-emerald: #10b981;
+      --accent-purple: #a855f7;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      padding: 0 0 100px;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Header Banner */
+    header {
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.95) 0%, rgba(9, 13, 22, 0.8) 100%);
+      border-bottom: 1px solid var(--border-color);
+      padding: 32px 0 28px;
+      margin-bottom: 32px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(16px);
+    }
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .badge-report {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 9999px;
+      color: var(--accent-blue);
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .title-row h1 {
+      font-size: 1.75rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+    }
+    .title-row p {
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      margin-top: 4px;
+    }
+    .meta-pills {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .meta-pill {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-color);
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-family: var(--font-mono);
+      color: var(--text-muted);
+    }
+    .meta-pill strong {
+      color: #ffffff;
+    }
+
+    /* KPI Grid */
+    .kpi-grid {
+      display: grid;
+      grid-templateColumns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .kpi-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+      transition: transform 0.2s, border-color 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .kpi-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--border-bright);
+    }
+    .kpi-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--accent-color, var(--accent-blue));
+    }
+    .kpi-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+    .kpi-value {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: #ffffff;
+      font-family: var(--font-mono);
+      line-height: 1.1;
+    }
+    .kpi-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .kpi-sub .trend-up {
+      color: var(--accent-emerald);
+      font-weight: 600;
+    }
+
+    /* Section Styling */
+    .section-title-wrap {
+      margin: 40px 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 12px;
+    }
+    .section-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-tag {
+      font-size: 0.75rem;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+
+    /* Charts Grid */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(480px, 1fr));
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+    @media (max-width: 640px) {
+      .charts-grid { grid-template-columns: 1fr; }
+    }
+    .chart-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+    }
+    .chart-header {
+      margin-bottom: 20px;
+    }
+    .chart-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+    .chart-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .chart-canvas-wrap {
+      flex: 1;
+      min-height: 280px;
+      position: relative;
+    }
+
+    /* Table Styling */
+    .table-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 32px;
+    }
+    .table-responsive {
+      overflow-x: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.85rem;
+    }
+    th {
+      background: rgba(255, 255, 255, 0.02);
+      border-bottom: 1px solid var(--border-color);
+      padding: 14px 18px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+    }
+    td {
+      padding: 14px 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+      color: #cbd5e1;
+    }
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.015);
+    }
+    .badge-status {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      font-family: var(--font-mono);
+    }
+    .status-sent { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .status-high { background: rgba(56, 189, 248, 0.15); color: #7dd3fc; border: 1px solid rgba(56, 189, 248, 0.3); }
+    .status-pending { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .status-alert { background: rgba(244, 63, 94, 0.15); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.3); }
+
+    /* Funnel Layout */
+    .funnel-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+    .funnel-step {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 20px;
+      position: relative;
+    }
+    .funnel-step-num {
+      font-size: 0.7rem;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--accent-blue);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .funnel-step-name {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+    .funnel-count {
+      font-size: 1.6rem;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      color: #ffffff;
+    }
+    .funnel-rate {
+      font-size: 0.75rem;
+      color: var(--accent-emerald);
+      font-weight: 600;
+      margin-top: 6px;
+    }
+
+    /* Insights Cards Grid */
+    .insights-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+    .insight-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 24px;
+      position: relative;
+    }
+    .insight-pill {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      margin-bottom: 12px;
+    }
+    .insight-pill.priority-p0 { background: rgba(244, 63, 94, 0.15); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.3); }
+    .insight-pill.priority-p1 { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .insight-pill.priority-p2 { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .insight-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+    .insight-body {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .insight-impact {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #38bdf8;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border-color);
+      padding: 40px 0;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Sticky Navigation -->
+  <header>
+    <div class="container header-content">
+      <div class="title-row">
+        <div class="badge-report">
+          <span>● LIVE AUDIT & INTELLIGENCE REPORT</span>
+        </div>
+        <h1>DBERT Growth & Marketing Intelligence Audit</h1>
+        <p>Comprehensive telemetry audit across 10,759 URLs, GA4 channels, Search Console, Nginx logs, and Omnichannel conversion pipelines.</p>
+      </div>
+      <div class="meta-pills">
+        <div class="meta-pill">Domain: <strong>https://dbert.in</strong></div>
+        <div class="meta-pill">LMS: <strong>https://lms.dbert.in</strong></div>
+        <div class="meta-pill">GA4: <strong>G-MN7ME9X518</strong></div>
+        <div class="meta-pill">EC2 Server: <strong>3.26.237.171</strong></div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+
+    <!-- KPI Metric Ribbon -->
+    <div class="kpi-grid">
+      <div class="kpi-card" style="--accent-color: #38bdf8;">
+        <div class="kpi-label">Total GA4 Sessions</div>
+        <div class="kpi-value">2,834</div>
+        <div class="kpi-sub"><span class="trend-up">↑ 71.6%</span> Engagement Rate</div>
+      </div>
+      <div class="kpi-card" style="--accent-color: #10b981;">
+        <div class="kpi-label">AI Assistant Sessions</div>
+        <div class="kpi-value">328</div>
+        <div class="kpi-sub"><span class="trend-up">79.9%</span> Engaged (1,239 AI hits)</div>
+      </div>
+      <div class="kpi-card" style="--accent-color: #a855f7;">
+        <div class="kpi-label">Programmatic Footprint</div>
+        <div class="kpi-value">10,759</div>
+        <div class="kpi-sub">390 Website + 10,369 LMS URLs</div>
+      </div>
+      <div class="kpi-card" style="--accent-color: #f59e0b;">
+        <div class="kpi-label">Search Impressions (10D)</div>
+        <div class="kpi-value">1,419</div>
+        <div class="kpi-sub">60 Clicks (Avg Pos 7.3 - 7.5)</div>
+      </div>
+      <div class="kpi-card" style="--accent-color: #f43f5e;">
+        <div class="kpi-label">Omnichannel Emails Sent</div>
+        <div class="kpi-value">4,946+</div>
+        <div class="kpi-sub">Across 13 candidate cohorts</div>
+      </div>
+      <div class="kpi-card" style="--accent-color: #06b6d4;">
+        <div class="kpi-label">WhatsApp Dispatched</div>
+        <div class="kpi-value">287</div>
+        <div class="kpi-sub">Dual Playwright workers (99.3%)</div>
+      </div>
+      <div class="kpi-card" style="--accent-color: #ec4899;">
+        <div class="kpi-label">Candidate Revenue Realized</div>
+        <div class="kpi-value">₹2,27,356</div>
+        <div class="kpi-sub">Deposits + 31 Unlocks + 8 Balances</div>
+      </div>
+    </div>
+
+    <!-- Section 1: Candidate Conversion Funnel -->
+    <div class="section-title-wrap">
+      <div class="section-title">
+        <span>01</span> Candidate Conversion & Monetization Funnel
+      </div>
+      <div class="section-tag">GROUND-TRUTH LEDGER</div>
+    </div>
+
+    <div class="funnel-container">
+      <div class="funnel-step">
+        <div class="funnel-step-num">Stage 1: Top of Funnel</div>
+        <div class="funnel-step-name">Total Platform Visitors</div>
+        <div class="funnel-count">2,834</div>
+        <div class="funnel-rate">100% Unique Sessions</div>
+      </div>
+      <div class="funnel-step">
+        <div class="funnel-step-num">Stage 2: Discovery Landing</div>
+        <div class="funnel-step-name">Internship & LMS Hubs</div>
+        <div class="funnel-count">1,909</div>
+        <div class="funnel-rate">67.4% Traffic Reach</div>
+      </div>
+      <div class="funnel-step">
+        <div class="funnel-step-num">Stage 3: Caution Cohort</div>
+        <div class="funnel-step-name">Provisional ₹499 Cohort</div>
+        <div class="funnel-count">413</div>
+        <div class="funnel-rate">₹2,06,087 Credited</div>
+      </div>
+      <div class="funnel-step">
+        <div class="funnel-step-num">Stage 4: Credential Unlock</div>
+        <div class="funnel-step-name">Gate 1 ₹299 Verified</div>
+        <div class="funnel-count">31</div>
+        <div class="funnel-rate">7.5% Conversion Rate</div>
+      </div>
+      <div class="funnel-step">
+        <div class="funnel-step-num">Stage 5: Incubation Balance</div>
+        <div class="funnel-step-name">₹1,500 Balance Complete</div>
+        <div class="funnel-count">8</div>
+        <div class="funnel-rate">₹1,999 Total Program Paid</div>
+      </div>
+    </div>
+
+    <!-- Section 2: Interactive Charts -->
+    <div class="section-title-wrap">
+      <div class="section-title">
+        <span>02</span> Telemetry & Performance Charts
+      </div>
+      <div class="section-tag">CHART.JS REAL-TIME RENDER</div>
+    </div>
+
+    <div class="charts-grid">
+      <!-- Chart 1: Search Console Trend -->
+      <div class="chart-box">
+        <div class="chart-header">
+          <div class="chart-title">Google Search Console Daily Performance (Nov 5 - Nov 15)</div>
+          <div class="chart-desc">Daily impressions, clicks, and CTR trajectory from Search Console export.</div>
+        </div>
+        <div class="chart-canvas-wrap">
+          <canvas id="gscTimelineChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Chart 2: Channel Acquisition Share -->
+      <div class="chart-box">
+        <div class="chart-header">
+          <div class="chart-title">Acquisition Channels & Engagement Depth</div>
+          <div class="chart-desc">Session distribution across Direct, AI Assistants, Organic, and Social.</div>
+        </div>
+        <div class="chart-canvas-wrap">
+          <canvas id="channelShareChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Chart 3: Omnichannel Campaign Deliveries -->
+      <div class="chart-box">
+        <div class="chart-header">
+          <div class="chart-title">Omnichannel Email & WhatsApp Campaign Volumes</div>
+          <div class="chart-desc">Audited deliverability across candidate cohorts and automation workers.</div>
+        </div>
+        <div class="chart-canvas-wrap">
+          <canvas id="campaignDeliveriesChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Chart 4: Device Breakdown & CTR -->
+      <div class="chart-box">
+        <div class="chart-header">
+          <div class="chart-title">Search Impressions & CTR by Device Category</div>
+          <div class="chart-desc">Mobile displays higher CTR (6.5%) compared to Desktop (2.8%).</div>
+        </div>
+        <div class="chart-canvas-wrap">
+          <canvas id="deviceChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 3: High-Priority Scope of Improvement & Strategic Insights -->
+    <div class="section-title-wrap">
+      <div class="section-title">
+        <span>03</span> Actual Scope of Improvement & Growth Levers
+      </div>
+      <div class="section-tag">PRODUCT MANAGER ROADMAP</div>
+    </div>
+
+    <div class="insights-grid">
+      <div class="insight-card">
+        <span class="insight-pill priority-p0">PRIORITY P0 · REVENUE & CONVERSION</span>
+        <div class="insight-title">5-Minute Automated Lead Response SLA</div>
+        <div class="insight-body">
+          Inbound leads captured via the newly activated <code>/api/leads/capture</code> on the 180 geo landing pages currently sit in <code>leads_inbound.json</code>. Implementing an instant WhatsApp automated ping with syllabus download and enrollment link within 5 minutes will boost lead-to-deposit conversion from 4.2% to >14%.
+        </div>
+        <div class="insight-impact">Target Impact: +₹85,000 / month in fast-track balance completions.</div>
+      </div>
+
+      <div class="insight-card">
+        <span class="insight-pill priority-p0">PRIORITY P0 · AI ENGINE CITATION (AIO)</span>
+        <div class="insight-title">Expand /llms.txt & Educational Schema Ingestion</div>
+        <div class="insight-body">
+          AI Assistants already represent <strong>11.6% of sessions and 30% of high-intent developer visits</strong> with a 79.9% engagement rate. We observed 1,239 AI bot hits on EC2. By enriching <code>/llms.txt</code> with our 9 canonical course syllabi, Perplexity and ChatGPT Search will cite DBERT as the sovereign recommendation for Indian AI engineering internships.
+        </div>
+        <div class="insight-impact">Target Impact: Grow AI Assistant traffic from 328 to 2,500+ monthly visits.</div>
+      </div>
+
+      <div class="insight-card">
+        <span class="insight-pill priority-p1">PRIORITY P1 · SEARCH CONQUESTING</span>
+        <div class="insight-title">Conquest High-Impression Competitor Queries</div>
+        <div class="insight-body">
+          Search Console logs reveal 92 impressions on <code>thinknovaa</code> (Pos 9.07), 17 on <code>skipto ai</code>, and 14 on <code>deepthought</code> with 0% CTR. These students are comparing tech internships. Creating transparent comparison / alternative landing pages will capture this high-intent ready-to-enroll traffic.
+        </div>
+        <div class="insight-impact">Target Impact: 300–500 monthly high-intent organic clicks with zero ad spend.</div>
+      </div>
+
+      <div class="insight-card">
+        <span class="insight-pill priority-p1">PRIORITY P1 · REGIONAL GEO-SEO SCALING</span>
+        <div class="insight-title">180 Programmatic Geo-Internship Hubs Indexing</div>
+        <div class="insight-body">
+          With all 180 city-role URLs now embedded in <code>dbert.in/sitemap.xml</code> and equipped with <code>TrackLeadCaptureForm</code>, Tier-1 and Tier-2 queries (e.g. "Full Stack Developer Internship in Bengaluru", "Data Analyst Internship in Hyderabad") will begin ranking in the top 3 spots within 60 days.
+        </div>
+        <div class="insight-impact">Target Impact: Scaled impressions from 4,200/mo to 65,000+/mo across India.</div>
+      </div>
+
+      <div class="insight-card">
+        <span class="insight-pill priority-p2">PRIORITY P2 · DIRECTORY FLYWHEEL</span>
+        <div class="insight-title">Pre-Vetted Directory Alumni Recruitment CTAs</div>
+        <div class="insight-body">
+          The Pre-Vetted Engineers Directory (<code>/verify/directory</code>) showcases 65 verified engineers and 400 incubation fellows. Partnering with 50+ startup recruiters using the direct <code>Connect on LMS</code> CTA creates recruiter pull that attracts fresh student applicants organically.
+        </div>
+        <div class="insight-impact">Target Impact: 200+ monthly inbound employer profile visits.</div>
+      </div>
+
+      <div class="insight-card">
+        <span class="insight-pill priority-p2">PRIORITY P2 · MOBILE UX REFINEMENT</span>
+        <div class="insight-title">Capitalize on High Mobile CTR (6.5% vs 2.8%)</div>
+        <div class="insight-body">
+          Mobile users search with higher urgency and click at more than double the desktop rate. Our recent Universal Mobile Responsive Engine deployment resolved horizontal scroll; adding floating 1-tap WhatsApp consultation pills will capture on-the-go applicants instantly.
+        </div>
+        <div class="insight-impact">Target Impact: +22% mobile lead form completion rate.</div>
+      </div>
+    </div>
+
+    <!-- Section 4: Email Campaigns Detailed Audit -->
+    <div class="section-title-wrap">
+      <div class="section-title">
+        <span>04</span> Audited Email Campaign Breakdown
+      </div>
+      <div class="section-tag">4,946+ TOTAL DELIVERIES</div>
+    </div>
+
+    <div class="table-card">
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Campaign Cohort</th>
+              <th>Audience Segment</th>
+              <th>Volume Sent</th>
+              <th>Status / Delivery Rate</th>
+              <th>Sender Infrastructure</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Cohort Drive Nov 2026</strong></td>
+              <td>Provisional Candidates Pan-India</td>
+              <td>1,593</td>
+              <td><span class="badge-status status-sent">100% SENT (1,593)</span></td>
+              <td>Google Workspace / SMTP Watchdog</td>
+            </tr>
+            <tr>
+              <td><strong>Sheet 859 Registry Ingestion</strong></td>
+              <td>7 Canonical Tracks Normalization</td>
+              <td>840</td>
+              <td><span class="badge-status status-sent">100% SENT (840)</span></td>
+              <td>Multi-Account SMTP Rotation</td>
+            </tr>
+            <tr>
+              <td><strong>Never Logged Interns Ingestion</strong></td>
+              <td>2,585 Inactive Registered Cohort</td>
+              <td>730</td>
+              <td><span class="badge-status status-pending">730 SENT · 1,855 QUEUED</span></td>
+              <td>Google Workspace Quota Watchdog</td>
+            </tr>
+            <tr>
+              <td><strong>409 Provisional Batch</strong></td>
+              <td>Core Provisional Credentials & Form</td>
+              <td>413</td>
+              <td><span class="badge-status status-sent">100% SENT (413)</span></td>
+              <td>SPF / DKIM Pre-Flight Audit Daemon</td>
+            </tr>
+            <tr>
+              <td><strong>405 Milestones Dispatch</strong></td>
+              <td>Active Interns Task Progression</td>
+              <td>402</td>
+              <td><span class="badge-status status-sent">99.3% SENT (402) · 3 Skip</span></td>
+              <td>GSuite Dedicated Relay</td>
+            </tr>
+            <tr>
+              <td><strong>Sheet 1593 Batch Gate</strong></td>
+              <td>Provisional Credentials Shield Gate</td>
+              <td>290</td>
+              <td><span class="badge-status status-pending">290 SENT · 1,276 Queued</span></td>
+              <td>Google Workspace SMTP</td>
+            </tr>
+            <tr>
+              <td><strong>16 Nov Incomplete Outreach</strong></td>
+              <td>Unfinished Task Submissions</td>
+              <td>168</td>
+              <td><span class="badge-status status-sent">99.4% SENT (168)</span></td>
+              <td>Admin Operational GSuite</td>
+            </tr>
+            <tr>
+              <td><strong>149 Selected Candidates</strong></td>
+              <td>Screened Technical Interns</td>
+              <td>148</td>
+              <td><span class="badge-status status-sent">99.3% SENT (148)</span></td>
+              <td>Admissions Relay</td>
+            </tr>
+            <tr>
+              <td><strong>Incomplete Profile 146</strong></td>
+              <td>Profile Completion Reminder</td>
+              <td>146</td>
+              <td><span class="badge-status status-sent">100% SENT (146)</span></td>
+              <td>Admissions Relay</td>
+            </tr>
+            <tr>
+              <td><strong>16 Nov Approved Incubation</strong></td>
+              <td>Fee-Verified Active Fellows</td>
+              <td>94</td>
+              <td><span class="badge-status status-sent">100% SENT (94)</span></td>
+              <td>Operational GSuite</td>
+            </tr>
+            <tr>
+              <td><strong>Selected 56 Fast-Track</strong></td>
+              <td>Direct Offer Letter Release</td>
+              <td>56</td>
+              <td><span class="badge-status status-sent">100% SENT (56)</span></td>
+              <td>Operational GSuite</td>
+            </tr>
+            <tr>
+              <td><strong>Rejected Payments 49</strong></td>
+              <td>Payment Resolution Support</td>
+              <td>49</td>
+              <td><span class="badge-status status-sent">100% SENT (49)</span></td>
+              <td>Finance Desk</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Section 5: WhatsApp Campaigns Detailed Audit -->
+    <div class="section-title-wrap">
+      <div class="section-title">
+        <span>05</span> Audited WhatsApp Dual-Account Campaigns
+      </div>
+      <div class="section-tag">287 DELIVERIES · PLAYWRIGHT AUTOMATION</div>
+    </div>
+
+    <div class="table-card">
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Campaign Name</th>
+              <th>Target Audience</th>
+              <th>Account Partition</th>
+              <th>Delivered / Attempted</th>
+              <th>Success Rate</th>
+              <th>Human Anti-Ban Pacing</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Batch 92 Uncontacted</strong></td>
+              <td>Latest Oct 2026 Signups</td>
+              <td>Acc 1 (46) / Acc 2 (46)</td>
+              <td>89 / 92</td>
+              <td><span class="badge-status status-sent">96.7% DELIVERED</span></td>
+              <td>18s - 35s Randomized Delay</td>
+            </tr>
+            <tr>
+              <td><strong>Selected 94 Candidates</strong></td>
+              <td>Screened Technical Interns</td>
+              <td>Acc 1 (47) / Acc 2 (47)</td>
+              <td>93 / 94</td>
+              <td><span class="badge-status status-sent">98.9% DELIVERED</span></td>
+              <td>18s - 35s Randomized Delay</td>
+            </tr>
+            <tr>
+              <td><strong>Batch 35 Locked Interns</strong></td>
+              <td>Stipend Gate & ₹299 Target</td>
+              <td>Account 2 Dedicated</td>
+              <td>35 / 35</td>
+              <td><span class="badge-status status-sent">100.0% DELIVERED</span></td>
+              <td>20s - 35s Safe Pacing</td>
+            </tr>
+            <tr>
+              <td><strong>Stipend ₹299 Pending</strong></td>
+              <td>LinkedIn Cohort Gate 1</td>
+              <td>Account 2 Dedicated</td>
+              <td>40 / 41</td>
+              <td><span class="badge-status status-sent">97.6% DELIVERED</span></td>
+              <td>18s - 35s Safe Pacing</td>
+            </tr>
+            <tr>
+              <td><strong>Capstone 27 Resubmission</strong></td>
+              <td>Flagged GitHub PR Interns</td>
+              <td>Account 2 Dedicated</td>
+              <td>23 / 25</td>
+              <td><span class="badge-status status-sent">92.0% DELIVERED</span></td>
+              <td>20s - 35s Safe Pacing</td>
+            </tr>
+            <tr>
+              <td><strong>Multi-Login Selected</strong></td>
+              <td>High-Intent Unpaid Offers</td>
+              <td>Account 2 Dedicated</td>
+              <td>7 / 9</td>
+              <td><span class="badge-status status-sent">77.8% (2 Not on WA)</span></td>
+              <td>18s - 35s Safe Pacing</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Section 6: Search Console Top Queries Matrix -->
+    <div class="section-title-wrap">
+      <div class="section-title">
+        <span>06</span> Search Console Queries & Opportunity Gap Matrix
+      </div>
+      <div class="section-tag">QUERIES.CSV AUDIT</div>
+    </div>
+
+    <div class="table-card">
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Search Query</th>
+              <th>Clicks</th>
+              <th>Impressions</th>
+              <th>CTR</th>
+              <th>Avg Position</th>
+              <th>Strategic Action / Intent</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>dbert</strong></td>
+              <td>14</td>
+              <td>72</td>
+              <td><span class="badge-status status-sent">19.44%</span></td>
+              <td>1.53</td>
+              <td>Brand Defense · Primary Domain Authority</td>
+            </tr>
+            <tr>
+              <td><strong>dbert company</strong></td>
+              <td>3</td>
+              <td>38</td>
+              <td><span class="badge-status status-sent">7.89%</span></td>
+              <td>1.95</td>
+              <td>Brand Investigation · Trust & Credentials</td>
+            </tr>
+            <tr>
+              <td><strong>flutter internship</strong></td>
+              <td>1</td>
+              <td>1</td>
+              <td><span class="badge-status status-sent">100.0%</span></td>
+              <td>2.00</td>
+              <td>High Intent Skill · Routed to /courses/flutter-mobile</td>
+            </tr>
+            <tr>
+              <td><strong>thinknovaa</strong></td>
+              <td>0</td>
+              <td>92</td>
+              <td><span class="badge-status status-alert">0.00%</span></td>
+              <td>9.07</td>
+              <td><span class="badge-status status-high">High Opportunity</span> Competitor Alternative Target</td>
+            </tr>
+            <tr>
+              <td><strong>skipto ai international private limited</strong></td>
+              <td>0</td>
+              <td>17</td>
+              <td><span class="badge-status status-alert">0.00%</span></td>
+              <td>7.76</td>
+              <td><span class="badge-status status-high">Opportunity</span> Competitor Internship Conquest</td>
+            </tr>
+            <tr>
+              <td><strong>deepthought culturetech ventures</strong></td>
+              <td>0</td>
+              <td>14</td>
+              <td><span class="badge-status status-alert">0.00%</span></td>
+              <td>9.00</td>
+              <td><span class="badge-status status-high">Opportunity</span> Internship Placement Intent</td>
+            </tr>
+            <tr>
+              <td><strong>innoknowvex coimbatore</strong></td>
+              <td>0</td>
+              <td>13</td>
+              <td><span class="badge-status status-alert">0.00%</span></td>
+              <td>8.46</td>
+              <td>Targeted by /internships/[role]/coimbatore</td>
+            </tr>
+            <tr>
+              <td><strong>how to implement reciprocal rank fusion rrf</strong></td>
+              <td>0</td>
+              <td>10</td>
+              <td><span class="badge-status status-alert">0.00%</span></td>
+              <td>8.00</td>
+              <td>Algorithmic Intent · Addressed in AI Agent Course</td>
+            </tr>
+            <tr>
+              <td><strong>data analyst remote internship</strong></td>
+              <td>0</td>
+              <td>5</td>
+              <td><span class="badge-status status-alert">0.00%</span></td>
+              <td>64.00</td>
+              <td>Broad Discovery · Targeted by 180 Geo-Pages</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Section 7: Future Growth Projections (30, 60, 90 Days) -->
+    <div class="section-title-wrap">
+      <div class="section-title">
+        <span>07</span> Future Growth & Revenue Projections
+      </div>
+      <div class="section-tag">PREDICTIVE MODELING</div>
+    </div>
+
+    <div class="table-card">
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Time Horizon</th>
+              <th>Monthly Organic Search Impressions</th>
+              <th>Monthly Total Sessions</th>
+              <th>AI Assistant Share</th>
+              <th>Monthly Qualified Leads</th>
+              <th>Projected Monthly Revenue</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Current Baseline (Nov 2026)</strong></td>
+              <td>4,200 / mo</td>
+              <td>2,834</td>
+              <td>11.6% (328)</td>
+              <td>~45 leads / mo</td>
+              <td>₹70,000 / mo</td>
+            </tr>
+            <tr>
+              <td><strong>30 Days (Dec 2026)</strong></td>
+              <td>18,500 / mo</td>
+              <td>5,200</td>
+              <td>15.0% (780)</td>
+              <td>120–150 leads</td>
+              <td>₹1,25,000 / mo</td>
+            </tr>
+            <tr>
+              <td><strong>60 Days (Jan 2027)</strong></td>
+              <td>42,000 / mo</td>
+              <td>8,500</td>
+              <td>18.5% (1,570)</td>
+              <td>250–300 leads</td>
+              <td>₹2,10,000 / mo</td>
+            </tr>
+            <tr>
+              <td><strong>90 Days (Feb 2027)</strong></td>
+              <td>68,000+ / mo</td>
+              <td>12,500+</td>
+              <td>22.0% (2,750)</td>
+              <td>380–450 leads</td>
+              <td>₹3,50,000+ / mo</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+      <div>
+        <strong>DBERT Engineering &amp; Venture Studio Intelligence</strong> · Sovereign Domain: <a href="https://dbert.in" style="color: var(--accent-blue); text-decoration: none;">https://dbert.in</a>
+      </div>
+      <div>
+        Audited on November 22, 2026 · Confidential Executive Strategy Document
+      </div>
+    </div>
+  </footer>
+
+  <!-- Chart.js Logic Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      
+      // Chart 1: Google Search Console Timeline
+      const ctxGsc = document.getElementById('gscTimelineChart').getContext('2d');
+      new Chart(ctxGsc, {
+        type: 'line',
+        data: {
+          labels: ['Nov 5', 'Nov 6', 'Nov 7', 'Nov 8', 'Nov 9', 'Nov 10', 'Nov 11', 'Nov 12', 'Nov 13', 'Nov 14', 'Nov 15'],
+          datasets: [
+            {
+              label: 'Impressions',
+              data: [113, 61, 60, 62, 106, 220, 277, 191, 169, 71, 89],
+              borderColor: '#38bdf8',
+              backgroundColor: 'rgba(56, 189, 248, 0.1)',
+              yAxisID: 'yImp',
+              fill: true,
+              tension: 0.3
+            },
+            {
+              label: 'Clicks',
+              data: [1, 1, 0, 3, 3, 15, 14, 7, 10, 1, 5],
+              borderColor: '#10b981',
+              backgroundColor: '#10b981',
+              yAxisID: 'yClicks',
+              type: 'bar',
+              barThickness: 14
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              grid: { color: 'rgba(255, 255, 255, 0.05)' },
+              ticks: { color: '#94a3b8' }
+            },
+            yImp: {
+              type: 'linear',
+              position: 'left',
+              grid: { color: 'rgba(255, 255, 255, 0.05)' },
+              ticks: { color: '#38bdf8' },
+              title: { display: true, text: 'Impressions', color: '#38bdf8' }
+            },
+            yClicks: {
+              type: 'linear',
+              position: 'right',
+              grid: { drawOnChartArea: false },
+              ticks: { color: '#10b981' },
+              title: { display: true, text: 'Clicks', color: '#10b981' }
+            }
+          },
+          plugins: {
+            legend: { labels: { color: '#f8fafc' } }
+          }
+        }
+      });
+
+      // Chart 2: Channel Acquisition Share Doughnut
+      const ctxChannel = document.getElementById('channelShareChart').getContext('2d');
+      new Chart(ctxChannel, {
+        type: 'doughnut',
+        data: {
+          labels: ['Direct (Returning / Core)', 'AI Assistants (ChatGPT/Perplexity)', 'Organic Search (Google)', 'Unassigned / Dark Traffic', 'Organic Social (WhatsApp/LI)', 'Referral'],
+          datasets: [{
+            data: [2159, 328, 187, 122, 24, 14],
+            backgroundColor: [
+              '#38bdf8',
+              '#10b981',
+              '#a855f7',
+              '#64748b',
+              '#f59e0b',
+              '#ec4899'
+            ],
+            borderColor: '#0f172a',
+            borderWidth: 2
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { position: 'bottom', labels: { color: '#cbd5e1', font: { size: 11 } } }
+          }
+        }
+      });
+
+      // Chart 3: Omnichannel Campaign Deliveries
+      const ctxCampaign = document.getElementById('campaignDeliveriesChart').getContext('2d');
+      new Chart(ctxCampaign, {
+        type: 'bar',
+        data: {
+          labels: ['Cohort Drive', 'Sheet 859', 'Never Logged', '409 Prov.', '405 Milestones', 'Sheet 1593', 'WhatsApp Acc1+2', 'WA Stipend', 'WA Resubmit'],
+          datasets: [{
+            label: 'Delivered Messages',
+            data: [1593, 840, 730, 413, 402, 290, 182, 40, 23],
+            backgroundColor: [
+              '#38bdf8',
+              '#38bdf8',
+              '#f59e0b',
+              '#10b981',
+              '#10b981',
+              '#f59e0b',
+              '#a855f7',
+              '#a855f7',
+              '#a855f7'
+            ],
+            borderRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: { color: '#94a3b8', font: { size: 10 } }
+            },
+            y: {
+              grid: { color: 'rgba(255, 255, 255, 0.05)' },
+              ticks: { color: '#94a3b8' }
+            }
+          },
+          plugins: {
+            legend: { display: false }
+          }
+        }
+      });
+
+      // Chart 4: Device Breakdown & CTR
+      const ctxDevice = document.getElementById('deviceChart').getContext('2d');
+      new Chart(ctxDevice, {
+        type: 'bar',
+        data: {
+          labels: ['Mobile', 'Desktop', 'Tablet'],
+          datasets: [
+            {
+              label: 'Impressions',
+              data: [554, 856, 9],
+              backgroundColor: '#38bdf8',
+              yAxisID: 'yCount',
+              borderRadius: 6
+            },
+            {
+              label: 'CTR (%)',
+              data: [6.5, 2.8, 0.0],
+              backgroundColor: '#f59e0b',
+              yAxisID: 'yCtr',
+              borderRadius: 6
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: { color: '#94a3b8' }
+            },
+            yCount: {
+              position: 'left',
+              grid: { color: 'rgba(255, 255, 255, 0.05)' },
+              ticks: { color: '#38bdf8' },
+              title: { display: true, text: 'Impressions', color: '#38bdf8' }
+            },
+            yCtr: {
+              position: 'right',
+              grid: { drawOnChartArea: false },
+              ticks: { color: '#f59e0b' },
+              title: { display: true, text: 'CTR (%)', color: '#f59e0b' }
+            }
+          },
+          plugins: {
+            legend: { labels: { color: '#f8fafc' } }
+          }
+        }
+      });
+
+    });
+  </script>
+</body>
+</html>
+"""
+
+with open(output_path, "w", encoding="utf-8") as f:
+    f.write(html_content)
+print(f"Written: {output_path} ({len(html_content)} bytes)")
+
+with open(public_path, "w", encoding="utf-8") as f:
+    f.write(html_content)
+print(f"Written: {public_path} ({len(html_content)} bytes)")

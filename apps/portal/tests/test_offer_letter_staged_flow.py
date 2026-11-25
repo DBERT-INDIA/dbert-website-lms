@@ -204,6 +204,88 @@ class TestOfferLetterStagedFlow(unittest.TestCase):
         self.assertEqual(res.status_code, 302)
         self.assertIn("/portal?tab=editprofile", res.headers.get("Location", ""))
 
+    def test_under_review_offer_page_renders_incubation_upsell_and_no_caution_deposit_payment(self):
+        """Under Review candidate must see evaluation status, queue position, and ₹1,999 Incubation upsell, NOT ₹499 payment."""
+        with self.app.test_request_context("/portal/offer"):
+            html = render_template(
+                "portal_offer_letter.html",
+                candidate={
+                    "name": "Arun Verma",
+                    "email": "stage1_apply@dbert.test",
+                    "domain": "Full Stack Web Development"
+                },
+                enrollment={
+                    "name": "Arun Verma",
+                    "email": "stage1_apply@dbert.test",
+                    "domain": "Full Stack Web Development"
+                },
+                offer=None,
+                is_signed=False,
+                is_deposit_verified=False,
+                locked=True,
+                is_under_review=True,
+                queue_position=18,
+                candidate_domain="Full Stack Web Development",
+                preview_mode=False,
+                user={"email": "stage1_apply@dbert.test", "name": "Arun Verma", "role": "intern", "domain": "Full Stack Web Development"},
+                active_page="offer"
+            )
+
+            # Must display review status, queue urgency badge, and SLA
+            self.assertIn("Application Under Active Mentor Review", html)
+            self.assertIn("Queue Position: #18 in Full Stack Web Development", html)
+            self.assertIn("Decision SLA: 24–48 Hours", html)
+            self.assertNotIn("Standard Evaluation is 100% Free", html)
+
+            # Must display Top Executive Highlight Ribbon (Above cards)
+            self.assertIn("Everything Included in Your ₹1,999 Incubation Fellowship", html)
+            self.assertIn("Guaranteed Monday Kickoff", html)
+            self.assertIn("₹5,000 Milestone Stipend (Hours + Tasks + PRs)", html)
+            self.assertIn("1-on-1 Live Mentor Sessions", html)
+            self.assertIn("Official Certificate of Completion", html)
+            self.assertIn("Architect-Signed LOR", html)
+            self.assertIn("Turnitin Rubric", html)
+            self.assertIn("Tab 1 Placement Assistance", html)
+            self.assertIn("₹1,999 All-Inclusive (Zero Extra Fee)", html)
+
+            # Must display Curriculum & Learning Outcomes Explore Bar
+            self.assertIn("https://dbert.in/learners/courses", html)
+            self.assertIn("https://dbert.in/learners/launchpad", html)
+            self.assertIn("https://dbert.in/fellows", html)
+
+            # Must display 4 High-Impact Mega Cards (Tailored to Engineering Students)
+            self.assertIn("Real Production Work &amp; GitHub Merges", html)
+            self.assertIn("1-on-1 Live Mentorship &amp; Office Hours", html)
+            self.assertIn("₹5,000 Milestone Stipend", html)
+            self.assertIn("Complete Career Packet &amp; Placement", html)
+
+            # Must display 3-gate stipend release checklist
+            self.assertIn("10 Login Hours / Week", html)
+            self.assertIn("Sprint Milestone Tasks", html)
+            self.assertIn("GitHub Pull Request Merged", html)
+
+            # Must NOT render old comparison table
+            self.assertNotIn("Standard Internship (Under Review)", html)
+            self.assertNotIn("<table", html)
+
+            # Must display Single Clean Dual Action CTAs (Zero Duplicates, Zero ₹299 Clutter)
+            self.assertIn("Enroll in Incubation &amp; Paid Fellowship (₹1,999)", html)
+            self.assertIn("https://dbert.in/enroll/1999?email=stage1_apply@dbert.test", html)
+            self.assertEqual(html.count("https://dbert.in/enroll/1999"), 1, "Must have exactly 1 enrollment CTA link without duplicates")
+            self.assertIn("Instant WhatsApp Admissions Desk", html)
+            self.assertIn("https://wa.me/918192911360", html)
+            self.assertEqual(html.count("https://wa.me/918192911360"), 1, "Must have exactly 1 WhatsApp admissions link without duplicates")
+
+            # Must NOT display distracting ₹299 credential unlock link on under-review page
+            self.assertNotIn("Unlock Turnitin Rubric &amp; Verified Dossier", html)
+            self.assertNotIn("₹299", html)
+
+            # Must NOT demand premature ₹499 caution deposit or render UTR form
+            self.assertNotIn("Official Offer Letter Gated", html)
+            self.assertNotIn("Seat Confirmation Required", html)
+            self.assertNotIn('id="depositSubmitForm"', html)
+            self.assertNotIn('id="depositUtrInput"', html)
+
 
 if __name__ == "__main__":
     unittest.main()

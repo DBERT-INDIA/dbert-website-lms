@@ -296,6 +296,12 @@ body.has-staff-sidebar main {
   min-height: 100vh;
   box-sizing: border-box;
 }
+body.has-sidebar,
+body.has-staff-sidebar,
+body.has-company-sidebar,
+body.has-mentor-sidebar {
+  padding: 0 !important;
+}
 body.has-staff-sidebar .content-wrap .wrap {
   margin-left: auto;
   margin-right: auto;
@@ -303,7 +309,17 @@ body.has-staff-sidebar .content-wrap .wrap {
   padding-right: 24px;
   box-sizing: border-box;
 }
-body.has-staff-sidebar > .wrap {
+body.has-staff-sidebar .queue-container,
+body.has-staff-sidebar .dashboard-container {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 1.5rem 1.5rem 3rem;
+  box-sizing: border-box;
+}
+body.has-staff-sidebar > .wrap,
+body.has-staff-sidebar > .queue-container,
+body.has-staff-sidebar > .dashboard-container {
   margin-left: var(--sidebar-w);
   width: calc(100% - var(--sidebar-w));
   padding-left: 24px;
@@ -1075,6 +1091,8 @@ body.doc a{color:var(--doc-accent)}
   body.has-sidebar .main,
   body.has-sidebar .main-content,
   body.has-staff-sidebar > .wrap,
+  body.has-staff-sidebar > .queue-container,
+  body.has-staff-sidebar > .dashboard-container,
   body.has-staff-sidebar .content-wrap,
   body.has-staff-sidebar main,
   body.has-staff-sidebar .main {
@@ -2841,12 +2859,11 @@ body.portal .lb-toggle.active{border-color:#000000; color:#000000 !important; ba
         }
 
 /* ---- staff_dashboard.html ---- */
-        body {
+        body.pg-staff-dashboard {
             background-color: var(--bg-app);
             color: var(--tx-body);
             font-family: var(--f-body);
             min-height: 100vh;
-            padding: 2rem 1.5rem;
         }
         body.pg-staff-dashboard .dashboard-container{
             max-width: 1100px;
@@ -2931,12 +2948,11 @@ body.portal .lb-toggle.active{border-color:#000000; color:#000000 !important; ba
         }
 
 /* ---- staff_project_queue.html ---- */
-        body {
+        body.pg-staff-project-queue {
             background-color: var(--bg-app);
             color: var(--tx-body);
             font-family: var(--f-body);
             min-height: 100vh;
-            padding: 2rem 1.5rem;
         }
         body.pg-staff-project-queue .queue-container{
             max-width: 1100px;
@@ -3039,12 +3055,11 @@ body.portal .lb-toggle.active{border-color:#000000; color:#000000 !important; ba
         }
 
 /* ---- staff_task_queue.html ---- */
-        body {
+        body.pg-staff-task-queue {
             background-color: var(--bg-app);
             color: var(--tx-body);
             font-family: var(--f-body);
             min-height: 100vh;
-            padding: 2rem 1.5rem;
         }
         body.pg-staff-task-queue .queue-container{
             max-width: 1100px;
@@ -5572,5 +5587,113 @@ html, body {
     box-sizing: border-box !important;
   }
 }
+
+/* ═══ Phase 3: Sidebar Lock Badges & Pulse ═══ */
+.nav-lock-pill {
+  font-size: 9.5px;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: rgba(148, 163, 184, 0.15);
+  color: #64748b;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+.nav-item-locked {
+  cursor: pointer;
+}
+.nav-item-locked:hover .nav-lock-pill {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+.nav-badge-pulse {
+  animation: badgePulse 2s infinite ease-in-out;
+}
+@keyframes badgePulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.8; transform: scale(1.05); }
+}
+/* Mobile invariant: nav items must not overflow at 390px */
+.nav-item {
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ════ Phase 5: Dynamic Domain Switching & Profile Security ════ */
+.badge-lock {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  vertical-align: middle;
+  margin-left: 6px;
+  line-height: 1.2;
+}
+
+.badge-locked {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+  vertical-align: middle;
+  margin-left: 6px;
+  line-height: 1.2;
+}
+
+.badge-editable {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+  vertical-align: middle;
+  margin-left: 6px;
+  line-height: 1.2;
+}
+
+.field-hint {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 5px;
+  margin-bottom: 2px;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+@media (max-width: 640px) {
+  .badge-locked, .badge-editable, .badge-lock {
+    font-size: 10px;
+    padding: 2px 8px;
+    margin-left: 0;
+    margin-top: 4px;
+  }
+}
+
+
 
 

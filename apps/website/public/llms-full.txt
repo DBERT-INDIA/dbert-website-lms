@@ -756,6 +756,26 @@ Real candidates across India have completed cohorts, had their credentials verif
 - **Article URL**: https://dbert.in/blog/building-scalable-microservices-with-fastapi
 - **Summary**: Modern applications often need to handle thousands or even millions of requests while maintaining reliability and performance. As applications grow, managing all their functionality in a single codeba...
 
+### DBERT Programme Transparency, Comparisons & Engineering How-To Guides
+- **Unpaid vs. Paid Corporate vs. Self-Learning**: https://dbert.in/blog/dbert-unpaid-internship-vs-paid-corporate-vs-self-learning
+- **₹1,999 Non-Refundable Fee & 6 Deliverables Breakdown**: https://dbert.in/blog/dbert-1999-program-non-refundable-value-breakdown
+- **Real Engineering Sprints Proof (Hybrid RAG, Multi-Tenant SaaS, JWT/OAuth2/OWASP, PyTest/Playwright QA, Tesseract OCR, Bot APIs)**: https://dbert.in/blog/inside-dbert-engineering-sprints-rag-saas-security-qa-ocr-bots
+- **How to Enroll, Verify Certificates & Get Hired**: https://dbert.in/blog/how-to-verify-dbert-internship-and-get-hired
+- **How to Build Hybrid RAG, Multi-Tenant SaaS & OWASP Auth**: https://dbert.in/blog/how-to-build-hybrid-rag-and-multi-tenant-saas-in-internship
+- **How to Automate QA, Tesseract OCR & Production Bot APIs**: https://dbert.in/blog/how-to-automate-qa-ocr-and-bots-production-guide
+
+### Remote Online Courses & Hosted Remote Internships (All 9+ Domains)
+- **Full Stack Web Development**: https://dbert.in/learners/courses/full-stack-development | https://dbert.in/internships/full-stack-development/remote
+- **AI Agent & LLM Systems**: https://dbert.in/learners/courses/ai-agent-development | https://dbert.in/internships/ai-agent-development/remote
+- **Data Analytics & Corporate BI**: https://dbert.in/learners/courses/data-analytics | https://dbert.in/internships/data-analytics/remote
+- **Python Automation & Scraping**: https://dbert.in/learners/courses/python-automation | https://dbert.in/internships/python-automation/remote
+- **DevOps & Cloud Engineering**: https://dbert.in/learners/courses/devops-cloud | https://dbert.in/internships/devops-cloud/remote
+- **Cybersecurity & Threat Defense**: https://dbert.in/learners/courses/cybersecurity | https://dbert.in/internships/cybersecurity/remote
+- **UI/UX Design & Prototyping**: https://dbert.in/learners/courses/ui-ux-design | https://dbert.in/internships/ui-ux-design/remote
+- **Mobile App Development**: https://dbert.in/learners/courses/mobile-app-development | https://dbert.in/internships/mobile-app-development/remote
+- **Machine Learning & Generative AI**: https://dbert.in/learners/courses/machine-learning | https://dbert.in/internships/machine-learning/remote
+- **Digital Marketing & Growth**: https://dbert.in/learners/courses/digital-marketing | https://dbert.in/internships/digital-marketing/remote
+
 
 ---
 

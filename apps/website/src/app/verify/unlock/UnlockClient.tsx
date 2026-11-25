@@ -78,10 +78,11 @@ const FEATURED_ENGINEERS: FeaturedEngineer[] = [
 
 export default function UnlockClient() {
   const searchParams = useSearchParams();
+  const initialQuery = searchParams.get('certid') || searchParams.get('email') || searchParams.get('q') || '';
 
   // Search / Lookup state
-  const [lookupQuery, setLookupQuery] = useState('');
-  const [isSearching, setIsSearching] = useState(false);
+  const [lookupQuery, setLookupQuery] = useState(initialQuery);
+  const [isSearching, setIsSearching] = useState(Boolean(initialQuery));
   const [candidate, setCandidate] = useState<CandidateProfile | null>(null);
 
   // Form inputs
@@ -100,19 +101,39 @@ export default function UnlockClient() {
   const [copiedVpa, setCopiedVpa] = useState(false);
   const [submittedResult, setSubmittedResult] = useState<SubmissionResult | null>(null);
   const [hasExistingVerification, setHasExistingVerification] = useState(false);
+  const [verificationRejected, setVerificationRejected] = useState(false);
 
   const VPA = 'Q652429146@ybl';
   const MERCHANT_NAME = 'DBERT Admissions';
   const VERIFY_AMOUNT = 299;
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  // Read initial query params from URL
-  useEffect(() => {
-    const q = searchParams.get('certid') || searchParams.get('email') || searchParams.get('q') || '';
-    if (q) {
-      setLookupQuery(q);
-      executeLookup(q);
+  const applyCandidateProfile = (data: any, clean: string) => {
+    const enteredEmail = emailPattern.test(clean) && !clean.includes('***') ? clean.toLowerCase() : '';
+    const hasSubmission = data.hasVerificationSubmission === true;
+    setHasExistingVerification(hasSubmission);
+    setVerificationRejected(hasSubmission && data.verificationStatus === 'REJECTED');
+    setSubmittedResult(null);
+
+    if (data.found && data.candidate) {
+      const c = data.candidate;
+      setCandidate(c);
+      setFullName(c.holderName || '');
+      setEmail(c.email && !c.email.includes('***') ? c.email : enteredEmail);
+      setPhone(c.phone && !c.phone.includes('***') ? c.phone : '');
+      setCollege(c.college || '');
+      if (c.domain) setDomain(c.domain);
+      setCertId(c.certId || '');
+    } else {
+      setCandidate(null);
+      // Fallback: if query looks like a Cert ID, set it
+      if (clean.toUpperCase().startsWith('CERT-')) {
+        setCertId(clean.toUpperCase());
+      } else if (enteredEmail) {
+        setEmail(enteredEmail);
+      }
     }
-  }, [searchParams]);
+  };
 
   const executeLookup = async (queryText: string) => {
     const clean = queryText.trim();
@@ -120,37 +141,37 @@ export default function UnlockClient() {
 
     setIsSearching(true);
     setErrorMsg('');
-    setHasExistingVerification(false);
 
     try {
       const res = await fetch(`/api/enroll/lookup?q=${encodeURIComponent(clean)}`);
       const data = await res.json();
-
-      if (data.found && data.candidate) {
-        const c = data.candidate;
-        setCandidate(c);
-        if (c.holderName) setFullName(c.holderName);
-        if (c.email && !c.email.includes('***')) setEmail(c.email);
-        if (c.phone && !c.phone.includes('***')) setPhone(c.phone);
-        if (c.college) setCollege(c.college);
-        if (c.domain) setDomain(c.domain);
-        if (c.certId) setCertId(c.certId);
-
-        setHasExistingVerification(data.hasVerificationSubmission === true);
-      } else {
-        // Fallback: if query looks like a Cert ID, set it
-        if (clean.toUpperCase().startsWith('CERT-')) {
-          setCertId(clean.toUpperCase());
-        } else if (clean.includes('@')) {
-          setEmail(clean.toLowerCase());
-        }
-      }
+      applyCandidateProfile(data, clean);
     } catch {
       // ignore network lookup error
     } finally {
       setIsSearching(false);
     }
   };
+
+  // Read initial query params from URL
+  useEffect(() => {
+    if (!initialQuery) return;
+    let ignore = false;
+    fetch(`/api/enroll/lookup?q=${encodeURIComponent(initialQuery.trim())}`)
+      .then(res => res.json())
+      .then(data => {
+        if (!ignore) {
+          applyCandidateProfile(data, initialQuery.trim());
+        }
+      })
+      .catch(() => {})
+      .finally(() => {
+        if (!ignore) setIsSearching(false);
+      });
+    return () => {
+      ignore = true;
+    };
+  }, [initialQuery]);
 
   const handleCopyVpa = () => {
     if (navigator?.clipboard) {
@@ -177,7 +198,7 @@ export default function UnlockClient() {
       setErrorMsg('Please enter your full legal name.');
       return;
     }
-    if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    if (!emailPattern.test(email.trim()) || email.includes('***')) {
       setErrorMsg('Please enter a valid email address.');
       return;
     }
@@ -305,7 +326,7 @@ export default function UnlockClient() {
         <p className={s.lookupSubtitle}>
           Enter your Certificate ID or registered email to look up your record. Enter your own contact details in the form below.
         </p>
-        {hasExistingVerification && (
+        {hasExistingVerification && !verificationRejected && (
           <p role="status">A verification request already exists. <a href="https://lms.dbert.in/portal">Open the LMS</a> to check your account status.</p>
         )}
         <div className={s.lookupRow}>
@@ -327,6 +348,30 @@ export default function UnlockClient() {
           </button>
         </div>
       </div>
+
+      {verificationRejected && (
+        <div style={{
+          backgroundColor: 'rgba(239, 68, 68, 0.1)',
+          border: '1px solid rgba(239, 68, 68, 0.4)',
+          borderRadius: '12px',
+          padding: '1rem 1.25rem',
+          marginBottom: '1.5rem',
+          display: 'flex',
+          alignItems: 'flex-start',
+          gap: '0.75rem',
+          color: '#FCA5A5'
+        }}>
+          <span style={{ fontSize: '1.25rem', lineHeight: '1' }}>⚠️</span>
+          <div>
+            <div style={{ fontWeight: 700, color: '#EF4444', marginBottom: '0.25rem' }}>
+              Previous verification payment could not be confirmed
+            </div>
+            <div style={{ fontSize: '0.88rem', color: '#FEE2E2', lineHeight: '1.4' }}>
+              <a href="https://lms.dbert.in/portal">Open the LMS</a> or contact admissions for details about the existing request.
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* SUCCESS RECEIPT (If Submitted) */}
       {submittedResult ? (
@@ -645,9 +690,9 @@ export default function UnlockClient() {
                 <td className={s.verifiedCol}>✓ 1-Click Recruiter Messaging &amp; Inbound</td>
               </tr>
               <tr>
-                <td className={s.featureCol}>Capstone Performance Stipend</td>
+                <td className={s.featureCol}>Capstone Performance Rewards</td>
                 <td className={s.provisionalCol}>🔒 Locked Gate 1</td>
-                <td className={s.verifiedCol}>✓ Eligible for ₹5,000 Milestone Payout</td>
+                <td className={s.verifiedCol}>✓ Eligible for Milestone Performance Reward</td>
               </tr>
             </tbody>
           </table>
@@ -712,7 +757,7 @@ export default function UnlockClient() {
             <span className={`${s.valueCardTag} ${s.tagStipend}`}>Financial Benefit</span>
             <h3 className={s.valueCardTitle}>Performance Stipend Access</h3>
             <p className={s.valueCardDesc}>
-              Unlocks verified candidate status required to submit pull requests on /stipend/tasks and withdraw milestone performance rewards (₹5,000–₹18,000) directly via UPI.
+              Unlocks verified candidate status required to submit pull requests on /stipend/tasks and withdraw performance-indexed internal milestone bounties directly via UPI.
             </p>
           </div>
         </div>

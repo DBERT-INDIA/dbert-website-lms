@@ -4,7 +4,8 @@ import Link from 'next/link';
 import { lmsInternshipSignupUrl } from '@/lib/lmsLinks';
 import { notFound } from 'next/navigation';
 import HandNote from '@/components/ui/HandNote';
-import { GEO_CITIES, GEO_ROLES } from '@/data/geo_domains.config';
+import { GEO_CITIES, GEO_ROLES, generateCityHeadline } from '@/data/geo_domains.config';
+import TrackLeadCaptureForm from '@/components/forms/TrackLeadCaptureForm';
 
 export async function generateStaticParams() {
   const roles = Object.keys(GEO_ROLES);
@@ -32,17 +33,17 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (!roleData || !cityData) {
     return {
-      title: 'Internship Not Found | DBERT',
+      title: 'Internship Not Found',
       description: 'The requested internship category was not found.'
     };
   }
 
   const cityName = cityData.name;
-  const title = `${roleData.title} Internships in ${cityName}`;
-  const description = `Apply for ${roleData.title} internships in ${cityName}. Build live client codebases under senior review, earn ${roleData.stipend} performance stipends, and earn verifiable MSME credentials.`;
+  const title = `${roleData.title} Internship in ${cityName} — 100% Guaranteed Production Internship`;
+  const description = `Apply for ${roleData.title} production internship in ${cityName}. Build live client codebases under senior review, secure 100% Guaranteed Production Internship with Dedicated Placement Assistance, and graduate with verifiable MSME credentials.`;
 
   return {
-    title: `${title} | DBERT`,
+    title,
     description,
     alternates: {
       canonical: `https://dbert.in/internships/${role}/${city}`
@@ -67,6 +68,7 @@ export default async function ProgrammaticInternshipPage({ params }: PageProps) 
 
   const cityName = cityData.name;
   const isRemote = city.toLowerCase() === 'remote';
+  const cityHeadline = generateCityHeadline(roleData.title, cityName);
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -107,10 +109,10 @@ export default async function ProgrammaticInternshipPage({ params }: PageProps) 
           },
           {
             '@type': 'Question',
-            name: `Is this ${roleData.title} internship in ${cityName} paid?`,
+            name: `What career outcome is guaranteed for the ${cityName} cohort?`,
             acceptedAnswer: {
               '@type': 'Answer',
-              text: `Yes. Interns receive performance stipends ranging from ${roleData.stipend} paid against milestone deliverables and senior pull request reviews.`
+              text: `Fellows receive 100% Guaranteed Production Internship with Dedicated Placement Assistance across internal DBERT portfolio ventures (Gayatri AI, Alkame, Aivara) or verified corporate hiring partners upon completing sprint milestones.`
             }
           },
           {
@@ -144,16 +146,16 @@ export default async function ProgrammaticInternshipPage({ params }: PageProps) 
             {roleData.title} Internships in {cityName}
           </h1>
           <HandNote tone="amber">
-            stipends ₹5K–₹18K ✎
+            {cityHeadline} ✎
           </HandNote>
         </div>
         <p className="lede-wide">
-          {roleData.desc} Join our embedded venture squads, receive senior pull-request reviews, and graduate with cryptographic MSME credentials.
+          {roleData.desc} Join our embedded venture squads, receive senior pull-request reviews, secure 100% Guaranteed Production Internship with Dedicated Placement Assistance, and graduate with cryptographic MSME credentials.
         </p>
 
         <div className="flex justify-center gap-3 flex-wrap mt-4">
           <span className="proof-mark proof-mark-signal">
-            <span>⚡ {roleData.stipend} Stipend</span>
+            <span>⚡ {cityHeadline}</span>
           </span>
           <span className="proof-mark">
             <span>✓ Verified Turnitin Rubrics</span>
@@ -167,35 +169,66 @@ export default async function ProgrammaticInternshipPage({ params }: PageProps) 
         </div>
       </div>
 
-      {/* Primary Conversion Section */}
-      <div className="section-band">
-        <div className="container center">
-          <div className="doclabel mb-2">§ 02 — FAST-TRACK APPLICATION</div>
-          <h2 className="section-title mb-2">Apply for {roleData.title} on LMS</h2>
-          <p className="band-lede mb-6">
-            Your application will be routed with the <strong>{roleData.title}</strong> track automatically pre-selected in our evaluation system.
-          </p>
+      {/* Primary Conversion & Inbound Lead Capture Section */}
+      <div className="section-band" style={{ padding: '60px 0', background: 'rgba(255, 255, 255, 0.015)', borderTop: '1px solid rgba(255, 255, 255, 0.08)', borderBottom: '1px solid rgba(255, 255, 255, 0.08)' }}>
+        <div className="container">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))', gap: 36, alignItems: 'start' }}>
+            
+            {/* Left Column: LMS Direct Links & Fast-Track Route */}
+            <div>
+              <div className="doclabel mb-2">§ 02 — FAST-TRACK APPLICATION</div>
+              <h2 className="section-title mb-3" style={{ textAlign: 'left', fontSize: '2rem' }}>
+                Join {roleData.title} in {cityName}
+              </h2>
+              <p className="band-lede mb-6" style={{ textAlign: 'left', maxWidth: '100%', fontSize: '0.95rem', color: '#94a3b8' }}>
+                Apply directly to our venture squad. Your profile will be automatically tagged with the <strong>{roleData.title}</strong> domain track and linked to the <strong>{cityName}</strong> regional engineering corridor.
+              </p>
 
-          <div className="flex justify-center gap-4 flex-wrap">
-            <a
-              href={lmsInternshipSignupUrl(role, city)}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-primary btn-lg"
-            >
-              Apply on LMS (Track Auto-Selected) ↗
-            </a>
-            <a
-              href={`https://lms.dbert.in/internships/${role}/${city}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-outline btn-lg"
-            >
-              View openings in {cityName} ↗
-            </a>
-            <Link href="/enroll/1999" className="btn btn-outline btn-lg">
-              Confirm Fellowship Seat (₹1,500 Balance) →
-            </Link>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 24 }}>
+                <a
+                  href={lmsInternshipSignupUrl(role, city)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-primary btn-lg"
+                  style={{ textAlign: 'center' }}
+                >
+                  Apply on LMS (Track Auto-Selected) ↗
+                </a>
+                <Link 
+                  href={`/enroll/1999?domain=${encodeURIComponent(roleData.title)}`} 
+                  className="btn btn-outline btn-lg"
+                  style={{ textAlign: 'center', borderColor: '#f59e0b', color: '#fbbf24' }}
+                >
+                  Confirm Fellowship Seat (₹1,999 Program) →
+                </Link>
+                <a
+                  href={`https://lms.dbert.in/internships/${role}/${city}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-outline btn-sm"
+                  style={{ textAlign: 'center', opacity: 0.8 }}
+                >
+                  Browse openings in {cityName} on the LMS ↗
+                </a>
+              </div>
+
+              {/* Verified Trust Badges */}
+              <div style={{ padding: 16, background: 'rgba(255, 255, 255, 0.02)', border: '1px solid rgba(255, 255, 255, 0.06)', borderRadius: 8, fontSize: '0.8rem', color: '#cbd5e1' }}>
+                <div style={{ fontWeight: 700, color: '#10b981', marginBottom: 4 }}>✓ Automated Selection Gating</div>
+                <div>Applications are scored on algorithmic code reviews and Turnitin originality verification (&lt;5% threshold). Selected candidates receive verified 3-document credential packets.</div>
+              </div>
+            </div>
+
+            {/* Right Column: Embedded Dynamic Lead Capture Form */}
+            <div>
+              <TrackLeadCaptureForm
+                initialCity={cityName}
+                initialDomain={role}
+                title={`Register for ${roleData.title} (${cityName})`}
+                subtitle="Submit your details for priority screening, direct curriculum syllabus download, and admissions squad consultation."
+              />
+            </div>
+
           </div>
         </div>
       </div>

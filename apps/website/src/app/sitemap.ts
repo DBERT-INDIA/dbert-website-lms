@@ -57,18 +57,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // 3. Get programmatic geo-internship combinations across all 18 tech hubs
   const geoInternshipRoutes = getAllGeoInternshipRoutes();
 
-  // 4. Get 9 canonical domain course routes
-  const courseDomainRoutes = [
-    'ai-agent-development',
-    'generative-ai',
-    'full-stack-development',
-    'data-analytics',
-    'cybersecurity',
-    'devops-cloud',
-    'mobile-app-development',
-    'python-automation',
-    'ui-ux-design',
-  ].map((slug) => `/courses/${slug}`);
+  // 4. Canonical course routes are already included from seoConfig (/learners/courses/*)
+  // Legacy /courses/* routes permanently redirect to /learners/courses/* and are excluded from sitemap.
+  const courseDomainRoutes: string[] = [];
 
   // 5. Preserve all previously indexed routes from existing public/sitemap.xml
   const historicalRoutes: string[] = [];

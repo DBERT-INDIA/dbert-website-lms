@@ -1,0 +1,65 @@
+---
+title: "How to Automate QA (PyTest, Playwright), Tesseract OCR & Bot APIs in Production"
+desc: "Step-by-step engineering guide to building reliable Playwright and PyTest QA suites, Python Tesseract OCR document pipelines, and production WhatsApp, Telegram, and Discord bots."
+readTime: "9 min read"
+date: "2026-11-25"
+author: "DBERT Engineering Staff"
+authorRole: "Automation & QA Architecture"
+authorBio: "Building deterministic E2E test harnesses, document intelligence pipelines, and multi-channel messaging bots at DBERT."
+tags: ["How-To Guide", "Playwright", "PyTest", "Tesseract OCR", "Bot APIs"]
+faqs:
+  - question: "Why combine PyTest, Postman, and Playwright in a single QA automation stack?"
+    answer: "Postman and PyTest validate API contracts, edge-case payloads, and database state rapidly at the service layer, while Playwright verifies real browser rendering, responsive viewports, and multi-step user flows end to end."
+  - question: "How do you improve Tesseract OCR accuracy on noisy scanned documents?"
+    answer: "Preprocess images with OpenCV before calling Tesseract: convert to grayscale, apply adaptive thresholding, deskew rotated pages, upscale low-DPI scans to 300 DPI, and constrain Tesseract with appropriate Page Segmentation Modes (PSM)."
+  - question: "What makes a production WhatsApp, Telegram, or Discord bot reliable?"
+    answer: "Idempotent webhook handlers, signature verification, persistent state machines in SQLite or PostgreSQL, exponential backoff on rate limits, and circuit breakers that pause dispatch if consecutive failures occur."
+---
+
+Modern software teams do not just hire full-stack generalists—they actively recruit engineers who can **automate quality gates, extract structured data from messy documents, and wire reliable messaging bots**. All three are core active sprint tracks inside DBERT's [Python Automation](/internships/python-automation) and [Technical Incubation](/enroll/1999) cohorts.
+
+Here is how to build each of these systems to production standards.
+
+## 1. How to Structure a 3-Layer QA Automation Suite
+
+Relying only on manual click-testing guarantees regressions before every release. A production QA sprint combines three layers:
+
+1. **API Contract & Schema Tests (Postman / Newman + PyTest):** Verify HTTP status codes, JSON schema types, and idempotency keys on every pull request.
+2. **Service & Integration Tests (`pytest`):** Use isolated test fixtures to validate business logic, error handling, and database constraints.
+3. **Browser E2E & Mobile Viewport Checks (Playwright):** Assert critical user journeys (login, form submission, mobile `scrollWidth <= innerWidth` checks) across Chromium and mobile viewports.
+
+```python
+# Example PyTest + Playwright viewport overflow check
+def test_mobile_no_horizontal_overflow(page):
+    page.set_viewport_size({"width": 390, "height": 844})
+    page.goto("https://dbert.in/enroll/1999")
+    overflow = page.evaluate("document.documentElement.scrollWidth > window.innerWidth")
+    assert overflow is False
+```
+
+## 2. How to Build a Reliable Python + Tesseract OCR Pipeline
+
+Passing a raw phone photo of an invoice or certificate straight into `pytesseract.image_to_string()` produces garbled output. Production document processing requires a **preprocessing stage**:
+
+1. **Normalize DPI & Grayscale:** Rescale low-resolution scans to ~300 DPI and convert to grayscale with OpenCV.
+2. **Denoise & Adaptive Threshold:** Remove uneven lighting shadows using `cv2.adaptiveThreshold`.
+3. **Deskew & Crop:** Detect text angle and rotate before OCR.
+4. **Structured Extraction:** Parse the extracted text with regex + Pydantic validation so downstream systems receive clean JSON (e.g., UTR numbers, dates, totals) instead of raw text blobs.
+
+## 3. How to Architect Production Bot APIs (Telegram, WhatsApp, Discord)
+
+Whether you are building an internal DevOps alert bot on Discord, a candidate support bot on Telegram, or an automated notification workflow via WhatsApp APIs, toy scripts fail under real traffic.
+
+Production bot architecture requires:
+- **Webhook Signature Verification:** Validate `X-Hub-Signature-256` (WhatsApp) or Ed25519 headers (Discord) before processing payloads.
+- **Persistent Deduplication & State:** Store message IDs and conversation states in PostgreSQL or SQLite WAL mode so webhook retries never double-send messages.
+- **Rate-Limit Pacing & Circuit Breakers:** Enforce randomized human-safe delays or token-bucket queues, and trip a circuit breaker after consecutive upstream failures.
+
+## Build & Ship These Systems with Mentor Reviews
+
+Every sprint in DBERT's 2-month program is designed around real engineering problems like these—not passive lectures. Read more about our engineering standards or enroll in the upcoming cohort:
+
+- [Inside DBERT’s Real Engineering Sprints: Hybrid RAG, Multi-Tenant SaaS, Security, QA, OCR & Bots](/blog/inside-dbert-engineering-sprints-rag-saas-security-qa-ocr-bots)
+- [DBERT Unpaid Internship vs. Paid Corporate Internship vs. 2 Months Self-Learning](/blog/dbert-unpaid-internship-vs-paid-corporate-vs-self-learning)
+- [Explore `/qa` Technical Knowledge Hub](/qa) or [Enroll on `/enroll/1999`](/enroll/1999)
+- Explore remote tracks: [Python Automation Course](/learners/courses/python-automation), [Remote Python Automation Internships](/internships/python-automation/remote), [DevOps & Cloud Course](/learners/courses/devops-cloud), and [135+ Verified Fellows](/fellows/verified).

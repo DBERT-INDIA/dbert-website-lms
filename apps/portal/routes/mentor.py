@@ -2,7 +2,7 @@
 
 from flask import Blueprint, Response, abort, flash, jsonify, redirect, request, url_for
 
-from app import current_intern, current_mentor, current_staff, get_db, is_enrolled_or_accepted, log_error
+from app import current_intern, current_mentor, current_staff, get_db, is_enrolled_or_accepted, log_error, require_confirmed_fellow
 from services.mentor_schedule import (
     BookingError,
     release_slot,
@@ -18,6 +18,7 @@ mentor_bp = Blueprint("mentor", __name__)
 
 
 @mentor_bp.post("/mentors/slots/<int:slot_id>/book")
+@require_confirmed_fellow
 def intern_book_slot(slot_id):
     intern = current_intern()
     if not intern:

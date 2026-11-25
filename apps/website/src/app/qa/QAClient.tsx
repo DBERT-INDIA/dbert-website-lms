@@ -93,7 +93,7 @@ export default function QAClient({ initialItems }: QAClientProps) {
               <h3>Looking to Build Production Systems Like These?</h3>
             </div>
             <p>
-              Join the 2-Month Technical Incubation Fellowship for <strong>₹1,999</strong> (Pay ₹1,500 balance if ₹499 caution deposit is paid). Build in public, get mentor reviews, and earn 5,000 coins stipend eligibility.
+              Join the 2-Month Technical Incubation Fellowship for <strong>₹1,999</strong> (Pay ₹1,500 balance if ₹499 caution deposit is paid). Build in public, get mentor reviews, and secure 100% Guaranteed Production Internship with Dedicated Placement Assistance.
             </p>
           </div>
           <div className={s.ctaActions}>
