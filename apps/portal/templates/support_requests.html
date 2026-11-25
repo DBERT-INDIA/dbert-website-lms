@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  {% set page_title = 'Support queue' if staff else 'My support requests' %}
+  {% set page_robots = 'noindex, nofollow' %}
+  {% include '_head.html' %}
+  <link rel="stylesheet" href="/static/css/product-tools.css">
+</head>
+<body>
+<main class="product-tool">
+  <a href="{{ '/admin' if staff else '/portal' }}">Back to dashboard</a>
+  <h1>{{ 'Support queue' if staff else 'My support requests' }}</h1>
+  {% if staff %}
+  <nav class="product-support-nav" aria-label="Filter support requests">
+    {% for key, label in status_labels.items() %}
+    <a href="{{ url_for('product_tools.staff_support', status=key) }}" {% if key == status %}aria-current="page"{% endif %}>{{ label }}</a>
+    {% endfor %}
+  </nav>
+  {% else %}
+  {% if request.args.get('submitted') == '1' %}<p role="status">Your request was submitted.</p>{% endif %}
+  <form method="post" action="{{ url_for('product_tools.support') }}" class="product-tool-card product-support-form">
+    {{ csrf_field() }}
+    <h2>Report a problem</h2>
+    {% if error %}<p class="product-tool-error" role="alert">{{ error }}</p>{% endif %}
+    {% if draft.source_path %}
+    <p>Page <code>{{ draft.source_path }}</code></p>
+    <input type="hidden" name="source" value="{{ draft.source_path }}">
+    {% endif %}
+    <label for="supportSubject">Subject</label>
+    <input id="supportSubject" name="subject" required minlength="5" maxlength="120" value="{{ draft.subject }}">
+    <label for="supportDetails">What happened?</label>
+    <textarea id="supportDetails" name="details" required minlength="10" maxlength="2000" rows="5">{{ draft.details }}</textarea>
+    <button type="submit" class="btn btn-primary">Submit request</button>
+  </form>
+  {% endif %}
+  {% for ticket in tickets %}
+  <article class="product-tool-card">
+    <div class="product-ticket-heading">
+      <h2>#{{ ticket.id }} {{ ticket.subject }}</h2>
+      <span>{{ status_labels[ticket.status] }}</span>
+    </div>
+    <p class="product-support-detail">{{ ticket.details }}</p>
+    {% if ticket.source_path %}<p>Page <code>{{ ticket.source_path }}</code></p>{% endif %}
+    <p>Updated <time datetime="{{ ticket.updated_at }}">{{ ticket.updated_at[:10] }}</time></p>
+    {% if staff %}
+    {% if ticket.assigned_actor %}<p>Assigned to support staff</p>{% endif %}
+    <form class="product-support-form" method="post" action="{{ url_for('product_tools.staff_update', ticket_id=ticket.id) }}">
+      {{ csrf_field() }}
+      <label for="ticketStatus{{ ticket.id }}">Status</label>
+      <select id="ticketStatus{{ ticket.id }}" name="status">
+        {% for key, label in status_labels.items() %}<option value="{{ key }}" {% if key == ticket.status %}selected{% endif %}>{{ label }}</option>{% endfor %}
+      </select>
+      <label for="ticketNote{{ ticket.id }}">Update for the learner</label>
+      <textarea id="ticketNote{{ ticket.id }}" name="note" maxlength="500" rows="2"></textarea>
+      <button type="submit" class="btn btn-primary">Assign to me and update</button>
+    </form>
+    {% elif ticket.latest_note %}<p class="product-support-detail"><strong>Latest update</strong> {{ ticket.latest_note }}</p>{% endif %}
+  </article>
+  {% else %}
+  <p>{{ 'There are no requests in this queue.' if staff else 'You haven’t submitted any support requests.' }}</p>
+  {% endfor %}
+</main>
+</body>
+</html>

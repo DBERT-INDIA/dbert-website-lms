@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  {% set page_title = 'Course publishing' %}
+  {% set page_robots = 'noindex, nofollow' %}
+  {% include '_head.html' %}
+  <link rel="stylesheet" href="/static/css/product-tools.css">
+</head>
+<body>
+<main class="product-tool">
+  <a href="{{ url_for('course_publishing.courses') if course else ('/admin' if publishing_admin else '/company/dashboard') }}">{{ 'All courses' if course else 'Back to dashboard' }}</a>
+  <h1>Course publishing</h1>
+  {% if not course %}
+  <ul class="product-result-list">
+    {% for item in courses %}
+    <li><a href="{{ url_for('course_publishing.edit', course_id=item.id) }}">{{ item.title }}</a><span>Course approval {{ item.content_status }}</span></li>
+    {% else %}<li>No courses are available for editing.</li>{% endfor %}
+  </ul>
+  {% else %}
+  <p>Course approval {{ course.content_status }}. Publishing an edition updates lesson material. The existing approval controls catalog visibility.</p>
+  {% if error %}<p class="product-tool-error" role="alert">{{ error }}</p>{% endif %}
+  <form method="post" class="product-tool-card product-support-form">
+    {{ csrf_field() }}
+    <h2>Create a draft edition</h2>
+    <label for="editionTitle">Course title</label>
+    <input id="editionTitle" name="title" value="{{ material.title }}" required minlength="3" maxlength="160">
+    {% for lesson in material.lessons %}
+    <label for="lessonTitle{{ lesson.id }}">Lesson {{ loop.index }} title</label>
+    <input id="lessonTitle{{ lesson.id }}" name="title_{{ lesson.id }}" required maxlength="160" value="{{ lesson.title }}">
+    <label for="lessonBrief{{ lesson.id }}">Lesson {{ loop.index }} material</label>
+    <textarea id="lessonBrief{{ lesson.id }}" name="brief_{{ lesson.id }}" rows="4" required maxlength="8000">{{ lesson.brief }}</textarea>
+    {% endfor %}
+    {% if material.lessons %}<button type="submit" class="btn btn-primary" name="action" value="draft">Save draft and preview</button>{% endif %}
+  </form>
+  {% if edition %}
+  <section class="product-tool-card">
+    <h2>Learner preview for edition {{ edition.id }}</h2>
+    <h3>{{ material.title }}</h3>
+    {% for lesson in material.lessons %}<h4>{{ lesson.title }}</h4><p class="product-support-detail">{{ lesson.brief }}</p>{% endfor %}
+    {% if publishing_admin and edition.id != live_id %}
+    <form method="post">
+      {{ csrf_field() }}
+      <input type="hidden" name="edition_id" value="{{ edition.id }}">
+      <button type="submit" name="action" value="publish" class="btn btn-primary">Publish this edition</button>
+    </form>
+    {% endif %}
+  </section>
+  {% endif %}
+  <section class="product-tool-card">
+    <h2>Edition history</h2>
+    <p>To restore older material, open a previous edition and publish it again.</p>
+    <ul class="product-result-list">
+      {% for version in revisions %}
+      <li><a href="{{ url_for('course_publishing.edit', course_id=course.id, edition_id=version.id) }}">Edition {{ version.id }}</a>
+        <span>{{ 'Live' if version.id == live_id else ('Previously published' if version.first_published_at else 'Draft') }} · {{ version.created_at }}</span></li>
+      {% else %}<li>No editions have been saved yet.</li>{% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+</main>
+</body>
+</html>

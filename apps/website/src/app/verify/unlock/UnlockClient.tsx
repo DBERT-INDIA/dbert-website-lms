@@ -99,6 +99,7 @@ export default function UnlockClient() {
   const [errorMsg, setErrorMsg] = useState('');
   const [copiedVpa, setCopiedVpa] = useState(false);
   const [submittedResult, setSubmittedResult] = useState<SubmissionResult | null>(null);
+  const [hasExistingVerification, setHasExistingVerification] = useState(false);
 
   const VPA = 'Q652429146@ybl';
   const MERCHANT_NAME = 'DBERT Admissions';
@@ -119,6 +120,7 @@ export default function UnlockClient() {
 
     setIsSearching(true);
     setErrorMsg('');
+    setHasExistingVerification(false);
 
     try {
       const res = await fetch(`/api/enroll/lookup?q=${encodeURIComponent(clean)}`);
@@ -134,22 +136,7 @@ export default function UnlockClient() {
         if (c.domain) setDomain(c.domain);
         if (c.certId) setCertId(c.certId);
 
-        // Check if already submitted
-        if (data.verificationSubmission) {
-          const vs = data.verificationSubmission;
-          setSubmittedResult({
-            submissionId: vs.id,
-            utrNumber: vs.utrNumber,
-            amountPaid: vs.amountPaid || 299,
-            fullName: vs.fullName,
-            email: vs.email,
-            phone: vs.phone,
-            domain: vs.domain,
-            certId: vs.certId,
-            submittedAt: vs.submittedAt,
-            alreadySubmitted: true
-          });
-        }
+        setHasExistingVerification(data.hasVerificationSubmission === true);
       } else {
         // Fallback: if query looks like a Cert ID, set it
         if (clean.toUpperCase().startsWith('CERT-')) {
@@ -316,8 +303,11 @@ export default function UnlockClient() {
       <div className={s.lookupSection}>
         <div className={s.lookupTitle}>Candidate Profile Lookup</div>
         <p className={s.lookupSubtitle}>
-          Enter your Certificate ID or Registered Email to instantly autofill your project and candidate profile.
+          Enter your Certificate ID or registered email to look up your record. Enter your own contact details in the form below.
         </p>
+        {hasExistingVerification && (
+          <p role="status">A verification request already exists. <a href="https://lms.dbert.in/portal">Open the LMS</a> to check your account status.</p>
+        )}
         <div className={s.lookupRow}>
           <input
             type="text"

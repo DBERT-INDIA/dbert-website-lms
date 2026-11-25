@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import db from '@/lib/db';
+import { getDb } from '@/lib/db';
 
 const PAGE_SIZE = 15; // 3x5 card grid per page
 const VALID_DOMAINS = [
@@ -48,7 +48,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'One or more URLs are invalid' }, { status: 400 });
     }
 
-    const contributor = await db.projectContributor.create({
+    const contributor = await getDb().projectContributor.create({
       data: {
         projectSlug: 'alkame',
         name,
@@ -78,8 +78,8 @@ export async function GET(request: Request) {
     const where = { projectSlug: 'alkame', status: 'approved' };
 
     const [totalCount, contributors] = await Promise.all([
-      db.projectContributor.count({ where }),
-      db.projectContributor.findMany({
+      getDb().projectContributor.count({ where }),
+      getDb().projectContributor.findMany({
         where,
         orderBy: { reviewedAt: 'desc' },
         skip: (page - 1) * PAGE_SIZE,

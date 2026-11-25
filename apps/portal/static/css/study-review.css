@@ -1,0 +1,28 @@
+.study-review-option {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  padding: .45rem .25rem;
+}
+
+.product-tool .study-review-option input {
+  width: 1.15rem;
+  height: 1.15rem;
+  min-height: 0;
+  flex: none;
+}
+
+.study-insights-table {
+  overflow-x: auto;
+}
+
+.study-insights-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.study-insights-table :is(th, td) {
+  border-bottom: 1px solid currentColor;
+  text-align: left;
+  padding: .55rem;
+}

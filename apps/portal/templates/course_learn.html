@@ -101,6 +101,7 @@
                 🔑 Add Gemini API Key
                 {% endif %}
             </span>
+            <a href="/courses/{{ course.id }}/study" id="studyClassroomLink" class="back-link">Study classroom</a>
             <a href="/courses/{{ course.id }}" class="back-link" style="white-space:nowrap">
                 <i class="fa-solid fa-arrow-left"></i> Back to syllabus
             </a>
@@ -168,6 +169,11 @@
     <div class="classroom-layout">
         <!-- Sidebar navigation tree -->
         <aside class="tree-sidebar" id="treeSidebar">
+            <details id="classroomSkillMap" style="margin: 0 0 1rem; padding: .8rem; border: 1px solid currentColor; border-radius: .6rem;">
+                <summary style="font-weight: 700; cursor: pointer;">Skill map</summary>
+                <p id="classroomSkillStatus" role="status" style="margin: .6rem 0;">Open to see your progress by concept.</p>
+                <ul id="classroomSkillList" style="padding-inline-start: 1.2rem;" hidden></ul>
+            </details>
             {% for chapter in chapters %}
             {% set outer_loop = loop %}
             <div class="chapter-group">
@@ -352,6 +358,8 @@
     function loadSubtopic(courseId, subtopicId, btnElem) {
         closeTreeSidebar();
         activeSubtopicId = subtopicId;
+        const studyLink = document.getElementById('studyClassroomLink');
+        if (studyLink) studyLink.href = `/courses/${courseId}/study?lesson_id=${subtopicId}`;
         document.querySelectorAll('.subtopic-btn').forEach(btn => btn.classList.remove('active'));
         if (btnElem) {
             btnElem.classList.add('active');
@@ -735,13 +743,54 @@
     setTimeout(sanitizeChatInput, 150);
     setTimeout(sanitizeChatInput, 500);
 
-    // Auto-load first subtopic if present on DOM ready
+    const skillMap = document.getElementById('classroomSkillMap');
+    let skillMapLoaded = false;
+    skillMap.addEventListener('toggle', async () => {
+        if (!skillMap.open || skillMapLoaded) return;
+        skillMapLoaded = true;
+        const status = document.getElementById('classroomSkillStatus');
+        const list = document.getElementById('classroomSkillList');
+        status.textContent = 'Loading your skills…';
+        try {
+            const response = await fetch(`/api/learning/v2/concept-tree/${currentCourseId}`);
+            if (!response.ok) throw new Error('Skill map unavailable');
+            const data = await response.json();
+            if (!Array.isArray(data.concepts)) throw new Error('Invalid skill map');
+            const demonstrated = data.concepts.filter(skill => ['PROFICIENT', 'MASTERED'].includes(skill.mastery_level)).length;
+            status.textContent = data.concepts.length
+                ? `${demonstrated} of ${data.concepts.length} concepts demonstrated`
+                : 'This course does not have a concept map yet.';
+            const lessonIds = new Set(Array.from(document.querySelectorAll('.subtopic-btn'), button => button.dataset.subtopicId));
+            list.replaceChildren(...data.concepts.map(skill => {
+                const item = document.createElement('li');
+                const lessonId = String(skill.subtopic_id);
+                if (lessonIds.has(lessonId)) {
+                    const link = document.createElement('a');
+                    link.href = `?subtopic=${lessonId}`;
+                    link.textContent = skill.name;
+                    item.append(link);
+                } else {
+                    item.append(skill.name);
+                }
+                const attempts = skill.total_attempts;
+                item.append(attempts ? ` — ${skill.mastery_level.toLowerCase()} · ${attempts} ${attempts === 1 ? 'attempt' : 'attempts'}` : ' — Not started');
+                return item;
+            }));
+            list.hidden = data.concepts.length === 0;
+        } catch {
+            status.textContent = 'Skill progress could not be loaded. Reopen the map to try again.';
+            skillMapLoaded = false;
+        }
+    });
+
+    // Review links select only a lesson already present in this classroom.
     window.addEventListener('load', () => {
         sanitizeChatInput();
-        const firstBtn = document.querySelector('.subtopic-btn');
-        if (firstBtn) {
-            const subId = parseInt(firstBtn.getAttribute('data-subtopic-id'));
-            loadSubtopic(currentCourseId, subId, firstBtn);
+        const requested = new URLSearchParams(window.location.search).get('subtopic');
+        const lessons = [...document.querySelectorAll('.subtopic-btn')];
+        const selected = lessons.find(button => button.dataset.subtopicId === requested) || lessons[0];
+        if (selected) {
+            loadSubtopic(currentCourseId, Number(selected.dataset.subtopicId), selected);
         }
     });
 </script>

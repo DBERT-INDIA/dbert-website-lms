@@ -113,11 +113,7 @@
                         body: JSON.stringify({
                             razorpay_order_id: response.razorpay_order_id,
                             razorpay_payment_id: response.razorpay_payment_id,
-                            razorpay_signature: response.razorpay_signature,
-                            product_type: productType,
-                            product_id: productId,
-                            domain: domain,
-                            joining_date: joiningDate
+                            razorpay_signature: response.razorpay_signature
                         })
                     });
 

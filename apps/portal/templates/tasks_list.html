@@ -590,7 +590,7 @@
           <a href="/portal" class="task-btn" style="background:rgba(255,255,255,0.08); color:#FFFFFF; border:1px solid rgba(255,255,255,0.2);">
             <i class="fa-solid fa-gauge"></i> My Dashboard
           </a>
-          <button type="button" onclick="switchTab('perks')" class="task-btn" style="background:linear-gradient(135deg, #F59E0B, #D97706); color:#FFFFFF;">
+          <button type="button" data-act-click="switchTab" data-arg-click='["perks"]' class="task-btn" style="background:linear-gradient(135deg, #F59E0B, #D97706); color:#FFFFFF;">
             <i class="fa-solid fa-gift"></i> Redeem Perks Store
           </button>
         </div>
@@ -653,16 +653,16 @@
     <!-- Status Tabs Navigation Strip -->
     <div class="status-tabs-wrap">
       <div class="status-tabs">
-        <button type="button" class="status-tab active" data-tab="available" onclick="switchTab('available')">
+        <button type="button" class="status-tab active" data-tab="available" aria-pressed="true" data-act-click="switchTab" data-arg-click='["available"]'>
           <i class="fa-solid fa-layer-group"></i> All Open Bounties <span class="tab-badge">{{ tasks|length }}</span>
         </button>
-        <button type="button" class="status-tab" data-tab="pending" onclick="switchTab('pending')">
+        <button type="button" class="status-tab" data-tab="pending" aria-pressed="false" data-act-click="switchTab" data-arg-click='["pending"]'>
           <i class="fa-solid fa-clock" style="color:#FBBF24;"></i> In Review <span class="tab-badge" style="background:rgba(245,158,11,0.2); color:#FDE047;">{{ pending_submissions|length }}</span>
         </button>
-        <button type="button" class="status-tab" data-tab="completed" onclick="switchTab('completed')">
+        <button type="button" class="status-tab" data-tab="completed" aria-pressed="false" data-act-click="switchTab" data-arg-click='["completed"]'>
           <i class="fa-solid fa-circle-check" style="color:#34D399;"></i> Completed &amp; Approved <span class="tab-badge" style="background:rgba(16,185,129,0.2); color:#6EE7B7;">{{ completed_submissions|length }}</span>
         </button>
-        <button type="button" class="status-tab perks-tab" data-tab="perks" onclick="switchTab('perks')">
+        <button type="button" class="status-tab perks-tab" data-tab="perks" aria-pressed="false" data-act-click="switchTab" data-arg-click='["perks"]'>
           <i class="fa-solid fa-gift" style="color:#FDE047;"></i> Redeem Coin Perks <span class="tab-badge" style="background:rgba(245,158,11,0.3); color:#FFF;">{{ perks|length }} Available</span>
         </button>
       </div>
@@ -679,16 +679,16 @@
     <div id="tabViewAvailable" class="tab-view active">
       <!-- Category Filter Pills -->
       <div class="category-pills">
-        <button type="button" class="cat-pill active" data-cat="all" onclick="filterCategory('all', this)">All Bounties ({{ tasks|length }})</button>
-        <button type="button" class="cat-pill" data-cat="growth" onclick="filterCategory('growth', this)">📢 Social Growth (50 Coins)</button>
-        <button type="button" class="cat-pill" data-cat="domain" onclick="filterCategory('domain', this)">🎯 Domain Specific</button>
-        <button type="button" class="cat-pill" data-cat="general" onclick="filterCategory('general', this)">🌐 General Tasks</button>
+        <button type="button" class="cat-pill active" data-cat="all" aria-pressed="true" data-act-click="filterCategory" data-arg-click='["all", "$el"]'>All Bounties ({{ tasks|length }})</button>
+        <button type="button" class="cat-pill" data-cat="growth" aria-pressed="false" data-act-click="filterCategory" data-arg-click='["growth", "$el"]'>📢 Social Growth (50 Coins)</button>
+        <button type="button" class="cat-pill" data-cat="domain" aria-pressed="false" data-act-click="filterCategory" data-arg-click='["domain", "$el"]'>🎯 Domain Specific</button>
+        <button type="button" class="cat-pill" data-cat="general" aria-pressed="false" data-act-click="filterCategory" data-arg-click='["general", "$el"]'>🌐 General Tasks</button>
       </div>
 
       <div class="items-grid" id="tasksGrid">
         {% if tasks %}
           {% for task in tasks %}
-          <div class="task-card" data-category="{{ 'growth' if task.coin_reward == 50 else ('domain' if task.task_type == 'domain_specific' else 'general') }}">
+          <div class="task-card" data-coin-reward="{{ task.coin_reward or 0 }}" data-category="{{ 'growth' if task.coin_reward == 50 else ('domain' if task.task_type == 'domain_specific' else 'general') }}">
             <div>
               <div class="task-card-header">
                 <div class="task-pills-row">
@@ -859,11 +859,28 @@
           </div>
         </div>
         <div>
-          <button type="button" onclick="switchTab('available')" class="task-btn" style="background:#2563EB; color:#FFFFFF;">
+          <button type="button" data-act-click="switchTab" data-arg-click='["available"]' class="task-btn" style="background:#2563EB; color:#FFFFFF;">
             <i class="fa-solid fa-plus"></i> Earn More Coins
           </button>
         </div>
       </div>
+
+      {% set goal_perks = perks|rejectattr('slug', 'equalto', 'course_fee_discount')|list %}
+      {% if goal_perks %}
+      <section class="perk-card" aria-labelledby="perkGoalTitle" style="margin-bottom: 24px;">
+        <h2 id="perkGoalTitle" style="font-size: 1.1rem; margin: 0;">Plan for a perk</h2>
+        <label for="perkGoal">Choose a perk</label>
+        <select id="perkGoal" style="width: min(100%, 32rem); padding: 8px; border-radius: 6px;">
+          <option value="">Select a goal</option>
+          {% for perk in goal_perks if perk.coin_price > 0 %}
+          <option value="{{ perk.id }}" data-cost="{{ perk.coin_price }}">{{ perk.title }} ({{ perk.coin_price }} coins)</option>
+          {% endfor %}
+        </select>
+        <progress id="perkGoalProgress" value="0" max="1" aria-label="Coins saved towards selected perk" style="width: min(100%, 32rem);" hidden></progress>
+        <p id="perkGoalSummary" role="status" style="margin: .35rem 0 0;">Select a perk to see the coins you still need.</p>
+        <ul id="perkGoalTasks" style="padding-inline-start: 1.2rem;" hidden></ul>
+      </section>
+      {% endif %}
 
       <!-- Perks Catalogue Grid -->
       <div class="items-grid" style="margin-bottom:32px;">
@@ -900,7 +917,7 @@
                       data-id="{{ perk.id }}"
                       data-title="{{ perk.title }}"
                       data-price="{{ perk.coin_price }}"
-                      onclick="confirmRedeemPerk('{{ perk.slug }}', {{ perk.id }}, '{{ perk.title }}', {{ perk.coin_price }})"
+                      data-act-click="openPerkRedemption" data-arg-click='["$el"]'
                       {% if (task_balance or 0) < perk.coin_price %}disabled title="Insufficient Coins"{% endif %}>
                 <i class="fa-solid fa-unlock"></i>
                 {% if (task_balance or 0) >= perk.coin_price %}
@@ -974,7 +991,7 @@
   <div class="modal-card">
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
       <h3 style="font-size:18px; font-weight:800; color:#FFFFFF; margin:0;"><i class="fa-solid fa-gift" style="color:#FBBF24;"></i> Confirm Perk Redemption</h3>
-      <button type="button" onclick="closePerkModal()" style="background:transparent; border:none; color:#94A3B8; font-size:20px; cursor:pointer;">&times;</button>
+      <button type="button" data-act-click="closePerkModal" aria-label="Close redemption" style="background:transparent; border:none; color:#94A3B8; font-size:20px; cursor:pointer;">&times;</button>
     </div>
 
     <div id="perkModalDetails" style="background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:12px; padding:16px; margin-bottom:18px;">
@@ -988,8 +1005,8 @@
     <div id="perkModalMsg" style="display:none; padding:12px; border-radius:8px; font-size:12.5px; font-weight:700; margin-bottom:16px;"></div>
 
     <div style="display:flex; justify-content:flex-end; gap:10px;">
-      <button type="button" onclick="closePerkModal()" class="task-btn" style="background:rgba(255,255,255,0.08); color:#CBD5E1;">Cancel</button>
-      <button type="button" id="btnExecuteRedeem" onclick="executePerkRedemption()" class="task-btn" style="background:linear-gradient(135deg, #F59E0B, #D97706); color:#FFF;">
+      <button type="button" data-act-click="closePerkModal" class="task-btn" style="background:rgba(255,255,255,0.08); color:#CBD5E1;">Cancel</button>
+      <button type="button" id="btnExecuteRedeem" data-act-click="executePerkRedemption" class="task-btn" style="background:linear-gradient(135deg, #F59E0B, #D97706); color:#FFF;">
         Confirm &amp; Redeem
       </button>
     </div>
@@ -1000,13 +1017,58 @@
     let activePerkSlug = null;
     let activePerkId = null;
 
+    const perkGoal = document.getElementById('perkGoal');
+    perkGoal?.addEventListener('change', () => {
+        const cost = Number(perkGoal.selectedOptions[0]?.dataset.cost || 0);
+        const balance = Number(document.getElementById('storeTaskBalance').textContent) || 0;
+        const remaining = Math.max(0, cost - balance);
+        const progress = document.getElementById('perkGoalProgress');
+        const summary = document.getElementById('perkGoalSummary');
+        const suggestions = document.getElementById('perkGoalTasks');
+        progress.hidden = cost === 0;
+        suggestions.replaceChildren();
+        suggestions.hidden = true;
+        if (!cost) {
+            summary.textContent = 'Select a perk to see the coins you still need.';
+            return;
+        }
+        progress.max = cost;
+        progress.value = Math.max(0, Math.min(balance, cost));
+        if (!remaining) {
+            summary.textContent = 'You have enough coins to redeem this perk.';
+            return;
+        }
+        const openTasks = Array.from(document.querySelectorAll('#tasksGrid [data-coin-reward]'), card => ({
+            title: card.querySelector('.task-title').textContent,
+            url: card.querySelector('.btn-submit-task').getAttribute('href'),
+            reward: Number(card.dataset.coinReward),
+        })).filter(task => task.reward > 0).sort((a, b) => b.reward - a.reward);
+        summary.textContent = `${remaining.toLocaleString()} more coins needed. ` + (openTasks.length
+            ? 'These open bounties can help you reach your goal.'
+            : 'There are no open coin bounties right now.');
+        for (const task of openTasks.slice(0, 3)) {
+            const link = document.createElement('a');
+            link.href = task.url;
+            link.textContent = `${task.title} (+${task.reward} coins)`;
+            const item = document.createElement('li');
+            item.append(link);
+            suggestions.append(item);
+        }
+        suggestions.hidden = openTasks.length === 0;
+    });
+
+    function openPerkRedemption(button) {
+        confirmRedeemPerk(button.dataset.slug, Number(button.dataset.id), button.dataset.title, Number(button.dataset.price));
+    }
+
     // ── Tab Switching Logic ──
     function switchTab(tabName) {
-        document.querySelectorAll('.status-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.status-tab').forEach(t => {
+            const selected = t.dataset.tab === tabName;
+            t.classList.toggle('active', selected);
+            t.setAttribute('aria-pressed', String(selected));
+        });
         document.querySelectorAll('.tab-view').forEach(v => v.classList.remove('active'));
-
-        const targetTab = document.querySelector(`.status-tab[data-tab="${tabName}"]`);
-        if (targetTab) targetTab.classList.add('active');
 
         if (tabName === 'available') {
             document.getElementById('tabViewAvailable').classList.add('active');
@@ -1026,10 +1088,12 @@
 
     // ── Category Filter Logic (Inside Open Bounties) ──
     function filterCategory(cat, btn) {
-        document.querySelectorAll('.cat-pill').forEach(p => p.classList.remove('active'));
-        if (btn) btn.classList.add('active');
+        document.querySelectorAll('.cat-pill').forEach(p => {
+            p.classList.toggle('active', p === btn);
+            p.setAttribute('aria-pressed', String(p === btn));
+        });
 
-        const cards = document.querySelectorAll('.task-card');
+        const cards = document.querySelectorAll('#tasksGrid .task-card');
         cards.forEach(c => {
             const cardCat = c.dataset.category;
             if (cat === 'all' || cardCat === cat) {

@@ -492,14 +492,24 @@
       </div>
     </div>
 
-    <!-- Recent In-App & Push Notification Feed -->
-    <div class="section-card">
+    <!-- In-app inbox -->
+    <div class="section-card" id="noticeInbox">
       <div class="section-title">
-        <i class="fa-solid fa-inbox" style="color: #F59E0B;"></i> Recent Account Alerts
+        <i class="fa-solid fa-inbox" style="color: #F59E0B;" aria-hidden="true"></i> Notification inbox
       </div>
       <div class="section-subtitle">
-        Chronological audit of notifications delivered to your account and devices.
+        {{ unread_count }} unread. Manage push delivery in the preferences above.
       </div>
+      <nav aria-label="Notification filter" style="display:flex;gap:1rem;flex-wrap:wrap;margin-block:.75rem;">
+        <a href="{{ url_for('account_notifications', _anchor='noticeInbox') }}" {% if inbox_filter == 'all' %}aria-current="page"{% endif %}>All notifications</a>
+        <a href="{{ url_for('account_notifications', filter='unread', _anchor='noticeInbox') }}" {% if inbox_filter == 'unread' %}aria-current="page"{% endif %}>Unread</a>
+      </nav>
+      {% if unread_count %}
+      <form method="post" action="{{ url_for('account_notifications', filter=inbox_filter) }}" style="margin-bottom:.75rem;">
+        {{ csrf_field() }}
+        <button class="btn btn-secondary" name="read" value="all">Mark all as read</button>
+      </form>
+      {% endif %}
 
       {% if notifications %}
       <div style="max-height: 400px; overflow-y: auto;">
@@ -514,6 +524,13 @@
               <span style="color: #94A3B8; font-size: 0.75rem;">{{ (n.created_at|string or '')[:16] }}</span>
             </div>
             <p style="margin: 0; color: #CBD5E1; font-size: 0.85rem; line-height: 1.5;">{{ n.body or n.message or '' }}</p>
+            {% if n.link and n.link.startswith('/') and not n.link.startswith('//') and '\\' not in n.link %}<a href="{{ n.link }}">Open update</a>{% endif %}
+            {% if not n.is_read %}
+            <form method="post" action="{{ url_for('account_notifications', filter=inbox_filter) }}">
+              {{ csrf_field() }}
+              <button class="btn btn-secondary" name="read" value="{{ n.id }}" aria-label="Mark {{ n.title or 'notification' }} as read">Mark as read</button>
+            </form>
+            {% endif %}
           </div>
         </div>
         {% endfor %}

@@ -20,6 +20,8 @@ type NavDrawerProps = {
   open: boolean;
   groups: DrawerGroup[];
   cta?: DrawerLink;
+  signIn?: DrawerLink;
+  pathname: string;
   onClose: () => void;
   /** Focus returns here when the drawer closes. */
   returnFocusRef: React.RefObject<HTMLButtonElement | null>;
@@ -35,6 +37,8 @@ export default function NavDrawer({
   open,
   groups,
   cta,
+  signIn,
+  pathname,
   onClose,
   returnFocusRef,
 }: NavDrawerProps) {
@@ -57,7 +61,7 @@ export default function NavDrawer({
     const trigger = returnFocusRef.current;
     closeRef.current?.focus();
     return () => {
-      trigger?.focus();
+      if (trigger?.offsetParent) trigger.focus();
     };
   }, [open, returnFocusRef]);
 
@@ -118,6 +122,8 @@ export default function NavDrawer({
       <Link
         key={`${link.href}-${link.label}`}
         href={link.href}
+        prefetch={false}
+        aria-current={pathname === link.href ? 'page' : undefined}
         className={className}
         onClick={onClose}
       >
@@ -174,6 +180,11 @@ export default function NavDrawer({
               <path d="M6 6l12 12M18 6L6 18" />
             </svg>
           </button>
+        </div>
+
+        <div className={styles.drawerGroup}>
+          {renderLink({ href: '/search', label: 'Search website' })}
+          {signIn && renderLink(signIn)}
         </div>
 
         {groups.map((group) => (

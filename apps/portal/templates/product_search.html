@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  {% set page_title = 'Help center' if help_page else 'Search DBERT' %}
+  {% include '_head.html' %}
+  <link rel="stylesheet" href="/static/css/product-tools.css">
+</head>
+<body>
+<main class="product-tool">
+  <a href="{{ '/portal' if learner else '/' }}">Back to {{ 'dashboard' if learner else 'DBERT LMS' }}</a>
+  <h1>{{ 'Help center' if help_page else 'Search DBERT' }}</h1>
+  {% if help_page %}
+  <div class="product-tool-card">
+    <h2>Find a course or internship</h2>
+    <p><a href="{{ url_for('product_tools.search') }}">Search the catalog and open listings</a> by topic or title.</p>
+    <h2>Get help with your LMS account</h2>
+    <p>Report a problem with a lesson, assessment, application, or booking. Follow updates from your support request page.</p>
+    <a class="btn btn-primary" href="{{ url_for('product_tools.support', source='/help') }}">Open support requests</a>
+  </div>
+  {% else %}
+  <form method="get" class="product-tool-card" role="search">
+    <label for="productQuery">Search courses, opportunities, and pages</label>
+    <div class="product-search-row">
+      <input id="productQuery" name="q" type="search" minlength="2" maxlength="100" value="{{ query }}" required>
+      <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+  </form>
+  {% if query and query|length < 2 %}
+  <p role="status">Enter at least two characters.</p>
+  {% elif query %}
+    {% set matches = namespace(count=0) %}
+    {% for heading, links in results if links %}
+    {% set matches.count = matches.count + links|length %}
+    <section class="product-tool-card" aria-label="{{ heading }}">
+      <h2>{{ heading }}</h2>
+      <ul class="product-result-list">
+        {% for name, context, href in links %}
+        <li><a href="{{ href }}">{{ name }}</a>{% if context %}<span>{{ context }}</span>{% endif %}</li>
+        {% endfor %}
+      </ul>
+    </section>
+    {% endfor %}
+    {% if not matches.count %}<p role="status">No results found. Try a different title or topic.</p>{% endif %}
+  {% endif %}
+  {% endif %}
+</main>
+</body>
+</html>

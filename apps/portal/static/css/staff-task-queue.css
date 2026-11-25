@@ -1,0 +1,69 @@
+.task-queue-overview {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    gap: 0.75rem;
+    margin: 0 0 1.25rem;
+}
+
+.task-queue-overview .card {
+    padding: 1rem 1.25rem;
+}
+
+.task-queue-overview dt {
+    color: var(--tx-muted);
+    font-size: 0.875rem;
+}
+
+.task-queue-overview dd {
+    margin: 0.25rem 0 0;
+    font: 700 1.5rem/1.25 var(--f-display);
+    color: var(--tx-head);
+}
+
+.task-queue-filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.task-queue-field {
+    display: grid;
+    flex: 1 1 11rem;
+    gap: 0.35rem;
+    min-width: 0;
+    color: var(--tx-head);
+    font-size: 0.875rem;
+}
+
+.task-queue-count, .task-queue-age, .task-queue-history {
+    color: var(--tx-muted);
+    font-size: 0.875rem;
+}
+
+.task-queue-history {
+    margin: 0.875rem 0;
+}
+
+.task-queue-history summary {
+    color: var(--tx-head);
+    cursor: pointer;
+}
+
+.task-queue-history ol {
+    display: grid;
+    gap: 0.5rem;
+    margin: 0.75rem 0 0;
+    padding-inline-start: 1.25rem;
+}
+
+.task-queue-pages {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1.25rem;
+    color: var(--tx-muted);
+}

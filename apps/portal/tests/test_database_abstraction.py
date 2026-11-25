@@ -11,10 +11,13 @@ Covers:
   8. Schema Translator and PostgreSQL schema compatibility verification
 """
 
-import os
+import ast
 import sqlite3
 import threading
+from pathlib import Path
+from unittest.mock import MagicMock
 import pytest
+from werkzeug.security import generate_password_hash
 
 from services.database import (
     DatabaseError,
@@ -466,12 +469,80 @@ class TestSchemaTranslator:
         assert "CREATE TABLE IF NOT EXISTS users" in script
         assert "CREATE INDEX idx_users_name ON users(name);" in script
 
-    def test_production_schema_file_exists_and_valid(self):
-        schema_path = os.path.join(os.path.dirname(__file__), "..", "docs", "POSTGRES_SCHEMA.sql")
-        assert os.path.exists(schema_path)
-        with open(schema_path, "r", encoding="utf-8") as f:
-            content = f.read()
-        assert "CREATE TABLE IF NOT EXISTS applications" in content
-        assert "CREATE TABLE IF NOT EXISTS gl_concepts" in content
-        assert "AUTOINCREMENT" not in content
-        assert "PRAGMA" not in content
+    def test_runtime_schema_translates_for_postgres(self):
+        from services.learning.learning_models import SCHEMA_SQL
+
+        app_path = Path(__file__).resolve().parents[1] / "app.py"
+        module = ast.parse(app_path.read_text(encoding="utf-8-sig"))
+        init_db = next(node for node in module.body if isinstance(node, ast.FunctionDef) and node.name == "init_db")
+        portal_schema = next(call.args[0].value for call in ast.walk(init_db) if
+                             isinstance(call, ast.Call) and isinstance(call.func, ast.Attribute)
+                             and call.func.attr == "executescript" and isinstance(call.args[0], ast.Constant))
+        assert "CREATE TABLE IF NOT EXISTS applications" in translate_sql(portal_schema)
+        assert "CREATE TABLE IF NOT EXISTS gl_concepts" in translate_sql(SCHEMA_SQL)
+        assert "AUTOINCREMENT" not in translate_sql(portal_schema + SCHEMA_SQL)
+
+
+@pytest.fixture
+def bootstrap_portal():
+    """Load the actual bootstrap functions without importing the live integrations."""
+    import json
+    import os
+
+    app_path = Path(__file__).resolve().parents[1] / "app.py"
+    module = ast.parse(app_path.read_text(encoding="utf-8-sig"))
+    definitions = [node for node in module.body if isinstance(node, ast.FunctionDef) and
+                   node.name in {"init_db", "_init_platform_features", "ensure_column"}]
+    assert len(definitions) == 3
+    namespace = {
+        "sqlite3": sqlite3, "json": json, "os": os,
+        "ADMIN_USERNAME": "synthetic-admin", "ADMIN_PASSWORD": "synthetic-password",
+        "generate_password_hash": generate_password_hash,
+        "PLATFORM_DOMAIN_COURSES": [],
+        "run_startup_reconciliation": lambda conn: None,
+    }
+
+    def fail_initialization(label, error):
+        raise AssertionError(f"{label}: {error}")
+
+    namespace["log_error"] = fail_initialization
+    exec(compile(ast.Module(body=definitions, type_ignores=[]), str(app_path), "exec"), namespace)
+
+    def initialize(conn):
+        namespace["get_db"] = lambda: conn
+        namespace["init_db"]()
+
+    return initialize
+
+
+def test_portal_bootstrap_creates_feature_tables_twice_on_sqlite(bootstrap_portal):
+    conn = SQLiteAdapter(":memory:")
+    try:
+        bootstrap_portal(conn)
+        bootstrap_portal(conn)
+        tables = {row["name"] for row in conn.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+        assert {"program_cohorts", "study_classroom_entries", "program_cohort_credentials", "day_quiz_receipts"} <= tables
+        assert "milestones_locked_at" in conn.get_column_names("program_cohorts")
+        assert "credential_status" in conn.get_column_names("intern_certificates")
+    finally:
+        conn.close()
+
+
+def test_postgres_bootstrap_runs_the_shared_migrations_under_one_lock(bootstrap_portal):
+    raw = MagicMock()
+    cursor = raw.cursor.return_value
+    cursor.fetchone.return_value = None
+    cursor.fetchall.return_value = []
+    cursor.description = [("result_json",)]
+    cursor.lastrowid = None
+    cursor.rowcount = 0
+    bootstrap_portal(PostgreSQLAdapter(raw))
+
+    statements = [call.args[0] for call in cursor.execute.call_args_list]
+    lock = next(index for index, sql in enumerate(statements) if sql.startswith("SELECT pg_advisory_lock("))
+    release = next(index for index, sql in enumerate(statements) if sql.startswith("SELECT pg_advisory_unlock("))
+    for table in ("enrollment_payment_claims", "day_quiz_receipts", "program_cohorts", "study_classroom_entries",
+                  "program_cohort_credentials", "gl_student_mastery"):
+        ddl = next(index for index, sql in enumerate(statements) if f"CREATE TABLE IF NOT EXISTS {table} (" in sql)
+        assert lock < ddl < release
+        assert "AUTOINCREMENT" not in statements[ddl]

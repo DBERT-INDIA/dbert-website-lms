@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import crypto from 'crypto';
-import db from '@/lib/db';
+import { getDb } from '@/lib/db';
 
 export async function POST(request: Request) {
   try {
@@ -31,7 +31,7 @@ export async function POST(request: Request) {
       const paymentEntity = event.payload.payment.entity;
       const orderId = paymentEntity.order_id;
       
-      await db.enrollmentInquiry.updateMany({
+      await getDb().enrollmentInquiry.updateMany({
         where: { razorpayOrderId: orderId },
         data: { status: 'paid', razorpayPaymentId: paymentEntity.id }
       });
@@ -39,7 +39,7 @@ export async function POST(request: Request) {
       const paymentEntity = event.payload.payment.entity;
       const orderId = paymentEntity.order_id;
       
-      await db.enrollmentInquiry.updateMany({
+      await getDb().enrollmentInquiry.updateMany({
         where: { razorpayOrderId: orderId },
         data: { status: 'failed' }
       });

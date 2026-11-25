@@ -109,6 +109,7 @@
         {
           "title": "Specialized Courses",
           "links": [
+            { "label": "Browse all courses", "href": "/learners/courses" },
             { "label": "AI Agent Development", "href": "/learners/courses/ai-agent-development" },
             { "label": "Generative AI", "href": "/learners/courses/generative-ai" },
             { "label": "Machine Learning", "href": "/learners/courses/machine-learning" },
@@ -119,10 +120,11 @@
           ]
         },
         {
-          "title": "External Portal",
+          "title": "Internships and LMS",
           "links": [
+            { "label": "Internship tracks", "href": "/internships" },
             { "label": "Job Board", "href": "https://lms.dbert.in/jobs", "external": true },
-            { "label": "Apply for Fellowship", "href": "https://lms.dbert.in", "external": true, "highlight": true }
+            { "label": "Apply for Fellowship", "href": "https://lms.dbert.in/#signup", "external": true, "highlight": true }
           ]
         }
       ]
@@ -146,7 +148,12 @@
   ],
   "cta": {
     "label": "Apply for Fellowship",
-    "href": "https://lms.dbert.in",
+    "href": "https://lms.dbert.in/#signup",
+    "external": true
+  },
+  "signIn": {
+    "label": "LMS sign in",
+    "href": "https://lms.dbert.in/#signin",
     "external": true
   }
 }

@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+  {% set page_title = "Staff cohort progress" %}
+  {% set page_robots = "noindex, nofollow" %}
+  {% include "_head.html" %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/cohort-progress.css') }}">
+</head>
+<body>
+  {% from "cohort_progress_components.html" import notices, milestones as milestone_list, checkin_list %}
+  <main id="main-content" class="cohort-progress">
+    <nav aria-label="Cohort navigation" class="cohort-progress-nav">
+      <a href="{{ '/admin/program-cohorts/' if is_admin else '/mentor/program-cohorts/' }}{{ cohort.id }}">Cohort roster</a>
+      <a href="/program-cohorts/{{ cohort.id }}/study">Study insights</a>
+    </nav>
+    {{ notices(get_flashed_messages(with_categories=true)) }}
+    <header class="cohort-progress-hero">
+      <div>
+        <p class="cohort-progress-caption">Staff progress</p>
+        <h1>{{ cohort.title }}</h1>
+        <p><time datetime="{{ cohort.starts_on }}">{{ cohort.starts_on }}</time> to <time datetime="{{ cohort.ends_on }}">{{ cohort.ends_on }}</time></p>
+      </div>
+      <div class="cohort-progress-meter">
+        <strong>{{ members|selectattr('status', 'equalto', 'completed')|list|length }} / {{ members|length }}</strong>
+        <span>Learners graduated</span>
+      </div>
+    </header>
+
+    <section aria-labelledby="roster-heading" class="cohort-progress-card">
+      <h2 id="roster-heading">Learner progress</h2>
+      {% if members %}
+        <ol class="cohort-milestone-list">
+          {% for learner in members %}
+            <li>
+              <div>
+                <h3>
+                  <a href="{{ url_for('.staff', cohort_id=cohort.id, member=learner.id, _anchor='member-detail') }}"
+                     {% if member and member.id == learner.id %}aria-current="true"{% endif %}>{{ learner.name }}</a>
+                </h3>
+                <p>{{ learner.required_met }}/{{ learner.required_total }} required milestones</p>
+              </div>
+              {% if learner.status == "completed" %}
+                <span class="cohort-pill cohort-pill-met">Graduated</span>
+              {% elif learner.eligible %}
+                <span class="cohort-pill cohort-pill-met">Ready to graduate</span>
+              {% else %}
+                <span class="cohort-pill">In progress</span>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ol>
+      {% else %}
+        <p>Enrolled learners will appear here.</p>
+      {% endif %}
+    </section>
+
+    {% if member %}
+      <section id="member-detail" aria-labelledby="member-heading" class="cohort-progress-card">
+        <h2 id="member-heading">{{ member.name }}</h2>
+        {% if member.milestones %}
+          {{ milestone_list(member.milestones, milestone_kinds) }}
+        {% endif %}
+        {% if is_admin and member.eligible %}
+          <form method="post" class="cohort-progress-form">
+            {{ csrf_field() }}
+            <input type="hidden" name="action" value="graduate">
+            <input type="hidden" name="membership_id" value="{{ member.id }}">
+            <button class="btn btn-primary" type="submit">Issue cohort credential</button>
+          </form>
+        {% elif member.cert_id %}
+          <p><a href="/portal/certificate/{{ member.cert_id }}">Verify cohort credential</a></p>
+        {% endif %}
+
+        <h3>Staff check-ins</h3>
+        {{ checkin_list(checkins) }}
+        <form method="post" class="cohort-progress-form">
+          {{ csrf_field() }}
+          <input type="hidden" name="action" value="checkin">
+          <input type="hidden" name="membership_id" value="{{ member.id }}">
+          <label for="checkin-message">Message for {{ member.name }}</label>
+          <p id="checkin-scope">The learner and assigned cohort staff can read this message.</p>
+          <textarea id="checkin-message" name="message" maxlength="500" rows="3" aria-describedby="checkin-scope" required></textarea>
+          <button class="btn btn-secondary" type="submit">Save check-in</button>
+        </form>
+      </section>
+    {% endif %}
+
+    <section aria-labelledby="rules-heading" class="cohort-progress-card">
+      <h2 id="rules-heading">Milestone rules</h2>
+      {% if frozen %}
+        <p>The first credential has been issued. Milestone rules are locked for this cohort.</p>
+      {% endif %}
+      {% if milestones %}
+        <ol class="cohort-milestone-list">
+          {% for milestone in milestones %}
+            <li>
+              <div>
+                <h3>{{ milestone.title }}</h3>
+                <p>{{ milestone_kinds[milestone.kind] }} · Target {{ milestone.threshold }} · {{ 'Required' if milestone.required else 'Optional' }}
+                  {% if milestone.due_on %} · Due <time datetime="{{ milestone.due_on }}">{{ milestone.due_on }}</time>{% endif %}
+                </p>
+              </div>
+              {% if is_admin and not frozen %}
+                <form method="post">
+                  {{ csrf_field() }}
+                  <input type="hidden" name="action" value="archive">
+                  <input type="hidden" name="milestone_id" value="{{ milestone.id }}">
+                  <button class="btn btn-secondary" type="submit" aria-label="Archive {{ milestone.title }}">Archive</button>
+                </form>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ol>
+      {% else %}
+        <p>This cohort has no milestones.</p>
+      {% endif %}
+      {% if is_admin and not frozen %}
+        <form method="post" class="cohort-progress-form">
+          {{ csrf_field() }}
+          <input type="hidden" name="action" value="add">
+          <h3>Add a milestone</h3>
+          <label for="milestone-title">Title</label>
+          <input id="milestone-title" name="title" maxlength="120" required>
+          <label for="milestone-kind">Evidence</label>
+          <select id="milestone-kind" name="kind" required>
+            {% for kind, label in milestone_kinds.items() %}
+              <option value="{{ kind }}">{{ label }}</option>
+            {% endfor %}
+          </select>
+          <div class="cohort-progress-columns">
+            <div>
+              <label for="milestone-target">Target count</label>
+              <input id="milestone-target" type="number" name="threshold" min="1" max="100" value="1" required>
+            </div>
+            <div>
+              <label for="milestone-due">Due date (optional)</label>
+              <input id="milestone-due" type="date" name="due_on" min="{{ cohort.starts_on }}" max="{{ cohort.ends_on }}">
+            </div>
+          </div>
+          <label class="cohort-progress-checkbox"><input type="checkbox" name="required" value="1" checked> Required to graduate</label>
+          <p>Adding the first milestone fixes the cohort dates. Quizzes, projects, and questions count from the later of the cohort start date and the learner’s enrollment date. Late activity and prior course completion count. Courses with required capstones also need an approved project.</p>
+          <button class="btn btn-primary" type="submit">Add milestone</button>
+        </form>
+      {% endif %}
+    </section>
+  </main>
+</body>
+</html>

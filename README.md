@@ -1,156 +1,86 @@
-# DBERT Ecosystem: Website, LMS Portal & REST API
-================================================================================
-**Universal Documentation for Engineers & AI Agents**  
-**Active Production Domain**: [https://dbert.in](https://dbert.in)  
-**Production Host**: AWS EC2 (`ubuntu@3.26.237.171`)  
+# DBERT website, learning portal, and API
 
----
+DBERT supports course learning, mentorship, credential verification, and internship hiring. This implementation connects course cohorts to a source-grounded study classroom, mentor follow-ups, and credentials tied to learner progress.
 
-## 1. Ecosystem Overview & Architecture
+## What you can do
 
-The DBERT (Digital Blaize Ecosystem for Research & Training) platform is an integrated, production-grade education, credentialing, and internship hiring infrastructure comprising three core runtime services reverse-proxied by Nginx on AWS EC2:
+| Role | Workflow |
+| --- | --- |
+| Learner | Join a course cohort or its waitlist. Ask questions about the course, open citations at the relevant lesson section, keep private notes, and add questions to the dashboard review queue. Track milestones and claim a credential once the requirements are met. |
+| Mentor | View assigned cohort rosters and progress. Use aggregate lesson activity to identify topics for follow-up. Assign a follow-up to the cohort or leave a private check-in for a learner. |
+| Admin | Create course cohorts with dates, capacity, and assigned mentors. Manage registration and waitlists, configure milestones, issue eligible cohort credentials, and inspect staff activity and platform health. |
+| Visitor or employer | Discover courses and opportunities, check a résumé against a target role, verify public credentials, and use the employer workflow to track applicants. |
 
-```mermaid
-flowchart TD
-    Client["User Browser / Candidate / Recruiter"] --> Nginx["Nginx Reverse Proxy (SSL Termination)<br/>dbert.in / lms.dbert.in / api.dbert.in"]
+The study classroom has Study Trail, Tutor Chat, and Lecture panels on desktop and tabs on mobile. It uses course excerpts by default. A configured portal can enable optional Gemini responses with `STUDY_CLASSROOM_USE_GEMINI=true` and a learner-supplied key.
 
-    Nginx -->|"https://dbert.in (Port 3001)"| Website["apps/website<br/>Next.js 14/16 App Router (Standalone Node)"]
-    Nginx -->|"https://lms.dbert.in (Port 5001)"| Portal["apps/portal<br/>Python Flask LMS (Gunicorn + venv)"]
-    Nginx -->|"https://api.dbert.in (Port 8000)"| FastAPI["dbert-api-package<br/>FastAPI Async REST API (Uvicorn + venv)"]
+Cohort milestones can use passed quizzes, approved capstones, distinct lessons discussed, and course completion. Completion requires an approved capstone for courses that require one. Cohort credentials appear in the existing wallet alongside ordinary course certificates.
 
-    Website -->|"Symlink: /data"| DataFiles["data/<br/>balance_enrollments_1500.json<br/>verification_submissions_299.json"]
-    Portal -->|"PostgreSQL (74 Tables)"| PostgresDB[(PostgreSQL 15 Database)]
-    FastAPI -->|"PostgreSQL (74 Tables)"| PostgresDB
-    Portal -->|"SMTP (465)"| GoogleSMTP["Google Workspace SMTP<br/>abhinav.sharma@dbert.in"]
+## Repository layout
+
+| Path | Contents |
+| --- | --- |
+| [apps/portal](apps/portal) | Flask learning portal, staff and mentor tools, Jinja templates, and portal tests |
+| [apps/website](apps/website) | Next.js public website, course discovery, résumé checker, and certificate verification |
+| [dbert-api-package](dbert-api-package) | FastAPI service with its own [setup guide](dbert-api-package/README.md) |
+| [scripts/verify_offline.py](scripts/verify_offline.py) | Offline checks for the portal, website, and Compose configuration |
+
+## Run locally
+
+### Learning portal
+
+Use Python 3.10 or later. From the repository root in PowerShell, create a virtual environment and install the portal dependencies.
+
+```powershell
+python -m venv ../dbert-venv
+$dbertPython = (Resolve-Path ..\dbert-venv\Scripts\python.exe).Path
+& $dbertPython -m pip install -r apps/portal/requirements-dev.txt
+Set-Location apps/portal
+if (-not (Test-Path .env)) { Copy-Item .env.example .env }
 ```
 
-### 1.1. Core Production Services
-1. **Public Marketing & Verification Portal (`apps/website`)**:
-   - Next.js 14/16 App Router application running in Node.js standalone mode on port 3001 (`dbert-website.service`).
-   - Handles public landing pages, candidate search directory (`/verify/directory`), instant certificate verification engine (`/verify/[certId]`), and incubation balance enrollment portal (`/enroll/1999`, `/eroll`).
-2. **Student & Administration LMS Portal (`apps/portal`)**:
-   - Python Flask monolith running via Gunicorn on port 5001 (`dbert-portal.service`) with Python virtual environment (`.venv`).
-   - Powers the student learning dashboard, courses catalog, 1:1 mentor bookings, task submissions, ambassador coins ledger, and staff/admin review queues.
-3. **High-Performance REST Backend (`dbert-api-package`)**:
-   - Modern FastAPI async REST backend running via Uvicorn on port 8000 (`dbert-api.service`).
-   - Exposes 88+ REST endpoints, Pydantic v2 schemas, interactive Swagger documentation (`/docs`), and JWT multi-role authentication.
+For a local SQLite instance, set `FLASK_DEBUG=true` and `DB_FILE=internship.db` in the portal's `.env` and leave `DATABASE_URL` unset. Set your own development values for `FLASK_SECRET_KEY`, `ADMIN_USERNAME`, `ADMIN_PASSWORD`, and `ADMIN_KEY`. Set `EMAILS_ENABLED=false` for the local demo.
 
----
-
-## 2. Directory Structure Map (Normalized & Pristine)
-
-```
-.
-├── .agent/                             # Agent memory, architectural reports, and state tracking
-├── .agents/
-│   └── rules/                          # Operational rules and guidelines
-├── apps/
-│   ├── portal/                         # Flask LMS Platform (app.py, wsgi.py, routes/, services/, templates/)
-│   └── website/                        # Next.js App Router (src/app/, components/, public/, prisma/)
-├── archive/                            # Safety backup archives (git-ignored)
-├── data/                               # Live candidate registries, balance enrollments & campaign logs
-│   ├── sources/                        # Historical source CSV datasets (git-ignored)
-│   ├── all_409_provisional_registry.json # Master registry for 409 provisional candidates
-│   ├── balance_enrollments_1500.json   # CRITICAL: Live candidate balance enrollment records
-│   ├── verification_submissions_299.json # CRITICAL: Live ₹299 verification submissions
-│   ├── sheet_1593_provisional_registry.json # Master registry for Sheet 1593
-│   ├── sheet_859_registry.json         # Master registry for Sheet 859
-│   └── quota_watchdog_state.json       # SMTP watchdog circuit-breaker state
-├── dbert-api-package/                  # FastAPI REST Backend (backend/, alembic.ini, Dockerfile)
-├── deploy/                             # Production Nginx configurations and systemd service templates
-├── design/                             # Design system reference files
-├── docs/                               # Ecosystem documentation
-│   ├── audit/                          # Architectural audit reports and hardening plans
-│   ├── dbert-roadmap/                  # Roadmap specifications and route inventories
-│   ├── presentations/                  # Program slide decks and presentation materials
-│   ├── reports/                        # External QA and audit docx reports
-│   └── samples/                        # Reference certificate samples
-├── logs/                               # Application log dumps
-├── scripts/                            # 35 Curated Canonical Production Scripts
-│   ├── bat/                            # Windows batch automation launchers (git-ignored)
-│   ├── scrapers/                       # Omnichannel internship scraping adapters
-│   ├── deploy_*.py                     # Automated EC2 deployment scripts
-│   ├── dispatch_*.py                   # Production email campaign daemons
-│   ├── send_dbert_whatsapp.py          # Playwright WhatsApp dual-worker automation engine
-│   ├── quota_watchdog_and_dispatcher.py # Automated SMTP quota monitor & pipeline launcher
-│   └── verify_*.py                     # End-to-end health & verification probes
-├── uploads/                            # Staged uploads and reference assets
-├── .gitignore                          # Strict git ignore definitions
-├── AGENTS.md                           # Universal Architectural Context & Playbook
-├── GEMINI.md                           # Universal Architectural Context & Playbook (Mirror)
-└── README.md                           # This Ecosystem Guide
+```powershell
+& $dbertPython -m flask --app app run --host 127.0.0.1 --port 5000
 ```
 
----
+Open `http://127.0.0.1:5000`. The cohort demo uses a local admin account, an assigned mentor account, and two synthetic learners already enrolled in the course.
 
-## 3. Production Server Deployment & Management
+### Public website
 
-### 3.1. Infrastructure Details
-- **Host**: `ubuntu@3.26.237.171`
-- **SSH Key**: `C:\Users\user\.ssh\dbert-production-server.pem`
-- **Base Directory**: `/var/www/dbert-website-lms`
-- **Systemd Services**:
-  - `dbert-website.service` (Port 3001, Node standalone)
-  - `dbert-portal.service` (Port 5001, Gunicorn Python 3.10+)
-  - `dbert-api.service` (Port 8000, Uvicorn FastAPI)
-  - `nginx.service` (SSL termination for `dbert.in`, `lms.dbert.in`, `api.dbert.in`)
+Use Node.js 22.12 or later in the 22.x line, or Node.js 24 LTS. In a second terminal, run these commands from the repository root.
 
-### 3.2. Common Operations Commands
-```bash
-# Check service health
-ssh -i "C:\Users\user\.ssh\dbert-production-server.pem" ubuntu@3.26.237.171 "systemctl status dbert-website dbert-portal dbert-api"
-
-# Restart all services
-ssh -i "C:\Users\user\.ssh\dbert-production-server.pem" ubuntu@3.26.237.171 "sudo systemctl restart dbert-website.service dbert-portal.service dbert-api.service nginx.service"
-
-# View live portal error logs
-ssh -i "C:\Users\user\.ssh\dbert-production-server.pem" ubuntu@3.26.237.171 "sudo journalctl -u dbert-portal.service -f -n 50"
-
-# View live website logs
-ssh -i "C:\Users\user\.ssh\dbert-production-server.pem" ubuntu@3.26.237.171 "sudo journalctl -u dbert-website.service -f -n 50"
+```powershell
+Set-Location apps/website
+if (-not (Test-Path .env)) { Copy-Item .env.example .env }
+npm ci
+npm run dev -- --hostname 127.0.0.1
 ```
 
----
+Open `http://127.0.0.1:3000`. Public pages can build without a database. For features that store form submissions or manage records, configure `DATABASE_URL` for a disposable PostgreSQL database and initialize its schema with `npx prisma db push` from `apps/website`. Set `LMS_INTERNAL_URL=http://127.0.0.1:5000` to use the local portal for résumé scans.
 
-## 4. Key Workflows & Lifecycle Logic
+## Demo walkthrough
 
-### 4.1. The 5-Stage Candidate Lifecycle (`apps/portal`)
-1. **Stage 1: APPLIED** (`stage_num: 1`) - Candidate created account; pending domain declaration and statement of purpose. Payment form is locked.
-2. **Stage 2: UNDER_REVIEW** (`stage_num: 2`) - Application submitted and under review by admissions mentors. Payment form is locked.
-3. **Stage 3: SELECTED** (`stage_num: 3`) - Candidate approved for cohort. Prompts candidate to select a joining Monday and unlock the ₹499 caution deposit / ₹1,999 incubation payment.
-4. **Stage 4: PAYMENT_PENDING** (`stage_num: 4`) - Candidate uploaded transaction receipt / UTR. Admin verification in progress.
-5. **Stage 5: CONFIRMED / ENROLLED** (`stage_num: 5`) - Payment verified by admin. Seat confirmed, auto-enrolled into domain course workspace.
+1. Open `/admin/program-cohorts` as an admin. Create a cohort with one seat, assign a mentor, and define a milestone.
+2. From `/program-cohorts`, join as the first learner and waitlist the second. Raise the capacity to two to show promotion.
+3. In the course's **Study classroom**, ask about a lesson, open a citation, save a note, and flag a question for review. Reload to show the saved work.
+4. Open `/mentor/program-cohorts` as the assigned mentor. Review cohort progress and assign a lesson follow-up.
+5. Meet the required milestones, claim the cohort credential, and open it from `/account/credentials`.
 
-### 4.2. The 4 Stipend Release Gates (`/stipend/tasks`)
-1. **Gate 1: Verified Credential**: Candidate must possess a non-provisional, cryptographically verified certificate (`status: "VERIFIED"`, `isProvisional: false`).
-2. **Gate 2: 60-Day Completion Maturity**: Intern can only submit the stipend claim on or after their official completion date (`joining_date + 60 days`). A live countdown timer is shown prior to maturity.
-3. **Gate 3: Encrypted UPI Verification**: Candidate must configure and confirm their Fernet-encrypted UPI ID on their profile.
-4. **Gate 4: Domain Capstone & AI Rubric**: Intern submits GitHub repository URL, live deployment URL, and technical report PDF. Gemini AI evaluates deliverables against domain rubrics, staff performs final approval, and 5,000 coins are credited to the withdrawable wallet.
+See the [cohort and classroom report](COHORT_CLASSROOM_IMPLEMENTATION.md) for the full video walkthrough.
 
----
+## Verification
 
-## 5. Security & Deliverability Rules
-- **Domain Sovereign Rule**: All active URLs, canonical tags, API routes, and emails MUST use `https://dbert.in` (legacy `dbert.online` is retired).
-- **Google Workspace SMTP**: Authenticated sender is strictly `abhinav.sharma@dbert.in`.
-- **Database Security**: Production database runs PostgreSQL 15. All SQLite files are strictly for local/offline testing and never committed to Git.
----
+From the repository root, run the following with the development environment's Python interpreter and Node.js on your path. Install Playwright's Chromium with `python -m playwright install chromium` if you plan to run the browser checks.
 
-## 6. Autonomous Multi-Inbox Triage & Candidate Response Systems
+```powershell
+python -B scripts/verify_offline.py
+python -B scripts/verify_offline.py --browser
+```
 
-### 6.1. Triage Architecture & Inboxes
-DBERT incorporates an autonomous email triage and response system operating across 5 Google Workspace accounts (`abhinav.sharma`, `manoj.kumar`, `sandeep.bannu`, `contactus`, `pulkit.kunar`) and local Windows Outlook MAPI stores.
-- **RFC 2822 Thread Alignment**: Dispatches preserve `In-Reply-To` and `References` headers to maintain seamless candidate conversation threads.
-- **Deliverability-First Design**: Single-card 600px responsive HTML (`#0B0F17` dark canvas, `#141A23` inner card, `#E2B96F` gold typography) paired with identical UTF-8 plain text to eliminate white-text contrast traps and maintain 100% spam-filter clearance.
-- **Dual WhatsApp Concierge**: Instant 1-tap escalations to Admissions (`+91 81929 11360`) and Mentorship (`+91 89580 06294`).
+The recorded offline run passed **130 Python tests, 4 Node tests, 8 Chromium tests, and SEO checks for 82 routes**. The Next.js production build also passed with `DATABASE_URL` unset. The portal checks use synthetic data and SQLite, with a simulated PostgreSQL connection for startup checks. Full Flask startup and live PostgreSQL and Gemini still need verification in a configured environment.
 
-### 6.2. 8-Scenario Candidate Inquiry Taxonomy
-1. **₹499 Caution Deposit**: 100% credited against program fee (net balance ₹1,500) or refunded upon milestone completion.
-2. **Milestone Fee Clarification (₹299 vs Free)**: Academic evaluation, LMS grading, and ₹5,000 stipend eligibility are 100% free; ₹299 is strictly an optional courier fee for physical certificates.
-3. **Portal Login & Onboarding Server Errors**: Self-healing access links, 1-click password reset, and WhatsApp manual onboarding assistance.
-4. **Performance Stipend Release (4-Gate Rule)**: 1) Verified credential, 2) 60-day tenure gate, 3) Encrypted UPI ID, 4) Capstone technical contribution on `/stipend/tasks`.
-5. **Payout Setup & UPI Submission**: Idempotent financial ledger recording into `intern_accounts.upi_id` / `balance_enrollments_1500.json`.
-6. **Official LOR & Work References**: Signed letter from Mr. Abhinav Sharma, official HR background verification via `admissions@dbert.in`, and cryptographic dossier on `dbert.in/verify`.
-7. **Domain Migration**: Official active sovereign domain is `https://dbert.in` (legacy `dbert.online` retired).
-8. **Curriculum & Schedule**: 10 hrs/week flexible asynchronous format with weekend mentor code reviews.
+## Implementation reports
 
-For complete operational playbooks, routing code, and self-evolution protocols, see Section 37 of [`AGENTS.md`](./AGENTS.md) and [`GEMINI.md`](./GEMINI.md).
+- [Platform improvements](IMPLEMENTATION_REPORT.md) covers the earlier changes to enrollment, payments, navigation, assessments, capstones, mentoring, support, hiring, and credentials.
+- [Cohorts, study classroom, and verification](COHORT_CLASSROOM_IMPLEMENTATION.md) explains the original gaps, how the current workflows operate, and the bugs fixed during verification.

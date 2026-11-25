@@ -11,6 +11,7 @@ import re
 import json
 import logging
 from typing import Dict, Any, List, Optional, Tuple
+from urllib.parse import urlencode
 
 logger = logging.getLogger("ats_engine")
 
@@ -90,6 +91,42 @@ SLUG_TO_DOMAIN["data-analyst"] = "Data Analyst"
 SLUG_TO_DOMAIN["ai-agent"] = "AI Agent Development"
 SLUG_TO_DOMAIN["ai-machine-learning"] = "AI Agent Development"
 SLUG_TO_DOMAIN["python"] = "Python Automation"
+
+_JOB_SKILLS = {
+    term.casefold(): term
+    for domain in DOMAIN_KEYWORDS.values()
+    for term in domain["primary"] + domain["advanced"]
+}
+_JOB_SKILLS.update({
+    "react.js": "React", "nodejs": "Node.js", "node js": "Node.js", "powerbi": "Power BI",
+    "typescript": "TypeScript", "html": "HTML5", "css": "CSS3", "c++": "C++", "c#": "C#",
+    "java": "Java", "django": "Django", "flask": "Flask", "spring boot": "Spring Boot",
+})
+_JOB_SKILL_PATTERN = re.compile(
+    r"(?<!\w)(?:" + "|".join(re.escape(term) for term in sorted(_JOB_SKILLS, key=len, reverse=True)) + r")(?!\w)",
+    re.IGNORECASE,
+)
+
+
+def compare_job_skills(resume_text: str, job_description: str) -> Dict[str, Any]:
+    """Compare mentions of known skills and return course-search links without storing the job text."""
+    def skills_in(text):
+        normalized = " ".join(text.split())
+        terms = (_JOB_SKILLS.get(match.group().casefold()) for match in _JOB_SKILL_PATTERN.finditer(normalized))
+        return dict.fromkeys(term for term in terms if term)
+
+    mentioned = skills_in(resume_text)
+    requirements = list(skills_in(job_description))[:30]
+    matched = [skill for skill in requirements if skill in mentioned]
+    missing = [skill for skill in requirements if skill not in mentioned]
+    return {
+        "matched": matched,
+        "missing": missing,
+        "next_steps": [
+            {"label": f"Find DBERT resources for {skill}", "href": "/search?" + urlencode({"q": skill})}
+            for skill in missing[:3]
+        ],
+    }
 
 POWER_ACTION_VERBS = [
     "engineered", "architected", "developed", "deployed", "optimized", "implemented",

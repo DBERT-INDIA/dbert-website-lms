@@ -164,7 +164,15 @@
       <a class="nav-item" href="/admin/post-hire-deposits" style="text-decoration:none;"><i class="fas fa-money-check-dollar"></i> Job-Hire Deposits</a>
       <a class="nav-item" href="/admin/companies" style="text-decoration:none;"><i class="fas fa-building"></i> Companies</a>
       <a class="nav-item" href="/admin/course-payments" style="text-decoration:none;"><i class="fas fa-indian-rupee-sign"></i> Course Payments</a>
-      <a class="nav-item" href="/admin/cohorts" style="text-decoration:none;"><i class="fas fa-users-rectangle"></i> Cohorts</a>
+      <a class="nav-item" href="/admin/payment-claims"><i class="fas fa-receipt"></i> Enrollment Payments</a>
+      <a class="nav-item" href="/staff/support"><i class="fas fa-life-ring" aria-hidden="true"></i> Support Queue</a>
+      <a class="nav-item" href="/admin/platform-health"><i class="fas fa-heart-pulse" aria-hidden="true"></i> Platform Health</a>
+      <a class="nav-item" href="/admin/student-funnel"><i class="fas fa-chart-column" aria-hidden="true"></i> Student Funnel</a>
+      <a class="nav-item" href="/admin/credential-status"><i class="fas fa-certificate" aria-hidden="true"></i> Credential Status</a>
+      <a class="nav-item" href="/course-publishing"><i class="fas fa-book" aria-hidden="true"></i> Course Publishing</a>
+      <a class="nav-item" href="/admin/action-history"><i class="fas fa-clock-rotate-left" aria-hidden="true"></i> Staff Action History</a>
+      <a class="nav-item" href="/admin/program-cohorts"><i class="fas fa-users" aria-hidden="true"></i> Course Cohorts</a>
+      <a class="nav-item" href="/admin/cohorts" style="text-decoration:none;"><i class="fas fa-users-rectangle"></i> Company Cohorts</a>
       <a class="nav-item" href="/admin/ledger" style="text-decoration:none;"><i class="fas fa-coins"></i> Coin Ledger</a>
       <a class="nav-item" href="/admin/stipend-funnel" style="text-decoration:none; background:rgba(16,185,129,0.1); color:#10b981;"><i class="fas fa-funnel-dollar"></i> Stipend &amp; Growth Funnel</a>
       <a class="nav-item" href="/admin/analytics" style="text-decoration:none; background:rgba(56,189,248,0.15); color:#38bdf8; font-weight:700;"><i class="fas fa-chart-line"></i> Traffic &amp; SEO Intelligence</a>
@@ -563,6 +571,19 @@
           <div class="form-group">
             <label class="field-label" for="spDesc" style="font-weight:600; margin-bottom:6px; display:block;">Short Description</label>
             <textarea id="spDesc" class="field-input" rows="3" placeholder="Brief summary for this spotlight slide..."></textarea>
+          </div>
+          <div class="field">
+            <label for="spPublishAt">Publish time (IST)</label>
+            <input id="spPublishAt" class="field-input" type="datetime-local">
+          </div>
+          <div class="field">
+            <label for="spExpiresAt">Expiry time (IST)</label>
+            <input id="spExpiresAt" class="field-input" type="datetime-local">
+          </div>
+          <p style="font-size:.8rem;">An active spotlight with no publish time appears immediately. An empty expiry time keeps it live.</p>
+          <div style="border:1px solid currentColor;border-radius:.5rem;padding:.6rem;margin-block:.5rem;">
+            <strong id="spPreviewTitle">Spotlight preview</strong>
+            <p id="spPreviewDescription" style="margin:.25rem 0 0;"></p>
           </div>
           <div class="form-group" style="display:flex; align-items:center; gap:10px; margin-top:4px;">
             <input type="checkbox" id="spActive" checked style="width:18px; height:18px; accent-color:var(--gold); cursor:pointer;"/>
@@ -1472,8 +1493,8 @@
         <td style="color:var(--tx-muted);font-size:12px;">${s.id}</td>
         <td><span class="badge badge-blue">${escHtml(s.target_brand||'General')}</span></td>
         <td><strong>${escHtml(s.title)}</strong>${s.description ? `<br><small style="color:var(--tx-muted);">${escHtml(s.description)}</small>` : ''}</td>
-        <td><a href="${escHtml(s.url)}" target="_blank" rel="noopener noreferrer" style="color:var(--gold);font-size:12px;"><i class="fas fa-external-link-alt" style="font-size:10px;margin-right:4px;"></i>${escHtml(s.url)}</a></td>
-        <td>${s.is_active ? '<span class="badge badge-green">Active</span>' : '<span class="badge badge-muted">Inactive</span>'}</td>
+        <td>${/^https:\/\//i.test(s.url) ? `<a href="${escHtml(s.url)}" target="_blank" rel="noopener noreferrer">${escHtml(s.url)}</a>` : escHtml(s.url)}</td>
+        <td><span class="badge ${s.schedule_status === 'Live' ? 'badge-green' : 'badge-muted'}">${escHtml(s.schedule_status || (s.is_active ? 'Live' : 'Paused'))}</span></td>
         <td style="white-space:nowrap;">
           <button class="btn-sm ghost" ${actAttr('click', 'openEditSpotlightModal', [s.id])} title="Edit Slide" style="margin-right:6px;padding:4px 8px;font-size:12px;">
             <i class="fas fa-edit"></i> Edit
@@ -1494,7 +1515,10 @@
     document.getElementById('spBrand').value = '';
     document.getElementById('spUrl').value = '';
     document.getElementById('spDesc').value = '';
+    document.getElementById('spPublishAt').value = '';
+    document.getElementById('spExpiresAt').value = '';
     document.getElementById('spActive').checked = true;
+    updateSpotlightPreview();
     openModal('spotlightModal');
   }
 
@@ -1508,9 +1532,20 @@
     document.getElementById('spBrand').value = s.target_brand || '';
     document.getElementById('spUrl').value = s.url || '';
     document.getElementById('spDesc').value = s.description || '';
+    document.getElementById('spPublishAt').value = s.publish_at_ist || '';
+    document.getElementById('spExpiresAt').value = s.expires_at_ist || '';
     document.getElementById('spActive').checked = Boolean(s.is_active);
+    updateSpotlightPreview();
     openModal('spotlightModal');
   }
+
+  function updateSpotlightPreview() {
+    document.getElementById('spPreviewTitle').textContent = document.getElementById('spTitle').value.trim() || 'Spotlight preview';
+    document.getElementById('spPreviewDescription').textContent = document.getElementById('spDesc').value.trim();
+  }
+
+  document.getElementById('spTitle').addEventListener('input', updateSpotlightPreview);
+  document.getElementById('spDesc').addEventListener('input', updateSpotlightPreview);
 
   async function saveSpotlight() {
     const id = document.getElementById('spId').value;
@@ -1518,6 +1553,8 @@
     const target_brand = (document.getElementById('spBrand').value || '').trim();
     const url = (document.getElementById('spUrl').value || '').trim();
     const description = (document.getElementById('spDesc').value || '').trim();
+    const publish_at_ist = document.getElementById('spPublishAt').value;
+    const expires_at_ist = document.getElementById('spExpiresAt').value;
     const is_active = document.getElementById('spActive').checked ? 1 : 0;
 
     if (!title) return showToast('Please enter a slide title.', 'red');
@@ -1525,8 +1562,8 @@
 
     const endpoint = id ? '/admin/spotlights/edit' : '/admin/spotlights/add';
     const payload = id
-      ? { id: parseInt(id, 10), title, url, target_brand, description, is_active }
-      : { title, url, target_brand, description, is_active };
+      ? { id: parseInt(id, 10), title, url, target_brand, description, is_active, publish_at_ist, expires_at_ist }
+      : { title, url, target_brand, description, is_active, publish_at_ist, expires_at_ist };
 
     const data = await apiFetch(endpoint, 'POST', payload);
     if (data && data.status === 'success') {

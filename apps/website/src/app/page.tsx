@@ -195,16 +195,11 @@ export default function HomePage() {
               </TrackedLink>
             </div>
 
-            <div className={styles.heroTelemetry}>
-              <span className={styles.heroTelemetryItem}>
-                <span className={styles.heroTelemetryDot} />
-                Delhi NCR Studio
-              </span>
-              <span className={styles.heroTelemetryItem}>
-                <span className={styles.heroTelemetryDot} />
-                100% IP ownership retained
-              </span>
-            </div>
+            <nav className={styles.heroLinks} aria-label="Popular destinations">
+              <Link href="/learners/courses" prefetch={false}>Browse courses</Link>
+              <Link href="/internships" prefetch={false}>Find internships</Link>
+              <Link href="/verify" prefetch={false}>Verify a certificate</Link>
+            </nav>
           </div>
 
           <StudioInPractice focus="founders" />

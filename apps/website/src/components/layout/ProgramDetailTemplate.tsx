@@ -20,6 +20,11 @@ import {
 } from 'lucide-react';
 import s from './ProgramDetailTemplate.module.css';
 
+const ENROLLMENT_TRACKS = [
+  'AI Agent Development', 'Data Analyst', 'Full Stack Development', 'Python Automation',
+  'UI/UX Design', 'DevOps & Cloud', 'Mobile App Development', 'Cybersecurity', 'Digital Marketing',
+];
+
 export interface CurriculumBlock {
   period: string;
   title: string;
@@ -62,10 +67,11 @@ export default function ProgramDetailTemplate({
   repoReferences
 }: ProgramDetailTemplateProps) {
   const [step, setStep] = useState<'details' | 'payment'>('details');
-  const [formData, setFormData] = useState({ name: '', email: '', phone: '', college: '', utr: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', phone: '', college: '', utr: '', track: '' });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [submissionId, setSubmissionId] = useState('');
+  const [claimStatus, setClaimStatus] = useState<'pending' | 'verified' | 'rejected'>('pending');
   const [errorMsg, setErrorMsg] = useState('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,6 +83,10 @@ export default function ProgramDetailTemplate({
     e.preventDefault();
     if (!formData.name.trim() || !formData.email.trim() || !formData.phone.trim()) {
       setErrorMsg('Please enter your full name, email, and 10-digit WhatsApp number.');
+      return;
+    }
+    if (!formData.track) {
+      setErrorMsg('Select your learning track.');
       return;
     }
     setErrorMsg('');
@@ -103,8 +113,7 @@ export default function ProgramDetailTemplate({
           email: formData.email.trim().toLowerCase(),
           phone: formData.phone.trim(),
           college: formData.college.trim(),
-          domain: title,
-          courseTitle: title,
+          domain: formData.track,
           utrNumber: cleanUtr
         })
       });
@@ -115,6 +124,7 @@ export default function ProgramDetailTemplate({
       }
 
       setSubmissionId(data.submissionId || '');
+      setClaimStatus(data.claimStatus);
       setSuccess(true);
     } catch (err: any) {
       setErrorMsg(err.message || 'Network error while validating payment. Please try again.');
@@ -300,19 +310,27 @@ export default function ProgramDetailTemplate({
             {success ? (
               <div className={s.successBlock}>
                 <span className="icon-chip"><CircleCheck aria-hidden="true" /></span>
-                <h3 className={s.successTitle} style={{ color: '#10B981' }}>Seat Confirmed!</h3>
+                <h3 className={s.successTitle}>
+                  {claimStatus === 'verified' ? 'Security deposit verified'
+                    : claimStatus === 'rejected' ? 'Payment claim rejected' : 'Deposit submitted for verification'}
+                </h3>
                 <p className={s.successCopy}>
-                  Your security deposit has been recorded (Ref: <code>{submissionId}</code>). Your LMS student account is active!
+                  Receipt reference <code>{submissionId}</code>.{' '}
+                  {claimStatus === 'pending'
+                    ? 'Admissions will review the payment reference against the settlement ledger.'
+                    : claimStatus === 'rejected'
+                      ? 'Contact admissions with your receipt reference if you believe this claim should be verified.'
+                      : 'The payment has been matched to your enrollment.'}
                 </p>
                 <div style={{ marginTop: '16px' }}>
                   <a 
-                    href="https://lms.dbert.in/portal" 
+                    href="https://lms.dbert.in/portal/payment-claims"
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="btn btn-primary btn-sm"
                     style={{ width: '100%', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '8px', textDecoration: 'none' }}
                   >
-                    <span>Enter My LMS Portal</span>
+                    <span>View payment status in LMS</span>
                     <ArrowRight size={14} />
                   </a>
                 </div>
@@ -363,7 +381,19 @@ export default function ProgramDetailTemplate({
                   onChange={handleInputChange}
                   className={s.input}
                 />
-                
+                <label>
+                  Learning track
+                  <select
+                    value={formData.track}
+                    onChange={(event) => setFormData({ ...formData, track: event.target.value })}
+                    className={s.input}
+                    required
+                  >
+                    <option value="">Choose a track</option>
+                    {ENROLLMENT_TRACKS.map((track) => <option key={track} value={track}>{track}</option>)}
+                  </select>
+                </label>
+
                 <button type="submit" className={`btn btn-primary btn-sm ${s.submit}`} style={{ background: 'linear-gradient(135deg, #F59E0B, #D97706)', color: '#0F172A', fontWeight: 800 }}>
                   <span>Proceed to UPI QR (₹499)</span>
                   <ArrowRight size={14} style={{ marginLeft: '6px' }} />

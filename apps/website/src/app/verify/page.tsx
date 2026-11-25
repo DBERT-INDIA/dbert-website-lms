@@ -51,7 +51,7 @@ function VerifyFormContent() {
   ).trim();
 
   const [certId, setCertId] = useState(initialCertId);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(Boolean(initialCertId));
   const [result, setResult] = useState<VerificationResult | null>(null);
   const [errorMsg, setErrorMsg] = useState('');
   const [showManualSearch, setShowManualSearch] = useState(!initialCertId);
@@ -77,17 +77,18 @@ function VerifyFormContent() {
             program_name: data.programName,
             domain: data.domain || 'general',
           });
-        } else {
-          setErrorMsg('Certificate ID not found or invalid.');
+          return;
         }
-      } else {
-        setErrorMsg('Verification failed. Please check the Certificate ID format.');
       }
+      setErrorMsg(res.ok || res.status === 404
+        ? 'Certificate ID not found or invalid.'
+        : 'Verification failed. Please check the Certificate ID format.');
     } catch {
       setErrorMsg('Network error. Please try again.');
     } finally {
       setLoading(false);
     }
+    setShowManualSearch(true);
   }, []);
 
   useEffect(() => {
@@ -129,6 +130,9 @@ function VerifyFormContent() {
 
   return (
     <>
+      {loading && !showManualSearch && (
+        <p className="card card-lift text-center p-6 text-muted" role="status">Verifying certificate…</p>
+      )}
       {/* 1. HERO VIEW: Verified Candidate Profile Dossier */}
       {result && !showManualSearch && (
         <div>
@@ -403,7 +407,7 @@ function VerifyFormContent() {
           <div className={s.tabsSection}>
             <div className={s.tabsHeader}>
               <div>
-                <h3 className={s.tabsTitle}>Academic Appraisal & Production Audit</h3>
+                <h2 className={s.tabsTitle}>Academic Appraisal & Production Audit</h2>
                 <div className={s.tabsSub}>Detailed competency rubrics and verified project milestones</div>
               </div>
 
@@ -560,7 +564,7 @@ function VerifyFormContent() {
                   <div className={s.mentorCardDetails}>
                     <div className={s.mentorCardHeader}>
                       <div>
-                        <h4 className={s.mentorCardTitle}>{result.signatory || MENTOR_PROFILE.name}</h4>
+                        <h3 className={s.mentorCardTitle}>{result.signatory || MENTOR_PROFILE.name}</h3>
                         <div className={s.mentorCardSub}>{result.signatoryTitle || MENTOR_PROFILE.title} &bull; DBERT</div>
                       </div>
                       <a
@@ -807,7 +811,7 @@ function VerifyFormContent() {
             </button>
           </form>
 
-          {errorMsg && <div className={s.errorAlert}>{errorMsg}</div>}
+          {errorMsg && <div className={s.errorAlert} role="alert">{errorMsg}</div>}
 
           {/* ALREADY REGISTERED INTERNS: CLAIM CERTIFICATE CARD */}
           <div className={s.claimCard} style={{ marginTop: '40px' }}>

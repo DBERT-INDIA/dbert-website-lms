@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  {% set page_title = 'Account security' %}
+  {% set page_robots = 'noindex, nofollow' %}
+  {% include '_head.html' %}
+  <link rel="stylesheet" href="/static/css/product-tools.css">
+</head>
+<body>
+<main class="product-tool">
+  <a href="/portal">Back to dashboard</a>
+  <h1>Account security</h1>
+  <p><a href="/account/notifications">Manage communication preferences</a></p>
+  {% if request.args.get('updated') == '1' %}<p role="status">Active sessions updated.</p>{% endif %}
+  <section class="product-tool-card">
+    <h2>Active sessions</h2>
+    {% if sessions|length > 1 %}
+    <form method="post">
+      {{ csrf_field() }}
+      <button class="btn btn-primary" name="session" value="others">Sign out every other session</button>
+    </form>
+    {% endif %}
+    <ul class="product-result-list">
+      {% for item in sessions %}
+      <li>
+        <strong>{{ 'Current session' if item.is_current else 'Other session' }}</strong>
+        <span>Started {{ item.created_at }} · Expires {{ item.expires_at }}</span>
+        {% if not item.is_current %}
+        <form method="post">
+          {{ csrf_field() }}
+          <button class="btn btn-secondary" name="session" value="{{ item.id }}" aria-label="Sign out session started {{ item.created_at }}">Sign out session</button>
+        </form>
+        {% endif %}
+      </li>
+      {% endfor %}
+    </ul>
+  </section>
+</main>
+</body>
+</html>

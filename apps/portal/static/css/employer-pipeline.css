@@ -1,0 +1,37 @@
+.employer-interview {
+    margin: 0.875rem 0;
+}
+
+.employer-interview summary {
+    color: var(--tx-head);
+    cursor: pointer;
+}
+
+.employer-interview form {
+    display: grid;
+    gap: 0.625rem;
+    margin-top: 0.75rem;
+}
+
+.employer-interview label {
+    display: grid;
+    gap: 0.25rem;
+    color: var(--tx-muted);
+}
+
+.employer-interview input, .employer-interview textarea {
+    min-width: 0;
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    background: var(--surface, #111827);
+    color: var(--tx-head);
+    padding: 0.625rem;
+}
+
+.employer-closure {
+    display: inline;
+}
+
+.employer-closure button {
+    padding: 0.25rem 0.5rem;
+}

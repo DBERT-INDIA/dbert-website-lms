@@ -22,6 +22,7 @@
             <a href="/staff/projects?status=pending" class="tab-btn {% if current_status == 'pending' %}active{% endif %}">Pending Review</a>
             <a href="/staff/projects?status=approved" class="tab-btn {% if current_status == 'approved' %}active{% endif %}">Approved</a>
             <a href="/staff/projects?status=rejected" class="tab-btn {% if current_status == 'rejected' %}active{% endif %}">Rejected</a>
+            <a href="/staff/projects?status=changes_requested" class="tab-btn {% if current_status == 'changes_requested' %}active{% endif %}">Changes requested</a>
         </div>
 
         {% if submissions %}
@@ -37,15 +38,28 @@
                     <span class="meta-line" style="text-transform: uppercase; font-weight: 700;">{{ sub.status }}</span>
                 </div>
 
-                <a href="{{ sub.github_repo_url }}" target="_blank" class="repo-link">
+                {% if sub.github_repo_url.startswith('https://github.com/') %}<a href="{{ sub.github_repo_url }}" target="_blank" rel="noopener noreferrer" class="repo-link">
                     📦 GitHub Repo: {{ sub.github_repo_url }} ↗
-                </a>
+                </a>{% endif %}
 
                 <div class="desc-box">{{ sub.project_description }}</div>
 
                 {% if sub.status == 'pending' %}
+                <fieldset style="margin-block:1rem; padding:.8rem;">
+                    <legend>Project rubric</legend>
+                    {% for key in ('implementation', 'verification', 'documentation') %}
+                    <label for="projectRubric{{ sub.id }}-{{ key }}" style="display:block;margin-top:.4rem;">{{ key|title }}</label>
+                    <select id="projectRubric{{ sub.id }}-{{ key }}" data-project-criterion="{{ key }}">
+                        <option value="">Select a rating</option>
+                        <option>Meets expectations</option><option>Needs revision</option>
+                    </select>
+                    {% endfor %}
+                    <label for="projectFeedback{{ sub.id }}" style="display:block;margin-top:.6rem;">Feedback shared with the learner</label>
+                    <textarea id="projectFeedback{{ sub.id }}" rows="3" maxlength="2000" style="max-width:100%;"></textarea>
+                </fieldset>
                 <div class="actions-bar">
                     <button class="btn-reject" data-act-click="makeDecision" data-arg-click='[{{ sub.id|tojson }}, "rejected"]'>Reject Submission</button>
+                    <button class="btn btn-secondary" data-act-click="makeDecision" data-arg-click='[{{ sub.id|tojson }}, "changes_requested"]'>Request changes</button>
                     <button class="btn-approve" data-act-click="makeDecision" data-arg-click='[{{ sub.id|tojson }}, "approved"]'>✓ Approve & Issue Verified Certificate</button>
                 </div>
                 {% endif %}
@@ -61,11 +75,15 @@
     <script nonce="{{ csp_nonce() }}">
         function makeDecision(subId, decision) {
             if (!confirm(`Are you sure you want to mark submission #${subId} as ${decision}?`)) return;
+            const card = document.getElementById(`subCard_${subId}`);
+            const rubric = Object.fromEntries(Array.from(card.querySelectorAll('[data-project-criterion]'))
+                .filter(input => input.value).map(input => [input.dataset.projectCriterion, input.value]));
+            const feedback = document.getElementById(`projectFeedback${subId}`).value.trim();
 
             fetch(`/staff/projects/${subId}/decision`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ decision: decision })
+                body: JSON.stringify({ decision, rubric, feedback })
             })
             .then(r => r.json())
             .then(data => {

@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  {% set page_title_full = "Enrollment Payments · DBERT Admin" %}
+  {% include "_head.html" %}
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="/static/css/payment-claims.css">
+</head>
+<body>
+  <main class="claims-page">
+    <nav aria-label="Administration"><a href="/admin">Admin dashboard</a></nav>
+    <h1>Enrollment payment claims</h1>
+    <p>Match the transaction reference and amount against the bank settlement record before verifying a claim.</p>
+    <nav aria-label="Claim status">
+      {% for filter in ('pending', 'verified', 'rejected') %}
+      <a href="/admin/payment-claims?status={{ filter }}" {% if filter == status %}aria-current="page"{% endif %}>{{ filter|capitalize }}</a>
+      {% endfor %}
+      <a href="/admin/payment-claims?status=online-exceptions" {% if status == 'online-exceptions' %}aria-current="page"{% endif %}>Online exceptions</a>
+    </nav>
+    {% for category, message in get_flashed_messages(with_categories=true) %}
+    <p role="{{ 'alert' if category == 'error' else 'status' }}">{{ message }}</p>
+    {% endfor %}
+    {% if status == 'online-exceptions' %}
+    <p>These captures couldn’t be matched to an expected order. Review the order and capture in the payment provider’s dashboard before allocating any credit.</p>
+    {% for exception in exceptions %}
+    <section class="claim-panel">
+      <h2>{{ exception.event_id }}</h2>
+      <dl class="claim-details">
+        <div><dt>Order reference</dt><dd>{{ exception.order_id or 'Unavailable' }}</dd></div>
+        <div><dt>Payment reference</dt><dd>{{ exception.payment_id or 'Unavailable' }}</dd></div>
+        <div><dt>Recorded</dt><dd>{{ exception.recorded_at }}</dd></div>
+      </dl>
+    </section>
+    {% else %}
+    <p>No unmatched online captures on this page.</p>
+    {% endfor %}
+    {% else %}
+    {% for claim in claims %}
+    <section class="claim-panel">
+      <h2>{{ claim.submission_id }}</h2>
+      <dl class="claim-details">
+        <div><dt>Candidate</dt><dd>{{ claim.full_name }}</dd></div>
+        <div><dt>Email</dt><dd>{{ claim.email }}</dd></div>
+        <div><dt>Track</dt><dd>{{ claim.domain }}</dd></div>
+        <div><dt>Transaction reference</dt><dd>{{ claim.utr_number }}</dd></div>
+        <div><dt>{{ claim.payment_type|capitalize }}</dt><dd>₹{{ claim.amount }}</dd></div>
+        <div><dt>Submitted</dt><dd>{{ claim.submitted_at }}</dd></div>
+        {% if claim.certificate_reference %}<div><dt>Certificate reference supplied</dt><dd>{{ claim.certificate_reference }}</dd></div>{% endif %}
+        {% if claim.intern_reference %}<div><dt>Intern reference supplied</dt><dd>{{ claim.intern_reference }}</dd></div>{% endif %}
+        {% if claim.submission_note %}<div><dt>Candidate note</dt><dd>{{ claim.submission_note }}</dd></div>{% endif %}
+      </dl>
+      {% if status == 'pending' %}
+      <form class="claim-actions" method="post" action="/admin/payment-claims">
+        {{ csrf_field() }}
+        <input type="hidden" name="submission_id" value="{{ claim.submission_id }}">
+        <label>Amount confirmed in ledger
+          <input type="number" name="verified_amount" min="1" step="1" inputmode="numeric">
+        </label>
+        <label class="claim-note">Review note (required to reject)
+          <input type="text" name="review_note" maxlength="400">
+        </label>
+        <div class="claim-controls">
+          <button class="btn btn-primary" type="submit" name="decision" value="verified">Verify payment</button>
+          <button class="btn btn-outline" type="submit" name="decision" value="rejected">Reject claim</button>
+        </div>
+      </form>
+      {% else %}
+      <p>Reviewed {{ claim.reviewed_at }}{% if claim.review_note %} · {{ claim.review_note }}{% endif %}</p>
+      {% endif %}
+    </section>
+    {% else %}
+    <p>No {{ status }} payment claims on this page.</p>
+    {% endfor %}
+    {% endif %}
+    {% if page > 1 or has_next %}
+    <nav aria-label="Claim pages">
+      {% if page > 1 %}<a href="/admin/payment-claims?status={{ status }}&amp;page={{ page - 1 }}">Previous</a>{% endif %}
+      <span>Page {{ page }}</span>
+      {% if has_next %}<a href="/admin/payment-claims?status={{ status }}&amp;page={{ page + 1 }}">Next</a>{% endif %}
+    </nav>
+    {% endif %}
+  </main>
+</body>
+</html>

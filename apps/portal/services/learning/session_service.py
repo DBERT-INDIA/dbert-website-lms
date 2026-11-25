@@ -7,6 +7,7 @@ import uuid
 import json
 from datetime import datetime, timezone
 from typing import Optional, Dict, Any, Tuple
+from services.database.connection_pool import transaction
 from services.learning.learning_models import LearningSession, Concept
 from services.learning.concept_service import ConceptService
 from services.learning.mastery_policy import MasteryPolicy
@@ -19,8 +20,11 @@ class SessionResumeError(Exception):
     pass
 
 class DuplicateTurnError(Exception):
-    """Raised when an identical idempotency key is submitted consecutively."""
-    pass
+    """Raised when an existing submission key is reused for a different answer."""
+
+
+class SessionChangedError(SessionResumeError):
+    """Raised when another turn advanced the lesson during evaluation."""
 
 class LearningSessionService:
     @staticmethod
@@ -77,9 +81,10 @@ class LearningSessionService:
                 current_concept_id, current_action, action_state_json,
                 idempotency_key, status, last_heartbeat_at, created_at, updated_at
             ) VALUES (?, ?, ?, ?, ?, 'EXPLAIN', '{}', NULL, 'active', ?, ?, ?)
+            RETURNING session_id
             """,
             (new_session_id, student_id, course_id, subtopic_id, initial_concept_id, now_iso, now_iso, now_iso)
-        )
+        ).fetchone()
         conn.commit()
 
         # Record session_started event
@@ -178,167 +183,169 @@ class LearningSessionService:
         student_id: int,
         student_input: str,
         idempotency_key: Optional[str] = None,
-        llm_caller = None
+        llm_caller=None,
     ) -> Dict[str, Any]:
-        """
-        Atomic Lifecycle execution:
-        1. Check idempotency (reload protection)
-        2. Evaluate response against concept criteria
-        3. Deterministic mastery update
-        4. Next-action selection
-        5. Spaced review update
-        6. Session state transition
-        All wrapped in a single database transaction.
-        """
-        # 1. Idempotency Check
+        """Evaluate outside the write lock, then persist the entire turn or roll it back."""
+        if idempotency_key is not None and (
+            not isinstance(idempotency_key, str) or not 1 <= len(idempotency_key) <= 128
+        ):
+            raise ValueError("The idempotency key must contain 1 to 128 characters.")
+
+        session = LearningSessionService._load_owned_session(conn, session_id, student_id)
+        replay = LearningSessionService._replay_turn(conn, session, student_input, idempotency_key)
+        if replay is not None:
+            return replay
+
+        concept = ConceptService.get_concept(conn, session.current_concept_id)
+        if concept is None:
+            raise SessionResumeError("This session has no active lesson concept.")
+
+        evaluation = StructuredEvaluator.evaluate(
+            student_response=student_input, concept=concept, llm_caller=llm_caller
+        )
+        with transaction(conn):
+            # UPDATE locks the existing session in PostgreSQL and opens a write transaction in SQLite.
+            conn.execute(
+                "UPDATE gl_learning_sessions SET updated_at = updated_at WHERE session_id = ? AND student_id = ?",
+                (session_id, student_id),
+            )
+            session = LearningSessionService._load_owned_session(conn, session_id, student_id)
+            replay = LearningSessionService._replay_turn(conn, session, student_input, idempotency_key)
+            if replay is not None:
+                return replay
+            if session.current_concept_id != concept.concept_id:
+                raise SessionChangedError("Your active concept changed. Reload before retrying.")
+
+            now = datetime.now(timezone.utc).isoformat()
+            # Separate sessions for this learner share the same mastery and review records.
+            conn.execute(
+                """INSERT INTO gl_student_learning_profile (student_id, created_at, updated_at)
+                   VALUES (?, ?, ?) ON CONFLICT(student_id) DO UPDATE SET student_id = excluded.student_id
+                   RETURNING student_id""",
+                (student_id, now, now),
+            )
+            return LearningSessionService._save_turn(
+                conn, session, concept, student_input, idempotency_key, evaluation, now
+            )
+
+    @staticmethod
+    def _load_owned_session(conn, session_id, student_id):
         row = conn.execute(
             "SELECT * FROM gl_learning_sessions WHERE session_id = ? AND student_id = ?",
-            (session_id, student_id)
+            (session_id, student_id),
         ).fetchone()
-        if not row:
-            raise SessionResumeError(f"Session {session_id} not found")
+        if row is None:
+            raise SessionResumeError("Learning session not found.")
+        return LearningSessionService._row_to_session(row)
 
-        session = LearningSessionService._row_to_session(row)
-        if idempotency_key and session.idempotency_key == idempotency_key:
-            # Replay cached state to avoid double processing
-            return {
-                "idempotent_replay": True,
+    @staticmethod
+    def _replay_turn(conn, session, student_input, idempotency_key):
+        if idempotency_key is None:
+            return None
+        row = conn.execute(
+            """SELECT student_input, evaluation_json, recommendation_json, result_json
+               FROM gl_learning_turns WHERE student_id = ? AND session_id = ? AND idempotency_key = ?""",
+            (session.student_id, session.session_id, idempotency_key),
+        ).fetchone()
+        if row is None:
+            return None
+        if row["student_input"] != student_input:
+            raise DuplicateTurnError("This submission key already belongs to a different answer.")
+        if row["result_json"]:
+            result = json.loads(row["result_json"])
+        else:
+            # Old turns retain their evaluation and recommendation even before result snapshots existed.
+            recommendation = json.loads(row["recommendation_json"])
+            result = {
                 "session": session.to_dict(),
-                "action": session.current_action,
-                "action_state": session.action_state
+                "evaluation": json.loads(row["evaluation_json"]),
+                "recommendation": recommendation,
+                "action": recommendation.get("action"),
             }
+        return {**result, "idempotent_replay": True}
 
-        concept_id = session.current_concept_id
-        if not concept_id:
-            raise ValueError("No active concept associated with session")
-
-        concept = ConceptService.get_concept(conn, concept_id)
-        if not concept:
-            raise ValueError(f"Concept {concept_id} not found")
-
-        # 2. Record answer_submitted event
+    @staticmethod
+    def _save_turn(conn, session, concept, student_input, idempotency_key, evaluation, now):
+        student_id, session_id, concept_id = session.student_id, session.session_id, concept.concept_id
+        evaluation_data = evaluation.to_dict()
         MasteryPolicy._record_event(
             conn, student_id, concept_id, session_id,
-            "answer_submitted", {"input_preview": student_input[:150]}
+            "answer_submitted", {"input_length": len(student_input)}, commit=False
         )
-
-        # 3. Evaluate response
-        eval_result = StructuredEvaluator.evaluate(
-            student_response=student_input,
-            concept=concept,
-            llm_caller=llm_caller
-        )
-
-        # 4. Record answer_evaluated event
         MasteryPolicy._record_event(
-            conn, student_id, concept_id, session_id,
-            "answer_evaluated", eval_result.to_dict()
+            conn, student_id, concept_id, session_id, "answer_evaluated", evaluation_data, commit=False
         )
-
-        # 5. Deterministically update mastery
         mastery, _ = MasteryPolicy.evaluate_and_update_mastery(
-            conn=conn,
-            student_id=student_id,
-            concept=concept,
-            evaluation=eval_result,
-            session_id=session_id,
-            student_input=student_input
+            conn, student_id, concept, evaluation, session_id, student_input, commit=False
         )
-
-        # 6. Check review urgency
         due_reviews = SpacedReviewScheduler.get_due_reviews_for_student(conn, student_id)
-        is_review_due = any(r["concept_id"] == concept_id for r in due_reviews)
-
-        # 7. Select next action
-        next_action_rec = AdaptiveActionEngine.select_next_action(
+        recommendation = AdaptiveActionEngine.select_next_action(
             conn=conn,
             student_id=student_id,
             concept=concept,
             mastery=mastery,
-            latest_evaluation=eval_result,
-            review_due=is_review_due
+            latest_evaluation=evaluation,
+            review_due=any(review["concept_id"] == concept_id for review in due_reviews),
         )
-
-        # 8. Schedule Spaced Review based on performance
-        review_category = "NEW" if mastery.total_attempts <= 1 else (
-            "REMEDIATION" if eval_result.detected_misconceptions else (
-                "MASTERY_VALIDATION" if mastery.mastery_score >= 0.85 else "REINFORCEMENT"
-            )
+        if mastery.total_attempts <= 1:
+            category = "NEW"
+        elif evaluation.detected_misconceptions:
+            category = "REMEDIATION"
+        elif mastery.mastery_score >= 0.85:
+            category = "MASTERY_VALIDATION"
+        else:
+            category = "REINFORCEMENT"
+        next_review, interval = SpacedReviewScheduler.schedule_next_review(
+            conn, student_id, concept_id, category, evaluation.correctness, commit=False
         )
-        next_review_iso, next_interval = SpacedReviewScheduler.schedule_next_review(
-            conn=conn,
-            student_id=student_id,
-            concept_id=concept_id,
-            category=review_category,
-            performance_rating=eval_result.correctness
-        )
-
-        # If ADVANCE and next concept exists, transition session current_concept
-        target_concept_id = concept_id
-        if next_action_rec.action == "ADVANCE" and next_action_rec.next_concept_id:
-            target_concept_id = next_action_rec.next_concept_id
-
-        # 9. Update Session State and Write Turn Ledger
-        now_iso = datetime.now(timezone.utc).isoformat()
+        recommendation_data = recommendation.to_dict()
         action_state = {
-            "evaluation": eval_result.to_dict(),
-            "recommendation": next_action_rec.to_dict(),
-            "next_review_at": next_review_iso,
-            "review_interval_days": next_interval
+            "evaluation": evaluation_data,
+            "recommendation": recommendation_data,
+            "next_review_at": next_review,
+            "review_interval_days": interval,
         }
-        
-        import uuid
-        turn_uuid = str(uuid.uuid4())
-        
-        conn.execute(
-            """
-            INSERT INTO gl_learning_turns (
-                turn_uuid, session_id, student_id, concept_id, idempotency_key,
-                student_input, evaluation_json, recommendation_json, status, created_at, completed_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """,
-            (
-                turn_uuid, session_id, student_id, concept_id, idempotency_key,
-                student_input, json.dumps(eval_result.to_dict()), json.dumps(next_action_rec.to_dict()),
-                "completed", now_iso, now_iso
-            )
-        )
-
-        conn.execute(
-            """
-            UPDATE gl_learning_sessions
-            SET current_concept_id = ?,
-                current_action = ?,
-                action_state_json = ?,
-                idempotency_key = ?,
-                last_heartbeat_at = ?,
-                updated_at = ?
-            WHERE session_id = ?
-            """,
-            (
-                target_concept_id,
-                next_action_rec.action,
-                json.dumps(action_state),
-                idempotency_key,
-                now_iso,
-                now_iso,
-                session_id
-            )
-        )
-        conn.commit()
-
-        session.current_concept_id = target_concept_id
-        session.current_action = next_action_rec.action
+        if recommendation.action == "ADVANCE" and recommendation.next_concept_id:
+            session.current_concept_id = recommendation.next_concept_id
+        session.current_action = recommendation.action
         session.action_state = action_state
         session.idempotency_key = idempotency_key
+        session.last_heartbeat_at = now
+        session.updated_at = now
 
-        return {
+        result = {
             "session": session.to_dict(),
-            "evaluation": eval_result.to_dict(),
+            "evaluation": evaluation_data,
             "mastery": mastery.to_dict(),
-            "recommendation": next_action_rec.to_dict(),
-            "next_review_at": next_review_iso
+            "recommendation": recommendation_data,
+            "next_review_at": next_review,
+            "action": session.current_action,
+            "action_state": action_state,
         }
+        conn.execute(
+            """INSERT INTO gl_learning_turns (
+                turn_uuid, session_id, student_id, concept_id, idempotency_key,
+                student_input, evaluation_json, recommendation_json, result_json,
+                status, created_at, completed_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'completed', ?, ?)""",
+            (
+                str(uuid.uuid4()), session_id, student_id, concept_id, idempotency_key,
+                student_input, json.dumps(evaluation_data), json.dumps(recommendation_data),
+                json.dumps(result) if idempotency_key else None, now, now,
+            ),
+        )
+        conn.execute(
+            """UPDATE gl_learning_sessions
+               SET current_concept_id = ?, current_action = ?, action_state_json = ?,
+                   idempotency_key = ?, last_heartbeat_at = ?, updated_at = ?
+               WHERE session_id = ? AND student_id = ?""",
+            (
+                session.current_concept_id, session.current_action, json.dumps(action_state),
+                idempotency_key, now, now, session_id, student_id,
+            ),
+        )
+        MasteryPolicy.update_student_profile(conn, student_id, commit=False)
+        return result
 
     @staticmethod
     def _row_to_session(row) -> LearningSession:

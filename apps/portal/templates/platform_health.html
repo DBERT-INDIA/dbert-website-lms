@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  {% set page_title = 'Platform health' %}
+  {% set page_robots = 'noindex, nofollow' %}
+  {% include '_head.html' %}
+  <link rel="stylesheet" href="/static/css/product-tools.css">
+</head>
+<body>
+<main class="product-tool">
+  <a href="/admin">Back to admin</a>
+  <h1>Platform health</h1>
+  <section class="product-tool-card">
+    <h2>Current portal worker</h2>
+    <dl class="product-result-list">
+      {% for label, value in metrics.items() %}<dt>{{ label }}</dt><dd>{{ value }}</dd>{% endfor %}
+    </dl>
+  </section>
+  <section class="product-tool-card">
+    <h2>Background delivery queue</h2>
+    <ul class="product-result-list">
+      {% for item in queue %}<li>{{ item.status|replace('_', ' ')|title }} · {{ item.total }}<span>Oldest created {{ item.oldest }}</span></li>
+      {% else %}<li>The queue is empty.</li>{% endfor %}
+    </ul>
+  </section>
+</main>
+</body>
+</html>

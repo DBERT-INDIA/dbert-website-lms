@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import db from '@/lib/db';
+import { getDb } from '@/lib/db';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { getJwtSecret } from '@/lib/env';
@@ -12,7 +12,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missing username or password' }, { status: 400 });
     }
 
-    const user = await db.adminUser.findUnique({
+    const user = await getDb().adminUser.findUnique({
       where: { username }
     });
 
@@ -26,7 +26,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
     }
 
-    await db.adminUser.update({
+    await getDb().adminUser.update({
       where: { id: user.id },
       data: { lastLogin: new Date() }
     });

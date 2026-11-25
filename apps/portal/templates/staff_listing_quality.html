@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+  {% set page_title = 'Listing quality' %}
+  {% set page_robots = 'noindex, nofollow' %}
+  {% include '_head.html' %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/staff-task-queue.css') }}">
+  <style nonce="{{ csp_nonce() }}">
+    .listing-quality { width: min(calc(100% - 2rem), 64rem); margin: 2rem auto; }
+    .listing-quality .card { padding: 1rem; margin-block: 0.75rem; }
+    .listing-quality .listing-flags { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+    .listing-quality .listing-note { white-space: pre-wrap; overflow-wrap: anywhere; }
+  </style>
+</head>
+<body class="has-staff-sidebar">
+  {% set active_page = 'staff_listing_quality' %}
+  {% include '_staff_sidebar.html' %}
+  <main class="listing-quality">
+    <h1>Listing quality</h1>
+    <p>Review reports from learners and possible duplicate, stale, or incomplete listings.</p>
+    {% for category, message in get_flashed_messages(with_categories=true) %}
+      <p role="{{ 'alert' if category == 'error' else 'status' }}">{{ message }}</p>
+    {% endfor %}
+
+    {% if selected_post %}
+    <section id="listing-reports" aria-labelledby="report-heading">
+      <h2 id="report-heading">Pending reports for listing {{ selected_post }}</h2>
+      {% for report in reports %}
+      <article class="card">
+        <h3>{{ reasons.get(report.reason, report.reason) }}</h3>
+        <p>Received {{ report.created_at }}</p>
+        {% if report.note %}<p class="listing-note">{{ report.note }}</p>{% endif %}
+        <form method="post" action="{{ url_for('staff_resolve_listing_report', report_id=report.id) }}">
+          {{ csrf_field() }}
+          <button type="submit" class="btn-secondary">Mark reviewed</button>
+        </form>
+      </article>
+      {% else %}<p>No pending reports remain for this listing.</p>{% endfor %}
+    </section>
+    {% endif %}
+
+    <nav class="task-queue-filters" aria-label="Listing quality filters">
+      {% for value, label in [('all', 'All flags'), ('reports', 'Learner reports'), ('automated', 'Automated flags')] %}
+        <a href="{{ url_for('staff_listing_quality', view=value) }}" class="btn-secondary" {% if queue.view == value %}aria-current="page"{% endif %}>{{ label }}</a>
+      {% endfor %}
+    </nav>
+    <p>{{ queue.total }} flagged {{ 'listing' if queue.total == 1 else 'listings' }}</p>
+    {% for listing in queue.rows %}
+    <article class="card">
+      <h2>{{ listing.title or 'Untitled listing' }}</h2>
+      <p>{{ listing.company_name }} &middot; {{ listing.status }}</p>
+      <ul class="listing-flags">
+        {% if listing.duplicate %}<li>Possible duplicate</li>{% endif %}
+        {% if listing.stale %}<li>Expired or due for review</li>{% endif %}
+        {% if listing.incomplete %}<li>Missing listing details</li>{% endif %}
+        {% if listing.report_count %}<li>{{ listing.report_count }} pending reports</li>{% endif %}
+      </ul>
+      <a href="{{ url_for('post_detail_no_slug', post_id=listing.id) }}">Open listing</a>
+      {% if listing.report_count %}<a href="{{ url_for('staff_listing_quality', view=queue.view, page=queue.page, post=listing.id, _anchor='listing-reports') }}">Review reports</a>{% endif %}
+    </article>
+    {% else %}<p>No listings match this view.</p>{% endfor %}
+    {% if queue.page_count > 1 %}
+    <nav class="task-queue-pages" aria-label="Listing quality pages">
+      {% if queue.page > 1 %}<a href="{{ url_for('staff_listing_quality', page=queue.page - 1, view=queue.view) }}">Previous</a>{% endif %}
+      <span>Page {{ queue.page }} of {{ queue.page_count }}</span>
+      {% if queue.page < queue.page_count %}<a href="{{ url_for('staff_listing_quality', page=queue.page + 1, view=queue.view) }}">Next</a>{% endif %}
+    </nav>
+    {% endif %}
+  </main>
+</body>
+</html>

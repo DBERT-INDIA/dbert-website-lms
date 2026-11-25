@@ -604,6 +604,21 @@
       align-items: flex-start;
     }
   }
+  .sessions-grid [hidden] { display: none !important; }
+  .mentor-booking-actions { display: flex; align-items: center; gap: 0.65rem; flex-wrap: wrap; }
+  .mentor-reservation { margin-top: 1rem; border-top: 1px solid rgba(255,255,255,0.12); padding: 1rem 0; }
+  .mentor-question { display: grid; gap: 0.5rem; justify-items: start; margin-top: 0.75rem; }
+  .mentor-question textarea, #mentorBookingDate {
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    background: #0b1020;
+    color: #fff;
+    padding: 0.5rem 0.75rem;
+  }
+  .mentor-question textarea { width: min(100%, 44rem); }
+  .mentor-shared-note { white-space: pre-wrap; }
+  .booking-status:not(:empty) { margin: 0.5rem 0; }
+  .session-card meter { width: 100%; }
 </style>
 </head>
 <body class="pg-session-booking has-sidebar">
@@ -638,391 +653,142 @@
         </div>
       </div>
 
-      <!-- 2. CASCADING CALENDAR BOOKING CONSOLE -->
       <div class="booking-console-card">
-        
-        <!-- STEP 1: DOMAIN & MENTOR SELECTOR -->
         <div class="filter-bar-group">
           <div>
-            <div class="step-header">
-              <span class="step-num">1</span>
-              <h2 class="step-title">Select Domain Track & Mentor</h2>
-            </div>
-            <div class="domain-pills-row" id="domainPills">
-              <div class="domain-pill {% if not intern_domain or intern_domain == 'All Tracks' %}active{% endif %}" onclick="selectDomain('All Tracks')">
-                All Domains
-              </div>
-              {% for d in (domains or []) %}
-                {% if d != 'All Tracks' %}
-                  <div class="domain-pill {% if d == intern_domain %}active{% endif %}" onclick="selectDomain('{{ d }}')">
-                    {{ d }}
-                  </div>
-                {% endif %}
+            <h2 class="step-title">Choose a track and mentor</h2>
+            <div class="domain-pills-row" id="domainPills" role="group" aria-label="Session track">
+              {% for domain in ['All Tracks'] + domains %}
+              <button type="button" class="domain-pill{% if domain == intern_domain %} active{% endif %}"
+                      data-domain="{{ domain }}" aria-pressed="{{ 'true' if domain == intern_domain else 'false' }}">
+                {{ domain }}
+              </button>
               {% endfor %}
             </div>
           </div>
-
           <div class="mentor-selector-row">
-            <span class="mentor-select-label"><i class="fa-solid fa-user-tie"></i> Filter by Mentor:</span>
-            <select class="mentor-dropdown" id="mentorSelect" onchange="filterSessions()">
-              <option value="all">All Mentors (Recommended)</option>
-              {% for m in (mentors or []) %}
-                <option value="{{ m.id }}">
-                  {{ m.name }} ({{ m.upcoming_count }} Sessions)
-                </option>
+            <label class="mentor-select-label" for="mentorSelect">Mentor</label>
+            <select class="mentor-dropdown" id="mentorSelect">
+              <option value="all">All mentors</option>
+              {% for mentor in mentors %}
+              <option value="{{ mentor.id }}">{{ mentor.name }} ({{ mentor.upcoming_count }})</option>
               {% endfor %}
             </select>
           </div>
         </div>
 
-        <!-- STEP 2: 14-DAY VISUAL DATE STRIP -->
         <div class="date-strip-wrap">
-          <div class="step-header">
-            <span class="step-num">2</span>
-            <h2 class="step-title">Select Date (Next 14 Days)</h2>
-          </div>
-          <div class="date-strip" id="dateStrip">
-            <!-- Populated via Javascript -->
-          </div>
+          <h2 class="step-title">Choose a session date</h2>
+          <p class="mentor-hero-desc">Session dates follow IST. The times below use your device timezone.</p>
+          <div class="date-strip" id="dateStrip" data-today="{{ calendar_today }}" role="group" aria-label="Next fourteen days"></div>
+          <label for="mentorBookingDate">Session date (IST)</label>
+          <input type="date" id="mentorBookingDate" min="{{ calendar_today }}" value="{{ calendar_today }}">
         </div>
 
-        <!-- STEP 3: AVAILABLE SESSION SLOTS -->
-        <div>
-          <div class="step-header">
-            <span class="step-num">3</span>
-            <h2 class="step-title" id="step3Title">Available Sessions for Selected Date</h2>
-          </div>
-          <div class="sessions-grid" id="sessionsGrid">
-            <!-- Populated via Javascript -->
-          </div>
-        </div>
-
-      </div>
-
-      <!-- 3. MY SCHEDULED SESSIONS -->
-      <div class="bookings-card">
-        <div class="step-header" style="margin-bottom: 1.5rem;">
-          <i class="fa-solid fa-calendar-check" style="color: #10B981; font-size: 1.25rem;"></i>
-          <h2 class="step-title">My Scheduled Mentorship Sessions</h2>
-        </div>
-
-        {% if my_bookings %}
-          {% for b in my_bookings %}
-            <div class="booking-item-row">
-              <div class="booking-info-left">
-                <div class="booking-check-badge">
-                  <i class="fa-solid fa-check"></i>
-                </div>
+        <h2 class="step-title" id="step3Title">Upcoming sessions</h2>
+        <p id="bookingStatus" class="booking-status" role="status"></p>
+        <div class="sessions-grid" id="sessionsGrid">
+          {% for slot in available_slots %}
+          {% set seats_left = [slot.capacity - slot.seats_booked, 0]|max %}
+          <article class="session-card" data-session-card data-date="{{ slot.booking_date }}"
+                   data-domain="{{ slot.domain }}" data-mentor="{{ slot.mentor_id }}" data-seats="{{ seats_left }}">
+            <div>
+              <div class="session-card-header">
+                <div class="mentor-avatar" aria-hidden="true">{{ slot.mentor_name[:1]|upper }}</div>
                 <div>
-                  <h3 style="font-size: 1.05rem; font-weight: 800; color: #FFFFFF; margin: 0 0 0.25rem;">
-                    {{ b.topic }} &middot; {{ b.mentor_name }}
-                  </h3>
-                  <div style="font-size: 0.8125rem; color: #94A3B8; font-family: monospace;">
-                    <i class="fa-regular fa-clock" style="color:#D4AF37;"></i>
-                    {{ b.start_time }} – {{ b.end_time.split(' ')[1] if b.end_time and ' ' in b.end_time else (b.end_time or '') }} IST &middot;
-                    <span style="color:#38BDF8;">{{ b.domain }}</span>
-                  </div>
+                  <h3 class="session-topic">{{ slot.topic }}</h3>
+                  <p class="mentor-name">{{ slot.mentor_name }}</p>
                 </div>
               </div>
-
-              <div style="display: flex; align-items: center; gap: 0.65rem; flex-wrap: wrap;">
-                {% if b.meeting_link %}
-                  <a href="{{ b.meeting_link }}" target="_blank" rel="noopener" class="btn-join-meet">
-                    <i class="fa-solid fa-video"></i> Join Meet ↗
-                  </a>
-                  <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text={{ b.topic|urlencode }}&dates={{ b.start_time|replace('-','')|replace(' ','T')|replace(':','') }}00Z/{{ b.end_time|replace('-','')|replace(' ','T')|replace(':','') }}00Z&details={{ ('DBERT Mentorship Session with ' ~ b.mentor_name)|urlencode }}&location={{ b.meeting_link|urlencode }}" target="_blank" rel="noopener" class="btn-cal-add">
-                    <i class="fa-regular fa-calendar-plus"></i> Add to Calendar
-                  </a>
-                {% endif %}
-                <button type="button" class="btn-cancel-seat" onclick="cancelSession({{ b.slot_id }})">
-                  Cancel Reservation
-                </button>
+              <p class="meta-pill">{{ slot.domain }}</p>
+              <div class="time-badge">
+                <time datetime="{{ slot.start_iso }}" data-mentor-time>{{ slot.start_time }} IST</time>
+                &ndash; <time datetime="{{ slot.end_iso }}" data-mentor-time>{{ slot.end_time }} IST</time>
               </div>
             </div>
+            <div>
+              <p>{{ slot.seats_booked }} / {{ slot.capacity }} seats reserved</p>
+              <meter min="0" max="{{ slot.capacity }}" value="{{ [slot.seats_booked, slot.capacity]|min }}" aria-label="Seats reserved"></meter>
+              {% if slot.is_my_booking %}
+              <p class="btn-reserved-active">Seat reserved</p>
+              {% elif seats_left == 0 %}
+              <p class="btn-full">Session full</p>
+              {% else %}
+              <button type="button" class="btn-reserve" data-reservation-action="book" data-slot-id="{{ slot.id }}"
+                      data-endpoint="{{ url_for('mentor.intern_book_slot', slot_id=slot.id) }}">Reserve seat</button>
+              {% endif %}
+            </div>
+          </article>
           {% endfor %}
-        {% else %}
-          <div style="text-align: center; padding: 2.5rem 1rem; color: #94A3B8;">
-            <i class="fa-regular fa-calendar-plus" style="font-size: 2rem; color: #475569; margin-bottom: 0.75rem;"></i>
-            <div style="font-weight: 700; color: #FFF; font-size: 1rem;">No Upcoming Sessions Booked</div>
-            <div style="font-size: 0.8125rem; color: #64748B; margin-top: 0.25rem;">Select your domain, pick a date above, and reserve your seat in an available session.</div>
-          </div>
-        {% endif %}
+        </div>
+        <p id="mentorNoSessions"{% if available_slots %} hidden{% endif %}>No sessions match this date and these filters.</p>
       </div>
 
+      <section class="bookings-card" aria-labelledby="scheduledMentorship">
+        <h2 class="step-title" id="scheduledMentorship">My scheduled sessions</h2>
+        {% for category, message in get_flashed_messages(with_categories=true) %}
+          <p class="booking-status" role="{{ 'alert' if category == 'error' else 'status' }}">{{ message }}</p>
+        {% endfor %}
+        {% for booking in my_bookings %}
+          <article class="mentor-reservation" id="mentor-reservation-{{ booking.slot_id }}">
+            <div class="booking-item-row">
+              <div>
+                <h3>{{ booking.topic }} &middot; {{ booking.mentor_name }}</h3>
+                <p class="time-badge">
+                  <time datetime="{{ booking.start_iso }}" data-mentor-time>{{ booking.start_time }} IST</time>
+                  &ndash; <time datetime="{{ booking.end_iso }}" data-mentor-time>{{ booking.end_time }} IST</time>
+                </p>
+              </div>
+              <div class="mentor-booking-actions">
+                {% if booking.meeting_link %}
+                  <a href="{{ booking.meeting_link }}" target="_blank" rel="noopener noreferrer" class="btn-join-meet">Join meeting</a>
+                {% else %}
+                  <span>Meeting link pending</span>
+                {% endif %}
+                <a href="{{ url_for('mentor.intern_mentor_calendar', slot_id=booking.slot_id) }}" class="btn-cal-add">Download calendar event</a>
+                <button type="button" class="btn-cancel-seat" data-reservation-action="cancel" data-slot-id="{{ booking.slot_id }}"
+                        data-endpoint="{{ url_for('mentor.intern_cancel_slot', slot_id=booking.slot_id) }}">Cancel reservation</button>
+              </div>
+            </div>
+            <p class="booking-status" data-reservation-feedback role="status"></p>
+            {% if booking.agenda %}
+              <h4>Session agenda</h4>
+              <p class="mentor-shared-note">{{ booking.agenda }}</p>
+            {% endif %}
+            {% if booking.follow_up %}
+              <h4>Shared follow-up</h4>
+              <p class="mentor-shared-note">{{ booking.follow_up }}</p>
+            {% endif %}
+            <form class="mentor-question" method="post" action="{{ url_for('mentor.intern_mentor_question', slot_id=booking.slot_id) }}">
+              {{ csrf_field() }}
+              <label for="question-{{ booking.slot_id }}">Question for your mentor</label>
+              <textarea id="question-{{ booking.slot_id }}" name="question" rows="2" maxlength="600">{{ booking.question or '' }}</textarea>
+              <button type="submit" class="btn-cal-add">Save question</button>
+            </form>
+          </article>
+        {% else %}
+          <p>Reserve an upcoming session to see it here.</p>
+        {% endfor %}
+      </section>
+
+      {% if previous_bookings %}
+      <section class="bookings-card" aria-labelledby="pastMentorship">
+        <h2 class="step-title" id="pastMentorship">Previous sessions</h2>
+        {% for booking in previous_bookings %}
+          <article class="mentor-reservation">
+            <h3>{{ booking.topic }} &middot; {{ booking.mentor_name }}</h3>
+            <p><time datetime="{{ booking.start_iso }}" data-mentor-time>{{ booking.start_time }} IST</time></p>
+            {% if booking.follow_up %}
+              <h4>Shared follow-up</h4>
+              <p class="mentor-shared-note">{{ booking.follow_up }}</p>
+            {% endif %}
+          </article>
+        {% endfor %}
+      </section>
+      {% endif %}
     </div>
   </div>
 </div>
-
-<script nonce="{{ csp_nonce() }}">
-  // Embedded slots data from server (defensively defaulted)
-  const rawSlots = {{ (available_slots or [])|tojson }};
-  let currentDomain = {{ (intern_domain or 'All Tracks')|tojson }};
-  let selectedDate = null;
-
-  // Initialize 14-day date strip starting from today
-  function initDateStrip() {
-    const strip = document.getElementById('dateStrip');
-    strip.innerHTML = '';
-
-    const now = new Date();
-    const baseDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-
-    const dayNames = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
-    const monthNames = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
-
-    let firstDateWithSlots = null;
-    let firstDateStr = null;
-
-    for (let i = 0; i < 14; i++) {
-      const d = new Date(baseDate);
-      d.setDate(baseDate.getDate() + i);
-
-      const yyyy = d.getFullYear();
-      const mm = String(d.getMonth() + 1).padStart(2, '0');
-      const dd = String(d.getDate()).padStart(2, '0');
-      const dateStr = `${yyyy}-${mm}-${dd}`;
-
-      if (i === 0) firstDateStr = dateStr;
-
-      // Calculate slots count for this date
-      const matchingCount = rawSlots.filter(s => s.start_time && s.start_time.startsWith(dateStr)).length;
-      if (matchingCount > 0 && !firstDateWithSlots) {
-        firstDateWithSlots = dateStr;
-      }
-
-      const card = document.createElement('div');
-      card.className = 'date-card';
-      card.id = 'date-card-' + dateStr;
-      card.onclick = () => selectDate(dateStr);
-
-      card.innerHTML = `
-        <div class="date-day-name">${dayNames[d.getDay()]}</div>
-        <div class="date-day-num">${dd}</div>
-        <div class="date-day-name" style="font-size: 0.65rem; margin-bottom: 0.35rem;">${monthNames[d.getMonth()]}</div>
-        <div class="date-badge ${matchingCount > 0 ? 'has-slots' : 'none'}">
-          ${matchingCount > 0 ? matchingCount + ' Slots' : 'None'}
-        </div>
-      `;
-
-      strip.appendChild(card);
-    }
-
-    // Auto-select first date with slots, or today
-    const initialDate = firstDateWithSlots || firstDateStr;
-    if (initialDate) {
-      selectDate(initialDate);
-    } else {
-      renderSessions();
-    }
-  }
-
-  function selectDomain(domain) {
-    currentDomain = domain;
-    document.querySelectorAll('.domain-pill').forEach(el => {
-      if (el.textContent.trim() === domain || (domain === 'All Tracks' && el.textContent.trim() === 'All Domains')) {
-        el.classList.add('active');
-      } else {
-        el.classList.remove('active');
-      }
-    });
-    renderSessions();
-  }
-
-  function selectDate(dateStr) {
-    selectedDate = dateStr;
-    document.querySelectorAll('.date-card').forEach(c => c.classList.remove('active'));
-    const target = document.getElementById('date-card-' + dateStr);
-    if (target) target.classList.add('active');
-    renderSessions();
-  }
-
-  function filterSessions() {
-    renderSessions();
-  }
-
-  function renderSessions() {
-    const grid = document.getElementById('sessionsGrid');
-    const mentorId = document.getElementById('mentorSelect').value;
-    const title = document.getElementById('step3Title');
-
-    if (title && selectedDate) {
-      title.textContent = `Available Sessions for ${selectedDate}`;
-    }
-
-    // Filter slots based on date, domain, and mentor
-    const filtered = rawSlots.filter(s => {
-      // Date filter
-      if (!s.start_time.startsWith(selectedDate)) return false;
-
-      // Mentor filter
-      if (mentorId !== 'all' && String(s.mentor_staff_id) !== mentorId) return false;
-
-      // Domain filter
-      if (currentDomain !== 'All Tracks' && s.domain !== 'All Tracks' && s.domain !== currentDomain) {
-        return false;
-      }
-
-      return true;
-    });
-
-    if (filtered.length === 0) {
-      grid.innerHTML = `
-        <div style="grid-column: 1 / -1; text-align: center; padding: 3rem 1rem; background: #07090E; border: 1px dashed rgba(255,255,255,0.1); border-radius: 16px;">
-          <i class="fa-regular fa-calendar-xmark" style="font-size: 2rem; color: #475569; margin-bottom: 0.75rem;"></i>
-          <div style="font-weight: 700; color: #FFF; font-size: 1rem;">No Sessions Available on ${selectedDate}</div>
-          <div style="font-size: 0.8125rem; color: #64748B; margin-top: 0.25rem;">
-            Try selecting another date or switching to "All Tracks" or "All Mentors".
-          </div>
-        </div>
-      `;
-      return;
-    }
-
-    grid.innerHTML = filtered.map(s => {
-      const booked = s.seats_booked || 0;
-      const capacity = s.capacity || 30;
-      const seatsLeft = Math.max(0, capacity - booked);
-      const pct = Math.min(100, Math.round((booked / capacity) * 100));
-
-      let meterClass = 'green';
-      let statusText = `${seatsLeft} Seats Available`;
-      if (seatsLeft === 0) {
-        meterClass = 'red';
-        statusText = 'Session Full (30/30)';
-      } else if (seatsLeft <= 5) {
-        meterClass = 'amber';
-        statusText = `Filling Fast (${seatsLeft} Seats Left)`;
-      }
-
-      const startTimeOnly = s.start_time.split(' ')[1] || '';
-      const endTimeOnly = s.end_time.split(' ')[1] || '';
-
-      let actionButtonHtml = '';
-      if (s.is_my_booking) {
-        actionButtonHtml = `
-          <div class="btn-reserved-active">
-            <i class="fa-solid fa-check-circle"></i> Seat Reserved
-          </div>
-        `;
-      } else if (seatsLeft === 0) {
-        actionButtonHtml = `
-          <div class="btn-full">
-            <i class="fa-solid fa-ban" style="margin-right: 0.4rem;"></i> Session Full
-          </div>
-        `;
-      } else {
-        actionButtonHtml = `
-          <button type="button" class="btn-reserve" onclick="reserveSlot(${s.id})">
-            <span>Reserve Seat (Free)</span>
-            <i class="fa-solid fa-arrow-right"></i>
-          </button>
-        `;
-      }
-
-      return `
-        <div class="session-card">
-          <div>
-            <div class="session-card-header">
-              <div class="mentor-avatar">${s.mentor_name.charAt(0).toUpperCase()}</div>
-              <div>
-                <h3 class="mentor-name">${s.mentor_name}</h3>
-                <div style="font-size: 0.75rem; color: #94A3B8;">Faculty Technical Mentor</div>
-              </div>
-            </div>
-
-            <h4 class="session-topic">${s.topic}</h4>
-
-            <div class="session-meta-pills">
-              <span class="meta-pill" style="border: 1px solid rgba(56, 189, 248, 0.3); color: #38BDF8;">
-                <i class="fa-solid fa-layer-group"></i> ${s.domain}
-              </span>
-              <span class="meta-pill">
-                <i class="fa-solid fa-users"></i> Max 30 Interns
-              </span>
-            </div>
-
-            <div class="time-badge">
-              <i class="fa-regular fa-clock"></i>
-              ${startTimeOnly} – ${endTimeOnly} IST (45 mins)
-            </div>
-          </div>
-
-          <div>
-            <!-- Capacity Meter -->
-            <div class="capacity-meter-wrap">
-              <div class="capacity-text-row">
-                <span>Capacity (${booked}/${capacity})</span>
-                <span style="color: ${meterClass === 'green' ? '#34D399' : (meterClass === 'amber' ? '#FBBF24' : '#FB7185')};">
-                  ${statusText}
-                </span>
-              </div>
-              <div class="meter-bar-bg">
-                <div class="meter-bar-fill ${meterClass}" style="width: ${pct}%;"></div>
-              </div>
-            </div>
-
-            <div style="margin-top: 1.15rem;">
-              ${actionButtonHtml}
-            </div>
-          </div>
-        </div>
-      `;
-    }).join('');
-  }
-
-  function reserveSlot(slotId) {
-    if (!confirm('Confirm reservation for this group mentorship session?')) return;
-
-    fetch(`/mentors/slots/${slotId}/book`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': '{{ csrf_token() }}'
-      }
-    })
-    .then(r => r.json())
-    .then(data => {
-      if (data.status === 'success') {
-        alert(data.message || 'Seat reserved successfully!');
-        window.location.reload();
-      } else {
-        alert(data.message || 'Reservation failed.');
-      }
-    })
-    .catch(() => alert('Server communication error during reservation.'));
-  }
-
-  function cancelSession(slotId) {
-    if (!confirm('Are you sure you want to cancel your seat reservation for this session? Your seat will be released back to the cohort.')) return;
-
-    fetch(`/mentors/slots/${slotId}/cancel`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': '{{ csrf_token() }}'
-      }
-    })
-    .then(r => r.json())
-    .then(data => {
-      if (data.status === 'success') {
-        alert(data.message || 'Reservation cancelled.');
-        window.location.reload();
-      } else {
-        alert(data.message || 'Failed to cancel reservation.');
-      }
-    })
-    .catch(() => alert('Server error during cancellation.'));
-  }
-
-  window.selectDomain = selectDomain;
-  window.selectDate = selectDate;
-  window.filterSessions = filterSessions;
-  window.reserveSlot = reserveSlot;
-  window.cancelSession = cancelSession;
-
-  // Initialize on page load
-  document.addEventListener('DOMContentLoaded', initDateStrip);
-</script>
-
+<script src="{{ url_for('static', filename='js/mentor-booking.js') }}" defer></script>
 </body>
 </html>

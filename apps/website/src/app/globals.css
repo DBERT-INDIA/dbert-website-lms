@@ -328,13 +328,13 @@ code { font-family: var(--font-m); font-size: .9em; }
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
 
-/* Scroll reveal — driven by components/ui/Reveal.tsx. */
-.rv {
-  opacity: 0;
-  transform: translateY(26px);
-  transition: opacity .7s var(--ease), transform .7s var(--ease);
+/* Content renders normally. The observer can add a short entry animation. */
+.rv.in { animation: reveal-entry .45s var(--ease); }
+
+@keyframes reveal-entry {
+  from { transform: translateY(10px); }
+  to { transform: none; }
 }
-.rv.in { opacity: 1; transform: none; }
 
 /* ── 5b. Migration utilities (Phase 5) ─────────
    Each of these replaces an inline style object repeated dozens of times
@@ -1610,12 +1610,12 @@ code { font-family: var(--font-m); font-size: .9em; }
 }
 
 /* Staggered entrance for children elements */
-.stagger-grid > .rv:nth-child(1) { transition-delay: 40ms; }
-.stagger-grid > .rv:nth-child(2) { transition-delay: 100ms; }
-.stagger-grid > .rv:nth-child(3) { transition-delay: 160ms; }
-.stagger-grid > .rv:nth-child(4) { transition-delay: 220ms; }
-.stagger-grid > .rv:nth-child(5) { transition-delay: 280ms; }
-.stagger-grid > .rv:nth-child(6) { transition-delay: 340ms; }
+.stagger-grid > .rv:nth-child(1) { animation-delay: 40ms; }
+.stagger-grid > .rv:nth-child(2) { animation-delay: 100ms; }
+.stagger-grid > .rv:nth-child(3) { animation-delay: 160ms; }
+.stagger-grid > .rv:nth-child(4) { animation-delay: 220ms; }
+.stagger-grid > .rv:nth-child(5) { animation-delay: 280ms; }
+.stagger-grid > .rv:nth-child(6) { animation-delay: 340ms; }
 
 /* Tag chips (clean replacement for .marker in blog and lists) */
 .tag-chip {

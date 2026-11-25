@@ -3,6 +3,7 @@
 <head>
 {% set page_title_full = "Task Review Queue — Staff Portal" %}
 {% include "_head.html" %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/staff-task-queue.css') }}">
 </head>
 <body class="pg-staff-task-queue has-staff-sidebar">
 {% set active_page = 'staff_tasks' %}
@@ -30,7 +31,7 @@
             </div>
             <div style="display: flex; gap: 0.5rem; align-items: center;">
                 <input type="password" id="geminiKeyInput" placeholder="Enter GEMINI_API_KEY..." style="background: rgba(0,0,0,0.4); border: 1px solid #475569; border-radius: 8px; padding: 0.4rem 0.75rem; color: #fff; font-size: 0.8rem; width: 220px;">
-                <button onclick="saveGeminiKey()" style="background: #4F46E5; color: #fff; border: none; border-radius: 8px; padding: 0.4rem 0.85rem; font-size: 0.8rem; font-weight: bold; cursor: pointer;">Save & Test Key</button>
+                <button type="button" data-act-click="saveGeminiKey" style="background: #4F46E5; color: #fff; border: none; border-radius: 8px; padding: 0.4rem 0.85rem; font-size: 0.8rem; font-weight: bold; cursor: pointer;">Save &amp; Test Key</button>
             </div>
         </div>
 
@@ -75,11 +76,42 @@
         document.addEventListener('DOMContentLoaded', checkStipendHealth);
         </script>
 
-        <div class="filter-tabs">
-            <a href="/staff/tasks?status=pending" class="tab-btn {% if current_status == 'pending' %}active{% endif %}">Pending Review</a>
-            <a href="/staff/tasks?status=approved" class="tab-btn {% if current_status == 'approved' %}active{% endif %}">Approved</a>
-            <a href="/staff/tasks?status=rejected" class="tab-btn {% if current_status == 'rejected' %}active{% endif %}">Rejected</a>
-        </div>
+        <dl class="task-queue-overview" aria-label="Pending review summary">
+            <div class="card"><dt>Pending reviews</dt><dd>{{ queue.pending_count }}</dd></div>
+            <div class="card"><dt>Oldest pending submission</dt><dd>{{ queue.oldest_pending_age or '—' }}</dd></div>
+        </dl>
+
+        <nav class="filter-tabs" aria-label="Review status">
+            {% for value, label in queue.status_options %}
+                <a href="{{ url_for('staff_task_queue', status=value, domain=queue.domain, age=queue.age) }}"
+                    class="tab-btn{% if queue.status == value %} active{% endif %}"
+                    {% if queue.status == value %}aria-current="page"{% endif %}>{{ label }}</a>
+            {% endfor %}
+        </nav>
+
+        <form method="get" action="{{ url_for('staff_task_queue') }}" class="task-queue-filters" aria-label="Filter submissions">
+            <input type="hidden" name="status" value="{{ queue.status }}">
+            <label class="task-queue-field">Domain
+                <select name="domain" class="form-control">
+                    <option value="">All domains</option>
+                    {% for domain in queue.domains %}
+                        <option value="{{ domain }}" {% if domain == queue.domain %}selected{% endif %}>{{ domain }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <label class="task-queue-field">{% if queue.status == 'pending' %}Waiting for at least{% else %}Submitted at least{% endif %}
+                <select name="age" class="form-control">
+                    {% for value, label in queue.age_options %}
+                        <option value="{{ value }}" {% if value == queue.age %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </label>
+            <button type="submit" class="btn-approve">Apply filters</button>
+            {% if queue.domain or queue.age %}
+                <a href="{{ url_for('staff_task_queue', status=queue.status) }}">Clear filters</a>
+            {% endif %}
+        </form>
+        <p class="task-queue-count">{{ queue.total }} matching {{ 'submission' if queue.total == 1 else 'submissions' }}, oldest first</p>
 
         {% if submissions %}
             {% for sub in submissions %}
@@ -129,6 +161,9 @@
                         </div>
                         <div class="meta-line">
                             Intern: <strong>{{ sub.intern_name }}</strong> ({{ sub.intern_email }}) • Submitted: {{ sub.created_at }}
+                            {% if sub.status == 'pending' and sub.age_label %}
+                                <span class="task-queue-age">&middot; Waiting {{ sub.age_label|lower }}</span>
+                            {% endif %}
                         </div>
                     </div>
                     {% if sub.payment_type == 'unpaid' %}
@@ -169,6 +204,19 @@
                     {% endif %}
                 </div>
 
+                {% if sub.review_history %}
+                <details class="task-queue-history">
+                    <summary>Review history ({{ sub.review_history|length }})</summary>
+                    <ol>
+                        {% for review in sub.review_history %}
+                            <li><strong>{{ review.decision|capitalize }}</strong> by {{ review.reviewer or 'Staff' }}
+                                {% if review.created_at %}&middot; <time datetime="{{ review.created_at }}">{{ review.created_at }}</time>{% endif %}
+                                {% if review.reason_code %}&middot; {{ review.reason_code }}{% endif %}</li>
+                        {% endfor %}
+                    </ol>
+                </details>
+                {% endif %}
+
                 {% if sub.status == 'pending' %}
                 <div class="actions-bar">
                     <button class="btn-reject" data-act-click="makeTaskDecision" data-arg-click='[{{ sub.id|tojson }}, "rejected"]'>Reject Work</button>
@@ -186,8 +234,20 @@
             {% endfor %}
         {% else %}
             <div class="card" style="padding: 2.5rem; text-align: center;">
-                <p style="color: var(--tx-muted); margin: 0;">No task submissions found for status '{{ current_status }}'.</p>
+                <p style="color: var(--tx-muted); margin: 0;">No submissions match these filters.</p>
             </div>
+        {% endif %}
+
+        {% if queue.page_count > 1 %}
+        <nav class="task-queue-pages" aria-label="Submission pages">
+            {% if queue.page > 1 %}
+                <a href="{{ url_for('staff_task_queue', status=queue.status, domain=queue.domain, age=queue.age, page=queue.page - 1) }}">Previous</a>
+            {% endif %}
+            <span>Page {{ queue.page }} of {{ queue.page_count }}</span>
+            {% if queue.page < queue.page_count %}
+                <a href="{{ url_for('staff_task_queue', status=queue.status, domain=queue.domain, age=queue.age, page=queue.page + 1) }}">Next</a>
+            {% endif %}
+        </nav>
         {% endif %}
     </div>
 

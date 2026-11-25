@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  {% set page_title = "Cohort progress" %}
+  {% set page_robots = "noindex, nofollow" %}
+  {% include "_head.html" %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/cohort-progress.css') }}">
+</head>
+<body>
+  {% from "cohort_progress_components.html" import notices, milestones, checkin_list %}
+  <main id="main-content" class="cohort-progress">
+    <nav aria-label="Cohort navigation" class="cohort-progress-nav">
+      <a href="/program-cohorts/{{ cohort.id }}">Back to cohort</a>
+      <a href="/portal/certificates">My certificates</a>
+    </nav>
+    {{ notices(get_flashed_messages(with_categories=true)) }}
+    <header class="cohort-progress-hero">
+      <div>
+        <p class="cohort-progress-caption">Cohort progress</p>
+        <h1>{{ cohort.title }}</h1>
+        <p><time datetime="{{ cohort.starts_on }}">{{ cohort.starts_on }}</time> to <time datetime="{{ cohort.ends_on }}">{{ cohort.ends_on }}</time></p>
+      </div>
+      {% if member.required_total %}
+        <div class="cohort-progress-meter">
+          <strong>{{ member.required_met }} / {{ member.required_total }}</strong>
+          <label for="required-progress">Required milestones</label>
+          <progress id="required-progress" value="{{ member.required_met }}" max="{{ member.required_total }}"></progress>
+        </div>
+      {% endif %}
+    </header>
+
+    <section aria-labelledby="milestone-heading" class="cohort-progress-card">
+      <h2 id="milestone-heading">Milestones</h2>
+      {% if member.milestones %}
+        {{ milestones(member.milestones, milestone_kinds) }}
+      {% else %}
+        <p>Your cohort has no milestones yet.</p>
+      {% endif %}
+    </section>
+
+    <div class="cohort-progress-columns">
+      <section aria-labelledby="credential-heading" class="cohort-progress-card">
+        <h2 id="credential-heading">Cohort credential</h2>
+        {% if member.cert_id and member.credential_status == "valid" %}
+          <p>Issued on <time datetime="{{ member.issued_at[:10] }}">{{ member.issued_at[:10] }}</time>.</p>
+          <a class="btn btn-primary" href="/portal/certificate/{{ member.cert_id }}">View credential</a>
+        {% elif member.cert_id %}
+          <p>Credential status is {{ member.credential_status or "unavailable" }}.</p>
+          <a class="btn btn-secondary" href="/portal/certificate/{{ member.cert_id }}">Check credential status</a>
+        {% elif member.eligible %}
+          <p>You met every required milestone.</p>
+          <form method="post">
+            {{ csrf_field() }}
+            <button class="btn btn-primary" type="submit">Claim credential</button>
+          </form>
+        {% elif member.required_total %}
+          <p>Complete every required milestone to claim your credential.</p>
+        {% else %}
+          <p>Credential claims open after staff add at least one required milestone.</p>
+        {% endif %}
+      </section>
+
+      <section aria-labelledby="checkins-heading" class="cohort-progress-card">
+        <h2 id="checkins-heading">Staff check-ins</h2>
+        {{ checkin_list(checkins) }}
+      </section>
+    </div>
+  </main>
+</body>
+</html>

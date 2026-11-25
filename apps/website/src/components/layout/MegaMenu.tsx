@@ -56,7 +56,7 @@ function buildDrawerGroups(items: NavItem[]): DrawerGroup[] {
   return groups;
 }
 
-function renderNavLink(link: DrawerLink) {
+function renderNavLink(link: DrawerLink, pathname: string) {
   const className = `${styles.navItemLink}${link.highlight ? ` ${styles.highlightLink}` : ''}`;
 
   if (link.external) {
@@ -77,6 +77,8 @@ function renderNavLink(link: DrawerLink) {
   return (
     <Link
       href={link.href}
+      prefetch={false}
+      aria-current={pathname === link.href ? 'page' : undefined}
       className={className}
       onClick={() => trackEvent('nav_link_click', { label: link.label, href: link.href, external: false })}
     >
@@ -102,7 +104,7 @@ function isItemActive(item: NavItem, pathname: string): boolean {
     );
   }
   if (item.label === 'For Learners') {
-    return pathname.startsWith('/learners') || pathname.startsWith('/cohorts');
+    return pathname.startsWith('/learners') || pathname.startsWith('/cohorts') || pathname.startsWith('/internships');
   }
   if (item.label === 'DBERT Labs') {
     return pathname.startsWith('/labs');
@@ -119,6 +121,7 @@ export default function MegaMenu() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
   const hambRef = useRef<HTMLButtonElement>(null);
+  const disclosureRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   // Close everything on route change.
   const [lastPathname, setLastPathname] = useState(pathname);
@@ -130,24 +133,43 @@ export default function MegaMenu() {
 
   const closeDrawer = useCallback(() => setDrawerOpen(false), []);
 
-  // Desktop dropdowns: close on outside click and on Escape.
+  useEffect(() => {
+    const desktop = window.matchMedia('(min-width: 1180px)');
+    const closeMenus = () => {
+      setOpenIndex(null);
+      setDrawerOpen(false);
+    };
+    desktop.addEventListener('change', closeMenus);
+    return () => desktop.removeEventListener('change', closeMenus);
+  }, []);
+
   useEffect(() => {
     if (openIndex === null) return;
+    const trigger = disclosureRefs.current[openIndex];
 
-    const onPointerDown = (event: MouseEvent) => {
+    const onPointerDown = (event: PointerEvent) => {
       if (!navRef.current?.contains(event.target as Node)) {
         setOpenIndex(null);
       }
     };
 
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setOpenIndex(null);
+    const onFocusIn = (event: FocusEvent) => {
+      if (!trigger?.parentElement?.contains(event.target as Node)) setOpenIndex(null);
     };
 
-    document.addEventListener('mousedown', onPointerDown);
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return;
+      event.preventDefault();
+      trigger?.focus();
+      setOpenIndex(null);
+    };
+
+    document.addEventListener('pointerdown', onPointerDown);
+    document.addEventListener('focusin', onFocusIn);
     document.addEventListener('keydown', onKeyDown);
     return () => {
-      document.removeEventListener('mousedown', onPointerDown);
+      document.removeEventListener('pointerdown', onPointerDown);
+      document.removeEventListener('focusin', onFocusIn);
       document.removeEventListener('keydown', onKeyDown);
     };
   }, [openIndex]);
@@ -177,6 +199,7 @@ export default function MegaMenu() {
                   <Link
                     key={item.label}
                     href={item.href}
+                    aria-current={pathname === item.href ? 'page' : undefined}
                     className={`${styles.navLink}${isActive ? ` ${styles.activeLink}` : ''}`}
                   >
                     {item.label}
@@ -195,9 +218,10 @@ export default function MegaMenu() {
                 >
                   <button
                     type="button"
+                    ref={(button) => { disclosureRefs.current[index] = button; }}
                     className={`${styles.navTrigger}${isOpen ? ` ${styles.navTriggerOpen}` : ''}${isActive ? ` ${styles.activeLink}` : ''}`}
                     aria-expanded={isOpen}
-                    aria-controls={panelId}
+                    aria-controls={isOpen ? panelId : undefined}
                     onClick={() => setOpenIndex(isOpen ? null : index)}
                   >
                     {item.label}
@@ -225,6 +249,8 @@ export default function MegaMenu() {
                             <p className={styles.featuredDesc}>{item.featured.desc}</p>
                             <Link
                               href={item.featured.href}
+                              prefetch={false}
+                              aria-current={pathname === item.featured.href ? 'page' : undefined}
                               className={styles.featuredCta}
                               onClick={() => setOpenIndex(null)}
                             >
@@ -239,7 +265,7 @@ export default function MegaMenu() {
                               <h2 className={styles.megaColTitle}>{column.title}</h2>
                               <ul className={styles.linkList}>
                                 {column.links.map((link) => (
-                                  <li key={`${link.href}-${link.label}`}>{renderNavLink(link)}</li>
+                                  <li key={`${link.href}-${link.label}`}>{renderNavLink(link, pathname)}</li>
                                 ))}
                               </ul>
                             </div>
@@ -256,7 +282,7 @@ export default function MegaMenu() {
                     >
                       <ul className={styles.linkList}>
                         {item.links.map((link) => (
-                          <li key={`${link.href}-${link.label}`}>{renderNavLink(link)}</li>
+                          <li key={`${link.href}-${link.label}`}>{renderNavLink(link, pathname)}</li>
                         ))}
                       </ul>
                     </div>
@@ -267,6 +293,18 @@ export default function MegaMenu() {
           </nav>
 
           <div className={styles.navActions}>
+            <Link
+              href="/search"
+              prefetch={false}
+              aria-label="Search website"
+              aria-current={pathname === '/search' ? 'page' : undefined}
+              className={styles.searchLink}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+                <circle cx="11" cy="11" r="6.5" />
+                <path d="m16 16 4 4" />
+              </svg>
+            </Link>
             {navConfig.signIn && (
               <a
                 href={navConfig.signIn.href}
@@ -281,7 +319,7 @@ export default function MegaMenu() {
             {navConfig.cta && (
               <a
                 href={navConfig.cta.href}
-                className="btn btn-primary btn-sm"
+                className={`btn btn-primary btn-sm ${styles.applyAction}`}
                 target={navConfig.cta.external ? '_blank' : undefined}
                 rel={navConfig.cta.external ? 'noopener noreferrer' : undefined}
                 onClick={() => trackEvent('incubation_apply_click', { location: 'navbar_cta' })}
@@ -320,6 +358,8 @@ export default function MegaMenu() {
           open={drawerOpen}
           groups={drawerGroups}
           cta={navConfig.cta}
+          signIn={navConfig.signIn}
+          pathname={pathname}
           onClose={closeDrawer}
           returnFocusRef={hambRef}
         />

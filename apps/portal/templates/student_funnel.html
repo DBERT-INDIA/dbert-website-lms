@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  {% set page_title = 'Student funnel' %}
+  {% set page_robots = 'noindex, nofollow' %}
+  {% include '_head.html' %}
+  <link rel="stylesheet" href="/static/css/product-tools.css">
+</head>
+<body>
+<main class="product-tool">
+  <a href="/admin">Back to admin</a>
+  <h1>Student funnel</h1>
+  <form class="product-tool-card product-support-form" method="get">
+    <label for="funnelDays">Account creation period</label>
+    <select id="funnelDays" name="days">
+      {% for span in [7, 30, 90] %}<option value="{{ span }}" {% if span == days %}selected{% endif %}>Last {{ span }} days</option>{% endfor %}
+    </select>
+    <button type="submit" class="btn btn-primary">Apply</button>
+  </form>
+  <section class="product-tool-card">
+    <h2>Learner milestones</h2>
+    <p>Each stage counts accounts that also reached the preceding stage. A recorded quiz attempt or classroom answer counts as starting learning.</p>
+    {% set total = stages[0][1] %}
+    <ol class="product-result-list">
+      {% for label, count in stages %}
+      <li><strong>{{ label }}</strong> {{ count }}
+        {% if total %}<span><progress max="{{ total }}" value="{{ count }}" aria-label="{{ label }} out of accounts created"></progress></span>{% endif %}
+      </li>
+      {% endfor %}
+    </ol>
+  </section>
+  <section class="product-tool-card">
+    <h2>Tracked visitors</h2>
+    <p>{{ visitors }} distinct browser identifiers in this period. Visitor counts are separate from signed-in learner milestones.</p>
+  </section>
+</main>
+</body>
+</html>

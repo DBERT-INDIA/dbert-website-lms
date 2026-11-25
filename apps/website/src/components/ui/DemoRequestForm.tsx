@@ -1,110 +1,50 @@
 'use client';
 
-import React, { useState } from 'react';
 import { Rocket } from 'lucide-react';
-import f from './forms.module.css';
-import styles from './MultiStepForm.module.css'; // Reusing form styles
 import { trackEvent } from '@/lib/analytics';
+import PublicForm from './PublicForm';
+import f from './forms.module.css';
+import styles from './MultiStepForm.module.css';
 
-interface DemoRequestFormProps {
-  productName: string;
-}
-
-export default function DemoRequestForm({ productName }: DemoRequestFormProps) {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    companyName: '',
-    productName: productName,
-    message: ''
-  });
-  
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setErrorMsg('');
-
-    try {
-      const res = await fetch('/api/demo-request', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
-      });
-
-      if (res.ok) {
-        setSuccess(true);
-        trackEvent('generate_lead', {
-          form_name: 'demo_request',
-          product_name: productName
-        });
-      } else {
-        const data = await res.json();
-        setErrorMsg(data.error || 'Something went wrong. Please try again.');
-      }
-    } catch (err) {
-      setErrorMsg('Network error. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  if (success) {
-    return (
-      <div className={`card ${f.statePanel}`}>
-        <span className="icon-chip"><Rocket aria-hidden="true" /></span>
-        <h2 className="card-title">Demo Requested!</h2>
-        <p className={f.hint}>
-          Thank you for your interest in {productName}. Our product team will be in touch shortly to schedule your personalized demo.
-        </p>
-      </div>
-    );
-  }
-
+export default function DemoRequestForm({ productName }: { productName: string }) {
   return (
-    <div className={`${styles.formContainer} ${f.narrowForm}`}>
-      <form className="card" onSubmit={handleSubmit}>
-        <h2 className={`${styles.stepTitle} ${f.field}`}>Request a Demo</h2>
-        <p className={f.introCopy}>See how {productName} can streamline your workflows.</p>
-        
-        {errorMsg && <div className={styles.errorAlert}>{errorMsg}</div>}
-
-        <div className={styles.fieldGroup}>
-          <label>Full Name *</label>
-          <input type="text" name="name" required value={formData.name} onChange={handleInputChange} placeholder="Your name" />
-        </div>
-        <div className={styles.fieldGroup}>
-          <label>Work Email *</label>
-          <input type="email" name="email" required value={formData.email} onChange={handleInputChange} placeholder="you@company.com" />
-        </div>
-        <div className={styles.fieldGroup}>
-          <label>Phone Number</label>
-          <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} placeholder="Contact number" />
-        </div>
-        <div className={styles.fieldGroup}>
-          <label>Company Name</label>
-          <input type="text" name="companyName" value={formData.companyName} onChange={handleInputChange} placeholder="e.g. Acme Corp" />
-        </div>
-        <div className={styles.fieldGroup}>
-          <label>What are you looking to achieve? (Optional)</label>
-          <textarea name="message" value={formData.message} onChange={handleInputChange} placeholder="Tell us about your use case..." rows={3} />
-        </div>
-
-        <div className={`${styles.formNav} ${f.spacedTop}`}>
-          <button type="submit" className={`btn btn-primary ${f.full}`} disabled={loading}>
-            {loading ? 'Submitting...' : 'Get a Demo'}
-          </button>
-        </div>
-      </form>
-    </div>
+    <PublicForm
+      endpoint="/api/demo-request"
+      title="Request a demo"
+      description={'See how ' + productName + ' could work for your team.'}
+      submitLabel="Request demo"
+      pendingLabel="Submitting request…"
+      confirmationTitle="Demo requested"
+      confirmationCopy={'The DBERT product team will contact you to schedule your ' + productName + ' demo.'}
+      confirmationIcon={<Rocket aria-hidden="true" />}
+      restartLabel="Request another demo"
+      context={{ productName }}
+      onSuccess={() => trackEvent('generate_lead', { form_name: 'demo_request', product_name: productName })}
+    >
+      {(id) => (
+        <>
+          <div className={styles.fieldGroup}>
+            <label htmlFor={id + '-name'}>Full name *</label>
+            <input id={id + '-name'} name="name" autoComplete="name" minLength={2} maxLength={150} required />
+          </div>
+          <div className={styles.fieldGroup}>
+            <label htmlFor={id + '-email'}>Work email *</label>
+            <input id={id + '-email'} type="email" name="email" autoComplete="email" maxLength={254} required />
+          </div>
+          <div className={styles.fieldGroup}>
+            <label htmlFor={id + '-phone'}>Phone number</label>
+            <input id={id + '-phone'} type="tel" name="phone" autoComplete="tel" maxLength={30} />
+          </div>
+          <div className={styles.fieldGroup}>
+            <label htmlFor={id + '-company'}>Company name</label>
+            <input id={id + '-company'} name="companyName" autoComplete="organization" maxLength={200} />
+          </div>
+          <div className={[styles.fieldGroup, f.publicFieldWide].join(' ')}>
+            <label htmlFor={id + '-message'}>What would you like to see in the demo?</label>
+            <textarea id={id + '-message'} name="message" maxLength={4000} rows={3} />
+          </div>
+        </>
+      )}
+    </PublicForm>
   );
 }

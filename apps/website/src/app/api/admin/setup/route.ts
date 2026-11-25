@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import db from '@/lib/db';
+import { getDb } from '@/lib/db';
 import bcrypt from 'bcryptjs';
 
 export async function POST(request: Request) {
@@ -17,7 +17,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Missing username or password' }, { status: 400 });
     }
 
-    const existingUser = await db.adminUser.findUnique({
+    const existingUser = await getDb().adminUser.findUnique({
       where: { username }
     });
 
@@ -27,7 +27,7 @@ export async function POST(request: Request) {
 
     const passwordHash = await bcrypt.hash(password, 10);
 
-    const user = await db.adminUser.create({
+    const user = await getDb().adminUser.create({
       data: {
         username,
         passwordHash

@@ -7,6 +7,7 @@
 {% set page_title = "My Portal" %}
 {% set page_robots = "noindex, nofollow" %}
 {% include "_head.html" %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/portal-applications.css') }}">
   <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
 
   <script nonce="{{ csp_nonce() }}">
@@ -934,6 +935,23 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
 
         <!-- ACCEPTED: attendance + enrollment details -->
         <div id="ovAccepted" class="hidden">
+          <section id="learnerStarter" class="glass-card" aria-labelledby="learnerStarterTitle" style="padding: 1rem; margin-bottom: 1rem;" hidden>
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:.5rem; flex-wrap:wrap;">
+              <h2 id="learnerStarterTitle" style="margin:0; font-size:1.15rem;">Get started</h2>
+              <button type="button" id="learnerStarterToggle" class="btn btn-secondary" aria-controls="learnerStarterBody">Skip for now</button>
+            </div>
+            <div id="learnerStarterBody" style="margin-top:.6rem;">
+              <p id="learnerStarterTrack"></p>
+              <label for="learnerStarterGoal">What would you like to do first?</label>
+              <select id="learnerStarterGoal" style="display:block; max-width:100%; margin:.35rem 0 .65rem; padding:.5rem;">
+                <option value="learn">Work through a lesson</option>
+                <option value="practice">Practice with a bounty</option>
+                <option value="mentor">Meet a mentor</option>
+              </select>
+              <a id="learnerStarterAction" class="btn btn-primary" href="/courses">Open course catalog</a>
+              <p id="learnerStarterStatus" role="status" style="margin:.4rem 0 0;"></p>
+            </div>
+          </section>
 
           <!-- Growth & Social Bounties Banner (Earn 200 Coins) -->
           <div class="bounty-accelerator-banner" style="background:linear-gradient(135deg, rgba(212,175,55,0.14) 0%, rgba(15,23,42,0.85) 100%); border:1.5px solid rgba(212,175,55,0.35); border-radius:16px; padding:20px 24px; margin-bottom:24px; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; box-shadow:0 10px 30px -10px rgba(0,0,0,0.5); width:100%; box-sizing:border-box;">
@@ -1001,13 +1019,12 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
                     <div>
                       <div style="font-size: 13.5px; font-weight: 700; color: #0F172A; display: flex; align-items: center; gap: 8px;">
                         <span>Spaced Reviews Due</span>
-                        <span class="badge badge-gold" id="statReviews" style="font-weight: 800; font-size: 11.5px; border-radius: 999px; padding: 4px 12px;">0</span>
+                        <span class="badge badge-gold" id="statReviews" style="font-weight: 800; font-size: 11.5px; border-radius: 999px; padding: 4px 12px;">—</span>
                       </div>
-                      <div style="font-size: 12px; color: #475569; margin-top: 4px;">Targeted cognitive recall practice</div>
+                      <p id="reviewQueueStatus" role="status" style="font-size: 12px; color: #475569; margin: 4px 0 0;">Loading reviews…</p>
+                      <ul id="reviewQueueList" style="padding-inline-start: 1.25rem; margin: 8px 0 0;" hidden></ul>
+                      <button type="button" id="reviewQueueMore" class="cta-pill-btn" hidden>Show all reviews</button>
                     </div>
-                    <a href="/courses" id="ctaPracticeAction" class="cta-pill-btn cta-pill-amber" style="padding: 10px 20px !important; font-size: 12.5px !important; white-space: nowrap; font-weight: 700;">
-                      <i class="fas fa-repeat"></i> <span>Practice Now →</span>
-                    </a>
                   </div>
 
                   <!-- Diagnostic Stats Mini-Grid -->
@@ -1057,6 +1074,7 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
               <a href="/courses" id="ovCourseBtn" class="btn-tutor" style="background:linear-gradient(135deg,var(--violet),#2563eb);color:#ffffff !important;font-size:13.5px;padding:12px 18px;margin-top:8px;text-decoration:none;text-align:center;border-radius:8px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 14px rgba(37,99,235,0.3);width:100%;box-sizing:border-box;">
                 <span>Continue Learning →</span>
               </a>
+              <a id="ovStudyClassroom" href="/courses" hidden>Open study classroom</a>
             </div>
 
             <!-- Card 2: Micro-Tasks & Reward Coins -->
@@ -1116,8 +1134,7 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
                     <div class="metric-bar-track" style="height:9px;background:#E2E8F0;border-radius:999px;overflow:hidden;"><div class="metric-bar-fill" id="barQuizAvg" style="width:0%;height:100%;border-radius:999px;background:linear-gradient(90deg, #f59e0b, #d97706);"></div></div>
                   </div>
                   <div class="metric-bar-item" style="margin-bottom:0;">
-                    <div class="metric-bar-head" style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="color:#475569;font-weight:600;font-size:12.5px;">Practice Exercises</span><strong id="statPractice" style="color:#0F172A;font-weight:800;font-size:13.5px;">0%</strong></div>
-                    <div class="metric-bar-track" style="height:9px;background:#E2E8F0;border-radius:999px;overflow:hidden;"><div class="metric-bar-fill" id="barPractice" style="width:0%;height:100%;border-radius:999px;background:linear-gradient(90deg, #8b5cf6, #7c3aed);"></div></div>
+                    <div class="metric-bar-head" style="display:flex;justify-content:space-between;margin-bottom:6px;"><span style="color:#475569;font-weight:600;font-size:12.5px;">Quizzes passed</span><strong id="statQuizzesPassed" style="color:#0F172A;font-weight:800;font-size:13.5px;">—</strong></div>
                   </div>
                 </div>
 
@@ -1453,10 +1470,40 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
                   </div>
                   <div>
                     <div style="font-size:14px;font-weight:700;color:#0F172A;">1:1 Mentorship</div>
-                    <div style="font-size:12px;color:#64748B;margin-top:2px;">Book senior review</div>
+                    <div id="dashboardMentorSummary" style="font-size:12px;color:#64748B;margin-top:2px;">Browse availability</div>
                   </div>
                 </div>
                 <div class="qa-arrow-btn"><i class="fa-solid fa-arrow-right"></i></div>
+              </a>
+
+              <a href="/search" class="quick-access-tile">
+                <div><strong>Search DBERT</strong><div style="font-size:12px;color:#64748B;margin-top:2px;">Find courses and open opportunities</div></div>
+                <div class="qa-arrow-btn" aria-hidden="true"><i class="fa-solid fa-arrow-right"></i></div>
+              </a>
+
+              <a href="/program-cohorts" class="quick-access-tile">
+                <div><strong>Course cohorts</strong><div style="font-size:12px;color:#64748B;margin-top:2px;">Join a group and track your program milestones</div></div>
+                <div class="qa-arrow-btn" aria-hidden="true"><i class="fa-solid fa-arrow-right"></i></div>
+              </a>
+
+              <button type="button" class="quick-access-tile" data-act-click="switchTab" data-arg-click='["myapplications"]' style="text-align:left;">
+                <div><strong>My applications</strong><div style="font-size:12px;color:#64748B;margin-top:2px;">See what needs your attention</div></div>
+                <div class="qa-arrow-btn" aria-hidden="true"><i class="fa-solid fa-arrow-right"></i></div>
+              </button>
+
+              <a href="/support?source=/portal" class="quick-access-tile">
+                <div><strong>Support requests</strong><div style="font-size:12px;color:#64748B;margin-top:2px;">Report an issue or follow its status</div></div>
+                <div class="qa-arrow-btn" aria-hidden="true"><i class="fa-solid fa-arrow-right"></i></div>
+              </a>
+
+              <a href="/account/security" class="quick-access-tile">
+                <div><strong>Account security</strong><div style="font-size:12px;color:#64748B;margin-top:2px;">Check active sign-ins and notification settings</div></div>
+                <div class="qa-arrow-btn" aria-hidden="true"><i class="fa-solid fa-arrow-right"></i></div>
+              </a>
+
+              <a href="/account/credentials" class="quick-access-tile">
+                <div><strong>Credential wallet</strong><div style="font-size:12px;color:#64748B;margin-top:2px;">View and share earned certificates</div></div>
+                <div class="qa-arrow-btn" aria-hidden="true"><i class="fa-solid fa-arrow-right"></i></div>
               </a>
 
               <a href="/tasks" class="quick-access-tile">
@@ -1532,7 +1579,14 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
 
       <!-- ══════════════ MY APPLICATIONS (Track 2 §B / UAT #4) ══════════════ -->
       <div class="panel" id="panel-myapplications">
-        <div class="panel-head"><h1>My Applications</h1><p>Jobs &amp; internships you've applied to, and their status.</p></div>
+        <div class="panel-head"><h1>My Applications</h1><p>Track your applications and see who needs to act next.</p></div>
+        <div id="myAppsFilters" class="application-filters" role="group" aria-label="Filter applications" hidden>
+          <button type="button" class="btn-secondary" data-app-filter="all" aria-pressed="true">All</button>
+          <button type="button" class="btn-secondary" data-app-filter="action" aria-pressed="false">Action required</button>
+          <button type="button" class="btn-secondary" data-app-filter="waiting" aria-pressed="false">Waiting for a decision</button>
+          <button type="button" class="btn-secondary" data-app-filter="closed" aria-pressed="false">Closed</button>
+        </div>
+        <p id="myAppsCount" class="application-count" role="status"></p>
         <div id="myAppsBody"><p style="color:var(--tx-muted);font-size:14px;">Loading…</p></div>
       </div>
 
@@ -2796,63 +2850,144 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
   }
 
   /* ════ MY APPLICATIONS (job board, Track 2 §B) ════ */
-  let _myAppsLoaded=false;
-  /* T5: per-applied-post interview action (Start/Resume/Locked/Cooling/Completed). */
-  function ivActionHtml(a){
-    const iv=a.interview;
-    if(!iv) return '';
-    const href='/interview?post_id='+a.post_id;
-    if(iv.in_progress) return '<a class="btn-secondary" href="'+href+'" style="margin-top:10px;display:inline-flex;"><i class="fas fa-play"></i>&nbsp; Resume Interview</a>';
-    if(iv.status==='completed') return '<span class="badge badge-blue" style="margin-top:10px;display:inline-block;"><i class="fas fa-circle-check"></i> Interview completed</span>';
-    if(iv.locked) return '<span class="badge" style="margin-top:10px;display:inline-block;color:var(--tx-muted);">Interview attempts used up for this post</span>';
-    if(iv.cooling_until) return '<span class="badge" style="margin-top:10px;display:inline-block;color:var(--tx-muted);">Next attempt available soon</span>';
-    if(iv.can_start) return '<a class="btn-secondary" href="'+href+'" style="margin-top:10px;display:inline-flex;"><i class="fas fa-robot"></i>&nbsp; Start Interview</a>';
-    return '';
+  let _myAppsLoaded = false;
+  let _myAppsLoading = false;
+  let _myAppsView = 'all';
+  let _myApps = [];
+  const pendingCertifications = 'Selected - Pending Certifications';
+
+  function applicationRequirements(application) {
+    if (!Array.isArray(application.needed_certs)) return [];
+    return application.needed_certs.filter(course => course && /^[1-9]\d*$/.test(String(course.course_id)));
   }
-  function loadMyApplications(force){
-    if(_myAppsLoaded && !force) return;
-    const box=document.getElementById('myAppsBody');
-    fetch('/intern/my-applications',{credentials:'include'})
-      .then(r=>r.json()).then(d=>{
-        if(d.status!=='success'){ box.innerHTML='<p style="color:var(--tx-muted);font-size:14px;">Could not load your applications.</p>'; return; }
-        _myAppsLoaded=true;
-        const apps=d.applications||[]; const tb=d.tutor_base||'';
-        if(!apps.length){
-          box.innerHTML='<div class="glass-card" style="text-align:center;padding:26px;"><p style="color:var(--tx-muted);font-size:14px;margin-bottom:12px;">You haven\'t applied to any jobs or internships yet.</p>'
-            +'<a class="btn-primary" href="/jobs" style="justify-content:center;text-decoration:none;display:inline-flex;"><i class="fas fa-briefcase"></i>&nbsp; Browse the board</a></div>';
-          return;
-        }
-        // T5: nudge if any applied post still has no interview attempt started.
-        const needsSelection=apps.some(a=>a.interview && a.interview.status==='not_started' && a.interview.can_start);
-        let html=needsSelection
-          ? '<div class="glass-card" style="margin-bottom:14px;padding:14px 18px;border-color:rgba(226,185,111,.3);background:rgba(226,185,111,.06);">'
-            +'<strong style="color:var(--gold);">Select an internship to continue your application</strong>'
-            +'<p style="color:var(--tx-muted);font-size:13px;margin:4px 0 0;">Pick any applied post below and start its interview whenever you\'re ready.</p></div>'
-          : '';
-        html+=apps.map(a=>{
-          const pending=(a.status==='Selected - Pending Certifications');
-          let certBlock='';
-          if(pending){
-            const certs=(a.needed_certs||[]);
-            const items=certs.length
-              ? '<ul style="margin:8px 0 0;padding-left:18px;">'+certs.map(c=>'<li style="margin:3px 0;"><a href="/course/'+c.course_id+'/start" style="color:var(--gold);font-weight:600;">'+escHtml(c.title)+'</a></li>').join('')+'</ul>'
-              : '<p style="color:var(--tx-muted);font-size:13px;margin:6px 0 0;">No specific certifications listed — check with the company.</p>';
-            certBlock='<div style="margin-top:12px;border:1px solid rgba(76,175,80,.35);background:rgba(76,175,80,.08);border-radius:12px;padding:14px 16px;">'
-              +'<div style="color:var(--green);font-weight:800;font-size:14px;">&#127881; You\'ve been selected for this role!</div>'
-              +'<p style="color:var(--tx-muted);font-size:13px;margin:6px 0 0;">Complete the certification(s) below on this portal to proceed:</p>'+items
-              +(a.decision_note?'<p style="color:#c9d3dd;font-size:13px;margin:10px 0 0;font-style:italic;">&ldquo;'+escHtml(a.decision_note)+'&rdquo;</p>':'')
-              +'</div>';
-          }
-          return '<div class="glass-card" style="margin-bottom:12px;padding:16px 18px;">'
-            +'<div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start;">'
-            +'<div><a href="'+escHtml(a.post_path)+'" style="color:#fff;font-weight:700;font-size:15px;text-decoration:none;">'+escHtml(a.post_title)+'</a>'
-            +'<div style="color:var(--tx-muted);font-size:12.5px;margin-top:2px;">'+escHtml(a.company_name)+' &middot; '+escHtml(a.post_type)+' &middot; applied '+fmtDate(a.created_at)+'</div></div>'
-            +'<span class="badge '+badgeClass(a.status)+'">'+escHtml(a.status)+'</span></div>'
-            +certBlock+ivActionHtml(a)+'</div>';
-        }).join('');
-        box.innerHTML=html;
-      }).catch(()=>{ box.innerHTML='<p style="color:var(--tx-muted);font-size:14px;">Network error.</p>'; });
+
+  function applicationNextStep(application, requirements) {
+    if (application.status === 'Hired' || application.status === 'Rejected') {
+      return {category: 'closed', title: 'Decision recorded', detail: 'Review the latest decision for this application.'};
+    }
+    if (Date.parse(application.employer_interview_at) > Date.now()) {
+      const link = /^https:\/\//.test(application.employer_interview_link) ? application.employer_interview_link : '';
+      return {category: 'action', title: 'Employer interview scheduled', detail: 'Review the interview time and any instructions.',
+        link, linkText: 'Open meeting link', external: true};
+    }
+    if (application.status === pendingCertifications) {
+      return requirements.length
+        ? {category: 'action', title: 'Your next step', detail: 'Complete the required certifications to continue.'}
+        : {category: 'waiting', title: 'Hiring team’s next step', detail: 'Certification links will appear here when assigned.'};
+    }
+
+    const interview = application.interview;
+    const validPostId = /^[1-9]\d*$/.test(String(application.post_id));
+    if (validPostId && (interview?.in_progress || (interview?.can_start && interview.status !== 'completed'))) {
+      return {
+        category: 'action',
+        title: 'Your next step',
+        detail: 'Complete the interview for this role.',
+        link: '/interview?post_id=' + application.post_id,
+        linkText: interview.in_progress ? 'Resume interview' : 'Start interview'
+      };
+    }
+
+    const detail = interview?.locked
+      ? 'You’ve used the interview attempts for this role. Watch for the next update.'
+      : interview?.cooling_until && interview.status !== 'completed'
+        ? 'The next interview attempt will become available after the waiting period.'
+        : 'Watch for an update from the hiring team.';
+    return {category: 'waiting', title: 'Waiting for an update', detail};
   }
+
+  function applicationDate(value, includeTime = false) {
+    if (!value) return '';
+    const date = new Date(String(value).replace(/^(\d{4}-\d{2}-\d{2}) /, '$1T'));
+    if (Number.isNaN(date.getTime())) return '';
+    const options = includeTime
+      ? {year: 'numeric', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short'}
+      : {dateStyle: 'medium'};
+    const label = new Intl.DateTimeFormat(undefined, options).format(date);
+    return ' <time datetime="' + date.toISOString() + '">' + escHtml(label) + '</time>';
+  }
+
+  function applicationCard(application, requirements, next) {
+    const title = escHtml(application.post_title);
+    const path = /^\/(?:jobs|internships)\//.test(application.post_path) ? escHtml(application.post_path) : '';
+    const heading = path ? '<a href="' + path + '">' + title + '</a>' : title;
+    const timeline = '<li>Application submitted' + applicationDate(application.created_at) + '</li>'
+      + (application.interview?.status === 'completed' ? '<li>Interview completed</li>' : '')
+      + (application.employer_interview_at ? '<li>Employer interview' + applicationDate(application.employer_interview_at, true) + '</li>' : '')
+      + (application.status !== 'Applied' ? '<li>' + escHtml(application.status) + applicationDate(application.decided_at) + '</li>' : '');
+    const certificationLinks = application.status === pendingCertifications && requirements.length
+      ? '<ul>' + requirements.map(course => '<li><a href="/course/' + course.course_id + '/start">'
+          + escHtml(course.title || 'Open course') + '</a></li>').join('') + '</ul>'
+      : '';
+    const decisionNote = application.decision_note ? '<p>' + escHtml(application.decision_note) + '</p>' : '';
+    const interviewNote = application.employer_interview_note ? '<p>' + escHtml(application.employer_interview_note) + '</p>' : '';
+    const actionLink = next.link ? '<a class="btn-secondary" href="' + escHtml(next.link) + '"'
+      + (next.external ? ' target="_blank" rel="noopener noreferrer"' : '') + '>' + next.linkText + '</a>' : '';
+
+    return '<article class="glass-card application-card">'
+      + '<header class="application-card-header"><div><h2>' + heading + '</h2>'
+      + '<p>' + escHtml(application.company_name) + ' &middot; ' + escHtml(application.post_type) + '</p></div>'
+      + '<span class="badge ' + badgeClass(application.status) + '">' + escHtml(application.status) + '</span></header>'
+      + '<ol class="application-timeline" aria-label="Application timeline">' + timeline + '</ol>'
+      + '<div class="application-next"><strong>' + next.title + '</strong><p>' + next.detail + '</p>'
+      + certificationLinks + interviewNote + actionLink + decisionNote + '</div></article>';
+  }
+
+  function renderMyApplications() {
+    const box = document.getElementById('myAppsBody');
+    const filters = document.getElementById('myAppsFilters');
+    filters.hidden = !_myApps.length;
+    filters.querySelectorAll('[data-app-filter]').forEach(button => {
+      button.setAttribute('aria-pressed', String(button.dataset.appFilter === _myAppsView));
+    });
+
+    const entries = _myApps.map(application => {
+      const requirements = applicationRequirements(application);
+      return {application, requirements, next: applicationNextStep(application, requirements)};
+    });
+    const visible = entries.filter(entry => _myAppsView === 'all' || entry.next.category === _myAppsView);
+    document.getElementById('myAppsCount').textContent = entries.length
+      ? visible.length + ' of ' + entries.length + ' applications'
+      : '';
+    if (!entries.length) {
+      box.innerHTML = '<div class="glass-card application-empty"><p>Your applications will appear here.</p>'
+        + '<a href="/jobs" class="btn-primary">Browse openings</a></div>';
+    } else if (!visible.length) {
+      box.innerHTML = '<p class="glass-card application-empty">No applications in this view.</p>';
+    } else {
+      box.innerHTML = visible.map(entry => applicationCard(entry.application, entry.requirements, entry.next)).join('');
+    }
+  }
+
+  async function loadMyApplications(force) {
+    if (_myAppsLoading || (_myAppsLoaded && !force)) return;
+    const box = document.getElementById('myAppsBody');
+    _myAppsLoading = true;
+    box.setAttribute('aria-busy', 'true');
+    box.textContent = 'Loading applications…';
+    try {
+      const response = await fetch('/intern/my-applications', {credentials: 'include'});
+      const data = await response.json();
+      if (!response.ok || data.status !== 'success') throw new Error('Application list unavailable');
+      _myApps = Array.isArray(data.applications) ? data.applications : [];
+      renderMyApplications();
+      _myAppsLoaded = true;
+    } catch {
+      box.innerHTML = '<p role="alert">Could not load your applications.</p>'
+        + '<button type="button" class="btn-secondary" id="retryMyApps">Try again</button>';
+      document.getElementById('retryMyApps').addEventListener('click', () => loadMyApplications(true));
+    } finally {
+      box.removeAttribute('aria-busy');
+      _myAppsLoading = false;
+    }
+  }
+
+  document.getElementById('myAppsFilters').addEventListener('click', event => {
+    const button = event.target.closest('[data-app-filter]');
+    if (!button) return;
+    _myAppsView = button.dataset.appFilter;
+    renderMyApplications();
+  });
 
   /* --- LEADERBOARD --- */
   let _lbData = null, _lbView = 'domain';
@@ -3104,25 +3239,42 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
     const s = _ecoSpotlights[_ecoIdx];
     if (!s) return;
     const slidesEl = document.getElementById('ecoSlides');
-    slidesEl.style.opacity = 0;
-    setTimeout(() => {
-      slidesEl.innerHTML = '<h4 style="color:#fff; font-size:15px; font-weight:700; margin-bottom:6px;">' + escHtml(s.title) + '</h4>' +
-        (s.description ? '<p style="color:var(--tx-body); font-size:13px; line-height:1.5; margin-bottom:12px;">' + escHtml(s.description) + '</p>' : '') +
-        '<a href="javascript:void(0)" onclick="trackEcoClick(' + s.id + ', \'' + s.url.replace(/'/g, "\\'") + '\')" style="color:var(--gold); font-size:13px; font-weight:700; text-decoration:none;">Read more on ' + escHtml(s.target_brand || 'our partner site') + ' &rarr;</a>';
-      
-      slidesEl.style.transition = 'opacity 0.4s ease';
-      slidesEl.style.opacity = 1;
-      
-      const dotsEl = document.getElementById('ecoDots');
-      if (_ecoSpotlights.length > 1) {
-        dotsEl.innerHTML = _ecoSpotlights.map((_, i) => '<div style="width:8px; height:8px; border-radius:50%; background:' + (i === _ecoIdx ? 'var(--gold)' : 'var(--border)') + '; cursor:pointer;" onclick="setEcoSlide(' + i + ')"></div>').join('');
-      } else {
-        dotsEl.innerHTML = '';
-      }
-    }, 200);
+    const title = document.createElement('h4');
+    title.textContent = s.title;
+    const description = document.createElement('p');
+    description.textContent = s.description || '';
+    const link = document.createElement('a');
+    link.href = s.url;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.textContent = 'Read more on ' + (s.target_brand || 'our partner site');
+    link.addEventListener('click', () => {
+      fetch('/intern/track-spotlight-click', {
+        method: 'POST', keepalive: true, headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ spotlight_id: s.id }),
+      }).catch(() => {});
+    });
+    slidesEl.replaceChildren(title, description, link);
+
+    const dots = document.getElementById('ecoDots');
+    const count = _ecoSpotlights.length > 1 ? _ecoSpotlights.length : 0;
+    if (dots.children.length !== count) {
+      dots.replaceChildren(..._ecoSpotlights.slice(0, count).map((_, i) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'btn btn-secondary btn-sm';
+        button.textContent = i + 1;
+        button.setAttribute('aria-label', 'Show spotlight ' + (i + 1));
+        button.addEventListener('click', () => setEcoSlide(i));
+        return button;
+      }));
+    }
+    Array.from(dots.children).forEach((button, index) => button.setAttribute('aria-pressed', String(index === _ecoIdx)));
   }
 
   function nextEcoSlide() {
+    if (document.getElementById('ecoCarousel').contains(document.activeElement)
+        || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     _ecoIdx = (_ecoIdx + 1) % _ecoSpotlights.length;
     renderEcoSlide();
   }
@@ -3829,6 +3981,14 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
       _totalCoins = data.total_coins || 0;
       _availableTasks = data.available_tasks || [];
       _learningProfile = data.learning_profile || null;
+      const mentorSummary = document.getElementById('dashboardMentorSummary');
+      if (mentorSummary) {
+        const scheduled = data.upcoming_mentor;
+        const date = scheduled ? new Date(scheduled.start) : null;
+        mentorSummary.textContent = date && Number.isFinite(date.getTime())
+          ? new Intl.DateTimeFormat('en-IN', { dateStyle: 'medium', timeStyle: 'short', timeZone: 'Asia/Kolkata' }).format(date) + ' IST · ' + scheduled.mentor
+          : 'Browse availability';
+      }
 
       _upiId=data.upi_id||_upiId;_upiAmount=data.upi_amount||_upiAmount;
       _paidEligible=!!data.paid_eligible;_reapplyInfo=data.reapply_info;
@@ -3982,6 +4142,97 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
   }
 
   /* ════ OVERVIEW: status + next-step card ════ */
+  let reviewQueueRequested = false;
+  let starterAccount = null;
+
+  function setupLearnerStarter(activeCourse) {
+    const id = Number(_intern?.id);
+    if (!Number.isSafeInteger(id) || id < 1 || id === starterAccount) return;
+    starterAccount = id;
+    const panel = document.getElementById('learnerStarter');
+    const body = document.getElementById('learnerStarterBody');
+    const toggle = document.getElementById('learnerStarterToggle');
+    const goal = document.getElementById('learnerStarterGoal');
+    const link = document.getElementById('learnerStarterAction');
+    const status = document.getElementById('learnerStarterStatus');
+    const storageKey = 'dbert-learner-start:' + id;
+    const courseId = Number(activeCourse?.course_id);
+    const hasCourse = Number.isSafeInteger(courseId) && courseId > 0;
+    const domain = _intern.domain || activeCourse?.domain || '';
+    const steps = {
+      learn: [hasCourse ? `/courses/${courseId}/learn` : '/courses', hasCourse ? 'Open your course' : 'Explore courses'],
+      practice: ['/tasks', 'Browse open bounties'],
+      mentor: [domain ? '/mentors/slots?domain=' + encodeURIComponent(domain) : '/mentors/slots', 'Find mentor sessions'],
+    };
+    let saved = {};
+    try { saved = JSON.parse(localStorage.getItem(storageKey) || '{}') || {}; } catch { /* The checklist still works. */ }
+    goal.value = Object.hasOwn(steps, saved.goal) ? saved.goal : 'learn';
+    body.hidden = saved.skipped === true;
+    document.getElementById('learnerStarterTrack').textContent = domain ? 'Your track is ' + domain + '.' : 'Choose a next step for your learning.';
+
+    const refresh = () => {
+      [link.href, link.textContent] = steps[goal.value];
+      toggle.textContent = body.hidden ? 'Resume setup' : 'Skip for now';
+      toggle.setAttribute('aria-expanded', String(!body.hidden));
+    };
+    const remember = () => {
+      try {
+        localStorage.setItem(storageKey, JSON.stringify({ goal: goal.value, skipped: body.hidden }));
+        status.textContent = 'Your preference is saved in this browser.';
+      } catch {
+        status.textContent = 'Your preference is available until you leave this page.';
+      }
+    };
+
+    goal.onchange = () => { refresh(); remember(); };
+    toggle.onclick = () => { body.hidden = !body.hidden; refresh(); remember(); };
+    refresh();
+    panel.hidden = false;
+  }
+
+  async function loadReviewQueue() {
+    const count = document.getElementById('statReviews');
+    const status = document.getElementById('reviewQueueStatus');
+    const list = document.getElementById('reviewQueueList');
+    const more = document.getElementById('reviewQueueMore');
+    if (!count || reviewQueueRequested) return;
+    reviewQueueRequested = true;
+
+    try {
+      const response = await fetch('/api/learning/v2/reviews-due');
+      if (!response.ok) throw new Error('Could not retrieve reviews');
+      const data = await response.json();
+      if (data.status !== 'success' || !Array.isArray(data.reviews)) throw new Error('Invalid review response');
+      count.textContent = String(data.reviews.length);
+      status.textContent = data.reviews.length ? 'Start with the reviews below.' : 'You’re caught up on reviews.';
+      const items = data.reviews.map((review) => {
+        const item = document.createElement('li');
+        if (typeof review.review_url === 'string' && /^\/courses\/\d+\/(?:learn\?subtopic=\d+|study\/review\/\d+)$/.test(review.review_url)) {
+          const link = document.createElement('a');
+          link.href = review.review_url;
+          link.textContent = review.concept_name;
+          item.append(link);
+        } else {
+          item.textContent = review.concept_name;
+        }
+        return item;
+      });
+      list.replaceChildren(...items.slice(0, 3));
+      list.hidden = items.length === 0;
+      if (items.length > 3) {
+        more.hidden = false;
+        more.addEventListener('click', () => {
+          list.append(...items.slice(3));
+          items[3].querySelector('a')?.focus();
+          more.hidden = true;
+        }, { once: true });
+      }
+    } catch {
+      status.textContent = 'Reviews could not be loaded. Refresh to try again.';
+      reviewQueueRequested = false;
+    }
+  }
+
   function updateOverviewCardsGrid() {
     // Card 1: Active Course & Next Lesson Redirect
     const courseTitleEl = document.getElementById('ovCourseTitle');
@@ -3989,9 +4240,14 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
     const coursePctEl   = document.getElementById('ovCoursePct');
     const courseFillEl  = document.getElementById('ovCourseProgressFill');
     const courseBtnEl   = document.getElementById('ovCourseBtn');
+    const studyLink = document.getElementById('ovStudyClassroom');
 
     if (_courseEnrs && _courseEnrs.length > 0) {
       const c = _courseEnrs[0];
+      if (studyLink && /^\d+$/.test(String(c.course_id))) {
+        studyLink.href = `/courses/${c.course_id}/study`;
+        studyLink.hidden = false;
+      }
       if (courseTitleEl) courseTitleEl.textContent = c.title || 'Enrolled Course';
       const dayNum = c.current_day || 1;
       if (courseDescEl) courseDescEl.innerHTML = `Enrolled &bull; Current Lesson: <strong>Day ${dayNum}</strong>`;
@@ -4019,6 +4275,7 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
         if (ctaLearnText) ctaLearnText.textContent = `Resume Lesson (Day ${dayNum}) →`;
       }
     } else {
+      if (studyLink) studyLink.hidden = true;
       if (courseTitleEl) courseTitleEl.textContent = 'Guided Learning Workspace';
       if (courseDescEl) courseDescEl.textContent = 'Access your enrolled courses, guided learning lessons, and subtopic quizzes.';
       if (coursePctEl) coursePctEl.textContent = '0%';
@@ -4074,31 +4331,23 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
     const barMastery = document.getElementById('barMastery');
     if (barMastery) barMastery.style.width = masteryPct + '%';
 
-    let curP = 0;
-    let quizAvg = 0;
-    if (_courseEnrs && _courseEnrs.length > 0) {
-      const c0 = _courseEnrs[0];
-      curP = c0.guided_completion_pct || c0.learning_completion_pct || c0.tutor_completion_pct || 0;
-      quizAvg = c0.quizzes_passed > 0 ? 85 : (c0.current_day > 1 ? 75 : 0);
-    }
+    const activeCourse = _courseEnrs?.[0];
+    setupLearnerStarter(activeCourse);
+    const curP = activeCourse?.guided_completion_pct ?? activeCourse?.learning_completion_pct ?? activeCourse?.tutor_completion_pct ?? 0;
+    const quizAvg = activeCourse?.quiz_average_pct;
     const statCurriculumEl = document.getElementById('statCurriculum');
     if (statCurriculumEl) statCurriculumEl.textContent = curP + '%';
     const barCurriculum = document.getElementById('barCurriculum');
     if (barCurriculum) barCurriculum.style.width = curP + '%';
 
-    const statPracticeEl = document.getElementById('statPractice');
-    const pracPct = Math.round(curP * 0.8);
-    if (statPracticeEl) statPracticeEl.textContent = pracPct + '%';
-    const barPractice = document.getElementById('barPractice');
-    if (barPractice) barPractice.style.width = pracPct + '%';
+    const quizzesPassed = document.getElementById('statQuizzesPassed');
+    if (quizzesPassed) quizzesPassed.textContent = activeCourse?.quizzes_passed ?? '—';
 
     const statQuizAvgEl = document.getElementById('statQuizAvg');
-    if (statQuizAvgEl) statQuizAvgEl.textContent = quizAvg + '%';
+    if (statQuizAvgEl) statQuizAvgEl.textContent = Number.isFinite(quizAvg) ? quizAvg + '%' : 'No attempts';
     const barQuizAvg = document.getElementById('barQuizAvg');
-    if (barQuizAvg) barQuizAvg.style.width = quizAvg + '%';
-
-    const statReviewsEl = document.getElementById('statReviews');
-    if (statReviewsEl) statReviewsEl.textContent = '0';
+    if (barQuizAvg) barQuizAvg.style.width = (Number.isFinite(quizAvg) ? quizAvg : 0) + '%';
+    loadReviewQueue();
 
     const statMiscEl = document.getElementById('statMisconceptions');
     if (statMiscEl) statMiscEl.textContent = _learningProfile ? Math.round((_learningProfile.recent_struggle_index || 0) * 10) : '0';
@@ -4107,7 +4356,7 @@ body.portal .scrim{background:rgba(15,23,42,.45)}
     if (statLastSessEl) {
       statLastSessEl.textContent = (_learningProfile && _learningProfile.last_learning_at)
         ? _learningProfile.last_learning_at.substring(0, 10)
-        : 'Active';
+        : 'No sessions yet';
     }
 
     const statConceptEl = document.getElementById('statConcept');

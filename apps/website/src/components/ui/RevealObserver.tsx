@@ -13,17 +13,15 @@ export default function RevealObserver() {
   const pathname = usePathname();
 
   useEffect(() => {
+    const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
+    if (
+      typeof IntersectionObserver === 'undefined' ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+      connection?.saveData
+    ) return;
+
     const elements = Array.from(document.querySelectorAll<HTMLElement>('.rv:not(.in)'));
     if (elements.length === 0) return;
-
-    const prefersReducedMotion =
-      typeof window !== 'undefined' &&
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    if (typeof IntersectionObserver === 'undefined' || prefersReducedMotion) {
-      elements.forEach((el) => el.classList.add('in'));
-      return;
-    }
 
     const observer = new IntersectionObserver(
       (entries) => {

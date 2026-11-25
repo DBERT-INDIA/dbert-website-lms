@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  {% set page_title = 'Program cohorts' %}
+  {% set page_robots = 'noindex, nofollow' %}
+  {% include '_head.html' %}
+  <link rel="stylesheet" href="/static/css/product-tools.css">
+  <link rel="stylesheet" href="/static/css/program-cohorts.css">
+</head>
+<body>
+<main class="product-tool cohort-page">
+  {% if role == 'admin' %}<a href="/admin">Back to admin dashboard</a>
+  {% elif role == 'mentor' %}<a href="/mentor">Back to mentor dashboard</a>
+  {% else %}<a href="/portal">Back to learner dashboard</a>{% endif %}
+  <h1>Program cohorts</h1>
+  {% for category, message in get_flashed_messages(with_categories=true) %}
+  <p class="product-tool-error" role="alert">{{ message }}</p>
+  {% endfor %}
+  {% if role == 'admin' %}
+  <form method="post" class="product-tool-card product-support-form cohort-form">
+    {{ csrf_field() }}
+    <h2>Create a cohort</h2>
+    <label for="cohort-title">Cohort name</label>
+    <input id="cohort-title" name="title" value="{{ request.form.get('title', '') }}" required minlength="3" maxlength="160">
+    <label for="cohort-course">Course</label>
+    <select id="cohort-course" name="course_id" required>
+      <option value="">Choose a course</option>
+      {% for course in courses %}
+      <option value="{{ course.id }}"{% if request.form.get('course_id') == course.id|string %} selected{% endif %}>{{ course.title }}</option>
+      {% endfor %}
+    </select>
+    <div class="cohort-form-row">
+      <div><label for="cohort-start">Start date</label>
+        <input id="cohort-start" name="starts_on" type="date" value="{{ request.form.get('starts_on', '') }}" required></div>
+      <div><label for="cohort-end">End date</label>
+        <input id="cohort-end" name="ends_on" type="date" value="{{ request.form.get('ends_on', '') }}" required></div>
+      <div><label for="cohort-capacity">Seats</label>
+        <input id="cohort-capacity" name="capacity" type="number" min="1" max="2147483647" value="{{ request.form.get('capacity', '') }}" required></div>
+    </div>
+    <label for="cohort-mentor">Assigned mentor</label>
+    <select id="cohort-mentor" name="mentor_id">
+      <option value="">Unassigned</option>
+      {% for mentor in mentors %}
+      <option value="{{ mentor.id }}"{% if request.form.get('mentor_id') == mentor.id|string %} selected{% endif %}>{{ mentor.name }}</option>
+      {% endfor %}
+    </select>
+    <button type="submit">Create cohort</button>
+  </form>
+  <h2>All cohorts</h2>
+  {% endif %}
+  {% if cohorts %}
+  <ul class="product-result-list cohort-cards">
+    {% for cohort in cohorts %}
+    <li>
+      <a href="{{ url_for('program_cohorts.admin_detail' if role == 'admin' else 'program_cohorts.mentor_detail' if role == 'mentor' else 'program_cohorts.detail', cohort_id=cohort.id) }}">{{ cohort.title }}</a>
+      <span>{{ cohort.course_title }}</span>
+      <span><time datetime="{{ cohort.starts_on }}">{{ cohort.starts_on }}</time> to <time datetime="{{ cohort.ends_on }}">{{ cohort.ends_on }}</time></span>
+      {% if role == 'learner' %}
+      <span>{% if cohort.membership_status == 'waitlisted' %}On the waitlist
+        {% elif cohort.membership_status in ['enrolled', 'completed'] %}{{ cohort.membership_status|capitalize }}
+        {% elif cohort.seats_taken >= cohort.capacity %}Waitlist available
+        {% else %}Seats available{% endif %}</span>
+      {% else %}
+      <span>{{ cohort.seats_taken }} / {{ cohort.capacity }} seats used · {{ cohort.waiting }} waiting · {{ 'Open' if cohort.accepting else 'Closed' }}</span>
+      {% if role == 'admin' and cohort.mentor_name %}<span>Mentor {{ cohort.mentor_name }}</span>{% endif %}
+      {% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+  {% elif role == 'mentor' %}<p>You have no assigned program cohorts.</p>
+  {% elif role == 'admin' %}<p>No cohorts have been created yet.</p>
+  {% else %}<p>No cohorts are available right now.</p>{% endif %}
+</main>
+</body>
+</html>

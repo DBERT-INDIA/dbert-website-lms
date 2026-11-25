@@ -20,7 +20,7 @@ class MasteryPolicy:
     MISCONCEPTION_SCORE_CAP = 0.65
 
     @staticmethod
-    def get_or_create_mastery(conn, student_id: int, concept_id: str) -> StudentMastery:
+    def get_or_create_mastery(conn, student_id: int, concept_id: str, *, commit=True) -> StudentMastery:
         """Retrieves or initializes a student's mastery record for a concept."""
         row = conn.execute(
             "SELECT * FROM gl_student_mastery WHERE student_id = ? AND concept_id = ?",
@@ -40,10 +40,12 @@ class MasteryPolicy:
                 misconceptions_json, last_evidence_json,
                 review_interval_days, review_count, created_at, updated_at
             ) VALUES (?, ?, 0.0, 'NOVICE', 0.0, 1.0, 0, 0, 0, '[]', '{}', 1.0, 0, ?, ?)
+            RETURNING student_id
             """,
             (student_id, concept_id, now_iso, now_iso)
-        )
-        conn.commit()
+        ).fetchone()
+        if commit:
+            conn.commit()
 
         return StudentMastery(
             student_id=student_id,
@@ -63,7 +65,7 @@ class MasteryPolicy:
 
 
     @staticmethod
-    def update_student_profile(conn, student_id: int):
+    def update_student_profile(conn, student_id: int, *, commit=True):
         """
         Calculates and updates the aggregated Student Learning Profile using a deterministic weighted evidence model.
         """
@@ -113,13 +115,15 @@ class MasteryPolicy:
                 mentor_interventions = excluded.mentor_interventions,
                 last_learning_at = excluded.last_learning_at,
                 updated_at = excluded.updated_at
+            RETURNING student_id
             """,
             (
                 student_id, overall_mastery, overall_confidence, round(avg_velocity, 2),
                 struggle_index, retention_index, interventions, now_iso, now_iso, now_iso
             )
-        )
-        conn.commit()
+        ).fetchone()
+        if commit:
+            conn.commit()
 
     @staticmethod
     def evaluate_and_update_mastery(
@@ -128,23 +132,25 @@ class MasteryPolicy:
         concept: Concept,
         evaluation: EvaluationResult,
         session_id: str,
-        student_input: str
+        student_input: str,
+        *,
+        commit=True,
     ) -> Tuple[StudentMastery, Optional[LearningEvent]]:
         """
         Deterministially updates student mastery using validated evaluation evidence.
         Emits durable learning events into gl_learning_events.
         """
-        mastery = MasteryPolicy.get_or_create_mastery(conn, student_id, concept.concept_id)
+        mastery = MasteryPolicy.get_or_create_mastery(conn, student_id, concept.concept_id, commit=commit)
         
         # 1. Process detected misconceptions
         for m_id in evaluation.detected_misconceptions:
             MisconceptionService.attach_misconception(
-                conn, student_id, concept.concept_id, m_id, trigger_context=student_input[:200]
+                conn, student_id, concept.concept_id, m_id, trigger_context=student_input[:200], commit=commit
             )
             # Emit misconception event
             MasteryPolicy._record_event(
                 conn, student_id, concept.concept_id, session_id,
-                "misconception_detected", {"misconception_id": m_id, "evidence": evaluation.to_dict()}
+                "misconception_detected", {"misconception_id": m_id, "evidence": evaluation.to_dict()}, commit=commit
             )
 
         active_misconceptions = MisconceptionService.get_active_misconceptions(conn, student_id, concept.concept_id)
@@ -156,7 +162,8 @@ class MasteryPolicy:
             # High quality answer after misconception -> resolve the most recent active one
             for active in active_misconceptions:
                 MisconceptionService.resolve_misconception(
-                    conn, student_id, concept.concept_id, active["misconception_id"], resolution_evidence="Correct answer demonstrated"
+                    conn, student_id, concept.concept_id, active["misconception_id"],
+                    resolution_evidence="Correct answer demonstrated", commit=commit
                 )
             active_misconceptions = MisconceptionService.get_active_misconceptions(conn, student_id, concept.concept_id)
 
@@ -259,7 +266,8 @@ class MasteryPolicy:
                 concept.concept_id
             )
         )
-        conn.commit()
+        if commit:
+            conn.commit()
 
         # Update model in-memory
         mastery.mastery_score = final_score
@@ -284,16 +292,18 @@ class MasteryPolicy:
                 "mastery_level": level,
                 "consecutive_successes": consecutive_successes,
                 "turn_performance": round(turn_perf, 3)
-            }
+            },
+            commit=commit,
         )
 
         # 12. Update global profile
-        MasteryPolicy.update_student_profile(conn, student_id)
+        if commit:
+            MasteryPolicy.update_student_profile(conn, student_id)
         
         return mastery, event
 
     @staticmethod
-    def _record_event(conn, student_id: int, concept_id: str, session_id: str, event_type: str, payload: Dict[str, Any]) -> LearningEvent:
+    def _record_event(conn, student_id: int, concept_id: str, session_id: str, event_type: str, payload: Dict[str, Any], *, commit=True) -> LearningEvent:
         event = LearningEvent(
             student_id=student_id,
             concept_id=concept_id,
@@ -316,7 +326,8 @@ class MasteryPolicy:
                 event.created_at
             )
         )
-        conn.commit()
+        if commit:
+            conn.commit()
         return event
 
     @staticmethod

@@ -1,0 +1,47 @@
+{% macro notices(messages) %}
+  {% if messages %}
+    <ul class="cohort-progress-notices" aria-label="Updates">
+      {% for category, message in messages %}
+        <li role="{{ 'alert' if category == 'error' else 'status' }}" class="{{ 'cohort-progress-error' if category == 'error' }}">{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endmacro %}
+
+{% macro milestones(states, kinds) %}
+  <ol class="cohort-milestone-list">
+    {% for state in states %}
+      <li>
+        <div>
+          <h3>{{ state.title }}</h3>
+          <p>{{ kinds[state.kind] }} · {{ state.count }}/{{ state.threshold }} · {{ 'Required' if state.required else 'Optional' }}
+            {% if state.due_on %} · Due <time datetime="{{ state.due_on }}">{{ state.due_on }}</time>{% endif %}
+          </p>
+        </div>
+        {% if state.met %}
+          <span class="cohort-pill cohort-pill-met">Complete</span>
+        {% elif state.overdue %}
+          <span class="cohort-pill cohort-pill-overdue">Overdue</span>
+        {% else %}
+          <span class="cohort-pill">In progress</span>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ol>
+{% endmacro %}
+
+{% macro checkin_list(checkins) %}
+  {% if checkins %}
+    <ol class="cohort-checkin-list">
+      {% for checkin in checkins %}
+        <li>
+          <strong>{{ "Mentor" if checkin.actor_type == "mentor" else "Administrator" }}</strong>
+          <time datetime="{{ checkin.created_at[:10] }}">{{ checkin.created_at[:10] }}</time>
+          <p>{{ checkin.message }}</p>
+        </li>
+      {% endfor %}
+    </ol>
+  {% else %}
+    <p>There are no check-ins yet.</p>
+  {% endif %}
+{% endmacro %}

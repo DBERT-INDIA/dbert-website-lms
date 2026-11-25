@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
-import db from '@/lib/db';
+import { getDb } from '@/lib/db';
 import { getProjectRepoInfo, MENTOR_PROFILE } from '@/lib/verification';
 
 interface RegistryRecord {
@@ -199,7 +199,7 @@ export async function GET(request: Request) {
     // 2. Fallback to Prisma database
     let certificate = null;
     try {
-      certificate = await db.certificate.findUnique({
+      certificate = await getDb().certificate.findUnique({
         where: { certificateId: certId }
       });
     } catch {

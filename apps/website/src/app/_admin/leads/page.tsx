@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import jwt from 'jsonwebtoken';
-import db from '@/lib/db';
+import { getDb } from '@/lib/db';
 import { getJwtSecret } from '@/lib/env';
 import s from '../admin.module.css';
 import LeadsDashboardClient from './LeadsDashboardClient';
@@ -32,13 +32,13 @@ export default async function AdminLeadsPage() {
 
   // Fetch all leads
   const [startups, contacts, consultations, demos, enrollments, collaborations, pendingCohorts] = await Promise.all([
-    db.startupRegistration.findMany({ orderBy: { createdAt: 'desc' } }),
-    db.contactSubmission.findMany({ orderBy: { createdAt: 'desc' } }),
-    db.consultationBooking.findMany({ orderBy: { createdAt: 'desc' } }),
-    db.demoRequest.findMany({ orderBy: { createdAt: 'desc' } }),
-    db.enrollmentInquiry.findMany({ orderBy: { createdAt: 'desc' } }),
-    db.collaborationRequest.findMany({ orderBy: { createdAt: 'desc' } }),
-    db.cohortApplication.count({ where: { cohortSlug: 'aivara', status: 'pending' } }),
+    getDb().startupRegistration.findMany({ orderBy: { createdAt: 'desc' } }),
+    getDb().contactSubmission.findMany({ orderBy: { createdAt: 'desc' } }),
+    getDb().consultationBooking.findMany({ orderBy: { createdAt: 'desc' } }),
+    getDb().demoRequest.findMany({ orderBy: { createdAt: 'desc' } }),
+    getDb().enrollmentInquiry.findMany({ orderBy: { createdAt: 'desc' } }),
+    getDb().collaborationRequest.findMany({ orderBy: { createdAt: 'desc' } }),
+    getDb().cohortApplication.count({ where: { cohortSlug: 'aivara', status: 'pending' } }),
   ]);
 
   return (

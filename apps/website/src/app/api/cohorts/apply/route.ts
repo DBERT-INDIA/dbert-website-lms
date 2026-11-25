@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import db from '@/lib/db';
+import { getDb } from '@/lib/db';
 
 export const VALID_DOMAINS = [
   'AI Agent Development',
@@ -133,7 +133,7 @@ export async function POST(request: Request) {
     // 4. Save to Database
     const cleanPhone = phone.replace(/[\s+-]/g, '').slice(-10);
 
-    const application = await db.cohortApplication.create({
+    const application = await getDb().cohortApplication.create({
       data: {
         cohortSlug,
         fullName: fullName.trim(),

@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en">
+<head>
+  {% set page_title = post.title ~ ' (Role filled)' %}
+  {% set page_robots = 'noindex, follow' %}
+  {% include '_head.html' %}
+</head>
+<body>
+  <main class="content" style="width:min(100% - 2rem, 42rem);margin:8vh auto;">
+    <h1>{{ post.title }}</h1>
+    <p>{{ post.company_name }} has filled this role. Applications are closed.</p>
+    <p><a class="btn-primary" href="{{ '/internships' if post.post_type == 'internship' else '/jobs' }}">Browse current openings</a></p>
+    <p><a href="/portal#myapplications">Open My Applications</a></p>
+  </main>
+</body>
+</html>

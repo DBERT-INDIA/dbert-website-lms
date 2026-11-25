@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import crypto from 'crypto';
-import db from '@/lib/db';
+import { getDb } from '@/lib/db';
 
 export async function POST(request: Request) {
   try {
@@ -28,7 +28,7 @@ export async function POST(request: Request) {
       // Payment is valid — update enrollment to paid
       if (enrollmentId) {
         try {
-          await db.enrollmentInquiry.update({
+          await getDb().enrollmentInquiry.update({
             where: { id: enrollmentId },
             data: {
               razorpayPaymentId: razorpay_payment_id,
@@ -45,7 +45,7 @@ export async function POST(request: Request) {
       // Payment is invalid — do NOT mark as paid
       if (enrollmentId) {
         try {
-          await db.enrollmentInquiry.update({
+          await getDb().enrollmentInquiry.update({
             where: { id: enrollmentId },
             data: {
               status: 'failed'

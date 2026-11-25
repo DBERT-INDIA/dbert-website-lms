@@ -232,9 +232,9 @@ export default async function BlogPostPage({ params }: BlogPostProps) {
               <div style={{ color: '#38BDF8', fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.35rem' }}>
                 For Aspiring Engineers
               </div>
-              <h4 style={{ color: '#fff', fontSize: '1.05rem', margin: '0 0 0.5rem', fontWeight: 700 }}>
+              <h2 style={{ color: '#fff', fontSize: '1.05rem', margin: '0 0 0.5rem', fontWeight: 700 }}>
                 Build Production Systems
-              </h4>
+              </h2>
               <p style={{ color: '#94A3B8', fontSize: '0.8125rem', lineHeight: '1.5', margin: '0 0 1rem' }}>
                 Join the next cohort, receive 1:1 mentorship from industry staff, and publish verified capstone case studies.
               </p>
@@ -247,9 +247,9 @@ export default async function BlogPostPage({ params }: BlogPostProps) {
               <div style={{ color: '#34D399', fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.35rem' }}>
                 For Tech Recruiters &amp; Employers
               </div>
-              <h4 style={{ color: '#fff', fontSize: '1.05rem', margin: '0 0 0.5rem', fontWeight: 700 }}>
+              <h2 style={{ color: '#fff', fontSize: '1.05rem', margin: '0 0 0.5rem', fontWeight: 700 }}>
                 Hire Pre-Vetted Fellows
-              </h4>
+              </h2>
               <p style={{ color: '#94A3B8', fontSize: '0.8125rem', lineHeight: '1.5', margin: '0 0 1rem' }}>
                 Discover engineers with verified code rubrics, live deployment URLs, and zero recruiter markup fees.
               </p>

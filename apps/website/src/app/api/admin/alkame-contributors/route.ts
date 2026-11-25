@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import jwt from 'jsonwebtoken';
-import db from '@/lib/db';
+import { getDb } from '@/lib/db';
 import { getJwtSecret } from '@/lib/env';
 
 async function requireAdmin(): Promise<boolean> {
@@ -35,7 +35,7 @@ export async function PATCH(request: Request) {
       return NextResponse.json({ error: 'Status must be "approved" or "rejected"' }, { status: 400 });
     }
 
-    const updated = await db.projectContributor.update({
+    const updated = await getDb().projectContributor.update({
       where: { id },
       data: {
         status,

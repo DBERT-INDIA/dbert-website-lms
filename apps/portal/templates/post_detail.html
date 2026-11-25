@@ -461,6 +461,14 @@
 
     <div class="sheet" style="padding: 44px 48px; max-width: 920px; margin: 20px auto 48px; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 20px; box-shadow: 0 10px 32px rgba(15, 23, 42, 0.05); box-sizing: border-box; overflow: hidden;">
       <h1>{{ post.title }}</h1>
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:.75rem;margin-bottom:.9rem;">
+        <button type="button" class="btn btn-secondary" aria-pressed="false" data-save-opportunity="{{ post.id }}"
+                data-opportunity-kind="{{ 'internship' if post.post_type == 'internship' else 'job' }}"
+                data-opportunity-title="{{ post.title }}" hidden>Save opportunity</button>
+        <a href="/saved-opportunities">Saved opportunities</a>
+        <span id="saveOpportunityStatus" role="status"></span>
+      </div>
+      <script src="/static/js/saved-opportunities.js" defer></script>
       <div class="co"><i class="fas fa-building"></i> {{ company.name }}{% if company.website %} · <a href="{{ company.website }}" rel="nofollow noopener" target="_blank">website</a>{% endif %}</div>
 
       <div class="meta">
@@ -505,6 +513,28 @@
           </div>
         {% endif %}
       </div>
+
+      {% if can_report_listing %}
+      <section id="listing-report" aria-label="Report a listing issue" style="margin:1rem 0;">
+        {% for category, message in get_flashed_messages(with_categories=true) %}
+          <p role="{{ 'alert' if category == 'error' else 'status' }}">{{ message }}</p>
+        {% endfor %}
+        <details>
+          <summary>Report a listing issue</summary>
+          <form method="post" action="{{ url_for('intern_report_listing', post_id=post.id) }}" style="display:grid;gap:0.5rem;max-width:32rem;margin:0.75rem 0;">
+            {{ csrf_field() }}
+            <label for="listing-report-reason">Reason</label>
+            <select name="reason" id="listing-report-reason" required>
+              <option value="">Choose a reason</option>
+              {% for value, label in listing_report_reasons %}<option value="{{ value }}">{{ label }}</option>{% endfor %}
+            </select>
+            <label for="listing-report-note">Additional details (optional)</label>
+            <textarea name="note" id="listing-report-note" rows="2" maxlength="600"></textarea>
+            <button class="btn btn-ghost" type="submit">Send to staff review</button>
+          </form>
+        </details>
+      </section>
+      {% endif %}
 
       <!-- Verified Fellow Priority Shortlist Advantage Banner -->
       <div style="background: linear-gradient(135deg, rgba(226,185,111,0.08), rgba(16,185,129,0.05)); border: 1px solid rgba(226,185,111,0.3); border-radius: 8px; padding: 14px 18px; margin: 20px 0; display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap;">

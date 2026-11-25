@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import db from '@/lib/db';
+import { getDb } from '@/lib/db';
 
 export async function GET(request: Request) {
   try {
@@ -10,7 +10,7 @@ export async function GET(request: Request) {
       return NextResponse.json({ error: 'Missing certificate ID parameters' }, { status: 400 });
     }
 
-    const certificate = await db.certificate.findUnique({
+    const certificate = await getDb().certificate.findUnique({
       where: { certificateId: certId }
     });
 

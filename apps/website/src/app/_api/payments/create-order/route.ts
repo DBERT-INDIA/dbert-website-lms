@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { razorpay } from '@/lib/razorpay';
-import db from '@/lib/db';
+import { getDb } from '@/lib/db';
 
 export async function POST(request: Request) {
   try {
@@ -32,7 +32,7 @@ export async function POST(request: Request) {
     // Step 2 — try to persist enrollment (non-critical: payment still works without it)
     let enrollmentId: string | number | bigint | null = null;
     try {
-      const enrollment = await db.enrollmentInquiry.create({
+      const enrollment = await getDb().enrollmentInquiry.create({
         data: {
           name,
           email,

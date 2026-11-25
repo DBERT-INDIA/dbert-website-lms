@@ -118,7 +118,7 @@
     color: #94A3B8;
   }
 
-  .fg input, .fg select {
+  .fg input, .fg select, .fg textarea {
     background: #07090E;
     border: 1px solid rgba(255, 255, 255, 0.12);
     border-radius: 10px;
@@ -128,7 +128,7 @@
     outline: none;
     transition: border-color 0.15s ease;
   }
-  .fg input:focus, .fg select:focus {
+  .fg input:focus, .fg select:focus, .fg textarea:focus {
     border-color: #D4AF37;
     box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
   }
@@ -272,6 +272,11 @@
     font-weight: 700;
     display: none;
   }
+  .mentor-session-editor { margin-top: 0.5rem; }
+  .mentor-session-editor summary { cursor: pointer; }
+  .mentor-session-editor form { min-width: 13rem; margin-top: 0.75rem; }
+  .mentor-session-editor .fg { margin-bottom: 0.5rem; }
+  .mentor-attendee-question { white-space: pre-wrap; }
 </style>
 </head>
 <body class="pg-mentor-availability has-mentor-sidebar">
@@ -289,10 +294,14 @@
         Mentor: <strong>{{ staff.name }}</strong> &middot; Group capacity up to 30 interns per session
       </div>
     </div>
-    <a href="/staff/dashboard" class="back-btn">
-      <i class="fa-solid fa-arrow-left"></i> Staff Dashboard
+    <a href="{{ back_path }}" class="back-btn">
+      <i class="fa-solid fa-arrow-left"></i> Back to dashboard
     </a>
   </div>
+
+  {% for category, message in get_flashed_messages(with_categories=true) %}
+    <p class="dash-card" role="{{ 'alert' if category == 'error' else 'status' }}">{{ message }}</p>
+  {% endfor %}
 
   <!-- ADD SLOT FORM -->
   <div class="dash-card">
@@ -301,24 +310,23 @@
       Publish New Mentorship Session
     </h3>
 
-    <form id="slotForm" onsubmit="createGroupSlot(event)">
+    <form id="slotForm">
       <div class="form-grid">
         <div class="fg">
-          <label for="startTime">Start Time (YYYY-MM-DD HH:MM)</label>
-          <input type="text" id="startTime" placeholder="2026-11-09 14:00" required>
+          <label for="startTime">Start time (IST)</label>
+          <input type="datetime-local" id="startTime" required>
         </div>
         <div class="fg">
-          <label for="endTime">End Time (YYYY-MM-DD HH:MM)</label>
-          <input type="text" id="endTime" placeholder="2026-11-09 14:45" required>
+          <label for="endTime">End time (IST)</label>
+          <input type="datetime-local" id="endTime" required>
         </div>
         <div class="fg">
           <label for="domainSelect">Target Domain Track</label>
           <select id="domainSelect" required>
             <option value="All Tracks">All Tracks (Cohort Open)</option>
-            <option value="Data Analyst">Data Analyst</option>
-            <option value="AI / Machine Learning">AI & Machine Learning</option>
-            <option value="Full Stack Web Development">Full Stack Web Development</option>
-            <option value="Python Automation">Python Automation</option>
+            {% for domain in domains if domain != 'All Tracks' %}
+              <option value="{{ domain }}">{{ domain }}</option>
+            {% endfor %}
           </select>
         </div>
         <div class="fg">
@@ -329,7 +337,11 @@
 
       <div class="fg" style="margin-bottom: 1.25rem;">
         <label for="topicInput">Session Agenda / Topic</label>
-        <input type="text" id="topicInput" value="Technical Mentorship & Capstone Review" placeholder="e.g. Capstone Architecture & Code Review" required>
+        <input type="text" id="topicInput" value="Technical Mentorship &amp; Capstone Review" maxlength="120" required>
+      </div>
+      <div class="fg" style="margin-bottom: 1.25rem;">
+        <label for="meetingLink">HTTPS meeting link (optional)</label>
+        <input type="url" id="meetingLink" maxlength="500">
       </div>
 
       <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
@@ -341,7 +353,7 @@
         </button>
       </div>
 
-      <div id="formMsg"></div>
+      <div id="formMsg" role="status"></div>
     </form>
   </div>
 
@@ -368,10 +380,10 @@
           </thead>
           <tbody>
             {% for slot in slots %}
-              <tr>
+              <tr id="mentor-session-{{ slot.id }}">
                 <td>
-                  <strong style="color:#FFF;">{{ slot.start_time.split(' ')[0] }}</strong><br>
-                  <span style="font-family: monospace; color:#94A3B8;">{{ slot.start_time.split(' ')[1] }} – {{ slot.end_time.split(' ')[1] }}</span>
+                  <strong style="color:#FFF;">{{ slot.date_label }}</strong><br>
+                  <span style="font-family: monospace; color:#94A3B8;">{{ slot.time_label }}</span>
                 </td>
                 <td>
                   <span style="padding: 0.2rem 0.5rem; background: rgba(255,255,255,0.06); border-radius: 6px; font-size: 0.78rem;">
@@ -380,6 +392,25 @@
                 </td>
                 <td>
                   <span style="color:#E2E8F0; font-weight: 600;">{{ slot.topic }}</span>
+                  <details class="mentor-session-editor">
+                    <summary>Agenda and follow-up</summary>
+                    <form method="post" action="{{ url_for('mentor.staff_mentor_details', slot_id=slot.id) }}">
+                      {{ csrf_field() }}
+                      <div class="fg">
+                        <label for="agenda-{{ slot.id }}">Shared agenda</label>
+                        <textarea name="agenda" id="agenda-{{ slot.id }}" rows="2" maxlength="2000">{{ slot.agenda or '' }}</textarea>
+                      </div>
+                      <div class="fg">
+                        <label for="follow-up-{{ slot.id }}">Shared follow-up tasks</label>
+                        <textarea name="follow_up" id="follow-up-{{ slot.id }}" rows="2" maxlength="2000">{{ slot.follow_up or '' }}</textarea>
+                      </div>
+                      <div class="fg">
+                        <label for="link-{{ slot.id }}">HTTPS meeting link</label>
+                        <input type="url" name="meeting_link" id="link-{{ slot.id }}" maxlength="500" value="{{ slot.meeting_link or '' }}">
+                      </div>
+                      <button class="roster-btn" type="submit">Save session materials</button>
+                    </form>
+                  </details>
                 </td>
                 <td>
                   <div style="font-weight: 800; font-size: 0.85rem;">
@@ -391,8 +422,8 @@
                 </td>
                 <td>
                   {% if slot.seats_booked >= slot.capacity %}
-                    <span class="capacity-pill full">Full (30/30)</span>
-                  {% elif slot.seats_booked >= slot.capacity - 5 %}
+                    <span class="capacity-pill full">Full ({{ slot.seats_booked }}/{{ slot.capacity }})</span>
+                  {% elif slot.seats_booked and slot.capacity - slot.seats_booked <= 5 %}
                     <span class="capacity-pill filling">Filling Fast</span>
                   {% else %}
                     <span class="capacity-pill open">Open</span>
@@ -400,24 +431,25 @@
                 </td>
                 <td>
                   {% if slot.attendees %}
-                    <button type="button" class="roster-btn" onclick="toggleRoster({{ slot.id }})">
-                      <i class="fa-solid fa-users"></i> {{ slot.attendees|length }} Interns View
-                    </button>
-                    <div id="roster-{{ slot.id }}" class="roster-drawer">
+                    <details class="mentor-session-editor">
+                      <summary>{{ slot.attendees|length }} {{ 'attendee' if slot.attendees|length == 1 else 'attendees' }}</summary>
                       {% for a in slot.attendees %}
                         <div class="attendee-item">
                           &bull; <strong>{{ a.intern_name }}</strong> ({{ a.intern_email }})
+                          {% if a.question %}<p class="mentor-attendee-question">{{ a.question }}</p>{% endif %}
                         </div>
                       {% endfor %}
-                    </div>
+                    </details>
                   {% else %}
                     <span style="color: #64748B; font-size: 0.8rem;">No interns yet</span>
                   {% endif %}
                 </td>
                 <td>
-                  <a href="{{ slot.meeting_link }}" target="_blank" rel="noopener" style="color: #D4AF37; font-weight: 700; text-decoration: none; font-size: 0.82rem;">
-                    <i class="fa-solid fa-video"></i> Join Meet ↗
-                  </a>
+                  {% if slot.meeting_link %}
+                    <a href="{{ slot.meeting_link }}" target="_blank" rel="noopener noreferrer" style="color: #D4AF37; font-weight: 700; text-decoration: none; font-size: 0.82rem;">Join meeting</a>
+                  {% else %}
+                    <span>Meeting link pending</span>
+                  {% endif %}
                 </td>
               </tr>
             {% endfor %}
@@ -435,21 +467,18 @@
 </div>
 
 <script nonce="{{ csp_nonce() }}">
-  function toggleRoster(slotId) {
-    const el = document.getElementById('roster-' + slotId);
-    if (el) {
-      el.style.display = (el.style.display === 'block') ? 'none' : 'block';
-    }
-  }
-
-  function createGroupSlot(e) {
+  document.getElementById('slotForm').addEventListener('submit', function createGroupSlot(e) {
     e.preventDefault();
     const start = document.getElementById('startTime').value.trim();
     const end = document.getElementById('endTime').value.trim();
     const domain = document.getElementById('domainSelect').value;
-    const capacity = parseInt(document.getElementById('capacityInput').value, 10) || 30;
+    const capacity = Number(document.getElementById('capacityInput').value);
     const topic = document.getElementById('topicInput').value.trim();
+    const meetingLink = document.getElementById('meetingLink').value.trim();
     const msg = document.getElementById('formMsg');
+    const submit = e.currentTarget.querySelector('button[type=submit]');
+    if (submit.disabled) return;
+    submit.disabled = true;
 
     msg.style.display = 'block';
     msg.style.color = '#94A3B8';
@@ -466,7 +495,8 @@
         end_time: end,
         domain: domain,
         capacity: capacity,
-        topic: topic
+        topic: topic,
+        meeting_link: meetingLink
       })
     })
     .then(r => r.json())
@@ -476,18 +506,17 @@
         msg.textContent = data.message;
         setTimeout(() => window.location.reload(), 1000);
       } else {
+        submit.disabled = false;
         msg.style.color = '#FB7185';
         msg.textContent = data.message || 'Error creating slot.';
       }
     })
     .catch(() => {
+      submit.disabled = false;
       msg.style.color = '#FB7185';
       msg.textContent = 'Server communication error.';
     });
-  }
-
-  window.toggleRoster = toggleRoster;
-  window.createGroupSlot = createGroupSlot;
+  });
 </script>
 </body>
 </html>

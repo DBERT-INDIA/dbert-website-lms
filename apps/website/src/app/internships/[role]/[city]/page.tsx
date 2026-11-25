@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { lmsInternshipSignupUrl } from '@/lib/lmsLinks';
 import { notFound } from 'next/navigation';
 import HandNote from '@/components/ui/HandNote';
 import { GEO_CITIES, GEO_ROLES } from '@/data/geo_domains.config';
@@ -37,7 +38,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   const cityName = cityData.name;
-  const title = `${roleData.title} Internships in ${cityName} (2026 Batch)`;
+  const title = `${roleData.title} Internships in ${cityName}`;
   const description = `Apply for ${roleData.title} internships in ${cityName}. Build live client codebases under senior review, earn ${roleData.stipend} performance stipends, and earn verifiable MSME credentials.`;
 
   return {
@@ -70,53 +71,6 @@ export default async function ProgrammaticInternshipPage({ params }: PageProps) 
   const jsonLd = {
     '@context': 'https://schema.org',
     '@graph': [
-      {
-        '@type': 'JobPosting',
-        title: `${roleData.title} Intern (${cityName})`,
-        description: `<p>${roleData.desc}</p><p><strong>Required Skills:</strong> ${roleData.skills.join(', ')}</p><p><strong>Stipend:</strong> ${roleData.stipend}</p><p><strong>Location:</strong> ${cityName}</p>`,
-        datePosted: '2026-11-01T00:00:00+05:30',
-        validThrough: '2027-06-30T23:59:59+05:30',
-        employmentType: 'INTERN',
-        hiringOrganization: {
-          '@type': 'Organization',
-          name: 'DBERT Technical Council',
-          sameAs: 'https://dbert.in',
-          logo: 'https://dbert.in/logo.svg'
-        },
-        ...(isRemote
-          ? {
-              jobLocationType: 'TELECOMMUTE',
-              applicantLocationRequirements: {
-                '@type': 'Country',
-                name: 'IN'
-              }
-            }
-          : {
-              jobLocation: {
-                '@type': 'Place',
-                address: {
-                  '@type': 'PostalAddress',
-                  streetAddress: cityData.street,
-                  addressLocality: cityData.locality,
-                  addressRegion: cityData.region,
-                  postalCode: cityData.postalCode,
-                  addressCountry: 'IN'
-                }
-              }
-            }),
-        baseSalary: {
-          '@type': 'MonetaryAmount',
-          currency: 'INR',
-          value: {
-            '@type': 'QuantitativeValue',
-            value: 5000,
-            minValue: 5000,
-            maxValue: 23000,
-            unitText: 'MONTH'
-          }
-        },
-        directApply: true
-      },
       {
         '@type': 'BreadcrumbList',
         itemListElement: [
@@ -183,7 +137,7 @@ export default async function ProgrammaticInternshipPage({ params }: PageProps) 
       {/* Hero Header */}
       <div className="container page-head">
         <div className="doclabel">
-          § 01 — {cityName.toUpperCase()} REGIONAL SPRINT <span className="rev">cohort: 2026</span>
+          § 01 — {cityName.toUpperCase()} REGIONAL SPRINT
         </div>
         <div className="stack-h justify-center align-baseline gap-3 flex-wrap">
           <h1 className="page-title">
@@ -224,7 +178,7 @@ export default async function ProgrammaticInternshipPage({ params }: PageProps) 
 
           <div className="flex justify-center gap-4 flex-wrap">
             <a
-              href={`https://lms.dbert.in/#signup?domain=${role}&next=/internships/${role}/${city}`}
+              href={lmsInternshipSignupUrl(role, city)}
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn-primary btn-lg"
@@ -232,12 +186,12 @@ export default async function ProgrammaticInternshipPage({ params }: PageProps) 
               Apply on LMS (Track Auto-Selected) ↗
             </a>
             <a
-              href={`https://lms.dbert.in/internships/${role}`}
+              href={`https://lms.dbert.in/internships/${role}/${city}`}
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn-outline btn-lg"
             >
-              View All Live Openings on Portal ↗
+              View openings in {cityName} ↗
             </a>
             <Link href="/enroll/1999" className="btn btn-outline btn-lg">
               Confirm Fellowship Seat (₹1,500 Balance) →

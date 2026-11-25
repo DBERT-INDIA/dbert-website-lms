@@ -1,206 +1,28 @@
 import { NextRequest, NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
+import {
+  PaymentClaimSubmissionError,
+  submitEnrollmentPaymentClaim,
+} from '@/lib/enrollment-payment-claim';
 import { PRICING_CONFIG } from '@/config/pricing.config';
-
-interface BalanceSubmission {
-  id: string;
-  submittedAt: string;
-  fullName: string;
-  email: string;
-  phone: string;
-  college: string;
-  domain: string;
-  certId?: string;
-  internId?: string;
-  amountExpected: number;
-  amountClaimed?: number;
-  amountVerified?: number;
-  amountPaid: number;
-  utrNumber: string;
-  remarks?: string;
-  status: 'SUBMITTED' | 'UNDER_REVIEW' | 'VERIFIED' | 'REJECTED';
-  ipAddress?: string;
-  userAgent?: string;
-}
-
-function resolveDataFilePath(): string {
-  // Statically scoped to data folder within cwd
-  const dataDir = path.join(process.cwd(), 'data');
-  if (!fs.existsSync(dataDir)) {
-    try {
-      fs.mkdirSync(dataDir, { recursive: true });
-    } catch {
-      // ignore
-    }
-  }
-  return path.join(dataDir, 'balance_enrollments_1500.json');
-}
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const {
-      fullName,
-      email,
-      phone,
-      college,
-      domain,
-      certId,
-      internId,
-      utrNumber,
-      remarks
-    } = body;
-
-    // Validation
-    if (!fullName || typeof fullName !== 'string' || !fullName.trim()) {
-      return NextResponse.json({ success: false, error: 'Full Legal Name is required.' }, { status: 400 });
-    }
-    if (!email || typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
-      return NextResponse.json({ success: false, error: 'A valid email address is required.' }, { status: 400 });
-    }
-    if (!phone || typeof phone !== 'string' || phone.trim().replace(/\D/g, '').length < 10) {
-      return NextResponse.json({ success: false, error: 'A valid 10-digit contact / WhatsApp number is required.' }, { status: 400 });
-    }
-    if (!domain || typeof domain !== 'string' || !domain.trim()) {
-      return NextResponse.json({ success: false, error: 'Domain Track selection is required.' }, { status: 400 });
-    }
-    if (!utrNumber || typeof utrNumber !== 'string' || utrNumber.trim().length < 6) {
-      return NextResponse.json({ success: false, error: 'A valid 12-digit UPI UTR / Transaction Reference number is required.' }, { status: 400 });
-    }
-
-    const cleanUtr = utrNumber.trim().toUpperCase();
-    const cleanCertId = (certId || '').trim();
-    const cleanInternId = (internId || '').trim();
-
-    // Unique submission reference
-    const timestamp = new Date().toISOString();
-    const randomHex = Math.random().toString(36).substring(2, 6).toUpperCase();
-    const submissionId = `DBERT-ENR-${Date.now().toString().slice(-6)}-${randomHex}`;
-
-    const submissionRecord: BalanceSubmission = {
-      id: submissionId,
-      submittedAt: timestamp,
-      fullName: fullName.trim(),
-      email: email.trim().toLowerCase(),
-      phone: phone.trim(),
-      college: (college || '').trim(),
-      domain: domain.trim(),
-      certId: cleanCertId || undefined,
-      internId: cleanInternId || undefined,
-      amountExpected: PRICING_CONFIG.balancePayable,
-      amountClaimed: PRICING_CONFIG.balancePayable,
-      amountVerified: 0,
-      amountPaid: 0, // Finding DBERT-013: Payment verified only after admin reconciliation
-      utrNumber: cleanUtr,
-      remarks: (remarks || '').trim() || undefined,
-      status: 'SUBMITTED',
-      ipAddress: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || undefined,
-      userAgent: request.headers.get('user-agent') || undefined
-    };
-
-    // Save to persistent storage
-    const targetFile = resolveDataFilePath();
-    let existing: BalanceSubmission[] = [];
-    if (fs.existsSync(targetFile)) {
-      try {
-        const raw = fs.readFileSync(targetFile, 'utf-8');
-        existing = JSON.parse(raw);
-        if (!Array.isArray(existing)) existing = [];
-      } catch {
-        existing = [];
-      }
-    }
-
-    // Check duplicate UTR
-    const duplicate = existing.find(e => e.utrNumber === cleanUtr);
-    if (duplicate) {
-      return NextResponse.json({
-        success: true,
-        alreadySubmitted: true,
-        submissionId: duplicate.id,
-        message: 'This UTR has already been recorded and is currently in verification queue.'
-      });
-    }
-
-    existing.unshift(submissionRecord);
-
-    // Write back atomically
-    const tempFile = `${targetFile}.tmp.${Date.now()}`;
-    fs.writeFileSync(tempFile, JSON.stringify(existing, null, 2), 'utf-8');
-    fs.renameSync(tempFile, targetFile);
-
-    // Also write to log file for easy auditing
-    const logFile = path.join(path.dirname(targetFile), 'balance_enrollments.log');
-    const logLine = `[${timestamp}] SUBMISSION_RECEIVED: ID=${submissionId} CANDIDATE="${fullName}" EMAIL="${email}" PHONE="${phone}" UTR="${cleanUtr}" CERT="${cleanCertId}"\n`;
-    try {
-      fs.appendFileSync(logFile, logLine, 'utf-8');
-    } catch {
-      // non-blocking
-    }
-
-    // Real-Time Convergence: Synchronize atomically to LMS PostgreSQL
-    let lmsSynced = false;
-    let lmsSyncError: string | null = null;
-    try {
-      const syncEndpoint = process.env.INTERNAL_LMS_SYNC_URL || 'https://lms.dbert.in/api/internal/enrollment-sync';
-      const syncSecret = process.env.INTERNAL_SYNC_SECRET || (process.env.NODE_ENV !== 'production' ? 'dbert-secure-sync-token-2026' : '');
-      if (!syncSecret) {
-        throw new Error('INTERNAL_SYNC_SECRET environment variable is required in production.');
-      }
-      
-      const syncRes = await fetch(syncEndpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-DBERT-Internal-Secret': syncSecret
-        },
-        body: JSON.stringify({
-          name: fullName.trim(),
-          email: email.trim().toLowerCase(),
-          phone: phone.trim(),
-          college: (college || '').trim(),
-          domain: domain.trim(),
-          amount: PRICING_CONFIG.balancePayable,
-          payment_type: 'balance',
-          utr: cleanUtr,
-          submission_id: submissionId
-        }),
-        signal: AbortSignal.timeout(5000)
-      });
-
-      if (!syncRes.ok) {
-        const errJson = await syncRes.json().catch(() => ({}));
-        lmsSyncError = errJson.message || `LMS sync returned HTTP ${syncRes.status}`;
-        console.error('[Data Convergence Sync Error]', lmsSyncError);
-        // If client submitted invalid data rejected by LMS validation
-        if (syncRes.status >= 400 && syncRes.status < 500) {
-          return NextResponse.json({
-            success: false,
-            error: errJson.message || 'Enrollment data rejected by verification service. Please verify your details.'
-          }, { status: 400 });
-        }
-      } else {
-        lmsSynced = true;
-      }
-    } catch (syncErr) {
-      lmsSyncError = syncErr instanceof Error ? syncErr.message : String(syncErr);
-      console.error('[Data Convergence Sync Network Error]', lmsSyncError);
-    }
-
+    const body = await request.json().catch(() => null);
+    const receipt = await submitEnrollmentPaymentClaim(body, 'balance', PRICING_CONFIG.balancePayable);
     return NextResponse.json({
-      success: true,
-      submissionId,
-      submittedAt: timestamp,
-      candidateName: fullName.trim(),
-      certId: cleanCertId,
-      domain: domain.trim(),
-      utrNumber: cleanUtr,
-      amount: PRICING_CONFIG.balancePayable,
-      syncStatus: lmsSynced ? 'SYNCHRONIZED' : 'QUEUED_FOR_RECONCILIATION',
-      message: 'Your payment submission has been recorded and submitted for admissions reconciliation.'
-    });
-  } catch (err: any) {
-    return NextResponse.json({ success: false, error: err.message || 'Internal server error' }, { status: 500 });
+      ...receipt,
+      syncStatus: 'SYNCHRONIZED',
+      message: receipt.claimStatus === 'pending'
+        ? 'Your payment claim is pending verification.'
+        : 'This payment claim has already been reviewed.',
+    }, { status: receipt.alreadySubmitted ? 200 : 201 });
+  } catch (error) {
+    if (error instanceof PaymentClaimSubmissionError) {
+      return NextResponse.json({ success: false, error: error.message }, { status: error.status });
+    }
+    return NextResponse.json({
+      success: false,
+      error: 'Payment submission is temporarily unavailable. Please try again shortly.',
+    }, { status: 503 });
   }
 }

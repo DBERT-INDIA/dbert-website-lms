@@ -20,6 +20,12 @@
     <div class="verify-row"><span>Issued</span><b>{{ (cert.issued_at or '')[:10] }}</b></div>
     <div class="verify-row"><span>Certificate ID</span><b class="t-mono">{{ cert.cert_id }}</b></div>
   </div>
+  {% elif credential_status in ('replaced', 'revoked') %}
+  <div class="card auth-card verify-bad" style="max-width:480px">
+    <h1>Certificate {{ credential_status }}</h1>
+    <p>Certificate <b class="t-mono">{{ cert_id }}</b> is no longer valid.</p>
+    {% if replacement_id %}<p><a href="{{ url_for('portal_view_certificate', cert_id=replacement_id) }}">Verify the replacement certificate</a></p>{% endif %}
+  </div>
   {% else %}
   <div class="card auth-card verify-bad" style="max-width:480px">
     <div class="brand-eyebrow"><i class="fa-solid fa-graduation-cap"></i> DBERT</div>

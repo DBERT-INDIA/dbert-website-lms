@@ -33,6 +33,7 @@ interface SubmissionResponse {
   domain: string;
   utrNumber: string;
   amount: number;
+  claimStatus?: 'pending' | 'verified' | 'rejected';
 }
 
 interface ApprovedRecord {
@@ -164,7 +165,7 @@ export default function EnrollmentClient() {
 
       if (data.found && data.candidate) {
         const c: CandidateData = data.candidate;
-        trackEvent('enrollment_candidate_lookup', { found: true, domain: c.domain || 'Unknown', certId: c.certId });
+        trackEvent('enrollment_candidate_lookup', { found: true, domain: c.domain || 'Unknown' });
 
         // Check if candidate already has an approved enrollment
         if (data.isApproved || data.enrollmentStatus === 'APPROVED') {
@@ -358,9 +359,7 @@ export default function EnrollmentClient() {
       const data = await res.json();
       if (data.success) {
         trackEvent('balance_utr_submitted', {
-          submissionId: data.submissionId,
-          certId: certId.trim(),
-          amount: 1500,
+          amount: data.amount,
           domain
         });
         setSubmissionResult({
@@ -370,7 +369,8 @@ export default function EnrollmentClient() {
           certId: certId.trim(),
           domain,
           utrNumber: utrNumber.trim().toUpperCase(),
-          amount: 1500
+          amount: data.amount,
+          claimStatus: data.claimStatus
         });
       } else {
         setSubmitError(data.error || 'Submission failed. Please verify your details and try again.');
@@ -593,13 +593,20 @@ export default function EnrollmentClient() {
 
   // ── Render: Post-Submission Success State (Pending) ──────────────────────────
   if (submissionResult) {
+    const reviewStatus = submissionResult.claimStatus || 'pending';
+    const verified = reviewStatus === 'verified';
     return (
       <div className={s.container}>
         <div className={s.successCard}>
           <div className={s.successIcon}>✓</div>
-          <h1 className={s.successTitle}>Balance Payment Submitted Successfully</h1>
+          <h1 className={s.successTitle}>
+            {verified ? 'Balance payment verified'
+              : reviewStatus === 'rejected' ? 'Balance payment claim rejected' : 'Balance payment claim received'}
+          </h1>
           <p className={s.successDesc}>
-            Your ₹1,999 program payment submission has been securely recorded. The admissions council is validating your 12-digit UTR with bank records.
+            {verified ? 'Admissions matched the payment to your enrollment.'
+              : reviewStatus === 'rejected' ? 'Contact admissions with your receipt reference if you believe this claim should be verified.'
+                : 'Admissions will match your transaction reference and amount against the settlement ledger.'}
           </p>
 
           <div className={s.receiptDetails}>
@@ -622,8 +629,8 @@ export default function EnrollmentClient() {
               <span className={s.receiptVal}>{submissionResult.domain}</span>
             </div>
             <div className={s.receiptRow}>
-              <span className={s.receiptLabel}>Amount Paid (Balance)</span>
-              <span className={s.receiptVal} style={{ color: '#10B981' }}>₹1,999 Paid in Full</span>
+              <span className={s.receiptLabel}>{verified ? 'Verified balance payment' : 'Claimed balance amount'}</span>
+              <span className={s.receiptVal}>{formatINR(submissionResult.amount)}</span>
             </div>
             <div className={s.receiptRow}>
               <span className={s.receiptLabel}>12-Digit UTR / Ref ID</span>
@@ -631,19 +638,23 @@ export default function EnrollmentClient() {
             </div>
             <div className={s.receiptRow}>
               <span className={s.receiptLabel}>Status</span>
-              <span className={s.receiptVal} style={{ color: '#F59E0B' }}>PENDING VERIFICATION (2-4 hrs)</span>
+              <span className={s.receiptVal}>{verified ? 'Verified' : reviewStatus === 'rejected' ? 'Rejected' : 'Pending verification'}</span>
             </div>
           </div>
 
-          <a
+          <a href="https://lms.dbert.in/portal/payment-claims" className={s.backVerifyLink}>
+            View payment status in LMS
+          </a>
+
+          {!verified && <a
             href={generateWhatsAppProofUrl()}
             target="_blank"
             rel="noopener noreferrer"
             className={s.whatsappProofBtn}
-            onClick={() => trackEvent('whatsapp_proof_routing_click', { certId: submissionResult?.certId, submissionId: submissionResult?.submissionId })}
+            onClick={() => trackEvent('whatsapp_proof_routing_click', { source: 'balance_claim' })}
           >
             <span>📲 Send Payment Screenshot via WhatsApp to Admissions</span>
-          </a>
+          </a>}
 
           <div>
             {submissionResult.certId ? (

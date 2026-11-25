@@ -71,7 +71,9 @@ class SpacedReviewScheduler:
         student_id: int,
         concept_id: str,
         category: str,
-        performance_rating: float = 0.8
+        performance_rating: float = 0.8,
+        *,
+        commit=True,
     ) -> Tuple[str, float]:
         """
         Updates gl_student_mastery with newly computed next_review_at and review_interval_days.
@@ -111,7 +113,8 @@ class SpacedReviewScheduler:
             """,
             (next_interval, now_iso, next_review_iso, now_iso, student_id, concept_id)
         )
-        conn.commit()
+        if commit:
+            conn.commit()
 
         return next_review_iso, next_interval
 
