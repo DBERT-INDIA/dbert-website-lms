@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import HandNote from '@/components/ui/HandNote';
-import { GEO_CITIES, GEO_ROLES } from '@/data/geo_domains.config';
+import { GEO_CITIES, GEO_ROLES, generateCityHeadline } from '@/data/geo_domains.config';
 import TrackLeadCaptureForm from '@/components/forms/TrackLeadCaptureForm';
 
 export async function generateStaticParams() {
@@ -32,17 +32,17 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (!roleData || !cityData) {
     return {
-      title: 'Internship Not Found | DBERT',
+      title: 'Internship Not Found',
       description: 'The requested internship category was not found.'
     };
   }
 
   const cityName = cityData.name;
-  const title = `${roleData.title} Internships in ${cityName} (2026 Batch)`;
-  const description = `Apply for ${roleData.title} internships in ${cityName}. Build live client codebases under senior review, secure 100% guaranteed internship placement (internal & external), and graduate with verifiable MSME credentials.`;
+  const title = `${roleData.title} Internship in ${cityName} — 100% Guaranteed Production Internship`;
+  const description = `Apply for ${roleData.title} production internship in ${cityName}. Build live client codebases under senior review, secure 100% Guaranteed Production Internship with Dedicated Placement Assistance, and graduate with verifiable MSME credentials.`;
 
   return {
-    title: `${title} | DBERT`,
+    title,
     description,
     alternates: {
       canonical: `https://dbert.in/internships/${role}/${city}`
@@ -67,6 +67,7 @@ export default async function ProgrammaticInternshipPage({ params }: PageProps) 
 
   const cityName = cityData.name;
   const isRemote = city.toLowerCase() === 'remote';
+  const cityHeadline = generateCityHeadline(roleData.title, cityName);
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -74,7 +75,7 @@ export default async function ProgrammaticInternshipPage({ params }: PageProps) 
       {
         '@type': 'JobPosting',
         title: `${roleData.title} Intern (${cityName})`,
-        description: `<p>${roleData.desc}</p><p><strong>Required Skills:</strong> ${roleData.skills.join(', ')}</p><p><strong>Outcome:</strong> 100% Guaranteed Internship Placement (Internal & External)</p><p><strong>Location:</strong> ${cityName}</p>`,
+        description: `<p>${roleData.desc}</p><p><strong>Required Skills:</strong> ${roleData.skills.join(', ')}</p><p><strong>Outcome:</strong> ${cityHeadline}</p><p><strong>Location:</strong> ${cityName}</p>`,
         datePosted: '2026-11-01T00:00:00+05:30',
         validThrough: '2027-06-30T23:59:59+05:30',
         employmentType: 'INTERN',
@@ -105,17 +106,6 @@ export default async function ProgrammaticInternshipPage({ params }: PageProps) 
                 }
               }
             }),
-        baseSalary: {
-          '@type': 'MonetaryAmount',
-          currency: 'INR',
-          value: {
-            '@type': 'QuantitativeValue',
-            value: 5000,
-            minValue: 5000,
-            maxValue: 23000,
-            unitText: 'MONTH'
-          }
-        },
         directApply: true
       },
       {
@@ -157,7 +147,7 @@ export default async function ProgrammaticInternshipPage({ params }: PageProps) 
             name: `What career outcome is guaranteed for the ${cityName} cohort?`,
             acceptedAnswer: {
               '@type': 'Answer',
-              text: `Fellows receive 100% guaranteed internship placement across internal DBERT portfolio ventures (Gayatri AI, Alkame, Aivara) or verified corporate hiring partners upon completing sprint milestones.`
+              text: `Fellows receive 100% Guaranteed Production Internship with Dedicated Placement Assistance across internal DBERT portfolio ventures (Gayatri AI, Alkame, Aivara) or verified corporate hiring partners upon completing sprint milestones.`
             }
           },
           {
@@ -191,16 +181,16 @@ export default async function ProgrammaticInternshipPage({ params }: PageProps) 
             {roleData.title} Internships in {cityName}
           </h1>
           <HandNote tone="amber">
-            100% guaranteed placement ✎
+            {cityHeadline} ✎
           </HandNote>
         </div>
         <p className="lede-wide">
-          {roleData.desc} Join our embedded venture squads, receive senior pull-request reviews, and graduate with cryptographic MSME credentials.
+          {roleData.desc} Join our embedded venture squads, receive senior pull-request reviews, secure 100% Guaranteed Production Internship with Dedicated Placement Assistance, and graduate with cryptographic MSME credentials.
         </p>
 
         <div className="flex justify-center gap-3 flex-wrap mt-4">
           <span className="proof-mark proof-mark-signal">
-            <span>⚡ 100% Guaranteed Placement</span>
+            <span>⚡ {cityHeadline}</span>
           </span>
           <span className="proof-mark">
             <span>✓ Verified Turnitin Rubrics</span>

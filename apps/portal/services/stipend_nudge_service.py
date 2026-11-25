@@ -11,6 +11,7 @@ completion of LinkedIn experience and engineering case studies.
 import json
 import logging
 import os
+import re
 from datetime import datetime, timedelta
 from typing import Dict, Any, List, Optional
 from urllib.parse import quote
@@ -83,6 +84,7 @@ class StipendNudgeService:
                    COALESCE(e.name, '') AS name,
                    COALESCE(e.domain, '') AS domain,
                    COALESCE(e.batch_label, '') AS batch_label,
+                   COALESCE(e.phone, '') AS phone,
                    e.created_at AS enrolled_at
             FROM enrollments e
             WHERE e.payment_status = 'Accepted' 
@@ -94,6 +96,7 @@ class StipendNudgeService:
                    COALESCE(a.name, '') AS name,
                    COALESCE(a.domain, '') AS domain,
                    'Active Sprint' AS batch_label,
+                   COALESCE(a.phone, '') AS phone,
                    a.created_at AS enrolled_at
             FROM applications a
             WHERE a.status = 'Accepted'
@@ -119,7 +122,7 @@ class StipendNudgeService:
             # 2. Check intern_accounts for profile & links
             acct = conn.execute(
                 """
-                SELECT id, name, domain, college, linkedin_url, linkedin_verified, github_url
+                SELECT id, name, domain, college, linkedin_url, linkedin_verified, github_url, phone
                 FROM intern_accounts
                 WHERE LOWER(email) = ?
                 LIMIT 1
@@ -128,6 +131,11 @@ class StipendNudgeService:
             ).fetchone()
 
             intern_id = acct["id"] if acct else None
+            phone = ""
+            if acct and acct["phone"]:
+                phone = str(acct["phone"]).strip()
+            if not phone and "phone" in r.keys() and r["phone"]:
+                phone = str(r["phone"]).strip()
             linkedin_url = (acct["linkedin_url"] or "").strip() if acct else ""
             github_url = (acct["github_url"] or "").strip() if acct else ""
             linkedin_verified = bool(acct and (acct["linkedin_verified"] or linkedin_url))
@@ -182,23 +190,50 @@ class StipendNudgeService:
             if not g1:
                 next_step = "Link LinkedIn Profile"
                 next_action = "LINK_LINKEDIN"
+                action_url = "https://lms.dbert.in/profile"
             elif not g2:
                 next_step = "Publish Case Study Article"
                 next_action = "SUBMIT_ARTICLE"
+                action_url = "https://lms.dbert.in/blog"
             elif not g3:
                 next_step = "Verify Credential (₹299)"
                 next_action = "VERIFY_CERTIFICATE"
+                action_url = f"https://dbert.in/verify/unlock?email={email}" + (f"&certid={cert_id}" if cert_id else "")
             elif not g4:
                 next_step = "Submit GitHub Repo & Demo"
                 next_action = "SUBMIT_GITHUB"
+                action_url = "https://lms.dbert.in/tasks"
             else:
                 next_step = "₹5,000 Stipend Ready"
                 next_action = "STIPEND_READY"
+                action_url = "https://lms.dbert.in/stipend/tasks"
+
+            # Clean phone for WhatsApp link
+            clean_digits = re.sub(r"[^\d]", "", phone or "")
+            if len(clean_digits) == 10:
+                wa_phone = f"91{clean_digits}"
+            elif len(clean_digits) == 12 and clean_digits.startswith("91"):
+                wa_phone = clean_digits
+            else:
+                wa_phone = clean_digits
+
+            # Pre-filled WhatsApp message
+            wa_text = (
+                f"Hi {name}, Admissions Team here from DBERT.\n\n"
+                f"You are actively enrolled in the DBERT Technical Incubation Fellowship ({domain}). "
+                f"To unlock your ₹5,000 Production Stipend release, your next required milestone is:\n\n"
+                f"🎯 *{next_step}*\n"
+                f"🔗 Complete here: {action_url}\n\n"
+                f"Once submitted, our mentors will verify and clear this gate within 24 hours. "
+                f"Reply here if you need any assistance."
+            )
+            wa_url = f"https://wa.me/{wa_phone}?text={quote(wa_text)}" if wa_phone else f"https://wa.me/?text={quote(wa_text)}"
 
             candidates.append({
                 "intern_id": intern_id,
                 "email": email,
                 "name": name,
+                "phone": phone,
                 "domain": domain,
                 "batch_label": batch_label,
                 "cert_id": cert_id,
@@ -216,6 +251,9 @@ class StipendNudgeService:
                 "unlocked_count": unlocked_count,
                 "next_step": next_step,
                 "next_action": next_action,
+                "action_url": action_url,
+                "wa_url": wa_url,
+                "wa_text": wa_text,
             })
 
         # Sort: Highest unlocked gates and verified first
@@ -283,7 +321,16 @@ class StipendNudgeService:
         plain_body = f"Hello {name},\n\nPlease complete your next step: {next_step} to unlock your ₹5,000 stipend.\nLog into: https://lms.dbert.in/#signin?email={email}\n\nDBERT Operations"
 
         try:
-            return bool(send_fn(email, subject, plain_body, html_body))
+            # send_email_async signature: (to_email, subject, html_body, name="", campaign="transactional")
+            send_fn(to_email=email, subject=subject, html_body=html_body, name=name, campaign="stipend_nudge")
+            return True
+        except TypeError:
+            try:
+                send_fn(email, subject, html_body, name)
+                return True
+            except Exception as ex:
+                logger.error("Failed to send eligibility nudge to %s: %s", email, ex)
+                return False
         except Exception as ex:
             logger.error("Failed to send eligibility nudge to %s: %s", email, ex)
             return False

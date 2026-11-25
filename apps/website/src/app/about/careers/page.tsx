@@ -49,16 +49,6 @@ export default function CareersPage() {
           '@type': 'Country',
           name: 'IN',
         },
-        baseSalary: {
-          '@type': 'MonetaryAmount',
-          currency: 'INR',
-          value: {
-            '@type': 'QuantitativeValue',
-            minValue: 10000,
-            maxValue: 22000,
-            unitText: 'MONTH',
-          },
-        },
         directApply: true,
       },
     ],

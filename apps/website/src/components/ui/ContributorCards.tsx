@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import f from './forms.module.css';
 import s from './ContributorCards.module.css';
@@ -37,28 +37,39 @@ export default function ContributorCards({
   const [loading, setLoading] = useState(true);
   const [errorMsg, setErrorMsg] = useState('');
 
-  const fetchPage = useCallback(async (pageNum: number) => {
-    setLoading(true);
-    setErrorMsg('');
-    try {
-      const endpoint =
-        projectSlug === 'alkame'
-          ? `/api/alkame/contributors?page=${pageNum}`
-          : `/api/projects/${projectSlug}/contributors?page=${pageNum}`;
-      const res = await fetch(endpoint);
-      if (!res.ok) throw new Error('Failed to load contributors');
-      const json: ApiResponse = await res.json();
-      setData(json);
-    } catch (err) {
-      setErrorMsg('Could not load contributors right now.');
-    } finally {
-      setLoading(false);
-    }
-  }, [projectSlug]);
-
   useEffect(() => {
-    fetchPage(page);
-  }, [page, fetchPage]);
+    let ignore = false;
+    const endpoint =
+      projectSlug === 'alkame'
+        ? `/api/alkame/contributors?page=${page}`
+        : `/api/projects/${projectSlug}/contributors?page=${page}`;
+
+    fetch(endpoint)
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to load contributors');
+        return res.json();
+      })
+      .then((json: ApiResponse) => {
+        if (!ignore) {
+          setData(json);
+          setErrorMsg('');
+        }
+      })
+      .catch(() => {
+        if (!ignore) {
+          setErrorMsg('Could not load contributors right now.');
+        }
+      })
+      .finally(() => {
+        if (!ignore) {
+          setLoading(false);
+        }
+      });
+
+    return () => {
+      ignore = true;
+    };
+  }, [page, projectSlug]);
 
   if (loading && !data) {
     return <p className={f.emptyState}>Loading contributors…</p>;
@@ -106,7 +117,12 @@ export default function ContributorCards({
           {Array.from({ length: data.totalPages }, (_, i) => i + 1).map((num) => (
             <button
               key={num}
-              onClick={() => setPage(num)}
+              onClick={() => {
+                if (num !== page) {
+                  setLoading(true);
+                  setPage(num);
+                }
+              }}
               disabled={loading}
               className={`${s.pageBtn}${num === page ? ` ${s.pageBtnActive}` : ''}`}
             >

@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { CheckCircle2, ArrowRight, ShieldCheck, Zap, MessageSquare } from 'lucide-react';
+import { getPublishedTracks } from '@/data/courses.config';
 import s from './TrackLeadCaptureForm.module.css';
 
 export interface TrackLeadCaptureFormProps {
@@ -13,18 +14,10 @@ export interface TrackLeadCaptureFormProps {
   subtitle?: string;
 }
 
-export const DOMAIN_OPTIONS = [
-  { slug: 'ai-agent-development', label: 'AI Agent & Multi-Agent Systems' },
-  { slug: 'generative-ai', label: 'Generative AI & LLM Engineering' },
-  { slug: 'machine-learning', label: 'Machine Learning & Fine-Tuning' },
-  { slug: 'full-stack-development', label: 'Full Stack Web Development' },
-  { slug: 'data-analytics', label: 'Data Analytics & Automated BI' },
-  { slug: 'cybersecurity', label: 'Cybersecurity & Threat Defense' },
-  { slug: 'devops-cloud', label: 'DevOps & Cloud Engineering' },
-  { slug: 'mobile-app-development', label: 'Mobile App Development (Flutter/React Native)' },
-  { slug: 'python-automation', label: 'Python System Automation & Scraping' },
-  { slug: 'ui-ux-design', label: 'UI/UX Design & Product Prototyping' },
-];
+export const DOMAIN_OPTIONS = getPublishedTracks().map((track) => ({
+  slug: track.slug,
+  label: track.name,
+}));
 
 export default function TrackLeadCaptureForm({
   initialDomain = 'ai-agent-development',
@@ -58,14 +51,16 @@ export default function TrackLeadCaptureForm({
       const cityParam = urlParams.get('city') || initialCity;
       const domainParam = urlParams.get('domain') || initialDomain;
 
-      setFormData((prev) => ({
-        ...prev,
-        city: cityParam || prev.city,
-        domain: domainParam || prev.domain,
-        ...(utmSource ? { utmSource } : {}),
-        ...(utmMedium ? { utmMedium } : {}),
-        ...(utmCampaign ? { utmCampaign } : {})
-      }));
+      queueMicrotask(() => {
+        setFormData((prev) => ({
+          ...prev,
+          city: cityParam || prev.city,
+          domain: domainParam || prev.domain,
+          ...(utmSource ? { utmSource } : {}),
+          ...(utmMedium ? { utmMedium } : {}),
+          ...(utmCampaign ? { utmCampaign } : {})
+        }));
+      });
     }
   }, [initialCity, initialDomain]);
 
@@ -177,13 +172,13 @@ export default function TrackLeadCaptureForm({
               onClick={() => handleProgramChange('fellowship')}
             >
               <span>2-Mo Fellowship</span>
-              <span>₹1,999 Fellowship · 100% Placement</span>
+              <span>₹1,999 · 100% Guaranteed Production Internship</span>
             </div>
             <div
               className={`${s.radioLabel} ${formData.programInterest === 'course' ? s.radioLabelActive : ''}`}
               onClick={() => handleProgramChange('course')}
             >
-              <span>3-Mo Paid Course</span>
+              <span>3-Mo Professional Course</span>
               <span>Full Stack Mastery · EMI</span>
             </div>
           </div>
@@ -281,7 +276,7 @@ export default function TrackLeadCaptureForm({
             'Submitting...'
           ) : (
             <>
-              Apply for Fellowship (Guaranteed Placement) <ArrowRight size={16} />
+              Apply for Fellowship (100% Guaranteed Production Internship with Dedicated Placement Assistance) <ArrowRight size={16} />
             </>
           )}
         </button>

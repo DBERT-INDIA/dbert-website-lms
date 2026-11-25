@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { Suspense } from 'react';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { Bot, Sparkles, Cpu, Terminal, Layout, BarChart3 } from 'lucide-react';
 import ProgramDetailTemplate from '@/components/layout/ProgramDetailTemplate';
@@ -24,21 +24,11 @@ function DomainSelectorContent() {
   const pathname = usePathname();
 
   const domainParam = searchParams.get('domain') || searchParams.get('track');
-  const initialDomainId = domainParam && LAUNCHPAD_DOMAINS[domainParam] 
+  const selectedDomainId = domainParam && LAUNCHPAD_DOMAINS[domainParam] 
     ? domainParam 
     : 'ai-agent-development';
 
-  const [selectedDomainId, setSelectedDomainId] = useState<string>(initialDomainId);
-
-  useEffect(() => {
-    if (domainParam && LAUNCHPAD_DOMAINS[domainParam]) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setSelectedDomainId(domainParam);
-    }
-  }, [domainParam]);
-
   const handleSelectDomain = (domainId: string) => {
-    setSelectedDomainId(domainId);
     const params = new URLSearchParams(searchParams.toString());
     params.set('domain', domainId);
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });

@@ -81,32 +81,38 @@ def seed_administrative_personas(conn):
 def seed_application_stages(conn):
     print("-> Seeding Internship Application Stages (Stages 1 through 5)...")
 
-    # Clean up previous test enrollments for stages 1, 2, and 3
-    conn.execute("DELETE FROM enrollments WHERE email IN ('stage1_apply@dbert.test', 'stage2_review@dbert.test', 'stage3_selected@dbert.test')")
+    # Clean up previous test enrollments for stages 0, 1, 2, and 3
+    conn.execute("DELETE FROM enrollments WHERE email IN ('rejected_user@dbert.test', 'stage1_apply@dbert.test', 'stage2_review@dbert.test', 'stage3_selected@dbert.test')")
 
     stages_data = [
+        # Stage 0: Rejected
+        (9100, 'Aarav Kulkarni (Rejected)', 'rejected_user@dbert.test', 'Full Stack Development', 'Rejected', 0, None, None, 'free_deposit', 0),
         # Stage 1: Apply Pending
-        (9101, 'Arun Verma', 'stage1_apply@dbert.test', 'Full Stack Development', 'Apply Pending', None, None),
+        (9101, 'Arun Verma', 'stage1_apply@dbert.test', 'Full Stack Development', 'Apply Pending', 1, None, None, 'free_deposit', 0),
         # Stage 2: Under Review
-        (9102, 'Bhavna Patel', 'stage2_review@dbert.test', 'AI Agent Development', 'Under Review', None, None),
+        (9102, 'Bhavna Patel', 'stage2_review@dbert.test', 'AI Agent Development', 'Under Review', 2, None, None, 'free_deposit', 0),
         # Stage 3: Selected (Waiting for candidate to pick Monday & pay ₹499 caution deposit)
-        (9103, 'Chirag Gupta', 'stage3_selected@dbert.test', 'Data Analyst', 'Selected', None, None),
+        (9103, 'Chirag Gupta', 'stage3_selected@dbert.test', 'Data Analyst', 'Selected', 3, None, None, 'free_deposit', 0),
         # Stage 4: Enrollment Pending (Candidate paid ₹499, waiting for staff review)
-        (9104, 'Divya Rao', 'stage4_pending@dbert.test', 'Python Automation', 'Enrollment Pending', '2026-11-16', 'TEST499UTR001'),
-        # Stage 5: Enrolled (Deposit verified, actively working in sprint cohort)
-        (9105, 'Eshan Sen', 'stage5_enrolled@dbert.test', 'Full Stack Development', 'Enrolled', '2026-11-09', 'TEST499UTR002'),
+        (9104, 'Divya Rao', 'stage4_pending@dbert.test', 'Python Automation', 'Enrollment Pending', 4, '2026-11-16', 'TEST499UTR001', 'free_deposit', 499),
+        # Stage 5A: Enrolled (Deposit verified, actively working in sprint cohort)
+        (9105, 'Eshan Sen', 'stage5_enrolled@dbert.test', 'Full Stack Development', 'Enrolled', 5, (now_ist - timedelta(days=15)).strftime("%Y-%m-%d"), 'TEST499UTR002', 'free_deposit', 499),
+        # Stage 5B: Expired Tenure (Enrolled > 65 days ago: 60d + 5d grace expired, domain unlocked)
+        (9106, 'Meera Nair (Expired Tenure)', 'stage5_expired@dbert.test', 'Data Analyst', 'Enrolled', 5, (now_ist - timedelta(days=80)).strftime("%Y-%m-%d"), 'TEST499UTR003', 'free_deposit', 499),
+        # Stage 5C: Fully Paid ₹1,999 Fellowship
+        (9107, 'Rohan Verma (Paid ₹1,999)', 'fellow_paid_1999@dbert.test', 'AI Agent Development', 'Enrolled', 5, (now_ist - timedelta(days=10)).strftime("%Y-%m-%d"), 'TEST1999UTR004', 'fellowship_1999', 1999),
     ]
 
-    for intern_id, name, email, domain, status, joining_date, utr in stages_data:
+    for intern_id, name, email, domain, status, signup_stage, joining_date, utr, product, amount in stages_data:
         # 1. Intern Account
         conn.execute("""
             INSERT OR REPLACE INTO intern_accounts (
                 id, application_id, name, email, phone, city, college, course, semester,
                 year_of_passing, domain, password_hash, password_set, is_active, created_at, updated_at,
-                email_verified, account_status, gemini_api_key_encrypted
+                email_verified, account_status, signup_stage, gemini_api_key_encrypted
             ) VALUES (?, ?, ?, ?, '+91 98765 43210', 'Bangalore', 'IIT Tech', 'B.Tech CSE', 7, 2026,
-                      ?, ?, 1, 1, ?, ?, 1, 'active', ?)
-        """, (intern_id, intern_id, name, email, domain, TEST_PASSWORD_HASH, now_str, now_str, ENCRYPTED_GEMINI_KEY))
+                      ?, ?, 1, 1, ?, ?, 1, 'active', ?, ?)
+        """, (intern_id, intern_id, name, email, domain, TEST_PASSWORD_HASH, now_str, now_str, signup_stage, ENCRYPTED_GEMINI_KEY))
 
         # 2. Application Record
         conn.execute("""
@@ -133,8 +139,19 @@ def seed_application_stages(conn):
                     year_of_passing, domain, joining_date, batch_label, payment_screenshot, payment_status,
                     admin_note, product, amount, created_at, updated_at
                 ) VALUES (?, ?, ?, ?, ?, '+91 98765 43210', 'Bangalore', 'IIT Tech', 'B.Tech CSE', 7, 2026,
-                          ?, ?, 'Batch-Nov-2026', '/uploads/test_receipt.png', ?, ?, 'free_deposit', 499, ?, ?)
-            """, (intern_id, intern_id, now_str, name, email, domain, joining_date, payment_status, f"UTR: {utr}", now_str, now_str))
+                          ?, ?, 'Batch-Nov-2026', '/uploads/test_receipt.png', ?, ?, ?, ?, ?, ?)
+            """, (intern_id, intern_id, now_str, name, email, domain, joining_date, payment_status, f"UTR: {utr}", product, amount, now_str, now_str))
+
+        if email == 'stage5_expired@dbert.test':
+            # Isolate Invariant 7: verified credential remains valid, UPI set, but tenure (>65d) is expired
+            conn.execute("""
+                UPDATE intern_accounts SET upi_id_encrypted = ?, linkedin_url = 'https://linkedin.com/in/test-qa-9106', linkedin_verified = 1 WHERE id = ?
+            """, (ENCRYPTED_UPI_ID, intern_id))
+            conn.execute("""
+                INSERT OR REPLACE INTO intern_certificates (
+                    id, intern_id, course_id, course_title, cert_id, issued_at, url, tier, email
+                ) VALUES (9106, 9106, 1, 'Data Analyst Advanced Fellowship', 'CERT-DBERT-2026-DA-9106', ?, 'https://dbert.in/verify/CERT-DBERT-2026-DA-9106', 'Executive Gold', ?)
+            """, (joining_date, email))
 
 
 def seed_stipend_progression_scenarios(conn):
@@ -220,9 +237,9 @@ def seed_stipend_progression_scenarios(conn):
             INSERT OR REPLACE INTO intern_accounts (
                 id, application_id, name, email, phone, city, college, course, semester,
                 year_of_passing, domain, password_hash, password_set, is_active, created_at, updated_at,
-                email_verified, account_status, upi_id_encrypted, linkedin_url, linkedin_verified, gemini_api_key_encrypted
+                email_verified, account_status, signup_stage, upi_id_encrypted, linkedin_url, linkedin_verified, gemini_api_key_encrypted
             ) VALUES (?, ?, ?, ?, '+91 98765 11111', 'Mumbai', 'BITS Pilani', 'B.Tech IT', 8, 2026,
-                      ?, ?, 1, 1, ?, ?, 1, 'active', ?, ?, ?, ?)
+                      ?, ?, 1, 1, ?, ?, 1, 'active', 5, ?, ?, ?, ?)
         """, (p["id"], p["id"], p["name"], p["email"], p["domain"], TEST_PASSWORD_HASH,
               now_str, now_str, upi_val, linkedin_val, linkedin_ver, ENCRYPTED_GEMINI_KEY))
 

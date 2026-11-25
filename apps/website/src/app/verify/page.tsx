@@ -51,7 +51,7 @@ function VerifyFormContent() {
   ).trim();
 
   const [certId, setCertId] = useState(initialCertId);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(Boolean(initialCertId));
   const [result, setResult] = useState<VerificationResult | null>(null);
   const [errorMsg, setErrorMsg] = useState('');
   const [showManualSearch, setShowManualSearch] = useState(!initialCertId);
@@ -91,10 +91,35 @@ function VerifyFormContent() {
   }, []);
 
   useEffect(() => {
-    if (initialCertId) {
-      executeVerify(initialCertId);
-    }
-  }, [initialCertId, executeVerify]);
+    if (!initialCertId) return;
+    let ignore = false;
+    fetch(`/api/verify?certid=${encodeURIComponent(initialCertId.trim())}`)
+      .then(res => res.json())
+      .then(data => {
+        if (!ignore) {
+          if (data.verified) {
+            setResult(data);
+            setShowManualSearch(false);
+            trackEvent('certificate_verified', {
+              cert_id: data.certId,
+              program_name: data.programName,
+              domain: data.domain || 'general',
+            });
+          } else {
+            setErrorMsg('Certificate ID not found or invalid.');
+          }
+        }
+      })
+      .catch(() => {
+        if (!ignore) setErrorMsg('Network error. Please try again.');
+      })
+      .finally(() => {
+        if (!ignore) setLoading(false);
+      });
+    return () => {
+      ignore = true;
+    };
+  }, [initialCertId]);
 
   const handleVerify = (e: React.FormEvent) => {
     e.preventDefault();
@@ -175,13 +200,13 @@ function VerifyFormContent() {
                   Action Required: Project Verification &amp; Credential Authentication Pending
                 </div>
                 <p className={s.provisionalBannerDesc}>
-                  Your credential authentication and stipend eligibility are currently provisional pending project verification (₹299). Complete verification to unlock your official 3-document credential dossier and activate public verification.
+                  Your credential authentication and stipend eligibility are currently provisional pending project verification. Complete verification to unlock your official 3-document credential dossier and activate public verification.
                 </p>
                 <Link
-                  href={`/verify/unlock?certid=${encodeURIComponent(result.certId)}`}
+                  href={`/enroll/1999?certid=${encodeURIComponent(result.certId)}`}
                   className={s.provisionalFormBtn}
                 >
-                  Complete Verification &amp; Unlock Official Credentials (₹299) &rarr;
+                  Complete Verification &amp; Unlock Official Credentials &rarr;
                 </Link>
               </div>
             </div>
@@ -320,10 +345,10 @@ function VerifyFormContent() {
                 <div className={s.actionSuite}>
                   {result.isProvisional ? (
                     <Link
-                      href={`/verify/unlock?certid=${encodeURIComponent(result.certId)}`}
+                      href={`/enroll/1999?certid=${encodeURIComponent(result.certId)}`}
                       className={s.btnActivateForm}
                     >
-                      🔒 Unlock Official Credentials (₹299) &rarr;
+                      🔒 Unlock Official Credentials &rarr;
                     </Link>
                   ) : (
                     <>
@@ -657,7 +682,7 @@ function VerifyFormContent() {
               DBERT Technical Fellowship & Incubation
             </span>
             <h2 className={s.fellowTitle}>
-              Launch Your Engineering Career with a Guaranteed Placement Opportunity
+              Launch Your Engineering Career with 100% Guaranteed Production Internship with Dedicated Placement Assistance
             </h2>
             <p className={s.fellowDesc}>
               Skip the uncertain hiring lottery. Follow an elite 60-day incubation pipeline from hands-on engineering training directly into a live production role with DBERT or our ecosystem hiring partners upon completion and verified certification.
@@ -769,7 +794,7 @@ function VerifyFormContent() {
               <div style={{ color: '#E2B96F', fontWeight: 700, fontSize: '0.85rem' }}>Looking to browse all candidates?</div>
               <div style={{ color: '#8A9AB5', fontSize: '0.75rem' }}>Browse all 465 registered interns alphabetically by name</div>
             </div>
-            <a
+            <Link
               href="/verify/directory"
               style={{
                 display: 'inline-flex',
@@ -785,7 +810,7 @@ function VerifyFormContent() {
               }}
             >
               Browse A–Z Directory &rarr;
-            </a>
+            </Link>
           </div>
 
           <form className={`card card-lift ${s.formCard}`} onSubmit={handleVerify}>
@@ -882,7 +907,7 @@ function VerifyFormContent() {
               DBERT Technical Fellowship & Incubation
             </span>
             <h2 className={s.fellowTitle}>
-              Launch Your Engineering Career with a Guaranteed Placement Opportunity
+              Launch Your Engineering Career with 100% Guaranteed Production Internship with Dedicated Placement Assistance
             </h2>
             <p className={s.fellowDesc}>
               Skip the uncertain hiring lottery. Follow an elite 60-day incubation pipeline from hands-on engineering training directly into a live production role with DBERT or our ecosystem hiring partners upon completion and verified certification.
@@ -951,7 +976,7 @@ export default function CertificateVerifyPage() {
     <div className="container pad-block">
       <div className={s.shell}>
         <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '16px' }}>
-          <a
+          <Link
             href="/verify/directory"
             style={{
               display: 'inline-flex',
@@ -968,7 +993,7 @@ export default function CertificateVerifyPage() {
             }}
           >
             Browse Alphabetical Credential Directory &rarr;
-          </a>
+          </Link>
         </div>
         <Suspense
           fallback={

@@ -39,6 +39,48 @@ const nextConfig = {
         destination: 'https://lms.dbert.in/sitemap.xml',
         permanent: true,
       },
+      {
+        source: '/verify/unlock',
+        destination: '/enroll/1999',
+        permanent: true,
+      },
+      {
+        source: '/enroll/balance',
+        destination: '/enroll/1999',
+        permanent: true,
+      },
+      {
+        source: '/eroll',
+        destination: '/enroll/1999',
+        permanent: true,
+      },
+      {
+        source: '/courses',
+        destination: '/learners/courses',
+        permanent: true,
+      },
+      {
+        source: '/courses/data-science',
+        destination: '/learners/courses/data-analytics',
+        permanent: true,
+      },
+      ...[
+        'ai-agent-development',
+        'generative-ai',
+        'machine-learning',
+        'python-automation',
+        'full-stack-development',
+        'data-analytics',
+        'ui-ux-design',
+        'devops-cloud',
+        'mobile-app-development',
+        'cybersecurity',
+        'digital-marketing',
+      ].map((slug) => ({
+        source: `/courses/${slug}`,
+        destination: `/learners/courses/${slug}`,
+        permanent: true,
+      })),
     ];
   },
 };

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useSyncExternalStore } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import s from './enroll.module.css';
@@ -68,13 +68,32 @@ export default function EnrollmentClient() {
   // URL Query Parameters
   const paramCertId = searchParams.get('certid') || searchParams.get('certId') || '';
   const paramEmail = searchParams.get('email') || '';
+  const paramName = searchParams.get('name') || '';
+  const paramPhone = searchParams.get('phone') || '';
+  const paramCollege = searchParams.get('college') || '';
+  const paramDomain = searchParams.get('domain') || '';
+  const paramInternId = searchParams.get('intern_id') || '';
+  const isRejoin = searchParams.get('rejoin') === '1';
   const paramQuery = searchParams.get('q') || paramCertId || paramEmail || '';
+  const isLegacyRedirect = Boolean(paramCertId) && !isRejoin;
+
+  const resolvedInitialDomain =
+    DOMAIN_OPTIONS.find(d => d.toLowerCase() === paramDomain.toLowerCase()) ||
+    paramDomain ||
+    'Data Analyst';
 
   // Lookup State
   const [lookupQuery, setLookupQuery] = useState(paramQuery);
-  const [lookupLoading, setLookupLoading] = useState(false);
-  const [lookupAlert, setLookupAlert] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
-  const [isAutofilled, setIsAutofilled] = useState(false);
+  const [lookupLoading, setLookupLoading] = useState(Boolean(paramQuery) && !isRejoin);
+  const [lookupAlert, setLookupAlert] = useState<{ type: 'success' | 'error'; text: string } | null>(
+    isRejoin && (paramName || paramEmail)
+      ? {
+          type: 'success',
+          text: `✓ Portal profile prefilled for ${paramName || paramEmail}. Complete the ₹1,500 balance payment below to join the new cohort.`
+        }
+      : null
+  );
+  const [isAutofilled, setIsAutofilled] = useState(isRejoin && Boolean(paramName || paramEmail));
 
   // Approved Candidate State & Countdown
   const [approvedRecord, setApprovedRecord] = useState<ApprovedRecord | null>(null);
@@ -87,39 +106,183 @@ export default function EnrollmentClient() {
   });
 
   // Form Fields
-  const [fullName, setFullName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
-  const [college, setCollege] = useState('');
-  const [domain, setDomain] = useState('Data Analyst');
-  const [certId, setCertId] = useState('');
-  const [internId, setInternId] = useState('');
+  const [fullName, setFullName] = useState(paramName);
+  const [email, setEmail] = useState(paramEmail);
+  const [phone, setPhone] = useState(paramPhone);
+  const [college, setCollege] = useState(paramCollege);
+  const [domain, setDomain] = useState(resolvedInitialDomain);
+  const [certId, setCertId] = useState(paramCertId);
+  const [internId, setInternId] = useState(paramInternId);
   const [utrNumber, setUtrNumber] = useState('');
-  const [remarks, setRemarks] = useState('');
+  const [remarks, setRemarks] = useState(isRejoin ? 'REJOIN_COHORT' : '');
 
   // UI / Payment State
   const [copiedVpa, setCopiedVpa] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submissionResult, setSubmissionResult] = useState<SubmissionResponse | null>(null);
-  const [deviceType, setDeviceType] = useState<'desktop' | 'android' | 'ios'>('desktop');
 
   // Detect device platform
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const ua = navigator.userAgent || '';
-      if (/android/i.test(ua)) setDeviceType('android');
-      else if (/iphone|ipad|ipod/i.test(ua)) setDeviceType('ios');
-      else setDeviceType('desktop');
-    }
-  }, []);
+  const deviceType = useSyncExternalStore(
+    () => () => {},
+    () => {
+      const ua = typeof navigator !== 'undefined' ? (navigator.userAgent || '') : '';
+      if (/android/i.test(ua)) return 'android';
+      if (/iphone|ipad|ipod/i.test(ua)) return 'ios';
+      return 'desktop';
+    },
+    () => 'desktop' as const
+  );
 
-  // Autofill on initial mount if param is provided
-  useEffect(() => {
-    if (paramQuery) {
-      handleLookup(paramQuery);
+  const applyCandidateRecord = (data: any, q: string) => {
+    if (data.found && data.candidate) {
+      const c: CandidateData = data.candidate;
+      trackEvent('enrollment_candidate_lookup', { found: true, domain: c.domain || 'Unknown', certId: c.certId });
+
+      // Check if candidate already has an approved enrollment (skip when re-joining a new cohort)
+      if (!isRejoin && (data.isApproved || data.enrollmentStatus === 'APPROVED')) {
+        const defaultCohort = getNextCohortStandup();
+        const startDate = data.batchStartDate || defaultCohort.batchStartDate;
+        const displayDate = data.batchStartDisplay || defaultCohort.batchStartDisplay;
+
+        setApprovedRecord({
+          submissionId: c.submissionId || 'DBERT-ENR-CONFIRMED',
+          candidateName: c.holderName,
+          email: c.email || q,
+          phone: c.phone || '',
+          college: c.college || '',
+          domain: c.domain || 'Full Stack Web Development',
+          certId: c.certId,
+          internId: c.internId,
+          utrNumber: c.utrNumber || 'VERIFIED-UPI',
+          amountPaid: c.amountPaid || PRICING_CONFIG.balancePayable,
+          batchStartDate: startDate,
+          batchStartDisplay: displayDate
+        });
+        setLookupAlert({
+          type: 'success',
+          text: `✓ Official Enrollment Approved for ${c.holderName}! Batch commences ${displayDate}.`
+        });
+        return;
+      }
+
+      // Check if candidate has submitted but pending review (skip when re-joining a new cohort)
+      if (!isRejoin && data.enrollmentStatus === 'SUBMITTED') {
+        setSubmissionResult({
+          submissionId: c.submissionId || 'DBERT-ENR-RECORDED',
+          submittedAt: new Date().toISOString(),
+          candidateName: c.holderName,
+          certId: c.certId,
+          domain: c.domain || 'Data Analyst',
+          utrNumber: c.utrNumber || '',
+          amount: c.amountPaid || 1500
+        });
+        return;
+      }
+
+      // Check if previous balance submission was rejected
+      if (data.enrollmentStatus === 'REJECTED') {
+        setApprovedRecord(null);
+        setSubmissionResult(null);
+        setFullName(c.holderName || '');
+        if (c.email) setEmail(c.email);
+        if (c.phone) setPhone(c.phone);
+        if (c.college) setCollege(c.college);
+        if (c.domain) {
+          const matchOpt = DOMAIN_OPTIONS.find(d => d.toLowerCase() === c.domain?.toLowerCase());
+          setDomain(matchOpt || c.domain);
+        }
+        setCertId(c.certId || '');
+        setInternId(c.internId || '');
+        setIsAutofilled(true);
+        const reason = data.rejectionReason || 'Previous UTR could not be reconciled on the UPI settlement ledger.';
+        setLookupAlert({
+          type: 'error',
+          text: `⚠️ Previous submission unverified: ${reason} Please complete the ₹1,500 balance via QR code or 1-Tap UPI and enter your valid 12-digit UTR below.`
+        });
+        return;
+      }
+
+      // Unenrolled candidate: autofill form
+      setApprovedRecord(null);
+      setFullName(c.holderName || '');
+      if (c.email) setEmail(c.email);
+      if (c.phone) setPhone(c.phone);
+      if (c.college) setCollege(c.college);
+      if (c.domain) {
+        const matchOpt = DOMAIN_OPTIONS.find(d => d.toLowerCase() === c.domain?.toLowerCase());
+        setDomain(matchOpt || c.domain);
+      }
+      setCertId(c.certId || '');
+      setInternId(c.internId || '');
+      setIsAutofilled(true);
+      setLookupAlert({
+        type: 'success',
+        text: `✓ Verified record loaded for ${c.holderName} (${c.certId}). Program Fee: ₹1,999.`
+      });
+    } else {
+      setIsAutofilled(false);
+      setApprovedRecord(null);
+      setLookupAlert({
+        type: 'error',
+        text: 'No matching candidate record found. You can still manually complete the form below.'
+      });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  };
+
+  // Lookup function
+  const handleLookup = async (queryVal?: string) => {
+    const q = (queryVal || lookupQuery).trim();
+    if (!q) {
+      setLookupAlert({ type: 'error', text: 'Please enter a Certificate ID, Intern ID, or Registered Email.' });
+      return;
+    }
+
+    setLookupLoading(true);
+    setLookupAlert(null);
+
+    try {
+      const res = await fetch(`/api/enroll/lookup?q=${encodeURIComponent(q)}`);
+      const data = await res.json();
+      applyCandidateRecord(data, q);
+    } catch (err: any) {
+      setLookupAlert({
+        type: 'error',
+        text: `Lookup connection error: ${err.message}. Please enter details manually.`
+      });
+    } finally {
+      setLookupLoading(false);
+    }
+  };
+
+  // Autofill on initial mount if param is provided (skip lookup when prefilled via rejoin=1)
+  useEffect(() => {
+    if (!paramQuery || isRejoin) return;
+    let ignore = false;
+    fetch(`/api/enroll/lookup?q=${encodeURIComponent(paramQuery.trim())}`)
+      .then(res => res.json())
+      .then(data => {
+        if (!ignore) {
+          applyCandidateRecord(data, paramQuery.trim());
+        }
+      })
+      .catch((err: any) => {
+        if (!ignore) {
+          setLookupAlert({
+            type: 'error',
+            text: `Lookup connection error: ${err.message}. Please enter details manually.`
+          });
+        }
+      })
+      .finally(() => {
+        if (!ignore) {
+          setLookupLoading(false);
+        }
+      });
+
+    return () => {
+      ignore = true;
+    };
   }, [paramQuery]);
 
   // Countdown timer hook when approvedRecord is set
@@ -146,124 +309,6 @@ export default function EnrollmentClient() {
     const interval = setInterval(tick, 1000);
     return () => clearInterval(interval);
   }, [approvedRecord]);
-
-  // Lookup function
-  const handleLookup = async (queryVal?: string) => {
-    const q = (queryVal || lookupQuery).trim();
-    if (!q) {
-      setLookupAlert({ type: 'error', text: 'Please enter a Certificate ID, Intern ID, or Registered Email.' });
-      return;
-    }
-
-    setLookupLoading(true);
-    setLookupAlert(null);
-
-    try {
-      const res = await fetch(`/api/enroll/lookup?q=${encodeURIComponent(q)}`);
-      const data = await res.json();
-
-      if (data.found && data.candidate) {
-        const c: CandidateData = data.candidate;
-        trackEvent('enrollment_candidate_lookup', { found: true, domain: c.domain || 'Unknown', certId: c.certId });
-
-        // Check if candidate already has an approved enrollment
-        if (data.isApproved || data.enrollmentStatus === 'APPROVED') {
-          const defaultCohort = getNextCohortStandup();
-          const startDate = data.batchStartDate || defaultCohort.batchStartDate;
-          const displayDate = data.batchStartDisplay || defaultCohort.batchStartDisplay;
-
-          setApprovedRecord({
-            submissionId: c.submissionId || 'DBERT-ENR-CONFIRMED',
-            candidateName: c.holderName,
-            email: c.email || q,
-            phone: c.phone || '',
-            college: c.college || '',
-            domain: c.domain || 'Full Stack Web Development',
-            certId: c.certId,
-            internId: c.internId,
-            utrNumber: c.utrNumber || 'VERIFIED-UPI',
-            amountPaid: c.amountPaid || PRICING_CONFIG.balancePayable,
-            batchStartDate: startDate,
-            batchStartDisplay: displayDate
-          });
-          setLookupAlert({
-            type: 'success',
-            text: `✓ Official Enrollment Approved for ${c.holderName}! Batch commences ${displayDate}.`
-          });
-          return;
-        }
-
-        // Check if candidate has submitted but pending review
-        if (data.enrollmentStatus === 'SUBMITTED') {
-          setSubmissionResult({
-            submissionId: c.submissionId || 'DBERT-ENR-RECORDED',
-            submittedAt: new Date().toISOString(),
-            candidateName: c.holderName,
-            certId: c.certId,
-            domain: c.domain || 'Data Analyst',
-            utrNumber: c.utrNumber || '',
-            amount: c.amountPaid || 1500
-          });
-          return;
-        }
-
-        // Check if previous balance submission was rejected
-        if (data.enrollmentStatus === 'REJECTED') {
-          setApprovedRecord(null);
-          setSubmissionResult(null);
-          setFullName(c.holderName || '');
-          if (c.email) setEmail(c.email);
-          if (c.phone) setPhone(c.phone);
-          if (c.college) setCollege(c.college);
-          if (c.domain) {
-            const matchOpt = DOMAIN_OPTIONS.find(d => d.toLowerCase() === c.domain?.toLowerCase());
-            setDomain(matchOpt || c.domain);
-          }
-          setCertId(c.certId || '');
-          setInternId(c.internId || '');
-          setIsAutofilled(true);
-          const reason = data.rejectionReason || 'Previous UTR could not be reconciled on the UPI settlement ledger.';
-          setLookupAlert({
-            type: 'error',
-            text: `⚠️ Previous submission unverified: ${reason} Please complete the ₹1,500 balance via QR code or 1-Tap UPI and enter your valid 12-digit UTR below.`
-          });
-          return;
-        }
-
-        // Unenrolled candidate: autofill form
-        setApprovedRecord(null);
-        setFullName(c.holderName || '');
-        if (c.email) setEmail(c.email);
-        if (c.phone) setPhone(c.phone);
-        if (c.college) setCollege(c.college);
-        if (c.domain) {
-          const matchOpt = DOMAIN_OPTIONS.find(d => d.toLowerCase() === c.domain?.toLowerCase());
-          setDomain(matchOpt || c.domain);
-        }
-        setCertId(c.certId || '');
-        setInternId(c.internId || '');
-        setIsAutofilled(true);
-        setLookupAlert({
-          type: 'success',
-          text: `✓ Verified record loaded for ${c.holderName} (${c.certId}). Program Fee: ₹1,999.`
-        });
-      } else {
-        setIsAutofilled(false);
-        setApprovedRecord(null);
-        setLookupAlert({
-          type: 'error',
-          text: 'No matching candidate record found. You can still manually complete the form below.'
-        });
-      }
-    } catch (err: any) {
-      setLookupAlert({
-        type: 'error',
-        text: `Lookup connection error: ${err.message}. Please enter details manually.`
-      });
-    } finally {
-      setLookupLoading(false);
-    }
-  };
 
   // Copy Merchant VPA
   const merchantVpa = PRICING_CONFIG.merchantVpa;
@@ -671,6 +716,36 @@ export default function EnrollmentClient() {
 
       <AITrustBanner />
 
+      {isRejoin && (
+        <div style={{
+          background: '#fffbeb',
+          border: '1px solid #fcd34d',
+          borderRadius: '10px',
+          padding: '14px 18px',
+          marginBottom: '20px',
+          color: '#92400e',
+          fontSize: '13.5px',
+          lineHeight: '1.6'
+        }}>
+          <strong>Re-Joining New Cohort:</strong> Your LMS profile details have been prefilled below. Complete the ₹1,500 balance payment (with your ₹499 caution deposit credited) to activate your new 8-week sprint seat.
+        </div>
+      )}
+
+      {isLegacyRedirect && (
+        <div style={{
+          background: '#ecfdf5',
+          border: '1px solid #6ee7b7',
+          borderRadius: '10px',
+          padding: '14px 18px',
+          marginBottom: '20px',
+          color: '#065f46',
+          fontSize: '13.5px',
+          lineHeight: '1.6'
+        }}>
+          <strong>Notice:</strong> Standalone ₹299 verification fees have been discontinued. Verified credentials, Turnitin evaluation rubrics, and letters of recommendation are fully included in the official Fellowship (₹1,999 all-inclusive).
+        </div>
+      )}
+
       {/* Main Header & Ledger */}
       <div className={s.headerCard}>
         <div className={s.badgeRow}>
@@ -975,6 +1050,43 @@ export default function EnrollmentClient() {
         >
           Submit Proof to Admissions (+91 81929 11360) ↗
         </a>
+      </div>
+
+      {/* Program Guides & Transparency Links */}
+      <div style={{ marginTop: '24px', padding: '18px 20px', borderRadius: '14px', border: '1px solid rgba(255,255,255,0.08)', background: 'rgba(15,23,42,0.55)' }}>
+        <div style={{ fontSize: '0.78rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.07em', color: '#E2B96F', marginBottom: '10px' }}>
+          Program Guides &amp; Transparency
+        </div>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px 18px', fontSize: '0.88rem' }}>
+          <Link
+            href="/blog/dbert-1999-program-non-refundable-value-breakdown"
+            onClick={() => trackEvent('enroll_guide_click', { slug: 'dbert-1999-program-non-refundable-value-breakdown' })}
+            style={{ color: '#93C5FD', textDecoration: 'underline' }}
+          >
+            ₹1,999 Fee &amp; Non-Refundable Policy Breakdown →
+          </Link>
+          <Link
+            href="/blog/dbert-unpaid-internship-vs-paid-corporate-vs-self-learning"
+            onClick={() => trackEvent('enroll_guide_click', { slug: 'dbert-unpaid-internship-vs-paid-corporate-vs-self-learning' })}
+            style={{ color: '#93C5FD', textDecoration: 'underline' }}
+          >
+            DBERT vs. Paid Corporate vs. Self-Learning →
+          </Link>
+          <Link
+            href="/blog/inside-dbert-engineering-sprints-rag-saas-security-qa-ocr-bots"
+            onClick={() => trackEvent('enroll_guide_click', { slug: 'inside-dbert-engineering-sprints-rag-saas-security-qa-ocr-bots' })}
+            style={{ color: '#93C5FD', textDecoration: 'underline' }}
+          >
+            Real Sprint Tracks (RAG, SaaS, Security, QA, OCR, Bots) →
+          </Link>
+          <Link
+            href="/blog/how-to-verify-dbert-internship-and-get-hired"
+            onClick={() => trackEvent('enroll_guide_click', { slug: 'how-to-verify-dbert-internship-and-get-hired' })}
+            style={{ color: '#93C5FD', textDecoration: 'underline' }}
+          >
+            How to Verify Credentials &amp; Get Hired →
+          </Link>
+        </div>
       </div>
     </div>
   );

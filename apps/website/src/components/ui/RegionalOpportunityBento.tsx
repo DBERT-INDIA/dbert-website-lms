@@ -66,7 +66,7 @@ export default function RegionalOpportunityBento({
               <div>
                 <div className={styles.metaRow}>
                   <span className={styles.cityTag}>{opp.cityTag}</span>
-                  <span className={styles.stipendTag}>{opp.placement || opp.stipend || '100% Guaranteed Placement'}</span>
+                  <span className={styles.stipendTag}>{opp.placement || opp.stipend || '100% Guaranteed Production Internship with Dedicated Placement Assistance'}</span>
                 </div>
                 <h3 className={styles.roleTitle}>{opp.title}</h3>
                 <p className={styles.roleDesc}>{opp.roleDescription}</p>

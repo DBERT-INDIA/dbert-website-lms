@@ -50,7 +50,7 @@ export default function Faq({ items, heading = 'Common questions', id = 'faq' }:
         dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
       />
       <h2 id={`${id}-heading`} className="section-heading">{heading}</h2>
-      <FAQAccordion items={items} />
+      <FAQAccordion items={items} trackingContext={id} />
     </section>
   );
 }

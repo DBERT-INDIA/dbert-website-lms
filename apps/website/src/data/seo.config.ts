@@ -338,7 +338,7 @@ export const seoConfig: Record<string, SeoEntry> = {
     keyword: 'remote internships India',
     title: 'Remote Internships in India — Live AI & Web Tracks',
     description:
-      'Find remote internships India in AI, Web & Data. Build production code under senior review, secure 100% guaranteed placement and get verified MSME certs. Apply.',
+      'Find remote internships India in AI, Web & Data. Secure a production internship with dedicated placement assistance and get verified MSME credentials.',
   },
   '/learners/courses': {
     keyword: 'AI courses with certificate India',

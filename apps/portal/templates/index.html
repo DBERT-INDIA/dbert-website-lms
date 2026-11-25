@@ -531,9 +531,18 @@
             <div class="su-step" id="suStep2" style="display:none !important;">
               <div class="form-grid">
                 <div class="form-section-label" style="grid-column:1/-1;font-weight:800;color:#0F172A;font-size:13px;display:flex;justify-content:space-between;align-items:center;">Your academic background <span class="handwritten-tag" style="font-size:0.95rem !important;">Step 2 of 3</span></div>
-                <div class="form-group"><label class="field-label" for="su_city">City *</label>
-                  <select id="su_city" class="field-select"><option value="">-- Select City --</option><option>Delhi</option><option>Mumbai</option><option>Bengaluru</option><option>Hyderabad</option><option>Chennai</option><option>Pune</option><option>Kolkata</option><option>Jaipur</option><option>Ahmedabad</option><option>Lucknow</option><option>Chandigarh</option><option>Bhopal</option><option>Indore</option><option>Noida</option><option>Other</option></select></div>
-                <div class="form-group full"><label class="field-label" for="su_college">College / University *</label><input type="text" id="su_college" class="field-input" placeholder="College / University Name (e.g., VIT, IIT, Delhi University)" autocomplete="off"/></div>
+                <div class="form-group full" style="position:relative;">
+                  <label class="field-label" for="su_college">College / Institution * <span style="color:#64748B;font-size:10.5px;font-weight:500;">(search by name, acronym e.g. VIT / LPU / SRM, or city)</span></label>
+                  <input type="hidden" id="su_institution_id" value=""/>
+                  <input type="hidden" id="su_is_other_inst" value="0"/>
+                  <input type="text" id="su_college" class="field-input" placeholder="Type at least 2 characters to search your college..." autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="suInstDropdown"/>
+                  <div id="suInstDropdown" style="display:none;position:absolute;left:0;right:0;top:100%;margin-top:4px;background:#FFFFFF;border:1px solid #CBD5E1;border-radius:10px;box-shadow:0 12px 28px rgba(15,23,42,0.14);max-height:260px;overflow-y:auto;z-index:120;"></div>
+                  <div id="suInstManualNote" style="display:none;margin-top:6px;padding:6px 10px;background:#FEF3C7;border:1px solid #FDE68A;border-radius:8px;font-size:11.5px;color:#92400E;">
+                    Entering manually &mdash; our team will verify &amp; standardize this institution. <a href="#" onclick="resetInstPicker();return false;" style="color:#B45309;font-weight:700;text-decoration:underline;margin-left:4px;">Search again</a>
+                  </div>
+                </div>
+                <div class="form-group"><label class="field-label" for="su_affiliated_university">Affiliated University <span style="color:#64748B;font-size:10px;">(auto-filled if known)</span></label><input type="text" id="su_affiliated_university" class="field-input" placeholder="e.g., Anna University, VTU, Self / Autonomous" autocomplete="off"/></div>
+                <div class="form-group"><label class="field-label" for="su_city">City *</label><input type="text" id="su_city" class="field-input" placeholder="e.g., Bengaluru, Chennai, Pune" autocomplete="off"/></div>
                 <div class="form-group full"><label class="field-label" for="su_domain">Preferred Internship Track *</label>
                   <select id="su_domain" class="field-select">
                     <option value="">-- Select Preferred Track --</option>
@@ -1025,17 +1034,146 @@
       else{showAuthError('signupError',data.message||'Could not create your account.');}
     }catch(e){setLoading('suBtn1',false);showAuthError('signupError','Network error. Please try again.');}
   }
+  // ── SEARCHABLE INSTITUTION COMBOBOX (Step 2) ──
+  let _instSearchTimer = null;
+  let _instMatches = [];
+  let _instActiveIdx = -1;
+
+  function _escInst(s){ const d=document.createElement('div'); d.textContent=s||''; return d.innerHTML; }
+
+  function closeInstDropdown(){
+    const dd=document.getElementById('suInstDropdown');
+    const inp=document.getElementById('su_college');
+    if(dd) dd.style.display='none';
+    if(inp) inp.setAttribute('aria-expanded','false');
+    _instActiveIdx=-1;
+  }
+
+  function selectInstitutionItem(item){
+    document.getElementById('su_institution_id').value = item.id || '';
+    document.getElementById('su_is_other_inst').value = '0';
+    document.getElementById('su_college').value = item.name || '';
+    const affEl = document.getElementById('su_affiliated_university');
+    const cityEl = document.getElementById('su_city');
+    if(affEl && item.affiliated_university) affEl.value = item.affiliated_university;
+    if(cityEl && item.city) cityEl.value = item.city;
+    const note = document.getElementById('suInstManualNote');
+    if(note) note.style.display='none';
+    closeInstDropdown();
+  }
+
+  function chooseOtherInstitution(){
+    document.getElementById('su_institution_id').value = '';
+    document.getElementById('su_is_other_inst').value = '1';
+    const note = document.getElementById('suInstManualNote');
+    if(note) note.style.display='block';
+    closeInstDropdown();
+  }
+
+  function resetInstPicker(){
+    document.getElementById('su_institution_id').value = '';
+    document.getElementById('su_is_other_inst').value = '0';
+    document.getElementById('su_college').value = '';
+    document.getElementById('su_affiliated_university').value = '';
+    document.getElementById('su_city').value = '';
+    const note = document.getElementById('suInstManualNote');
+    if(note) note.style.display='none';
+    document.getElementById('su_college').focus();
+  }
+  window.resetInstPicker = resetInstPicker;
+
+  function renderInstDropdown(items, query){
+    const dd = document.getElementById('suInstDropdown');
+    const inp = document.getElementById('su_college');
+    if(!dd || !inp) return;
+    _instMatches = items || [];
+    _instActiveIdx = -1;
+    let html = '';
+    if(_instMatches.length === 0){
+      html += '<div style="padding:10px 12px;font-size:12px;color:#64748B;">No matching institution found for "'+_escInst(query)+'".</div>';
+    } else {
+      html += _instMatches.map((it, idx)=>{
+        const sub = [it.affiliated_university, it.city, it.state].filter(Boolean).join(' &middot; ');
+        return '<div class="inst-opt" data-idx="'+idx+'" style="padding:9px 12px;cursor:pointer;border-bottom:1px solid #F1F5F9;display:flex;flex-direction:column;gap:2px;" onmouseover="this.style.background=\'#F8FAFC\'" onmouseout="this.style.background=\'#FFFFFF\'">'
+          + '<div style="font-size:13px;font-weight:700;color:#0F172A;">'+_escInst(it.name)+'</div>'
+          + (sub ? '<div style="font-size:11px;color:#64748B;">'+_escInst(sub)+'</div>' : '')
+          + '</div>';
+      }).join('');
+    }
+    html += '<div id="suInstOtherOpt" style="padding:10px 12px;cursor:pointer;background:#FFFBEB;color:#B45309;font-size:12.5px;font-weight:700;border-top:1px solid #FDE68A;">+ My college is not listed (Enter manually)</div>';
+    dd.innerHTML = html;
+    dd.style.display = 'block';
+    inp.setAttribute('aria-expanded','true');
+
+    dd.querySelectorAll('.inst-opt').forEach(el=>{
+      el.addEventListener('mousedown', function(e){
+        e.preventDefault();
+        const idx = parseInt(this.getAttribute('data-idx'), 10);
+        if(_instMatches[idx]) selectInstitutionItem(_instMatches[idx]);
+      });
+    });
+    const otherBtn = document.getElementById('suInstOtherOpt');
+    if(otherBtn){
+      otherBtn.addEventListener('mousedown', function(e){
+        e.preventDefault();
+        chooseOtherInstitution();
+      });
+    }
+  }
+
+  (function initInstCombobox(){
+    const inp = document.getElementById('su_college');
+    if(!inp) return;
+    inp.addEventListener('input', function(){
+      document.getElementById('su_institution_id').value = '';
+      const q = this.value.trim();
+      if(document.getElementById('su_is_other_inst').value === '1') return;
+      clearTimeout(_instSearchTimer);
+      if(q.length < 2){ closeInstDropdown(); return; }
+      _instSearchTimer = setTimeout(async ()=>{
+        try{
+          const res = await fetch('/api/institutions/search?q='+encodeURIComponent(q)+'&limit=20');
+          const data = await res.json();
+          if(data.status === 'success') renderInstDropdown(data.institutions || [], q);
+        }catch(e){}
+      }, 220);
+    });
+    inp.addEventListener('keydown', function(e){
+      const dd = document.getElementById('suInstDropdown');
+      if(!dd || dd.style.display === 'none') return;
+      const opts = dd.querySelectorAll('.inst-opt');
+      if(e.key === 'ArrowDown'){
+        e.preventDefault();
+        _instActiveIdx = Math.min(_instActiveIdx + 1, opts.length - 1);
+        opts.forEach((o,i)=>o.style.background = (i===_instActiveIdx)?'#EFF6FF':'#FFFFFF');
+      } else if(e.key === 'ArrowUp'){
+        e.preventDefault();
+        _instActiveIdx = Math.max(_instActiveIdx - 1, 0);
+        opts.forEach((o,i)=>o.style.background = (i===_instActiveIdx)?'#EFF6FF':'#FFFFFF');
+      } else if(e.key === 'Enter' && _instActiveIdx >= 0 && _instMatches[_instActiveIdx]){
+        e.preventDefault();
+        selectInstitutionItem(_instMatches[_instActiveIdx]);
+      } else if(e.key === 'Escape'){
+        closeInstDropdown();
+      }
+    });
+    inp.addEventListener('blur', function(){ setTimeout(closeInstDropdown, 180); });
+  })();
+
   async function suNext2(){
     hideAuthError('signupError');
     const city=_suVal('su_city'),college=_suVal('su_college'),course=_suVal('su_course'),
-          semester=_suVal('su_semester'),year=_suVal('su_year'),domain=_suVal('su_domain');
+          semester=_suVal('su_semester'),year=_suVal('su_year'),domain=_suVal('su_domain'),
+          affiliated_university=_suVal('su_affiliated_university'),
+          institution_id=_suVal('su_institution_id'),
+          is_other_institution=(_suVal('su_is_other_inst')==='1');
     if(!city||!college||!course||!semester||!year||!domain){showAuthError('signupError','Please fill in all required fields, including your preferred track.');return;}
-    if(/^(student|college|university|n\/?a|none|nil)$/i.test(college.trim())){
-      showAuthError('signupError','Please enter your actual College or University name (e.g. VIT, IIT, Delhi University).');return;
+    if(/^(student|college|university|n\/?a|none|nil|pending profile)$/i.test(college.trim())){
+      showAuthError('signupError','Please select or enter your actual College or University name.');return;
     }
     setLoading('suBtn2',true);
     try{
-      const res=await fetch('/signup/stage2',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'include',body:JSON.stringify({city,college,course,semester,year_of_passing:year,domain})});
+      const res=await fetch('/signup/stage2',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'include',body:JSON.stringify({city,college,institution_id,affiliated_university,is_other_institution,course,semester,year_of_passing:year,domain})});
       const data=await res.json(); setLoading('suBtn2',false);
       if(data.status==='success'){
         dbertGA('signup_stage2',{});
@@ -1079,7 +1217,8 @@
       if(it.phone)document.getElementById('su_phone').value=it.phone;
       if(st>=2){
         const set=(id,v)=>{const el=document.getElementById(id);if(el&&v)el.value=v;};
-        set('su_city',it.city);set('su_college',it.college);set('su_course',it.course);
+        set('su_city',it.city);set('su_college',it.college);set('su_institution_id',it.institution_id);
+        set('su_affiliated_university',it.affiliated_university);set('su_course',it.course);
         set('su_semester',it.semester);set('su_year',it.year_of_passing);set('su_domain',it.domain);
       }
       suGoStep(st===1?2:3);

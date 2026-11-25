@@ -4,6 +4,7 @@ import React, { useEffect, useState, useTransition } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import AuthorBox from '@/components/blog/AuthorBox';
+import StandardMarkdownRenderer from '@/components/blog/StandardMarkdownRenderer';
 import HandNote from '@/components/ui/HandNote';
 import AdSenseSlot from '@/components/ads/AdSenseSlot';
 import s from '@/app/blog/blog.module.css';
@@ -103,8 +104,10 @@ export default function DynamicBlogReader() {
     }
 
     if (!slug) {
-      setError('No article specified.');
-      setLoading(false);
+      queueMicrotask(() => {
+        setError('No article specified.');
+        setLoading(false);
+      });
       return;
     }
 
@@ -185,8 +188,11 @@ export default function DynamicBlogReader() {
           </div>
         </div>
 
-        <article className={`card ${s.postBody} ${s.mdxContent}`}>
-          {parseMarkdownBlocks(post.content_markdown)}
+        <article className={`${s.postBody} ${s.mdxContent}`}>
+          <StandardMarkdownRenderer
+            content={post.content_markdown}
+            titleToStrip={post.title}
+          />
         </article>
 
         <AdSenseSlot slotId="blog-post-bottom" />

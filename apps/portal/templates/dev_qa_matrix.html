@@ -322,6 +322,24 @@
     <!-- Cluster B: Internship Application Stages 1-5 -->
     <div class="section-title">02 · Internship Application Lifecycle (Stages 1 through 5)</div>
     <div class="section-grid">
+      <!-- Stage 0 -->
+      <div class="card">
+        <div class="card-top">
+          <div class="card-badge-row">
+            <span class="pill pill-red">Stage 0: Rejected</span>
+            <span style="font-size:11px;color:var(--text-sub);">ID: 9100</span>
+          </div>
+          <div class="card-name">Aarav Kulkarni (Rejected)</div>
+          <div class="card-email">rejected_user@dbert.test</div>
+          <div class="card-desc">Application rejected after screening. Tests Stage 0 appeal / re-application state and locked sprint routes.</div>
+          <div class="card-details">
+            <div>Domain: <span>Full Stack Web Development</span></div>
+            <div>Status: <span>Rejected (signup_stage=0)</span></div>
+          </div>
+        </div>
+        <a href="/dev/impersonate?email=rejected_user@dbert.test&target=/portal" class="btn-login">⚡ View Stage 0 on /portal</a>
+      </div>
+
       <!-- Stage 1 -->
       <div class="card">
         <div class="card-top">
@@ -410,6 +428,42 @@
           </div>
         </div>
         <a href="/dev/impersonate?email=stage5_enrolled@dbert.test&target=/portal" class="btn-login">⚡ View Stage 5 on /portal</a>
+      </div>
+
+      <!-- Stage 5B: Expired Tenure -->
+      <div class="card">
+        <div class="card-top">
+          <div class="card-badge-row">
+            <span class="pill pill-amber">Stage 5B: Expired Tenure (&gt;65d)</span>
+            <span style="font-size:11px;color:var(--text-sub);">ID: 9106</span>
+          </div>
+          <div class="card-name">Meera Nair (Expired Tenure)</div>
+          <div class="card-email">stage5_expired@dbert.test</div>
+          <div class="card-desc">Enrolled 80 days ago (past 60d + 5d grace). Tests Phase 5 tenure expiration and unlocked domain switching in Profile.</div>
+          <div class="card-details">
+            <div>Domain: <span>Data Analyst (Editable)</span></div>
+            <div>Status: <span>Tenure Expired (&gt;65d)</span></div>
+          </div>
+        </div>
+        <a href="/dev/impersonate?email=stage5_expired@dbert.test&target=/portal" class="btn-login">⚡ View Stage 5B on /portal</a>
+      </div>
+
+      <!-- Stage 5C: Paid ₹1,999 -->
+      <div class="card">
+        <div class="card-top">
+          <div class="card-badge-row">
+            <span class="pill pill-green">Stage 5C: Paid ₹1,999 Fellowship</span>
+            <span style="font-size:11px;color:var(--text-sub);">ID: 9107</span>
+          </div>
+          <div class="card-name">Rohan Verma (Paid ₹1,999)</div>
+          <div class="card-email">fellow_paid_1999@dbert.test</div>
+          <div class="card-desc">All-inclusive ₹1,999 Fellowship settled. Full sprint tasks, mentorship, and active cohort domain lock enabled.</div>
+          <div class="card-details">
+            <div>Domain: <span>AI Agent Development</span></div>
+            <div>Payment: <span>₹1,999 Settled (Active)</span></div>
+          </div>
+        </div>
+        <a href="/dev/impersonate?email=fellow_paid_1999@dbert.test&target=/tasks" class="btn-login">⚡ View Stage 5C on /tasks</a>
       </div>
     </div>
 

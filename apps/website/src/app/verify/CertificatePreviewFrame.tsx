@@ -98,10 +98,10 @@ export default function CertificatePreviewFrame({
             Form Submission Required to Validate &amp; Release Stipend
           </div>
           <Link
-            href={`/verify/unlock?certid=${encodeURIComponent(certId || '')}`}
+            href={`/enroll/1999?certid=${encodeURIComponent(certId || '')}`}
             className={s.lockedUnlockBtn}
           >
-            Verify &amp; Unlock Official Credentials (₹299) &rarr;
+            Verify &amp; Unlock Official Credentials &rarr;
           </Link>
         </div>
       )}

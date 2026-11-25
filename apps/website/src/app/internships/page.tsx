@@ -14,7 +14,7 @@ export default function InternshipsHubPage() {
       badge: 'Most Popular',
       desc: 'Build production web apps with React 19, Next.js App Router, TypeScript, and PostgreSQL with pgvector indexing.',
       openings: '1,420+ Live Openings',
-      placement: '100% Guaranteed Placement',
+      placement: '100% Guaranteed Production Internship with Dedicated Placement Assistance',
       cities: 'Remote · Bengaluru · Delhi NCR · Mumbai'
     },
     {
@@ -23,7 +23,7 @@ export default function InternshipsHubPage() {
       badge: 'Trending #1',
       desc: 'Construct autonomous AI workflow agents with LangGraph, CrewAI tool-calling loops, and local vLLM / Ollama runtimes.',
       openings: '890+ Live Openings',
-      placement: '100% Guaranteed Placement',
+      placement: '100% Guaranteed Production Internship with Dedicated Placement Assistance',
       cities: 'Remote · Bengaluru · Pune · Hyderabad'
     },
     {
@@ -32,7 +32,7 @@ export default function InternshipsHubPage() {
       badge: 'High Demand',
       desc: 'Engineer SQL query pipelines, programmatically normalise datasets with Pandas, and construct interactive Metabase/Power BI dashboards.',
       openings: '1,150+ Live Openings',
-      placement: '100% Guaranteed Placement',
+      placement: '100% Guaranteed Production Internship with Dedicated Placement Assistance',
       cities: 'Remote · Delhi NCR · Mumbai · Bengaluru'
     },
     {
@@ -41,7 +41,7 @@ export default function InternshipsHubPage() {
       badge: 'Fast-Track',
       desc: 'Write concurrent Playwright scrapers, configure Celery/Redis task workers, and automate high-throughput data extraction.',
       openings: '740+ Live Openings',
-      placement: '100% Guaranteed Placement',
+      placement: '100% Guaranteed Production Internship with Dedicated Placement Assistance',
       cities: 'Remote · Pune · Hyderabad · Chennai'
     },
     {
@@ -50,7 +50,7 @@ export default function InternshipsHubPage() {
       badge: 'Infrastructure',
       desc: 'Deploy Docker microservices, configure Kubernetes clusters, build automated GitHub Actions CI/CD pipelines, and manage AWS EC2/VPC.',
       openings: '620+ Live Openings',
-      placement: '100% Guaranteed Placement',
+      placement: '100% Guaranteed Production Internship with Dedicated Placement Assistance',
       cities: 'Remote · Bengaluru · Noida · Hyderabad'
     },
     {
@@ -59,7 +59,7 @@ export default function InternshipsHubPage() {
       badge: 'Design Track',
       desc: 'Design component libraries, auto-layout tokens, UX research journeys, and interactive high-fidelity prototypes in Figma.',
       openings: '580+ Live Openings',
-      placement: '100% Guaranteed Placement',
+      placement: '100% Guaranteed Production Internship with Dedicated Placement Assistance',
       cities: 'Remote · Mumbai · Delhi · Bengaluru'
     },
     {
@@ -68,7 +68,7 @@ export default function InternshipsHubPage() {
       badge: 'High Security',
       desc: 'Audit web endpoints for OWASP Top 10 vulnerabilities, conduct network pen-testing with Burp Suite, and implement SOC log pipelines.',
       openings: '490+ Live Openings',
-      placement: '100% Guaranteed Placement',
+      placement: '100% Guaranteed Production Internship with Dedicated Placement Assistance',
       cities: 'Remote · Bengaluru · Hyderabad · Pune'
     },
     {
@@ -77,7 +77,7 @@ export default function InternshipsHubPage() {
       badge: 'Cross-Platform',
       desc: 'Develop native-grade cross-platform apps with Flutter, Dart, Riverpod state management, and SQLite offline synchronization.',
       openings: '520+ Live Openings',
-      placement: '100% Guaranteed Placement',
+      placement: '100% Guaranteed Production Internship with Dedicated Placement Assistance',
       cities: 'Remote · Delhi NCR · Chennai · Bengaluru'
     },
     {
@@ -86,7 +86,7 @@ export default function InternshipsHubPage() {
       badge: 'Deep Tech',
       desc: 'Fine-tune open-weights LLMs with LoRA/QLoRA, construct dense vector search with Reciprocal Rank Fusion, and deploy vLLM.',
       openings: '680+ Live Openings',
-      placement: '100% Guaranteed Placement',
+      placement: '100% Guaranteed Production Internship with Dedicated Placement Assistance',
       cities: 'Remote · Bengaluru · Hyderabad · Mumbai'
     }
   ];
@@ -121,11 +121,11 @@ export default function InternshipsHubPage() {
             Remote Internships Across India
           </h1>
           <HandNote tone="amber">
-            live client repos · 100% guaranteed placement ✎
+            live client repos · 100% Guaranteed Production Internship with Dedicated Placement Assistance ✎
           </HandNote>
         </div>
         <p className="lede-wide">
-          Explore over 10,000 verified internship opportunities and startup engineering sprints. Build production software under senior review, secure guaranteed internship placement (internal & external), and graduate with cryptographic MSME credentials.
+          Explore over 10,000 verified internship opportunities and startup engineering sprints. Build production software under senior review, secure 100% Guaranteed Production Internship with Dedicated Placement Assistance, and graduate with cryptographic MSME credentials.
         </p>
 
         <div className="flex justify-center gap-3 flex-wrap mt-4">
@@ -133,7 +133,7 @@ export default function InternshipsHubPage() {
             <span>⚡ 6,700+ Internships on Portal</span>
           </span>
           <span className="proof-mark">
-            <span>100% Guaranteed Placement</span>
+            <span>100% Guaranteed Production Internship with Dedicated Placement Assistance</span>
           </span>
           <span className="proof-mark">
             <span>✓ Turnitin Originality Rubrics</span>
@@ -229,7 +229,7 @@ export default function InternshipsHubPage() {
         <div className="container">
           <div className="doclabel mb-2">§ 04 — INCUBATION FELLOWSHIP &amp; SEAT CONFIRMATION</div>
           <div className="bento-card cta-panel text-center">
-            <h2 className="card-title">Join the Paid Applied AI Fellowship</h2>
+            <h2 className="card-title">Join the Applied AI Fellowship</h2>
             <p className="page-lede max-w-2xl mx-auto mb-6">
               Skip traditional queues and join an embedded venture sprint building live production systems for incubated startups. 2-month sprints, senior pull request code reviews, and guaranteed MSME credential issuance.
             </p>
@@ -239,6 +239,20 @@ export default function InternshipsHubPage() {
               </Link>
               <Link href="/learners/fellowship" className="btn btn-outline btn-lg">
                 Inspect Fellowship Curriculum →
+              </Link>
+            </div>
+            <div className="mt-6 pt-5 border-t border-line/50 flex justify-center gap-4 flex-wrap text-xs">
+              <Link href="/blog/inside-dbert-engineering-sprints-rag-saas-security-qa-ocr-bots" className="text-accent hover:underline">
+                Inside DBERT Sprints (RAG, SaaS, OWASP, QA, OCR, Bots) →
+              </Link>
+              <Link href="/blog/dbert-unpaid-internship-vs-paid-corporate-vs-self-learning" className="text-accent hover:underline">
+                Unpaid vs. Paid vs. Self-Learning Comparison →
+              </Link>
+              <Link href="/blog/dbert-1999-program-non-refundable-value-breakdown" className="text-accent hover:underline">
+                ₹1,999 Fee &amp; Deliverables Breakdown →
+              </Link>
+              <Link href="/blog/how-to-verify-dbert-internship-and-get-hired" className="text-accent hover:underline">
+                How to Verify &amp; Get Hired →
               </Link>
             </div>
           </div>

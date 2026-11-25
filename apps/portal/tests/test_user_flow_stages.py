@@ -37,8 +37,19 @@ class TestUserFlowStages(unittest.TestCase):
             conn.execute("DELETE FROM intern_accounts WHERE email LIKE '%@stagetest.dbert.in'")
             conn.commit()
 
-    def test_stage_1_under_review(self):
-        """Candidate who only applied is in Under Review stage."""
+    def test_stage_1_application_required(self):
+        """Candidate without application is in Application Required stage."""
+        email = "candidate.new@stagetest.dbert.in"
+        with get_db() as conn:
+            conn.execute("INSERT INTO intern_accounts (name, email, domain, is_active) VALUES ('Candidate Zero', ?, NULL, 1)", (email,))
+            conn.commit()
+
+            st = get_intern_stage_and_next_action(conn, email)
+            self.assertEqual(st["stage_num"], 1)
+            self.assertEqual(st["stage"], "APPLICATION_REQUIRED")
+
+    def test_stage_2_under_review(self):
+        """Candidate who only applied is in Under Review stage (Stage 2)."""
         email = "candidate.applied@stagetest.dbert.in"
         with get_db() as conn:
             conn.execute("""
@@ -49,12 +60,13 @@ class TestUserFlowStages(unittest.TestCase):
             conn.commit()
 
             st = get_intern_stage_and_next_action(conn, email)
-            self.assertEqual(st["stage_num"], 1)
-            self.assertEqual(st["stage_name"], "Under Review")
-            self.assertIn("/courses", st["primary_cta_url"])
+            self.assertEqual(st["stage_num"], 2)
+            self.assertEqual(st["stage"], "UNDER_REVIEW")
+            self.assertIn("Under Review", st["stage_name"])
+            self.assertEqual(st["primary_cta_url"], "/portal/offer")
 
-    def test_stage_2_selected_pending_deposit(self):
-        """Selected candidate without deposit has Next Action to review terms and confirm seat."""
+    def test_stage_3_selected_pending_deposit(self):
+        """Selected candidate without deposit is in Stage 3 with CTA to review offer."""
         email = "candidate.selected@stagetest.dbert.in"
         with get_db() as conn:
             conn.execute("""
@@ -65,50 +77,33 @@ class TestUserFlowStages(unittest.TestCase):
             conn.commit()
 
             st = get_intern_stage_and_next_action(conn, email)
-            self.assertEqual(st["stage_num"], 2)
-            self.assertEqual(st["stage_name"], "Selected · Action Required")
+            self.assertEqual(st["stage_num"], 3)
+            self.assertEqual(st["stage"], "SELECTED")
             self.assertEqual(st["primary_cta_url"], "/portal/offer")
 
-    def test_stage_3_deposit_verification_in_progress(self):
-        """Candidate with submitted ₹499 UTR sees Verification in Progress."""
+    def test_stage_4_deposit_verification_in_progress(self):
+        """Candidate with submitted ₹499 UTR sees Verification in Progress (Stage 4)."""
         email = "candidate.submitted@stagetest.dbert.in"
         with get_db() as conn:
             conn.execute("""
-                INSERT INTO enrollments (name, email, phone, college, domain, joining_date, payment_status, utr, amount)
-                VALUES ('Candidate Three', ?, '9000000003', 'DU', 'Data Analyst', '2026-11-09', 'Pending Verification', '123456789012', 499)
+                INSERT INTO enrollments (name, email, phone, college, domain, joining_date, payment_status, utr, amount, timestamp)
+                VALUES ('Candidate Three', ?, '9000000003', 'DU', 'Data Analyst', '2026-11-09', 'Pending Verification', '123456789012', 499, datetime('now'))
             """, (email,))
             conn.execute("INSERT INTO intern_accounts (name, email, domain, is_active) VALUES ('Candidate Three', ?, 'Data Analyst', 1)", (email,))
             conn.commit()
 
             st = get_intern_stage_and_next_action(conn, email)
-            self.assertEqual(st["stage_num"], 3)
-            self.assertEqual(st["stage_name"], "Verification in Progress")
-            self.assertEqual(st["primary_cta_url"], "/portal/offer")
-
-    def test_stage_4_official_offer_unlocked(self):
-        """Candidate with verified deposit can sign official offer letter."""
-        email = "candidate.verified@stagetest.dbert.in"
-        with get_db() as conn:
-            conn.execute("""
-                INSERT INTO enrollments (name, email, phone, college, domain, joining_date, payment_status, utr, amount)
-                VALUES ('Candidate Four', ?, '9000000004', 'DU', 'Data Analyst', '2026-11-09', 'Verified', '123456789012', 499)
-            """, (email,))
-            conn.execute("INSERT INTO intern_accounts (name, email, domain, is_active) VALUES ('Candidate Four', ?, 'Data Analyst', 1)", (email,))
-            conn.commit()
-
-            st = get_intern_stage_and_next_action(conn, email)
             self.assertEqual(st["stage_num"], 4)
-            self.assertEqual(st["stage_name"], "Official Offer Unlocked")
-            self.assertIn("Sign", st["primary_cta_label"])
-            self.assertEqual(st["primary_cta_url"], "/portal/offer")
+            self.assertEqual(st["stage"], "PAYMENT_PENDING")
+            self.assertIn("Verification", st["stage_badge"])
 
     def test_stage_5_active_sprint_with_attendance_tracking(self):
-        """Accepted/signed candidate in active sprint tracks weekly 10 hrs login."""
+        """Confirmed fellow in active sprint (Stage 5) tracks weekly 10 hrs login."""
         email = "candidate.active@stagetest.dbert.in"
         with get_db() as conn:
             conn.execute("""
-                INSERT INTO enrollments (name, email, phone, college, domain, joining_date, payment_status, utr, amount)
-                VALUES ('Candidate Five', ?, '9000000005', 'DU', 'Data Analyst', '2026-11-09', 'Verified', '123456789012', 499)
+                INSERT INTO enrollments (name, email, phone, college, domain, joining_date, payment_status, utr, amount, timestamp)
+                VALUES ('Candidate Five', ?, '9000000005', 'DU', 'Data Analyst', '2026-11-09', 'Verified', '123456789012', 499, datetime('now'))
             """, (email,))
             cur = conn.execute("INSERT INTO intern_accounts (name, email, domain, is_active) VALUES ('Candidate Five', ?, 'Data Analyst', 1)", (email,))
             intern_id = cur.lastrowid
@@ -120,17 +115,16 @@ class TestUserFlowStages(unittest.TestCase):
 
             st = get_intern_stage_and_next_action(conn, email)
             self.assertEqual(st["stage_num"], 5)
-            self.assertEqual(st["stage_name"], "Active Sprint")
+            self.assertEqual(st["stage"], "CONFIRMED")
             self.assertEqual(st["hours_target"], 10)
-            self.assertIn("/courses", st["primary_cta_url"])
 
     def test_cross_domain_attendance_cors_and_ping(self):
         """Attendance endpoint accepts OPTIONS preflight from dbert.in and logs presence."""
         email = "attendance.test@stagetest.dbert.in"
         with get_db() as conn:
             conn.execute("""
-                INSERT INTO enrollments (name, email, phone, college, domain, joining_date, payment_status, amount)
-                VALUES ('Att Tester', ?, '9000000006', 'DU', 'Data Analyst', '2026-11-09', 'Verified', 499)
+                INSERT INTO enrollments (name, email, phone, college, domain, joining_date, payment_status, amount, timestamp)
+                VALUES ('Att Tester', ?, '9000000006', 'DU', 'Data Analyst', '2026-11-09', 'Verified', 499, datetime('now'))
             """, (email,))
             cur = conn.execute("INSERT INTO intern_accounts (name, email, domain, is_active) VALUES ('Att Tester', ?, 'Data Analyst', 1)", (email,))
             intern_id = cur.lastrowid

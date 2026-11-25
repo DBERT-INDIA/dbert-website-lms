@@ -78,10 +78,11 @@ const FEATURED_ENGINEERS: FeaturedEngineer[] = [
 
 export default function UnlockClient() {
   const searchParams = useSearchParams();
+  const initialQuery = searchParams.get('certid') || searchParams.get('email') || searchParams.get('q') || '';
 
   // Search / Lookup state
-  const [lookupQuery, setLookupQuery] = useState('');
-  const [isSearching, setIsSearching] = useState(false);
+  const [lookupQuery, setLookupQuery] = useState(initialQuery);
+  const [isSearching, setIsSearching] = useState(Boolean(initialQuery));
   const [candidate, setCandidate] = useState<CandidateProfile | null>(null);
 
   // Form inputs
@@ -105,14 +106,54 @@ export default function UnlockClient() {
   const MERCHANT_NAME = 'DBERT Admissions';
   const VERIFY_AMOUNT = 299;
 
-  // Read initial query params from URL
-  useEffect(() => {
-    const q = searchParams.get('certid') || searchParams.get('email') || searchParams.get('q') || '';
-    if (q) {
-      setLookupQuery(q);
-      executeLookup(q);
+  const applyCandidateProfile = (data: any, clean: string) => {
+    if (data.found && data.candidate) {
+      const c = data.candidate;
+      setCandidate(c);
+      if (c.holderName) setFullName(c.holderName);
+      if (c.email && !c.email.includes('***')) setEmail(c.email);
+      if (c.phone && !c.phone.includes('***')) setPhone(c.phone);
+      if (c.college) setCollege(c.college);
+      if (c.domain) setDomain(c.domain);
+      if (c.certId) setCertId(c.certId);
+
+      // Check if already submitted
+      if (data.verificationSubmission) {
+        const vs = data.verificationSubmission;
+        if (vs.status === 'REJECTED' || data.verificationStatus === 'REJECTED') {
+          setRejectionAlert(
+            data.rejectionRemarks ||
+            vs.adminRemarks ||
+            'Action Required: Your previous ₹299 verification fee payment could not be verified in the bank audit. Please complete repayment of ₹299 below and submit your updated 12-digit UTR.'
+          );
+          setSubmittedResult(null);
+        } else {
+          setRejectionAlert('');
+          setSubmittedResult({
+            submissionId: vs.id,
+            utrNumber: vs.utrNumber,
+            amountPaid: vs.amountPaid || 299,
+            fullName: vs.fullName,
+            email: vs.email,
+            phone: vs.phone,
+            domain: vs.domain,
+            certId: vs.certId,
+            submittedAt: vs.submittedAt,
+            alreadySubmitted: true
+          });
+        }
+      } else {
+        setRejectionAlert('');
+      }
+    } else {
+      // Fallback: if query looks like a Cert ID, set it
+      if (clean.toUpperCase().startsWith('CERT-')) {
+        setCertId(clean.toUpperCase());
+      } else if (clean.includes('@')) {
+        setEmail(clean.toLowerCase());
+      }
     }
-  }, [searchParams]);
+  };
 
   const executeLookup = async (queryText: string) => {
     const clean = queryText.trim();
@@ -124,59 +165,33 @@ export default function UnlockClient() {
     try {
       const res = await fetch(`/api/enroll/lookup?q=${encodeURIComponent(clean)}`);
       const data = await res.json();
-
-      if (data.found && data.candidate) {
-        const c = data.candidate;
-        setCandidate(c);
-        if (c.holderName) setFullName(c.holderName);
-        if (c.email && !c.email.includes('***')) setEmail(c.email);
-        if (c.phone && !c.phone.includes('***')) setPhone(c.phone);
-        if (c.college) setCollege(c.college);
-        if (c.domain) setDomain(c.domain);
-        if (c.certId) setCertId(c.certId);
-
-        // Check if already submitted
-        if (data.verificationSubmission) {
-          const vs = data.verificationSubmission;
-          if (vs.status === 'REJECTED' || data.verificationStatus === 'REJECTED') {
-            setRejectionAlert(
-              data.rejectionRemarks ||
-              vs.adminRemarks ||
-              'Action Required: Your previous ₹299 verification fee payment could not be verified in the bank audit. Please complete repayment of ₹299 below and submit your updated 12-digit UTR.'
-            );
-            setSubmittedResult(null);
-          } else {
-            setRejectionAlert('');
-            setSubmittedResult({
-              submissionId: vs.id,
-              utrNumber: vs.utrNumber,
-              amountPaid: vs.amountPaid || 299,
-              fullName: vs.fullName,
-              email: vs.email,
-              phone: vs.phone,
-              domain: vs.domain,
-              certId: vs.certId,
-              submittedAt: vs.submittedAt,
-              alreadySubmitted: true
-            });
-          }
-        } else {
-          setRejectionAlert('');
-        }
-      } else {
-        // Fallback: if query looks like a Cert ID, set it
-        if (clean.toUpperCase().startsWith('CERT-')) {
-          setCertId(clean.toUpperCase());
-        } else if (clean.includes('@')) {
-          setEmail(clean.toLowerCase());
-        }
-      }
+      applyCandidateProfile(data, clean);
     } catch {
       // ignore network lookup error
     } finally {
       setIsSearching(false);
     }
   };
+
+  // Read initial query params from URL
+  useEffect(() => {
+    if (!initialQuery) return;
+    let ignore = false;
+    fetch(`/api/enroll/lookup?q=${encodeURIComponent(initialQuery.trim())}`)
+      .then(res => res.json())
+      .then(data => {
+        if (!ignore) {
+          applyCandidateProfile(data, initialQuery.trim());
+        }
+      })
+      .catch(() => {})
+      .finally(() => {
+        if (!ignore) setIsSearching(false);
+      });
+    return () => {
+      ignore = true;
+    };
+  }, [initialQuery]);
 
   const handleCopyVpa = () => {
     if (navigator?.clipboard) {
@@ -693,9 +708,9 @@ export default function UnlockClient() {
                 <td className={s.verifiedCol}>✓ 1-Click Recruiter Messaging &amp; Inbound</td>
               </tr>
               <tr>
-                <td className={s.featureCol}>Capstone Performance Stipend</td>
+                <td className={s.featureCol}>Capstone Performance Rewards</td>
                 <td className={s.provisionalCol}>🔒 Locked Gate 1</td>
-                <td className={s.verifiedCol}>✓ Eligible for ₹5,000 Milestone Payout</td>
+                <td className={s.verifiedCol}>✓ Eligible for Milestone Performance Reward</td>
               </tr>
             </tbody>
           </table>
@@ -760,7 +775,7 @@ export default function UnlockClient() {
             <span className={`${s.valueCardTag} ${s.tagStipend}`}>Financial Benefit</span>
             <h3 className={s.valueCardTitle}>Performance Stipend Access</h3>
             <p className={s.valueCardDesc}>
-              Unlocks verified candidate status required to submit pull requests on /stipend/tasks and withdraw milestone performance rewards (₹5,000–₹18,000) directly via UPI.
+              Unlocks verified candidate status required to submit pull requests on /stipend/tasks and withdraw performance-indexed internal milestone bounties directly via UPI.
             </p>
           </div>
         </div>

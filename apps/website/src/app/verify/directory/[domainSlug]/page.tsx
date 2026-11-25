@@ -66,8 +66,10 @@ export default async function DomainDirectoryPage({ params }: DomainPageProps) {
     notFound();
   }
 
-  const allCandidates = directoryData as CandidateDirectoryItem[];
-  const domainCandidates = allCandidates.filter(
+  const allVerifiedCandidates = (directoryData as CandidateDirectoryItem[])
+    .filter((c) => !c.isProvisional && (c.status?.toUpperCase() === 'VERIFIED' || c.verified === true))
+    .sort((a, b) => (b.score || 0) - (a.score || 0) || a.holderName.localeCompare(b.holderName) || a.certId.localeCompare(b.certId));
+  const domainCandidates = allVerifiedCandidates.filter(
     (c) => normalizeDomainToSlug(c.domain) === domain.slug
   );
 
@@ -81,7 +83,7 @@ export default async function DomainDirectoryPage({ params }: DomainPageProps) {
     description: domain.description,
     url: pageUrl,
     numberOfItems: domainCandidates.length,
-    itemListElement: domainCandidates.slice(0, 30).map((cand, idx) => ({
+    itemListElement: domainCandidates.slice(0, 35).map((cand, idx) => ({
       '@type': 'ListItem',
       position: idx + 1,
       item: {
@@ -154,7 +156,7 @@ export default async function DomainDirectoryPage({ params }: DomainPageProps) {
 
       {/* Main Interactive Directory Client */}
       <DirectoryClient
-        candidates={allCandidates}
+        candidates={allVerifiedCandidates}
         currentDomainSlug={domain.slug}
         customHeadline={domain.headline}
         customDescription={domain.description}

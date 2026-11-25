@@ -74,24 +74,28 @@ export default function AivaraCohortForm() {
   });
 
   // Restore draft from sessionStorage
-  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     try {
       const saved = sessionStorage.getItem('aivara_cohort_draft');
       const savedStep = sessionStorage.getItem('aivara_cohort_step');
-      if (saved) {
-        setFormData(prev => ({ ...prev, ...JSON.parse(saved) }));
-      }
-      if (savedStep) {
-        const stepNum = parseInt(savedStep, 10);
-        if (stepNum >= 1 && stepNum <= 3) setStep(stepNum);
-      }
+      queueMicrotask(() => {
+        if (saved) {
+          try {
+            setFormData(prev => ({ ...prev, ...JSON.parse(saved) }));
+          } catch {}
+        }
+        if (savedStep) {
+          const stepNum = parseInt(savedStep, 10);
+          if (stepNum >= 1 && stepNum <= 3) setStep(stepNum);
+        }
+        setIsHydrated(true);
+      });
     } catch {
-      // Ignore storage read errors
+      queueMicrotask(() => {
+        setIsHydrated(true);
+      });
     }
-    setIsHydrated(true);
   }, []);
-  /* eslint-enable react-hooks/set-state-in-effect */
 
   // Sync draft to sessionStorage
   useEffect(() => {

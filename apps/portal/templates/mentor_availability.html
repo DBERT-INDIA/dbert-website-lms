@@ -9,10 +9,31 @@
      DBERT LMS — MENTOR GROUP AVAILABILITY MANAGEMENT STYLING
      CSP Nonce Compliant & Self-Contained
      ========================================================================== */
+  .pg-mentor-availability main.main-content,
+  .pg-mentor-availability main {
+    margin-left: var(--sidebar-w, 240px) !important;
+    width: calc(100% - var(--sidebar-w, 240px)) !important;
+    min-height: 100vh;
+    box-sizing: border-box;
+    padding: 0;
+  }
   .availability-wrap {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem 1rem 4rem;
+    max-width: 1180px;
+    width: 100%;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding: 2rem 1.5rem 4rem;
+    box-sizing: border-box;
+  }
+  @media (max-width: 768px) {
+    .pg-mentor-availability main.main-content,
+    .pg-mentor-availability main {
+      margin-left: 0 !important;
+      width: 100% !important;
+    }
+    .availability-wrap {
+      padding: 4.5rem 1rem 4rem !important;
+    }
   }
 
   .header-card {
@@ -278,7 +299,8 @@
 {% set active_page = 'mentor_slots' %}
 {% include '_mentor_sidebar.html' %}
 
-<div class="availability-wrap">
+<main class="main-content" id="main-content">
+  <div class="availability-wrap">
   <div class="header-card">
     <div>
       <div class="header-pill">
@@ -431,8 +453,9 @@
         <div style="font-size: 0.85rem; color: #64748B; margin-top: 0.25rem;">Add availability slots above for interns to register for group mentorship sessions.</div>
       </div>
     {% endif %}
+    </div>
   </div>
-</div>
+</main>
 
 <script nonce="{{ csp_nonce() }}">
   function toggleRoster(slotId) {

@@ -164,8 +164,8 @@
     "domain": "Incubation & Careers",
     "domainSlug": "incubation-careers",
     "question": "What is the difference between the ₹1,999 Fellowship and the Direct LMS Internship track?",
-    "shortAnswer": "The ₹1,999 Applied Fellowship provides 100% Guaranteed Internship Placement across internal DBERT portfolio ventures (Gayatri AI, Alkame, Aivara) or external hiring partners upon sprint completion. Direct applicants admitted on the LMS internship track participate in merit-based milestone gates to unlock official credentials and technical stipends.",
-    "detailedMarkdown": "DBERT partitions candidates into two specialized tracks:\n\n1. **₹1,999 Applied Fellowship (Guaranteed Placement)**: A 2-month engineering sprint on venture codebases. Fellows receive senior code reviews, a 3-document cryptographic credential packet, and 100% guaranteed internship placement across internal ventures or external partner squads.\n2. **Direct LMS Internship Track (₹499 Caution Deposit)**: Selective recruitment administered through LMS (lms.dbert.in/apply). Interns complete 60-day capstones and earn a ₹5,000 milestone stipend upon meeting strict engineering rubrics.",
+    "shortAnswer": "The ₹1,999 Applied Fellowship provides 100% Guaranteed Production Internship with Dedicated Placement Assistance across internal DBERT portfolio ventures (Gayatri AI, Alkame, Aivara) or external hiring partners upon sprint completion. Direct applicants admitted on the LMS internship track participate in merit-based milestone gates to unlock official credentials and internal performance bounties.",
+    "detailedMarkdown": "DBERT partitions candidates into two specialized tracks:\n\n1. **₹1,999 Applied Fellowship (100% Guaranteed Production Internship with Dedicated Placement Assistance)**: A 2-month engineering sprint on venture codebases. Fellows receive senior code reviews, a 3-document cryptographic credential packet, and 100% guaranteed production internship with dedicated placement assistance across internal ventures or external partner squads.\n2. **Direct LMS Internship Track (₹499 Caution Deposit)**: Selective recruitment administered through LMS (lms.dbert.in/apply). Interns complete 60-day capstones and earn performance-indexed internal merit bounties upon meeting strict engineering rubrics.",
     "relatedBlogSlug": "",
     "relatedBlogTitle": "DBERT Stipend & Ambassador Program",
     "relatedCertId": "",
@@ -177,7 +177,7 @@
       "Milestones"
     ],
     "ctaText": "Explore Fellowship Programs (Guaranteed Placement)",
-    "ctaUrl": "/courses/ai-agent-development"
+    "ctaUrl": "/learners/courses/ai-agent-development"
   },
   {
     "id": "fastapi-microservices-scalability",
@@ -238,5 +238,67 @@
     ],
     "ctaText": "Learn More About the Domain Migration at /dbert-online",
     "ctaUrl": "/dbert-online"
+  },
+  {
+    "id": "dbert-1999-non-refundable-breakdown",
+    "domain": "Legitimacy & Accreditation",
+    "domainSlug": "legitimacy-verification",
+    "question": "Why is the ₹1,999 DBERT incubation fee non-refundable and what deliverables are included?",
+    "shortAnswer": "The ₹1,999 fee (₹499 caution deposit + ₹1,500 balance) provisions active private repository access, 1:1 mentor code reviews, structured 2-month training, live sprint assignments, project placement, and verifiable credentials.",
+    "detailedMarkdown": "Unlike passive video courses, DBERT allocates human engineering bandwidth and private infrastructure the moment your seat is confirmed:\n\n1. **Active Client Repository**: Guaranteed assignment to a live production codebase.\n2. **Individual Mentor Code Reviews**: Senior engineers review and grade your pull requests.\n3. **Structured 2-Month Sprints**: Live production tickets across Hybrid RAG, Multi-Tenant SaaS, OAuth2/OWASP, Playwright QA, OCR, and Bot APIs.\n4. **Placement & Credentials**: Project placement with DBERT or a hiring/channel partner plus an offer letter and verifiable credentials at `https://dbert.in/verify`.\n\nRead the complete transparent breakdown in our guide: [Is the ₹1,999 DBERT Incubation Worth It?](/blog/dbert-1999-program-non-refundable-value-breakdown).",
+    "relatedBlogSlug": "dbert-1999-program-non-refundable-value-breakdown",
+    "relatedBlogTitle": "Is the ₹1,999 DBERT Incubation Worth It? Transparent Fee, Deliverables & Policy Breakdown",
+    "relatedCertId": "",
+    "author": "DBERT Engineering Staff",
+    "tags": [
+      "DBERT 1999",
+      "Fee Breakdown",
+      "Non-Refundable Policy",
+      "Incubation"
+    ],
+    "ctaText": "Complete Your ₹1,999 / ₹1,500 Enrollment",
+    "ctaUrl": "/enroll/1999"
+  },
+  {
+    "id": "unpaid-internship-vs-solo-learning",
+    "domain": "Legitimacy & Accreditation",
+    "domainSlug": "legitimacy-verification",
+    "question": "How does DBERT's 2-month project-based internship compare to a paid corporate internship or 2 months of solo self-learning?",
+    "shortAnswer": "While a paid corporate internship offers an upfront stipend, DBERT bridges the experience gap against solo self-learning by providing a real repository, meaningful tasks, mentor feedback, and a verifiable contribution history.",
+    "detailedMarkdown": "Spending two months learning alone without an assigned team or production repo leaves you with unverified toy projects and zero code review feedback. DBERT's 2-month incubation provides:\n\n- **Real Repository Workflows**: Branching, migrations, and CI checks inside active codebases.\n- **Actionable PR Reviews**: Direct feedback from senior engineering staff.\n- **Verifiable Proof**: Publicly auditable dossier on `https://dbert.in/verify/directory`.\n\nCompare all three paths in detail: [DBERT Unpaid Internship vs. Paid Corporate Internship vs. 2 Months Self-Learning](/blog/dbert-unpaid-internship-vs-paid-corporate-vs-self-learning).",
+    "relatedBlogSlug": "dbert-unpaid-internship-vs-paid-corporate-vs-self-learning",
+    "relatedBlogTitle": "DBERT Unpaid Internship vs. Paid Corporate Internship vs. 2 Months Self-Learning",
+    "relatedCertId": "",
+    "author": "DBERT Engineering Staff",
+    "tags": [
+      "Career Strategy",
+      "Internship Comparison",
+      "Self-Learning",
+      "Portfolio"
+    ],
+    "ctaText": "Compare Pathways & Join the Next Cohort",
+    "ctaUrl": "/enroll/1999"
+  },
+  {
+    "id": "real-technical-work-evidence",
+    "domain": "AI Agent Development",
+    "domainSlug": "ai-agent-development",
+    "question": "What real technical work and engineering skills do DBERT interns ship during the 2-month sprints?",
+    "shortAnswer": "Fellows ship production modules across Hybrid RAG (vector search, retrieval pipelines), Multi-Tenant SaaS APIs, Auth & Web Security (JWT, OAuth2, OWASP), QA Automation (PyTest, Postman, Playwright), Tesseract OCR, and Bot APIs (Telegram, WhatsApp, Discord).",
+    "detailedMarkdown": "DBERT sprint tickets map directly to production engineering tracks:\n\n- **Hybrid RAG Engineering**: Vector search (`pgvector`, Qdrant), BM25 + dense retrieval, reranking.\n- **SaaS Feature Development**: Multi-tenant PostgreSQL schemas and streaming APIs.\n- **Auth & Web Security**: JWT rotation, OAuth2 PKCE, OWASP Top 10 hardening.\n- **QA Automation**: PyTest fixtures, Postman contract suites, Playwright E2E checks.\n- **Document Processing & Bots**: Python + Tesseract OCR pipelines and WhatsApp/Telegram/Discord bot webhooks.\n\nExplore the full technical evidence: [Inside DBERT's Real Engineering Sprints](/blog/inside-dbert-engineering-sprints-rag-saas-security-qa-ocr-bots).",
+    "relatedBlogSlug": "inside-dbert-engineering-sprints-rag-saas-security-qa-ocr-bots",
+    "relatedBlogTitle": "Inside DBERT’s Real Engineering Sprints: Hybrid RAG, Multi-Tenant SaaS, Security, QA, OCR & Bots",
+    "relatedCertId": "",
+    "author": "DBERT AI Research Staff",
+    "tags": [
+      "Hybrid RAG",
+      "Multi-Tenant SaaS",
+      "OWASP",
+      "Playwright QA",
+      "OCR",
+      "Bots"
+    ],
+    "ctaText": "Inspect Verified Engineers in the Directory",
+    "ctaUrl": "/verify/directory"
   }
 ]

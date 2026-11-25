@@ -15,24 +15,74 @@ stipend_bp = Blueprint("stipend", __name__)
 logger = logging.getLogger("stipend_routes")
 
 from app import (
-    get_db, current_intern, is_admin_request, current_staff,
+    get_db, current_intern, is_admin_request, current_staff, require_admin,
     clean_text, log_error, mask_upi, send_email_async,
     credit_intern_coins, get_coin_balances, set_config, get_config,
     SITE_ORIGIN, send_password_reset_email, now_str, _ensure_articles_table
 )
+try:
+    from app import require_confirmed_fellow
+except ImportError:
+    def require_confirmed_fellow(*args, **kwargs):
+        def _decorator(fn):
+            return fn
+        return _decorator
 from services.certificate_service import CertificateService
 from services.ai.stipend_evaluator import (
     StipendEvaluator, get_active_gemini_key, probe_gemini_key,
     get_intern_gemini_key, generate_capstone_case_study
 )
 from services.linkedin_verifier import LinkedInVerifier
+from services.github_verifier import GitHubVerifier
+
+
+def _compute_tenure_expiration(conn, intern_id: int, email: str) -> tuple[bool, str]:
+    """Enforce Invariant 7: 60-day tenure + 5-day grace period."""
+    today = datetime.now().date()
+    try:
+        off = conn.execute(
+            "SELECT batch_end_date FROM intern_offer_letters WHERE intern_id = ? OR LOWER(email) = ? ORDER BY id DESC LIMIT 1",
+            (intern_id, email),
+        ).fetchone()
+        if off and off["batch_end_date"]:
+            bed = str(off["batch_end_date"]).strip()
+            b_date = None
+            for fmt in ("%Y-%m-%d", "%d %b %Y", "%d %B %Y"):
+                try:
+                    b_date = datetime.strptime(bed[:10] if fmt == "%Y-%m-%d" else bed, fmt).date()
+                    break
+                except ValueError:
+                    continue
+            if b_date:
+                grace_end = b_date + timedelta(days=5)
+                return today > grace_end, grace_end.strftime("%d %b %Y")
+    except Exception:
+        pass
+
+    try:
+        enr = conn.execute(
+            "SELECT joining_date FROM enrollments WHERE LOWER(email) = ? AND payment_status IN ('Verified', 'Accepted') ORDER BY id DESC LIMIT 1",
+            (email,),
+        ).fetchone()
+        if enr and enr["joining_date"]:
+            j_dt = datetime.strptime(str(enr["joining_date"])[:10], "%Y-%m-%d").date()
+            grace_end = j_dt + timedelta(days=65)
+            return today > grace_end, grace_end.strftime("%d %b %Y")
+    except Exception:
+        pass
+
+    return False, ""
 
 
 @stipend_bp.route("/stipend/tasks", methods=["GET"])
+@require_confirmed_fellow(allow_expired=True)
 def stipend_tasks():
     """Intern-facing Stipend Milestone Dashboard with 3-step gating."""
     intern = current_intern()
-    if not intern:
+    staff = current_staff()
+    admin = require_admin()
+    user = intern or staff or admin
+    if not user:
         req_email = clean_text(request.args.get("email", "")).lower()
         if req_email:
             reg = CertificateService.load_registry_record(email=req_email)
@@ -40,18 +90,75 @@ def stipend_tasks():
                 flash(f"Welcome {reg.get('holderName', 'Candidate')}! Your certified record is verified. Please sign in or set your password to access your stipend dashboard.", "info")
         return redirect("/#signin")
 
+    if not intern:
+        # Staff / Admin preview mode
+        return render_template(
+            "stipend_tasks.html",
+            intern={"id": 0, "name": "Staff Preview", "email": "staff@dbert.in", "domain": "Engineering"},
+            active_page='stipend',
+            is_locked_pre_payment=False,
+            is_graduated=False,
+            is_selected_unpaid=False,
+            offer_badge='OFFICIAL',
+            sprint_task_badge=None,
+            ver_info={"verified": True, "tier": "staff_preview"},
+            comp_info={"is_completed": True},
+            has_upi=False,
+            masked_upi="Staff Preview Mode",
+            has_gemini=False,
+            all_gates_passed=False,
+            tasks=[],
+            target_domain="Engineering",
+            has_linkedin=False,
+            linkedin_verified=False,
+            linkedin_url="",
+            linkedin_status="UNVERIFIED",
+            add_to_linkedin_url="",
+            stipend_verified=False,
+            raw_db_release="",
+            stipend_release_date="N/A",
+            is_released_or_past=False,
+            pending_resolution_notice=None,
+            submission_history=[],
+            is_tenure_expired=False,
+            grace_end_display=""
+        )
+
     email = intern.get("email", "").strip().lower()
     intern_id = intern.get("id")
 
     with get_db() as conn:
         # 1. Gate 1: Certificate Verification
         ver_info = CertificateService.is_intern_verified(conn, intern_id=intern_id, email=email)
+        if ver_info.get("status") == "NOT_FOUND":
+            ver_info["status_label"] = "Not Yet Issued"
+        elif ver_info.get("verified"):
+            ver_info["status_label"] = "Verified"
+        elif ver_info.get("is_provisional"):
+            ver_info["status_label"] = "Provisional"
+        else:
+            ver_info["status_label"] = ver_info.get("status") or "Pending"
         
-        # 2. Gate 2: Completion Date Check
+        # 2. Gate 2: Completion Date Check & Invariant 7 Tenure Expiration
         comp_info = CertificateService.get_intern_completion_info(conn, intern_id=intern_id, email=email)
+        is_tenure_expired, grace_end_display = _compute_tenure_expiration(conn, intern_id, email)
 
         # 3. Gate 3: Payout UPI Account Check
         acct = conn.execute("SELECT * FROM intern_accounts WHERE id=?", (intern_id,)).fetchone()
+        enr_paid = conn.execute(
+            """
+            SELECT product, amount, payment_status FROM enrollments
+            WHERE LOWER(email) = ? AND payment_status IN ('Verified', 'Accepted', 'Approved')
+            ORDER BY id DESC LIMIT 1
+            """,
+            (email,)
+        ).fetchone()
+        is_paid_1999 = bool(
+            enr_paid and (
+                (enr_paid["product"] or "").strip().lower() == "fellowship_1999"
+                or (enr_paid["amount"] or 0) >= 1999
+            )
+        )
         has_upi = bool(acct and acct["upi_id_encrypted"])
         masked_upi = "Active (Encrypted)"
         if has_upi and hasattr(current_app, "decrypt_upi"):
@@ -74,7 +181,12 @@ def stipend_tasks():
         active_key = intern_gemini_key or get_active_gemini_key(conn, intern_id=intern_id)
         has_gemini = bool(active_key)
 
-        all_gates_passed = bool(ver_info.get("verified") and comp_info.get("is_completed") and has_upi)
+        all_gates_passed = bool(
+            ver_info.get("verified")
+            and comp_info.get("is_completed")
+            and has_upi
+            and not is_tenure_expired
+        )
 
         # Fetch domain task
         target_domain = (acct["domain"] if acct and acct["domain"] else ver_info.get("domain", "")).strip()
@@ -134,6 +246,7 @@ def stipend_tasks():
         # Check existing submission
         existing_submission = None
         capstone_article = None
+        sub_github_url = (acct.get("github_url") if acct else "") or ""
         if all_gates_passed:
             existing_submission = conn.execute(
                 """
@@ -145,6 +258,8 @@ def stipend_tasks():
                 """,
                 (intern_id,)
             ).fetchone()
+            if existing_submission and existing_submission.get("github_repo_url"):
+                sub_github_url = existing_submission["github_repo_url"]
 
             if existing_submission:
                 cert_val = ver_info.get("cert_id") or ver_info.get("certId") or ""
@@ -156,6 +271,8 @@ def stipend_tasks():
                     """,
                     (intern_id, existing_submission["id"], cert_val)
                 ).fetchone()
+
+        github_validation = GitHubVerifier.classify_url(sub_github_url)
 
     return render_template(
         "stipend_tasks.html",
@@ -181,7 +298,11 @@ def stipend_tasks():
         stipend_release_date_display=stipend_release_date_display,
         stipend_amount=stipend_amount,
         verified_github_org=verified_github_org,
-        verified_github_repo=verified_github_repo
+        verified_github_repo=verified_github_repo,
+        github_validation=github_validation,
+        is_tenure_expired=is_tenure_expired,
+        grace_end_display=grace_end_display,
+        is_paid_1999=is_paid_1999
     )
 
 
@@ -199,6 +320,15 @@ def submit_stipend_task(task_id: int):
     email = intern.get("email", "").strip().lower()
 
     with get_db() as conn:
+        # Invariant 7: Tenure Expiration & 5-Day Grace Period check first
+        is_tenure_expired, grace_end_display = _compute_tenure_expiration(conn, intern_id, email)
+        if is_tenure_expired:
+            msg = f"Your 60-day sprint tenure and 5-day grace period ended on {grace_end_display}. Stipend submissions are closed for this cohort."
+            if not request.is_json:
+                flash(msg, "danger")
+                return redirect("/stipend/tasks")
+            return jsonify({"status": "error", "message": msg}), 403
+
         # Pre-flight Gating re-check
         ver_info = CertificateService.is_intern_verified(conn, intern_id=intern_id, email=email)
         if not ver_info.get("verified"):
@@ -262,6 +392,13 @@ def submit_stipend_task(task_id: int):
                 flash("GitHub repository URL is required.", "danger")
                 return redirect("/stipend/tasks")
             return jsonify({"status": "error", "message": "GitHub repository URL is required."}), 400
+        gh_check = GitHubVerifier.classify_url(github_repo_url)
+        if gh_check["status"] in ("NON_GITHUB_URL", "INVALID_FORMAT", "PROFILE_ONLY"):
+            err_msg = gh_check["message"] + " Please submit a Pull Request URL (/pull/<id>) on Alkameinc, Gayatri-Education, Aivaratechinfomatics, or DBERT-INDIA."
+            if not request.is_json:
+                flash(err_msg, "danger")
+                return redirect("/stipend/tasks")
+            return jsonify({"status": "error", "message": err_msg}), 400
         if not submission_content:
             if not request.is_json:
                 flash("Project architecture description is required.", "danger")
@@ -429,7 +566,7 @@ def stipend_activate():
 @stipend_bp.route("/admin/api/stipend-health", methods=["GET"])
 def admin_stipend_health():
     """Provides real-time health telemetry on GEMINI_API_KEY, FERNET_KEY, and verified candidates."""
-    if not is_admin_request():
+    if not (is_admin_request() or current_staff()):
         return jsonify({"status": "error", "message": "Admin authorization required."}), 403
 
     with get_db() as conn:
@@ -469,7 +606,7 @@ def admin_stipend_health():
 @stipend_bp.route("/admin/api/stipend-health/set-gemini-key", methods=["POST"])
 def admin_set_gemini_key():
     """Validates and saves a new GEMINI_API_KEY directly through the admin portal."""
-    if not is_admin_request():
+    if not (is_admin_request() or current_staff()):
         return jsonify({"status": "error", "message": "Admin authorization required."}), 403
 
     data = request.get_json(silent=True) or request.form

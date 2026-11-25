@@ -8,7 +8,7 @@ from app import (
     ensure_referral_code, row_to_dict, get_coin_balances, AMBASSADOR_ENABLED,
     referral_link, mask_upi, get_client_ip, rate_check, RL_UPI_UPDATE,
     log_abuse, is_valid_upi, RL_WITHDRAWAL, FERNET_KEY, debit_referral_coins,
-    REFERRAL_COOKIE, REFERRAL_WINDOW_DAYS, COOKIE_SECURE
+    REFERRAL_COOKIE, REFERRAL_WINDOW_DAYS, COOKIE_SECURE, require_confirmed_fellow
 )
 
 KNOWN_BOTS = (
@@ -18,8 +18,9 @@ KNOWN_BOTS = (
 )
 
 @ambassador_bp.route("/ambassador")
+@require_confirmed_fellow(allow_expired=True)
 def ambassador_page():
-    """Intern-facing College Ambassador tab (§6.6)."""
+    """Intern-facing College Ambassador tab (§6.6). Unlocks after enrollment (Stage 5)."""
     if not current_intern():
         return redirect("/#signin")
     return render_template("ambassador.html")
@@ -57,6 +58,7 @@ def referral_click():
 
 
 @ambassador_bp.route("/intern/ambassador")
+@require_confirmed_fellow(allow_expired=True)
 def intern_ambassador():
     """Funnel stats, referral link, referral-coin balance, masked UPI (Â§6.6)."""
     try:
@@ -126,6 +128,7 @@ def intern_ambassador():
 
 
 @ambassador_bp.route("/intern/ambassador/leads")
+@require_confirmed_fellow(allow_expired=True)
 def intern_ambassador_leads():
     """Full leads table and conversion status for the authenticated ambassador (§6.6)."""
     try:
@@ -177,6 +180,7 @@ def intern_ambassador_leads():
 
 
 @ambassador_bp.route("/intern/ambassador/upi", methods=["POST"])
+@require_confirmed_fellow(allow_expired=True)
 def intern_ambassador_upi():
     """Store the payout UPI id â€” encrypted at rest, never returned in clear."""
     try:
@@ -215,6 +219,7 @@ def intern_ambassador_upi():
 
 
 @ambassador_bp.route("/intern/ambassador/withdraw", methods=["GET", "POST"])
+@require_confirmed_fellow(allow_expired=True)
 def intern_ambassador_withdraw():
     """Request a payout or navigate to withdrawal dashboard. Draws ONLY on the referral ledger (§6.5)."""
     try:

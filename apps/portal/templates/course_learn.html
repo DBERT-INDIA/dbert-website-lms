@@ -5,6 +5,38 @@
 {% set page_robots = "noindex, nofollow" %}
 {% include "_head.html" %}
 <style>
+    #geminiModal {
+        position: fixed !important;
+        inset: 0 !important;
+        z-index: 999999 !important;
+        display: none !important;
+        align-items: center !important;
+        justify-content: center !important;
+        background: rgba(9, 12, 20, 0.85) !important;
+        backdrop-filter: blur(12px) !important;
+        -webkit-backdrop-filter: blur(12px) !important;
+        padding: 16px !important;
+    }
+    #geminiModal.active,
+    #geminiModal.open {
+        display: flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+    }
+    #geminiModal .modal-box {
+        background: #0F172A !important;
+        border: 1px solid rgba(226, 185, 111, 0.4) !important;
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.75) !important;
+        color: #F1F5F9 !important;
+        border-radius: 16px !important;
+        padding: 24px 24px !important;
+        width: 100% !important;
+        max-width: 500px !important;
+        position: relative !important;
+        z-index: 1000000 !important;
+        transform: scale(1) translateY(0) !important;
+    }
     .chat-bubble.assistant {
         white-space: normal;
         word-break: break-word;
@@ -115,49 +147,58 @@
             <span class="t-muted">Connect your free Google Gemini API key for unlimited, fast 1-on-1 AI tutoring.
             (Fallback usage: {{ fallback_used }}/{{ fallback_limit }} today)</span>
         </div>
-        <button data-act-click="openGeminiModal" class="btn btn-primary btn-sm" style="flex-shrink:0">
-            Test &amp; save key
+        <button type="button" data-act-click="openGeminiModal" class="btn btn-primary btn-sm" style="flex-shrink:0">
+            🔑 Connect / Update Gemini Key
         </button>
     </div>
     {% endif %}
 
     <!-- Gemini key test & save modal -->
     <div id="geminiModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="geminiModalTitle">
-        <div class="modal-box" style="max-width:480px">
+        <div class="modal-box" style="max-width:500px">
             <div class="row-between mb-16">
-                <h3 id="geminiModalTitle" style="margin:0">🔑 Connect Google Gemini key</h3>
-                <button data-act-click="closeGeminiModal" class="t-muted" style="font-size:18px" aria-label="Close dialog">✕</button>
+                <h3 id="geminiModalTitle" style="margin:0;display:flex;align-items:center;gap:8px;">
+                    <span>🔑</span> Connect Google Gemini Key
+                </h3>
+                <button type="button" data-act-click="closeGeminiModal" class="t-muted" style="font-size:20px;cursor:pointer;background:none;border:none;padding:4px;" aria-label="Close dialog">✕</button>
             </div>
 
             <p class="t-sm t-muted mb-16">
-                Enter your Google Gemini API key to unlock unthrottled AI tutoring. We test available
+                Enter your Google Gemini API key to unlock unthrottled 1-on-1 AI tutoring. We test available
                 models live against Google's API before saving.
             </p>
             <form autocomplete="off" onsubmit="return false;" style="margin:0;padding:0;">
                 <div class="field">
-                    <label for="modalApiKeyInput">Gemini API key</label>
+                    <label for="modalApiKeyInput" style="display:flex;justify-content:space-between;align-items:center;">
+                        <span>Gemini API Key</span>
+                        <span style="font-size:11px;color:#38BDF8;font-weight:600;"><i class="fa-solid fa-lock"></i> AES-256 Encrypted</span>
+                    </label>
                     <div style="position:relative; display:flex; align-items:center;">
                         <input type="password" id="modalApiKeyInput" name="gemini_api_key_novault"
                                autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"
                                data-lpignore="true" data-1p-ignore="true" data-form-type="other"
-                               placeholder="AIzaSy…" style="font-family:var(--f-mono); padding-right:40px;">
+                               placeholder="AIzaSy…" style="font-family:var(--f-mono); padding-right:40px; background:#1E293B; border-color:#334155; color:#F8FAFC;">
                         <button type="button" data-act-click="toggleModalApiKeyVisibility"
                                 style="position:absolute; right:10px; background:none; border:none; color:var(--tx-muted); cursor:pointer; font-size:14px; padding:4px;"
                                 aria-label="Toggle key visibility">
                             <i class="fa-regular fa-eye" id="modalEyeIcon"></i>
                         </button>
                     </div>
-                    <div class="hint" style="text-align:right">
-                        <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener" class="t-gold">
+                    <div class="hint" style="display:flex; justify-content:space-between; align-items:center; margin-top:8px;">
+                        <button type="button" id="btnFillDevMockKey"
+                                style="background:none; border:none; color:#38BDF8; font-size:12px; cursor:pointer; padding:0; text-decoration:underline; font-weight:600;">
+                            🧪 Fill Dev Mock Key (Instant Test)
+                        </button>
+                        <a href="https://aistudio.google.com/app/apikey" target="_blank" rel="noopener noreferrer" class="t-gold" style="font-size:12px; font-weight:600;">
                             Get a free key from Google AI Studio ↗</a>
                     </div>
                 </div>
             </form>
-            <div id="modalStatusMsg" class="alert" role="alert" style="display:none"></div>
+            <div id="modalStatusMsg" class="alert" role="alert" style="display:none; margin-top:12px;"></div>
             <div class="modal-foot">
-                <button data-act-click="closeGeminiModal" class="btn btn-ghost btn-sm">Cancel</button>
-                <button id="btnSaveGeminiKey" data-act-click="testAndSaveGeminiKey" class="btn btn-ai btn-sm">
-                    Test available models &amp; save
+                <button type="button" data-act-click="closeGeminiModal" class="btn btn-ghost btn-sm">Cancel</button>
+                <button type="button" id="btnSaveGeminiKey" data-act-click="testAndSaveGeminiKey" class="btn btn-ai btn-sm" style="font-weight:700;">
+                    Test Available Models &amp; Save
                 </button>
             </div>
         </div>
@@ -612,14 +653,30 @@
         });
     }
 
-    function openGeminiModal() {
+    function openGeminiModal(e) {
+        if (e && e.preventDefault) e.preventDefault();
         const m = document.getElementById('geminiModal');
-        if (m) m.style.display = 'flex';
+        if (m) {
+            m.classList.add('active', 'open');
+            m.style.setProperty('display', 'flex', 'important');
+            m.style.setProperty('opacity', '1', 'important');
+            m.style.setProperty('visibility', 'visible', 'important');
+            m.style.setProperty('pointer-events', 'auto', 'important');
+            const input = document.getElementById('modalApiKeyInput');
+            if (input) setTimeout(() => input.focus(), 100);
+        }
     }
 
-    function closeGeminiModal() {
+    function closeGeminiModal(e) {
+        if (e && e.preventDefault) e.preventDefault();
         const m = document.getElementById('geminiModal');
-        if (m) m.style.display = 'none';
+        if (m) {
+            m.classList.remove('active', 'open');
+            m.style.setProperty('display', 'none', 'important');
+            m.style.setProperty('opacity', '0', 'important');
+            m.style.setProperty('visibility', 'hidden', 'important');
+            m.style.setProperty('pointer-events', 'none', 'important');
+        }
         const msg = document.getElementById('modalStatusMsg');
         if (msg) msg.style.display = 'none';
     }
@@ -634,18 +691,41 @@
             return;
         }
 
-        if (btn) btn.disabled = true;
+        if (btn) {
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Verifying Key...';
+        }
         setModalStatus('info', 'Testing connection to Google Gemini API & verifying available models…');
 
+        const csrfToken = '{{ csrf_token() }}';
         fetch('/account/gemini-key', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ api_key: key })
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
+                'X-CSRF-Token': csrfToken,
+                'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: JSON.stringify({ api_key: key, _csrf: csrfToken })
         })
-        .then(r => r.json())
-        .then(data => {
-            if (btn) btn.disabled = false;
-            if (data.status === 'success') {
+        .then(async (r) => {
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = 'Test Available Models &amp; Save';
+            }
+            const text = await r.text();
+            let data = {};
+            try { data = JSON.parse(text); } catch (e) { data = { message: text }; }
+
+            if (r.status === 401) {
+                setModalStatus('err', 'Your session has expired. Please log in again in another tab.');
+                return;
+            }
+            if (r.status === 403) {
+                setModalStatus('err', 'Security CSRF token expired. Please refresh the page and try again.');
+                return;
+            }
+            if (r.ok && data.status === 'success') {
                 setModalStatus('ok', `✓ Verified ${data.models_count || 1} available Gemini models. Key saved securely.`);
                 setTimeout(() => {
                     closeGeminiModal();
@@ -662,8 +742,11 @@
             }
         })
         .catch(err => {
-            if (btn) btn.disabled = false;
-            setModalStatus('err', 'Server or network error while testing key.');
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = 'Test Available Models &amp; Save';
+            }
+            setModalStatus('err', 'Server or network error while testing key: ' + (err.message || ''));
         });
     }
 
@@ -679,6 +762,31 @@
             icon.className = 'fa-regular fa-eye';
         }
     }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const btnFillMock = document.getElementById('btnFillDevMockKey');
+        if (btnFillMock) {
+            btnFillMock.addEventListener('click', function(e) {
+                e.preventDefault();
+                const input = document.getElementById('modalApiKeyInput');
+                if (input) {
+                    input.value = 'AQ.MOCK_TEST_KEY_DEV_ONLY_000000000000000000000000';
+                    input.type = 'text';
+                    const icon = document.getElementById('modalEyeIcon');
+                    if (icon) icon.className = 'fa-solid fa-eye-slash';
+                }
+            });
+        }
+        const modalEl = document.getElementById('geminiModal');
+        if (modalEl) {
+            modalEl.addEventListener('click', function(e) {
+                if (e.target === this) closeGeminiModal(e);
+            });
+        }
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeGeminiModal(e);
+        });
+    });
     window.toggleModalApiKeyVisibility = toggleModalApiKeyVisibility;
     window.toggleTreeSidebar = toggleTreeSidebar;
     window.closeTreeSidebar = closeTreeSidebar;

@@ -24,6 +24,7 @@ import HandDrawnArrow from '@/components/ui/HandDrawnArrow';
 import CountUp from '@/components/ui/CountUp';
 import Reveal from '@/components/ui/Reveal';
 import TrackedLink from '@/components/ui/TrackedLink';
+import { getFeaturedTracks, FELLOWSHIP_FEE } from '@/data/courses.config';
 import AITrustBanner from '@/components/common/AITrustBanner';
 
 export const metadata: Metadata = {
@@ -74,7 +75,7 @@ const doors: Door[] = [
     who: 'Learners',
     title: 'Build your way into an AI career',
     description:
-      'A four-stage ladder from first Python script to an applied fellowship with guaranteed placement on real client systems.',
+      'A four-stage ladder from first Python script to a verified production internship with dedicated placement assistance on real client systems.',
     ctaLabel: 'Start the ladder',
     href: '/learners',
   },
@@ -131,10 +132,10 @@ const ladder: LadderStep[] = [
     tag: 'Real experience',
     title: 'DBERT Fellowship',
     isFeatured: true,
-    featuredLabel: 'guaranteed placement',
+    featuredLabel: 'guaranteed production internship',
     forText:
-      'Top performers join squads building production systems for real incubated clients — with 100% Guaranteed Internship Placement.',
-    outcome: 'verified client experience + 100% placement pipeline',
+      'Top performers join squads building production systems for real incubated clients — with 100% Guaranteed Production Internship with Dedicated Placement Assistance.',
+    outcome: 'verified client experience + dedicated placement assistance',
   },
   {
     num: 'R4',
@@ -146,50 +147,13 @@ const ladder: LadderStep[] = [
   },
 ];
 
-const featuredTracks = [
-  {
-    slug: 'ai-agent-development',
-    title: 'Autonomous AI Agent Engineering',
-    desc: 'Build multi-agent task loops, LangGraph stateful memory, and enterprise tool execution pipelines.',
-    skills: ['LangGraph', 'CrewAI', 'Python', 'FastAPI'],
-    fee: '₹1,999',
-  },
-  {
-    slug: 'full-stack-development',
-    title: 'Full Stack Web Development',
-    desc: 'Architect high-performance React 19 / Next.js web applications with pgvector similarity search.',
-    skills: ['Next.js 16', 'TypeScript', 'PostgreSQL', 'Tailwind'],
-    fee: '₹1,999',
-  },
-  {
-    slug: 'generative-ai',
-    title: 'Generative AI & LLM Systems',
-    desc: 'Deploy production RAG architectures, prompt routing clusters, and private parameter fine-tuning.',
-    skills: ['RAG', 'vLLM', 'Milvus', 'PyTorch'],
-    fee: '₹1,999',
-  },
-  {
-    slug: 'machine-learning',
-    title: 'Machine Learning & MLOps',
-    desc: 'Design predictive models, continuous drift evaluation pipelines, and containerized serving engines.',
-    skills: ['scikit-learn', 'Docker', 'MLflow', 'Pandas'],
-    fee: '₹1,999',
-  },
-  {
-    slug: 'data-science',
-    title: 'Data Science & Predictive Analytics',
-    desc: 'Build automated ETL data ingestion pipelines, exploratory statistics, and predictive business dashboards.',
-    skills: ['Polars', 'Arrow', 'SQLAlchemy', 'DuckDB'],
-    fee: '₹1,999',
-  },
-  {
-    slug: 'backend-engineering',
-    title: 'Backend Systems & Microservices',
-    desc: 'Implement event-driven microservices, Redis distributed caching, and resilient SQL transaction layers.',
-    skills: ['FastAPI', 'Go', 'Kafka', 'Redis'],
-    fee: '₹1,999',
-  },
-];
+const featuredTracks = getFeaturedTracks().map((track) => ({
+  slug: track.slug,
+  title: track.name,
+  desc: track.shortDescription,
+  skills: track.technologies.slice(0, 4).map((t) => t.name),
+  fee: FELLOWSHIP_FEE.formattedTotal,
+}));
 
 export default function HomePage() {
   return (
@@ -422,18 +386,18 @@ export default function HomePage() {
             <HandNote tone="blue">structured progression · direct screening entry available</HandNote>
           </Reveal>
 
-          {/* ── Featured 9-Domain Fellowships ── */}
+          {/* ── Featured 6-Domain Fellowships ── */}
           <div className={styles.tracksShowcase}>
             <div className={styles.tracksHead}>
               <div>
                 <div className="doclabel">Applied Fellowships · 2-Month Sprints</div>
                 <h3 className={styles.tracksTitle}>Featured Engineering Tracks</h3>
                 <p className={styles.tracksSubtitle}>
-                  Select your technical domain. Every fellow builds production features with 100% Guaranteed Internship Placement across internal ventures &amp; hiring partners.
+                  Select your technical domain. Every fellow builds production features with 100% Guaranteed Production Internship with Dedicated Placement Assistance across internal ventures &amp; hiring partners.
                 </p>
               </div>
-              <Link href="/internships" className="btn btn-outline" style={{ minHeight: '44px' }}>
-                <span>View All 9 Tracks &amp; Cities</span>
+              <Link href="/learners/courses" className="btn btn-outline" style={{ minHeight: '44px' }}>
+                <span>View All 11 Tracks</span>
                 <span className="arr" aria-hidden="true">&rarr;</span>
               </Link>
             </div>
@@ -442,12 +406,12 @@ export default function HomePage() {
               {featuredTracks.map((track) => (
                 <Link
                   key={track.slug}
-                  href={`/courses/${track.slug}`}
+                  href={`/learners/courses/${track.slug}`}
                   className={styles.trackCard}
                 >
                   <div>
                     <div className={styles.trackTop}>
-                      <span className={styles.trackBadge}>100% Placement Guaranteed</span>
+                      <span className={styles.trackBadge}>100% Guaranteed Internship</span>
                       <span className={styles.trackFee}>{track.fee} · 2 Mo</span>
                     </div>
                     <div className={styles.trackName}>{track.title}</div>
@@ -553,7 +517,7 @@ export default function HomePage() {
               including self-hosted LLM chat, document AI, and{' '}
               <Link href="/verify">verifiable certificates</Link>. And it runs{' '}
               <Link href="/learners">AI career programs</Link>, from individual{' '}
-              <Link href="/learners/courses">courses with certificates</Link> up to an applied engineering fellowship with 100% guaranteed placement
+              <Link href="/learners/courses">courses with certificates</Link> up to an applied engineering fellowship with 100% Guaranteed Production Internship with Dedicated Placement Assistance
               on real client systems. Each part feeds the others — fellows staff the startup builds,
               and the startup builds harden the products. See{' '}
               <Link href="/pricing">what everything costs</Link>, or read the{' '}

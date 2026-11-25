@@ -770,6 +770,27 @@ body #ovSelected .sel-quote-title {
           </div>
         </div>
 
+        {% if (signup_stage if signup_stage is not none else 2) in (1, 2) and not (flow_state and flow_state.stage == 'REJECTED') %}
+        <!-- INLINE UNDER REVIEW NOTICE (No Popup) -->
+        <div id="under-review-notice" style="background:rgba(30,41,59,0.9); border:1px solid rgba(251,191,36,0.35); border-radius:16px; padding:20px 24px; margin-bottom:20px; display:flex; align-items:flex-start; gap:14px;">
+          <span style="display:inline-flex; align-items:center; justify-content:center; width:38px; height:38px; border-radius:10px; background:rgba(251,191,36,0.15); border:1px solid rgba(251,191,36,0.35); color:#fbbf24; font-size:16px; flex-shrink:0; margin-top:2px;">
+            <i class="fa-solid fa-clock"></i>
+          </span>
+          <div>
+            <h3 style="color:#f8fafc; font-size:16.5px; font-weight:750; margin:0 0 6px;">
+              {% if signup_stage == 1 %}Application Pending Completion{% else %}Application Under Review{% endif %}
+            </h3>
+            <p style="color:#cbd5e1; font-size:13.5px; line-height:1.6; margin:0;">
+              {% if signup_stage == 1 %}
+                Complete your application profile and screening details so the DBERT Technical Council can review your candidacy.
+              {% else %}
+                Your application is currently being evaluated by the DBERT Technical Council. Once selected, your production sprint tasks, 1:1 mentorship, and codebase repos will unlock automatically.
+              {% endif %}
+            </p>
+          </div>
+        </div>
+        {% endif %}
+
         <!-- 0. HIGH-VISIBILITY NEXT ACTION IN LINE MISSION CARD (Positioned at Top) -->
         <div id="nextActionMissionCard">
           <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:12px; flex-wrap:wrap;">
@@ -825,7 +846,7 @@ body #ovSelected .sel-quote-title {
                 <span id="naTertiaryText">{{ next_action.tertiary_cta_label or 'Explore Paid Track &rarr;' }}</span>
               </a>
               {% else %}
-              <a id="naTertiaryBtn" href="/program" class="na-cta-btn na-btn-gold hidden" style="display:none !important;">
+              <a id="naTertiaryBtn" href="https://dbert.in/enroll/1999" target="_blank" rel="noopener" class="na-cta-btn na-btn-gold hidden" style="display:none !important;">
                 <i class="fas fa-rocket" id="naTertiaryIcon"></i>
                 <span id="naTertiaryText">Explore Paid Track &rarr;</span>
               </a>
@@ -1324,11 +1345,11 @@ body #ovSelected .sel-quote-title {
           <div style="font-size:48px;margin-bottom:14px;">&#128140;</div>
           <h2 style="color:var(--red);font-size:20px;font-weight:800;margin-bottom:8px;">Not moving forward this time</h2>
           <p id="rejectionNote" style="color:var(--tx-muted);font-size:14px;line-height:1.8;margin-bottom:18px;">Thank you for applying. Our team has reviewed your application carefully.</p>
-          <div class="countdown-strip" id="reapplyCountdown"><span>You can re-apply in</span><strong id="daysLeft">30</strong><span>days</span></div>
+          <div class="countdown-strip" id="reapplyCountdown"><span>You can re-apply in </span><strong id="daysLeft">30</strong><span> days</span></div>
           <div class="glass-card" style="margin-top:18px;text-align:left;border-color:rgba(76,175,80,0.28);background:rgba(76,175,80,0.05);">
             <h3 style="font-size:16px;font-weight:800;color:#7ed492;margin-bottom:6px;"><i class="fas fa-bolt" style="margin-right:8px;"></i>You don't have to wait</h3>
             <p style="color:#cfd8e6;font-size:13.5px;line-height:1.7;margin-bottom:14px;">This decision isn't the end of your journey. Our <strong style="color:#fff;">Paid Program</strong> gives you 15 days of training, a 45-day production role with mentor support, and a <strong style="color:#fff;">guaranteed placement opportunity</strong> with our hiring partners on completion + certification &mdash; your seat is confirmed the moment you enrol, no waiting to be shortlisted.</p>
-            <a class="btn-primary" href="/program" data-act-click="dbertGA" data-arg-click='["paid_program_cta_click", {"source":"rejected_view"}]' style="justify-content:center;"><i class="fas fa-rocket"></i> &nbsp;Explore the Paid Program</a>
+            <a class="btn-primary" href="https://dbert.in/enroll/1999" target="_blank" rel="noopener" data-act-click="dbertGA" data-arg-click='["paid_program_cta_click", {"source":"rejected_view"}]' style="justify-content:center;"><i class="fas fa-rocket"></i> &nbsp;Enroll in ₹1,999 Fellowship</a>
           </div>
           <div id="reapplyFormSection" class="hidden reapply-section" style="text-align:left;">
             <h3><i class="fas fa-redo"></i> Re-Apply Now</h3>
@@ -1357,6 +1378,83 @@ body #ovSelected .sel-quote-title {
               <span class="btn-lbl"><i class="fas fa-paper-plane"></i> &nbsp;Re-Submit Application</span>
               <span class="btn-spinner"></span>
             </button>
+          </div>
+        </div>
+
+        {% if admin_stipend_comment and admin_stipend_comment_visible == 1 %}
+        <div id="ovAdminStipendNote" class="glass-card" style="padding: 18px 22px; border-left: 4px solid #2563EB; margin-bottom: 18px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:6px;">
+            <span class="badge" style="background:rgba(37,99,235,0.12);color:#1D4ED8;border:1px solid rgba(37,99,235,0.3);padding:3px 10px;border-radius:999px;font-size:11.5px;font-weight:800;">
+              <i class="fa-solid fa-comment-dots"></i>&nbsp; Admin Stipend Review · {{ stipend_5000_status }}
+            </span>
+            {% if stipend_release_date %}
+            <span style="font-size:12px;color:var(--tx-muted);font-weight:600;">Release Date: {{ stipend_release_date }}</span>
+            {% endif %}
+          </div>
+          <p style="font-size:13.5px;color:var(--tx-head);line-height:1.55;margin:0;">{{ admin_stipend_comment }}</p>
+          {% if admin_stipend_comment_at %}
+          <div style="font-size:11.5px;color:var(--tx-muted);margin-top:6px;">Updated {{ admin_stipend_comment_at }}</div>
+          {% endif %}
+        </div>
+        {% endif %}
+
+        <!-- TENURE EXPIRED (Stage 5B Exit / Completion State) -->
+        <div id="ovTenureExpired" class="hidden">
+          <div class="glass-card" style="padding: 28px; border-left: 4px solid #F59E0B; margin-bottom: 20px;">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;">
+              <span class="badge" style="background:rgba(245,158,11,0.14);color:#B45309;border:1px solid rgba(245,158,11,0.35);padding:4px 12px;border-radius:999px;font-size:11.5px;font-weight:800;">
+                <i class="fa-solid fa-clock-rotate-left"></i>&nbsp; Tenure Expired · Stage 5B
+              </span>
+              {% if grace_end_display %}
+              <span style="font-size:12px;color:var(--tx-muted);font-weight:600;">Ended on {{ grace_end_display }}</span>
+              {% endif %}
+            </div>
+            <h2 style="font-size:20px;font-weight:800;color:var(--tx-head);margin:0 0 8px;">Tenure Expired for Previous Internship Program</h2>
+            <p style="font-size:13.5px;color:var(--tx-muted);line-height:1.65;margin:0 0 18px;max-width:720px;">
+              Your 60-day sprint tenure and 5-day grace period for your previous internship cohort have ended. Active sprint tasks, 1:1 mentorship, offer letter, and stipend submissions for the previous program are closed. Any earned credentials, coins, and ambassador perks remain active.
+            </p>
+            <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
+              <a href="{{ rejoin_enroll_url }}" class="btn-primary" style="background:linear-gradient(135deg,#F59E0B,#D97706);color:#0B1120 !important;font-weight:900;padding:12px 24px;border-radius:10px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;">
+                <span>Join New Cohort</span>
+                <i class="fa-solid fa-arrow-right"></i>
+              </a>
+              <a href="/certificates" class="btn-secondary" style="padding:12px 20px;border-radius:10px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;">
+                <i class="fa-solid fa-award"></i>
+                <span>View Issued Certificates</span>
+              </a>
+              <a href="/account/coins" class="btn-secondary" style="padding:12px 20px;border-radius:10px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;">
+                <i class="fa-solid fa-coins"></i>
+                <span>Coins &amp; Payouts</span>
+              </a>
+              <a href="/profile" class="btn-secondary" style="padding:12px 20px;border-radius:10px;text-decoration:none;display:inline-flex;align-items:center;gap:8px;">
+                <i class="fa-solid fa-sliders"></i>
+                <span>Switch Domain for Next Cohort</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="overview-cards-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;">
+            <div class="glass-card" style="padding:20px;margin-bottom:0;">
+              <div style="font-size:11.5px;font-weight:800;color:var(--tx-muted);text-transform:uppercase;margin-bottom:6px;">Earned Coins</div>
+              <div id="ovExpiredCoinsVal" style="font-size:22px;font-weight:800;color:var(--tx-head);margin-bottom:6px;">0 Coins</div>
+              <p style="font-size:12px;color:var(--tx-muted);margin:0 0 12px;">Your previously earned task &amp; referral coins remain available.</p>
+              <a href="/account/coins" style="font-size:12.5px;font-weight:700;color:#2563EB;text-decoration:none;">Open Coins Ledger &rarr;</a>
+            </div>
+            <div class="glass-card" style="padding:20px;margin-bottom:0;">
+              <div style="font-size:11.5px;font-weight:800;color:var(--tx-muted);text-transform:uppercase;margin-bottom:6px;">Certificates &amp; Pre-Vetted Status</div>
+              <div id="ovExpiredCertStatus" style="font-size:16px;font-weight:800;color:var(--tx-head);margin-bottom:6px;">Checking credentials…</div>
+              <p style="font-size:12px;color:var(--tx-muted);margin:0 0 12px;">Verified credentials are permanently indexed on dbert.in/verify.</p>
+              <a href="/certificates" style="font-size:12.5px;font-weight:700;color:#2563EB;text-decoration:none;">Manage &amp; Download Certificates &rarr;</a>
+            </div>
+            <div class="glass-card" style="padding:20px;margin-bottom:0;">
+              <div style="font-size:11.5px;font-weight:800;color:var(--tx-muted);text-transform:uppercase;margin-bottom:6px;">Ambassador &amp; Placements</div>
+              <div style="font-size:16px;font-weight:800;color:var(--tx-head);margin-bottom:6px;">Active Post-Cohort Access</div>
+              <p style="font-size:12px;color:var(--tx-muted);margin:0 0 12px;">Continue referring peers or browsing hiring partner roles.</p>
+              <div style="display:flex;gap:14px;flex-wrap:wrap;">
+                <a href="/ambassador" style="font-size:12.5px;font-weight:700;color:#2563EB;text-decoration:none;">Ambassador &rarr;</a>
+                <a href="/jobs" style="font-size:12.5px;font-weight:700;color:#2563EB;text-decoration:none;">Jobs &amp; Hiring &rarr;</a>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -1733,22 +1831,26 @@ body #ovSelected .sel-quote-title {
                   </div>
 
                   <p style="font-size:13px;color:#475569;line-height:1.6;margin:0 0 16px 0;">
-                    Your formal Letter of Offer from the DBERT Technical Council is issued upon ₹499 caution deposit reconciliation. Review your appointment terms, provide your digital signature, and download your verified executive A4 PDF.
+                    {% if is_paid_1999 %}
+                      Your formal Letter of Offer from the DBERT Technical Council is active under your ₹1,999 All-Inclusive Fellowship enrollment. Review your appointment terms, provide your digital signature, and download your verified executive A4 PDF.
+                    {% else %}
+                      Your formal Letter of Offer from the DBERT Technical Council is issued upon ₹499 caution deposit reconciliation. Review your appointment terms, provide your digital signature, and download your verified executive A4 PDF.
+                    {% endif %}
                   </p>
 
                   <!-- Terms Matrix Mini-Grid -->
                   <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;">
                     <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;padding:10px 12px;">
-                      <div style="font-size:11px;color:#64748B;font-weight:600;">Milestone Stipend</div>
-                      <div style="font-size:14px;font-weight:800;color:#059669;margin-top:2px;">₹5,000 / Sprint</div>
+                      <div style="font-size:11px;color:#64748B;font-weight:600;">Milestone Incentive</div>
+                      <div style="font-size:14px;font-weight:800;color:#059669;margin-top:2px;">5,000 Coins (60-Day)</div>
                     </div>
                     <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;padding:10px 12px;">
-                      <div style="font-size:11px;color:#64748B;font-weight:600;">Weekly Target</div>
-                      <div style="font-size:14px;font-weight:800;color:#0F172A;margin-top:2px;">10 hrs / week</div>
+                      <div style="font-size:11px;color:#64748B;font-weight:600;">Sprint Target</div>
+                      <div style="font-size:14px;font-weight:800;color:#0F172A;margin-top:2px;">80 hrs (8 Weeks)</div>
                     </div>
                     <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;padding:10px 12px;">
-                      <div style="font-size:11px;color:#64748B;font-weight:600;">Certifications</div>
-                      <div style="font-size:14px;font-weight:800;color:#0F172A;margin-top:2px;">2 Verifiable Certs</div>
+                      <div style="font-size:11px;color:#64748B;font-weight:600;">Credentials</div>
+                      <div style="font-size:14px;font-weight:800;color:#0F172A;margin-top:2px;">3-Doc Credential Packet</div>
                     </div>
                     <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;padding:10px 12px;">
                       <div style="font-size:11px;color:#64748B;font-weight:600;">Sprint Deliverables</div>
@@ -1909,12 +2011,32 @@ body #ovSelected .sel-quote-title {
 
       <!-- ══════════════ EDIT PROFILE ══════════════ -->
       <div class="panel" id="panel-editprofile">
-        <div class="panel-head"><h1>Edit Profile</h1><p>Email and domain are locked. Other details can be updated anytime.</p></div>
+        <div class="panel-head">
+          <h1>Edit Profile</h1>
+          <p>Manage your intern profile, technical domain track, and account security.</p>
+        </div>
         <div class="glass-card" style="max-width:640px;">
           <div class="form-grid">
             <div class="form-group full"><label class="field-label" for="ep_name">Full Name</label><input type="text" id="ep_name" class="field-input" placeholder="Your full name" maxlength="80"/></div>
             <div class="form-group"><label class="field-label" for="ep_email">Email (locked)</label><input type="email" id="ep_email" class="field-input" disabled/></div>
-            <div class="form-group"><label class="field-label" for="ep_domain">Domain (locked)</label><input type="text" id="ep_domain" class="field-input" disabled/></div>
+            <div class="form-group">
+              <label class="field-label" for="ep_domain" style="display:flex;align-items:center;flex-wrap:wrap;gap:6px;">
+                Internship Track / Domain
+                <span id="domainLockBadge" class="badge-lock"></span>
+              </label>
+              <select id="ep_domain" class="field-select">
+                <option value="Full Stack Web Development">Full Stack Web Development</option>
+                <option value="Data Analyst">Data Analyst</option>
+                <option value="AI Agent Development">AI Agent Development</option>
+                <option value="Python Automation">Python Automation</option>
+                <option value="UI/UX Design">UI/UX Design</option>
+                <option value="DevOps & Cloud">DevOps & Cloud</option>
+                <option value="Mobile App Development">Mobile App Development</option>
+                <option value="Cybersecurity">Cybersecurity</option>
+                <option value="Digital Marketing">Digital Marketing</option>
+              </select>
+              <p class="field-hint" id="domainHint"></p>
+            </div>
             <div class="form-group"><label class="field-label" for="ep_phone">Phone</label><input type="tel" id="ep_phone" class="field-input" placeholder="10-digit mobile" maxlength="10"/></div>
             <div class="form-group"><label class="field-label" for="ep_city">City</label><input type="text" id="ep_city" class="field-input" placeholder="City"/></div>
             <div class="form-group full"><label class="field-label" for="ep_college">College</label><input type="text" id="ep_college" class="field-input" placeholder="College name"/></div>
@@ -1926,6 +2048,33 @@ body #ovSelected .sel-quote-title {
           <button class="btn-primary" id="epBtn" data-act-click="saveProfile" style="margin-top:14px;width:100%;justify-content:center;">
             <span class="btn-lbl"><i class="fas fa-floppy-disk"></i> &nbsp;Save Changes</span><span class="btn-spinner"></span>
           </button>
+        </div>
+
+        <!-- Password Change Card -->
+        <div class="glass-card" style="margin-top:24px;padding:24px;max-width:640px;">
+          <h3 style="font-size:16px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px;color:#0F172A;">
+            <i class="fa-solid fa-key" style="color:#2563eb;"></i> Change Password
+          </h3>
+          <div class="form-grid">
+            <div class="form-group full">
+              <label class="field-label" for="pw_current">Current Password</label>
+              <input type="password" id="pw_current" class="field-input" placeholder="Enter current password" autocomplete="current-password"/>
+            </div>
+            <div class="form-group">
+              <label class="field-label" for="pw_new">New Password</label>
+              <input type="password" id="pw_new" class="field-input" placeholder="Minimum 8 characters" autocomplete="new-password"/>
+            </div>
+            <div class="form-group">
+              <label class="field-label" for="pw_confirm">Confirm New Password</label>
+              <input type="password" id="pw_confirm" class="field-input" placeholder="Re-enter new password" autocomplete="new-password"/>
+            </div>
+            <div class="form-group full" style="display:flex;align-items:center;flex-wrap:wrap;gap:12px;">
+              <button type="button" class="btn btn-secondary" id="pwSubmitBtn" onclick="submitPasswordChange()" data-act-click="submitPasswordChange">
+                Update Password
+              </button>
+              <span id="pwStatusMsg" style="font-size:13px;font-weight:600;word-break:break-word;"></span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -2022,7 +2171,7 @@ body #ovSelected .sel-quote-title {
           <div class="pitch-li"><i class="fas fa-check-circle"></i><span><strong style="color:var(--tx-head);">Guaranteed placement opportunity</strong> with our hiring partners on completion + certification &mdash; your seat is confirmed the moment you enrol.</span></div>
           <div class="pitch-li"><i class="fas fa-check-circle"></i><span>No waiting to be shortlisted &mdash; skip the selection queue entirely.</span></div>
           <div style="margin-top:18px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
-            <a class="btn-primary" href="/program" data-act-click="dbertGA" data-arg-click='["paid_program_cta_click", {"source":"portal_paid_tab"}]' style="justify-content:center;"><i class="fas fa-rocket"></i> &nbsp;Explore &amp; Enrol in the Paid Program</a>
+            <a class="btn-primary" href="https://dbert.in/enroll/1999" target="_blank" rel="noopener" data-act-click="dbertGA" data-arg-click='["paid_program_cta_click", {"source":"portal_paid_tab"}]' style="justify-content:center;"><i class="fas fa-rocket"></i> &nbsp;Enroll in ₹1,999 Fellowship</a>
             <span style="color:var(--tx-muted);font-size:13px;">One-time fee: <strong style="color:var(--gold);" id="paidAmt">&#8377;1999</strong></span>
           </div>
         </div>
@@ -3280,6 +3429,7 @@ body #ovSelected .sel-quote-title {
     if(name==='cohorts')loadCohorts();
     if(name==='messages')loadMessages();
     if(name==='notifications')loadNotifications();
+    if(name==='editprofile' && typeof populateProfileData === 'function' && _intern) populateProfileData(_intern);
     closeSidebar();
   }
 
@@ -4473,7 +4623,9 @@ body #ovSelected .sel-quote-title {
       // Reveal portal
       if(loadScr) loadScr.classList.add('hidden');
       switchTab('overview');
-      const _h=(location.hash||'').replace('#','');
+      const _urlParams = new URLSearchParams(window.location.search);
+      const _tabParam = _urlParams.get('tab');
+      const _h = _tabParam || (location.hash||'').replace('#','');
       if(_h && document.getElementById('panel-'+_h)) switchTab(_h);
       refreshNotifDot();
 
@@ -4525,7 +4677,7 @@ body #ovSelected .sel-quote-title {
     disabled.classList.add('hidden');card.classList.remove('hidden');
     const icon=document.getElementById('ivCardIcon'),title=document.getElementById('ivCardTitle'),body=document.getElementById('ivCardBody'),action=document.getElementById('ivCardAction');
     const learnBtn='<a class="btn-primary" href="/courses" style="justify-content:center;"><i class="fas fa-book-open"></i>&nbsp; Explore Guided Curriculum</a>';
-    const ftCta='<a class="btn-primary" href="/program" '+actAttr('click','dbertGA',['paid_program_cta_click',{source:'portal_interview_card'}])+' style="background:linear-gradient(135deg,var(--green),#2e7d32);color:#fff;justify-content:center;"><i class="fas fa-bolt"></i>&nbsp; Explore Paid Fast-Track</a>';
+    const ftCta='<a class="btn-primary" href="https://dbert.in/enroll/1999" target="_blank" rel="noopener" '+actAttr('click','dbertGA',['paid_program_cta_click',{source:'portal_interview_card'}])+' style="background:linear-gradient(135deg,var(--green),#2e7d32);color:#fff;justify-content:center;"><i class="fas fa-bolt"></i>&nbsp; Explore ₹1,999 Fellowship</a>';
     const dualCta='<div style="display:flex;gap:10px;flex-wrap:wrap;"><a class="btn-primary" href="/courses" style="justify-content:center;"><i class="fas fa-book-open"></i>&nbsp; Explore Curriculum</a>' + ftCta + '</div>';
     const priorDone=(s.interview_status==='completed')||((s.attempts_used||0)>0);
     if(s.in_progress){
@@ -4804,6 +4956,10 @@ body #ovSelected .sel-quote-title {
   function renderNextActionMissionCard(){
     const card = document.getElementById('nextActionMissionCard');
     if (!card) return;
+    if ((_intern && _intern.is_tenure_expired) || window._IS_TENURE_EXPIRED === true) {
+      card.style.display = 'none';
+      return;
+    }
     const na = (_rawMe && _rawMe.next_action) || null;
     if (!na) return;
 
@@ -4917,7 +5073,7 @@ body #ovSelected .sel-quote-title {
     }
   }
 
-  function showOvBlock(id){['ovSelected','ovJobDeposit','ovEnrolled','ovRejected','ovAccepted'].forEach(b=>{const el=document.getElementById(b);if(el)el.classList.toggle('hidden',b!==id);});}
+  function showOvBlock(id){['ovSelected','ovJobDeposit','ovEnrolled','ovRejected','ovAccepted','ovTenureExpired'].forEach(b=>{const el=document.getElementById(b);if(el)el.classList.toggle('hidden',b!==id);});}
   function renderOverview(){
     renderNextActionMissionCard();
     const apBanner = document.getElementById('academicProfileBanner');
@@ -5011,10 +5167,10 @@ body #ovSelected .sel-quote-title {
       showOvBlock('');
     }else if(_status==='Apply Pending'||_status==='Under Review'){
       buildStepBar('overviewStepBar','Under Review');
-      if(_flowState && _flowState.stage === 'APPLICATION_REQUIRED'){
+      if(_status==='Apply Pending' || (_flowState && _flowState.stage === 'APPLICATION_REQUIRED')){
         nsIcon.innerHTML='&#128221;';
-        nsTitle.textContent='Internship Application Required';
-        nsMsg.textContent='Please submit your domain selection, academic profile, and statement of purpose to proceed.';
+        nsTitle.textContent='Internship Application Pending';
+        nsMsg.textContent='Please complete your domain selection, academic profile, and statement of purpose so our team can review your application.';
         nsAction.innerHTML='<button class="btn-primary" ' + actAttr('click','checkWizardStatus',[]) + ' style="justify-content:center;"><i class="fas fa-file-pen"></i>&nbsp; Complete Application</button>';
       } else {
         nsIcon.innerHTML='&#127891;';nsTitle.textContent='Application Under Review — Fast-Track Seat Confirmation';
@@ -5071,10 +5227,10 @@ body #ovSelected .sel-quote-title {
       nsIcon.innerHTML=rejected?'&#9888;':'&#128179;';
       nsTitle.textContent=rejected?'Action needed — re-upload your payment':'Welcome to the Paid Program — here\'s what\'s next';
       nsMsg.innerHTML=rejected?'We couldn\'t verify your payment screenshot. Your seat is still held — please re-upload a clear payment proof to confirm your enrolment.':'Thanks for enrolling in the Paid Program. We typically verify payments within 24 hours and will email you once your seat is confirmed.';
-      if(rejected)nsAction.innerHTML='<a class="btn-primary" href="/program" style="justify-content:center;"><i class="fas fa-cloud-upload-alt"></i>&nbsp; Re-upload payment proof</a>';
+      if(rejected)nsAction.innerHTML='<a class="btn-primary" href="/portal/offer" style="justify-content:center;"><i class="fas fa-cloud-upload-alt"></i>&nbsp; Re-upload payment proof</a>';
       document.getElementById('enrolledIcon').innerHTML=rejected?'&#9888;':'&#128179;';
       document.getElementById('enrolledWaitTitle').textContent=rejected?'Action needed — re-upload your payment':'Paid enrolment received';
-      document.getElementById('enrolledWaitBody').innerHTML=rejected?'Re-upload a clear payment proof on the <a href="/program" style="color:var(--gold);font-weight:700;">program page</a> to confirm your enrolment.':'Thanks for enrolling in the Paid Program. We\'ll email you once your seat is confirmed.';
+      document.getElementById('enrolledWaitBody').innerHTML=rejected?'Re-upload a clear payment proof on <a href="/portal/offer" style="color:var(--gold);font-weight:700;">your seat confirmation page</a> to confirm your enrolment.':'Thanks for enrolling in the Paid Program. We\'ll email you once your seat is confirmed.';
       renderEnrolledDetails(true);showOvBlock('ovEnrolled');
     }else if(_status==='Accepted'){
       document.getElementById('ovWelcomeBanner').classList.remove('hidden');
@@ -5109,6 +5265,20 @@ body #ovSelected .sel-quote-title {
       document.getElementById('nextStepCard').classList.add('hidden');
       const sbEl = document.getElementById('overviewStepBar');
       if (sbEl) sbEl.classList.add('hidden');
+      if ((_intern && _intern.is_tenure_expired) || window._IS_TENURE_EXPIRED === true) {
+        const wr = document.getElementById('welcomeRoadmapSection');
+        if (wr) wr.style.display = 'none';
+        const cEl = document.getElementById('ovExpiredCoinsVal');
+        if (cEl) cEl.textContent = (_totalCoins || 0) + ' Coins';
+        const certEl = document.getElementById('ovExpiredCertStatus');
+        if (certEl) {
+          certEl.textContent = (_rawMe && _rawMe.verified_certificate && _rawMe.verified_certificate.verified)
+            ? 'Verified · Pre-Vetted Engineer'
+            : 'View Issued / Provisional Status';
+        }
+        showOvBlock('ovTenureExpired');
+        return;
+      }
       buildInternshipProgress('welcomeRoadmapSection');
       showOvBlock('ovAccepted');
 
@@ -5135,7 +5305,7 @@ body #ovSelected .sel-quote-title {
     }else if(_status==='Rejected'){
       nsIcon.innerHTML='&#128140;';nsTitle.textContent='Not moving forward this time';
       nsMsg.textContent='This decision isn\'t the end of your journey — our Paid Program includes a guaranteed placement opportunity with our hiring partners on completion + certification.';
-      nsAction.innerHTML='<a class="btn-primary" href="/program" '+actAttr('click','dbertGA',['paid_program_cta_click',{source:'portal_overview_rejected'}])+' style="background:linear-gradient(135deg,var(--green),#2e7d32);color:#fff;justify-content:center;"><i class="fas fa-rocket"></i>&nbsp; Explore the Paid Program</a>';
+      nsAction.innerHTML='<a class="btn-primary" href="https://dbert.in/enroll/1999" target="_blank" rel="noopener" '+actAttr('click','dbertGA',['paid_program_cta_click',{source:'portal_overview_rejected'}])+' style="background:linear-gradient(135deg,var(--green),#2e7d32);color:#fff;justify-content:center;"><i class="fas fa-rocket"></i>&nbsp; Enroll in ₹1,999 Fellowship</a>';
       const latestApp=_apps[0];
       if(latestApp&&latestApp.mentor_note)document.getElementById('rejectionNote').textContent=latestApp.mentor_note;
       const strip=document.getElementById('reapplyCountdown'),formSection=document.getElementById('reapplyFormSection');
@@ -5339,10 +5509,37 @@ body #ovSelected .sel-quote-title {
     }catch(e){showReapplyError('Network error. Please try again.');btn.disabled=false;btn.classList.remove('loading');}
   }
 
-  /* ════ ACCOUNT SETTINGS ════ */
-  function prefillAccountSettings(){
-    if(!_intern)return;const set=(id,v)=>{const el=document.getElementById(id);if(el)el.value=v||'';};
-    set('ep_name',_intern.name);set('ep_email',_intern.email);set('ep_domain',_intern.domain);set('ep_phone',_intern.phone);set('ep_city',_intern.city);set('ep_college',_intern.college);set('ep_course',_intern.course);set('ep_semester',_intern.semester);set('ep_year',_intern.year_of_passing);
+  /* ════ ACCOUNT SETTINGS & PROFILE DATA ════ */
+  function populateProfileData(u) {
+    if (!u) return;
+    const set = (id, v) => { const el = document.getElementById(id); if (el) el.value = v || ''; };
+    set('ep_name', u.name);
+    set('ep_email', u.email);
+    set('ep_phone', u.phone);
+    set('ep_city', u.city);
+    set('ep_college', u.college);
+    set('ep_course', u.course);
+    set('ep_semester', u.semester);
+    set('ep_year', u.year_of_passing);
+    var domainSel = document.getElementById('ep_domain');
+    if (domainSel) domainSel.value = u.domain || 'Full Stack Web Development';
+    var lockBadge = document.getElementById('domainLockBadge');
+    var hint = document.getElementById('domainHint');
+    var isLocked = (parseInt(u.signup_stage, 10) >= 5 && !u.is_tenure_expired);
+    if (isLocked) {
+      if (domainSel) domainSel.disabled = true;
+      if (lockBadge) { lockBadge.className = 'badge-locked'; lockBadge.innerHTML = '<i class="fa-solid fa-lock"></i> Locked for Active Cohort'; }
+      if (hint) hint.innerText = 'Track is locked for your active 8-week production tenure.';
+    } else {
+      if (domainSel) domainSel.disabled = false;
+      if (lockBadge) { lockBadge.className = 'badge-editable'; lockBadge.innerHTML = '<i class="fa-solid fa-pen"></i> Editable (Pre-Enrollment)'; }
+      if (hint) hint.innerText = 'You may freely update your technical track prior to cohort seat confirmation.';
+    }
+  }
+
+  function prefillAccountSettings() {
+    if (!_intern) return;
+    populateProfileData(_intern);
   }
   function populateApplyAnother(){
     const card=document.getElementById('applyAnotherCard'),full=document.getElementById('applyAnotherFull');
@@ -5371,7 +5568,14 @@ body #ovSelected .sel-quote-title {
   function showCpError(msg){const el=document.getElementById('cpError');el.querySelector('span').textContent=msg;el.classList.add('visible');}
   async function saveProfile(){
     document.getElementById('epError').classList.remove('visible');
-    const name=document.getElementById('ep_name').value.trim(),phone=document.getElementById('ep_phone').value.trim(),city=document.getElementById('ep_city').value.trim(),college=document.getElementById('ep_college').value.trim(),course=document.getElementById('ep_course').value,semester=document.getElementById('ep_semester').value,year=document.getElementById('ep_year').value;
+    const name=document.getElementById('ep_name').value.trim(),
+          phone=document.getElementById('ep_phone').value.trim(),
+          city=document.getElementById('ep_city').value.trim(),
+          college=document.getElementById('ep_college').value.trim(),
+          course=document.getElementById('ep_course').value,
+          semester=document.getElementById('ep_semester').value,
+          year=document.getElementById('ep_year').value,
+          domain=document.getElementById('ep_domain') ? document.getElementById('ep_domain').value : '';
     if(name.length<2||name.length>80){showEpError('Name must be 2–80 characters.');return;}
     if(!/^[6-9]\d{9}$/.test(phone)){showEpError('Enter a valid 10-digit phone number.');return;}
     if(!city){showEpError('City cannot be empty.');return;}
@@ -5381,12 +5585,62 @@ body #ovSelected .sel-quote-title {
     if(!year){showEpError('Please select a year of passing.');return;}
     const btn=document.getElementById('epBtn');btn.disabled=true;btn.classList.add('loading');
     try{
-      const res=await fetch('/intern/update-profile',{method:'POST',headers:{'Content-Type':'application/json'},credentials:'include',body:JSON.stringify({name,phone,city,college,course,semester,year_of_passing:year})});
-      const data=await res.json();
-      if(data.status==='success'){Object.assign(_intern,{name,phone,city,college,course,semester,year_of_passing:year});document.getElementById('internName').textContent=name||'Intern';showToast('Profile updated.','green');}
-      else{showEpError(data.message||'Update failed.');}
-    }catch(e){showEpError('Network error. Please try again.');}
+      const payload = {name, phone, city, college, course, semester, year_of_passing: year, domain};
+      const res = await fetch('/api/intern/profile/update', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        credentials: 'include',
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if(data.status === 'ok' || data.status === 'success'){
+        Object.assign(_intern, payload);
+        const inEl = document.getElementById('internName'); if(inEl) inEl.textContent = name || 'Intern';
+        const idEl = document.getElementById('infoDomain'); if(idEl) idEl.textContent = domain;
+        showToast('Profile updated successfully.', 'green');
+      } else {
+        showEpError(data.error || data.message || 'Update failed.');
+      }
+    }catch(e){
+      showEpError('Network error. Please try again.');
+    }
     btn.disabled=false;btn.classList.remove('loading');
+  }
+
+  function submitPasswordChange() {
+    var cur = document.getElementById('pw_current').value;
+    var nw = document.getElementById('pw_new').value;
+    var conf = document.getElementById('pw_confirm').value;
+    var msg = document.getElementById('pwStatusMsg');
+    if (!cur || !nw || !conf) { msg.style.color='#ef4444'; msg.innerText='All password fields are required.'; return; }
+    if (nw !== conf) { msg.style.color='#ef4444'; msg.innerText='Passwords do not match.'; return; }
+    if (nw.length < 8) { msg.style.color='#ef4444'; msg.innerText='Minimum 8 characters required.'; return; }
+    var btn = document.getElementById('pwSubmitBtn');
+    if (btn) btn.disabled = true;
+    msg.style.color = '#38bdf8';
+    msg.innerText = 'Updating password...';
+    fetch('/api/account/change-password', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      credentials: 'include',
+      body: JSON.stringify({current_password: cur, new_password: nw})
+    }).then(r => r.json()).then(d => {
+      if (btn) btn.disabled = false;
+      if (d.status === 'ok' || d.status === 'success') {
+        msg.style.color='#10b981';
+        msg.innerText='Password updated successfully.';
+        document.getElementById('pw_current').value = '';
+        document.getElementById('pw_new').value = '';
+        document.getElementById('pw_confirm').value = '';
+      } else {
+        msg.style.color='#ef4444';
+        msg.innerText = d.error || d.message || 'Update failed.';
+      }
+    }).catch(() => {
+      if (btn) btn.disabled = false;
+      msg.style.color='#ef4444';
+      msg.innerText='Network error. Please try again.';
+    });
   }
   async function changePassword(){
     document.getElementById('cpError').classList.remove('visible');
@@ -5907,6 +6161,8 @@ body #ovSelected .sel-quote-title {
     switchTab,
     doLogout,
     changePassword,
+    submitPasswordChange,
+    populateProfileData,
     doApplyAnother,
     updateAdWhy,
     saveProfile,
@@ -6105,6 +6361,8 @@ body #ovSelected .sel-quote-title {
     }
   };
 
+  window.confirmDomainSelection = confirmDomainSelection;
+
   document.addEventListener('DOMContentLoaded', () => {
     loadPortal();
     const openBtn = document.getElementById('openAcademicModalBtn');
@@ -6115,6 +6373,15 @@ body #ovSelected .sel-quote-title {
     if (closeCancel) closeCancel.addEventListener('click', closeAcademicModal);
     const submitBtn = document.getElementById('submitAcademicModalBtn');
     if (submitBtn) submitBtn.addEventListener('click', submitAcademicModal);
+
+    const closeDomainBtn = document.getElementById('closeDomainSelectionBtn');
+    if (closeDomainBtn) closeDomainBtn.addEventListener('click', window.closeDomainSelectionModal);
+    document.querySelectorAll('#domainGridOptions .domain-pick-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const domain = btn.getAttribute('data-domain');
+        if (domain) confirmDomainSelection(domain);
+      });
+    });
   });
   </script>
 
@@ -6199,62 +6466,62 @@ body #ovSelected .sel-quote-title {
             <span style="font-size:12px; color:#94A3B8;">Required to activate your curriculum, 1:1 mentor allocation &amp; sprint repos</span>
           </div>
         </div>
-        <button type="button" onclick="closeDomainSelectionModal()" style="background:none; border:none; color:#94A3B8; font-size:22px; cursor:pointer; line-height:1;" aria-label="Close">&times;</button>
+        <button type="button" id="closeDomainSelectionBtn" style="background:none; border:none; color:#94A3B8; font-size:22px; cursor:pointer; line-height:1;" aria-label="Close">&times;</button>
       </div>
       <p style="font-size:13px; color:#CBD5E1; margin:0 0 16px; line-height:1.5;">
         Select your primary engineering or analytics track below to instantly unlock your domain workspace:
       </p>
 
       <div id="domainGridOptions" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:10px; margin-bottom:18px;">
-        <button type="button" class="domain-pick-btn" onclick="confirmDomainSelection('AI Agent Development')" style="background:#1E293B; border:1.5px solid #334155; border-radius:12px; padding:14px 12px; text-align:left; cursor:pointer; transition:all 0.2s ease;">
+        <button type="button" class="domain-pick-btn" data-domain="AI Agent Development" style="background:#1E293B; border:1.5px solid #334155; border-radius:12px; padding:14px 12px; text-align:left; cursor:pointer; transition:all 0.2s ease;">
           <div style="font-size:20px; margin-bottom:6px;">🤖</div>
           <div style="font-weight:700; font-size:13px; color:#F8FAFC;">AI Agent Development</div>
           <div style="font-size:11px; color:#94A3B8; margin-top:2px;">LLMs, LangChain, Autogen</div>
         </button>
 
-        <button type="button" class="domain-pick-btn" onclick="confirmDomainSelection('Data Analyst')" style="background:#1E293B; border:1.5px solid #334155; border-radius:12px; padding:14px 12px; text-align:left; cursor:pointer; transition:all 0.2s ease;">
+        <button type="button" class="domain-pick-btn" data-domain="Data Analyst" style="background:#1E293B; border:1.5px solid #334155; border-radius:12px; padding:14px 12px; text-align:left; cursor:pointer; transition:all 0.2s ease;">
           <div style="font-size:20px; margin-bottom:6px;">📊</div>
           <div style="font-weight:700; font-size:13px; color:#F8FAFC;">Data Analyst</div>
           <div style="font-size:11px; color:#94A3B8; margin-top:2px;">SQL, Power BI, Python, EDA</div>
         </button>
 
-        <button type="button" class="domain-pick-btn" onclick="confirmDomainSelection('Full Stack Development')" style="background:#1E293B; border:1.5px solid #334155; border-radius:12px; padding:14px 12px; text-align:left; cursor:pointer; transition:all 0.2s ease;">
+        <button type="button" class="domain-pick-btn" data-domain="Full Stack Development" style="background:#1E293B; border:1.5px solid #334155; border-radius:12px; padding:14px 12px; text-align:left; cursor:pointer; transition:all 0.2s ease;">
           <div style="font-size:20px; margin-bottom:6px;">💻</div>
           <div style="font-weight:700; font-size:13px; color:#F8FAFC;">Full Stack Development</div>
           <div style="font-size:11px; color:#94A3B8; margin-top:2px;">Next.js, Node.js, Postgres</div>
         </button>
 
-        <button type="button" class="domain-pick-btn" onclick="confirmDomainSelection('Python Automation')" style="background:#1E293B; border:1.5px solid #334155; border-radius:12px; padding:14px 12px; text-align:left; cursor:pointer; transition:all 0.2s ease;">
+        <button type="button" class="domain-pick-btn" data-domain="Python Automation" style="background:#1E293B; border:1.5px solid #334155; border-radius:12px; padding:14px 12px; text-align:left; cursor:pointer; transition:all 0.2s ease;">
           <div style="font-size:20px; margin-bottom:6px;">🐍</div>
           <div style="font-weight:700; font-size:13px; color:#F8FAFC;">Python Automation</div>
           <div style="font-size:11px; color:#94A3B8; margin-top:2px;">Scraping, APIs, RPA, Schedulers</div>
         </button>
 
-        <button type="button" class="domain-pick-btn" onclick="confirmDomainSelection('UI/UX Design')" style="background:#1E293B; border:1.5px solid #334155; border-radius:12px; padding:14px 12px; text-align:left; cursor:pointer; transition:all 0.2s ease;">
+        <button type="button" class="domain-pick-btn" data-domain="UI/UX Design" style="background:#1E293B; border:1.5px solid #334155; border-radius:12px; padding:14px 12px; text-align:left; cursor:pointer; transition:all 0.2s ease;">
           <div style="font-size:20px; margin-bottom:6px;">🎨</div>
           <div style="font-weight:700; font-size:13px; color:#F8FAFC;">UI/UX Design</div>
           <div style="font-size:11px; color:#94A3B8; margin-top:2px;">Figma, Wireframing, UX Specs</div>
         </button>
 
-        <button type="button" class="domain-pick-btn" onclick="confirmDomainSelection('DevOps & Cloud')" style="background:#1E293B; border:1.5px solid #334155; border-radius:12px; padding:14px 12px; text-align:left; cursor:pointer; transition:all 0.2s ease;">
+        <button type="button" class="domain-pick-btn" data-domain="DevOps & Cloud" style="background:#1E293B; border:1.5px solid #334155; border-radius:12px; padding:14px 12px; text-align:left; cursor:pointer; transition:all 0.2s ease;">
           <div style="font-size:20px; margin-bottom:6px;">☁️</div>
           <div style="font-weight:700; font-size:13px; color:#F8FAFC;">DevOps &amp; Cloud</div>
           <div style="font-size:11px; color:#94A3B8; margin-top:2px;">AWS, Docker, CI/CD, Linux</div>
         </button>
 
-        <button type="button" class="domain-pick-btn" onclick="confirmDomainSelection('Mobile App Development')" style="background:#1E293B; border:1.5px solid #334155; border-radius:12px; padding:14px 12px; text-align:left; cursor:pointer; transition:all 0.2s ease;">
+        <button type="button" class="domain-pick-btn" data-domain="Mobile App Development" style="background:#1E293B; border:1.5px solid #334155; border-radius:12px; padding:14px 12px; text-align:left; cursor:pointer; transition:all 0.2s ease;">
           <div style="font-size:20px; margin-bottom:6px;">📱</div>
           <div style="font-weight:700; font-size:13px; color:#F8FAFC;">Mobile App Development</div>
           <div style="font-size:11px; color:#94A3B8; margin-top:2px;">React Native, Flutter, Android</div>
         </button>
 
-        <button type="button" class="domain-pick-btn" onclick="confirmDomainSelection('Cybersecurity')" style="background:#1E293B; border:1.5px solid #334155; border-radius:12px; padding:14px 12px; text-align:left; cursor:pointer; transition:all 0.2s ease;">
+        <button type="button" class="domain-pick-btn" data-domain="Cybersecurity" style="background:#1E293B; border:1.5px solid #334155; border-radius:12px; padding:14px 12px; text-align:left; cursor:pointer; transition:all 0.2s ease;">
           <div style="font-size:20px; margin-bottom:6px;">🛡️</div>
           <div style="font-weight:700; font-size:13px; color:#F8FAFC;">Cybersecurity</div>
           <div style="font-size:11px; color:#94A3B8; margin-top:2px;">Network Defense, SOC, Audits</div>
         </button>
 
-        <button type="button" class="domain-pick-btn" onclick="confirmDomainSelection('Digital Marketing')" style="background:#1E293B; border:1.5px solid #334155; border-radius:12px; padding:14px 12px; text-align:left; cursor:pointer; transition:all 0.2s ease;">
+        <button type="button" class="domain-pick-btn" data-domain="Digital Marketing" style="background:#1E293B; border:1.5px solid #334155; border-radius:12px; padding:14px 12px; text-align:left; cursor:pointer; transition:all 0.2s ease;">
           <div style="font-size:20px; margin-bottom:6px;">🚀</div>
           <div style="font-weight:700; font-size:13px; color:#F8FAFC;">Digital Marketing</div>
           <div style="font-size:11px; color:#94A3B8; margin-top:2px;">SEO, Analytics, Growth Funnels</div>

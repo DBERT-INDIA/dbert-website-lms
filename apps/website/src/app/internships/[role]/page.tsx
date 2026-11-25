@@ -2,7 +2,7 @@ import React from 'react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { GEO_CITIES, GEO_ROLES } from '@/data/geo_domains.config';
+import { GEO_CITIES, GEO_ROLES, generateCityHeadline } from '@/data/geo_domains.config';
 import TrackLeadCaptureForm from '@/components/forms/TrackLeadCaptureForm';
 import { MapPin, Briefcase, Award, ShieldCheck, CheckCircle2, ArrowRight, Building, GraduationCap, Banknote } from 'lucide-react';
 import s from '../../learners/learners.module.css';
@@ -23,24 +23,36 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   // Case 1: City Slug
   if (GEO_CITIES[slug]) {
     const city = GEO_CITIES[slug];
-    const title = `Engineering Internships in ${city.name} (2026 Batch)`;
-    const description = `Explore verified engineering and AI internships in ${city.name}. Commit upstream PRs on production repos, secure 100% guaranteed internship placement, and get verified credentials.`;
+    const title = `Engineering Internships in ${city.name} — 100% Guaranteed Production Internship`;
+    const description = `Explore verified engineering and AI production internships in ${city.name}. Commit upstream PRs on production repos, secure 100% Guaranteed Production Internship with Dedicated Placement Assistance, and get verified credentials.`;
     return {
-      title: `${title} | DBERT`,
+      title,
       description,
-      alternates: { canonical: `https://dbert.in/internships/${slug}` }
+      alternates: { canonical: `https://dbert.in/internships/${slug}` },
+      openGraph: {
+        title: `${title} | DBERT`,
+        description,
+        url: `https://dbert.in/internships/${slug}`,
+        type: 'website'
+      }
     };
   }
 
   // Case 2: Role Slug
   if (GEO_ROLES[slug]) {
     const role = GEO_ROLES[slug];
-    const title = `${role.title} Internships (2026 Batch)`;
-    const description = `Apply for ${role.title} internships. Build production codebases under senior architect review, secure 100% guaranteed internship placement, and receive verifiable MSME credentials.`;
+    const title = `${role.title} Internships — 100% Guaranteed Production Internship`;
+    const description = `Apply for ${role.title} production internships. Build production codebases under senior architect review, secure 100% Guaranteed Production Internship with Dedicated Placement Assistance, and receive verifiable MSME credentials.`;
     return {
-      title: `${title} | DBERT`,
+      title,
       description,
-      alternates: { canonical: `https://dbert.in/internships/${slug}` }
+      alternates: { canonical: `https://dbert.in/internships/${slug}` },
+      openGraph: {
+        title: `${title} | DBERT`,
+        description,
+        url: `https://dbert.in/internships/${slug}`,
+        type: 'website'
+      }
     };
   }
 
@@ -51,19 +63,32 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     const role = GEO_ROLES[rSlug];
     const city = GEO_CITIES[cSlug];
     if (role && city) {
-      const title = `${role.title} Internships in ${city.name}`;
-      const description = `Apply for ${role.title} internships in ${city.name}. Work on live production codebases, secure 100% guaranteed internship placement, and earn verifiable credentials.`;
+      const title = `${role.title} Internship in ${city.name} — 100% Guaranteed Production Internship`;
+      const description = `Apply for ${role.title} production internship in ${city.name}. Work on live production codebases, secure 100% Guaranteed Production Internship with Dedicated Placement Assistance, and earn verifiable credentials.`;
       return {
-        title: `${title} | DBERT`,
+        title,
         description,
-        alternates: { canonical: `https://dbert.in/internships/${slug}` }
+        alternates: { canonical: `https://dbert.in/internships/${slug}` },
+        openGraph: {
+          title: `${title} | DBERT`,
+          description,
+          url: `https://dbert.in/internships/${slug}`,
+          type: 'website'
+        }
       };
     }
   }
 
   return {
-    title: 'Internships | DBERT',
-    description: 'Explore verified engineering and AI internships across India and global remote tech hubs.'
+    title: 'Internships',
+    description: 'Explore verified engineering and AI production internships across India and global remote tech hubs with dedicated placement assistance.',
+    alternates: { canonical: 'https://dbert.in/internships' },
+    openGraph: {
+      title: 'Internships | DBERT',
+      description: 'Explore verified engineering and AI production internships across India and global remote tech hubs with dedicated placement assistance.',
+      url: 'https://dbert.in/internships',
+      type: 'website'
+    }
   };
 }
 
@@ -95,8 +120,16 @@ export default async function InternshipSlugDispatcher({ params }: PageProps) {
     : `${roleData?.title} Internships`;
 
   const pageSubtitle = cityData
-    ? `Verified venture squad internships across ${cityData.locality}, ${cityData.region}. Build production features, pass Turnitin evaluations, and secure 100% guaranteed internship placement.`
-    : `Verified engineering sprint internships across 18 tech hubs. Build production codebases with senior code reviews and 100% guaranteed internship placement.`;
+    ? `Verified venture squad internships across ${cityData.locality}, ${cityData.region}. Build production features, pass Turnitin evaluations, and secure 100% Guaranteed Production Internship with Dedicated Placement Assistance.`
+    : `Verified engineering sprint internships across 18 tech hubs. Build production codebases with senior code reviews and 100% Guaranteed Production Internship with Dedicated Placement Assistance.`;
+
+  const headline = isCombined && roleData && cityData
+    ? generateCityHeadline(roleData.title, cityData.name)
+    : cityData
+    ? generateCityHeadline('Engineering & AI Internships', cityData.name)
+    : roleData
+    ? generateCityHeadline(roleData.title, 'Pan-India')
+    : 'Engineering & AI Internships — 100% Guaranteed Production Internship with Dedicated Placement Assistance';
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -105,7 +138,7 @@ export default async function InternshipSlugDispatcher({ params }: PageProps) {
         '@type': 'JobPosting',
         '@id': `https://dbert.in/internships/${slug}#job`,
         title: pageTitle,
-        description: `<p>${pageSubtitle}</p><p><strong>Outcome:</strong> 100% Guaranteed Internship Placement (Internal & External).</p>`,
+        description: `<p>${pageSubtitle}</p><p><strong>Outcome:</strong> ${headline}.</p>`,
         datePosted: '2026-11-01T00:00:00+05:30',
         validThrough: '2027-06-30T23:59:59+05:30',
         employmentType: 'INTERN',
@@ -172,7 +205,7 @@ export default async function InternshipSlugDispatcher({ params }: PageProps) {
                 <Building size={16} style={{ color: '#10b981' }} /> {cityData.street}
               </span>
               <span style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                <Briefcase size={16} style={{ color: '#10b981' }} /> 100% Guaranteed Placement (Internal & External)
+                <Briefcase size={16} style={{ color: '#10b981' }} /> {headline}
               </span>
             </div>
           )}

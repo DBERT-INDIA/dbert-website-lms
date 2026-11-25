@@ -13,7 +13,7 @@ export default function PrReviewTerminal() {
       <div className={styles.header}>
         <div>
           <div className="doclabel" style={{ marginBottom: '6px' }}>
-            // ACTUAL APPRENTICESHIP // PULL REQUEST #148
+            {'// ACTUAL APPRENTICESHIP // PULL REQUEST #148'}
           </div>
           <h2 className={styles.title}>What Learning at DBERT Actually Feels Like</h2>
         </div>
@@ -69,7 +69,7 @@ export default function PrReviewTerminal() {
             ✓ Approved &amp; Merged to Production Cluster
           </span>
           <span className={styles.outcomeReward}>
-            Fellow earned ₹4,500 milestone stipend
+            Fellow completed verified sprint milestone
           </span>
         </div>
       </div>

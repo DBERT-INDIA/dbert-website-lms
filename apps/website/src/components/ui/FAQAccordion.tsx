@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
+import { trackEvent } from '@/lib/analytics';
 import styles from './FAQAccordion.module.css';
 
 interface FAQItem {
@@ -11,13 +12,22 @@ interface FAQItem {
 
 interface FAQAccordionProps {
   items: FAQItem[];
+  trackingContext?: string;
 }
 
-export default function FAQAccordion({ items }: FAQAccordionProps) {
+export default function FAQAccordion({ items, trackingContext }: FAQAccordionProps) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
-  const toggleAccordion = (index: number) => {
+  const toggleAccordion = (index: number, question: string) => {
+    const isOpening = activeIndex !== index;
     setActiveIndex(prevIndex => (prevIndex === index ? null : index));
+    if (isOpening) {
+      const eventName = trackingContext === 'blog-faq' ? 'blog_faq_expand' : 'faq_expand';
+      trackEvent(eventName, {
+        context: trackingContext || 'faq',
+        question: question.slice(0, 120),
+      });
+    }
   };
 
   return (
@@ -35,7 +45,7 @@ export default function FAQAccordion({ items }: FAQAccordionProps) {
               className={styles.faqQuestion} 
               aria-expanded={isOpen}
               aria-controls={answerId}
-              onClick={() => toggleAccordion(index)}
+              onClick={() => toggleAccordion(index, item.question)}
             >
               <span>{item.question}</span>
               <ChevronDown 

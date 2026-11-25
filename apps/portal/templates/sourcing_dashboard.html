@@ -183,7 +183,7 @@ function renderDashboard(data) {
     let remoteObj = data.work_models.find(r => r.model === 'Remote');
     document.getElementById('kpi-remote').innerText = remoteObj ? remoteObj.count : 0;
     
-    let paidStipends = data.stipends.filter(s => s.stipend.includes('₹'));
+    let paidStipends = (data.stipends || []).filter(s => s && s.stipend && (s.stipend.includes('₹') || s.stipend.includes('$') || s.stipend.includes('/')));
     document.getElementById('kpi-stipend').innerText = paidStipends.length > 0 ? paidStipends[0].stipend : 'Not Disclosed';
     
     // 2. Domains (CSS Bar Chart)

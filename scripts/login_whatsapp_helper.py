@@ -79,8 +79,11 @@ def login_account(acc_num: int, timeout_sec: int = 300):
                 print("[!] Browser window was closed by the user.")
                 break
 
-            # Check if chat interface is loaded
-            chat_pane = page.query_selector("[aria-label='Chat list'], #side, #pane-side, [data-testid='chat-list']")
+            # Check if chat interface is loaded (ignore transient navigation errors)
+            try:
+                chat_pane = page.query_selector("[aria-label='Chat list'], #side, #pane-side, [data-testid='chat-list']")
+            except Exception:
+                chat_pane = None
             if chat_pane:
                 logged_in = True
                 break

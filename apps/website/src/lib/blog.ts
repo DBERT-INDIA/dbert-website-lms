@@ -2,6 +2,11 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 
+export interface BlogFaqItem {
+  question: string;
+  answer: string;
+}
+
 export interface BlogPostMeta {
   slug: string;
   title: string;
@@ -13,6 +18,7 @@ export interface BlogPostMeta {
   authorBio: string;
   tags: string[];
   canonicalUrl?: string;
+  faqs?: BlogFaqItem[];
 }
 
 const BLOG_DIR = path.join(process.cwd(), 'src/content/blog');
@@ -49,6 +55,7 @@ export function getAllPosts(): BlogPostMeta[] {
       authorBio: data.authorBio ?? 'Applied artificial intelligence research and incubation ecosystem.',
       tags: Array.isArray(data.tags) ? data.tags : [],
       canonicalUrl: data.canonicalUrl,
+      faqs: Array.isArray(data.faqs) ? data.faqs : undefined,
     } as BlogPostMeta;
   });
 
@@ -85,6 +92,7 @@ export function getPostMeta(slug: string): BlogPostMeta | null {
     authorBio: data.authorBio ?? 'Applied artificial intelligence research and incubation ecosystem.',
     tags: Array.isArray(data.tags) ? data.tags : [],
     canonicalUrl: data.canonicalUrl,
+    faqs: Array.isArray(data.faqs) ? data.faqs : undefined,
   } as BlogPostMeta;
 }
 

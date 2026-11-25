@@ -42,7 +42,7 @@ export default function FastCalculator() {
       <div className={styles.header}>
         <div>
           <div className="doclabel" style={{ marginBottom: '6px' }}>
-            // INTERACTIVE TOOL // FULL TRANSPARENCY
+            {'// INTERACTIVE TOOL // FULL TRANSPARENCY'}
           </div>
           <h2 className={styles.title}>FAST Equity Model Calculator</h2>
         </div>

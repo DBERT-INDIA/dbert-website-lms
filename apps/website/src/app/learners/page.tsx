@@ -7,6 +7,7 @@ import HandNote from '@/components/ui/HandNote';
 import HandDrawnArrow from '@/components/ui/HandDrawnArrow';
 import PrReviewTerminal from '@/components/ui/PrReviewTerminal';
 import TrackedLink from '@/components/ui/TrackedLink';
+import { getFeaturedTracks } from '@/data/courses.config';
 import Faq from '@/components/seo/Faq';
 import s from './learners.module.css';
 import { pageMetadata } from '@/lib/seo';
@@ -15,9 +16,9 @@ export const metadata = pageMetadata('/learners');
 
 const learnerFaqs = [
   {
-    question: 'Does the DBERT Fellowship include Guaranteed Internship Placement?',
+    question: 'Does the DBERT Fellowship include 100% Guaranteed Production Internship with Dedicated Placement Assistance?',
     answer:
-      'Yes. Unlike attendance-based online certification programs, our 2-Month Applied Fellowship guarantees 100% internship placement across internal DBERT portfolio ventures (Gayatri AI, Alkame, Aivara) or verified corporate hiring partners upon successful sprint completion.'
+      'Yes. Unlike attendance-based online certification programs, our 2-Month Applied Fellowship guarantees 100% Guaranteed Production Internship with Dedicated Placement Assistance across internal DBERT portfolio ventures (Gayatri AI, Alkame, Aivara) or verified corporate hiring partners upon successful sprint completion.'
   },
   {
     question: 'Can I skip Launchpad and apply straight to Accelerate or Fellowship?',
@@ -68,7 +69,7 @@ const jsonLd = {
         {
           '@type': 'ListItem',
           position: 3,
-          name: 'DBERT Fellowship (Guaranteed AI Internship Placement)',
+          name: 'DBERT Fellowship (100% Guaranteed Production Internship with Dedicated Placement Assistance)',
           url: 'https://dbert.in/learners/fellowship',
         },
         {
@@ -119,10 +120,10 @@ export default function LearnersLandingPage() {
     {
       num: '03',
       tag: 'Experience Track',
-      title: 'DBERT Fellowship (Guaranteed Placement)',
+      title: 'DBERT Fellowship (100% Guaranteed Production Internship)',
       price: '₹1,999 / 2 months',
       forText: 'Top-tier graduates from our Accelerate courses are selected through code challenges to work on real client systems.',
-      outcome: 'Earn remote experience letters, contribute directly to live startup products, and receive 100% guaranteed internship placement.',
+      outcome: 'Earn remote experience letters, contribute directly to live startup products, and receive 100% Guaranteed Production Internship with Dedicated Placement Assistance.',
       ctaText: 'Apply for Fellowship',
       ctaHref: 'https://lms.dbert.in/',
       isFeatured: true
@@ -158,9 +159,9 @@ export default function LearnersLandingPage() {
     },
     {
       kind: 'founder',
-      who: 'Stage 03 · Guaranteed Placement Fellowship',
+      who: 'Stage 03 · Guaranteed Production Internship',
       title: 'Applied AI Fellowship',
-      description: 'Work on live client repositories, secure guaranteed internship placement, and ship code directly into production.',
+      description: 'Work on live client repositories, secure 100% Guaranteed Production Internship with Dedicated Placement Assistance, and ship code directly into production.',
       ctaLabel: 'Apply on Portal ↗',
       href: 'https://lms.dbert.in/',
     },
@@ -184,7 +185,7 @@ export default function LearnersLandingPage() {
               AI career programs built as a progressive engineering ladder
             </h1>
             <p className="intro-copy">
-              Four structured rungs, executed sequentially: your very first validated Python script, a production applied RAG training pipeline, an embedded engineering fellowship with 100% guaranteed placement on live venture repositories, and a curated jobs board restricted strictly to verified contributors.
+              Four structured rungs, executed sequentially: your very first validated Python script, a production applied RAG training pipeline, an embedded engineering fellowship with 100% Guaranteed Production Internship with Dedicated Placement Assistance on live venture repositories, and a curated jobs board restricted strictly to verified contributors.
             </p>
             <div className="stack-h gap-3 mt-6 flex-wrap">
               <a href="#ladder" className="btn btn-primary">
@@ -255,9 +256,9 @@ export default function LearnersLandingPage() {
               Once syntax fluency is established, developers graduate into the <Link href="/learners/accelerate">DBERT Accelerate engineering track</Link>. Here, tutorials terminate and structural building begins. Students implement live Retrieval-Augmented Generation architectures over unformatted PDFs, deploy vector database clusters using pgvector and Milvus, and configure function-calling loops against models locally and via high-throughput endpoints. For a technical deep dive into the exact vector retrieval mechanisms you will master, study our implementation guide on <Link href="/blog/rag-pipeline-tutorial-from-scratch">Building a Production RAG Architecture from Scratch</Link>.
             </p>
 
-            <h3>Rung 3: DBERT Applied Fellowship — Production Code &amp; Guaranteed Placement</h3>
+            <h3>Rung 3: DBERT Applied Fellowship — Production Code &amp; Guaranteed Production Internship</h3>
             <p>
-              The transition from student to professional software engineer requires surviving genuine code review on live systems. In our selective <Link href="/learners/fellowship">Applied AI Fellowship</Link>, admitted developers join embedded sprint squads under lead architects to build custom models and data ingestion layers for incubated startups within our <Link href="/startups/portfolio">Venture Portfolio</Link>. Fellows leave with verifiable Git contribution histories, professional experience letters, and 100% guaranteed internship placement across internal ventures or corporate hiring partners. Learn how this technical engagement operates in our comprehensive <Link href="/blog/paid-ai-internship-india-guide-2026">2026 Guide to Landing AI Internships in India</Link>.
+              The transition from student to professional software engineer requires surviving genuine code review on live systems. In our selective <Link href="/learners/fellowship">Applied AI Fellowship</Link>, admitted developers join embedded sprint squads under lead architects to build custom models and data ingestion layers for incubated startups within our <Link href="/startups/portfolio">Venture Portfolio</Link>. Fellows leave with verifiable Git contribution histories, professional experience letters, and 100% Guaranteed Production Internship with Dedicated Placement Assistance across internal ventures or corporate hiring partners. Learn how this technical engagement operates in our comprehensive <Link href="/blog/paid-ai-internship-india-guide-2026">2026 Guide to Landing AI Internships in India</Link>.
             </p>
 
             <div className={s.terminalSection}>
@@ -295,25 +296,20 @@ export default function LearnersLandingPage() {
           </div>
 
           <div className={s.domainGrid}>
-            {[
-              { title: 'AI Agent Development', desc: 'Construct autonomous AI workflow agents using LangChain, CrewAI orchestration frameworks, and structured tool calling loops.', salary: 'LangGraph, CrewAI & Ollama', slug: 'ai-agent-development', badge: 'Trending #1' },
-              { title: 'Generative AI Systems', desc: 'Build multi-provider LLM pipelines, prompt evaluation harnesses, dynamic vector indexing, and streaming front-ends.', salary: 'Llama-3, vLLM & RAG', slug: 'generative-ai', badge: 'High Impact' },
-              { title: 'Machine Learning & Fine-Tuning', desc: 'Perform data preprocessing, feature engineering, and parameter-efficient fine-tuning (LoRA/QLoRA) on open-weights foundation models.', salary: 'PyTorch, LoRA & HuggingFace', slug: 'machine-learning', badge: 'Deep Tech' },
-              { title: 'Full Stack AI Engineering', desc: 'Build responsive web applications with React, Next.js, Node.js, vector database indexing, and streaming LLM completion responses.', salary: 'Next.js, pgvector & TypeScript', slug: 'full-stack-development', badge: 'Most Popular' },
-              { title: 'Python System Automation', desc: 'Deploy concurrent web scraping engines, configure Selenium/Playwright testing harnesses, parse complex JSON schemas, and trigger automated alerts.', salary: 'Python, Playwright & Celery', slug: 'python-automation', badge: 'High Demand' },
-              { title: 'Applied Data Analytics', desc: 'Perform data cleaning pipelines with Python Pandas, formulate analytical SQL schemas, and assemble automated dashboard visualization frameworks.', salary: 'Pandas, SQL & Metabase', slug: 'data-analytics', badge: 'Evergreen' }
-            ].map((domain, idx) => (
-              <div key={idx} className="card stack-between">
+            {getFeaturedTracks().map((domain) => (
+              <div key={domain.slug} className="card stack-between">
                 <div>
                   <div className={s.badgeRow}>
                     <span className={s.badge}>{domain.badge}</span>
                   </div>
-                  <h3 className={s.domainTitle}>{domain.title}</h3>
-                  <p className={s.domainDesc}>{domain.desc}</p>
+                  <h3 className={s.domainTitle}>{domain.name}</h3>
+                  <p className={s.domainDesc}>{domain.shortDescription}</p>
                 </div>
                 <div>
-                  <p className={s.salary}>{domain.salary}</p>
-                  <Link href={`/learners/courses/${domain.slug}`} className={s.pathLink}>Inspect Career Track &rarr;</Link>
+                  <p className={s.salary}>
+                    {domain.technologies.slice(0, 3).map((t) => t.name).join(' · ')}
+                  </p>
+                  <Link href={domain.canonicalPath} className={s.pathLink}>Inspect Career Track &rarr;</Link>
                 </div>
               </div>
             ))}
@@ -322,6 +318,14 @@ export default function LearnersLandingPage() {
           {/* Frequently Asked Questions */}
           <div className="article my-12">
             <Faq items={learnerFaqs} heading="AI Engineering Career Ladder — Frequently Asked Questions" />
+            <div className={s.migrationBanner}>
+              <div className={s.migrationBannerTitle}>Official Domain Notice: DBERT.online is Now DBERT.in</div>
+              <p className={s.migrationBannerText}>
+                Please note that <strong>dbert.online is not the active platform</strong>. All official course syllabi,
+                learner certifications, and fellowship cohorts have permanently moved to <strong>dbert.in</strong>.
+                Read our full <Link href="/dbert-online">dbert.online domain migration notice</Link>.
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -345,7 +349,7 @@ export default function LearnersLandingPage() {
                 <h3 className="card-title-tight mb-0">Browse 3,200+ Live Internships</h3>
                 <span className="tag-chip text-[10px] font-mono text-emerald-400">Live Portal</span>
               </div>
-              <p className={s.nextDesc}>Apply for verified startup internships across Mumbai, Bengaluru, Delhi NCR, and remote roles with guaranteed placement.</p>
+              <p className={s.nextDesc}>Apply for verified startup internships across Mumbai, Bengaluru, Delhi NCR, and remote roles with 100% Guaranteed Production Internship with Dedicated Placement Assistance.</p>
               <a href="https://lms.dbert.in/" target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-sm">Open Career Portal ↗</a>
             </div>
           </div>

@@ -108,15 +108,17 @@
     color: var(--tx-muted);
     font-weight: 700;
     text-transform: uppercase;
-    font-size: 0.725rem;
+    font-size: 0.6875rem;
     letter-spacing: 0.05em;
-    padding: 0.85rem 1rem;
+    padding: 0.65rem 0.5rem;
     border-bottom: 1px solid var(--border);
+    white-space: nowrap;
   }
   td {
-    padding: 0.95rem 1rem;
+    padding: 0.65rem 0.5rem;
     border-bottom: 1px solid var(--border-soft);
     vertical-align: middle;
+    font-size: 0.8125rem;
   }
   tr:hover td {
     background: rgba(255, 255, 255, 0.02);
@@ -124,22 +126,24 @@
   .cand-info {
     display: flex;
     flex-direction: column;
+    gap: 2px;
   }
   .cand-name {
     font-weight: 700;
     color: var(--tx-head);
+    font-size: 0.85rem;
   }
   .cand-email {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     color: var(--tx-muted);
   }
   .gate-pill {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
-    padding: 3px 8px;
+    gap: 3px;
+    padding: 2px 6px;
     border-radius: 999px;
-    font-size: 0.725rem;
+    font-size: 0.6875rem;
     font-weight: 700;
     white-space: nowrap;
   }
@@ -147,7 +151,7 @@
   .gate-locked { background: rgba(148, 163, 184, 0.12); color: #94A3B8; border: 1px solid rgba(148, 163, 184, 0.25); }
   .gate-warning { background: rgba(245, 158, 11, 0.15); color: #FBBF24; border: 1px solid rgba(245, 158, 11, 0.3); }
   .nudge-btn {
-    padding: 5px 12px;
+    padding: 5px 10px;
     font-size: 0.775rem;
     font-weight: 700;
     border-radius: var(--r-sm);
@@ -156,10 +160,76 @@
     border: 1px solid rgba(99, 102, 241, 0.3);
     cursor: pointer;
     transition: all var(--ease);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    text-decoration: none;
+    box-sizing: border-box;
   }
   .nudge-btn:hover {
     background: #6366F1;
     color: #fff;
+  }
+  .nudge-btn.btn-all {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.25), rgba(79, 70, 229, 0.35));
+    border-color: #6366F1;
+    color: #A5B4FC;
+    width: 100%;
+    padding: 6px 10px;
+  }
+  .nudge-btn.btn-all:hover {
+    background: linear-gradient(135deg, #6366F1, #4F46E5);
+    color: #fff;
+  }
+  .nudge-btn.btn-email {
+    background: rgba(59, 130, 246, 0.15);
+    border-color: rgba(59, 130, 246, 0.35);
+    color: #60A5FA;
+  }
+  .nudge-btn.btn-email:hover {
+    background: #2563EB;
+    color: #fff;
+  }
+  .nudge-btn.btn-push {
+    background: rgba(245, 158, 11, 0.15);
+    border-color: rgba(245, 158, 11, 0.35);
+    color: #FBBF24;
+  }
+  .nudge-btn.btn-push:hover {
+    background: #D97706;
+    color: #fff;
+  }
+  .nudge-btn.btn-wa {
+    background: rgba(34, 197, 94, 0.15);
+    border-color: rgba(34, 197, 94, 0.35);
+    color: #4ADE80;
+  }
+  .nudge-btn.btn-wa:hover {
+    background: #16A34A;
+    color: #fff;
+  }
+  .pg-admin-stipend-funnel main.main {
+    margin-left: var(--sidebar-w, 240px) !important;
+    width: calc(100% - var(--sidebar-w, 240px)) !important;
+    min-height: 100vh;
+    box-sizing: border-box;
+  }
+  .dashboard-container {
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 1.5rem 24px 3.5rem !important;
+    box-sizing: border-box;
+  }
+  @media (max-width: 768px) {
+    .pg-admin-stipend-funnel main.main {
+      margin-left: 0 !important;
+      width: 100% !important;
+    }
+    .dashboard-container {
+      padding: 4.5rem 16px 3.5rem !important;
+    }
   }
 </style>
 </head>
@@ -167,8 +237,9 @@
   {% set active_page = 'admin_stipend_funnel' %}
   {% include "_staff_sidebar.html" %}
 
-  <main class="content-wrap container" style="padding-top: 1.5rem; padding-bottom: 3.5rem;">
-    <div class="funnel-header">
+  <main class="main content-wrap" id="main-content">
+    <div class="wrap dashboard-container">
+      <div class="funnel-header">
       <div>
         <div class="doclabel mb-2">§ FELLOWSHIP ADVANCEMENT ENGINE</div>
         <h1>Stipend &amp; Growth Funnel Progression</h1>
@@ -222,17 +293,27 @@
 
     <!-- Candidate Table -->
     <div class="table-card">
-      <table id="funnelTable">
+      <table id="funnelTable" style="table-layout: fixed; width: 100%; min-width: 980px;">
+        <colgroup>
+          <col style="width: 22%;">
+          <col style="width: 15%;">
+          <col style="width: 9%;">
+          <col style="width: 10%;">
+          <col style="width: 11%;">
+          <col style="width: 9%;">
+          <col style="width: 12%;">
+          <col style="width: 12%;">
+        </colgroup>
         <thead>
           <tr>
             <th>Candidate Details</th>
-            <th>Domain &amp; Credential</th>
-            <th>Gate 1: LinkedIn</th>
-            <th>Gate 2: Case Study</th>
-            <th>Gate 3: ₹299 Verified</th>
-            <th>Gate 4: GitHub</th>
-            <th>Next Action</th>
-            <th>Action</th>
+            <th>Domain &amp; Cert</th>
+            <th>G1: LinkedIn</th>
+            <th>G2: Case Study</th>
+            <th>G3: ₹299 Verified</th>
+            <th>G4: GitHub</th>
+            <th>Next Milestone</th>
+            <th>Nudge Outreach</th>
           </tr>
         </thead>
         <tbody>
@@ -243,6 +324,9 @@
                 <span class="cand-name">{{ c.name }}</span>
                 <span class="cand-email">{{ c.email }}</span>
                 <span class="cand-email" style="color:var(--gold);"><i class="fa-solid fa-calendar-days" style="font-size:10px;"></i> {{ c.batch_label }}</span>
+                {% if c.phone %}
+                <span class="cand-email" style="color:#60A5FA;"><i class="fa-solid fa-phone" style="font-size:10px;"></i> {{ c.phone }}</span>
+                {% endif %}
               </div>
             </td>
             <td>
@@ -291,13 +375,45 @@
               <span style="font-size:0.8rem; font-weight:700; color:var(--tx-head);">{{ c.next_step }}</span>
             </td>
             <td>
-              <button type="button" class="nudge-btn" 
-                      data-intern-id="{{ c.intern_id or '' }}" 
-                      data-email="{{ c.email }}"
-                      data-act-click="sendNudge" 
-                      data-arg-click='[{{ (c.intern_id or "")|tojson }}, {{ c.email|tojson }}]'>
-                <i class="fa-solid fa-paper-plane"></i> Nudge
-              </button>
+              <div class="action-cluster" style="display:flex; flex-direction:column; gap:4px; min-width:105px;">
+                <!-- 1. Omnichannel "Nudge All" -->
+                <button type="button" class="nudge-btn btn-all" 
+                        data-intern-id="{{ c.intern_id or '' }}" 
+                        data-email="{{ c.email }}"
+                        data-channel="all"
+                        data-act-click="sendNudge" 
+                        data-arg-click='[{{ (c.intern_id or "")|tojson }}, {{ c.email|tojson }}, "all"]'
+                        title="Dispatch Omnichannel Nudge (Email + Web Push + In-App)">
+                  <i class="fa-solid fa-bolt"></i> Nudge All
+                </button>
+                <div style="display:flex; gap:4px;">
+                  <!-- 2. Email Nudge -->
+                  <button type="button" class="nudge-btn btn-email" 
+                          data-intern-id="{{ c.intern_id or '' }}" 
+                          data-email="{{ c.email }}"
+                          data-channel="email"
+                          data-act-click="sendNudge" 
+                          data-arg-click='[{{ (c.intern_id or "")|tojson }}, {{ c.email|tojson }}, "email"]'
+                          title="Send Email Nudge" style="flex:1;">
+                    <i class="fa-solid fa-envelope"></i>
+                  </button>
+                  <!-- 3. Web Push Nudge -->
+                  <button type="button" class="nudge-btn btn-push" 
+                          data-intern-id="{{ c.intern_id or '' }}" 
+                          data-email="{{ c.email }}"
+                          data-channel="push"
+                          data-act-click="sendNudge" 
+                          data-arg-click='[{{ (c.intern_id or "")|tojson }}, {{ c.email|tojson }}, "push"]'
+                          title="Send Device Web Push Notification" style="flex:1;">
+                    <i class="fa-solid fa-bell"></i>
+                  </button>
+                  <!-- 4. Direct 1-Tap WhatsApp -->
+                  <a href="{{ c.wa_url }}" target="_blank" rel="noopener" class="nudge-btn btn-wa" 
+                     title="Open WhatsApp chat with prefilled {{ c.next_step }} guidance" style="flex:1;">
+                    <i class="fa-brands fa-whatsapp" style="font-size:13px;"></i>
+                  </a>
+                </div>
+              </div>
             </td>
           </tr>
           {% else %}
@@ -310,7 +426,8 @@
         </tbody>
       </table>
     </div>
-  </main>
+  </div>
+</main>
 
   <script nonce="{{ csp_nonce() }}">
     var currentGateFilter = 'ALL';
@@ -353,8 +470,15 @@
       });
     }
 
-    function sendNudge(internId, email) {
-      if (!confirm('Dispatch milestone guidance nudge to ' + email + '?')) return;
+    function sendNudge(internId, email, channel) {
+      channel = channel || 'all';
+      var actionLabels = {
+        'all': 'Omnichannel Nudge (Email + Web Push + In-App)',
+        'email': 'Milestone Email Nudge',
+        'push': 'Device Web Push Notification'
+      };
+      var label = actionLabels[channel] || 'Nudge';
+      if (!confirm('Dispatch ' + label + ' to ' + email + '?')) return;
       var csrfTok = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') || '{{ csrf_token() }}';
       fetch('/admin/stipend-funnel/nudge', {
         method: 'POST',
@@ -363,12 +487,15 @@
           'Accept': 'application/json',
           'X-CSRF-Token': csrfTok
         },
-        body: JSON.stringify({ intern_id: internId, email: email })
+        body: JSON.stringify({ intern_id: internId, email: email, channel: channel })
       })
       .then(function(r) { return r.json(); })
       .then(function(d) {
-        if (d.status === 'success') alert('Nudge email dispatched successfully to ' + email);
-        else alert(d.message || 'Error sending nudge');
+        if (d.status === 'success') {
+          alert('✓ ' + d.message);
+        } else {
+          alert('⚠️ ' + (d.message || 'Error sending nudge'));
+        }
       })
       .catch(function() { alert('Network error while dispatching nudge.'); });
     }
@@ -395,10 +522,11 @@
 
     document.addEventListener('click', function(e) {
       var btn = e.target.closest('.nudge-btn');
-      if (btn && btn.hasAttribute('data-email')) {
+      if (btn && btn.hasAttribute('data-email') && !btn.classList.contains('btn-wa')) {
         var internId = btn.getAttribute('data-intern-id') || '';
         var email = btn.getAttribute('data-email');
-        sendNudge(internId, email);
+        var channel = btn.getAttribute('data-channel') || 'all';
+        sendNudge(internId, email, channel);
       }
     });
   </script>

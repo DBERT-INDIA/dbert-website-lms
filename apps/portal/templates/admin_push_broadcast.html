@@ -21,7 +21,7 @@
   .admin-header-bar h1 {
     font-size: 1.75rem;
     font-weight: 800;
-    color: #fff;
+    color: #0F172A;
     margin: 0;
   }
   .stats-grid {
@@ -229,7 +229,7 @@
     <div class="admin-header-bar">
       <div>
         <h1>Push Broadcast Console</h1>
-        <div style="color: #94A3B8; font-size: 0.875rem; margin-top: 4px;">
+        <div style="color: #475569; font-size: 0.875rem; margin-top: 4px; font-weight: 500;">
           Self-hosted native RFC 8292 NIST P-256 Web Push engine with zero external vendor dependencies.
         </div>
       </div>
@@ -272,6 +272,8 @@
         </div>
 
         <form method="POST" action="/admin/push-broadcast">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <input type="hidden" name="_csrf" value="{{ csrf_token() }}">
           <div class="form-group">
             <label for="target_cohort">Target Audience / Cohort</label>
             <select id="target_cohort" name="target_cohort" class="form-control" onchange="updatePreview()">

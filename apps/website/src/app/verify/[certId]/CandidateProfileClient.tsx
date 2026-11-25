@@ -141,10 +141,10 @@ export default function CandidateProfileClient({
               This candidate record is currently provisional. Complete your final project verification to unlock official cryptographic credentials, 3-document dossier, Turnitin evaluation rubric, and remove provisional hold.
             </p>
             <Link
-              href={`/verify/unlock?certid=${encodeURIComponent(cert.certId)}`}
+              href={`/enroll/1999?certid=${encodeURIComponent(cert.certId)}`}
               className={s.provisionalFormBtn}
             >
-              Verify Final Deliverables &amp; Access Career Dossier &rarr;
+              Complete Fellowship Enrollment &amp; Access Career Dossier &rarr;
             </Link>
           </div>
         </div>
@@ -393,10 +393,10 @@ export default function CandidateProfileClient({
               ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '100%' }}>
                   <Link
-                    href={`/verify/unlock?certid=${encodeURIComponent(cert.certId)}`}
+                    href={`/enroll/1999?certid=${encodeURIComponent(cert.certId)}`}
                     className={s.btnActivateForm}
                   >
-                    🔒 Verify Final Deliverables &amp; Access Career Dossier &rarr;
+                    🔒 Complete Fellowship Enrollment &amp; Access Career Dossier &rarr;
                   </Link>
                 </div>
               )}

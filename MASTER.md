@@ -5,7 +5,8 @@ Bug Register, Dead Code Audit, Feature Clubbing Plan & AI Agent Operations Manua
 ================================================================================
 *Document Status*: **ACTIVE & CANONICAL SINGLE SOURCE OF TRUTH (SSOT)**  
 *Replaces & Supersedes*: `AGENTS.md`, `GEMINI.md`, `ARCHITECTURE_ROADMAP.md`  
-*Last Live Synchronized*: November 23, 2026  
+*Current Operational Baseline*: **Version 2 Sovereign Handover Baseline**  
+*Last Live Synchronized*: November 24, 2026 (Phase 21.3)  
 *Production Host*: AWS EC2 `ubuntu@3.26.237.171` (`/var/www/dbert-website-lms`)  
 *Active Sovereign Domains*:
 - Public Venture Studio & Verification Engine: `https://dbert.in` (Next.js Standalone · Port 3001)
@@ -48,15 +49,21 @@ Bug Register, Dead Code Audit, Feature Clubbing Plan & AI Agent Operations Manua
 13. [§ 12: Real-Time Operational Dashboard & Live Health Queries](#-12-real-time-operational-dashboard--live-health-queries)
 14. [§ 13: Strategic Future Expansion Roadmap (Phases 3–7)](#-13-strategic-future-expansion-roadmap-phases-37)
 15. [§ 14: File Cleanup, Archival Manifest & Redirection Headers](#-14-file-cleanup-archival-manifest--redirection-headers)
+16. [§ 15: Version 2 Engineering Handover & Execution Runbook](#-15-version-2-engineering-handover--execution-runbook)
+    - [15.1. System Readiness Baseline & Test Suite Verification](#151-system-readiness-baseline--test-suite-verification)
+    - [15.2. Recent Phase 21.2 & 21.3 Refinements Census (Nov 24, 2026)](#152-recent-phase-212--213-refinements-census-nov-24-2026)
+    - [15.3. Version 2 Strategic Architecture Blueprint (Synthesis of MASTER_PLAN_V2.md)](#153-version-2-strategic-architecture-blueprint-synthesis-of-master_plan_v2md)
+    - [15.4. Phased Implementation Roadmap for Next Agent (Phases 1–8)](#154-phased-implementation-roadmap-for-next-agent-phases-18)
+    - [15.5. Immediate Next Steps & Priority Work Items](#155-immediate-next-steps--priority-work-items)
 
 ---
 
 ## § 0: 60-Second Agent Onboarding & Universal Directives
 
-Any AI agent or software engineer beginning work on DBERT must follow these six non-negotiable operational invariants:
+Any AI agent or software engineer beginning work on DBERT must follow these nine non-negotiable operational invariants:
 
 > [!IMPORTANT]
-> ### The 6 Non-Negotiable Engineering Invariants
+> ### The 9 Non-Negotiable Engineering Invariants
 > 1. **Domain Sovereign Rule**: Always use `https://dbert.in`, `https://lms.dbert.in`, or `https://api.dbert.in`. **NEVER emit `dbert.online`** as baseUrl, active origin, in APIs, templates, WhatsApp copy, or emails.
 > 2. **Port Allocation Invariant**:
 >    - `dbert.in` $	o$ **Port 3001** (Next.js standalone Node server). *Note: Nginx proxies to 3001, NOT 3000.*
@@ -66,6 +73,17 @@ Any AI agent or software engineer beginning work on DBERT must follow these six 
 > 4. **Zero Dead-End Guarantee**: Every gate, locked screen, or pending state MUST provide at least one primary action CTA guiding the user to the exact route required to unlock progression.
 > 5. **Dual-Monorepo Data Awareness**: Website balance submissions are written to disk (`data/balance_enrollments_1500.json`) and reconciled via crontab every 15 minutes (`sync_enrollments_to_postgres.py`) into PostgreSQL. Never overwrite remote data with empty local files during deployment.
 > 6. **Zero Public Stipend & Guaranteed Placement Mandate**: Completely eliminate all public mentions of '₹5,000 stipend', '₹18,000 performance incentive', and monthly stipend ranges from public marketing pages (dbert.in). The sovereign public commitment is **100% Guaranteed Internship / Job Placement** across DBERT portfolio ventures (Gayatri AI, Alkame, Aivara) and verified hiring partners with active production codebase assignments and senior code review. Performance stipends (5,000 coins) are strictly an internal LMS performance incentive on /stipend/tasks, governed by Gates 1–5, and disbursed via the referral coin ledger.
+> 7. **Tenure Expiration & 5-Day Grace Period Invariant**: All internship tenures run strictly for 8 weeks (60 days) from the official Monday batch start date (`batch_start_date` to `batch_end_date`), with a strict 5-day grace period. Once `current_date > batch_end_date + 5 days`, the intern's tenure has officially expired and stipend eligibility is permanently voided. Their earned credentials remain permanently valid and cryptographically verified on `dbert.in/verify`, but task/stipend submissions are locked, requiring a new application and enrollment to join an active cohort.
+> 8. **Sovereign Dual-Payment Invariant**: Across the entire DBERT ecosystem, there are strictly **ONLY TWO (2) VALID PAYMENT TYPES**:
+>    - **Payment 1: ₹499 Refundable Seat Caution Deposit** (merit track on `/portal/offer`, refunded upon sprint milestone clearance).
+>    - **Payment 2: ₹1,999 All-Inclusive Incubation & Placement Fellowship** (direct fellowship on `/enroll/1999`).
+>    All legacy payment surfaces (such as standalone ₹299 verification fee on `/verify/unlock` and separate ₹1,500 balance completion) are permanently retired and paused on active pages; inbound traffic to `/verify/unlock` issues a strict 301 Permanent Redirect to `/enroll/1999`.
+> 9. **Four-Pillar Fellowship Graduation Standard**: To qualify for official graduation, verified 3-document credential packet issuance, Tab 1 placement directory indexing, and caution deposit refund, fellows must fulfill:
+>    (1) **80 Sprint Attendance Hours** logged via the global heartbeat engine,
+>    (2) **75 Phased Bounty Tasks** completed in the LMS across 8 weekly sprints,
+>    (3) **1 Merged Production Pull Request** on DBERT repositories verified via Hybrid GitHub API + 1-Click Architect Approval, and
+>    (4) **Technical Capstone Report** with Turnitin Originality Clearance (< 3%).
+> 10. **₹5,000 Stipend Release Verification Invariant**: `stipend_verified = 1` on `intern_accounts` tracks legacy **Gate 1** (₹299 credential verification cleared). Final **₹5,000 Stipend Release** (`stipend_5000_status = 'Approved'`) strictly requires: (a) **LinkedIn Certification URL added & verified** (`linkedin_url` / `linkedin_verified = 1`), (b) **Merged Pull Request URL** (`/pull/<id>`) on official DBERT GitHub repositories (`Alkameinc`, `Gayatri-Education`, `Aivaratechinfomatics`, `DBERT-INDIA`), and (c) **Admin Audit & Comment Review** via `/admin/stipend-reviews` (persisting `stipend_5000_status`, `stipend_release_date`, and `admin_stipend_comment` for `/portal` visibility).
 
 ---
 
@@ -145,7 +163,7 @@ data/dbert_whatsapp.db (Dispatch Log)"]
 - **Active Systemd Daemons**:
   * `dbert-website.service`: Next.js 14 Standalone (`node .next/standalone/server.js`, PORT=3001)
   * `dbert-portal.service`: Flask WSGI (`gunicorn --workers 4 --bind 127.0.0.1:5001 wsgi:app`)
-  * `dbert-api.service`: FastAPI ASGI (`uvicorn backend.main:app --port 8000 --workers 4`) [DECOMMISSIONED & MASKED on Nov 23, 2026; package archived to `data/archive/dbert-api-package/`]
+  * `dbert-api.service`: FastAPI ASGI (`uvicorn backend.main:app --port 8000 --workers 4`, active on port 8000 at `api.dbert.in` for sovereign async API, mobile endpoints, and outbox cron)
   * `nginx.service`: Edge reverse proxy, SSL termination, and rate limiting (`auth_limit: 5r/m`).
 - **Ubuntu Crontab (`crontab -l`)**:
   * `*/15 * * * * /var/www/dbert-website-lms/deploy/run_cron_tasks.sh >> /var/log/dbert_cron.log 2>&1`
@@ -455,7 +473,32 @@ flowchart TD
   `upi://pay?pa=Q652429146@ybl&pn=DBERT%20Admissions&am={amount}&cu=INR&tn=DBERT%20{program}%20Fee`
 - **Admissions WhatsApp Proof Routing**: `+91 81929 11360`
 
-### 4.2. Industry Incubation & Guaranteed Placement Fellowship Architecture (₹1,999)
+### 4.2. Dual-Tier Monetization & Academic Architecture (Fellowship vs Self-Paced)
+
+The DBERT educational platform operates on a synchronized **Dual-Tier Monetization & Learning Model**, accommodating both career-advancement candidates seeking live production experience and independent learners seeking self-paced mastery:
+
+#### Tier 1 (Core Flagship): Industry Incubation & Guaranteed Placement Fellowship (₹1,999)
+- **Target Audience:** Engineering students, final-year undergraduates, and career pivoters demanding verified production credentials and placement outcomes.
+- **All-Inclusive Fee:** One-time **₹1,999** (Zero hidden costs; zero public stipend claims).
+- **Core Value Pillars:**
+  1. *Active Production Codebase Assignments*: Real commits, PRs, and architectural reviews on production repos (Gayatri AI, Alkame, Aivara).
+  2. *1-on-1 Architect Mentorship*: Weekly office hours, PR reviews, and live engineering teardowns.
+  3. *Official 3-Document Credential Packet*: Vector PDF Completion Certificate, 9-dimension Academic Project Evaluation, and personalized Letter of Recommendation (LOR).
+  4. *Turnitin Originality Clearance (< 3%)*: Cryptographic verification of authentic, uncopied software artifacts.
+  5. *100% Guaranteed Internship / Job Placement*: Direct routing to DBERT venture studio portfolio roles and corporate hiring partners with Tab 1 indexing on `/verify/directory`.
+- **Enrollment Pathways:** Direct Incubation route (`https://dbert.in/enroll/1999`) and LMS merit intake (`https://lms.dbert.in/apply`).
+
+#### Tier 2 (Self-Paced Track): Standalone Self-Paced Certification Courses (₹499 – ₹799)
+- **Target Audience:** Independent self-directed learners, working professionals, and junior developers seeking targeted domain knowledge, curriculum modules, and verified micro-credentials without live sprint commitments or placement guarantees.
+- **Pricing:** Flexible **₹499 to ₹799** per domain course.
+- **Deliverables:**
+  1. *Full LMS Curriculum & Lab Access*: Complete access to video lectures, interactive coding sandboxes, code repositories, and structured reading modules across the 9 domains.
+  2. *Daily & Module Quizzes*: Automated knowledge checkpoint assessments recorded in `quiz_attempts`.
+  3. *Digital Micro-Certificate*: Cryptographically verifiable course completion credential hosted on `https://dbert.in/verify/[certId]`.
+- **Payment & Enrollment Engine:** Automated 1-Tap UPI Intent and dynamic QR checkout via merchant VPA `Q652429146@ybl` (`DBERT Admissions`) with instant automated course enrollment and zero external payment gateway friction.
+- **Upsell Pathway:** Self-paced learners who demonstrate high merit or want to transition to live production sprints can upgrade to the ₹1,999 Incubation Fellowship by paying the net price difference.
+
+
 
 The **DBERT Industry Incubation & Guaranteed Placement Fellowship** is engineered specifically for undergraduate and postgraduate engineering students seeking elite, production-grade software development experience and verified career placement credentials.
 
@@ -601,6 +644,130 @@ The **DBERT Official Offer Letter & Executive Appointment Engine** governs the l
 - **Step 3 (Seat Confirmation & Batch Allocation)**: Unlocks ₹499 refundable caution deposit payment gateway with high-res UPI QR (`Q652429146@ybl`), 1-tap UPI app launchers, and 12-digit UTR submission.
 
 ---
+
+
+### 4.7. The Sovereign Dual-Payment Architecture & Legacy Retirement Mandate
+
+To eliminate candidate friction, eliminate regulatory exposure, and simplify financial auditing, DBERT has codified a permanent **Dual-Payment Invariant**:
+
+```mermaid
+flowchart TD
+    subgraph Active_Dual_Payments ["Active Sovereign Payment Surfaces (Strictly 2 Types)"]
+        Pay1["Payment 1: ₹499 Refundable Seat Caution Deposit
+- Route: /portal/offer
+- Audience: Merit-Selected Interns (Stage 3)
+- Policy: 100% Refundable upon sprint milestone clearance"]
+        
+        Pay2["Payment 2: ₹1,999 All-Inclusive Fellowship
+- Route: https://dbert.in/enroll/1999
+- Audience: Direct Incubation Fellows
+- Policy: All-inclusive; 100% Guaranteed Placement"]
+    end
+
+    subgraph Legacy_Retired ["Permanently Retired & Paused Payment Surfaces"]
+        Ret1["Legacy ₹299 Standalone Verification (/verify/unlock)"]
+        Ret2["Legacy ₹1,500 Balance Completion (/enroll/balance)"]
+        Ret3["Ad-hoc Micro-Transactions"]
+    end
+
+    Ret1 & Ret2 & Ret3 -->|301 Permanent Redirect| Pay2
+```
+
+#### 1. The Two Canonical Payment Funnels
+1. **₹499 Refundable Seat Caution Deposit (`/portal/offer`)**:
+   - Paid exclusively by applicants who have cleared academic screening and received an official digital appointment offer letter.
+   - Purpose: Secures a dedicated seat in the upcoming Monday sprint cohort and covers initial cloud IDE lab resources.
+   - Refundability: **100% Refundable** upon completing the 4-Pillar graduation criteria.
+2. **₹1,999 Industry Incubation & Placement Fellowship (`/enroll/1999`)**:
+   - Paid by candidates seeking immediate entry into the full industry incubation fellowship.
+   - Covers active production codebase assignments, 1-on-1 architect mentorship, verified 3-document credential packet, Turnitin plagiarism rubric, and 100% guaranteed job / internship placement across DBERT ventures and partner network.
+
+#### 2. Retirement & 301 Permanent Redirection of Legacy Routes
+- **`/verify/unlock` (Legacy ₹299)**: Officially retired and paused. Inbound requests automatically issue an HTTP 301 redirect to `https://dbert.in/enroll/1999` with an informational notice:
+  > **Notice**: Standalone credential verification fees have been discontinued. Verified cryptographic credentials, Turnitin originality rubrics, and letters of recommendation are fully included in the official Incubation Fellowship and merit internship tracks.
+- **`/enroll/balance` (Legacy ₹1,500)**: Consolidated into the unified ₹1,999 single-payment flow. All references to split caution deposit balance payments on active marketing pages are removed.
+
+#### 3. Semi-Automated Statement Ingestion Engine (`/admin/reconcile`)
+- Administrative reconciliation operates via statement ingestion rather than manual, error-prone 1-by-1 verification:
+  * Admin exports UPI transaction statement CSV from merchant banking partner (Paytm / PhonePe / Yes Bank `Q652429146@ybl`).
+  * Admin uploads CSV to `/admin/reconcile`.
+  * The engine parses 12-digit UTR numbers, matches exact payment amounts (₹499 or ₹1,999), and auto-links them to pending records in `dbert_internship.enrollments`.
+  * On match: Sets `payment_status = 'APPROVED'`, updates `intern_accounts.signup_stage = 5` (`Confirmed Fellow`), credits transaction ledger, and dispatches automated confirmation WhatsApp notices and emails.
+
+---
+
+### 4.8. Four-Pillar Fellowship Graduation & Merit Standards
+
+To ensure DBERT alumni maintain elite competency in the software industry, graduation and credential unlock require fulfilling four objective pillars:
+
+```mermaid
+flowchart LR
+    P1["Pillar 1: 80 Sprint Hours
+(10 hrs/week tracked via heartbeat)"] --> Grad["Official Fellowship Graduation
+- 3-Doc Vector PDF Dossier
+- Tab 1 Pre-Vetted Directory
+- Deposit Refund / Stipend Release"]
+    P2["Pillar 2: 75 Bounty Tasks
+(Phased Bronze/Silver/Gold milestones)"] --> Grad
+    P3["Pillar 3: 1 Merged GitHub PR
+(Hybrid API + Architect Review)"] --> Grad
+    P4["Pillar 4: Capstone Report
+(Turnitin Originality < 3%)"] --> Grad
+```
+
+1. **Pillar 1: 80 Platform Sprint Hours**:
+   - Tracked continuously via the global heartbeat engine (`attendance-tracker.js` / `/attendance/ping`).
+   - Represents an average of 10 hours per week of active cloud IDE lab and development sprint time over the 8-week tenure.
+2. **Pillar 2: 75 Phased Bounty Tasks**:
+   - Distributed systematically across the 8-week curriculum (approx. 9–10 tasks per week) across coding, architecture, testing, and peer reviews.
+   - Visualized on the LMS dashboard with dynamic milestone achievements:
+     * **Bronze Milestone**: 25 Tasks Completed (Foundational Engineering)
+     * **Silver Milestone**: 50 Tasks Completed (Advanced Implementation)
+     * **Gold Clearance**: 75 Tasks Completed (Production Mastery)
+3. **Pillar 3: 1 Merged Production Pull Request (Hybrid Verification)**:
+   - Mandatory code contribution to DBERT sovereign production repositories (Gayatri AI, Alkame, Aivara).
+   - Automated check: GitHub REST API validates that the candidate's PR is officially merged into `main`/`master` and contains substantive additions (>30 LOC excluding typos/markdown).
+   - Architect approval: 1-click sign-off by a Lead Software Architect in the LMS staff review console (`/staff/reviews`).
+4. **Pillar 4: Academic Capstone Technical Report (< 3% Turnitin)**:
+   - Comprehensive technical architecture document detailing system design, API contracts, database schema, and test coverage.
+   - Cleared through Turnitin with originality similarity strictly under 3%.
+
+---
+
+### 4.9. 7-Day Digital Offer Letter Validity & Expiration Engine
+
+When an applicant is selected for an internship appointment (Stage 3):
+- **Offer Validity Window:** Strictly **7 Days (168 Hours)** from the timestamp of selection (`promoted_at`).
+- **Live Countdown Visualizer:** `/portal/offer` displays a high-precision countdown timer showing days, hours, and minutes remaining to accept.
+- **Automated Retention Nudges:**
+  * **Day 3 (72h Remaining)**: Automated WhatsApp & email reminder highlighting cohort orientation kickoff.
+  * **Day 6 (24h Remaining)**: Final reservation alert before seat reallocation.
+- **Seat Reallocation & Status Transition:**
+  * If the candidate does not sign and complete seat confirmation within 7 days, the reserved seat is automatically released to waitlisted applicants.
+  * Application status transitions to `'Offer Expired'` (`signup_stage` remains 3 with expired offer lock).
+  * Candidate retains a 1-click "Request Seat Re-Activation" button on `/portal/offer`, allowing staff to review and extend the offer if cohort seats remain available.
+
+
+### 4.6. Sovereign Internship Tenure & 5-Day Grace Period Governance
+
+To maintain academic integrity, operational predictability, and financial solvency, DBERT enforces a strict programmatic **Tenure & Grace Period Policy** across all cohorts:
+
+#### 1. Canonical Formula & Timeline Window
+- **Standard Tenure Duration:** Strictly **8 Weeks (60 Days)** calculated from the candidate's official Monday cohort kickoff:
+  $$\text{batch\_end\_date} = \text{batch\_start\_date} + 60\text{ days}$$
+- **Grace Period Window:** A strict **5-Day Grace Period** following `batch_end_date` is provided for final capstone submission and administrative reviews:
+  $$\text{Eligibility Cutoff} = \text{batch\_end\_date} + 5\text{ days}$$
+
+#### 2. Programmatic Lifecycle & Status Transition
+When $\text{Current Date} > \text{Eligibility Cutoff}$:
+1. **Stipend Eligibility Termination:** The candidate's stipend eligibility for that cohort tenure is permanently expired and voided. No retroactive stipend disbursements or claim windows can be granted on expired tenures.
+2. **Permanent Credential Safeguard:** All credentials earned and verified during tenure (Certificate of Completion, Academic Project Evaluation, Letter of Recommendation) remain **100% permanently valid and cryptographically verified** on `https://dbert.in/verify/[certId]` and in Tab 1 (Pre-Vetted Engineers) on `/verify/directory`. Expiration affects only ongoing active sprint claims, never verified academic credentials.
+3. **LMS Dashboard State:** In `apps/portal`, active sprint tasks and stipend claim forms are transitioned to read-only/locked state. The candidate is greeted with a clean, respectful banner:
+   > **Tenure Expired — Official Credentials Permanently Verified**  
+   > *Your 8-week cohort tenure and 5-day grace window have completed. Your verified credentials remain permanently accessible on the verification directory. To join active sprint teams and earn future performance rewards, submit a new cohort application.*
+4. **Re-Application & Re-Enrollment Pathway:** To participate in live production sprints, work on new commercial venture roadmaps, and earn new milestone stipends, candidates must submit a fresh application at `https://lms.dbert.in/apply` or enroll directly into an active cohort sprint at `https://dbert.in/enroll/1999`.
+
+
 ## § 5: Comprehensive Dead-End & Drop-Off Audit (D1–D32)
 
 The platform currently exhibits significant friction where candidates, interns, and recruiters encounter unnavigable dead-ends without primary call-to-action (CTA) recovery paths. Below is the systematic audit of the 7 baseline dead-ends (D1–D7) followed by 25 newly discovered dead-ends across all 8 system personas.
@@ -1035,6 +1202,34 @@ SEVERITY CLASSIFICATION BENCHMARK:
 - **Status:** **RESOLVED (Fixed: Nov 20, 2026)**
 - **Fix:** Executed `scripts/renew_43_expiring_posts.py`, extending `apply_by` to 2027-01-15 and `expires_at` to 2027-02-15; refreshed SEO-rich titles; synced to `lms.dbert.in/sitemap.xml` with `lastmod: 2026-11-20`.
 
+#### BUG-P1-14: Admin Push Broadcast Route 500 Error and Header Contrast Void
+- **Impact:** Administrators and staff visiting `/admin/push-broadcast` received 500 JSON error `{"action":"Please refresh the page in a moment...","code":500,"heading":"Something Went Wrong"}`.
+- **Root Cause:**
+  1. `admin_push_broadcast` strictly called `staff = current_staff()` and lacked dual admin auth support (`require_admin()`), causing unauthenticated or admin-only sessions to trigger unhandled 500 exceptions in production/dev.
+  2. Database queries for `web_push_devices` and `web_push_delivery_logs` lacked idempotent schema initialization.
+  3. Form submission lacked CSRF tokens (`_csrf` / `csrf_token`), causing form posts to fail with 403 CSRF rejection.
+  4. Header title `.admin-header-bar h1` used `color: #fff;` on a `#F8FAFC` page background, rendering it invisible.
+- **Status:** **RESOLVED (Fixed: Nov 24, 2026)**
+- **Fix:** In `apps/portal/app.py`, refactored `admin_push_broadcast` with `user = require_admin() or current_staff()`, added clean redirect to `/admin/login`, idempotent schema creation, and defensive try-except with flash logging. In `apps/portal/templates/admin_push_broadcast.html`, added hidden CSRF fields and adjusted title color to `#0F172A` and subtitle to `#475569` for crisp WCAG AA contrast. Fully verified with Playwright end-to-end tests.
+
+#### BUG-P1-15: Mentor Availability Double Sidebar Margin & Horizontal Content Overflow
+- **Impact:** On `http://localhost:5001/staff/mentor-slots`, the entire page content was pushed excessively to the right (x=480px) leaving a massive 240px blank void next to the mentor sidebar, causing the right side of cards and buttons to be clipped outside the viewport (x=1520px).
+- **Root Cause:** In `mentor_availability.html`, the inner wrapper had classes `.wrap.dashboard-container.availability-wrap` nested inside `<main class="main content-wrap">`. Global CSS in `dbert-theme.css` applied `margin-left: var(--sidebar-w)` to both `main` and `.wrap`, resulting in double 240px margin offsets (240px + 240px = 480px).
+- **Status:** **RESOLVED (Fixed: Nov 24, 2026)**
+- **Fix:** Refactored markup in `apps/portal/templates/mentor_availability.html` to standard `<main class="main-content">` with clean `<div class="availability-wrap">`, scoped `margin-left: var(--sidebar-w)` to `main`, and enforced `margin-left: auto !important; margin-right: auto !important;` on `.availability-wrap`. Verified content alignment shifted 240px to the left from x=480px to x=240px with zero right-edge clipping.
+
+#### BUG-P1-16: Stipend Funnel Non-Actionable Outreach & Silent Nudge Failure
+- **Impact:** On `/admin/stipend-funnel`, the "Nudge" button triggered HTTP 500 "Could not dispatch email" errors, candidate phone numbers were missing from records, and there were no actionable buttons for WhatsApp or real-time Web Push notifications.
+- **Root Cause:**
+  1. `StipendNudgeService.send_eligibility_nudge` evaluated `bool(send_fn(...))` where `send_email_async` runs in a background thread and returns `None`, causing `bool(None)` to always evaluate to `False` and return HTTP 500.
+  2. SQL query in `get_eligible_candidates` did not select candidate phone numbers from `enrollments` or `applications`.
+  3. No WhatsApp URL or native Web Push notification trigger existed for candidate milestone nudges.
+- **Status:** **RESOLVED (Fixed: Nov 24, 2026)**
+- **Fix:**
+  1. Updated `apps/portal/services/stipend_nudge_service.py` to select and clean phone numbers, format personalized milestone WhatsApp URLs (`https://wa.me/91...?text=...`), and correctly handle asynchronous email queueing.
+  2. Upgraded `POST /admin/stipend-funnel/nudge` in `apps/portal/app.py` to support multi-channel dispatch (`email`, `push`, `all`), real-time Web Push dispatch via `dispatch_lifecycle_push`, and recording in `notifications` table.
+  3. Redesigned the Action column in `admin_stipend_funnel.html` into a multi-channel action cluster: `[⚡ Nudge All]`, `[✉️ Email]`, `[🔔 Push]`, and `[💬 WhatsApp]` with full desktop table width optimization. Verified with automated Playwright end-to-end tests.
+
 #### BUG-P2-07: Public Stipend Claims Violating Placement Integrity
 - **Impact:** Marketing copy promising "₹5,000 stipend for ₹1,999 fee" created regulatory exposure, confusion, and adverse selection.
 - **Root Cause:** Incomplete separation between internal LMS performance bounties and external public course pricing.
@@ -1085,6 +1280,19 @@ SEVERITY CLASSIFICATION BENCHMARK:
 - **Description:** Background tabs paused JavaScript timers on mobile.
 - **Resolution:** Reconciled elapsed timestamps via `Date.now() - last_active_tick` to prevent attendance deficits.
 
+#### BUG-P2-07: Staff Signout Bounce Loop on `/staff/dashboard` (STAFF-SIGNOUT-001)
+- **Component:** `apps/portal/app.py:9035`, `apps/portal/templates/staff_dashboard.html`, `apps/portal/templates/_staff_sidebar.html`
+- **Severity:** **P2 (Major)**
+- **Status:** **RESOLVED (Fixed: Nov 24, 2026)**
+- **Description:** Clicking "Sign Out →" on `http://localhost:5001/staff/dashboard` (or the staff sidebar logout link) previously did nothing observable to the user.
+- **Root Cause:**
+  1. `staff_logout()` only popped `staff_id` from Flask's in-memory session and redirected to `/staff/login`. It failed to call `invalidate_session()` or `_clear_session_cookie(resp)`.
+  2. The browser retained `dbert_auth` and `dbert_session` HTTP cookies.
+  3. When redirected to `/staff/login`, `staff_login()` ran `if current_staff(): return redirect("/staff/dashboard")`. Since `current_staff()` extracted the valid cookie and database session, the user was immediately bounced back to `/staff/dashboard`.
+- **Resolution:**
+  1. Refactored `staff_logout()` in `apps/portal/app.py` to call `invalidate_session(get_session_token_from_request())`, clear session, invoke `_clear_session_cookie(resp)`, and redirect cleanly to `/staff/login`.
+  2. Added dedicated unit test suite in `apps/portal/tests/unit/test_staff_logout_flow.py` covering cookie deletion, database session invalidation from `user_sessions`, and subsequent unauthenticated access redirection. All 3 unit tests passed with 100% success.
+
 ---
 
 ### 4.4 P3 (Minor / Polish) Bugs
@@ -1117,6 +1325,22 @@ SEVERITY CLASSIFICATION BENCHMARK:
 - **Component:** `apps/portal/services/vapid_manager.py`
 - **Severity:** **P3 (Minor)**
 - **Status:** **RESOLVED / AUDITED (Fixed: Nov 22, 2026)**
+
+---
+
+### 4.5. Phase 21.2 Verified Bug Resolution Census (Nov 24, 2026)
+
+| Defect ID | Severity | Component | Issue Description | Architectural Resolution | Status |
+|---|:---:|---|---|---|:---:|
+| **BUG-P1-08** | **P1** | `apps/portal/app.py:24287` | Flask route execution truncation (`__main__` entrypoint in middle of file) | Relocated `from routes import register_blueprints`, `register_blueprints(app)`, and `if __name__ == "__main__":` to the absolute bottom of `apps/portal/app.py`. All 1,100+ trailing routes now load. | **RESOLVED** |
+| **BUG-P2-11** | **P2** | `apps/portal/templates/admin_analytics.html` | Jinja2 `UndefinedError` on `traffic.channels` and `traffic.devices` when dict is empty | Guarded with `ch_dict` and `dev_dict` using defensive `.get()` lookups. | **RESOLVED** |
+| **BUG-P2-12** | **P2** | `apps/portal/app.py:10542`, `templates/admin_push_broadcast.html` | Missing `web_push_devices` table and CSRF field name mismatch (`_csrf` vs `csrf_token`) | Executed `phase16_web_push_schema.py` migration, aligned CSRF field name to `csrf_token`, and added fallback defaults. | **RESOLVED** |
+| **BUG-P2-13** | **P2** | `apps/portal/templates/admin_login.html` | Missing `X-CSRF-Token` header on admin fetch call causing `403 abuse_blocked` | Injected `X-CSRF-Token: '{{ csrf_token() }}'` in fetch headers and `csrf_token` in POST body payload. | **RESOLVED** |
+| **BUG-P2-14** | **P2** | `apps/portal/app.py:9023` | Staff logout redirect loop back to `/staff/dashboard` | Added `invalidate_session()`, `session.clear()`, and `_clear_session_cookie(resp)` to `staff_logout()` to ensure cookie removal. | **RESOLVED** |
+| **BUG-P2-15** | **P2** | `apps/portal/routes/stipend.py:432` | Staff evaluator 403 on `/admin/api/stipend-health` | Expanded permission check from `is_admin_request()` to `is_admin_request() or current_staff()`. | **RESOLVED** |
+| **BUG-P2-16** | **P2** | `apps/portal/app.py:8125`, `services/notifications/web_push_service.py` | Stipend funnel nudge HTTP 400 on missing `intern_id` and push TypeError | Added candidate email fallback lookup in `admin_stipend_funnel_nudge`, aligned `dispatch_lifecycle_push` signature (`intern_id` & `extra_data`), and added `verify=False` to cPanel mailer fallback. | **RESOLVED** |
+| **BUG-P2-17** | **P2** | `apps/portal/app.py:24290` | Server disconnect terminates local Flask development server | Replaced narrow exception trap with `BaseException` loop logging `[SERVER_RESTART]` to keep server resilient during local testing. | **RESOLVED** |
+| **BUG-P3-06** | **P3** | `apps/portal/app.py:22734` | Missing `/api/telemetry` alias causing 404 | Added `@app.route("/api/telemetry")` alias to `admin_telemetry()`. | **RESOLVED** |
 
 ---
 
@@ -1291,10 +1515,9 @@ The following file manifest details obsolete, redundant, and dead code scheduled
 # rm -rf apps/website/src/app/_admin/ (COMPLETED)
 # rm -rf apps/website/src/app/_api/ (COMPLETED)
 
-# 2. Orphaned Standalone FastAPI Backend (86 Unused Endpoints)
-# Systemd service 'dbert-api.service' to be disabled & masked
-rm -rf dbert-api-package/backend/
-rm -rf dbert-api-package/website-content/
+# 2. Sovereign FastAPI Backend (api.dbert.in:8000) [STATUS: ACTIVE & PRESERVED]
+# Retained as sovereign async REST API service for cron processing, outbox delivery, mobile apps, and webhook ingestion.
+# Managed via systemd service 'dbert-api.service' on Port 8000.
 
 # 3. Completely Dead Flask Blueprints (223 Unreachable Lines) [STATUS: EXECUTED / DELETED in commit d263ee5]
 # rm -f apps/portal/routes/masterclass.py (COMPLETED)
@@ -1719,6 +1942,16 @@ flowchart TD
 - `post_type` (VARCHAR(50), DEFAULT 'internship') — internship, job
 - `domain` (VARCHAR(100), NOT NULL, INDEXED)
 - `title` (VARCHAR(255), NOT NULL)
+
+### 7.6 `whatsapp_templates` (Omnichannel Template Master Entity)
+- `id` (INTEGER, PK, Autoincrement)
+- `slug` (VARCHAR(100), UNIQUE, NOT NULL, INDEXED) — e.g. `offer_selected_stage3`, `verification_299_gate1`, `upi_setup_maturation`, `capstone_changes_requested`
+- `title` (VARCHAR(255), NOT NULL) — Descriptive campaign/template name
+- `body` (TEXT, NOT NULL) — Official message content with `{{name}}`, `{{cert_id}}`, etc.
+- `variables` (JSONB, DEFAULT '[]') — List of dynamic interpolation tokens
+- `category` (VARCHAR(50), DEFAULT 'admissions') — admissions, verification, stipend, capstone
+- `is_active` (BOOLEAN, DEFAULT TRUE)
+- `created_at` / `updated_at` (TIMESTAMPTZ)
 - `slug` (VARCHAR(255), NULL, INDEXED)
 - `stipend_min` / `stipend_max` (INTEGER)
 - `location` / `work_mode` (VARCHAR(100), DEFAULT 'Remote')
@@ -1766,6 +1999,7 @@ The following table documents all completed and ongoing programmatic batch dispa
 | **Master Monorepo Production Deployment & Debris Purge (Nov 23, 2026)** | Full Monorepo Architecture & P0–P3 Bug Resolutions | Ecosystem-Wide (Public + LMS + API) | Archived `dbert-api-package/` to `data/archive/`, masked `dbert-api.service` on EC2, executed remote Next.js standalone build on EC2, synced public assets & sitemaps, restarted services. Verified 100% of live smoke test endpoints (HTTP 200), including direct vector PDF streaming (`/portal/certificate/.../pdf` - 807 KB) | `scripts/deploy_monorepo_master_to_ec2.py` | Git Commits `a56b885`, `9bfb5dc`, `02a9d64`, `c8b0569` |
 | **Stalled Stage 3 Candidate Recovery Queue (Nov 23, 2026)** | Selected Cohorts with Issued Offers pending ₹499 Caution Deposit | 194 qualified candidates | Automated recovery queue generator; Formatted dual WhatsApp + Email templates with Offer URL (Line 9), Verification URL (Line 12), 14-day academic exam pause policy, zero-holding direct UPI transfer guarantee; 18s–35s human pacing | `scripts/build_stalled_stage3_recovery_queue.py`, `scripts/dispatch_stalled_stage3_recovery.py` | `data/stalled_stage3_recovery_queue.json`, `data/dbert_whatsapp_sent_today.json` |
 | **5-Gate Stipend Maturation Audit (Dec 03, 2026 Cohort)** | 143 Verified Interns (`phones_143_verified_broadcast.json`) | 143 verified accounts (₹715,000 commitment) | Automated 5-Gate evaluation engine verifying Gate 1 (Verified Credential), Gate 2 (Tenure maturing 2026-12-03), Gate 3 (Encrypted UPI), Gate 4 (Capstone PR approved). Generated structured ledger report: 52 cleared for instant batch payout (₹260,000), 83 pending UPI only, 8 pending PR revision | `scripts/evaluate_stipend_cohort_dec3.py` | `data/stipend_cohort_dec3_readiness_report.json` |
+| **Staff Signout Loop Resolution & Cookie Clearance Audit (Nov 24, 2026)** | Staff Reviewer Dashboard (`http://localhost:5001/staff/dashboard`) | LMS Staff & Evaluator Faculty | Eliminated infinite redirect bounce loop on `/staff/logout` by calling `invalidate_session()`, clearing Flask session, and invoking `_clear_session_cookie(resp)` to delete `dbert_auth` & `dbert_session` HTTP cookies. Deployed dedicated unit test suite with 100% pass rate. | N/A (App Router Fix) | `apps/portal/app.py`, `apps/portal/tests/unit/test_staff_logout_flow.py` |
 
 ---
 
@@ -1773,88 +2007,129 @@ This playbook provides standard operating procedures (SOPs) for day-to-day engin
 
 ---
 
-### 8.1. WhatsApp Dual-Account Dispatch System
+### 11.1. Universal Multi-Account WhatsApp Agent & Campaign Dashboard Engine
 
-The WhatsApp automation system operates through Playwright persistent browser contexts connected to two separate physical WhatsApp accounts.
+The WhatsApp automation system has evolved from a static two-account script into an extensible, high-throughput **Multi-Account WhatsApp Agent Dashboard** running locally at `http://localhost:5050`. It orchestrates an arbitrary pool of $N$ authenticated accounts with automated queue sharding, real-time telemetry, and bidirectional template synchronization.
 
 ```mermaid
 flowchart TD
-    subgraph Data Layer
-        DB[(dbert_whatsapp.db SQLite)]
-        SentLog[whatsapp_sent_log Deduplication]
+    subgraph Local_Agent_Dashboard ["Local Multi-Account Dashboard (http://localhost:5050)"]
+        UI["Web Dashboard UI (FastAPI/Flask + Vanilla JS)"]
+        SSE["Real-Time SSE Dispatch Progress & QR Stream"]
+        TemplateStudio["Template Studio & Syntax Validator"]
+        QueueSharder["Round-Robin Interleaved Sharder & Dynamic Failover"]
     end
 
-    subgraph Dispatch Router
-        CLI[send_dbert_whatsapp.py]
-        Queue[Uncontacted Candidates Queue]
-        CLI -->|Load Latest Signups First| Queue
-        Queue -->|Odd Serials| P1[Partition 1]
-        Queue -->|Even Serials| P2[Partition 2]
+    subgraph EC2_Integration ["Production LMS Cloud Bridge"]
+        LMS_API["LMS REST API Bridge (https://lms.dbert.in/api/admin/whatsapp)"]
+        PG_DB[("PostgreSQL 16: dbert_internship
+- applications (Selected 4,359)
+- intern_certificates (129)
+- whatsapp_templates (Master Registry)")]
     end
 
-    subgraph Browser Automation
-        P1 -->|Worker 1| W1[Account 1 Playwright Worker]
-        P2 -->|Worker 2| W2[Account 2 Playwright Worker]
-        W1 --> S1[.chrome_session_account1]
-        W2 --> S2[.chrome_session_account2]
+    subgraph Multi_Account_Pool ["Authenticated WhatsApp Workers Pool (N Accounts)"]
+        Acc1["Account 1 Worker (.chrome_session_account1)"]
+        Acc2["Account 2 Worker (.chrome_session_account2)"]
+        AccN["Account N Worker (.chrome_session_accountN)"]
     end
 
-    W1 -->|18s-35s Randomized Delay| WA1[WhatsApp Web Account 1]
-    W2 -->|18s-35s Randomized Delay| WA2[WhatsApp Web Account 2]
-    WA1 --> DB
-    WA2 --> DB
+    subgraph Persistence_Layer ["Local Persistence & Anti-Ban Deduplication"]
+        LocalDB[("dbert_whatsapp.db (SQLite WAL)
+- whatsapp_dispatch (Queue)
+- whatsapp_sent_log (Permanent Dedup)")]
+    end
+
+    UI -->|1. Fetch Candidate Presets| LMS_API
+    LMS_API -->|Query| PG_DB
+    PG_DB -->|Candidate JSON Stream| UI
+    
+    UI -->|2. Select / Edit Template| TemplateStudio
+    TemplateStudio <-->|Bidirectional Sync| PG_DB
+
+    UI -->|3. Trigger Dispatch| QueueSharder
+    QueueSharder -->|Shard 1| Acc1
+    QueueSharder -->|Shard 2| Acc2
+    QueueSharder -->|Shard N| AccN
+
+    Acc1 -->|18s–35s Randomized Delay| WA1["WhatsApp Web 1"]
+    Acc2 -->|18s–35s Randomized Delay| WA2["WhatsApp Web 2"]
+    AccN -->|18s–35s Randomized Delay| WAN["WhatsApp Web N"]
+
+    WA1 & WA2 & WAN -->|Record Delivery| LocalDB
+    LocalDB -->|Stream Live Progress| SSE
+    SSE -->|Update Progress Bars & Logs| UI
 ```
 
-#### 8.1.1. Physical Session Storage & Architecture
-- **Account 1 Directory**: `C:\Users\user\Desktop\aivara\aivara\.chrome_session_account1`
-- **Account 2 Directory**: `C:\Users\user\Desktop\aivara\aivara\.chrome_session_account2`
-- **Browser Executable**: Chrome (`C:\Program Files (x86)\Google\Chrome\Application\chrome.exe` or `C:\Program Files\Google\Chrome\Application\chrome.exe`)
-- **Engine**: Playwright Chromium `launch_persistent_context` with user agent spoofing and disabled blink features (`--disable-blink-features=AutomationControlled`).
+#### 11.1.1. Core Architectural Pillars
 
-#### 8.1.2. Strict Architectural Rules
-1. **The First-15-Lines Placement Rule (CRITICAL)**:
-   - Both the **Verification Dossier URL** (`https://dbert.in/verify?certid=...`) and the **Action / Form URL** (`https://docs.google.com/forms/...` or `/enroll/1999`) **MUST appear within the first 15 lines** of the WhatsApp message.
-   - Standard template placement: Verification URL at **Line 8**, Action/Form URL at **Line 11**.
-2. **Reverse Chronological Candidate Ordering**:
-   - Candidates must always be dispatched in order of registration timestamp (`signup_dt DESC`), prioritizing the newest signups over older inactive cohorts.
-3. **Queue Partitioning (Equal Dual Split)**:
-   - Odd candidate serials -> Account 1 (`--worker account1`).
-   - Even candidate serials -> Account 2 (`--worker account2`).
-4. **Anti-Ban Pacing & Humanized Safety**:
-   - Randomized delay between consecutive deliveries: **18 seconds to 35 seconds**.
-   - Input simulation: Text is pasted via clipboard simulation or typed with realistic keystroke intervals (50–120ms).
-5. **Circuit Breakers & Deduplication**:
-   - **Circuit Breaker**: If 3 consecutive delivery failures occur on an account, the worker immediately aborts to protect account health.
-   - **Deduplication**: Every delivery is permanently recorded in SQLite table `whatsapp_sent_log` and `data/dbert_whatsapp_sent_today.json`. Candidates are NEVER messaged twice.
+##### 1. Local Agent Web Dashboard (`http://localhost:5050`)
+- **Framework**: Lightweight Python FastAPI/Flask application running on `127.0.0.1:5050`.
+- **Purpose**: Unified control cockpit for multi-account login, candidate ingestion from EC2, template selection, live variable preview, and background campaign dispatching.
+- **Interface Modules**:
+  * **Account Pool Manager**: Displays live card for each configured account with connection badge (`Active / Ready`, `QR Code Needed`, `Disconnected / Rate-Limited`).
+  * **EC2 Query Presets Bar**: 1-click candidate ingestion buttons calling the LMS REST API bridge.
+  * **Interactive Template Studio**: Live editor with variable syntax highlighting, First-15-Lines validation badge, and live sample candidate message preview.
+  * **Real-Time Dispatch Console**: Multi-bar progress indicator showing per-account throughput, remaining queue, ETA, and live chronological delivery logs via Server-Sent Events (SSE).
 
-#### 8.1.3. Key CLI Commands Reference
+##### 2. Hybrid QR Code Login Architecture
+- **Dual Login Modes**:
+  * **Headless QR Stream (Primary)**: The dashboard captures headless Playwright QR code screenshots (`canvas[aria-label="Scan me!"]`) and renders them directly inside the dashboard webpage. The user scans the QR code from their mobile phone without any visible browser popups.
+  * **Visible Browser Window (Fallback)**: 1-click fallback button (`Open Chromium Window`) launches a visible browser window using `scripts/login_whatsapp_helper.py` in case of bot detection or session renewal friction.
+- **Session Persistence**: Sessions are stored in `data/whatsapp_sessions/account_{id}` with automatic backward compatibility for existing directories (`.chrome_session_account1`, `.chrome_session_account2` in `C:\Users\user\Desktop\aivara\aivara`).
+
+##### 3. Authenticated EC2 REST API Bridge
+- **Endpoint**: `GET https://lms.dbert.in/api/admin/whatsapp/candidates?filter={preset}`
+- **Security**: Authenticated via bearer admin token (`ADMIN_API_TOKEN`).
+- **Standardized Presets**:
+  * `selected_125`: 125 recently promoted Selected candidates with deterministic offer letter IDs (`DBERT-OFR-2026-...`) ready for appointment letter and caution deposit confirmation.
+  * `provisional_299`: Active provisional fellows with completed tasks pending Gate 1 verification unlock.
+  * `missing_upi_90`: Verified interns maturing on Dec 03, 2026 missing encrypted UPI payout setup.
+  * `resubmission_27`: Candidates flagged with `changes_requested` on capstone submissions.
+  * `all_uncontacted`: Universal uncontacted pool sorted reverse-chronologically (latest signups first).
+
+##### 4. Dynamic Template Studio & Bidirectional PostgreSQL Sync
+- **Centralized Master Storage**: Stored in PostgreSQL table `dbert_internship.whatsapp_templates` (with columns `id`, `slug`, `title`, `body`, `variables`, `is_active`, `updated_at`).
+- **Bidirectional Sync**: Templates authored or edited in the local dashboard are automatically persisted to PostgreSQL, enabling LMS staff and local agents to share the exact same template registry.
+- **Variable Injection**: Dynamic tags replaced at runtime:
+  `{{name}}`, `{{phone}}`, `{{domain}}`, `{{offer_letter_id}}`, `{{cert_id}}`, `{{verification_url}}`, `{{google_form_url}}`, `{{portal_url}}`, `{{batch_start}}`.
+- **First-15-Lines Placement Rule**: The dashboard automatically validates that both the **Verification URL** and the **Google Form / Portal Action URL** appear within the first 15 lines of the generated message body before allowing dispatch.
+
+##### 5. Round-Robin Sharding & Dynamic Auto-Failover
+- **Cyclic Distribution**: The target queue is partitioned across all currently active/logged-in accounts:
+  $$\text{Target Account} = i \pmod{N_{\text{active}}}$$
+- **Anti-Ban Human Delay**: Each account worker operates on an independent thread/process with randomized human delays of **18s to 35s** between consecutive messages.
+- **Circuit Breaker & Dynamic Failover**: If an account encounters 3 consecutive failures (network disconnection, invalid phone format, or session invalidation), the circuit breaker trips:
+  1. The faulty account is flagged `Paused / Tripped` on the dashboard.
+  2. Its remaining un-sent queue is automatically redistributed across the remaining healthy accounts.
+- **Deduplication Invariant**: Every delivery is checked against `data/dbert_whatsapp.db` table `whatsapp_sent_log` (indexing `phone`, `campaign_tag`, `sent_at`) preventing duplicate messages under all circumstances.
+
+#### 11.1.2. Key CLI & Daemon Commands Reference
+
 ```powershell
-# 1. Check login status of both accounts (Headless pre-flight)
-python scripts\check_both_whatsapp_logins.py
+# ==================== LOCAL WHATSAPP AGENT DASHBOARD ====================
+# Launch the Local Multi-Account Agent Dashboard web server
+python scripts/launch_whatsapp_agent_dashboard.py --port 5050
 
-# 2. Pre-flight session check and launch dual workers interactively
-python scripts\verify_and_launch_dbert_whatsapp.py
+# Check login status of all configured accounts (Headless pre-flight)
+python scripts/send_dbert_whatsapp.py --check-all-accounts
 
-# 3. Check current campaign status (Sent vs Pending vs Failed)
-python scripts\send_dbert_whatsapp.py --status
+# Launch visible login helper for specific account ID (e.g. Account 2 or Account 3)
+python scripts/login_whatsapp_helper.py --account 2
 
-# 4. Preview sample queue and message template without sending
-python scripts\send_dbert_whatsapp.py --dry-run
+# Inspect current campaign delivery metrics across all accounts
+python scripts/send_dbert_whatsapp.py --status
 
-# 5. Load next batch of 92 uncontacted candidates (Latest signups first)
-python scripts\send_dbert_whatsapp.py --next-batch
+# ==================== DIRECT BATCH DISPATCH SCRIPTS ====================
+# Run background dispatch for 125 newly Selected candidates via multi-account pool
+python scripts/dispatch_selected_multi_login_whatsapp.py --multi-account
 
-# 6. Run Worker for Account 1 (Odd Serials)
-python scripts\send_dbert_whatsapp.py --worker account1
+# Run background dispatch for 50 untouched ₹299 verification targets
+python scripts/dispatch_untouched_50_acc1.py --live
 
-# 7. Run Worker for Account 2 (Even Serials)
-python scripts\send_dbert_whatsapp.py --worker account2
-
-# 8. Send 1 single test message to verify delivery
-python scripts\send_dbert_whatsapp.py --test-to 919876543210 --account 2
+# Run dual-account dispatch for Batch 70 targets
+python scripts/dispatch_299_dual_account.py --live
 ```
-
----
 
 ### 8.2. Email Dispatching & SMTP Quota Management
 
@@ -1923,7 +2198,7 @@ DBERT's production infrastructure is hosted on AWS EC2 running Ubuntu Linux, orc
 - **Managed Systemd Services**:
   - `dbert-website.service`: Next.js 14/16 App Router (Standalone Node server on port 3000).
   - `dbert-portal.service`: Flask LMS Gunicorn server (WSGI on port 5001).
-  - `dbert-api.service`: FastAPI Uvicorn server (Decommissioned & masked Nov 23, 2026; archived to `data/archive/dbert-api-package/`).
+  - `dbert-api.service`: FastAPI Uvicorn server (Active on port 8000 at `api.dbert.in` for sovereign async APIs, mobile clients, and webhooks).
   - `nginx.service`: Reverse proxy for `dbert.in`, `lms.dbert.in`, `api.dbert.in`.
 
 #### 8.3.2. Next.js Website Deployment Sequence
@@ -2076,10 +2351,14 @@ python scripts/execute_queue_triage.py
 - **Approved Submissions:** **11 Submissions** (including Gurveer Singh PR #35, Kundan Kumhar PR #16, Ankur Sen PR #7, Shruthi Yuvnuv PR #1, and Shanu Sri Gowtham PR #19).
 - **Changes Requested:** **82 Submissions** (All provided with actionable feedback: Bhargavi C K rebase guidance, Thanvesh & Vinay upstream PR guidance, zero-commit/unofficial repo guidance).
 - **Pending Backlog:** **0 Submissions** (100% triaged).
-- **All 5 Gates Cleared (Ready for Payout):**
-  1. **Suraj shivsunder jha** (`sjha0940@gmail.com`) — ₹5,499 (Matured: 21 Nov 2026)
-  2. **Priyanshu Kalondia** (`priyanshukalondia@gmail.com`) — ₹5,499 (Matured: 21 Nov 2026)
-  3. **Shruthi Yuvnuv** (`reachshruthiv@gmail.com`) — ₹5,499 (Matured: 19 Jan 2027)
+- **All 5 Gates Cleared (Ready for Payout - 7 Candidates · Unified Release: 03 Dec 2026):**
+  1. **Suraj shivsunder jha** (`sjha0940@gmail.com`) — ₹5,499 (Release Date: 03 Dec 2026)
+  2. **Priyanshu Kalondia** (`priyanshukalondia@gmail.com`) — ₹5,499 (Release Date: 03 Dec 2026)
+  3. **Shruthi Yuvnuv** (`reachshruthiv@gmail.com`) — ₹5,499 (Release Date: 03 Dec 2026)
+  4. **Gurveer Singh** (`gurveer3057.beai25@chitkara.edu.in`) — ₹5,499 (Release Date: 03 Dec 2026)
+  5. **Kundan Kumhar** (`kundankumhar966@gmail.com`) — ₹5,499 (Release Date: 03 Dec 2026)
+  6. **Ankur Sen** (`ankur.24bai10281@vitbhopal.ac.in`) — ₹5,499 (Release Date: 03 Dec 2026)
+  7. **SHANU SRI GOWTHAM** (`shanusrigowtham17@gmail.com`) — ₹5,499 (Release Date: 03 Dec 2026)
 
 #### 8.4.5. Standardized 65–84 Credential Issuance & Evaluation SOP (v2026.3)
 When issuing new credentials or evaluating capstone project deliverables:
@@ -2193,7 +2472,7 @@ gantt
 ### Phase 5: Deep Service Unification & Monorepo Micro-Frontend Architecture (Target: Weeks 5–7)
 - **Objective:** Decommission orphaned backend services, converge split APIs, and eliminate data store divergence.
 - **Deliverables:**
-  1. **Decommission Orphaned FastAPI Backend [COMPLETED - Nov 23, 2026]:** Masked and stopped `dbert-api.service` on production AWS EC2, safely archived `dbert-api-package/` into `data/archive/dbert-api-package/` (Commit `9bfb5dc`), and reclaimed server compute/memory resources without impacting any user-facing endpoints.
+  1. **Harden Sovereign Async FastAPI Backend (`api.dbert.in`):** Maintain and harden `dbert-api.service` on port 8000 as the sovereign high-throughput async API backend for external integrations, mobile client auth, cron outbox processing, and B2B verification APIs.
   2. **Prisma-to-PostgreSQL Convergence:** Replace Next.js flat-file JSON reads (`certificates_registry.json`, `balance_enrollments_1500.json`) with direct PostgreSQL queries via Prisma client.
   3. **Decompose `apps/portal/app.py`:** Extract the remaining monolithic route handlers into the 13 modular blueprints in `apps/portal/routes/`, reducing `app.py` from 23,534 lines to a clean `< 500-line` application factory.
 
@@ -2234,7 +2513,6 @@ Directory Target                     Action       Rationale & Safety Verificatio
 ------------------------------------------------------------------------------------------------------------------------
 apps/website/src/app/_admin/         DELETED      51 dead unrouted files; administrative functions centralized in LMS
 apps/website/src/app/_api/           DELETED      Unused legacy API routes; Next.js routes active in /api/
-dbert-api-package/                   ARCHIVED     Orphaned 86-endpoint FastAPI backend archived to data/archive/dbert-api-package/; dbert-api.service masked on EC2
 apps/portal/routes/masterclass.py    DELETED      Orphaned blueprint; deleted along with dead templates
 apps/portal/templates/masterclass*.html DELETED   66 KB unused template backing dead masterclass blueprint
 apps/portal/templates/dev_qa_matrix.html WIRED/ACTIVE 605-line template wired to /dev/qa-matrix cockpit; 100% tests pass
@@ -2245,6 +2523,193 @@ scripts/archive/diagnostics/         ARCHIVED     184 ad-hoc throwaway checks an
 ------------------------------------------------------------------------------------------------------------------------
 Permanent Registries (Strictly Kept): 8 master registries in data/ untouched and verified 100% intact.
 ```
+
+---
+
+## § 15: Version 2 Engineering Handover & Execution Runbook
+
+> [!IMPORTANT]
+> **CANONICAL SOVEREIGN HANDOVER SPECIFICATION FOR NEXT AI AGENT**:
+> This section synthesizes all recent Phase 21 updates and establishes the authoritative operational handover for **Version 2 Execution**.
+> For complete granular multi-phase code specifications, step-by-step implementation instructions, and edge-case runbooks, refer directly to **[MASTER_PLAN_V2.md](./MASTER_PLAN_V2.md)** at the repository root.
+
+---
+
+### 15.1. System Readiness Baseline & Test Suite Verification
+
+Before initiating any Version 2 task, the incoming AI agent MUST verify that the codebase meets the baseline health requirements:
+
+1. **Monorepo Topology & Services**:
+   - `apps/website/`: Next.js 16 App Router application (Turbopack standalone build). Runs on Port 3000 in development (`http://localhost:3000`) and Port 3001 in production EC2.
+   - `apps/portal/`: Python 3.12 Flask LMS, Task Submission, and Administrative Portal. Runs on Port 5001 in development (`http://localhost:5001`) and Port 5001 under Gunicorn (4 workers) in production EC2.
+   - `data/`: 8 Permanent Master JSON Registries (`certificates_registry.json`, `directory_candidates.json`, `balance_enrollments_1500.json`, `all_409_provisional_registry.json`, etc.). **NEVER OVERWRITE WITH BLIND SCP UPLOADS**.
+   - `scripts/`: Production operations, dispatch daemons, and EC2 deployment scripts.
+
+2. **Automated Test Suite Baseline (100% Passing)**:
+   - **Flask LMS Unit & Integration Tests**:
+     ```powershell
+     python -m pytest apps/portal/tests/unit/test_staff_logout_flow.py apps/portal/tests/unit/test_local_seeded_ecosystem.py -v
+     # Result: 15 / 15 PASSED (100%)
+     ```
+   - **Mentor Availability & Attendance Test Suite**:
+     ```powershell
+     python -m unittest apps/portal/tests/test_mentor_slots.py
+     # Result: 6 / 6 PASSED (100%)
+     ```
+   - **Next.js TypeScript Compiler Check**:
+     ```powershell
+     cd apps/website; npx tsc --noEmit
+     # Result: 0 Errors (100% Type-Safe)
+     ```
+
+3. **1-Click Local Interactive QA Cockpit**:
+   - **URL**: `http://localhost:5001/dev/qa-matrix`
+   - **Uniform Test Password**: `TestPass123!` across all 17 seeded test personas.
+   - **1-Click Impersonation**: Bypasses manual credential entry and instantly provisions sessions for all 5 lifecycle stages, 4 stipend gates, faculty mentors, staff evaluators, and hiring recruiters.
+   - **Quick Simulation Buttons**: 1-click triggers to verify deposits, re-score capstones via Gemini, credit wallet coins, and execute payouts.
+
+---
+
+### 15.2. Recent Phase 21.2 & 21.3 Refinements Census (Nov 24, 2026)
+
+The following foundational fixes and system hardening updates were implemented and live-verified across the repository:
+
+| Subsystem / Route | File & Line Location | Defect / Failure Mode | Resolution & Invariant Enforced |
+|---|---|---|---|
+| **Flask Route Registration Truncation** | `apps/portal/app.py:24287` | `__main__` entrypoint and blueprint registration placed prematurely in middle of file, causing trailing 1,100+ lines of routes to be silently omitted during direct execution. | Relocated `from routes import register_blueprints`, `register_blueprints(app)`, and `if __name__ == "__main__":` to the absolute bottom of `app.py`. |
+| **Admin Analytics Resilience** | `apps/portal/routes/admin.py`, `templates/admin_analytics.html` | Jinja2 `UndefinedError: 'dict object' has no attribute 'channels'` when traffic analytics summary was uninitialized or empty. | Wrapped `traffic.channels` and `traffic.devices` with defensive `ch_dict` and `dev_dict` lookups via `.get()`. Dynamic monorepo root path discovery implemented. |
+| **Omnichannel Stipend Funnel Nudge** | `apps/portal/app.py:8125`, `templates/admin_stipend_funnel.html` | Clicking "Nudge" failed with HTTP 400 when candidates were listed without an explicit `intern_id`. Push notification threw TypeError on argument name mismatch. | Added candidate fallback lookup by `email` across `intern_accounts`, `enrollments`, and `applications`. Corrected `dispatch_lifecycle_push` signature (`intern_id` & `extra_data={"category": "stipend"}`). Upgraded UI to 4-action cluster: Nudge All, Email, Push, WhatsApp. |
+| **cPanel Mailer SSL Mismatch Guard** | `apps/portal/app.py:5260`, `services/delivery_service.py` | `mailer.aivaratech.online` SSL cert mismatch raised unhandled `SSLError`, causing email dispatch tasks to fail when attempting secondary fallback. | Added `verify=False` to fallback `requests.post()` in both `app.py` and `delivery_service.py`, allowing fallback requests to proceed without SSL hostname crashes. |
+| **AI Classroom Tutor BYOK Mock Fallback** | `apps/portal/app.py:4352`, `templates/course_learn.html` | BYOK chat threw HTTP 401 on local development when testing without a live Google AI Studio API key. | In `_gemini_stream_byok_call`, added dev simulation streaming tokens for keys starting with `AQ.MOCK_`, `TEST_`, `DEV_`, `AIzaSyMock`. Upgraded modal styling with z-index 999999 and backdrop blur. |
+| **Staff Logout Redirect Loop** | `apps/portal/app.py:9023`, `tests/unit/test_staff_logout_flow.py` | `staff_logout()` cleared `session["staff_id"]` but failed to clear `dbert_auth` and `dbert_session` cookies, causing `/staff/login` to loop back to `/staff/dashboard`. | Injected `_clear_session_cookie(resp)`, `invalidate_session()`, and `session.clear()`. Verified with 3-case unit test suite in `test_staff_logout_flow.py`. |
+| **Admin Stipend Health API Authorization** | `apps/portal/routes/stipend.py:432` | Staff evaluators received HTTP 403 on `/admin/api/stipend-health`. | Expanded permission check from `is_admin_request()` to `is_admin_request() or current_staff()`. |
+| **Talent Sourcing Dashboard Multi-Currency** | `apps/portal/templates/sourcing_dashboard.html` | Sourcing dashboard filtered only for `₹`, dropping jobs listed in USD (`$`) or remote rates (`/`). | Broadened regex filter to accept `₹`, `$`, and `/`. Seeded 22 initial internships in SQLite `scraped_internships`. |
+| **Admin Job Applications & Mentor Availability Layout** | `apps/portal/templates/admin_job_applications.html`, `mentor_availability.html` | Fixed left margin clipping behind the fixed sidebar on desktop viewports. | Added `margin-left: var(--sidebar-w, 240px) !important` on desktop with fluid responsive collapse on `< 768px` mobile screens. |
+| **Resilient Local Server Lifecycle** | `apps/portal/app.py:24290` | Terminal disconnects or socket drops crashed Werkzeug with exit code 1. | Replaced narrow socket exception catch with `BaseException` loop logging `[SERVER_RESTART]` and auto-restarting Flask cleanly without terminating the process. Created `scripts/start_lms_local.bat`. |
+
+---
+
+### 15.3. Version 2 Strategic Architecture Blueprint (Synthesis of MASTER_PLAN_V2.md)
+
+Version 2 represents the transition of DBERT from an ad-hoc growth experiment into a robust, high-margin **Venture Studio & B2B Engineering Placement Engine**.
+
+```mermaid
+flowchart TD
+    subgraph Candidate_Funnel ["Candidate Acquisition & Incubation (B2C)"]
+        Hero["Venture Studio Placement Guarantee
+(No Unrealistic Stipend Claims)"] --> Choice{"Enrollment Pathway"}
+        Choice -->|"Direct Incubation (₹1,999)"| EnrPortal["/enroll/1999
+(₹499 Credit + ₹1,500 Balance)"]
+        Choice -->|"Merit Selection (₹499)"| OfferPortal["/portal/offer
+(Digital Sign + ₹499 Seat Deposit)"]
+        EnrPortal --> Sprints["Active 8-Week Sprints
+(75 Tasks + 80h Heartbeat + 1 Merged PR)"]
+        OfferPortal --> Sprints
+    end
+
+    subgraph Evaluation_Proof ["Cryptographic Verification & Proof Dossier"]
+        Sprints --> Capstone["Technical Capstone Submission"]
+        Capstone --> Turnitin["Turnitin Plagiarism (< 3%) + Gemini Rubric"]
+        Turnitin --> CredentialMint["Official 3-Doc Credential Packet
+(LOR + Evaluation + Certificate)"]
+    end
+
+    subgraph Recruiter_Marketplace ["B2B Talent Marketplace & Placement (B2B)"]
+        CredentialMint --> Tab1["Pre-Vetted Engineers Directory
+(Tab 1: Verified · Ready to Hire)"]
+        Tab1 --> Recruiter["Corporate Recruiter Search
+(Next.js, PyTorch, LangChain Tags)"]
+        Recruiter --> RecruiterAction{"Recruiter Action"}
+        RecruiterAction -->|"Inspect Proof"| ProofDossier["/verify/[certId]
+(Live Dossier & Code Rubric)"]
+        RecruiterAction -->|"Instant Match"| LMSCompany["lms.dbert.in/company/signup
+(Direct Candidate Messaging)"]
+    end
+```
+
+---
+
+### 15.4. Phased Implementation Roadmap for Next Agent (Phases 1–8)
+
+The incoming AI agent must execute Version 2 across the following 8 standardized phases defined in **`MASTER_PLAN_V2.md`**:
+
+#### Phase 1: Realistic Value Proposition & Positioning Overhaul
+- **Goal:** Completely eliminate all legacy mentions of "₹5,000 stipend", "₹18,000 performance incentive", and monthly stipend ranges from public marketing pages (`dbert.in`).
+- **Core Positioning:** **100% Guaranteed Internship / Job Placement** across DBERT portfolio ventures (Gayatri AI, Alkame, Aivara) and partner hiring network.
+- **Key Files**: `apps/website/src/app/page.tsx`, `apps/website/src/app/courses/page.tsx`, `apps/website/src/app/internships/page.tsx`, `apps/website/src/app/enroll/1999/page.tsx`.
+
+#### Phase 2: Pre-Vetted Engineers Directory Overhaul (`/verify/directory`)
+- **Goal:** Transform the candidate directory into a high-converting B2B recruiter tool.
+- **Features**:
+  - Eliminate alphabetical first-name filters; implement search by technical domain, stack keywords, and competency.
+  - Maintain segregated status tabs: **Tab 1: Pre-Vetted Engineers (Verified · Ready to Hire)** (65 verified candidates) vs **Tab 2: Incubation Fellows (Provisional · In Sprints)** (400 candidates).
+  - Surface highest evaluation scores (98, 97, 96...) and verified status first.
+  - Dual Recruiter CTAs: `View Proof Dossier →` (`/verify/[certId]`) and `Connect on LMS →` (`/company/signup?ref=directory&candidate=[certId]`).
+- **Key Files**: `apps/website/src/app/verify/directory/page.tsx`, `apps/website/src/data/directory_candidates.json`.
+
+#### Phase 3: Left-Hand Sidebar Restructuring & Visual Hierarchy
+- **Goal:** Reorganize the cluttered `/portal` sidebar into a clean, 4-tier visual hierarchy.
+- **4 Tiers**:
+  1. **Tier 1: Sprints & Learning** (Active Sprints, Daily Quizzes, Capstone Brief, AI Classroom Tutor).
+  2. **Tier 2: Mentorship & Credentials** (1-on-1 Faculty Mentors, Credential Dossier, Verification).
+  3. **Tier 3: Placement & Bounties** (Venture Placement, Job Applications, Bounty Tasks).
+  4. **Tier 4: Account & Settings** (Profile, Security, Referrals, Logout).
+- **Key Files**: `apps/portal/templates/portal.html`, `apps/portal/templates/_sidebar.html`, `apps/portal/static/css/dbert-theme.css`.
+
+#### Phase 4: Context-Aware Feature Gating & Pre-Payment Locks
+- **Goal:** Eliminate white screens and 403 errors for candidates who have not yet completed payment.
+- **Rule**: If a candidate at Stage 1–4 attempts to access sprint lessons or mentor bookings, display an attractive amber lock state with an actionable CTA:
+  - Stage 1–2: `Awaiting Admissions Screening Interview →`
+  - Stage 3: `Sign Offer Letter & Reserve Monday Seat (₹499) →` (`/portal/offer`)
+  - Stage 4: `UTR Under Reconciliation (Admissions Verifying) →`
+  - Stage 5: Unlocked full access.
+- **Key Files**: `apps/portal/app.py`, `apps/portal/templates/portal.html`, `apps/portal/templates/course_learn.html`.
+
+#### Phase 5: Dynamic Domain Switching & In-Profile Security Engine
+- **Goal:** Empower interns to switch technical domain tracks or update phone/email with verification protections.
+- **Features**: Automatic course re-enrollment via `auto_enroll_intern_in_domain_courses()`, audit logging, and prevention of multi-domain certificate confusion.
+- **Key Files**: `apps/portal/routes/auth.py`, `apps/portal/services/intern_profile.py`, `apps/portal/templates/profile.html`.
+
+#### Phase 6: Legacy Payment 301 Redirection & Funnel Consolidation
+- **Goal:** Enforce the Sovereign Dual-Payment Invariant.
+- **Rule**: Strictly 2 valid payment surfaces across the entire ecosystem:
+  - **Payment 1: ₹499 Seat Caution Deposit** (`/portal/offer`).
+  - **Payment 2: ₹1,999 Direct Incubation Fellowship** (`/enroll/1999`).
+- **Action**: Retire standalone ₹299 verification fee. Issue a strict HTTP 301 redirect from `/verify/unlock` to `https://dbert.in/enroll/1999`.
+- **Key Files**: `apps/website/src/app/verify/unlock/page.tsx`, `apps/portal/app.py`.
+
+#### Phase 7: Local Multi-Account WhatsApp Agent Dashboard Prototype
+- **Goal:** Provide a local graphical dashboard on Port 5050 for monitoring dual-account WhatsApp dispatching.
+- **Features**: Chrome user data profile status indicators (`.chrome_session_account1`, `.chrome_session_account2`), queue distribution (odd vs even serials), rate pacing dials, and real-time dispatch logs.
+- **Key Files**: `scripts/send_dbert_whatsapp.py`, `scripts/verify_and_launch_dbert_whatsapp.py`, `data/dbert_whatsapp.db`.
+
+#### Phase 8: Production EC2 Deployment, Rebuild & E2E Live Verification
+- **Goal:** Safely deploy all tested updates to the production AWS EC2 host without downtime or data loss.
+- **Host**: `ubuntu@3.26.237.171` (`/var/www/dbert-website-lms`)
+- **Key Files**: `scripts/deploy_website_updates_to_ec2.py`, `scripts/deploy_enrollment_1999_to_ec2.py`.
+
+---
+
+### 15.5. Immediate Next Steps & Priority Work Items
+
+When the next AI agent begins the session, it should follow this exact sequence:
+
+1. **Verify Git Status & Baseline Tests**:
+   ```powershell
+   git status
+   python -m pytest apps/portal/tests/unit/test_staff_logout_flow.py apps/portal/tests/unit/test_local_seeded_ecosystem.py -v
+   cd apps/website; npx tsc --noEmit
+   ```
+2. **Review `MASTER_PLAN_V2.md` Phase 1 Specifications**:
+   Read **`MASTER_PLAN_V2.md` § Phase 1** to review the copy adjustments required across public landing pages.
+3. **Launch Local Dev Servers for Interactive Verification**:
+   - Website: `powershell -Command "cd apps/website; npx next dev -p 3000"`
+   - LMS Portal: `scripts\start_lms_local.bat` or `powershell -Command "cd apps/portal; python -u app.py"`
+   - Verification Cockpit: `http://localhost:5001/dev/qa-matrix`
+4. **Deploy Staged Updates to EC2**:
+   Once local testing of Phase 1–3 is confirmed by the user, execute the standardized SCP upload, standalone build, and systemd service restarts.
+
+---
 
 ---
 *End of MASTER.md — Official Sovereign Architecture & Runbook for DBERT Ecosystem*

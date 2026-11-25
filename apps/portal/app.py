@@ -2,6 +2,7 @@
 from services.intern_profile import AttendanceService, TaskSummaryService, ApplicationSummaryService
 from flask import Flask, render_template, request, jsonify, send_file, send_from_directory, Response, make_response, redirect, session, abort, g, has_request_context, flash, stream_with_context
 from urllib.parse import quote
+from functools import wraps
 from markupsafe import Markup, escape
 import os
 import sys
@@ -209,12 +210,185 @@ def csp_nonce():
     return n
 
 
+def compute_tenure_expiration(conn, intern_id: int, email: str) -> tuple[bool, str]:
+    """
+    Master Plan V2 Invariant 7:
+    60-day sprint tenure + 5-day grace period from official batch_start_date / joining_date.
+    Returns (is_tenure_expired, grace_end_display).
+    """
+    from datetime import datetime, date, timedelta
+
+    email = (email or "").strip().lower()
+    today = date.today()
+
+    try:
+        sv_row = conn.execute(
+            "SELECT stipend_verified FROM intern_accounts WHERE id = ? OR LOWER(email) = ? LIMIT 1",
+            (intern_id, email),
+        ).fetchone()
+        if sv_row and int(sv_row["stipend_verified"] or 0) == 1:
+            return False, ""
+    except Exception:
+        try:
+            conn.rollback()
+        except Exception:
+            pass
+
+    try:
+        ofr = conn.execute(
+            "SELECT batch_end_date FROM intern_offer_letters WHERE LOWER(email) = ? AND batch_end_date IS NOT NULL ORDER BY id DESC LIMIT 1",
+            (email,),
+        ).fetchone()
+        if ofr and ofr["batch_end_date"]:
+            bed = str(ofr["batch_end_date"]).strip()
+            b_date = None
+            for fmt in ("%Y-%m-%d", "%d %b %Y", "%d-%m-%Y"):
+                try:
+                    b_date = datetime.strptime(bed[:10] if fmt == "%Y-%m-%d" else bed, fmt).date()
+                    break
+                except ValueError:
+                    continue
+            if b_date:
+                grace_end = b_date + timedelta(days=5)
+                return today > grace_end, grace_end.strftime("%d %b %Y")
+    except Exception:
+        try:
+            conn.rollback()
+        except Exception:
+            pass
+
+    try:
+        enr = conn.execute(
+            "SELECT joining_date FROM enrollments WHERE LOWER(email) = ? AND payment_status IN ('Verified', 'Accepted') ORDER BY id DESC LIMIT 1",
+            (email,),
+        ).fetchone()
+        if enr and enr["joining_date"]:
+            j_str = str(enr["joining_date"]).strip()[:10]
+            j_dt = None
+            for fmt in ("%Y-%m-%d", "%d-%m-%Y", "%d/%m/%Y", "%Y/%m/%d"):
+                try:
+                    j_dt = datetime.strptime(j_str, fmt).date()
+                    break
+                except ValueError:
+                    continue
+            if j_dt:
+                grace_end = j_dt + timedelta(days=65)
+                return today > grace_end, grace_end.strftime("%d %b %Y")
+    except Exception:
+        try:
+            conn.rollback()
+        except Exception:
+            pass
+
+    return False, ""
+
+
+def build_rejoin_enroll_url(intern: dict | None, cert_id: str | None = None) -> str:
+    """Build prefilled /enroll/1999?rejoin=1 URL for tenure-expired interns."""
+    from urllib.parse import urlencode
+
+    base = os.environ.get("WEBSITE_BASE_URL", "https://dbert.in").rstrip("/")
+    if not intern:
+        return f"{base}/enroll/1999?rejoin=1"
+
+    params: dict[str, str] = {"rejoin": "1"}
+    if intern.get("name"):
+        params["name"] = str(intern["name"]).strip()
+    if intern.get("email"):
+        params["email"] = str(intern["email"]).strip().lower()
+    if intern.get("phone"):
+        params["phone"] = str(intern["phone"]).strip()
+    if intern.get("college"):
+        params["college"] = str(intern["college"]).strip()
+    if intern.get("domain"):
+        params["domain"] = str(intern["domain"]).strip()
+    if intern.get("intern_id") or intern.get("id"):
+        params["intern_id"] = str(intern.get("intern_id") or intern.get("id"))
+    if cert_id:
+        params["certid"] = str(cert_id).strip()
+
+    return f"{base}/enroll/1999?{urlencode(params)}"
+
+
 @app.context_processor
 def inject_globals():
-    """Phase 12.5/12.6 â€” make GA4 id + canonical origin available to every template."""
-    return {"GA4_ID": GA4_ID, "SITE_ORIGIN": SITE_ORIGIN,
-            "OG_IMAGE_URL": OG_IMAGE_URL, "LOGO_URL": LOGO_URL,
-            "csp_nonce": csp_nonce}
+    """Phase 12.5/12.6 — make GA4 id + canonical origin available to every template."""
+    intern = None
+    try:
+        intern = current_intern()
+    except Exception:
+        pass
+    stage = 2
+    is_tenure_expired = False
+    grace_end_display = ""
+    rejoin_enroll_url = build_rejoin_enroll_url(intern)
+    stipend_5000_status = "Pending Audit"
+    stipend_release_date = ""
+    admin_stipend_comment = ""
+    admin_stipend_comment_at = ""
+    admin_stipend_comment_visible = 1
+    if intern:
+        try:
+            raw_stage = intern.get("signup_stage")
+            stage = int(raw_stage) if raw_stage is not None else 2
+        except (ValueError, TypeError):
+            stage = 2
+        try:
+            with get_db() as conn:
+                user_email = (intern.get("email") or "").strip().lower()
+                if intern.get("id"):
+                    sr_row = conn.execute(
+                        "SELECT stipend_5000_status, stipend_release_date, admin_stipend_comment, admin_stipend_comment_at, admin_stipend_comment_visible FROM intern_accounts WHERE id = ?",
+                        (intern.get("id"),),
+                    ).fetchone()
+                    if sr_row:
+                        sr_d = row_to_dict(sr_row)
+                        stipend_5000_status = sr_d.get("stipend_5000_status") or "Pending Audit"
+                        stipend_release_date = str(sr_d.get("stipend_release_date") or "")
+                        admin_stipend_comment = sr_d.get("admin_stipend_comment") or ""
+                        admin_stipend_comment_at = str(sr_d.get("admin_stipend_comment_at") or "")
+                        admin_stipend_comment_visible = int(sr_d.get("admin_stipend_comment_visible") if sr_d.get("admin_stipend_comment_visible") is not None else 1)
+                if stage < 5 and user_email:
+                    enr_verified = conn.execute(
+                        "SELECT 1 FROM enrollments WHERE LOWER(email) = ? AND payment_status IN ('Accepted', 'Verified') LIMIT 1",
+                        (user_email,),
+                    ).fetchone()
+                    if enr_verified:
+                        stage = 5
+                        if intern.get("id"):
+                            conn.execute("UPDATE intern_accounts SET signup_stage = 5 WHERE id = ?", (intern.get("id"),))
+                            if hasattr(conn, "commit"):
+                                conn.commit()
+                if stage >= 5:
+                    is_tenure_expired, grace_end_display = compute_tenure_expiration(
+                        conn, intern.get("id") or 0, user_email
+                    )
+                    if is_tenure_expired:
+                        cert_row = conn.execute(
+                            "SELECT cert_id FROM intern_certificates WHERE (intern_id = ? OR LOWER(email) = LOWER(?)) ORDER BY id DESC LIMIT 1",
+                            (intern.get("id") or 0, user_email),
+                        ).fetchone()
+                        rejoin_enroll_url = build_rejoin_enroll_url(
+                            intern, cert_row["cert_id"] if cert_row else None
+                        )
+        except Exception:
+            pass
+    return {
+        "GA4_ID": GA4_ID, "SITE_ORIGIN": SITE_ORIGIN,
+        "OG_IMAGE_URL": OG_IMAGE_URL, "LOGO_URL": LOGO_URL,
+        "csp_nonce": csp_nonce,
+        "signup_stage": stage,
+        "is_locked_pre_payment": stage < 5,
+        "is_selected_unpaid": stage == 3,
+        "is_tenure_expired": is_tenure_expired,
+        "grace_end_display": grace_end_display,
+        "rejoin_enroll_url": rejoin_enroll_url,
+        "stipend_5000_status": stipend_5000_status,
+        "stipend_release_date": stipend_release_date,
+        "admin_stipend_comment": admin_stipend_comment,
+        "admin_stipend_comment_at": admin_stipend_comment_at,
+        "admin_stipend_comment_visible": admin_stipend_comment_visible,
+    }
 # Guard: crash loudly on startup if a secret is missing/defaulted in production â€”
 # prevents a silent same-value match (SSO forgery) or a forgeable session cookie.
 if os.environ.get("FLASK_DEBUG", "false").lower() != "true":
@@ -828,12 +1002,18 @@ def set_password_hash(plaintext):
 
 def verify_password(stored_hash, plaintext):
     """Constant-time-ish verify of `plaintext` against either a legacy unsalted
-    SHA-256 hash or a new salted KDF hash. Pure: never writes to the DB â€” callers
+    SHA-256 hash or a new salted KDF hash. Pure: never writes to the DB — callers
     do lazy migration via is_legacy_hash() after a successful verify."""
     if not stored_hash:
         return False
     if is_legacy_hash(stored_hash):
         return hmac.compare_digest(stored_hash, hash_password(plaintext))
+    if stored_hash.startswith(("$2a$", "$2b$", "$2y$")):
+        try:
+            import bcrypt
+            return bcrypt.checkpw((plaintext or "").encode("utf-8"), stored_hash.encode("utf-8"))
+        except Exception:
+            return False
     try:
         return check_password_hash(stored_hash, plaintext or "")
     except Exception:
@@ -2533,6 +2713,19 @@ def build_intern_next_action(flow_state, hours_logged=0.0, sprint_ctx=None):
         }
 
 
+def get_intern_stage_and_next_action(conn, email, hours_logged=0.0, sprint_ctx=None):
+    """Canonical wrapper combining get_intern_flow_state and build_intern_next_action for backward compatibility."""
+    flow = get_intern_flow_state(conn, email)
+    next_action = build_intern_next_action(flow, hours_logged=hours_logged, sprint_ctx=sprint_ctx)
+    res = dict(flow)
+    res.update(next_action)
+    res["stage_name"] = flow.get("label") or next_action.get("heading")
+    res["primary_cta_url"] = next_action.get("primary_cta_url") or "/portal"
+    res["primary_cta_label"] = next_action.get("primary_cta_label") or "View Status"
+    res["hours_target"] = next_action.get("hours_target", 10)
+    return res
+
+
 def ensure_application_record(conn, acct, chosen_domain=None, status=STATUS_UNDER_REVIEW, why_join=None):
     """Guarantees an application record exists in `applications` for the intern account,
     with their chosen domain and profile details.
@@ -2855,6 +3048,12 @@ def init_db():
                 batch_label TEXT,
                 payment_screenshot TEXT,
                 payment_status TEXT DEFAULT 'Pending Verification',
+                utr TEXT,
+                amount INTEGER DEFAULT 499,
+                amount_paid INTEGER DEFAULT 0,
+                deposit_paid INTEGER DEFAULT 0,
+                balance_paid INTEGER DEFAULT 0,
+                product TEXT DEFAULT 'free_deposit',
                 admin_note TEXT,
                 created_at TEXT DEFAULT (datetime('now','localtime')),
                 updated_at TEXT DEFAULT (datetime('now','localtime')),
@@ -3788,7 +3987,7 @@ def init_db():
             # Phase 13: multistep signup â€” consent + progress tracking.
             # signup_stage: 0/1=account created, 2=academics done, 3=application submitted (complete).
             ("terms_accepted_at", "TEXT"), ("newsletter_opt_in", "INTEGER DEFAULT 0"),
-            ("signup_stage", "INTEGER DEFAULT 3"),
+            ("signup_stage", "INTEGER DEFAULT 1"),
             # Phase 7 â€” College Ambassador (spec Â§6.2). upi_id_encrypted holds
             # Fernet ciphertext only; the plaintext never touches this table.
             ("referral_code", "TEXT"),
@@ -3798,6 +3997,14 @@ def init_db():
             ("gemini_api_key_encrypted", "TEXT"),
             ("gemini_key_last_verified_at", "TEXT"),
             ("stipend_verified", "INTEGER DEFAULT 0"),
+            ("stipend_amount", "INTEGER DEFAULT 0"),
+            ("stipend_release_date", "TEXT DEFAULT ''"),
+            ("stipend_5000_status", "TEXT DEFAULT 'Pending Audit'"),
+            ("admin_stipend_comment", "TEXT DEFAULT ''"),
+            ("admin_stipend_comment_at", "TEXT DEFAULT ''"),
+            ("admin_stipend_comment_visible", "INTEGER DEFAULT 1"),
+            ("verified_github_org", "TEXT DEFAULT ''"),
+            ("verified_github_repo", "TEXT DEFAULT ''"),
             ("linkedin_verified", "INTEGER DEFAULT 0"),
             ("profile_complete", "INTEGER DEFAULT 0"),
         ]:
@@ -3810,8 +4017,11 @@ def init_db():
             ("application_id", "INTEGER"), ("city", "TEXT"), ("course", "TEXT"),
             ("semester", "TEXT"), ("year_of_passing", "TEXT"), ("admin_note", "TEXT"),
             ("updated_at", "TEXT"), ("joining_date", "TEXT"), ("batch_label", "TEXT"),
-            ("product", "TEXT DEFAULT 'free_deposit'"), ("amount", "INTEGER"),  # Phase 12
-            ("email", "TEXT"),
+            ("product", "TEXT DEFAULT 'free_deposit'"), ("amount", "INTEGER DEFAULT 499"),
+            ("email", "TEXT"), ("utr", "TEXT"),
+            ("amount_paid", "INTEGER DEFAULT 0"),
+            ("deposit_paid", "INTEGER DEFAULT 0"),
+            ("balance_paid", "INTEGER DEFAULT 0"),
         ]:
             ensure_column(conn, "enrollments", col, defn)
         ensure_column(conn, "mentors", "password_hash", "TEXT")
@@ -3893,6 +4103,28 @@ def init_db():
 
         # UP9.1: Add email_verified to intern_accounts
         ensure_column(conn, "intern_accounts", "email_verified", "INTEGER DEFAULT 0")
+
+        # Standardized Institutions Directory & Signup Linkage
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS institutions (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                aliases TEXT DEFAULT '[]',
+                affiliated_university TEXT DEFAULT '',
+                city TEXT DEFAULT '',
+                state TEXT DEFAULT '',
+                aishe_code TEXT DEFAULT '',
+                source TEXT DEFAULT 'aishe',
+                is_verified BOOLEAN DEFAULT TRUE,
+                created_at TEXT DEFAULT ''
+            )
+        """)
+        conn.execute("CREATE INDEX IF NOT EXISTS idx_inst_name_lower ON institutions(LOWER(name))")
+        conn.execute("CREATE INDEX IF NOT EXISTS idx_inst_city_lower ON institutions(LOWER(city))")
+        ensure_column(conn, "intern_accounts", "institution_id", "INTEGER")
+        ensure_column(conn, "intern_accounts", "affiliated_university", "TEXT DEFAULT ''")
+        ensure_column(conn, "applications", "institution_id", "INTEGER")
+        ensure_column(conn, "applications", "affiliated_university", "TEXT DEFAULT ''")
 
         # Attendance tracking and cross-subsystem email column migrations
         ensure_column(conn, "attendance", "email", "TEXT")
@@ -4790,7 +5022,11 @@ CSRF_SAFE_METHODS = {"GET", "HEAD", "OPTIONS", "TRACE"}
 # Endpoints that legitimately cannot carry a token. Keep this list empty unless
 # there is a genuine server-to-server caller — every browser-originated POST
 # must be protected. RFC 8058 one-click unsubscribe is authenticated via HMAC signature.
-CSRF_EXEMPT_ENDPOINTS = {"scraped_lead_click_track", "unsubscribe", "api_tools_ats_checker", "internal_enrollment_sync", "intern_select_domain"}
+CSRF_EXEMPT_ENDPOINTS = {
+    "scraped_lead_click_track", "unsubscribe", "api_tools_ats_checker", 
+    "internal_enrollment_sync", "intern_select_domain",
+    "api_intern_profile_update", "api_account_change_password"
+}
 
 
 def _csrf_token():
@@ -4882,6 +5118,109 @@ def require_role(role):
         return None
     return user
 
+
+def get_current_intern():
+    """Wrapper around current_intern() for test mocking and lifecycle state access."""
+    return current_intern()
+
+
+def require_confirmed_fellow(f=None, *, allow_expired: bool = False):
+    """
+    Phase 4 + Stage 5B Exit Gating Decorator:
+    - Admin/Superadmin/Staff: bypass gating.
+    - Unauthenticated: redirects to /intern/login (or 401 JSON if AJAX).
+    - Stage < 3 (Under Review): flashes info message, redirects to /portal (or 403 JSON).
+    - Stage == 3 (Selected Unpaid): flashes warning, redirects to /portal/offer (or 403 JSON).
+    - Stage == 4 (Payment Reconciling): flashes info message, redirects to /portal (or 403 JSON).
+    - Stage >= 5 (Confirmed Fellow):
+      * If tenure expired (>65d) and not allow_expired: flashes exit notice, redirects to /portal (or 403 JSON).
+      * Otherwise allows execution.
+    """
+    def _decorator(func):
+        @wraps(func)
+        def decorated_function(*args, **kwargs):
+            # 1. Staff and Admin bypass
+            if (
+                session.get("role") in ("admin", "superadmin", "staff")
+                or session.get("admin_id")
+                or session.get("staff_id")
+                or require_admin()
+            ):
+                return func(*args, **kwargs)
+
+            # 2. Resolve current intern session
+            user = get_current_intern()
+            is_ajax = bool(
+                request.is_json
+                or (request.headers.get("Accept") and "application/json" in request.headers.get("Accept"))
+                or request.headers.get("X-Requested-With") == "XMLHttpRequest"
+            )
+            if not user:
+                if is_ajax:
+                    return jsonify({"status": "error", "message": "Authentication required. Please sign in or sign up to view tasks."}), 401
+                session["next"] = request.path
+                flash("Please sign in or sign up to view tasks.", "info")
+                return redirect("/intern/login")
+
+            # 3. Stage-based Gating
+            try:
+                stage = int(user.get("signup_stage") or 2)
+            except (ValueError, TypeError):
+                stage = 2
+
+            # Auto-heal: if payment is verified in enrollments, ensure Stage 5 access
+            user_email = (user.get("email") or "").strip().lower()
+            if stage < 5 and user_email:
+                try:
+                    with get_db() as conn:
+                        enr_verified = conn.execute(
+                            "SELECT 1 FROM enrollments WHERE LOWER(email) = ? AND payment_status IN ('Accepted', 'Verified') LIMIT 1",
+                            (user_email,)
+                        ).fetchone()
+                        if enr_verified:
+                            stage = 5
+                            if user.get("id"):
+                                conn.execute("UPDATE intern_accounts SET signup_stage = 5 WHERE id = ?", (user.get("id"),))
+                                if hasattr(conn, "commit"):
+                                    conn.commit()
+                except Exception as _enr_err:
+                    log_error("require_confirmed_fellow_enrollment_check", _enr_err)
+
+            if stage < 3:
+                if is_ajax:
+                    return jsonify({"status": "error", "message": "Your application is currently under review. Sprint features unlock upon selection."}), 403
+                flash("Your application is currently under review. Sprint features unlock upon selection.", "info")
+                return redirect("/portal")
+            elif stage == 3:
+                if is_ajax:
+                    return jsonify({"status": "error", "message": "Please complete your seat confirmation on /portal/offer to unlock production sprint tasks."}), 403
+                flash("Please complete your seat confirmation on /portal/offer to unlock production sprint tasks.", "warning")
+                return redirect("/portal/offer")
+            elif stage == 4:
+                if is_ajax:
+                    return jsonify({"status": "error", "message": "Your payment is being verified. Your workspace will unlock shortly."}), 403
+                flash("Your payment is being verified. Your workspace will unlock shortly.", "info")
+                return redirect("/portal")
+
+            if not allow_expired and user_email:
+                try:
+                    with get_db() as conn:
+                        is_exp, _ = compute_tenure_expiration(conn, user.get("id") or 0, user_email)
+                    if is_exp:
+                        msg = "Your previous cohort tenure has ended. Join a new cohort to unlock sprints and mentorship."
+                        if is_ajax:
+                            return jsonify({"status": "error", "message": msg, "redirect_url": build_rejoin_enroll_url(user)}), 403
+                        flash(msg, "warning")
+                        return redirect("/portal")
+                except Exception as _exp_err:
+                    log_error("require_confirmed_fellow_tenure_check", _exp_err)
+
+            return func(*args, **kwargs)
+        return decorated_function
+
+    if f is not None:
+        return _decorator(f)
+    return _decorator
 
 
 def is_admin_request():
@@ -6435,6 +6774,16 @@ def portal_page():
 
             sprint_ctx = _evaluate_intern_sprint_context(conn, acct["id"] if acct else None, email_clean, domain=dom or "General")
             next_action = build_intern_next_action(flow_state, hours_logged=hours_logged, sprint_ctx=sprint_ctx)
+            enr_paid_row = conn.execute(
+                "SELECT product, amount FROM enrollments WHERE LOWER(email)=? AND payment_status IN ('Verified','Accepted','Approved') ORDER BY id DESC LIMIT 1",
+                (email_clean,)
+            ).fetchone()
+            is_paid_1999 = bool(
+                enr_paid_row and (
+                    (enr_paid_row["product"] or "").strip().lower() == "fellowship_1999"
+                    or (enr_paid_row["amount"] or 0) >= 1999
+                )
+            )
 
         resp = make_response(render_template(
             "portal.html",
@@ -6442,7 +6791,8 @@ def portal_page():
             needs_academic_profile=needs_academic_profile,
             flow_state=flow_state,
             current_stage=flow_state["stage_num"],
-            next_action=next_action
+            next_action=next_action,
+            is_paid_1999=is_paid_1999
         ))
         resp.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
         resp.headers["Pragma"] = "no-cache"
@@ -6635,6 +6985,10 @@ def portal_offer_page():
 
     try:
         with get_db() as conn:
+            is_exp, _ = compute_tenure_expiration(conn, user.get("id") or 0, email)
+            if is_exp:
+                flash("Your previous cohort offer letter has expired with your tenure. Join a new cohort to receive a new offer.", "warning")
+                return redirect("/portal")
             enr = conn.execute(
                 "SELECT * FROM enrollments WHERE LOWER(email) = ? ORDER BY id DESC LIMIT 1",
                 (email,)
@@ -6683,10 +7037,15 @@ def portal_offer_page():
                 except Exception:
                     queue_pos = 18
 
+                app_status = (app_row["status"] if app_row and "status" in app_row.keys() else "") or ""
+                is_rejected = app_status.strip().lower() == "rejected"
+
                 resp = make_response(render_template(
                     "portal_offer_letter.html",
                     locked=True,
-                    is_under_review=True,
+                    is_rejected=is_rejected,
+                    is_under_review=(not is_rejected),
+                    app_status=app_status,
                     queue_position=queue_pos,
                     candidate_domain=candidate_domain,
                     preview_mode=False,
@@ -6722,6 +7081,12 @@ def portal_offer_page():
 
             preview_mode = not is_deposit_verified
             is_signed = bool(offer and offer.get("signature_name") and offer.get("accepted_at"))
+            is_paid_1999 = bool(
+                enr and (
+                    (enr.get("product") or "").strip().lower() == "fellowship_1999"
+                    or (enr.get("amount") or 0) >= 1999
+                )
+            )
 
             resp = make_response(render_template(
                 "portal_offer_letter.html",
@@ -6729,6 +7094,7 @@ def portal_offer_page():
                 preview_mode=preview_mode,
                 is_signed=is_signed,
                 is_deposit_verified=is_deposit_verified,
+                is_paid_1999=is_paid_1999,
                 offer=offer,
                 enrollment=enr or app_row,
                 user=user,
@@ -6751,6 +7117,10 @@ def portal_offer_sign():
         return jsonify({"status": "error", "message": "Authentication required."}), 401
 
     email = (user.get("email") or "").strip().lower()
+    with get_db() as conn:
+        is_exp, _ = compute_tenure_expiration(conn, user.get("id") or 0, email)
+        if is_exp:
+            return jsonify({"status": "error", "message": "Your previous cohort offer letter has expired with your tenure."}), 403
 
     payload = request.get_json(silent=True) or request.form.to_dict() or {}
     signature_name = (payload.get("signature_name") or "").strip()
@@ -6811,6 +7181,11 @@ def portal_offer_print():
         return redirect("/#signin")
 
     email = (user.get("email") or "").strip().lower()
+    with get_db() as conn:
+        is_exp, _ = compute_tenure_expiration(conn, user.get("id") or 0, email)
+        if is_exp:
+            flash("Your previous cohort offer letter has expired with your tenure. Join a new cohort to receive a new offer.", "warning")
+            return redirect("/portal")
 
     try:
         with get_db() as conn:
@@ -8136,6 +8511,173 @@ def admin_stipend_funnel_nudge():
             return jsonify({"status": "success", "message": f"Nudge dispatched to {email}."})
         else:
             return jsonify({"status": "error", "message": "Could not dispatch email."}), 500
+
+
+# ── Admin Stipend Review & Comment Dashboard ─────────────────────────────
+_DBERT_PR_ORGS = ("alkameinc/", "gayatri-education/", "aivaratechinfomatics/", "dbert-india/")
+
+
+def _is_valid_dbert_pr(url: str) -> bool:
+    u = (url or "").strip().lower()
+    return "github.com/" in u and "/pull/" in u and any(org in u for org in _DBERT_PR_ORGS)
+
+
+@app.route("/admin/stipend-reviews", methods=["GET"])
+def admin_stipend_reviews():
+    user = require_admin() or require_role(["admin", "staff", "mentor"])
+    if not user:
+        return redirect("/admin/login")
+
+    with get_db() as conn:
+        rows = conn.execute(
+            """
+            SELECT DISTINCT ia.id, ia.name, ia.email, ia.phone, ia.domain,
+                   ia.stipend_verified, ia.stipend_amount, ia.stipend_release_date,
+                   ia.stipend_5000_status, ia.admin_stipend_comment,
+                   ia.admin_stipend_comment_at, ia.admin_stipend_comment_visible,
+                   ia.github_url, ia.linkedin_url, ia.linkedin_verified,
+                   ia.verified_github_repo
+            FROM intern_accounts ia
+            LEFT JOIN task_submissions ts ON ts.intern_id = ia.id
+            WHERE LOWER(COALESCE(ia.email, '')) NOT LIKE '%@dbert.test'
+              AND LOWER(COALESCE(ia.email, '')) NOT LIKE '%@test.com'
+              AND (
+                  ia.stipend_verified = 1
+                  OR LOWER(COALESCE(ts.status, '')) IN ('approved', 'pending')
+                  OR LOWER(COALESCE(ts.github_repo_url, '')) LIKE '%/pull/%'
+              )
+            ORDER BY ia.stipend_verified DESC, ia.id ASC
+            """
+        ).fetchall()
+
+        candidates = []
+        for r in rows:
+            d = row_to_dict(r)
+            email = (d.get("email") or "").strip().lower()
+            is_exp, grace_end = compute_tenure_expiration(conn, d["id"], email)
+            cert = conn.execute(
+                "SELECT cert_id, tier FROM intern_certificates WHERE LOWER(email) = ? ORDER BY id DESC LIMIT 1",
+                (email,),
+            ).fetchone()
+            sub = conn.execute(
+                """
+                SELECT id, status, github_repo_url, live_demo_url, submission_content, created_at
+                FROM task_submissions
+                WHERE intern_id = ?
+                ORDER BY CASE WHEN LOWER(COALESCE(status, '')) = 'approved' THEN 0 WHEN LOWER(COALESCE(github_repo_url, '')) LIKE '%/pull/%' THEN 1 ELSE 2 END, id DESC
+                LIMIT 1
+                """,
+                (d["id"],),
+            ).fetchone()
+            sd = row_to_dict(sub) if sub else {}
+            gh_url = (sd.get("github_repo_url") or d.get("github_url") or "").strip()
+            li_url = (d.get("linkedin_url") or "").strip()
+            project = (d.get("verified_github_repo") or "").strip()
+            if not project and "github.com/" in gh_url.lower():
+                parts = gh_url.split("github.com/", 1)[1].split("/")
+                if len(parts) >= 2:
+                    project = f"{parts[0]}/{parts[1]}"
+
+            cert_d = row_to_dict(cert) if cert else {}
+            tier = str(cert_d.get("tier") or "")
+            gate_299 = f"PASS ({tier})" if tier.lower() == "verified" else (f"NO ({tier})" if tier else "NO CERT")
+            has_pr = _is_valid_dbert_pr(gh_url)
+            has_li = bool(li_url) and bool(d.get("linkedin_verified") or "linkedin.com/" in li_url.lower())
+
+            candidates.append({
+                "id": d["id"],
+                "name": d.get("name") or "",
+                "email": d.get("email") or "",
+                "phone": d.get("phone") or "",
+                "domain": d.get("domain") or "",
+                "stipend_verified": int(d.get("stipend_verified") or 0),
+                "stipend_amount": int(d.get("stipend_amount") or 0),
+                "release_date": str(d.get("stipend_release_date") or ""),
+                "stipend_5000_status": d.get("stipend_5000_status") or "Pending Audit",
+                "admin_comment": d.get("admin_stipend_comment") or "",
+                "admin_comment_at": str(d.get("admin_stipend_comment_at") or ""),
+                "visible_to_intern": int(d.get("admin_stipend_comment_visible") if d.get("admin_stipend_comment_visible") is not None else 1),
+                "project": project,
+                "github_url": gh_url,
+                "has_dbert_pr": has_pr,
+                "sub_status": sd.get("status") or "",
+                "linkedin_url": li_url,
+                "linkedin_verified": int(d.get("linkedin_verified") or 0),
+                "has_linkedin": has_li,
+                "gate_299": gate_299,
+                "end_date_65d": str(grace_end or ""),
+                "is_expired": bool(is_exp),
+            })
+
+    if request.headers.get("Accept") == "application/json" or request.args.get("format") == "json":
+        return jsonify({"status": "success", "candidates": candidates, "count": len(candidates)})
+
+    return render_template("admin_stipend_reviews.html", candidates=candidates, user=user)
+
+
+@app.route("/admin/stipend-reviews/comment", methods=["POST"])
+def admin_stipend_reviews_comment():
+    user = require_admin() or require_role(["admin", "staff", "mentor"])
+    if not user:
+        return jsonify({"status": "error", "message": "Unauthorized"}), 401
+
+    data = request.get_json(silent=True) or request.form or {}
+    intern_id = _int_or_none(data.get("intern_id"))
+    if not intern_id:
+        return jsonify({"status": "error", "message": "Missing intern_id"}), 400
+
+    comment = (data.get("comment") or "").strip()[:2000]
+    release_date = (data.get("release_date") or "").strip()[:32]
+    stipend_status = (data.get("stipend_5000_status") or "Pending Audit").strip()
+    if stipend_status not in ("Approved", "Needs PR or LinkedIn", "Pending Audit"):
+        stipend_status = "Pending Audit"
+    visible_raw = data.get("visible_to_intern", 1)
+    visible = 1 if str(visible_raw).lower() in ("1", "true", "yes", "on") else 0
+    now_str = datetime.now().strftime("%Y-%m-%d %H:%M")
+
+    with get_db() as conn:
+        acct = conn.execute("SELECT id, email FROM intern_accounts WHERE id = ?", (intern_id,)).fetchone()
+        if not acct:
+            return jsonify({"status": "error", "message": "Intern account not found"}), 404
+
+        conn.execute(
+            """
+            UPDATE intern_accounts
+            SET stipend_5000_status = ?,
+                stipend_release_date = ?,
+                admin_stipend_comment = ?,
+                admin_stipend_comment_at = ?,
+                admin_stipend_comment_visible = ?
+            WHERE id = ?
+            """,
+            (stipend_status, release_date, comment, now_str, visible, intern_id),
+        )
+
+        if visible == 1 and comment:
+            conn.execute(
+                """
+                INSERT INTO notifications (intern_id, kind, title, body, link, is_read, created_at)
+                VALUES (?, 'stipend_review', ?, ?, '/portal', 0, ?)
+                """,
+                (
+                    intern_id,
+                    f"Stipend Review Update: {stipend_status}",
+                    comment,
+                    now_str,
+                ),
+            )
+        if hasattr(conn, "commit"):
+            conn.commit()
+
+    return jsonify({
+        "status": "success",
+        "intern_id": intern_id,
+        "stipend_5000_status": stipend_status,
+        "release_date": release_date,
+        "comment": comment,
+        "visible_to_intern": visible,
+        "updated_at": now_str,
+    })
 
 
 # ── Canonical Blog Redirection to dbert.in ────────────────────────────────
@@ -9982,12 +10524,14 @@ def staff_task_decision(submission_id):
 
 # â”€â”€ UP5.2: Open Tasks & Task Submissions Routes â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 @app.route("/tasks", methods=["GET"])
+@require_confirmed_fellow
 def tasks_list():
     intern = current_intern()
     staff = current_staff()
     mentor = current_mentor()
     company = current_company()
-    user = intern or staff or mentor or company
+    admin = require_admin()
+    user = intern or staff or mentor or company or admin
     if not user:
         if request.is_json or request.headers.get("Accept") == "application/json" or request.headers.get("X-Requested-With") == "XMLHttpRequest":
             return jsonify({"status": "error", "message": "Authentication required. Please sign in or sign up to view tasks."}), 401
@@ -10102,12 +10646,14 @@ def tasks_list():
 
 
 @app.route("/tasks/<int:task_id>", methods=["GET"])
+@require_confirmed_fellow
 def task_detail(task_id):
     intern = current_intern()
     staff = current_staff()
     mentor = current_mentor()
     company = current_company()
-    user = intern or staff or mentor or company
+    admin = require_admin()
+    user = intern or staff or mentor or company or admin
     if not user:
         if request.is_json or request.headers.get("Accept") == "application/json" or request.headers.get("X-Requested-With") == "XMLHttpRequest":
             return jsonify({"status": "error", "message": "Authentication required. Please sign in or sign up to view task details."}), 401
@@ -10143,6 +10689,7 @@ def task_detail(task_id):
 
 
 @app.route("/tasks/<int:task_id>/submit", methods=["POST"])
+@require_confirmed_fellow
 def task_submit(task_id):
     intern = current_intern()
     if not intern:
@@ -10672,6 +11219,8 @@ def account_coins_ledger():
         total_earned=task_earned,
         total_spent=task_spent,
         net_balance=balances["task"],
+        stipend_verified=bool(intern.get("stipend_verified")),
+        stipend_amount=int(intern.get("stipend_amount") or 0),
     )
 
 
@@ -10894,9 +11443,13 @@ def check_mentor_capacity_warning():
 
 
 @app.route("/mentors/slots", methods=["GET"])
+@require_confirmed_fellow
 def intern_mentor_slots():
     intern = current_intern()
-    if not intern:
+    staff = current_staff()
+    admin = require_admin()
+    user = intern or staff or admin
+    if not user:
         return redirect("/#signin")
 
     with get_db() as conn:
@@ -10908,6 +11461,7 @@ def intern_mentor_slots():
             "ORDER BY s.start_time ASC"
         ).fetchall()
 
+        intern_id = intern["id"] if intern else 0
         my_bookings = conn.execute(
             "SELECT b.*, s.start_time, s.end_time, st.name as mentor_name "
             "FROM mentor_session_bookings b "
@@ -10915,7 +11469,7 @@ def intern_mentor_slots():
             "JOIN staff_accounts st ON s.mentor_staff_id = st.id "
             "WHERE b.intern_id = ? "
             "ORDER BY s.start_time DESC",
-            (intern["id"],)
+            (intern_id,)
         ).fetchall()
 
     return render_template(
@@ -10926,6 +11480,7 @@ def intern_mentor_slots():
 
 
 @app.route("/mentors/slots/<int:slot_id>/book", methods=["POST"])
+@require_confirmed_fellow
 def intern_book_slot(slot_id):
     intern = current_intern()
     if not intern:
@@ -11988,6 +12543,16 @@ def portal_certificates_page():
                 "SELECT * FROM intern_offer_letters WHERE LOWER(email)=? ORDER BY id DESC LIMIT 1",
                 (email,)
             ).fetchone()
+            enr_paid_row = conn.execute(
+                "SELECT product, amount FROM enrollments WHERE LOWER(email)=? AND payment_status IN ('Verified','Accepted','Approved') ORDER BY id DESC LIMIT 1",
+                (email,)
+            ).fetchone()
+            is_paid_1999 = bool(
+                enr_paid_row and (
+                    (enr_paid_row["product"] or "").strip().lower() == "fellowship_1999"
+                    or (enr_paid_row["amount"] or 0) >= 1999
+                )
+            )
 
         resp = make_response(render_template(
             "certificates.html",
@@ -11997,6 +12562,7 @@ def portal_certificates_page():
             verified_info=verified_info,
             is_verified=is_verified,
             is_provisional=is_provisional,
+            is_paid_1999=is_paid_1999,
             directory_candidate=directory_candidate,
             cert_id=cert_id,
             eval_score=eval_score,
@@ -12727,6 +13293,191 @@ def signup_stage1():
         return jsonify({"status": "error", "message": "Server error. Please try again."}), 500
 
 
+_JUNK_COLLEGES = {
+    "pending profile", "student", "n/a", "na", "none", "nil", "null",
+    "test", "testing", "college", "university", "institute", "school",
+    "other", "others", "not applicable", "no", "yes", "xyz", "abc", "self",
+}
+
+
+@app.route("/api/institutions/search", methods=["GET"])
+def api_institutions_search():
+    """Public type-ahead search for standardized institutions, affiliated universities, and cities."""
+    q = clean_text(request.args.get("q") or "").strip()
+    city_filter = clean_text(request.args.get("city") or "").strip()
+    try:
+        limit = min(max(int(request.args.get("limit") or 20), 1), 30)
+    except (TypeError, ValueError):
+        limit = 20
+    if len(q) < 2 and not city_filter:
+        return jsonify({"status": "success", "institutions": []})
+
+    ql = q.lower()
+    like_q = f"%{ql}%"
+    prefix_q = f"{ql}%"
+    alias_q = f'%"{ql}"%'
+    with get_db() as conn:
+        sql = """
+            SELECT id, name, aliases, affiliated_university, city, state, aishe_code, is_verified
+            FROM institutions
+            WHERE (LOWER(name) LIKE ? OR LOWER(aliases) LIKE ? OR LOWER(affiliated_university) LIKE ? OR LOWER(city) LIKE ?)
+        """
+        params = [like_q, alias_q, like_q, like_q]
+        if city_filter:
+            sql += " AND LOWER(city) = LOWER(?)"
+            params.append(city_filter)
+        sql += """
+            ORDER BY
+                CASE WHEN LOWER(aliases) LIKE ? THEN 0
+                     WHEN LOWER(name) LIKE ? THEN 1
+                     WHEN LOWER(name) LIKE ? THEN 2
+                     ELSE 3 END,
+                CASE WHEN is_verified THEN 0 ELSE 1 END,
+                LENGTH(name) ASC,
+                name ASC
+            LIMIT ?
+        """
+        params.extend([alias_q, prefix_q, like_q, limit])
+        rows = conn.execute(sql, tuple(params)).fetchall()
+
+    results = []
+    for r in rows:
+        results.append({
+            "id": r["id"],
+            "name": r["name"],
+            "affiliated_university": r["affiliated_university"] or "",
+            "city": r["city"] or "",
+            "state": r["state"] or "",
+            "is_verified": bool(r["is_verified"]),
+        })
+    return jsonify({"status": "success", "institutions": results})
+
+
+@app.route("/api/admin/institutions/summary", methods=["GET"])
+def api_admin_institutions_summary():
+    """Admin segregation summary & filtered intern list by Institution, Affiliated University, and City."""
+    user = require_role("admin")
+    if not user:
+        return jsonify({"status": "error", "message": "Unauthorized"}), 401
+    q_col = clean_text(request.args.get("college") or "").strip()
+    q_univ = clean_text(request.args.get("university") or "").strip()
+    q_city = clean_text(request.args.get("city") or "").strip()
+
+    with get_db() as conn:
+        top_colleges = conn.execute("""
+            SELECT COALESCE(NULLIF(college,''), '(Unset)') AS label, COUNT(*) AS cnt
+            FROM intern_accounts GROUP BY 1 ORDER BY cnt DESC LIMIT 15
+        """).fetchall()
+        top_universities = conn.execute("""
+            SELECT COALESCE(NULLIF(affiliated_university,''), '(Unset)') AS label, COUNT(*) AS cnt
+            FROM intern_accounts GROUP BY 1 ORDER BY cnt DESC LIMIT 15
+        """).fetchall()
+        top_cities = conn.execute("""
+            SELECT COALESCE(NULLIF(city,''), '(Unset)') AS label, COUNT(*) AS cnt
+            FROM intern_accounts GROUP BY 1 ORDER BY cnt DESC LIMIT 15
+        """).fetchall()
+
+        sql = """
+            SELECT id, name, email, college, affiliated_university, city, domain, account_status, institution_id
+            FROM intern_accounts WHERE 1=1
+        """
+        params = []
+        if q_col:
+            sql += " AND LOWER(COALESCE(college,'')) LIKE ?"
+            params.append(f"%{q_col.lower()}%")
+        if q_univ:
+            sql += " AND LOWER(COALESCE(affiliated_university,'')) LIKE ?"
+            params.append(f"%{q_univ.lower()}%")
+        if q_city:
+            sql += " AND LOWER(COALESCE(city,'')) LIKE ?"
+            params.append(f"%{q_city.lower()}%")
+        sql += " ORDER BY id DESC LIMIT 100"
+        interns = conn.execute(sql, tuple(params)).fetchall()
+
+    return jsonify({
+        "status": "success",
+        "top_colleges": [dict(r) for r in top_colleges],
+        "top_universities": [dict(r) for r in top_universities],
+        "top_cities": [dict(r) for r in top_cities],
+        "interns": [dict(r) for r in interns],
+    })
+
+
+@app.route("/api/admin/institutions/pending", methods=["GET"])
+def api_admin_institutions_pending():
+    """Lists user-submitted unverified institutions awaiting admin review."""
+    user = require_role("admin")
+    if not user:
+        return jsonify({"status": "error", "message": "Unauthorized"}), 401
+    with get_db() as conn:
+        rows = conn.execute("""
+            SELECT i.id, i.name, i.affiliated_university, i.city, i.state, i.created_at,
+                   COUNT(ia.id) AS intern_count
+            FROM institutions i
+            LEFT JOIN intern_accounts ia ON ia.institution_id = i.id
+            WHERE i.is_verified = FALSE OR i.source = 'user_submitted'
+            GROUP BY i.id, i.name, i.affiliated_university, i.city, i.state, i.created_at
+            ORDER BY intern_count DESC, i.id DESC
+            LIMIT 100
+        """).fetchall()
+    return jsonify({"status": "success", "pending": [dict(r) for r in rows]})
+
+
+@app.route("/api/admin/institutions/resolve", methods=["POST"])
+def api_admin_institutions_resolve():
+    """Approves an unverified institution or merges it into a canonical institution_id."""
+    user = require_role("admin")
+    if not user:
+        return jsonify({"status": "error", "message": "Unauthorized"}), 401
+    data = request.get_json(force=True) or {}
+    try:
+        inst_id = int(data.get("id"))
+    except (TypeError, ValueError):
+        return jsonify({"status": "error", "message": "Invalid institution id"}), 400
+    action = (data.get("action") or "").strip().lower()
+    with get_db() as conn:
+        if action == "approve":
+            aff = clean_text(data.get("affiliated_university") or "")
+            ct = clean_text(data.get("city") or "")
+            conn.execute(
+                """UPDATE institutions
+                   SET is_verified=TRUE,
+                       affiliated_university=COALESCE(NULLIF(?,''), affiliated_university),
+                       city=COALESCE(NULLIF(?,''), city)
+                   WHERE id=?""",
+                (aff, ct, inst_id),
+            )
+            conn.commit()
+            return jsonify({"status": "success", "message": "Institution approved."})
+        elif action == "merge":
+            try:
+                target_id = int(data.get("target_id"))
+            except (TypeError, ValueError):
+                return jsonify({"status": "error", "message": "Valid target_id required for merge"}), 400
+            if target_id == inst_id:
+                return jsonify({"status": "error", "message": "Cannot merge into self"}), 400
+            target = conn.execute(
+                "SELECT id, name, affiliated_university, city FROM institutions WHERE id=? LIMIT 1",
+                (target_id,),
+            ).fetchone()
+            if not target:
+                return jsonify({"status": "error", "message": "Target institution not found"}), 404
+            for tbl in ("intern_accounts", "applications"):
+                conn.execute(
+                    f"""UPDATE {tbl}
+                        SET institution_id=?, college=?,
+                            affiliated_university=COALESCE(NULLIF(?,''), affiliated_university),
+                            city=COALESCE(NULLIF(?,''), city)
+                        WHERE institution_id=?""",
+                    (target["id"], target["name"], target["affiliated_university"] or "", target["city"] or "", inst_id),
+                )
+            conn.execute("DELETE FROM institutions WHERE id=?", (inst_id,))
+            conn.commit()
+            return jsonify({"status": "success", "message": f"Merged into {target['name']}."})
+        else:
+            return jsonify({"status": "error", "message": "Invalid action (use approve or merge)"}), 400
+
+
 @app.route("/signup/stage2", methods=["POST"])
 def signup_stage2():
     try:
@@ -12737,6 +13488,9 @@ def signup_stage2():
         data = request.get_json(force=True) or {}
         city    = clean_text(data.get("city"))
         college = clean_text(data.get("college"))
+        affiliated_university = clean_text(data.get("affiliated_university") or "")
+        raw_inst_id = data.get("institution_id")
+        is_other_inst = bool(data.get("is_other_institution"))
         course  = clean_text(data.get("course"))
         semester = clean_text(data.get("semester"))
         year    = clean_text(data.get("year_of_passing"))
@@ -12744,37 +13498,86 @@ def signup_stage2():
         # whichever post the intern later applies to (Track 2 board). Validate it
         # only when one is actually given.
         domain  = clean_text(data.get("domain"))
-        missing = [k for k, v in {"city": city, "college": college, "course": course,
-                                  "semester": semester, "year_of_passing": year}.items() if not v]
-        if missing:
-            return jsonify({"status": "error", "message": "Missing: " + ", ".join(missing)}), 400
-        if course not in VALID_COURSES:
-            return jsonify({"status": "error", "message": "Invalid course."}), 400
-        if semester not in VALID_SEMESTERS:
-            return jsonify({"status": "error", "message": "Invalid semester."}), 400
-        if year not in VALID_YEARS:
-            return jsonify({"status": "error", "message": "Invalid year."}), 400
-        if domain and domain not in VALID_DOMAINS:
-            return jsonify({"status": "error", "message": "Invalid domain."}), 400
+
+        inst_id = None
+        if raw_inst_id not in (None, "", 0, "0"):
+            try:
+                inst_id = int(raw_inst_id)
+            except (TypeError, ValueError):
+                inst_id = None
+
         with get_db() as conn:
+            if inst_id:
+                inst_row = conn.execute(
+                    "SELECT id, name, affiliated_university, city FROM institutions WHERE id=? LIMIT 1",
+                    (inst_id,),
+                ).fetchone()
+                if inst_row:
+                    college = inst_row["name"]
+                    if inst_row["affiliated_university"]:
+                        affiliated_university = inst_row["affiliated_university"]
+                    if inst_row["city"]:
+                        city = inst_row["city"]
+                else:
+                    inst_id = None
+
+            missing = [k for k, v in {"city": city, "college": college, "course": course,
+                                      "semester": semester, "year_of_passing": year}.items() if not v]
+            if missing:
+                return jsonify({"status": "error", "message": "Missing: " + ", ".join(missing)}), 400
+            if (college or "").strip().lower() in _JUNK_COLLEGES or len((college or "").strip()) < 3:
+                return jsonify({"status": "error", "message": "Please select or enter your actual College / University name."}), 400
+            if course not in VALID_COURSES:
+                return jsonify({"status": "error", "message": "Invalid course."}), 400
+            if semester not in VALID_SEMESTERS:
+                return jsonify({"status": "error", "message": "Invalid semester."}), 400
+            if year not in VALID_YEARS:
+                return jsonify({"status": "error", "message": "Invalid year."}), 400
+            if domain and domain not in VALID_DOMAINS:
+                return jsonify({"status": "error", "message": "Invalid domain."}), 400
+
+            # If user entered a custom/unlisted institution, match existing or queue as unverified
+            if not inst_id:
+                existing_inst = conn.execute(
+                    "SELECT id, name, affiliated_university, city FROM institutions WHERE LOWER(name)=LOWER(?) LIMIT 1",
+                    (college,),
+                ).fetchone()
+                if existing_inst:
+                    inst_id = existing_inst["id"]
+                    college = existing_inst["name"]
+                    if existing_inst["affiliated_university"] and not affiliated_university:
+                        affiliated_university = existing_inst["affiliated_university"]
+                    if existing_inst["city"] and not city:
+                        city = existing_inst["city"]
+                else:
+                    cur = conn.execute(
+                        """INSERT INTO institutions (name, aliases, affiliated_university, city, state, aishe_code, source, is_verified, created_at)
+                           VALUES (?, '[]', ?, ?, '', '', 'user_submitted', FALSE, ?)""",
+                        (college, affiliated_university, city, now_str()),
+                    )
+                    inst_id = getattr(cur, "lastrowid", None)
+                    if not inst_id:
+                        row_new = conn.execute("SELECT id FROM institutions WHERE LOWER(name)=LOWER(?) ORDER BY id DESC LIMIT 1", (college,)).fetchone()
+                        inst_id = row_new["id"] if row_new else None
+
             acct_row = conn.execute("SELECT signup_stage FROM intern_accounts WHERE LOWER(email)=LOWER(?) LIMIT 1", (email,)).fetchone()
             curr_stage = int(acct_row["signup_stage"]) if (acct_row and acct_row["signup_stage"] is not None) else 0
             new_stage = max(curr_stage, 2)
             conn.execute("""
-                UPDATE intern_accounts SET city=?,college=?,course=?,semester=?,year_of_passing=?,
+                UPDATE intern_accounts SET city=?,college=?,institution_id=?,affiliated_university=?,course=?,semester=?,year_of_passing=?,
                     domain=COALESCE(NULLIF(?,''), domain),
                     signup_stage=?,updated_at=? WHERE LOWER(email)=LOWER(?)
-            """, (city, college, course, semester, year, domain, new_stage, now_str(), email))
+            """, (city, college, inst_id, affiliated_university, course, semester, year, domain, new_stage, now_str(), email))
 
             # Phase 48: Sync applications table — update college, domain, and promote from 'Apply Pending' to 'Under Review'
             conn.execute("""
                 UPDATE applications
-                SET city=?, college=?, course=?, semester=?, year_of_passing=?,
+                SET city=?, college=?, institution_id=?, affiliated_university=?, course=?, semester=?, year_of_passing=?,
                     domain=COALESCE(NULLIF(?,''), domain),
                     status=CASE WHEN status IN (?, 'Draft', 'Incomplete Profile') THEN ? ELSE status END,
                     updated_at=?
                 WHERE LOWER(email)=LOWER(?)
-            """, (city, college, course, semester, year, domain, STATUS_APPLY_PENDING, STATUS_UNDER_REVIEW, now_str(), email))
+            """, (city, college, inst_id, affiliated_university, course, semester, year, domain, STATUS_APPLY_PENDING, STATUS_UNDER_REVIEW, now_str(), email))
             conn.commit()
 
         # Phase 48: If there is a stashed next_url from an acquisition lead, return it
@@ -12854,7 +13657,7 @@ def signup_stage3():
                 UPDATE intern_accounts SET application_id=?, domain=?,
                     linkedin_url=COALESCE(NULLIF(?,''),linkedin_url),
                     github_url=COALESCE(NULLIF(?,''),github_url),
-                    signup_stage=3,updated_at=? WHERE email=?
+                    signup_stage=2,updated_at=? WHERE email=?
             """, (application_id, domain, linkedin, github, now_str(), email))
             # Phase 14: Transactional Outbox Event
             if domain:
@@ -12989,7 +13792,7 @@ def intern_login():
         pending_next = _safe_portal_next(request.args.get("next") or session.pop("next", None) or data.get("next"))
         if pending_next:
             login_redirect = pending_next
-        elif int(user["signup_stage"] or 3) < 3:
+        elif not user["application_id"] and int(user["signup_stage"] or 3) < 3:
             session.pop("post_login_return_to", None)
             session.pop("post_login_next", None)
             session.pop("next", None)
@@ -16819,6 +17622,36 @@ def intern_me():
         sprint_ctx = _evaluate_intern_sprint_context(conn, acct["id"] if acct else None, acct_email, domain=norm_domain or "General") if flow_st and flow_st.get("stage_num") == 5 else None
         next_action = build_intern_next_action(flow_st, hours_logged=attendance_summary.get("hours", 0.0), sprint_ctx=sprint_ctx) if flow_st else None
 
+        # tenure expiration check for domain lock
+        tenure_expired = False
+        if safe_enr and safe_enr.get("joining_date"):
+            try:
+                j_dt = datetime.strptime(str(safe_enr["joining_date"])[:10], "%Y-%m-%d").date()
+                grace_end = j_dt + timedelta(days=65)  # 60-day tenure + 5-day grace
+                tenure_expired = date.today() > grace_end
+            except Exception:
+                pass
+        else:
+            try:
+                with get_db() as _c:
+                    _off = _c.execute(
+                        "SELECT batch_end_date FROM intern_offer_letters WHERE intern_id = ? OR LOWER(email) = LOWER(?) ORDER BY id DESC LIMIT 1",
+                        (acct["id"], acct["email"])
+                    ).fetchone()
+                    if _off and _off.get("batch_end_date"):
+                        _bed = str(_off.get("batch_end_date")).strip()
+                        _b_dt = None
+                        for _fmt in ("%Y-%m-%d", "%d %b %Y", "%Y-%m-%d %H:%M:%S", "%d/%m/%Y"):
+                            try:
+                                _b_dt = datetime.strptime(_bed[:11].strip(), _fmt).date()
+                                break
+                            except Exception:
+                                pass
+                        if _b_dt:
+                            tenure_expired = date.today() > (_b_dt + timedelta(days=5))
+            except Exception:
+                pass
+
         return jsonify({
             "status": overall_status,
             "attendance_status": attendance_status,
@@ -16840,6 +17673,7 @@ def intern_me():
                 "tutor_completion_pct": top_pct,
                 "learning_completion_pct": top_pct,
                 "signup_stage":     int(acct["signup_stage"] or 3),
+                "is_tenure_expired": tenure_expired,
                 "needs_academic_profile": needs_academic_profile,
             },
             "applications": safe_apps,
@@ -18774,18 +19608,43 @@ def api_razorpay_webhook():
 # ATTENDANCE
 # â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
-@app.route("/attendance/ping", methods=["POST"])
+@app.route("/attendance/ping", methods=["POST", "OPTIONS"])
 def attendance_ping():
     """
     Heartbeat endpoint called every 3 minutes from the dashboard.
-    Credits 3 minutes to the current Sunâ€“Sat week.
+    Credits 3 minutes to the current Sun–Sat week.
     Only credits if today >= enrollment joining_date.
     Returns updated weekly total so the frontend counter stays live.
     """
+    origin = request.headers.get("Origin")
+    cors_headers = {}
+    if origin in ("https://dbert.in", "https://www.dbert.in", "https://lms.dbert.in", "http://localhost:3000"):
+        cors_headers["Access-Control-Allow-Origin"] = origin
+        cors_headers["Access-Control-Allow-Credentials"] = "true"
+        cors_headers["Access-Control-Allow-Methods"] = "POST, OPTIONS"
+        cors_headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Session-Token, X-Requested-With"
+    elif origin:
+        cors_headers["Access-Control-Allow-Origin"] = "https://dbert.in"
+        cors_headers["Access-Control-Allow-Credentials"] = "true"
+        cors_headers["Access-Control-Allow-Methods"] = "POST, OPTIONS"
+        cors_headers["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-Session-Token, X-Requested-With"
+
+    if request.method == "OPTIONS":
+        resp = make_response("", 200)
+        for k, v in cors_headers.items():
+            resp.headers[k] = v
+        return resp
+
+    def _reply(data, code=200):
+        resp = make_response(jsonify(data), code)
+        for k, v in cors_headers.items():
+            resp.headers[k] = v
+        return resp
+
     try:
         user = require_role("intern")
         if not user:
-            return jsonify({"status": "error", "message": "Unauthorized"}), 401
+            return _reply({"status": "error", "message": "Unauthorized"}, 401)
 
         # Sliding session refresh: extend session on every active ping across any page
         try:
@@ -18806,26 +19665,26 @@ def attendance_ping():
                 "SELECT id FROM intern_accounts WHERE LOWER(email)=LOWER(?) AND is_active=1", (user["email"],)
             ).fetchone()
             if not acct:
-                return jsonify({"status": "error", "message": "Account not found"}), 404
+                return _reply({"status": "error", "message": "Account not found"}, 404)
 
             intern_id = acct["id"]
 
-            # Joining date guard â€” no attendance credits before joining date at 18:00
+            # Joining date guard — no attendance credits before joining date at 18:00
             enr = conn.execute(
                 "SELECT joining_date FROM enrollments WHERE LOWER(email)=LOWER(?) ORDER BY id DESC LIMIT 1",
                 (user["email"],)
             ).fetchone()
             if enr and not joining_unlocked(enr["joining_date"]):
-                return jsonify({"status": "success", "ok": True, "skipped": True,
-                                "reason": "before_joining_date"})
+                return _reply({"status": "success", "ok": True, "skipped": True,
+                               "reason": "before_joining_date"})
 
             # End-date guard — no attendance credits after joining_date + 60 days
             if enr and enr["joining_date"]:
                 try:
                     jd = datetime.strptime(enr["joining_date"], "%Y-%m-%d").date()
                     if date.today() > jd + timedelta(days=60):
-                        return jsonify({"status": "success", "ok": True, "skipped": True,
-                                        "reason": "internship_ended"})
+                        return _reply({"status": "success", "ok": True, "skipped": True,
+                                       "reason": "internship_ended"})
                 except ValueError:
                     pass
 
@@ -18854,7 +19713,7 @@ def attendance_ping():
                         elapsed = (datetime.now() - last_up).total_seconds()
                         if elapsed < 170:
                             curr_tot = existing["total_minutes"] or 0
-                            return jsonify({
+                            return _reply({
                                 "status": "success",
                                 "ok": True,
                                 "skipped": True,
@@ -18889,7 +19748,7 @@ def attendance_ping():
                     (intern_id, user["email"], ws, we, new_total, now_str())
                 )
                 conn.commit()
-                return jsonify({
+                return _reply({
                     "status": "success",
                     "ok": True,
                     "session_started": True,
@@ -18903,7 +19762,7 @@ def attendance_ping():
 
         hours   = new_total // 60
         minutes = new_total % 60
-        return jsonify({
+        return _reply({
             "status":        "success",
             "ok":            True,
             "total_minutes": new_total,
@@ -18914,7 +19773,7 @@ def attendance_ping():
         })
     except Exception as e:
         log_error("attendance-ping", e)
-        return jsonify({"status": "error", "message": "Error"}), 500
+        return _reply({"status": "error", "message": "Error"}, 500)
 
 
 @app.route("/intern/attendance")
@@ -24009,6 +24868,246 @@ def send_job_pre_vetted_elevate_email(name, to_email, job_title, company_name):
         send_email_async(to_email, subject, html_body, name=name, campaign="pre_vetted_job_elevation")
     except Exception as e:
         log_error("send_job_pre_vetted_elevate_email", e)
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# Milestone Phase 5: Profile & Domain Track APIs
+# ══════════════════════════════════════════════════════════════════════════════
+@app.route("/api/intern/profile/update", methods=["POST"])
+def api_intern_profile_update():
+    user = current_intern()
+    if not user:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    data = request.get_json(silent=True)
+    if data is None:
+        try:
+            data = request.get_json(force=True, silent=True)
+        except Exception:
+            data = None
+    data = data or {}
+
+    stage = user.get("signup_stage", 2)
+    try:
+        stage = int(stage)
+    except (ValueError, TypeError):
+        stage = 2
+
+    new_domain = data.get("domain")
+    current_domain = user.get("domain")
+
+    # Domain lock validation
+    if new_domain and new_domain != current_domain:
+        batch_end = user.get("batch_end_date")
+        if not batch_end:
+            try:
+                with get_db() as conn:
+                    off = conn.execute(
+                        "SELECT batch_end_date FROM intern_offer_letters WHERE intern_id = ? OR LOWER(email) = LOWER(?) ORDER BY id DESC LIMIT 1",
+                        (user.get("id"), user.get("email"))
+                    ).fetchone()
+                    if off and off.get("batch_end_date"):
+                        batch_end = off.get("batch_end_date")
+                    else:
+                        enr = conn.execute(
+                            "SELECT joining_date FROM enrollments WHERE intern_id = ? OR LOWER(email) = LOWER(?) ORDER BY id DESC LIMIT 1",
+                            (user.get("id"), user.get("email"))
+                        ).fetchone()
+                        if enr and enr.get("joining_date"):
+                            j_dt = datetime.strptime(str(enr.get("joining_date"))[:10], "%Y-%m-%d").date()
+                            batch_end = j_dt + timedelta(days=60)
+            except Exception as _be_err:
+                log_error("profile-update-batch-end", _be_err)
+
+        tenure_expired = False
+        if batch_end:
+            b_date = None
+            if isinstance(batch_end, datetime):
+                b_date = batch_end.date()
+            elif isinstance(batch_end, date):
+                b_date = batch_end
+            elif isinstance(batch_end, str):
+                for fmt in ("%Y-%m-%d", "%d %b %Y", "%Y-%m-%d %H:%M:%S", "%d/%m/%Y"):
+                    try:
+                        b_date = datetime.strptime(batch_end.strip()[:11].strip(), fmt).date()
+                        break
+                    except Exception:
+                        pass
+                if not b_date:
+                    try:
+                        b_date = datetime.strptime(batch_end.strip()[:10], "%Y-%m-%d").date()
+                    except Exception:
+                        pass
+            if b_date:
+                grace_end = b_date + timedelta(days=5)
+                tenure_expired = date.today() > grace_end
+
+        if stage >= 5 and not tenure_expired:
+            return jsonify({"error": "Track is locked during active cohort tenure."}), 403
+
+    domain_to_set = new_domain if new_domain else current_domain
+    name = clean_text(data.get("name")) if data.get("name") is not None else user.get("name")
+    phone = clean_text(data.get("phone")) if data.get("phone") is not None else user.get("phone")
+    college = clean_text(data.get("college")) if data.get("college") is not None else user.get("college")
+    city = clean_text(data.get("city")) if data.get("city") is not None else user.get("city")
+    course = clean_text(data.get("course")) if data.get("course") is not None else user.get("course")
+    semester = clean_text(data.get("semester")) if data.get("semester") is not None else user.get("semester")
+    year = clean_text(data.get("year_of_passing")) if data.get("year_of_passing") is not None else user.get("year_of_passing")
+
+    try:
+        with get_db() as conn:
+            if getattr(conn, "dialect", "sqlite") == "postgres" or os.environ.get("DATABASE_URL"):
+                try:
+                    conn.execute("SET search_path TO dbert_internship, public;")
+                except Exception:
+                    pass
+
+            # 1. Update intern_accounts
+            conn.execute(
+                """UPDATE intern_accounts 
+                   SET name = ?, phone = ?, college = ?, domain = ?, 
+                       city = COALESCE(?, city), course = COALESCE(?, course), 
+                       semester = COALESCE(?, semester), year_of_passing = COALESCE(?, year_of_passing),
+                       updated_at = ?
+                   WHERE id = ?""",
+                (name, phone, college, domain_to_set, city, course, semester, year, now_str(), user["id"])
+            )
+
+            # 2. Update applications (using portable query, avoiding duplicate error)
+            if new_domain and new_domain != current_domain:
+                existing_app = conn.execute(
+                    "SELECT id FROM applications WHERE LOWER(email) = LOWER(?) AND domain = ? LIMIT 1",
+                    (user["email"], domain_to_set)
+                ).fetchone()
+                if existing_app:
+                    conn.execute(
+                        "UPDATE applications SET updated_at = ? WHERE id = ?",
+                        (now_str(), existing_app["id"])
+                    )
+                else:
+                    conn.execute(
+                        """UPDATE applications 
+                           SET domain = ?, updated_at = ?
+                           WHERE id = (
+                               SELECT id FROM applications 
+                               WHERE LOWER(email) = LOWER(?) 
+                               ORDER BY id DESC LIMIT 1
+                           )""",
+                        (domain_to_set, now_str(), user["email"])
+                    )
+
+            # 3. If in Stage 3 and domain changed, update offer letter
+            if new_domain and new_domain != current_domain and stage == 3:
+                conn.execute(
+                    """UPDATE intern_offer_letters 
+                       SET domain = ?, updated_at = ?
+                       WHERE intern_id = ? OR LOWER(email) = LOWER(?)""",
+                    (domain_to_set, now_str(), user.get("id"), user["email"])
+                )
+
+            # 4. Sync enrollments if exists
+            conn.execute(
+                """UPDATE enrollments 
+                   SET domain = ?, updated_at = ?
+                   WHERE intern_id = ? OR LOWER(email) = LOWER(?)""",
+                    (domain_to_set, now_str(), user.get("id"), user["email"])
+            )
+
+            conn.commit()
+
+        return jsonify({"status": "ok"}), 200
+    except Exception as e:
+        log_error("api_intern_profile_update", e)
+        return jsonify({"error": "Failed to update profile."}), 500
+
+
+@app.route("/api/account/change-password", methods=["POST"])
+def api_account_change_password():
+    user = current_intern()
+    if not user:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    data = request.get_json(silent=True)
+    if data is None:
+        try:
+            data = request.get_json(force=True, silent=True)
+        except Exception:
+            data = None
+    data = data or {}
+
+    current_pw = data.get("current_password", "")
+    new_pw = data.get("new_password", "")
+
+    if not new_pw or len(new_pw) < 8:
+        return jsonify({"error": "Password must be at least 8 characters."}), 400
+
+    try:
+        with get_db() as conn:
+            if getattr(conn, "dialect", "sqlite") == "postgres" or os.environ.get("DATABASE_URL"):
+                try:
+                    conn.execute("SET search_path TO dbert_internship, public;")
+                except Exception:
+                    pass
+
+            row = conn.execute("SELECT password_hash FROM intern_accounts WHERE id = ?", (user["id"],)).fetchone()
+            if not row:
+                return jsonify({"error": "Intern account not found."}), 404
+
+            stored_hash = row["password_hash"]
+            if not verify_password(stored_hash, current_pw):
+                return jsonify({"error": "Current password is incorrect."}), 400
+
+            import bcrypt
+            new_hash = bcrypt.hashpw(new_pw.encode("utf-8"), bcrypt.gensalt()).decode("utf-8")
+
+            conn.execute(
+                "UPDATE intern_accounts SET password_hash = ?, password_set = 1, updated_at = ? WHERE id = ?",
+                (new_hash, now_str(), user["id"])
+            )
+            conn.commit()
+
+        return jsonify({"status": "ok"}), 200
+    except Exception as e:
+        log_error("api_account_change_password", e)
+        return jsonify({"error": "Failed to change password."}), 500
+
+
+@app.route("/api/admin/whatsapp/candidates")
+def api_admin_whatsapp_candidates():
+    """Phase 7: LMS REST API Bridge for Local Multi-Account WhatsApp Agent Dashboard."""
+    token = request.headers.get("Authorization", "").replace("Bearer ", "").strip()
+    if token != os.environ.get("ADMIN_API_TOKEN", "dbert_sovereign_secret_2026"):
+        return jsonify({"error": "Unauthorized"}), 401
+
+    filter_type = request.args.get("filter", "selected_125")
+    limit = int(request.args.get("limit", 125))
+
+    with get_db() as conn:
+        if filter_type == "selected_125":
+            rows = conn.execute("""
+                SELECT id, name, email, phone, domain, college, signup_stage
+                FROM intern_accounts
+                WHERE signup_stage = 3 AND is_active = 1
+                ORDER BY id DESC LIMIT ?
+            """, (limit,)).fetchall()
+        elif filter_type == "missing_upi":
+            rows = conn.execute("""
+                SELECT id, name, email, phone, domain, college, signup_stage
+                FROM intern_accounts
+                WHERE signup_stage = 4 AND is_active = 1
+                ORDER BY id DESC LIMIT ?
+            """, (limit,)).fetchall()
+        else:
+            rows = conn.execute("""
+                SELECT id, name, email, phone, domain, college, signup_stage
+                FROM intern_accounts
+                WHERE is_active = 1
+                ORDER BY id DESC LIMIT ?
+            """, (limit,)).fetchall()
+
+    candidates = [row_to_dict(r) for r in rows]
+    return jsonify({"status": "success", "count": len(candidates), "candidates": candidates})
+
 
 
 from routes import register_blueprints

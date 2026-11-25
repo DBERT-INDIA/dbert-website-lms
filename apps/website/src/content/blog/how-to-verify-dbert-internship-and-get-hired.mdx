@@ -1,0 +1,70 @@
+---
+title: "How to Enroll in DBERT ₹1,999, Verify Your Certificate & Get Hired via the Directory"
+desc: "Step-by-step how-to guide for completing your DBERT ₹1,999 incubation enrollment, verifying any certificate ID on dbert.in/verify, and getting discovered by recruiters in the Pre-Vetted Directory."
+readTime: "7 min read"
+date: "2026-11-25"
+author: "DBERT Engineering Staff"
+authorRole: "Verification & Hiring Ops"
+authorBio: "Maintaining DBERT's cryptographic certificate registry, UTR ledger, and employer hiring directory."
+tags: ["How-To Guide", "Certificate Verification", "Pre-Vetted Directory", "DBERT 1999"]
+faqs:
+  - question: "How do I verify if a DBERT internship certificate is authentic?"
+    answer: "Visit dbert.in/verify and enter the candidate's Certificate ID (for example, CERT-DBERT-2026-DA-057) or open their direct dossier URL at dbert.in/verify/[certId]. The system displays their verification tier, domain track, evaluation rubric, and credential status."
+  - question: "How do I complete the ₹1,999 enrollment if I already paid ₹499?"
+    answer: "Go to dbert.in/enroll/1999, enter your Certificate ID or registered email to autofill your profile, pay the remaining ₹1,500 balance via UPI QR or 1-tap UPI app, and submit your 12-digit UTR number for instant ledger recording."
+  - question: "What is the difference between Tab 1 and Tab 2 in the DBERT Directory?"
+    answer: "Tab 1 (Pre-Vetted Engineers) lists verified candidates with completed evaluations and unlocked credentials ready for immediate hiring. Tab 2 (Incubation Fellows) lists provisional candidates currently completing their active engineering sprints."
+  - question: "How do recruiters contact DBERT fellows without agency fees?"
+    answer: "Recruiters browse dbert.in/verify/directory, filter by domain or evaluation score (80+, 85+, 90+), inspect the candidate's proof dossier, and click Connect on LMS to message candidates directly with zero recruiter markup."
+---
+
+Whether you are a student completing your cohort onboarding or an engineering recruiter validating a candidate's resume, DBERT's verification and enrollment workflows are built to be transparent and self-service.
+
+This guide answers the four most common **"How-To"** questions we receive every week.
+
+## 1. How to Complete Your ₹1,999 Enrollment (Including ₹499 Deposit Credit)
+
+If you are joining the 2-month technical incubation or completing your remaining balance after paying the ₹499 caution deposit:
+
+1. **Open the Enrollment Portal:** Navigate to [dbert.in/enroll/1999](/enroll/1999).
+2. **Autofill Your Profile:** Enter your Certificate ID or registered email in the lookup bar. The `/api/enroll/lookup` endpoint automatically populates your name, phone, college, and domain track.
+3. **Pay the Exact Balance:**
+   - If you already paid the **₹499 caution deposit**, your net payable balance is **₹1,500** (`₹1,999 − ₹499`).
+   - Use the embedded UPI QR code or 1-tap UPI buttons (Google Pay, PhonePe, Paytm).
+4. **Submit Your 12-Digit UTR:** Enter your 12-digit UPI Transaction Reference (UTR) in the form. The portal assigns a unique submission ID (e.g., `DBERT-ENR-XXXXXX-XXXX`) and prevents duplicate submissions.
+
+For a full breakdown of what the fee covers, read [Is the ₹1,999 DBERT Incubation Worth It?](/blog/dbert-1999-program-non-refundable-value-breakdown).
+
+## 2. How to Verify a DBERT Certificate or Dossier
+
+Any employer, university placement cell, or candidate can verify credentials in under 10 seconds:
+
+1. Visit [dbert.in/verify](/verify).
+2. Enter the **Certificate ID** (e.g., `CERT-DBERT-2026-DA-057`) or navigate directly to `https://dbert.in/verify/<CERT_ID>`.
+3. Inspect the verification output:
+   - **Verified Tier:** Displays the candidate's domain track, evaluation rubric, Turnitin originality status, and official 3-document credential packet.
+   - **Provisional / Locked Tier:** Indicates the candidate is still in sprints or pending final verification/balance completion, with a direct link to `/enroll/1999`.
+
+> **Domain Note:** `dbert.in` is the only active official platform (`dbert.online` permanently redirects to `dbert.in`). Always verify credentials on `https://dbert.in/verify`.
+
+## 3. How to Get Ranked in the Pre-Vetted Engineers Directory
+
+The [Pre-Vetted Engineers Directory](/verify/directory) is not a static alphabetical list—it ranks candidates dynamically by **verified status** and **evaluation score** (98, 97, 96...):
+
+- **Tab 1 — Pre-Vetted Engineers (Verified · Ready to Hire):** Surfaced first to recruiters. Includes fellows who have completed their sprints, passed senior PR code reviews, and unlocked verified credentials.
+- **Tab 2 — Incubation Fellows (Provisional · In Sprints):** Candidates actively progressing through their 8-week production sprints.
+
+To climb to the top of Tab 1:
+- Ship clean, well-tested pull requests during your sprint weeks.
+- Address all mentor code review comments thoroughly.
+- Keep your Turnitin originality score under 3.0% on documentation and case studies.
+
+## 4. How Recruiters Hire Directly Without Markup
+
+Recruiters visiting `/verify/directory` can filter by domain stack chips (Next.js, PostgreSQL, PyTorch, LangChain, Playwright, Docker) and score tiers (**90+ Top Tier Distinction**, **85+ High Merit**, **80+ Proficient**), inspect the candidate's **Proof Dossier**, and click **Connect on LMS** to engage candidates directly with zero recruiter commission.
+
+### Continue Reading
+- [DBERT Unpaid Internship vs. Paid Corporate Internship vs. 2 Months Self-Learning](/blog/dbert-unpaid-internship-vs-paid-corporate-vs-self-learning)
+- [Inside DBERT’s Real Engineering Sprints: Hybrid RAG, Multi-Tenant SaaS, Security, QA, OCR & Bots](/blog/inside-dbert-engineering-sprints-rag-saas-security-qa-ocr-bots)
+- [Explore Live Internship Tracks](/internships) & [135+ Verified Fellows Showcase](/fellows/verified)
+- Browse remote online courses: [Full Stack](/learners/courses/full-stack-development), [AI Agents](/learners/courses/ai-agent-development), [Data Analytics](/learners/courses/data-analytics), [DevOps & Cloud](/learners/courses/devops-cloud), [Cybersecurity](/learners/courses/cybersecurity), [UI/UX](/learners/courses/ui-ux-design), and [Mobile App Development](/learners/courses/mobile-app-development).

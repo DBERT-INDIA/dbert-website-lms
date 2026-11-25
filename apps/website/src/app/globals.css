@@ -1820,6 +1820,16 @@ code { font-family: var(--font-m); font-size: .9em; }
   box-shadow: 0 9px 24px rgba(31, 52, 69, 0.09);
 }
 
+.card.card-static:hover,
+.card.card-static:active,
+.card.card-static:focus-within,
+.bento-card.card-static:hover {
+  background: var(--surface-card);
+  border-color: var(--border-subtle);
+  transform: none;
+  box-shadow: 0 5px 18px rgba(31, 52, 69, 0.055);
+}
+
 .bento-card:hover { transform: translateY(-2px); }
 
 .timeline-stepper::before {
@@ -1866,7 +1876,7 @@ code { font-family: var(--font-m); font-size: .9em; }
   border-color: rgba(189, 105, 72, .25);
 }
 
-::selection { background: rgba(189, 105, 72, .24); color: var(--text-primary); }
+::selection { background: rgba(56, 189, 248, 0.28); color: inherit; }
 
 .doclabel,
 .doclabel .rev,

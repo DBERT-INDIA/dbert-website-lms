@@ -159,6 +159,7 @@
       <div class="nav-item" data-tab="security" data-act-click="switchTab" data-arg-click='["security"]'><i class="fas fa-shield-halved"></i> Security</div>
       <div class="nav-item" data-tab="addapp" data-act-click="switchTab" data-arg-click='["addapp"]'><i class="fas fa-plus-circle"></i> Add Application</div>
       <div class="nav-item" data-tab="upload" data-act-click="switchTab" data-arg-click='["upload"]'><i class="fas fa-upload"></i> CSV Import</div>
+      <div class="nav-item" data-tab="institutions" data-act-click="switchTab" data-arg-click='["institutions"]'><i class="fas fa-university"></i> Institutions &amp; Cities</div>
       <!-- Track 2 §8: link the separate admin pages (§1 companies, Track 1 §6 ledger) — real anchors, not tabs. -->
       <a class="nav-item" href="/admin/job-applications" style="text-decoration:none;"><i class="fas fa-briefcase"></i> Job Applications</a>
       <a class="nav-item" href="/admin/post-hire-deposits" style="text-decoration:none;"><i class="fas fa-money-check-dollar"></i> Job-Hire Deposits</a>
@@ -167,6 +168,7 @@
       <a class="nav-item" href="/admin/cohorts" style="text-decoration:none;"><i class="fas fa-users-rectangle"></i> Cohorts</a>
       <a class="nav-item" href="/admin/ledger" style="text-decoration:none;"><i class="fas fa-coins"></i> Coin Ledger</a>
       <a class="nav-item" href="/admin/stipend-funnel" style="text-decoration:none; background:rgba(16,185,129,0.1); color:#10b981;"><i class="fas fa-funnel-dollar"></i> Stipend &amp; Growth Funnel</a>
+      <a class="nav-item" href="/admin/stipend-reviews" style="text-decoration:none; background:rgba(37,99,235,0.12); color:#2563eb; font-weight:700;"><i class="fas fa-clipboard-check"></i> ₹5,000 Stipend Reviews</a>
       <a class="nav-item" href="/admin/analytics" style="text-decoration:none; background:rgba(56,189,248,0.15); color:#38bdf8; font-weight:700;"><i class="fas fa-chart-line"></i> Traffic &amp; SEO Intelligence</a>
       <a class="nav-item" href="/admin/sourcing-dashboard" style="text-decoration:none; background:#1a73e815; color:#1a73e8;"><i class="fas fa-chart-pie"></i> Sourcing Analytics</a>
     </nav>
@@ -624,6 +626,35 @@
         </div>
       </div>
     </div>
+
+    <div class="section-panel" id="panel-institutions">
+      <div class="glass-card" style="margin-bottom:18px;">
+        <h3 style="margin-bottom:12px;"><i class="fas fa-filter" style="margin-right:6px;"></i>Segregate Interns by Institution, University &amp; City</h3>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:12px;">
+          <input type="text" id="instFilterCollege" class="search-input" placeholder="Filter by Institution..." style="width:100%;padding:8px 12px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:#fff;"/>
+          <input type="text" id="instFilterUniv" class="search-input" placeholder="Filter by Affiliated University..." style="width:100%;padding:8px 12px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:#fff;"/>
+          <input type="text" id="instFilterCity" class="search-input" placeholder="Filter by City..." style="width:100%;padding:8px 12px;border-radius:8px;border:1px solid var(--border);background:rgba(255,255,255,.04);color:#fff;"/>
+          <button class="btn-sm gold" onclick="loadInstitutionsTab()"><i class="fas fa-search"></i> Apply Filters</button>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-bottom:16px;" id="instSummaryCards"></div>
+        <div style="overflow-x:auto;">
+          <table class="data-table">
+            <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Institution</th><th>Affiliated University</th><th>City</th><th>Status</th></tr></thead>
+            <tbody id="instInternsBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="glass-card">
+        <h3 style="margin-bottom:10px;"><i class="fas fa-clock" style="margin-right:6px;"></i>Pending Unverified Institutions ("Other" Submissions)</h3>
+        <div style="overflow-x:auto;">
+          <table class="data-table">
+            <thead><tr><th>ID</th><th>Submitted Name</th><th>Affiliated University</th><th>City</th><th>Interns</th><th>Actions</th></tr></thead>
+            <tbody id="instPendingBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </main>
 
   <!-- ENROLLMENT REVIEW MODAL -->
@@ -911,6 +942,7 @@
     security:     {title:'Security', sub:'Recent blocked / abusive requests', stats:false},
     addapp:       {title:'Add Application', sub:'Manually add an application', stats:false},
     upload:       {title:'CSV Import / Export', sub:'Bulk import and data export', stats:false},
+    institutions: {title:'Institutions & Cities', sub:'Segregate interns & verify unlisted institutions', stats:false},
   };
   const TAB_LOADERS = {
     enrollments: ()=>loadEnrollments(),
@@ -923,7 +955,47 @@
     spotlights: ()=>loadSpotlights(),
     security: ()=>loadSecurity(),
     addapp: ()=>{}, upload: ()=>{},
+    institutions: ()=>loadInstitutionsTab(),
   };
+
+  async function loadInstitutionsTab(){
+    const c = encodeURIComponent((document.getElementById('instFilterCollege')||{}).value||'');
+    const u = encodeURIComponent((document.getElementById('instFilterUniv')||{}).value||'');
+    const ct = encodeURIComponent((document.getElementById('instFilterCity')||{}).value||'');
+    try{
+      const [sumRes, pendRes] = await Promise.all([
+        apiFetch(`/api/admin/institutions/summary?college=${c}&university=${u}&city=${ct}`),
+        apiFetch('/api/admin/institutions/pending')
+      ]);
+      if(sumRes && sumRes.status==='success'){
+        const renderCard = (title, items) => `<div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:10px;padding:12px;"><div style="font-weight:700;font-size:12px;color:#D49A37;margin-bottom:8px;">${title}</div>${(items||[]).slice(0,8).map(x=>`<div style="display:flex;justify-content:space-between;font-size:12px;padding:3px 0;border-bottom:1px solid rgba(255,255,255,.04);"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:78%;">${esc(x.label)}</span><strong>${x.cnt}</strong></div>`).join('')}</div>`;
+        document.getElementById('instSummaryCards').innerHTML =
+          renderCard('Top Institutions', sumRes.top_colleges) +
+          renderCard('Top Affiliated Universities', sumRes.top_universities) +
+          renderCard('Top Cities', sumRes.top_cities);
+        document.getElementById('instInternsBody').innerHTML = (sumRes.interns||[]).map(r=>
+          `<tr><td>${r.id}</td><td>${esc(r.name)}</td><td>${esc(r.email)}</td><td>${esc(r.college||'-')}</td><td>${esc(r.affiliated_university||'-')}</td><td>${esc(r.city||'-')}</td><td>${esc(r.account_status||'-')}</td></tr>`
+        ).join('') || '<tr><td colspan="7" style="text-align:center;color:var(--tx-muted);">No matching interns</td></tr>';
+      }
+      if(pendRes && pendRes.status==='success'){
+        document.getElementById('instPendingBody').innerHTML = (pendRes.pending||[]).map(p=>
+          `<tr><td>${p.id}</td><td>${esc(p.name)}</td><td>${esc(p.affiliated_university||'-')}</td><td>${esc(p.city||'-')}</td><td>${p.intern_count}</td><td style="display:flex;gap:6px;"><button class="btn-sm gold" onclick="resolveInst(${p.id},'approve')">Approve</button><button class="btn-sm ghost" onclick="mergeInst(${p.id})">Merge ID</button></td></tr>`
+        ).join('') || '<tr><td colspan="6" style="text-align:center;color:var(--tx-muted);">No pending unverified institutions</td></tr>';
+      }
+    }catch(e){}
+  }
+  async function resolveInst(id, action){
+    const res = await apiFetch('/api/admin/institutions/resolve', 'POST', {id, action});
+    if(res && res.status==='success'){ showToast(res.message||'Done','success'); loadInstitutionsTab(); }
+    else showToast((res&&res.message)||'Failed','error');
+  }
+  async function mergeInst(id){
+    const target = prompt('Enter canonical Institution ID to merge #'+id+' into:');
+    if(!target) return;
+    const res = await apiFetch('/api/admin/institutions/resolve', 'POST', {id, action:'merge', target_id: parseInt(target,10)});
+    if(res && res.status==='success'){ showToast(res.message||'Merged','success'); loadInstitutionsTab(); }
+    else showToast((res&&res.message)||'Merge failed','error');
+  }
 
   function toggleAdminSidebar(){
     const sb = document.getElementById('adminSidebar');

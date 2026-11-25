@@ -1,0 +1,79 @@
+---
+title: "How to Build Hybrid RAG, Multi-Tenant SaaS & OWASP Auth in a 2-Month Sprint"
+desc: "A practical engineering how-to guide covering Hybrid RAG retrieval pipelines, multi-tenant SaaS PostgreSQL isolation, and JWT/OAuth2/OWASP security patterns used in DBERT production sprints."
+readTime: "10 min read"
+date: "2026-11-25"
+author: "DBERT AI Research Staff"
+authorRole: "AI & Backend Systems Lead"
+authorBio: "Architecting multi-tenant SaaS platforms, hybrid vector retrieval engines, and zero-trust auth layers at DBERT Labs."
+tags: ["How-To Guide", "Hybrid RAG", "Multi-Tenant SaaS", "OAuth2", "OWASP"]
+faqs:
+  - question: "Why use Hybrid RAG instead of pure vector similarity search?"
+    answer: "Pure vector search struggles with exact part numbers, error codes, acronyms, and proper nouns. Hybrid RAG combines BM25 sparse keyword search with dense vector embeddings (via Reciprocal Rank Fusion) and cross-encoder reranking to significantly improve retrieval precision."
+  - question: "What is the safest way to isolate tenants in a multi-tenant SaaS database?"
+    answer: "Enforce tenant_id scoping at both the API middleware layer and the database layer using PostgreSQL Row-Level Security (RLS) policies, ensuring a bug in an application query cannot leak another tenant's data."
+  - question: "Which OWASP checks do DBERT mentors look for in authentication PRs?"
+    answer: "Mentors verify short-lived JWTs with secure refresh token rotation, OAuth2 PKCE state validation, strict parameterized SQL queries, rate limiting on auth endpoints, and zero hardcoded secrets."
+---
+
+One of the clearest ways to separate a real engineering internship from a passive tutorial is to look at the **architectural patterns** you are required to implement. In DBERT's [AI Agent & LLM](/internships/ai-agent-development) and [Full-Stack](/internships/full-stack-development) sprints, fellows build three foundational production patterns: **Hybrid RAG**, **Multi-Tenant SaaS**, and **OWASP-Hardened Authentication**.
+
+Here is the practical engineering blueprint for implementing all three cleanly.
+
+## 1. How to Build a Hybrid RAG Retrieval Pipeline
+
+Basic RAG tutorials embed a PDF into a vector store and call `top_k=4`. In production, that fails on exact identifiers (like `CERT-DBERT-2026-DA-057`, error codes, or Indian statutory clauses).
+
+### The 3-Stage Hybrid Retrieval Flow
+1. **Sparse Search (BM25 / Postgres `tsvector`):** Captures exact keyword and ID matches.
+2. **Dense Vector Search (`pgvector` / Qdrant):** Captures semantic intent and paraphrased queries.
+3. **Reciprocal Rank Fusion (RRF) + Reranking:** Merges both candidate lists using:
+
+```python
+def reciprocal_rank_fusion(bm25_ids: list[str], vector_ids: list[str], k: int = 60) -> list[str]:
+    scores: dict[str, float] = {}
+    for rank, doc_id in enumerate(bm25_ids):
+        scores[doc_id] = scores.get(doc_id, 0.0) + 1.0 / (k + rank + 1)
+    for rank, doc_id in enumerate(vector_ids):
+        scores[doc_id] = scores.get(doc_id, 0.0) + 1.0 / (k + rank + 1)
+    return [doc_id for doc_id, _ in sorted(scores.items(), key=lambda x: x[1], reverse=True)]
+```
+
+Pair this with a cross-encoder reranker on the top 15 fused chunks before passing the top 4–5 chunks to your LLM context window.
+
+## 2. How to Architect Multi-Tenant SaaS APIs Safely
+
+In multi-tenant SaaS, a single missed `WHERE tenant_id = $1` clause causes a cross-customer data breach.
+
+- **Extract `tenant_id` from verified JWT/session context**, never from an untrusted request body or query parameter.
+- **Enable PostgreSQL Row-Level Security (RLS)** on shared tables so the database engine itself enforces tenant isolation:
+
+```sql
+ALTER TABLE project_documents ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY tenant_isolation_policy ON project_documents
+  USING (tenant_id = current_setting('app.current_tenant_id')::uuid);
+```
+
+- **Index composite keys `(tenant_id, created_at DESC)`** so tenant dashboards remain fast under concurrent load.
+
+## 3. How to Harden JWT, OAuth2 & OWASP Security
+
+Every authentication PR reviewed by DBERT mentors is audited against a strict security checklist:
+
+- **JWT Hygiene:** Keep access tokens short-lived (15 minutes), store refresh tokens in `HttpOnly`, `Secure`, `SameSite=Lax` cookies, and implement token family revocation on reuse detection.
+- **OAuth2 PKCE:** Always validate the cryptographic `state` parameter to prevent login CSRF, and use PKCE (`code_verifier` / `code_challenge`) for public or SPA clients.
+- **OWASP Top 10 Guardrails:**
+  - **Broken Object-Level Authorization (BOLA):** Verify resource ownership on every `GET / PATCH / DELETE` route.
+  - **Rate Limiting:** Apply sliding-window rate limits (e.g., Redis) on `/login`, `/otp`, and `/api/enroll/*` endpoints.
+  - **Input Validation:** Enforce strict Zod or Pydantic schemas at the API boundary.
+
+## Want to Ship These Patterns in a Reviewed Production Repo?
+
+If you want to implement these exact architectures with 1:1 senior mentor code reviews and earn a verifiable dossier, explore the [DBERT Applied Fellowship](/learners/fellowship) or complete your cohort seat on [/enroll/1999](/enroll/1999).
+
+### Continue Reading
+- [Inside DBERT’s Real Engineering Sprints: Hybrid RAG, Multi-Tenant SaaS, Security, QA, OCR & Bots](/blog/inside-dbert-engineering-sprints-rag-saas-security-qa-ocr-bots)
+- [How to Automate QA (PyTest, Playwright), OCR & Bot APIs in Production](/blog/how-to-automate-qa-ocr-and-bots-production-guide)
+- [Browse Verified Engineers in `/verify/directory`](/verify/directory) & [135+ Verified Fellows](/fellows/verified)
+- Enroll in remote tracks: [AI Agent Development Course](/learners/courses/ai-agent-development), [Full Stack Development Course](/learners/courses/full-stack-development), [Cybersecurity Course](/learners/courses/cybersecurity), or [Remote AI Agent Internships](/internships/ai-agent-development/remote).

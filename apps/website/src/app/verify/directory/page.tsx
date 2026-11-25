@@ -6,7 +6,7 @@ import directoryData from '@/data/directory_candidates.json';
 import { ArrowRight, ShieldCheck, UserCheck, CheckCircle2, HelpCircle } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Pre-Vetted Engineers Directory — Hire Proven AI & Tech Talent | DBERT',
+  title: 'Pre-Vetted Engineers & Candidate Directory',
   description:
     'Search the DBERT candidate directory for pre-vetted AI, Full Stack & Data engineers with verified Turnitin rubrics and code dossiers. Connect on LMS.',
   keywords: [
@@ -56,7 +56,9 @@ const recruiterFaqs = [
 ];
 
 export default function DirectoryPage() {
-  const candidates = directoryData as CandidateDirectoryItem[];
+  const verifiedCandidates = (directoryData as CandidateDirectoryItem[])
+    .filter((c) => !c.isProvisional && (c.status?.toUpperCase() === 'VERIFIED' || c.verified === true))
+    .sort((a, b) => (b.score || 0) - (a.score || 0) || a.holderName.localeCompare(b.holderName) || a.certId.localeCompare(b.certId));
 
   // 1. ItemList Schema for Candidate Dossiers
   const itemListSchema = {
@@ -65,8 +67,8 @@ export default function DirectoryPage() {
     name: 'DBERT Pre-Vetted Software & AI Engineers Directory',
     description: 'Official registry of pre-screened technical engineers evaluated on live production pull requests, system design, and 100-point academic rubrics.',
     url: 'https://dbert.in/verify/directory',
-    numberOfItems: candidates.length,
-    itemListElement: candidates.slice(0, 35).map((cand, idx) => ({
+    numberOfItems: verifiedCandidates.length,
+    itemListElement: verifiedCandidates.slice(0, 35).map((cand, idx) => ({
       '@type': 'ListItem',
       position: idx + 1,
       item: {
@@ -136,7 +138,7 @@ export default function DirectoryPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
 
-      <DirectoryClient candidates={candidates} />
+      <DirectoryClient candidates={verifiedCandidates} />
 
       {/* Recruiter Hiring & FAQ Add-On Section */}
       <section className="container pad-block" style={{ borderTop: '1px solid var(--border-subtle, #1E293B)', marginTop: '40px' }}>
