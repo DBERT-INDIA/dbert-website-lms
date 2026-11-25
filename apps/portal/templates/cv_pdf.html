@@ -39,6 +39,7 @@
           </div>{% endfor %}
         {% endif %}
         {% if projects %}<h2>Projects</h2><ul>{% for p in projects %}<li>{{ p }}</li>{% endfor %}</ul>{% endif %}
+        {% if verified_projects %}<h2>Verified projects</h2><ul>{% for p in verified_projects %}<li><a href="{{ p.github_repo_url }}">{{ p.project_title }}</a></li>{% endfor %}</ul>{% endif %}
       </td>
     </tr>
   </table>

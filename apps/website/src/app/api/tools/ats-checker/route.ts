@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server';
 
-const LMS_BASE_URL = process.env.NODE_ENV === 'production' && process.env.LMS_INTERNAL_URL
-  ? process.env.LMS_INTERNAL_URL
-  : 'https://lms.dbert.in';
+const LMS_BASE_URL = (process.env.LMS_INTERNAL_URL
+  || (process.env.NODE_ENV === 'production' ? 'https://lms.dbert.in' : 'http://127.0.0.1:5000')).replace(/\/$/, '');
 
 export async function POST(request: Request) {
   try {

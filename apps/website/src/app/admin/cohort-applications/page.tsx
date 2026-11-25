@@ -2,7 +2,7 @@ import React from 'react';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import jwt from 'jsonwebtoken';
-import db from '@/lib/db';
+import { getDb } from '@/lib/db';
 import { getJwtSecret } from '@/lib/env';
 import s from '../admin.module.css';
 import CohortApplicationsClient from './CohortApplicationsClient';
@@ -27,7 +27,7 @@ export default async function CohortApplicationsPage() {
     redirect('/admin/login');
   }
 
-  const applications = await db.cohortApplication.findMany({
+  const applications = await getDb().cohortApplication.findMany({
     where: { cohortSlug: 'aivara' },
     orderBy: { createdAt: 'desc' },
   });

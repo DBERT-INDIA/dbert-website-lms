@@ -28,8 +28,9 @@ def intern_my_applications():
         intern_email = (intern.get("email") or "").strip().lower()
         with get_db() as conn:
             rows = conn.execute(
-                "SELECT pa.id, pa.status, pa.comment, pa.created_at, pa.decision_note, "
-                "pa.needed_certs_json, p.id AS post_id, p.title AS post_title, "
+                "SELECT pa.id, pa.status, pa.comment, pa.created_at, pa.decided_at, pa.decision_note, "
+                "pa.needed_certs_json, pa.employer_interview_at, pa.employer_interview_link, pa.employer_interview_note, "
+                "p.id AS post_id, p.title AS post_title, "
                 "p.post_type, p.slug, co.id AS company_id, co.name AS company_name "
                 "FROM post_applications pa JOIN posts p ON p.id = pa.post_id "
                 "JOIN companies co ON co.id = p.company_id "

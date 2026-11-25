@@ -81,30 +81,24 @@
   margin-bottom: 28px;
 }
 
-.heroTelemetry {
+.heroLinks {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 6px 18px;
   flex-wrap: wrap;
-  padding-top: 18px;
-  border-top: 1px solid var(--line);
-  font-family: var(--font-m);
-  font-size: 0.72rem;
-  color: var(--faint);
-  letter-spacing: 0.04em;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-subtle);
 }
 
-.heroTelemetryItem {
+.heroLinks a {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-}
-
-.heroTelemetryDot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--accent);
+  min-height: 44px;
+  color: var(--accent);
+  font-size: .88rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
 /* ═══ STAT BAR ═══ */

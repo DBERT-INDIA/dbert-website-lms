@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  {% set page_title = 'Cohort study insights' %}
+  {% set page_robots = 'noindex, nofollow' %}
+  {% include '_head.html' %}
+  <link rel="stylesheet" href="/static/css/product-tools.css">
+  <link rel="stylesheet" href="/static/css/study-review.css">
+</head>
+<body>
+<main class="product-tool">
+  <a href="/program-cohorts/{{ cohort.id }}/staff/progress">Back to cohort progress</a>
+  <h1>{{ cohort.title }} study insights</h1>
+  {% if request.args.get('saved') == '1' %}<p role="status">Follow-up added to the cohort’s Study Trail.</p>{% endif %}
+  <section class="product-tool-card">
+    <h2>Lesson activity</h2>
+    <p>Counts cover cohort activity after learners join and during the program dates. A lesson appears once two learners have asked about it.</p>
+    {% if signals %}
+    <div class="study-insights-table">
+      <table>
+        <caption class="sr-only">Learners by lesson and review activity</caption>
+        <thead><tr><th scope="col">Lesson</th><th scope="col">Asked</th><th scope="col">Needs review</th><th scope="col">Reviewed</th></tr></thead>
+        <tbody>
+          {% for signal in signals %}
+          <tr><th scope="row">Day {{ signal.day_number }} · {{ signal.title }}</th><td>{{ signal.asking }}</td><td>{{ signal.reviewing }}</td><td>{{ signal.reviewed }}</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <p>There is no shared lesson activity to show yet.</p>
+    {% endif %}
+  </section>
+  {% if lessons %}
+  <form method="post" class="product-tool-card product-support-form">
+    {{ csrf_field() }}
+    <h2>Assign a study follow-up</h2>
+    <label for="followup-lesson">Lesson</label>
+    <select id="followup-lesson" name="lesson_id" required>
+      <option value="">Choose a lesson</option>
+      {% for lesson in lessons %}<option value="{{ lesson.id }}">Day {{ lesson.day_number }} · {{ lesson.title }}</option>{% endfor %}
+    </select>
+    <label for="followup-title">Title</label>
+    <input id="followup-title" name="title" required minlength="3" maxlength="150">
+    <label for="followup-message">Instructions</label>
+    <textarea id="followup-message" name="message" required minlength="5" maxlength="2000" rows="4"></textarea>
+    <label for="followup-date">Due date (optional)</label>
+    <input id="followup-date" name="due_on" type="date">
+    <button type="submit" class="btn btn-primary">Assign follow-up</button>
+  </form>
+  {% endif %}
+  <section class="product-tool-card">
+    <h2>Assigned follow-ups</h2>
+    {% if followups %}
+    <ul class="product-result-list">
+      {% for followup in followups %}
+      <li><strong>{{ followup.title }}</strong>
+        <span>{{ followup.lesson_title }}{% if followup.due_on %} · Due <time datetime="{{ followup.due_on }}">{{ followup.due_on }}</time>{% endif %}</span>
+        <p class="product-support-detail">{{ followup.message }}</p>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}<p>No follow-ups assigned yet.</p>{% endif %}
+  </section>
+</main>
+</body>
+</html>

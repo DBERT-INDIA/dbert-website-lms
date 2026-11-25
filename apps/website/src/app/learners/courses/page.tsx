@@ -13,20 +13,19 @@ const publishedTracks = getPublishedTracks();
 
 const jsonLd = {
   '@context': 'https://schema.org',
-  '@graph': [
-    {
-      '@type': 'ItemList',
-      name: 'DBERT Production AI & Engineering Fellowship Tracks',
-      itemListElement: publishedTracks.map((track, idx) => ({
-        '@type': 'Course',
-        position: idx + 1,
-        name: track.name,
-        description: track.shortDescription,
-        url: `https://dbert.in${track.canonicalPath}`,
-        provider: { '@type': 'Organization', name: 'DBERT', url: 'https://dbert.in' },
-      })),
+  '@type': 'ItemList',
+  name: 'DBERT Production AI & Engineering Fellowship Tracks',
+  itemListElement: publishedTracks.map((track, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    item: {
+      '@type': 'Course',
+      name: track.name,
+      description: track.shortDescription,
+      url: new URL(track.canonicalPath, 'https://dbert.in').href,
+      provider: { '@type': 'Organization', name: 'DBERT', url: 'https://dbert.in' },
     },
-  ],
+  })),
 };
 
 export default function CoursesHubPage() {
@@ -39,7 +38,7 @@ export default function CoursesHubPage() {
       <div className="wrap">
         <Reveal className="section-head">
           <div className="doclabel">
-            § 01 — COURSES <span className="rev">11 fellowship tracks</span>
+            § 01 — COURSES <span className="rev">{publishedTracks.length} fellowship tracks</span>
           </div>
           <div className="stack-h align-baseline gap-3 flex-wrap">
             <h1>AI and engineering fellowship tracks with verifiable credentials</h1>
@@ -48,7 +47,7 @@ export default function CoursesHubPage() {
             </HandNote>
           </div>
           <p className="body-copy">
-            Eleven focused technical tracks built around production engineering practices ({FELLOWSHIP_FEE.formattedTotal} total program fee · 2 months). Complete them through guided sprints, merge pull requests against real codebases, and verify your credentials on our registry. If you want the full sequence from beginner to fellowship, explore the{' '}
+            {publishedTracks.length} focused technical tracks built around production engineering practices ({FELLOWSHIP_FEE.formattedTotal} total program fee · 2 months). Complete them through guided sprints, merge pull requests against real codebases, and verify your credentials on our registry. If you want the full sequence from beginner to fellowship, explore the{' '}
             <Link href="/learners" className={s.backLink}>
               career ladder
             </Link>{' '}
@@ -64,19 +63,19 @@ export default function CoursesHubPage() {
             <div>
               <span className="doclabel text-xs">§ 02 — LIVE SPRINT DISCOVERY PORTAL</span>
               <h2 className="text-xl font-bold font-mono text-white mt-1">
-                Explore Live Industry Internships &amp; Placements
+                Explore current internships and placements
               </h2>
               <p className="text-xs text-muted max-w-2xl mt-1">
                 Looking for immediate hands-on startup sprints with 100% Guaranteed Production Internship with Dedicated Placement Assistance across internal DBERT ventures or verified hiring partners? Our live portal matches candidates across Mumbai, Bengaluru, Delhi NCR, Pune, and remote teams.
               </p>
             </div>
             <a
-              href="https://lms.dbert.in/"
+              href="https://lms.dbert.in/internships"
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn-primary text-xs shrink-0"
             >
-              Launch Internship Portal ↗
+              Browse LMS internships ↗
             </a>
           </div>
 

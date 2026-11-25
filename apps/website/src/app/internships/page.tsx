@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { pageMetadata } from '@/lib/seo';
+import { lmsInternshipSignupUrl } from '@/lib/lmsLinks';
 import Reveal from '@/components/ui/Reveal';
 import HandNote from '@/components/ui/HandNote';
 
@@ -13,7 +14,6 @@ export default function InternshipsHubPage() {
       title: 'Full Stack Web Development',
       badge: 'Most Popular',
       desc: 'Build production web apps with React 19, Next.js App Router, TypeScript, and PostgreSQL with pgvector indexing.',
-      openings: '1,420+ Live Openings',
       placement: '100% Guaranteed Production Internship with Dedicated Placement Assistance',
       cities: 'Remote · Bengaluru · Delhi NCR · Mumbai'
     },
@@ -22,7 +22,6 @@ export default function InternshipsHubPage() {
       title: 'AI Agent & LLM Systems',
       badge: 'Trending #1',
       desc: 'Construct autonomous AI workflow agents with LangGraph, CrewAI tool-calling loops, and local vLLM / Ollama runtimes.',
-      openings: '890+ Live Openings',
       placement: '100% Guaranteed Production Internship with Dedicated Placement Assistance',
       cities: 'Remote · Bengaluru · Pune · Hyderabad'
     },
@@ -31,7 +30,6 @@ export default function InternshipsHubPage() {
       title: 'Data Analytics & Corporate BI',
       badge: 'High Demand',
       desc: 'Engineer SQL query pipelines, programmatically normalise datasets with Pandas, and construct interactive Metabase/Power BI dashboards.',
-      openings: '1,150+ Live Openings',
       placement: '100% Guaranteed Production Internship with Dedicated Placement Assistance',
       cities: 'Remote · Delhi NCR · Mumbai · Bengaluru'
     },
@@ -40,7 +38,6 @@ export default function InternshipsHubPage() {
       title: 'Python Automation & Scraping',
       badge: 'Fast-Track',
       desc: 'Write concurrent Playwright scrapers, configure Celery/Redis task workers, and automate high-throughput data extraction.',
-      openings: '740+ Live Openings',
       placement: '100% Guaranteed Production Internship with Dedicated Placement Assistance',
       cities: 'Remote · Pune · Hyderabad · Chennai'
     },
@@ -49,7 +46,6 @@ export default function InternshipsHubPage() {
       title: 'DevOps & Cloud Engineering',
       badge: 'Infrastructure',
       desc: 'Deploy Docker microservices, configure Kubernetes clusters, build automated GitHub Actions CI/CD pipelines, and manage AWS EC2/VPC.',
-      openings: '620+ Live Openings',
       placement: '100% Guaranteed Production Internship with Dedicated Placement Assistance',
       cities: 'Remote · Bengaluru · Noida · Hyderabad'
     },
@@ -58,7 +54,6 @@ export default function InternshipsHubPage() {
       title: 'UI/UX Design & Prototyping',
       badge: 'Design Track',
       desc: 'Design component libraries, auto-layout tokens, UX research journeys, and interactive high-fidelity prototypes in Figma.',
-      openings: '580+ Live Openings',
       placement: '100% Guaranteed Production Internship with Dedicated Placement Assistance',
       cities: 'Remote · Mumbai · Delhi · Bengaluru'
     },
@@ -67,7 +62,6 @@ export default function InternshipsHubPage() {
       title: 'Cybersecurity & Threat Defense',
       badge: 'High Security',
       desc: 'Audit web endpoints for OWASP Top 10 vulnerabilities, conduct network pen-testing with Burp Suite, and implement SOC log pipelines.',
-      openings: '490+ Live Openings',
       placement: '100% Guaranteed Production Internship with Dedicated Placement Assistance',
       cities: 'Remote · Bengaluru · Hyderabad · Pune'
     },
@@ -76,7 +70,6 @@ export default function InternshipsHubPage() {
       title: 'Mobile App Development (Flutter)',
       badge: 'Cross-Platform',
       desc: 'Develop native-grade cross-platform apps with Flutter, Dart, Riverpod state management, and SQLite offline synchronization.',
-      openings: '520+ Live Openings',
       placement: '100% Guaranteed Production Internship with Dedicated Placement Assistance',
       cities: 'Remote · Delhi NCR · Chennai · Bengaluru'
     },
@@ -85,7 +78,6 @@ export default function InternshipsHubPage() {
       title: 'Generative AI & LLM Systems',
       badge: 'Deep Tech',
       desc: 'Fine-tune open-weights LLMs with LoRA/QLoRA, construct dense vector search with Reciprocal Rank Fusion, and deploy vLLM.',
-      openings: '680+ Live Openings',
       placement: '100% Guaranteed Production Internship with Dedicated Placement Assistance',
       cities: 'Remote · Bengaluru · Hyderabad · Mumbai'
     }
@@ -114,7 +106,7 @@ export default function InternshipsHubPage() {
       {/* Hero Header */}
       <div className="container page-head">
         <div className="doclabel">
-          § 01 — REMOTE INTERNSHIP DISCOVERY <span className="rev">rev: 2026.2</span>
+          Remote internship discovery
         </div>
         <div className="stack-h justify-center align-baseline gap-3 flex-wrap">
           <h1 className="page-title">
@@ -125,12 +117,12 @@ export default function InternshipsHubPage() {
           </HandNote>
         </div>
         <p className="lede-wide">
-          Explore over 10,000 verified internship opportunities and startup engineering sprints. Build production software under senior review, secure 100% Guaranteed Production Internship with Dedicated Placement Assistance, and graduate with cryptographic MSME credentials.
+          Explore internship opportunities and startup engineering sprints. Build production software under senior review, secure 100% Guaranteed Production Internship with Dedicated Placement Assistance, and graduate with cryptographic MSME credentials.
         </p>
 
         <div className="flex justify-center gap-3 flex-wrap mt-4">
           <span className="proof-mark proof-mark-signal">
-            <span>⚡ 6,700+ Internships on Portal</span>
+            <span>Current listings on the LMS</span>
           </span>
           <span className="proof-mark">
             <span>100% Guaranteed Production Internship with Dedicated Placement Assistance</span>
@@ -148,9 +140,9 @@ export default function InternshipsHubPage() {
       <div className="section-band">
         <div className="container center">
           <div className="doclabel mb-2">§ 02 — LIVE SPRINT GATEWAY</div>
-          <h2 className="section-title mb-2">Connect Directly to LMS Live Inventory</h2>
+          <h2 className="section-title mb-2">Find current internship openings</h2>
           <p className="band-lede mb-6">
-            Looking for immediate placement? Our dedicated LMS portal hosts full applicant tracking, mentor evaluation, and live company openings updated daily.
+            Browse current openings and follow your application on the LMS.
           </p>
           <div className="flex justify-center gap-4 flex-wrap">
             <a
@@ -159,7 +151,7 @@ export default function InternshipsHubPage() {
               rel="noopener noreferrer"
               className="btn btn-primary btn-lg"
             >
-              Browse 6,700+ Internships on LMS Portal ↗
+              Browse internships on the LMS ↗
             </a>
             <a
               href="https://lms.dbert.in/#signup"
@@ -167,7 +159,7 @@ export default function InternshipsHubPage() {
               rel="noopener noreferrer"
               className="btn btn-outline btn-lg"
             >
-              Apply for Next Cohort (Starts Monday) ↗
+              Start a cohort application ↗
             </a>
           </div>
         </div>
@@ -201,7 +193,7 @@ export default function InternshipsHubPage() {
                   </div>
                   <div className="flex flex-col gap-2">
                     <a
-                      href={`https://lms.dbert.in/apply?domain=${domain.slug}&next=/internships/${domain.slug}`}
+                      href={lmsInternshipSignupUrl(domain.slug)}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="btn btn-primary btn-sm text-center"

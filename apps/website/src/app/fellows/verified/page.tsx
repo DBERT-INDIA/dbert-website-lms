@@ -1,12 +1,13 @@
 import React from 'react';
 import type { Metadata } from 'next';
+import { pageMetadata } from '@/lib/seo';
 import FellowsClient, { type VerifiedFellowItem } from './FellowsClient';
 import rawFellowsData from '@/data/verified_fellows_showcase.json';
 
+const verifiedFellowsMetadata = pageMetadata('/fellows/verified');
+
 export const metadata: Metadata = {
-  title: 'Verified Fellows & Published Engineering Case Studies | DBERT',
-  description:
-    'Explore verified fellows and software engineering scholars from DBERT Technical Incubation. Inspect cryptographic certificate dossiers, authentic LinkedIn profiles, and published open-source articles.',
+  ...verifiedFellowsMetadata,
   keywords: [
     'DBERT verified fellows',
     'DBERT student reviews',
@@ -18,15 +19,9 @@ export const metadata: Metadata = {
     'DBERT legitimate internship proof'
   ],
   openGraph: {
-    title: 'Verified Fellows & Published Engineering Case Studies | DBERT',
-    description:
-      'Inspect verified alumni outcomes, authentic LinkedIn certificate posts, and published technical articles by DBERT technical incubation fellows.',
-    url: 'https://dbert.in/fellows/verified',
+    ...verifiedFellowsMetadata.openGraph,
     siteName: 'DBERT',
     type: 'website',
-  },
-  alternates: {
-    canonical: 'https://dbert.in/fellows/verified',
   },
 };
 

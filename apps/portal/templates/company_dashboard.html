@@ -3,6 +3,7 @@
 <head>
 {% set page_title_full = "Company Dashboard · DBERT Jobs" %}
 {% include "_head.html" %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/employer-pipeline.css') }}">
 <meta name="robots" content="noindex,nofollow">
 </head>
 <body class="pg-company-dashboard">
@@ -41,6 +42,9 @@
             <a class="btn" href="/company/posts/new"><i class="fas fa-plus"></i> Create post</a>
           </div>
         </div>
+        {% for category, message in get_flashed_messages(with_categories=true) %}
+        <p role="{{ 'alert' if category == 'error' else 'status' }}">{{ message }}</p>
+        {% endfor %}
         <div class="card">
           <table>
             <tr><th>Title</th><th>Type</th><th>Domain</th><th>Status</th><th></th></tr>
@@ -51,6 +55,7 @@
               <td>{{ p.domain }}</td>
               <td>
                 {% if p.status == 'published' %}<span class="badge b-live">live</span>
+                {% elif p.status == 'filled' %}<span class="badge b-exp">filled</span>
                 {% elif p.status == 'expired' %}<span class="badge b-exp">expired</span>
                 {% else %}<span class="badge b-draft">{{ p.status }}</span>{% endif %}
               </td>
@@ -58,6 +63,12 @@
                 <a href="/company/posts/{{ p.id }}">manage</a>
                 &nbsp;·&nbsp;
                 <a href="/company/posts/{{ p.id }}/applicants">applicants</a>
+                {% if p.status == 'published' %}
+                  <form class="employer-closure" method="post" action="{{ url_for('company_post_close', post_id=p.id) }}">
+                    {{ csrf_field() }}
+                    <button type="submit" class="btn ghost" aria-label="Mark {{ p.title }} filled">Mark filled</button>
+                  </form>
+                {% endif %}
                 &nbsp;·&nbsp;
                 <a href="#" data-act-click="quickDelete" data-arg-click='[{{ p.id|tojson }}]' data-prevent-click style="color:var(--red);">delete</a>
               </td>
@@ -74,6 +85,7 @@
         <div class="pagehead">
           <div>
             <h1>Author & Upload New Course</h1>
+            <p><a href="/course-publishing">Manage course drafts and editions</a></p>
             <div class="who">Publish flagship learning tracks to the DBERT catalog and earn 85% on course sales.</div>
           </div>
           <a class="btn ghost" href="/company/earnings"><i class="fas fa-coins"></i> View Earnings Ledger</a>

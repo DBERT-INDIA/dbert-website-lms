@@ -32,20 +32,41 @@
           {% endif %}
         </p>
       </div>
-      <a href="{{ submission.github_repo_url }}" target="_blank" rel="noopener"
+      {% if submission.github_repo_url.startswith('https://github.com/') %}
+      <a href="{{ submission.github_repo_url }}" target="_blank" rel="noopener noreferrer"
          style="color:inherit;font-size:12.5px;font-weight:600;white-space:nowrap">
         View repository <i class="fa-solid fa-arrow-up-right-from-square"></i>
       </a>
+      {% endif %}
     </div>
     {% endif %}
 
     <div class="card mb-24">
       <div class="card-head"><i class="fa-solid fa-clipboard-list"></i><h3>Project assignment brief</h3></div>
-      <div class="t-sm" style="line-height:1.65">
-        {{ (project.brief if project else 'Build a comprehensive, production-ready application demonstrating the key skills taught throughout this course. Push your code to a public GitHub repository containing a detailed README.md file.') | safe }}
+      <div class="t-sm" style="line-height:1.65; white-space:pre-line;">
+        {{ project.brief if project else 'Build an application that demonstrates the key skills taught in this course. Include a README that explains how to run and test it.' }}
       </div>
+      <h3>Prepare your submission</h3>
+      <ol><li>Implement the requirements in the brief.</li><li>Verify the behavior and document the checks.</li><li>Include setup instructions and a summary of your changes.</li></ol>
     </div>
 
+    {% if revisions %}
+    <section class="card mb-24" aria-labelledby="projectHistoryTitle">
+      <h2 id="projectHistoryTitle">Revision history</h2>
+      {% for revision in revisions %}
+      <details {% if loop.first %}open{% endif %} style="margin-block:.65rem;">
+        <summary>{{ revision.project_title }} · {{ revision.status|replace('_', ' ')|title }} · {{ revision.created_at }}</summary>
+        {% if revision.review_feedback %}<p style="white-space:pre-wrap;">{{ revision.review_feedback }}</p>{% endif %}
+        {% if revision.rubric %}
+        <ul>{% for criterion, rating in revision.rubric.items() %}<li>{{ criterion|title }} — {{ rating }}</li>{% endfor %}</ul>
+        {% endif %}
+        {% if revision.github_repo_url.startswith('https://github.com/') %}<a href="{{ revision.github_repo_url }}" rel="noopener noreferrer">Open submitted repository</a>{% endif %}
+      </details>
+      {% endfor %}
+    </section>
+    {% endif %}
+
+    {% if not submission or submission.status not in ('pending', 'approved') %}
     <div class="card">
       <div class="card-head"><i class="fa-brands fa-github"></i><h3>Submit your repository</h3></div>
 
@@ -84,6 +105,7 @@
 
       <div id="msgBox" class="t-sm mt-16" style="display:none"></div>
     </div>
+    {% endif %}
 
   </div>
 </div>

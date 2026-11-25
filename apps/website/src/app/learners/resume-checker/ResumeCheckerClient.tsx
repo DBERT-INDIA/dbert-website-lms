@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
+import { useEffect, useId, useRef, useState, type FormEvent } from 'react';
 import Link from 'next/link';
 import s from './resume-checker.module.css';
 
@@ -14,142 +14,217 @@ const DOMAINS = [
   { id: 'ui-ux-design', label: 'UI/UX Design', canonical: 'UI/UX Design' },
 ];
 
+type JobFit = {
+  matched: string[];
+  missing: string[];
+  next_steps: Array<{ label: string; href: string }>;
+};
+
+type AuditResult = {
+  status: 'success';
+  score: number;
+  color: string;
+  tier: string;
+  locked: boolean;
+  breakdown: Record<'keywords' | 'impact_verbs' | 'structure' | 'length_hygiene', { percentage: number }>;
+  strengths?: string[];
+  job_fit?: JobFit;
+  critical_missing_keywords?: string[];
+  recommendations?: { bullet_rewrites?: Array<{ original: string; improved: string; why: string }> };
+  matched_jobs?: Array<{
+    id: number | string;
+    title: string;
+    company_name: string;
+    location?: string;
+    stipend_min?: number;
+    stipend_max?: number;
+  }>;
+  lms_signup_url?: string;
+};
+
+type AuditInput = {
+  resume: { file: File } | { text: string };
+  domain: string;
+  jobDescription: string;
+};
+
+type Contact = { name: string; email: string; phone: string };
+
+const MAX_PDF_BYTES = 5 * 1024 * 1024;
+const MAX_JOB_DESCRIPTION_LENGTH = 6000;
+
+async function requestAudit(input: AuditInput, contact?: Contact) {
+  const body = new FormData();
+  if ('file' in input.resume) {
+    body.set('file', input.resume.file);
+  } else {
+    body.set('text', input.resume.text);
+  }
+  body.set('domain', input.domain);
+  if (input.jobDescription) body.set('job_description', input.jobDescription);
+  if (contact) {
+    body.set('name', contact.name);
+    body.set('email', contact.email);
+    body.set('phone', contact.phone);
+  }
+
+  const response = await fetch('/api/tools/ats-checker', { method: 'POST', body });
+  const data: AuditResult | { status: 'error'; message?: string } | null = await response.json().catch(() => null);
+  if (!response.ok || data?.status !== 'success') {
+    const message = data?.status === 'error' ? data.message : undefined;
+    throw new Error(message || 'The audit could not be completed. Please try again.');
+  }
+  return data;
+}
+
+function getDbertHref(href: string) {
+  try {
+    const link = new URL(href, 'https://dbert.in');
+    if (link.origin === 'https://dbert.in') return link.pathname + link.search + link.hash;
+    if (link.origin === 'https://lms.dbert.in') return link.href;
+  } catch {
+    return null;
+  }
+  return null;
+}
+
+function JobFitResults({ fit, headingId }: { fit: JobFit; headingId: string }) {
+  return (
+    <section className={s.sectionBox} aria-labelledby={headingId}>
+      <h3 id={headingId} className={s.fitTitle}>Job description match</h3>
+      <p className={s.fitNote}>Use these keyword matches to check what your résumé shows for this role.</p>
+      <div className={s.fitColumns}>
+        <div>
+          <h4>Matched skills</h4>
+          {fit.matched.length > 0
+            ? <ul className={s.fitList}>{fit.matched.map((skill) => <li key={skill}>{skill}</li>)}</ul>
+            : <p className={s.fitNote}>No matching keywords found.</p>}
+        </div>
+        <div>
+          <h4>Missing or unclear skills</h4>
+          {fit.missing.length > 0
+            ? <ul className={s.fitList}>{fit.missing.map((skill) => <li key={skill}>{skill}</li>)}</ul>
+            : <p className={s.fitNote}>No missing keywords found.</p>}
+        </div>
+      </div>
+      {fit.next_steps.length > 0 && (
+        <div>
+          <h4>Suggested next steps</h4>
+          <ul className={s.fitLinks}>
+            {fit.next_steps.map((step) => {
+              const href = getDbertHref(step.href);
+              return <li key={step.href + step.label}>{href ? <a href={href}>{step.label}</a> : step.label}</li>;
+            })}
+          </ul>
+        </div>
+      )}
+    </section>
+  );
+}
+
 export default function ResumeCheckerClient() {
+  const id = useId();
   const [selectedDomain, setSelectedDomain] = useState(DOMAINS[0].canonical);
   const [activeTab, setActiveTab] = useState<'upload' | 'paste'>('upload');
   const [resumeText, setResumeText] = useState('');
+  const [jobDescription, setJobDescription] = useState('');
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [pending, setPending] = useState<'scan' | 'unlock' | null>(null);
+  const requestPending = useRef(false);
   const [errorMsg, setErrorMsg] = useState('');
-  
-  // Results
-  const [scanResult, setScanResult] = useState<any>(null);
-  
-  // Unlock Form
-  const [unlockName, setUnlockName] = useState('');
-  const [unlockEmail, setUnlockEmail] = useState('');
-  const [unlockPhone, setUnlockPhone] = useState('');
-  const [unlockLoading, setUnlockLoading] = useState(false);
+  const [unlockError, setUnlockError] = useState('');
+  const [audit, setAudit] = useState<{ input: AuditInput; result: AuditResult } | null>(null);
+  const scanResult = audit?.result;
 
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const resultsRef = useRef<HTMLDivElement>(null);
+  const resultsRef = useRef<HTMLHeadingElement>(null);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const f = e.target.files[0];
-      if (f.type !== 'application/pdf') {
-        alert('Please select a valid PDF file.');
-        return;
-      }
-      setSelectedFile(f);
+  useEffect(() => {
+    if (audit) resultsRef.current?.focus();
+  }, [audit]);
+
+  function selectFile(file?: File) {
+    if (!file) return;
+    setSelectedFile(null);
+    if (file.type !== 'application/pdf' && (file.type || !/\.pdf$/i.test(file.name))) {
+      setErrorMsg('Choose a PDF résumé.');
+    } else if (file.size === 0 || file.size > MAX_PDF_BYTES) {
+      setErrorMsg('Choose a text-based PDF résumé up to 5 MB.');
+    } else {
+      setSelectedFile(file);
       setErrorMsg('');
     }
-  };
+  }
 
-  const handleScan = async () => {
+  async function handleScan() {
+    if (requestPending.current) return;
+    const text = resumeText.trim();
+    const resume = activeTab === 'upload' ? (selectedFile ? { file: selectedFile } : null) : { text };
+    if (!resume) {
+      setErrorMsg('Choose a PDF résumé or switch to pasted text.');
+      return;
+    }
+    if ('text' in resume && text.length < 30) {
+      setErrorMsg('Paste at least 30 characters of résumé text.');
+      return;
+    }
+
+    const input = { resume, domain: selectedDomain, jobDescription: jobDescription.trim() };
     setErrorMsg('');
-    if (activeTab === 'upload' && !selectedFile) {
-      setErrorMsg('Please select a PDF resume or switch to the text tab.');
-      return;
-    }
-    if (activeTab === 'paste' && resumeText.trim().length < 30) {
-      setErrorMsg('Please paste at least 30 characters of resume text.');
-      return;
-    }
-
-    setLoading(true);
+    setUnlockError('');
+    setPending('scan');
+    requestPending.current = true;
     try {
-      let res: Response;
-      if (activeTab === 'upload' && selectedFile) {
-        const fd = new FormData();
-        fd.append('file', selectedFile);
-        fd.append('domain', selectedDomain);
-        res = await fetch('/api/tools/ats-checker', {
-          method: 'POST',
-          body: fd,
-        });
-      } else {
-        res = await fetch('/api/tools/ats-checker', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            text: resumeText,
-            domain: selectedDomain,
-          }),
-        });
-      }
-
-      const data = await res.json();
-      if (!res.ok || data.status === 'error') {
-        throw new Error(data.message || 'Failed to scan resume');
-      }
-
-      setScanResult(data);
-      setTimeout(() => {
-        resultsRef.current?.scrollIntoView({ behavior: 'smooth' });
-      }, 100);
-    } catch (err: any) {
-      setErrorMsg(err.message || 'Error communicating with ATS scanner. Please try again.');
+      const result = await requestAudit(input);
+      setAudit({ input, result });
+    } catch (error) {
+      setErrorMsg(error instanceof Error ? error.message : 'The scanner could not be reached. Try again.');
     } finally {
-      setLoading(false);
+      requestPending.current = false;
+      setPending(null);
     }
-  };
+  }
 
-  const handleUnlock = async () => {
-    if (!unlockName.trim() || !unlockEmail.trim() || !unlockEmail.includes('@')) {
-      alert('Please provide your Full Name and a valid Email address.');
+  async function handleUnlock(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    if (!audit || requestPending.current) return;
+    const fields = new FormData(event.currentTarget);
+    const contact = {
+      name: String(fields.get('name') ?? '').trim(),
+      email: String(fields.get('email') ?? '').trim(),
+      phone: String(fields.get('phone') ?? '').trim(),
+    };
+    if (!contact.name) {
+      setUnlockError('Enter your full name.');
       return;
     }
 
-    setUnlockLoading(true);
+    setUnlockError('');
+    setPending('unlock');
+    requestPending.current = true;
     try {
-      let res: Response;
-      if (activeTab === 'upload' && selectedFile) {
-        const fd = new FormData();
-        fd.append('file', selectedFile);
-        fd.append('domain', selectedDomain);
-        fd.append('name', unlockName.trim());
-        fd.append('email', unlockEmail.trim());
-        fd.append('phone', unlockPhone.trim());
-        res = await fetch('/api/tools/ats-checker', {
-          method: 'POST',
-          body: fd,
-        });
-      } else {
-        res = await fetch('/api/tools/ats-checker', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            text: resumeText,
-            domain: selectedDomain,
-            name: unlockName.trim(),
-            email: unlockEmail.trim(),
-            phone: unlockPhone.trim(),
-          }),
-        });
-      }
-
-      const data = await res.json();
-      if (!res.ok || data.status === 'error') {
-        throw new Error(data.message || 'Failed to unlock audit');
-      }
-
-      setScanResult(data);
-    } catch (err: any) {
-      alert(err.message || 'Error unlocking audit. Please try again.');
+      const result = await requestAudit(audit.input, contact);
+      if (result.locked) throw new Error('The report is still locked. Verify your email and try again.');
+      setAudit({ input: audit.input, result });
+    } catch (error) {
+      setUnlockError(error instanceof Error ? error.message : 'The report could not be unlocked.');
     } finally {
-      setUnlockLoading(false);
+      requestPending.current = false;
+      setPending(null);
     }
-  };
+  }
+
+
 
   return (
     <div className={s.toolCard}>
-      <div className={s.stepTitle}>Step 1: Select Your Target Technical Domain</div>
-      <div className={s.domainPills}>
+      <div className={s.stepTitle} id={id + '-domain'}>Target technical domain</div>
+      <div className={s.domainPills} role="group" aria-labelledby={id + '-domain'}>
         {DOMAINS.map((d) => (
           <button
             key={d.id}
             type="button"
+            aria-pressed={selectedDomain === d.canonical}
             className={`${s.domainPill} ${selectedDomain === d.canonical ? s.domainPillActive : ''}`}
             onClick={() => setSelectedDomain(d.canonical)}
           >
@@ -158,9 +233,10 @@ export default function ResumeCheckerClient() {
         ))}
       </div>
 
-      <div className={s.tabNav}>
+      <div className={s.tabNav} role="group" aria-label="Résumé input method">
         <button
           type="button"
+          aria-pressed={activeTab === 'upload'}
           className={`${s.tabBtn} ${activeTab === 'upload' ? s.tabBtnActive : ''}`}
           onClick={() => setActiveTab('upload')}
         >
@@ -168,6 +244,7 @@ export default function ResumeCheckerClient() {
         </button>
         <button
           type="button"
+          aria-pressed={activeTab === 'paste'}
           className={`${s.tabBtn} ${activeTab === 'paste' ? s.tabBtnActive : ''}`}
           onClick={() => setActiveTab('paste')}
         >
@@ -178,71 +255,85 @@ export default function ResumeCheckerClient() {
       {activeTab === 'upload' ? (
         <div
           className={s.dropZone}
-          onClick={() => fileInputRef.current?.click()}
           onDragOver={(e) => e.preventDefault()}
           onDrop={(e) => {
             e.preventDefault();
-            if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-              const f = e.dataTransfer.files[0];
-              if (f.type === 'application/pdf') {
-                setSelectedFile(f);
-                setErrorMsg('');
-              } else {
-                alert('Please drop a PDF file.');
-              }
-            }
+            selectFile(e.dataTransfer.files[0]);
           }}
         >
           <input
             ref={fileInputRef}
             type="file"
-            accept="application/pdf"
-            style={{ display: 'none' }}
-            onChange={handleFileChange}
+            accept="application/pdf,.pdf"
+            hidden
+            onChange={(e) => {
+              selectFile(e.currentTarget.files?.[0]);
+              e.currentTarget.value = '';
+            }}
           />
-          <div style={{ fontSize: '2.5rem', marginBottom: '8px' }}>☁️</div>
-          <div style={{ fontWeight: 700, color: '#f8fafc', fontSize: '1.05rem' }}>
-            {selectedFile
-              ? `Selected: ${selectedFile.name} (${(selectedFile.size / 1024).toFixed(1)} KB)`
-              : 'Click to browse or drop your PDF resume'}
-          </div>
-          <div style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '6px' }}>
-            Standard 1–2 page engineering resume (Max 5MB)
-          </div>
+          <button
+            className={s.filePicker}
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            aria-describedby={id + '-pdf-hint'}
+          >
+            <span className={s.pickerTitle}>
+              {selectedFile ? 'Selected PDF: ' + selectedFile.name : 'Choose or drop a PDF résumé'}
+            </span>
+            <span className={s.fitNote} id={id + '-pdf-hint'}>Text-based PDF, up to 5 MB</span>
+          </button>
         </div>
       ) : (
-        <textarea
-          className={s.textPaste}
-          placeholder="Paste your complete resume text here (Summary, Skills, Experience, Education, Projects)..."
-          value={resumeText}
-          onChange={(e) => setResumeText(e.target.value)}
-        />
-      )}
-
-      {errorMsg && (
-        <div style={{ color: '#ef4444', fontSize: '0.85rem', marginTop: '12px', fontWeight: 600 }}>
-          ⚠️ {errorMsg}
+        <div className={s.inputField}>
+          <label htmlFor={id + '-resume'}>Résumé text</label>
+          <textarea
+            id={id + '-resume'}
+            className={s.textPaste}
+            placeholder="Include your skills, experience, projects, and education."
+            value={resumeText}
+            onChange={(e) => setResumeText(e.target.value)}
+          />
         </div>
       )}
+
+      <div className={s.inputField}>
+        <label htmlFor={id + '-job-description'}>Job description (optional)</label>
+        <textarea
+          id={id + '-job-description'}
+          className={s.jobDescription}
+          aria-describedby={id + '-fit-note'}
+          placeholder="Paste the role requirements and preferred skills."
+          maxLength={MAX_JOB_DESCRIPTION_LENGTH}
+          value={jobDescription}
+          onChange={(event) => setJobDescription(event.target.value)}
+        />
+        <p id={id + '-fit-note'} className={s.fitNote}>Compare your résumé with the skills listed for this role.</p>
+      </div>
+
+      <p className={s.formError} role="alert">{errorMsg}</p>
 
       <div className={s.actionRow}>
         <div className={s.securityNote}>
-          🔒 100% Private &amp; Secure · No data shared with external recruiters
+          DBERT processes your résumé and any job description you provide.
         </div>
         <button
           type="button"
           className="btn btn-primary"
           style={{ padding: '12px 28px', fontSize: '0.95rem' }}
-          disabled={loading}
+          disabled={pending !== null}
           onClick={handleScan}
         >
-          {loading ? 'Auditing Resume...' : '⚡ Run Free AI ATS Audit'}
+          {pending === 'scan' ? 'Auditing résumé…' : 'Run résumé audit'}
         </button>
       </div>
+      <span className="sr-only" role="status">
+        {pending === 'scan' ? 'Auditing résumé…' : ''}
+      </span>
 
       {/* Live Scan Results */}
       {scanResult && (
-        <div ref={resultsRef} className={s.resultsWrap}>
+        <section className={s.resultsWrap} aria-labelledby={id + '-audit-results'}>
+          <h2 id={id + '-audit-results'} ref={resultsRef} tabIndex={-1} className={s.fitTitle}>Audit results</h2>
           <div className={s.scoreGrid}>
             <div>
               <div className={s.scoreGauge} style={{ borderColor: scanResult.color }}>
@@ -252,7 +343,6 @@ export default function ResumeCheckerClient() {
               <div className={s.tierBadge} style={{ backgroundColor: scanResult.color }}>
                 {scanResult.tier}
               </div>
-              <div className={s.passProb}>{scanResult.pass_probability}</div>
             </div>
 
             <div>
@@ -290,6 +380,8 @@ export default function ResumeCheckerClient() {
             </div>
           </div>
 
+          {scanResult.job_fit && <JobFitResults fit={scanResult.job_fit} headingId={id + '-job-fit'} />}
+
           <div className={s.strengthsCard}>
             <div className={s.strengthsTitle}>✅ Key Strengths Identified</div>
             <ul className={s.strengthsList}>
@@ -299,59 +391,31 @@ export default function ResumeCheckerClient() {
             </ul>
           </div>
 
-          {/* Lead Gate / Conversion Gate */}
           {scanResult.locked ? (
-            <div className={s.gateWrap}>
-              <div className={s.blurOverlay}>
-                <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#f59e0b' }}>
-                  CRITICAL MISSING TECH STACK KEYWORDS (5)
-                </div>
-                <p>Docker containerization, PostgreSQL indexing, Next.js App Router, Jest automated tests...</p>
-                <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#f59e0b', marginTop: '12px' }}>
-                  AI BULLET POINT REWRITES WITH METRICS
-                </div>
-                <p>Architected responsive Next.js frontend reducing latency by 32% for 5,000+ users...</p>
+            <form className={s.gateCtaBox} method="post" onSubmit={handleUnlock} aria-labelledby={id + '-unlock'}>
+              <h3 className={s.gateTitle} id={id + '-unlock'}>Unlock the full report</h3>
+              <p className={s.gateDesc}>
+                Get suggested résumé edits and related openings for this audit. When Gemini is available, it analyzes a résumé excerpt for the full report.
+              </p>
+              <div className={s.gateInputs}>
+                <label className={s.inputField}>
+                  <span>Full name</span>
+                  <input name="name" autoComplete="name" className={s.gateInput} required />
+                </label>
+                <label className={s.inputField}>
+                  <span>Email address</span>
+                  <input type="email" name="email" autoComplete="email" className={s.gateInput} required />
+                </label>
+                <label className={s.inputField}>
+                  <span>WhatsApp number (optional)</span>
+                  <input type="tel" name="phone" autoComplete="tel" className={s.gateInput} />
+                </label>
+                <p className={s.formError} role="alert">{unlockError}</p>
+                <button type="submit" className="btn btn-primary" disabled={pending !== null}>
+                  {pending === 'unlock' ? 'Unlocking…' : 'Unlock report and activate LMS account'}
+                </button>
               </div>
-
-              <div className={s.gateCtaBox}>
-                <div className={s.gateTitle}>Unlock Complete ATS Breakdown &amp; Matched Jobs</div>
-                <p className={s.gateDesc}>
-                  Free for engineering students. Discover your exact missing keywords, customized AI bullet point rewrites, and 1-click apply to verified partner openings.
-                </p>
-                <div className={s.gateInputs}>
-                  <input
-                    type="text"
-                    placeholder="Full Name"
-                    className={s.gateInput}
-                    value={unlockName}
-                    onChange={(e) => setUnlockName(e.target.value)}
-                  />
-                  <input
-                    type="email"
-                    placeholder="Email Address"
-                    className={s.gateInput}
-                    value={unlockEmail}
-                    onChange={(e) => setUnlockEmail(e.target.value)}
-                  />
-                  <input
-                    type="tel"
-                    placeholder="WhatsApp Number"
-                    className={s.gateInput}
-                    value={unlockPhone}
-                    onChange={(e) => setUnlockPhone(e.target.value)}
-                  />
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    style={{ width: '100%', padding: '12px', fontWeight: 700 }}
-                    disabled={unlockLoading}
-                    onClick={handleUnlock}
-                  >
-                    {unlockLoading ? 'Unlocking...' : 'Unlock Full Report & Activate LMS Account →'}
-                  </button>
-                </div>
-              </div>
-            </div>
+            </form>
           ) : (
             <div className={s.unlockedSection}>
               <div className={s.sectionBox}>
@@ -371,7 +435,7 @@ export default function ResumeCheckerClient() {
                 <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#d97706', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '12px' }}>
                   ✨ AI Bullet-Point Impact Rewrites
                 </div>
-                {(scanResult.recommendations?.bullet_rewrites || []).map((rw: any, idx: number) => (
+                {(scanResult.recommendations?.bullet_rewrites || []).map((rw, idx) => (
                   <div key={idx} className={s.rewriteItem}>
                     <div className={s.rewriteOriginal}>Original: {rw.original}</div>
                     <div className={s.rewriteImproved}>Improved: {rw.improved}</div>
@@ -390,13 +454,13 @@ export default function ResumeCheckerClient() {
                   </Link>
                 </div>
                 {(scanResult.matched_jobs || []).length > 0 ? (
-                  (scanResult.matched_jobs || []).map((job: any) => (
+                  (scanResult.matched_jobs || []).map((job) => (
                     <div key={job.id} className={s.jobItem}>
                       <div>
                         <div className={s.jobTitle}>{job.title}</div>
-                        <div className={s.jobMeta}>{job.company_name} · {job.location || 'Remote'} · {job.stipend_min ? `₹${job.stipend_min.toLocaleString()} - ₹${job.stipend_max.toLocaleString()}/mo` : 'Competitive'}</div>
+                        <div className={s.jobMeta}>{job.company_name} · {job.location || 'Remote'}{job.stipend_min && job.stipend_max ? ` · ₹${job.stipend_min.toLocaleString()}–₹${job.stipend_max.toLocaleString()}/mo` : ''}</div>
                       </div>
-                      <a href={`https://lms.dbert.in/apply/${job.id}`} className="btn btn-secondary" style={{ padding: '6px 14px', fontSize: '0.8rem' }}>
+                      <a href={`https://lms.dbert.in/apply/${encodeURIComponent(job.id)}`} className="btn btn-secondary" style={{ padding: '6px 14px', fontSize: '0.8rem' }}>
                         Apply Now
                       </a>
                     </div>
@@ -410,7 +474,7 @@ export default function ResumeCheckerClient() {
 
               <div style={{ textAlign: 'center', marginTop: '24px' }}>
                 <a
-                  href={scanResult.lms_signup_url || 'https://lms.dbert.in/portal/cv'}
+                  href={(scanResult.lms_signup_url && getDbertHref(scanResult.lms_signup_url)) || 'https://lms.dbert.in/portal/cv'}
                   className="btn btn-primary"
                   style={{ padding: '14px 32px', fontSize: '1rem', fontWeight: 700 }}
                 >
@@ -419,7 +483,7 @@ export default function ResumeCheckerClient() {
               </div>
             </div>
           )}
-        </div>
+        </section>
       )}
     </div>
   );

@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  {% set page_title = 'Verified portfolio' %}
+  {% set page_robots = 'noindex, nofollow' %}
+  {% include '_head.html' %}
+  <link rel="stylesheet" href="/static/css/product-tools.css">
+</head>
+<body>
+<main class="product-tool">
+  <a href="/portal/cv">Back to CV editor</a>
+  <h1>Verified portfolio</h1>
+  <p>Choose the approved projects and valid certificates you want to include when your CV is public.</p>
+  {% if request.args.get('updated') == '1' %}<p role="status">Portfolio selection saved.</p>{% endif %}
+  <form method="post" class="product-tool-card">
+    {{ csrf_field() }}
+    <fieldset style="margin-bottom:1rem;">
+      <legend>Approved projects</legend>
+      {% for item in projects %}
+      <label style="display:block;"><input style="width:auto;min-height:auto;" type="checkbox" name="project" value="{{ item.id }}" {% if item.id in chosen_projects %}checked{% endif %}> {{ item.project_title }}</label>
+      {% else %}<p>Approved projects will be available here.</p>{% endfor %}
+    </fieldset>
+    <fieldset style="margin-bottom:1rem;">
+      <legend>Valid certificates</legend>
+      {% for item in credentials %}
+      <label style="display:block;"><input style="width:auto;min-height:auto;" type="checkbox" name="credential" value="{{ item.id }}" {% if item.id in chosen_credentials %}checked{% endif %}> {{ item.course_title or 'DBERT certificate' }}</label>
+      {% else %}<p>Valid certificates will be available here.</p>{% endfor %}
+    </fieldset>
+    <button type="submit" class="btn btn-primary">Save portfolio choices</button>
+  </form>
+</main>
+</body>
+</html>

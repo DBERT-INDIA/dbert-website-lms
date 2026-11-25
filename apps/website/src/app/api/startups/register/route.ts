@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import db from '@/lib/db';
+import { getDb } from '@/lib/db';
 
 function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
@@ -64,7 +64,7 @@ export async function POST(request: Request) {
 
     const cleanServices = Array.isArray(servicesNeeded) ? servicesNeeded.filter(s => typeof s === 'string').slice(0, 20) : [];
 
-    const registration = await db.startupRegistration.create({
+    const registration = await getDb().startupRegistration.create({
       data: {
         startupName: startupName.trim().slice(0, 150),
         founderName: founderName.trim().slice(0, 150),

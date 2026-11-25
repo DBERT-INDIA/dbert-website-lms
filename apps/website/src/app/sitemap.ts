@@ -85,8 +85,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // 6. Combine and deduplicate all routes (previous + current)
   const routes = [
     '',
-    '/fellows/verified',
-    ...historicalRoutes,
+    ...historicalRoutes.filter((route) => !seoConfig[route]?.noindex),
     ...Object.entries(seoConfig)
       .filter(([, entry]) => !entry.noindex)
       .map(([route]) => route),

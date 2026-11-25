@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+<head>
+  {% set page_title = 'Saved opportunities' %}
+  {% set page_robots = 'noindex, nofollow' %}
+  {% include '_head.html' %}
+  <link rel="stylesheet" href="/static/css/product-tools.css">
+  <script src="/static/js/saved-opportunities.js" defer></script>
+</head>
+<body>
+<main class="product-tool">
+  <h1>Saved opportunities</h1>
+  <p><a id="savedOpportunityBrowse" href="/internships">Browse internships</a> · <a href="/jobs">Browse jobs</a></p>
+  <p id="savedOpportunityStatus" role="status"></p>
+  <noscript><p>Enable JavaScript to view opportunities saved in this browser.</p></noscript>
+  <ul class="product-result-list" id="savedOpportunityList"></ul>
+</main>
+</body>
+</html>

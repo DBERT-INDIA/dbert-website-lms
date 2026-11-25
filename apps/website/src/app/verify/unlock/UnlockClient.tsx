@@ -100,57 +100,37 @@ export default function UnlockClient() {
   const [errorMsg, setErrorMsg] = useState('');
   const [copiedVpa, setCopiedVpa] = useState(false);
   const [submittedResult, setSubmittedResult] = useState<SubmissionResult | null>(null);
-  const [rejectionAlert, setRejectionAlert] = useState('');
+  const [hasExistingVerification, setHasExistingVerification] = useState(false);
+  const [verificationRejected, setVerificationRejected] = useState(false);
 
   const VPA = 'Q652429146@ybl';
   const MERCHANT_NAME = 'DBERT Admissions';
   const VERIFY_AMOUNT = 299;
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   const applyCandidateProfile = (data: any, clean: string) => {
+    const enteredEmail = emailPattern.test(clean) && !clean.includes('***') ? clean.toLowerCase() : '';
+    const hasSubmission = data.hasVerificationSubmission === true;
+    setHasExistingVerification(hasSubmission);
+    setVerificationRejected(hasSubmission && data.verificationStatus === 'REJECTED');
+    setSubmittedResult(null);
+
     if (data.found && data.candidate) {
       const c = data.candidate;
       setCandidate(c);
-      if (c.holderName) setFullName(c.holderName);
-      if (c.email && !c.email.includes('***')) setEmail(c.email);
-      if (c.phone && !c.phone.includes('***')) setPhone(c.phone);
-      if (c.college) setCollege(c.college);
+      setFullName(c.holderName || '');
+      setEmail(c.email && !c.email.includes('***') ? c.email : enteredEmail);
+      setPhone(c.phone && !c.phone.includes('***') ? c.phone : '');
+      setCollege(c.college || '');
       if (c.domain) setDomain(c.domain);
-      if (c.certId) setCertId(c.certId);
-
-      // Check if already submitted
-      if (data.verificationSubmission) {
-        const vs = data.verificationSubmission;
-        if (vs.status === 'REJECTED' || data.verificationStatus === 'REJECTED') {
-          setRejectionAlert(
-            data.rejectionRemarks ||
-            vs.adminRemarks ||
-            'Action Required: Your previous ₹299 verification fee payment could not be verified in the bank audit. Please complete repayment of ₹299 below and submit your updated 12-digit UTR.'
-          );
-          setSubmittedResult(null);
-        } else {
-          setRejectionAlert('');
-          setSubmittedResult({
-            submissionId: vs.id,
-            utrNumber: vs.utrNumber,
-            amountPaid: vs.amountPaid || 299,
-            fullName: vs.fullName,
-            email: vs.email,
-            phone: vs.phone,
-            domain: vs.domain,
-            certId: vs.certId,
-            submittedAt: vs.submittedAt,
-            alreadySubmitted: true
-          });
-        }
-      } else {
-        setRejectionAlert('');
-      }
+      setCertId(c.certId || '');
     } else {
+      setCandidate(null);
       // Fallback: if query looks like a Cert ID, set it
       if (clean.toUpperCase().startsWith('CERT-')) {
         setCertId(clean.toUpperCase());
-      } else if (clean.includes('@')) {
-        setEmail(clean.toLowerCase());
+      } else if (enteredEmail) {
+        setEmail(enteredEmail);
       }
     }
   };
@@ -218,7 +198,7 @@ export default function UnlockClient() {
       setErrorMsg('Please enter your full legal name.');
       return;
     }
-    if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    if (!emailPattern.test(email.trim()) || email.includes('***')) {
       setErrorMsg('Please enter a valid email address.');
       return;
     }
@@ -344,8 +324,11 @@ export default function UnlockClient() {
       <div className={s.lookupSection}>
         <div className={s.lookupTitle}>Candidate Profile Lookup</div>
         <p className={s.lookupSubtitle}>
-          Enter your Certificate ID or Registered Email to instantly autofill your project and candidate profile.
+          Enter your Certificate ID or registered email to look up your record. Enter your own contact details in the form below.
         </p>
+        {hasExistingVerification && !verificationRejected && (
+          <p role="status">A verification request already exists. <a href="https://lms.dbert.in/portal">Open the LMS</a> to check your account status.</p>
+        )}
         <div className={s.lookupRow}>
           <input
             type="text"
@@ -366,8 +349,7 @@ export default function UnlockClient() {
         </div>
       </div>
 
-      {/* Rejection / Repayment Alert (If payment failed bank audit) */}
-      {rejectionAlert && (
+      {verificationRejected && (
         <div style={{
           backgroundColor: 'rgba(239, 68, 68, 0.1)',
           border: '1px solid rgba(239, 68, 68, 0.4)',
@@ -382,10 +364,10 @@ export default function UnlockClient() {
           <span style={{ fontSize: '1.25rem', lineHeight: '1' }}>⚠️</span>
           <div>
             <div style={{ fontWeight: 700, color: '#EF4444', marginBottom: '0.25rem' }}>
-              Verification Payment Not Verified — Repayment Required
+              Previous verification payment could not be confirmed
             </div>
             <div style={{ fontSize: '0.88rem', color: '#FEE2E2', lineHeight: '1.4' }}>
-              {rejectionAlert}
+              <a href="https://lms.dbert.in/portal">Open the LMS</a> or contact admissions for details about the existing request.
             </div>
           </div>
         </div>

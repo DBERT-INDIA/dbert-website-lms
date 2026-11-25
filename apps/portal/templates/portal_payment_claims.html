@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  {% set page_title_full = "My Enrollment Payments · DBERT" %}
+  {% include "_head.html" %}
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="stylesheet" href="/static/css/payment-claims.css">
+</head>
+<body>
+  <main class="claims-page">
+    <nav aria-label="Student portal">
+      <a href="/portal">Portal</a>
+      <a href="/portal/offer">Offer letter</a>
+    </nav>
+    <h1>My enrollment payments</h1>
+    <p>Check the status of UPI payment claims submitted through the DBERT website.</p>
+    {% for claim in claims %}
+    <section class="claim-panel">
+      <h2>{{ claim.payment_type|capitalize }} · ₹{{ claim.amount }}</h2>
+      <p class="claim-status">
+        {% if claim.status == 'pending' %}Pending verification{% else %}{{ claim.status|capitalize }}{% endif %}
+      </p>
+      <dl class="claim-details">
+        <div><dt>Receipt reference</dt><dd>{{ claim.submission_id }}</dd></div>
+        <div><dt>Submitted</dt><dd>{{ claim.submitted_at }}</dd></div>
+        {% if claim.reviewed_at %}<div><dt>Reviewed</dt><dd>{{ claim.reviewed_at }}</dd></div>{% endif %}
+      </dl>
+      {% if claim.status == 'rejected' %}
+      <p>Contact admissions with the receipt reference if you believe this payment should be verified.</p>
+      {% endif %}
+    </section>
+    {% else %}
+    <p>No website enrollment payment claims on this page.</p>
+    {% endfor %}
+    {% if page > 1 or has_next %}
+    <nav aria-label="Claim pages">
+      {% if page > 1 %}<a href="/portal/payment-claims?page={{ page - 1 }}">Previous</a>{% endif %}
+      <span>Page {{ page }}</span>
+      {% if has_next %}<a href="/portal/payment-claims?page={{ page + 1 }}">Next</a>{% endif %}
+    </nav>
+    {% endif %}
+  </main>
+</body>
+</html>

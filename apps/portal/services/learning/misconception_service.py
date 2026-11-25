@@ -30,9 +30,10 @@ class MisconceptionService:
                 pattern_description = excluded.pattern_description,
                 remediation_strategy = excluded.remediation_strategy,
                 example_trigger = excluded.example_trigger
+            RETURNING misconception_id
             """,
             (misconception_id, concept_id, label, pattern_description, remediation_strategy, example_trigger)
-        )
+        ).fetchone()
         conn.commit()
         return {
             "misconception_id": misconception_id,
@@ -58,7 +59,9 @@ class MisconceptionService:
         student_id: int,
         concept_id: str,
         misconception_id: str,
-        trigger_context: str
+        trigger_context: str,
+        *,
+        commit=True,
     ) -> List[Dict[str, Any]]:
         """
         Attaches an active misconception to the student's mastery profile.
@@ -103,7 +106,8 @@ class MisconceptionService:
             """,
             (json.dumps(current_list), now_iso, student_id, concept_id)
         )
-        conn.commit()
+        if commit:
+            conn.commit()
         return current_list
 
     @staticmethod
@@ -112,7 +116,9 @@ class MisconceptionService:
         student_id: int,
         concept_id: str,
         misconception_id: str,
-        resolution_evidence: str
+        resolution_evidence: str,
+        *,
+        commit=True,
     ) -> List[Dict[str, Any]]:
         """Marks an active misconception as successfully remediated."""
         m_row = conn.execute(
@@ -142,7 +148,8 @@ class MisconceptionService:
             """,
             (json.dumps(current_list), now_iso, student_id, concept_id)
         )
-        conn.commit()
+        if commit:
+            conn.commit()
         return current_list
 
     @staticmethod

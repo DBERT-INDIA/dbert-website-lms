@@ -1,6 +1,7 @@
 import React from 'react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { lmsInternshipSignupUrl } from '@/lib/lmsLinks';
 import { notFound } from 'next/navigation';
 import HandNote from '@/components/ui/HandNote';
 import { GEO_CITIES, GEO_ROLES, generateCityHeadline } from '@/data/geo_domains.config';
@@ -73,42 +74,6 @@ export default async function ProgrammaticInternshipPage({ params }: PageProps) 
     '@context': 'https://schema.org',
     '@graph': [
       {
-        '@type': 'JobPosting',
-        title: `${roleData.title} Intern (${cityName})`,
-        description: `<p>${roleData.desc}</p><p><strong>Required Skills:</strong> ${roleData.skills.join(', ')}</p><p><strong>Outcome:</strong> ${cityHeadline}</p><p><strong>Location:</strong> ${cityName}</p>`,
-        datePosted: '2026-11-01T00:00:00+05:30',
-        validThrough: '2027-06-30T23:59:59+05:30',
-        employmentType: 'INTERN',
-        hiringOrganization: {
-          '@type': 'Organization',
-          name: 'DBERT Technical Council',
-          sameAs: 'https://dbert.in',
-          logo: 'https://dbert.in/logo.svg'
-        },
-        ...(isRemote
-          ? {
-              jobLocationType: 'TELECOMMUTE',
-              applicantLocationRequirements: {
-                '@type': 'Country',
-                name: 'IN'
-              }
-            }
-          : {
-              jobLocation: {
-                '@type': 'Place',
-                address: {
-                  '@type': 'PostalAddress',
-                  streetAddress: cityData.street,
-                  addressLocality: cityData.locality,
-                  addressRegion: cityData.region,
-                  postalCode: cityData.postalCode,
-                  addressCountry: 'IN'
-                }
-              }
-            }),
-        directApply: true
-      },
-      {
         '@type': 'BreadcrumbList',
         itemListElement: [
           {
@@ -174,7 +139,7 @@ export default async function ProgrammaticInternshipPage({ params }: PageProps) 
       {/* Hero Header */}
       <div className="container page-head">
         <div className="doclabel">
-          § 01 — {cityName.toUpperCase()} REGIONAL SPRINT <span className="rev">cohort: 2026</span>
+          § 01 — {cityName.toUpperCase()} REGIONAL SPRINT
         </div>
         <div className="stack-h justify-center align-baseline gap-3 flex-wrap">
           <h1 className="page-title">
@@ -221,7 +186,7 @@ export default async function ProgrammaticInternshipPage({ params }: PageProps) 
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 24 }}>
                 <a
-                  href={`https://lms.dbert.in/#signup?domain=${role}&next=/internships/${role}/${city}`}
+                  href={lmsInternshipSignupUrl(role, city)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn btn-primary btn-lg"
@@ -237,13 +202,13 @@ export default async function ProgrammaticInternshipPage({ params }: PageProps) 
                   Confirm Fellowship Seat (₹1,999 Program) →
                 </Link>
                 <a
-                  href={`https://lms.dbert.in/internships/${role}`}
+                  href={`https://lms.dbert.in/internships/${role}/${city}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn btn-outline btn-sm"
                   style={{ textAlign: 'center', opacity: 0.8 }}
                 >
-                  Browse Pan-India Openings on LMS ↗
+                  Browse openings in {cityName} on the LMS ↗
                 </a>
               </div>
 

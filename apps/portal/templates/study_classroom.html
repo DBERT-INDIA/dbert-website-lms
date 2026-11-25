@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <title>{{ study_course.title }} · Study classroom | DBERT LMS</title>
+  <link rel="stylesheet" href="/static/css/dbert-theme.css">
+  <link rel="stylesheet" href="/static/css/study-classroom.css">
+  <script src="/static/js/study-classroom.js" defer></script>
+</head>
+<body class="study-page">
+  <a class="study-skip" href="#study-chat">Skip to tutor chat</a>
+  <main class="study-shell" id="study-classroom" data-course-id="{{ study_course.id }}" data-lesson-id="{{ study_active_lesson }}">
+    <header class="study-header">
+      <div>
+        <nav class="study-breadcrumb" aria-label="Breadcrumb">
+          <a href="/courses">My courses</a><span aria-hidden="true">/</span><a href="/courses/{{ study_course.id }}/learn">Course workspace</a>
+        </nav>
+        <h1>{{ study_course.title }}</h1>
+      </div>
+      <div class="study-select">
+        <label for="study-lesson-select">Current lesson</label>
+        <select id="study-lesson-select" name="lesson_id">
+          {% for lesson in study_lessons %}
+          <option value="{{ lesson.id }}"{% if lesson.id == study_active_lesson %} selected{% endif %}>Day {{ lesson.day_number }} · {{ lesson.title }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </header>
+
+    <div class="study-tabs" role="tablist" aria-label="Classroom panels" hidden>
+      <button id="study-trail-tab" type="button" role="tab" aria-controls="study-trail" aria-selected="false" tabindex="-1">Study trail</button>
+      <button id="study-chat-tab" type="button" role="tab" aria-controls="study-chat" aria-selected="true">Tutor chat</button>
+      <button id="study-lecture-tab" type="button" role="tab" aria-controls="study-lecture" aria-selected="false" tabindex="-1">Lecture</button>
+    </div>
+
+    <p id="study-status" class="sr-only" role="status"></p>
+    <div class="study-grid">
+      <section class="study-panel" id="study-trail" aria-labelledby="study-trail-heading">
+        <header class="study-panel-head">
+          <h2 id="study-trail-heading">Study trail</h2>
+          <p>Revisit questions and practice what needs review.</p>
+        </header>
+        <div class="study-panel-content">
+          <div class="study-filter" role="group" aria-label="Filter study trail">
+            <button type="button" id="study-filter-all" aria-pressed="true">All</button>
+            <button type="button" id="study-filter-review" aria-pressed="false">Needs review <span id="study-review-count">0</span></button>
+          </div>
+          <p id="study-trail-empty" class="study-muted">Your questions will appear here.</p>
+          <ol id="study-trail-entries" class="study-trail-list"></ol>
+          <section id="study-followups" class="study-followups" aria-labelledby="study-followups-heading" hidden>
+            <h3 id="study-followups-heading">Mentor follow-ups</h3>
+            <ul id="study-followup-list"></ul>
+          </section>
+        </div>
+      </section>
+
+      <div class="study-separator" data-resize-panel="trail" role="separator" aria-label="Study trail width" aria-controls="study-trail" aria-orientation="vertical" tabindex="0"></div>
+
+      <section class="study-panel study-chat-panel" id="study-chat" aria-labelledby="study-chat-heading" tabindex="-1">
+        <header class="study-panel-head">
+          <h2 id="study-chat-heading">Tutor chat</h2>
+          <p id="study-chat-context">Ask a question to explore this course.</p>
+        </header>
+        <div class="study-panel-content study-chat-log" id="study-chat-log" role="log" aria-label="Conversation">
+          <div id="study-chat-empty" class="study-chat-intro">
+            <h3>What would you like to understand?</h3>
+            <p>Ask about the lecture, request a worked example, or check your understanding. Sources link to the course sections used by the tutor.</p>
+          </div>
+          <div id="study-conversation"></div>
+          <p id="study-chat-working" class="study-muted" hidden>Finding relevant course material…</p>
+        </div>
+        <form id="study-chat-form" class="study-composer" method="post">
+          <label for="study-question">Your question</label>
+          <textarea id="study-question" name="question" required minlength="3" maxlength="1200" rows="2" placeholder="For example, can you walk me through this idea?"></textarea>
+          <div class="study-composer-actions">
+            <p id="study-chat-error" role="alert"></p>
+            <button type="submit" class="study-primary" id="study-send" disabled>Ask tutor</button>
+          </div>
+        </form>
+        <noscript><p class="study-muted">Turn on JavaScript to open the tutor, or return to the course workspace.</p></noscript>
+      </section>
+
+      <div class="study-separator" data-resize-panel="lecture" role="separator" aria-label="Lecture width" aria-controls="study-lecture" aria-orientation="vertical" tabindex="0"></div>
+
+      <section class="study-panel" id="study-lecture" aria-labelledby="study-lecture-heading">
+        <header class="study-panel-head">
+          <h2 id="study-lecture-heading">Lecture</h2>
+          <p>Read the source and keep notes for this lesson.</p>
+        </header>
+        <div class="study-panel-content">
+          <p class="study-muted" id="study-lesson-day"></p>
+          <h3 class="study-lesson-title" id="study-lesson-title" tabindex="-1">Loading lesson…</h3>
+          <p id="study-lecture-error" class="study-error" role="alert"></p>
+          <button type="button" id="study-retry-lecture" class="study-secondary" hidden>Reload lesson</button>
+          <div id="study-lesson-sections"></div>
+
+          <form class="study-notes" id="study-notes-form" method="post" hidden>
+            <label for="study-notes">Your notes for this lesson</label>
+            <textarea id="study-notes" name="notes" rows="4" maxlength="6000"></textarea>
+            <div class="study-notes-actions">
+              <button type="submit" id="study-save-notes" class="study-secondary" disabled>Save notes</button>
+              <button type="button" id="study-load-notes" class="study-secondary" hidden>Load saved notes</button>
+              <p id="study-notes-status" class="study-muted" role="status"></p>
+            </div>
+            <p id="study-notes-error" class="study-error" role="alert"></p>
+          </form>
+        </div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>

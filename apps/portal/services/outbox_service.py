@@ -1,5 +1,6 @@
 import json
 import datetime
+import uuid
 from typing import Optional, Dict, Any, List, Union, Callable
 
 # -----------------------------------------------------------------------------
@@ -98,15 +99,18 @@ def enqueue_outbox_event(
 
 
 def reclaim_expired_leases(conn) -> int:
-    """Reclaims events stuck in PROCESSING past their lease expiry, resetting them to RETRYING."""
+    """Count an expired processing lease as an interrupted delivery attempt."""
     now = _now_str()
     cur = conn.execute(
         """
         UPDATE event_outbox
-        SET status = ?, locked_by = NULL, lock_expires_at = NULL, updated_at = ?
-        WHERE status = ? AND lock_expires_at IS NOT NULL AND lock_expires_at <= ?
+        SET status = CASE WHEN retry_count + 1 >= max_retries THEN ? ELSE ? END,
+            next_retry_at = CASE WHEN retry_count + 1 >= max_retries THEN NULL ELSE ? END,
+            retry_count = retry_count + 1, last_error = 'Delivery worker lease expired.',
+            locked_by = NULL, lock_expires_at = NULL, updated_at = ?
+        WHERE status = ? AND (lock_expires_at IS NULL OR lock_expires_at <= ?)
         """,
-        (STATUS_RETRYING, now, STATUS_PROCESSING, now)
+        (STATUS_DEAD_LETTER, STATUS_RETRYING, now, now, STATUS_PROCESSING, now)
     )
     return cur.rowcount if hasattr(cur, "rowcount") else 0
 
@@ -118,31 +122,37 @@ def claim_outbox_batch(
     lease_seconds: int = 300
 ) -> List[Dict[str, Any]]:
     """
-    Atomically claims a batch of pending/retrying events for a worker.
-    Sets status to 'PROCESSING' with a lease timestamp, guaranteeing that concurrent workers
-    never process the same event twice (solving BASE-04 / SF-013).
+    Claim up to the requested number of eligible events under one unique lease.
     """
     reclaim_expired_leases(conn)
     now = datetime.datetime.now()
     now_str = now.strftime("%Y-%m-%d %H:%M:%S")
-    expires_str = (now + datetime.timedelta(seconds=lease_seconds)).strftime("%Y-%m-%d %H:%M:%S")
-
-    # Fetch eligible events
+    expires_str = (now + datetime.timedelta(seconds=max(1, lease_seconds))).strftime("%Y-%m-%d %H:%M:%S")
+    lease_token = f"{worker_id}:{uuid.uuid4().hex}"
+    row_lock = " FOR UPDATE SKIP LOCKED" if getattr(conn, "dialect", "") == "postgres" else ""
+    eligibility = "status IN (?, ?) AND (next_retry_at IS NULL OR next_retry_at <= ?)"
+    ready = (STATUS_PENDING, STATUS_RETRYING, now_str)
+    conn.execute(
+        f"""
+        UPDATE event_outbox
+        SET status = ?, locked_by = ?, lock_expires_at = ?, updated_at = ?
+        WHERE id IN (
+            SELECT id FROM event_outbox WHERE {eligibility} ORDER BY id LIMIT ?{row_lock}
+        ) AND {eligibility}
+        """,
+        (STATUS_PROCESSING, lease_token, expires_str, now_str, *ready, max(0, limit), *ready),
+    )
     rows = conn.execute(
         """
         SELECT id, event_type, aggregate_type, aggregate_id, payload_json,
-               status, retry_count, max_retries, next_retry_at, last_error, created_at
+               status, retry_count, max_retries, next_retry_at, last_error, created_at,
+               locked_by, lock_expires_at
         FROM event_outbox
-        WHERE status IN (?, ?)
-          AND (next_retry_at IS NULL OR next_retry_at <= ?)
-        ORDER BY id ASC
-        LIMIT ?
+        WHERE locked_by=?
+        ORDER BY id
         """,
-        (STATUS_PENDING, STATUS_RETRYING, now_str, limit)
+        (lease_token,),
     ).fetchall()
-
-    if not rows:
-        return []
 
     claimed = []
     for r in rows:
@@ -152,18 +162,6 @@ def claim_outbox_batch(
         except Exception:
             item["payload"] = {}
         claimed.append(item)
-
-    ids = [item["id"] for item in claimed]
-    if ids:
-        placeholders = ",".join("?" for _ in ids)
-        conn.execute(
-            f"""
-            UPDATE event_outbox
-            SET status = ?, locked_by = ?, lock_expires_at = ?, updated_at = ?
-            WHERE id IN ({placeholders})
-            """,
-            [STATUS_PROCESSING, worker_id, expires_str, now_str] + ids
-        )
 
     return claimed
 
@@ -176,16 +174,27 @@ def fetch_pending_outbox_events(conn, limit: int = 50) -> List[Dict[str, Any]]:
     return claim_outbox_batch(conn, worker_id="fetch_worker", limit=limit)
 
 
-def mark_event_sent(conn, event_id: int) -> bool:
-    """Marks an outbox event as SENT with timestamp and releases worker lease."""
+def _owned_event(event_id, lease_token, now):
+    if lease_token is not None:
+        return (
+            "id=? AND status=? AND locked_by=? AND lock_expires_at>?",
+            (event_id, STATUS_PROCESSING, lease_token, now),
+        )
+    # Preserve management calls for idle events. A live worker must prove ownership.
+    return "id=? AND status IN (?, ?) AND locked_by IS NULL", (event_id, STATUS_PENDING, STATUS_RETRYING)
+
+
+def mark_event_sent(conn, event_id: int, *, lease_token: Optional[str] = None) -> bool:
+    """Record delivery only while the caller owns the current lease."""
     now = _now_str()
+    predicate, params = _owned_event(event_id, lease_token, now)
     cur = conn.execute(
-        """
+        f"""
         UPDATE event_outbox
         SET status = ?, processed_at = ?, updated_at = ?, last_error = NULL, locked_by = NULL, lock_expires_at = NULL
-        WHERE id = ?
+        WHERE {predicate}
         """,
-        (STATUS_SENT, now, now, event_id)
+        (STATUS_SENT, now, now, *params)
     )
     return cur.rowcount > 0
 
@@ -194,22 +203,26 @@ def mark_event_failed(
     conn,
     event_id: int,
     error_message: str,
-    base_backoff_seconds: int = 30
+    base_backoff_seconds: int = 30,
+    *,
+    lease_token: Optional[str] = None,
 ) -> str:
     """
     Marks an outbox event as failed. Computes exponential backoff.
     Transitions to RETRYING if retry_count < max_retries, otherwise DEAD_LETTER.
     Releases worker lease. Returns the new status.
     """
+    now = datetime.datetime.now()
+    now_text = now.strftime("%Y-%m-%d %H:%M:%S")
+    predicate, params = _owned_event(event_id, lease_token, now_text)
     row = conn.execute(
-        "SELECT retry_count, max_retries FROM event_outbox WHERE id = ?", (event_id,)
+        f"SELECT retry_count, max_retries FROM event_outbox WHERE {predicate}", params,
     ).fetchone()
     if not row:
         return STATUS_FAILED
 
     new_retry_count = row["retry_count"] + 1
     max_retries = row["max_retries"]
-    now = datetime.datetime.now()
 
     if new_retry_count >= max_retries:
         new_status = STATUS_DEAD_LETTER
@@ -217,64 +230,83 @@ def mark_event_failed(
     else:
         new_status = STATUS_RETRYING
         # Exponential backoff: 2^(retry_count) * base_backoff_seconds
-        backoff_sec = (2 ** new_retry_count) * base_backoff_seconds
+        backoff_sec = min((2 ** min(new_retry_count, 12)) * max(0, base_backoff_seconds), 86400)
         next_retry_str = (now + datetime.timedelta(seconds=backoff_sec)).strftime("%Y-%m-%d %H:%M:%S")
 
-    conn.execute(
-        """
+    updated = conn.execute(
+        f"""
         UPDATE event_outbox
         SET status = ?, retry_count = ?, next_retry_at = ?, last_error = ?, updated_at = ?, locked_by = NULL, lock_expires_at = NULL
-        WHERE id = ?
+        WHERE {predicate} AND retry_count=?
         """,
-        (new_status, new_retry_count, next_retry_str, error_message[:1000], _now_str(), event_id)
+        (new_status, new_retry_count, next_retry_str, error_message[:1000], now_text, *params, row["retry_count"])
     )
-    return new_status
+    return new_status if updated.rowcount == 1 else STATUS_FAILED
+
+
+def _renew_outbox_lease(conn, event_id, lease_token, lease_seconds):
+    now = datetime.datetime.now()
+    now_text = now.strftime("%Y-%m-%d %H:%M:%S")
+    expires = (now + datetime.timedelta(seconds=lease_seconds)).strftime("%Y-%m-%d %H:%M:%S")
+    predicate, params = _owned_event(event_id, lease_token, now_text)
+    updated = conn.execute(
+        f"UPDATE event_outbox SET lock_expires_at=? WHERE {predicate}", (expires, *params),
+    )
+    return updated.rowcount == 1
 
 
 def process_outbox_batch(
     conn,
     dispatcher_func: Callable[[str, Dict[str, Any]], bool],
     batch_size: int = 50,
-    base_backoff_seconds: int = 30
+    base_backoff_seconds: int = 30,
 ) -> Dict[str, int]:
     """
-    Processes a batch of outbox events using the provided dispatcher function.
-    Dispatcher must return True on success or raise/return False on failure.
-    Guarantees that individual dispatcher failures never abort the batch or caller.
+    Processes claims outside worker transactions and checkpoints each acknowledgement.
+    Use a dedicated worker connection, because delivery commits the leases it acquires.
     """
-    events = fetch_pending_outbox_events(conn, limit=batch_size)
+    lease_seconds = 300
+    events = claim_outbox_batch(conn, worker_id="dispatch", limit=batch_size, lease_seconds=lease_seconds)
+    conn.commit()
     metrics = {
         "processed": 0,
         "sent": 0,
         "retrying": 0,
-        "dead_letter": 0
+        "dead_letter": 0,
+        "lost_lease": 0,
     }
 
     for ev in events:
-        metrics["processed"] += 1
         event_id = ev["id"]
-        event_type = ev["event_type"]
-        payload = ev["payload"]
+        lease_token = ev["locked_by"]
+        owned = _renew_outbox_lease(conn, event_id, lease_token, lease_seconds)
+        conn.commit()
+        if not owned:
+            metrics["lost_lease"] += 1
+            continue
 
+        metrics["processed"] += 1
+        reason = "Dispatcher returned non-success result."
         try:
-            success = dispatcher_func(event_type, payload)
-            if success:
-                mark_event_sent(conn, event_id)
+            delivered = dispatcher_func(ev["event_type"], ev["payload"])
+        except Exception as error:
+            delivered = False
+            reason = str(error)
+
+        if delivered:
+            if mark_event_sent(conn, event_id, lease_token=lease_token):
                 metrics["sent"] += 1
             else:
-                st = mark_event_failed(
-                    conn, event_id, "Dispatcher returned non-success result.", base_backoff_seconds
-                )
-                if st == STATUS_RETRYING:
-                    metrics["retrying"] += 1
-                elif st == STATUS_DEAD_LETTER:
-                    metrics["dead_letter"] += 1
-        except Exception as e:
-            st = mark_event_failed(conn, event_id, str(e), base_backoff_seconds)
-            if st == STATUS_RETRYING:
+                metrics["lost_lease"] += 1
+        else:
+            status = mark_event_failed(conn, event_id, reason, base_backoff_seconds, lease_token=lease_token)
+            if status == STATUS_RETRYING:
                 metrics["retrying"] += 1
-            elif st == STATUS_DEAD_LETTER:
+            elif status == STATUS_DEAD_LETTER:
                 metrics["dead_letter"] += 1
+            else:
+                metrics["lost_lease"] += 1
+        conn.commit()
 
     return metrics
 

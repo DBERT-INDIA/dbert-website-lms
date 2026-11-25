@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  {% set page_title = 'Study review' %}
+  {% set page_robots = 'noindex, nofollow' %}
+  {% include '_head.html' %}
+  <link rel="stylesheet" href="/static/css/product-tools.css">
+  <link rel="stylesheet" href="/static/css/study-review.css">
+</head>
+<body>
+<main class="product-tool">
+  <a href="{{ url_for('study_classroom.classroom', course_id=course_id, lesson_id=course_lesson.id, entry_id=entry.id) }}">Back to study classroom</a>
+  <h1>Review {{ course_lesson.title }}</h1>
+  <p>Your original question</p>
+  <blockquote class="product-support-detail">{{ entry.question }}</blockquote>
+
+  {% if result %}
+  <div class="product-tool-card" role="status">
+    {% if result == 'correct' %}<strong>Correct. Your Study Trail is updated.</strong>
+    {% elif result == 'incorrect' %}<strong>Try again after reviewing the course material.</strong>
+    {% elif result == 'read' %}<strong>Reading review complete. Your Study Trail is updated.</strong>
+    {% else %}<strong>This item is already marked Explored.</strong>{% endif %}
+  </div>
+  {% elif entry.status == 'explored' %}
+  <p>This item is marked Explored. Flag it for review in your Study Trail to practice it again.</p>
+  {% endif %}
+
+  {% if entry.citations %}
+  <section class="product-tool-card">
+    <h2>Course sources</h2>
+    <ul class="product-result-list">
+      {% for source in entry.citations %}
+      <li>
+        <a href="{{ url_for('study_classroom.classroom', course_id=course_id, lesson_id=source.lesson_id, section_id=source.section_id) }}">{{ source.title }}</a>
+        <p class="product-support-detail">{{ source.excerpt }}</p>
+      </li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+
+  {% if entry.status == 'needs_review' %}
+  <form method="post" class="product-tool-card product-support-form">
+    {{ csrf_field() }}
+    <input type="hidden" name="attempt_key" value="{{ attempt_key }}">
+    {% if practice %}
+    <h2>Practice question</h2>
+    <input type="hidden" name="fingerprint" value="{{ practice.fingerprint }}">
+    <fieldset>
+      <legend>{{ practice.text }}</legend>
+      {% for option in practice.options %}
+      <label class="study-review-option">
+        <input type="radio" name="option" value="{{ loop.index0 }}" required>
+        {{ option }}
+      </label>
+      {% endfor %}
+    </fieldset>
+    <button type="submit" class="btn btn-primary">Check answer</button>
+    {% else %}
+    <h2>Reading review</h2>
+    <p>Revisit the lesson and your question, then mark this reading review complete.</p>
+    <a href="{{ url_for('study_classroom.classroom', course_id=course_id, lesson_id=course_lesson.id, panel='lecture') }}">Open lesson</a>
+    <button type="submit" class="btn btn-primary">Mark reading reviewed</button>
+    {% endif %}
+  </form>
+  {% endif %}
+</main>
+</body>
+</html>

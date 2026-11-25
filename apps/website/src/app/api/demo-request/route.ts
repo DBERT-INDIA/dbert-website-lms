@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import db from '@/lib/db';
+import { getDb } from '@/lib/db';
 
 function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
@@ -36,7 +36,7 @@ export async function POST(request: Request) {
     const cleanPhone = (typeof phone === 'string' && phone.trim()) ? phone.trim().slice(0, 30) : null;
     const cleanMessage = (typeof message === 'string' && message.trim()) ? message.trim().slice(0, 4000) : null;
 
-    const demoReq = await db.demoRequest.create({
+    const demoReq = await getDb().demoRequest.create({
       data: {
         name: name.trim(),
         email: email.trim().toLowerCase(),

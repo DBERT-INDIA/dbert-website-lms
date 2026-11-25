@@ -2,7 +2,7 @@ import React from 'react';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import jwt from 'jsonwebtoken';
-import db from '@/lib/db';
+import { getDb } from '@/lib/db';
 import { getJwtSecret } from '@/lib/env';
 import s from '../admin.module.css';
 import AlkameContributorsClient from './AlkameContributorsClient';
@@ -29,7 +29,7 @@ export default async function AlkameContributorsPage() {
     redirect('/admin/login');
   }
 
-  const contributors = await db.projectContributor.findMany({
+  const contributors = await getDb().projectContributor.findMany({
     where: { projectSlug: 'alkame' },
     orderBy: { createdAt: 'desc' },
   });

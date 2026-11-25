@@ -70,6 +70,12 @@ export const seoConfig: Record<string, SeoEntry> = {
     description:
       'Explore DBERT verified fellows, authentic LinkedIn credentials, and published engineering case studies from technical incubation. Inspect proof dossiers.',
   },
+  '/search': {
+    keyword: '',
+    title: 'Search DBERT',
+    description: 'Find DBERT courses, internships, products, and support pages.',
+    noindex: true,
+  },
   '/enroll/1999': {
     keyword: 'DBERT incubation enrollment',
     title: 'Incubation Program Enrollment',
@@ -344,7 +350,7 @@ export const seoConfig: Record<string, SeoEntry> = {
     keyword: 'AI courses with certificate India',
     title: 'AI & Engineering Courses with Certificates',
     description:
-      'AI and engineering courses in India with verifiable certificates across 6 domains: AI Agents, Generative AI, Machine Learning, Automation, and Analytics.',
+      'Explore AI and engineering courses in India with verifiable certificates. Filter the catalog by topic and technology to find your next practical track.',
   },
   '/learners/courses/ai-agent-development': {
     keyword: 'AI agent development course',

@@ -81,6 +81,17 @@ function getVerificationSubmissions(): any[] {
   return [];
 }
 
+const lookupHeaders = { 'Cache-Control': 'private, no-store' };
+
+function maskedContact(email?: string | null, phone?: string | null) {
+  const [local, domain] = (email || '').split('@');
+  const digits = (phone || '').replace(/\D/g, '');
+  return {
+    email: local && domain ? `${local.slice(0, 1)}***@${domain}` : '',
+    phone: digits.length >= 4 ? `******${digits.slice(-4)}` : '',
+  };
+}
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
@@ -118,42 +129,29 @@ export async function GET(request: NextRequest) {
 
     if (balanceMatch) {
       const isApproved = balanceMatch.status === 'APPROVED' || balanceMatch.status === 'VERIFIED';
-      // Mask PII for public lookup (Finding DBERT-014)
-      const rawEmail = balanceMatch.email || '';
-      const maskedEmail = rawEmail.includes('@')
-        ? `${rawEmail.split('@')[0].slice(0, 3)}***@${rawEmail.split('@')[1]}`
-        : '';
-      const rawPhone = (balanceMatch.phone || '').replace(/\D/g, '');
-      const maskedPhone = rawPhone.length >= 4
-        ? `+91 ******${rawPhone.slice(-4)}`
-        : '';
-
       const nextCohort = getNextCohortStandup();
 
       return NextResponse.json({
         found: true,
         enrollmentStatus: balanceMatch.status || 'SUBMITTED',
         isApproved,
-        rejectionReason: (balanceMatch as any).rejectionReason || null,
         batchStartDate: balanceMatch.batchStartDate || nextCohort.batchStartDate,
         batchStartDisplay: balanceMatch.batchStartDisplay || nextCohort.batchStartDisplay,
         candidate: {
           // Never fabricate fake IDs (Finding DBERT-015)
           certId: balanceMatch.certId || null,
           internId: balanceMatch.internId || null,
-          holderName: balanceMatch.fullName,
-          email: maskedEmail,
-          phone: maskedPhone,
-          college: balanceMatch.college || 'Full Stack Incubation Scholar',
+          holderName: '',
+          ...maskedContact(balanceMatch.email, balanceMatch.phone),
+          college: '',
           domain: balanceMatch.domain,
           project: balanceMatch.domain + ' Production Architecture',
           batch: balanceMatch.batchStartDisplay || nextCohort.batchStartDisplay,
           isProvisional: !isApproved,
           submissionId: balanceMatch.id,
           status: balanceMatch.status,
-          rejectionReason: (balanceMatch as any).rejectionReason || null
         }
-      });
+      }, { headers: lookupHeaders });
     }
 
     // 1.5 Check if submitted in verification_submissions_299.json
@@ -234,25 +232,23 @@ export async function GET(request: NextRequest) {
         enrollmentStatus: 'UNENROLLED',
         isApproved: false,
         verificationStatus: verMatch ? verMatch.status : (match.isProvisional ? 'UNVERIFIED' : 'VERIFIED'),
-        verificationSubmission: verMatch || null,
-        rejectionRemarks: verMatch?.status === 'REJECTED' ? (verMatch.adminRemarks || 'Payment not verified. Repayment required.') : null,
+        hasVerificationSubmission: Boolean(verMatch),
         candidate: {
           certId: match.certId,
           internId: match.internId || '',
-          holderName: match.holderName,
-          email: match.email || '',
-          phone: match.phone || '',
-          college: match.college || '',
+          holderName: match.isProvisional ? '' : match.holderName,
+          ...maskedContact(match.email, match.phone),
+          college: match.isProvisional ? '' : match.college || '',
           domain: match.domain || '',
           project: match.project || '',
           batch: match.batch || '',
           isProvisional: match.isProvisional ?? true
         }
-      });
+      }, { headers: lookupHeaders });
     }
 
     return NextResponse.json({ found: false, message: 'Candidate record not found' }, { status: 404 });
-  } catch (err: any) {
-    return NextResponse.json({ found: false, error: err.message }, { status: 500 });
+  } catch {
+    return NextResponse.json({ found: false, error: 'Lookup is temporarily unavailable' }, { status: 500, headers: lookupHeaders });
   }
 }

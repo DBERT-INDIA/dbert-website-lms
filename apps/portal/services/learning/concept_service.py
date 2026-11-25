@@ -47,6 +47,7 @@ class ConceptService:
                 assessment_criteria_json = excluded.assessment_criteria_json,
                 common_misconceptions_json = excluded.common_misconceptions_json,
                 resources_json = excluded.resources_json
+            RETURNING concept_id
             """,
             (
                 concept.concept_id,
@@ -64,7 +65,7 @@ class ConceptService:
                 json.dumps(concept.resources),
                 concept.created_at
             )
-        )
+        ).fetchone()
         conn.commit()
         return concept
 

@@ -1,129 +1,112 @@
-"""
-routes/mentor.py - Mentor Portal & Availability Routing Blueprint
-Fulfills Phase 23 (Monolith Modularization) of INTERNSHIPPORTAL4_LOCAL_AI_AGENT_MASTER_PLAN.md
+"""Mentor booking, calendar and reserved-session workspace endpoints."""
 
-Endpoints:
-- POST /mentors/slots/<int:slot_id>/book
-- POST /mentors/slots/<int:slot_id>/cancel
-"""
-from flask import Blueprint, jsonify, request
-from services.auth_service import AuthService
-from app import (
-    get_db, current_intern, is_enrolled_or_accepted,
-    check_mentor_pacing, log_error
+from flask import Blueprint, Response, abort, flash, jsonify, redirect, request, url_for
+
+from app import current_intern, current_mentor, current_staff, get_db, is_enrolled_or_accepted, log_error, require_confirmed_fellow
+from services.mentor_schedule import (
+    BookingError,
+    release_slot,
+    reserve_slot,
+    session_calendar,
+    student_reservations,
+    update_learner_question,
+    update_session_details,
 )
+
 
 mentor_bp = Blueprint("mentor", __name__)
 
 
-@mentor_bp.route("/mentors/slots/<int:slot_id>/book", methods=["POST"])
+@mentor_bp.post("/mentors/slots/<int:slot_id>/book")
+@require_confirmed_fellow
 def intern_book_slot(slot_id):
-    """Enrolls an active intern into a mentor session with group capacity of up to 30 interns."""
-    with get_db() as conn:
-        intern = AuthService.current_intern(conn)
+    intern = current_intern()
     if not intern:
-        return jsonify({"status": "error", "message": "Authentication required"}), 401
+        return jsonify({"status": "error", "message": "Authentication required."}), 401
     if not is_enrolled_or_accepted(intern["email"]):
         return jsonify({"status": "error", "message": "Internship enrollment required to book mentor sessions."}), 403
 
     try:
         with get_db() as conn:
-            # Check if already booked
-            already = conn.execute(
-                "SELECT 1 FROM mentor_session_bookings WHERE slot_id = ? AND intern_id = ? AND status = 'booked'",
-                (slot_id, intern["id"])
-            ).fetchone()
-            if already:
-                return jsonify({"status": "error", "message": "You have already reserved a seat in this mentorship session."}), 400
-
-            meeting_link = f"https://meet.google.com/dbert-mentor-slot-{slot_id}"
-            res = conn.execute(
-                "UPDATE mentor_availability_slots "
-                "SET seats_booked = seats_booked + 1, "
-                "    is_booked = CASE WHEN seats_booked + 1 >= COALESCE(capacity, 30) THEN 1 ELSE 0 END "
-                "WHERE id = ? AND seats_booked < COALESCE(capacity, 30)",
-                (slot_id,)
-            )
-            if res.rowcount == 0:
-                return jsonify({"status": "error", "message": "This session has reached its full capacity of 30 interns."}), 400
-
-            conn.execute(
-                "INSERT INTO mentor_session_bookings (slot_id, intern_id, meeting_link, status) VALUES (?, ?, ?, 'booked')",
-                (slot_id, intern["id"], meeting_link)
-            )
-
-            # Query mentor name and slot start time for notification push
-            slot_info = conn.execute(
-                "SELECT s.start_time, sa.name AS mentor_name "
-                "FROM mentor_availability_slots s "
-                "LEFT JOIN staff_accounts sa ON s.mentor_staff_id = sa.id "
-                "WHERE s.id = ?",
-                (slot_id,)
-            ).fetchone()
-
-            conn.commit()
-
-        try:
-            from services.notifications.web_push_service import notify_mentor_booking_push
-            m_name = slot_info["mentor_name"] if slot_info and slot_info["mentor_name"] else "DBERT Engineering Mentor"
-            s_time = slot_info["start_time"] if slot_info and slot_info["start_time"] else "Upcoming Session"
-            notify_mentor_booking_push(intern["email"], m_name, str(s_time), meeting_link)
-        except Exception as _p_err:
-            log_error("intern-book-slot-push", _p_err)
-
-        return jsonify({
-            "status": "success",
-            "message": "Seat reserved successfully in group mentorship session!",
-            "meeting_link": meeting_link
-        })
-    except Exception as e:
-        log_error("intern-book-slot", e)
-        return jsonify({"status": "error", "message": "Failed to book mentor slot"}), 500
+            meeting_link = reserve_slot(conn, intern_id=intern["id"], slot_id=slot_id)
+    except BookingError as error:
+        return jsonify({"status": "error", "message": str(error)}), error.status
+    except Exception as error:
+        log_error("intern-book-slot", error)
+        return jsonify({"status": "error", "message": "Could not book this session."}), 500
+    return jsonify({"status": "success", "message": "Seat reserved.", "meeting_link": meeting_link})
 
 
-@mentor_bp.route("/mentors/slots/<int:slot_id>/cancel", methods=["POST"])
+@mentor_bp.post("/mentors/slots/<int:slot_id>/cancel")
 def intern_cancel_slot(slot_id):
-    """Cancels an intern's seat reservation and increments available seats."""
-    with get_db() as conn:
-        intern = AuthService.current_intern(conn)
+    intern = current_intern()
     if not intern:
-        return jsonify({"status": "error", "message": "Authentication required"}), 401
+        return jsonify({"status": "error", "message": "Authentication required."}), 401
 
     try:
         with get_db() as conn:
-            res = conn.execute(
-                "UPDATE mentor_session_bookings SET status = 'cancelled' "
-                "WHERE slot_id = ? AND intern_id = ? AND status = 'booked'",
-                (slot_id, intern["id"])
-            )
-            if res.rowcount == 0:
-                return jsonify({"status": "error", "message": "No active reservation found for this session."}), 404
+            release_slot(conn, intern_id=intern["id"], slot_id=slot_id)
+    except BookingError as error:
+        return jsonify({"status": "error", "message": str(error)}), error.status
+    except Exception as error:
+        log_error("intern-cancel-slot", error)
+        return jsonify({"status": "error", "message": "Could not cancel this reservation."}), 500
+    return jsonify({"status": "success", "message": "Reservation cancelled and seat released."})
 
-            conn.execute(
-                "UPDATE mentor_availability_slots "
-                "SET seats_booked = CASE WHEN seats_booked > 0 THEN seats_booked - 1 ELSE 0 END, "
-                "    is_booked = 0 "
-                "WHERE id = ?",
-                (slot_id,)
-            )
-            conn.commit()
 
-        try:
-            from services.notifications.web_push_service import dispatch_lifecycle_push
-            dispatch_lifecycle_push(
-                "mentor_cancelled",
-                target_email=intern["email"],
-                title="📅 Mentor Session Cancelled",
-                body="Your seat reservation was cancelled and released back to the cohort.",
-                url="/mentors/booking"
-            )
-        except Exception as _p_err:
-            log_error("intern-cancel-slot-push", _p_err)
+@mentor_bp.get("/mentors/slots/<int:slot_id>/calendar.ics")
+def intern_mentor_calendar(slot_id):
+    intern = current_intern()
+    if not intern:
+        abort(401)
 
-        return jsonify({
-            "status": "success",
-            "message": "Session reservation cancelled. Seat released back to cohort."
-        })
-    except Exception as e:
-        log_error("intern-cancel-slot", e)
-        return jsonify({"status": "error", "message": "Failed to cancel reservation"}), 500
+    with get_db() as conn:
+        bookings = student_reservations(conn, intern["id"], slot_id)
+    if not bookings:
+        abort(404)
+    return Response(
+        session_calendar(bookings[0]),
+        content_type="text/calendar; charset=utf-8",
+        headers={"Content-Disposition": f'attachment; filename="dbert-mentor-{slot_id}.ics"'},
+    )
+
+
+@mentor_bp.post("/mentors/slots/<int:slot_id>/question")
+def intern_mentor_question(slot_id):
+    intern = current_intern()
+    if not intern:
+        return redirect("/#signin", code=303)
+
+    try:
+        with get_db() as conn:
+            update_learner_question(
+                conn, intern_id=intern["id"], slot_id=slot_id, question=request.form.get("question", ""),
+            )
+        flash("Your question was saved for the mentor.", "success")
+    except BookingError as error:
+        if error.status == 404:
+            abort(404)
+        flash(str(error), "error")
+    return redirect(url_for("intern_mentor_slots", _anchor=f"mentor-reservation-{slot_id}"), code=303)
+
+
+@mentor_bp.post("/staff/mentor-slots/<int:slot_id>/details")
+def staff_mentor_details(slot_id):
+    staff = current_staff()
+    mentor = current_mentor() if not staff else None
+    if not staff and not mentor:
+        abort(401)
+
+    try:
+        with get_db() as conn:
+            update_session_details(
+                conn, staff_id=staff["id"] if staff else None, mentor_id=mentor["id"] if mentor else None,
+                slot_id=slot_id, agenda=request.form.get("agenda", ""),
+                follow_up=request.form.get("follow_up", ""), meeting_link=request.form.get("meeting_link", ""),
+            )
+        flash("Session materials updated.", "success")
+    except BookingError as error:
+        if error.status == 404:
+            abort(404)
+        flash(str(error), "error")
+    return redirect(url_for("staff_mentor_slots", _anchor=f"mentor-session-{slot_id}"), code=303)

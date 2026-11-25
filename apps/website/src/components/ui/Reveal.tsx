@@ -5,7 +5,7 @@ type RevealProps = {
   /** Element to render. Defaults to a div. */
   as?: React.ElementType;
   className?: string;
-  /** Stagger, in ms, applied as a transition-delay. */
+  /** Stagger in milliseconds for the optional entry animation. */
   delay?: number;
 } & React.HTMLAttributes<HTMLElement>;
 
@@ -20,9 +20,8 @@ type RevealProps = {
  * IntersectionObserver. The homepage alone renders 29 of them, so that was 29
  * hydration roots and 29 observers for one behaviour.
  *
- * `.rv` starts at opacity 0. globals.css forces it visible under
- * prefers-reduced-motion, and RevealObserver reveals everything if
- * IntersectionObserver is unavailable.
+ * Content is visible by default. The observer skips optional motion when
+ * scripting support, motion preferences, or data-saving settings call for it.
  */
 export default function Reveal({
   children,
@@ -34,7 +33,7 @@ export default function Reveal({
   return (
     <Tag
       className={`rv${className ? ` ${className}` : ''}`}
-      style={delay ? { transitionDelay: `${delay}ms` } : undefined}
+      style={delay ? { animationDelay: `${delay}ms` } : undefined}
       {...rest}
     >
       {children}

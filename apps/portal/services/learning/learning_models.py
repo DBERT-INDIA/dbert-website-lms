@@ -106,6 +106,7 @@ CREATE TABLE IF NOT EXISTS gl_learning_turns (
     student_input TEXT NOT NULL,
     evaluation_json TEXT NOT NULL,
     recommendation_json TEXT NOT NULL,
+    result_json TEXT,
     assistant_response TEXT,
     status TEXT DEFAULT 'completed',
     created_at TEXT NOT NULL,
@@ -113,7 +114,9 @@ CREATE TABLE IF NOT EXISTS gl_learning_turns (
 );
 CREATE INDEX IF NOT EXISTS idx_gl_turns_session ON gl_learning_turns(session_id);
 CREATE INDEX IF NOT EXISTS idx_gl_turns_student ON gl_learning_turns(student_id);
-CREATE UNIQUE INDEX IF NOT EXISTS idx_gl_turns_idem ON gl_learning_turns(idempotency_key) WHERE idempotency_key IS NOT NULL;
+CREATE UNIQUE INDEX IF NOT EXISTS idx_gl_turns_session_idem
+    ON gl_learning_turns(student_id, session_id, idempotency_key) WHERE idempotency_key IS NOT NULL;
+DROP INDEX IF EXISTS idx_gl_turns_idem;
 
 
 -- 5. Diagnostic Misconception Catalog
@@ -182,6 +185,9 @@ CREATE INDEX IF NOT EXISTS idx_gl_teacher_inst_student ON gl_teacher_learning_in
 def init_learning_tables(conn) -> None:
     """Idempotently executes table creation and indexes for Guided Learning 2.0."""
     conn.executescript(SCHEMA_SQL)
+    columns = conn.execute("SELECT * FROM gl_learning_turns WHERE 1 = 0").description
+    if "result_json" not in {column[0] for column in columns}:
+        conn.execute("ALTER TABLE gl_learning_turns ADD COLUMN result_json TEXT")
     conn.commit()
 
 

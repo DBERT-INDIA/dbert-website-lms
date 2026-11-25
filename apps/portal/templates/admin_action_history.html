@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+  {% set page_title = 'Staff action history' %}
+  {% set page_robots = 'noindex, nofollow' %}
+  {% include '_head.html' %}
+  <link rel="stylesheet" href="/static/css/product-tools.css">
+</head>
+<body>
+<main class="product-tool">
+  <a href="/admin">Back to admin</a>
+  <h1>Staff action history</h1>
+  <form method="get" class="product-tool-card product-support-form">
+    <label for="auditArea">Workflow</label>
+    <select id="auditArea" name="area">
+      <option value="">All workflows</option>
+      {% for area in sections %}<option value="{{ area }}" {% if area == active %}selected{% endif %}>{{ area }}</option>{% endfor %}
+    </select>
+    <button type="submit" class="btn btn-primary">Filter history</button>
+  </form>
+  <ol class="product-result-list">
+    {% for event in events %}
+    <li>
+      <strong>{{ event.category }} · Record {{ event.item_id }} · {{ event.action|replace('_', ' ') }}</strong>
+      <span>{{ event.occurred_at }} · {{ 'Actor ' ~ event.actor if event.actor else 'System' }}</span>
+      {% if event.reason %}<p class="product-support-detail">{{ event.reason }}</p>{% endif %}
+    </li>
+    {% else %}<li>No actions have been recorded for this workflow.</li>{% endfor %}
+  </ol>
+</main>
+</body>
+</html>

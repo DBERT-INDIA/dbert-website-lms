@@ -100,7 +100,7 @@
       <div class="head">
         <div class="cert-badge">
           <div class="disc"><i class="fas fa-graduation-cap"></i></div>
-          <div class="wm">DBERT<small>INTERNSHIP PROGRAMME</small></div>
+          <div class="wm">DBERT<small>{{ 'COURSE COHORT' if cert.tier == 'program_cohort_completion' else 'INTERNSHIP PROGRAMME' }}</small></div>
         </div>
         <div class="htitle">
           <div class="t1">CERTIFICATE OF</div>
@@ -115,11 +115,11 @@
         {% set d = (cert.domain or 'Engineering').replace('_',' ').title() %}
         <div class="lead">This certificate is proudly awarded to</div>
         <div class="recipient">{{ rec_name }}</div>
-        <div class="lead">on successful completion of the comprehensive curriculum in</div>
+        <div class="lead">{{ 'for meeting the required milestones in' if cert.tier == 'program_cohort_completion' else 'on successful completion of the comprehensive curriculum in' }}</div>
         <div class="prog">{{ cert.course_title }}</div>
         <div class="meta" style="margin-top:14px; color:var(--tx-muted); font-size:13.5px;">
           Track: <strong style="color:var(--tx-head);">{{ d }}</strong> &nbsp;|&nbsp; 
-          Credential Level: <strong style="color:var(--gold);">DBERT Verified Graduate</strong>
+          Credential Level: <strong style="color:var(--gold);">{{ 'Cohort Completion' if cert.tier == 'program_cohort_completion' else 'DBERT Verified Graduate' }}</strong>
         </div>
       </div>
 

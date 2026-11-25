@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import jwt from 'jsonwebtoken';
-import db from '@/lib/db';
+import { getDb } from '@/lib/db';
 import { getJwtSecret } from '@/lib/env';
 import { callCohortEmailApi, CohortDecisionType } from '@/lib/email';
 
@@ -39,7 +39,7 @@ export async function GET(request: Request) {
       where.domain = domain;
     }
 
-    let applications = await db.cohortApplication.findMany({
+    let applications = await getDb().cohortApplication.findMany({
       where,
       orderBy: { createdAt: 'desc' },
     });
@@ -81,7 +81,7 @@ export async function PATCH(request: Request) {
       }, { status: 400 });
     }
 
-    const application = await db.cohortApplication.findUnique({
+    const application = await getDb().cohortApplication.findUnique({
       where: { id },
     });
 
@@ -100,7 +100,7 @@ export async function PATCH(request: Request) {
     });
 
     // 2. Persist Decision & Email audit trail to database
-    const updated = await db.cohortApplication.update({
+    const updated = await getDb().cohortApplication.update({
       where: { id },
       data: {
         status: decision,

@@ -3,6 +3,7 @@
 <head>
 {% set page_title_full %}Applicants · {{ post.title }}{% endset %}
 {% include "_head.html" %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/employer-pipeline.css') }}">
 <meta name="robots" content="noindex,nofollow">
 </head>
 <body class="pg-company-applicants has-company-sidebar">
@@ -21,11 +22,15 @@
   <div class="wrap">
     <h1>Applicants — {{ post.title }}</h1>
     <p class="sub"><a href="/company/posts/{{ post.id }}"><i class="fas fa-arrow-left"></i> Back to post</a> · {{ applicants|length }} applicant(s)
-    {% set certifying_count = applicants | selectattr('status', 'equalto', 'PENDING_CERTS') | list | length %}
+    {% set certifying_count = applicants | selectattr('status', 'equalto', pending_certs_status) | list | length %}
     {% if certifying_count > 0 %}
       · <span class="chip" style="background: rgba(245, 158, 11, 0.15); color: #F59E0B; border: 1px solid #F59E0B; padding: 2px 8px; border-radius: 12px; font-size: 12px; display: inline-flex; align-items: center; gap: 4px;">🎓 {{ certifying_count }} Candidate(s) Currently Certifying</span>
     {% endif %}
     </p>
+
+    {% for category, message in get_flashed_messages(with_categories=true) %}
+    <p class="req-strip" role="{{ 'alert' if category == 'error' else 'status' }}">{{ message }}</p>
+    {% endfor %}
 
     {% if required_certs %}
     <div class="req-strip"><i class="fas fa-certificate" style="color:var(--gold);"></i>
@@ -62,7 +67,7 @@
     {% endif %}
 
     {% for a in applicants %}
-    <div class="applicant" data-app="{{ a.id }}"
+    <div class="applicant" id="app-{{ a.id }}" data-app="{{ a.id }}"
          data-search="{{ (a.intern_name ~ ' ' ~ a.intern_email)|lower }}"
          data-status="{{ a.status }}"
          data-applied="{{ a.created_at }}">
@@ -85,7 +90,7 @@
         {% if not a.earned_certs and not a.missing_certs %}<span class="chip none">No required certs / none earned</span>{% endif %}
       </div>
 
-      <div class="cert-label">Interview</div>
+      <div class="cert-label">LMS interview</div>
       {% if a.interview %}
         <div class="chips">
           <span class="chip {{ 'earned' if a.interview.status == 'completed' else 'none' }}">{{ a.interview.status|capitalize }} &middot; attempt {{ a.interview.attempt_no }}</span>
@@ -96,6 +101,38 @@
         </div>
       {% else %}
         <div class="chips"><span class="chip none">Not started</span></div>
+      {% endif %}
+
+      {% if a.status not in ['Hired', 'Rejected'] or a.employer_interview_at %}
+      <details class="employer-interview">
+        <summary>{{ 'Manage employer interview' if a.employer_interview_at else 'Schedule an employer interview' }}</summary>
+        {% if a.employer_interview_form %}
+          {% set scheduled = a.employer_interview_form|replace('T', ' ') %}
+          <p>Scheduled for <time datetime="{{ a.employer_interview_at }}">{{ scheduled }} IST</time></p>
+        {% endif %}
+        <form method="post" action="{{ url_for('company_application_interview', app_id=a.id) }}">
+          {{ csrf_field() }}
+          {% if a.status not in ['Hired', 'Rejected'] %}
+          <label>Interview time (IST)
+            <input type="datetime-local" name="start" value="{{ a.employer_interview_form }}" required>
+          </label>
+          <label>HTTPS meeting link (optional)
+            <input type="url" name="link" maxlength="500" value="{{ a.employer_interview_link or '' }}">
+          </label>
+          <label>Instructions for the applicant (optional)
+            <textarea name="note" rows="2" maxlength="1000">{{ a.employer_interview_note or '' }}</textarea>
+          </label>
+          {% endif %}
+          <div class="row-actions">
+            {% if a.status not in ['Hired', 'Rejected'] %}
+            <button type="submit" class="btn" name="interview_action" value="schedule">Save interview</button>
+            {% endif %}
+            {% if a.employer_interview_at %}
+            <button type="submit" class="btn ghost" name="interview_action" value="cancel" formnovalidate>Cancel interview</button>
+            {% endif %}
+          </div>
+        </form>
+      </details>
       {% endif %}
 
       <div class="row-actions">

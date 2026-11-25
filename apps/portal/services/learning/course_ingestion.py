@@ -90,14 +90,14 @@ class CourseIngester:
                     chunk_id, course_id, course_version, module_id, concept_id,
                     subtopic_id, difficulty, content_type, source, text_content,
                     embedding_json, created_at
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))''',
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now')) RETURNING chunk_id''',
                 (
                     chunk["chunk_id"], chunk["course_id"], chunk["course_version"],
                     chunk["module_id"], chunk["concept_id"], chunk["subtopic_id"],
                     chunk["difficulty"], chunk["content_type"], chunk["source"],
                     chunk["text_content"], chunk["embedding_json"]
                 )
-            )
+            ).fetchone()
             
         conn.commit()
         return True

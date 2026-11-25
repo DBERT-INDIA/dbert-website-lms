@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  {% set page_title = cohort.title %}
+  {% set page_robots = 'noindex, nofollow' %}
+  {% include '_head.html' %}
+  <link rel="stylesheet" href="/static/css/product-tools.css">
+  <link rel="stylesheet" href="/static/css/program-cohorts.css">
+</head>
+<body>
+<main class="product-tool cohort-page">
+  <a href="{{ url_for('program_cohorts.admin_index' if role == 'admin' else 'program_cohorts.mentor_index' if role == 'mentor' else 'program_cohorts.index') }}">Back to program cohorts</a>
+  <h1>{{ cohort.title }}</h1>
+  {% for category, message in get_flashed_messages(with_categories=true) %}
+  <p{% if category == 'error' %} class="product-tool-error" role="alert"{% else %} role="status"{% endif %}>{{ message }}</p>
+  {% endfor %}
+  <section class="product-tool-card">
+    <dl class="cohort-facts">
+      <div><dt>Course</dt><dd>{{ cohort.course_title }}</dd></div>
+      <div><dt>Dates</dt><dd><time datetime="{{ cohort.starts_on }}">{{ cohort.starts_on }}</time> to <time datetime="{{ cohort.ends_on }}">{{ cohort.ends_on }}</time></dd></div>
+      <div><dt>Mentor</dt><dd>{{ cohort.mentor_name or 'Unassigned' }}</dd></div>
+      <div><dt>Seats</dt><dd>{{ cohort.seats_taken }} / {{ cohort.capacity }} used</dd></div>
+      {% if role == 'learner' and member %}
+      <div><dt>Your status</dt><dd>{{ 'On the waitlist' if member.status == 'waitlisted' else member.status|capitalize }}</dd></div>
+      {% elif role != 'learner' %}
+      <div><dt>Registration</dt><dd>{{ 'Open' if accepting else 'Closed' }}</dd></div>
+      {% endif %}
+    </dl>
+    {% if role == 'learner' %}
+      {% if member and member.status in ['enrolled', 'completed'] %}
+      <div class="cohort-actions">
+        {% if eligible and cohort.course_available %}
+        <a class="cohort-button" href="/courses/{{ cohort.course_id }}/study">Open classroom</a>
+        {% endif %}
+        <a href="/program-cohorts/{{ cohort.id }}/progress">View my progress</a>
+      </div>
+      {% elif member and member.status == 'waitlisted' %}
+      {% if accepting %}
+      <p>You are on the waitlist. When a seat becomes available, it goes to the next learner with course access.</p>
+      {% else %}
+      <p>You are on the waitlist. Registration is closed and seats are paused.</p>
+      {% endif %}
+      {% elif not accepting %}
+      <p>Registration is closed.</p>
+      {% elif not eligible %}
+      <div class="cohort-actions">
+        <span>Enroll in the course to join this cohort.</span>
+        <a href="/courses/{{ cohort.course_id }}">View course</a>
+      </div>
+      {% else %}
+      <form method="post">
+        {{ csrf_field() }}
+        <button class="cohort-button" name="action" value="join">{{ 'Join waitlist' if cohort.seats_taken >= cohort.capacity else 'Join cohort' }}</button>
+      </form>
+      {% endif %}
+      {% if member and member.status in ['waitlisted', 'enrolled'] %}
+      <form method="post" class="cohort-withdraw">
+        {{ csrf_field() }}
+        <button class="cohort-button cohort-button-secondary" name="action" value="withdraw">{{ 'Leave waitlist' if member.status == 'waitlisted' else 'Leave cohort' }}</button>
+      </form>
+      {% endif %}
+    {% else %}
+    <div class="cohort-actions">
+      <a class="cohort-button" href="/program-cohorts/{{ cohort.id }}/staff/progress">Manage cohort progress</a>
+      <a href="/program-cohorts/{{ cohort.id }}/study">View cohort study activity</a>
+      {% if role == 'admin' %}
+      <form method="post">
+        {{ csrf_field() }}
+        <button name="status" value="{{ 'closed' if cohort.status == 'open' else 'open' }}" class="cohort-button cohort-button-secondary">
+          {{ 'Close registration' if cohort.status == 'open' else 'Reopen registration' }}
+        </button>
+      </form>
+      {% if accepting and cohort.seats_taken < cohort.capacity %}
+      <form method="post">
+        {{ csrf_field() }}
+        <button name="action" value="fill-seats" class="cohort-button cohort-button-secondary">Fill seats from waitlist</button>
+      </form>
+      {% endif %}
+      {% endif %}
+    </div>
+    {% endif %}
+  </section>
+  {% if role != 'learner' %}
+  <section class="product-tool-card">
+    <h2>Roster</h2>
+    {% if members %}
+    <div class="cohort-table-wrap">
+      <table class="cohort-table">
+        <thead><tr><th scope="col">Learner</th><th scope="col">Status</th><th scope="col">Requested on</th><th scope="col">Enrolled on</th></tr></thead>
+        <tbody>
+        {% for item in members %}
+          <tr><td>{{ item.name }}</td><td>{{ item.status|capitalize }}</td><td>{{ item.requested_at[:10] }}</td><td>{{ item.enrolled_at[:10] if item.enrolled_at else '—' }}</td></tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}<p>No learners have joined this cohort.</p>{% endif %}
+  </section>
+  {% endif %}
+  {% if role == 'admin' %}
+  <form method="post" class="product-tool-card product-support-form cohort-form">
+    {{ csrf_field() }}
+    <h2>Edit cohort settings</h2>
+    <label for="cohort-title">Cohort name</label>
+    <input id="cohort-title" name="title" value="{{ request.form.get('title', cohort.title) }}" required minlength="3" maxlength="160">
+    <div class="cohort-form-row">
+      <div><label for="cohort-start">Start date</label>
+        <input id="cohort-start" name="starts_on" type="date" value="{{ cohort.starts_on if cohort.schedule_locked_at else request.form.get('starts_on', cohort.starts_on) }}"{% if cohort.schedule_locked_at %} readonly aria-describedby="schedule-lock"{% else %} required{% endif %}></div>
+      <div><label for="cohort-end">End date</label>
+        <input id="cohort-end" name="ends_on" type="date" value="{{ cohort.ends_on if cohort.schedule_locked_at else request.form.get('ends_on', cohort.ends_on) }}"{% if cohort.schedule_locked_at %} readonly aria-describedby="schedule-lock"{% else %} required{% endif %}></div>
+      <div><label for="cohort-capacity">Seats</label>
+        <input id="cohort-capacity" name="capacity" type="number" min="{{ [cohort.seats_taken, 1]|max }}" max="2147483647" value="{{ request.form.get('capacity', cohort.capacity) }}" required></div>
+    </div>
+    {% if cohort.schedule_locked_at %}<p id="schedule-lock">Cohort dates are fixed once a milestone is defined.</p>{% endif %}
+    {% set selected_mentor = request.form.get('mentor_id', cohort.mentor_id|string if cohort.mentor_id else '') %}
+    <label for="cohort-mentor">Assigned mentor</label>
+    <select id="cohort-mentor" name="mentor_id">
+      <option value="">Unassigned</option>
+      {% if selected_mentor == cohort.mentor_id|string and cohort.mentor_id not in mentors|map(attribute='id')|list %}
+      <option value="{{ cohort.mentor_id }}" selected>{{ cohort.mentor_name }} (inactive)</option>
+      {% endif %}
+      {% for mentor in mentors %}
+      <option value="{{ mentor.id }}"{% if selected_mentor == mentor.id|string %} selected{% endif %}>{{ mentor.name }}</option>
+      {% endfor %}
+    </select>
+    <button type="submit" name="action" value="update" class="cohort-button">Save settings</button>
+  </form>
+  {% endif %}
+  {% if role == 'admin' and history %}
+  <section class="product-tool-card">
+    <h2>Recent registration activity</h2>
+    <ul class="product-result-list">
+      {% for event in history %}
+      <li><b>{{ event.action|capitalize }}{% if event.name %} · {{ event.name }}{% endif %}</b><span>{{ event.created_at }}</span></li>
+      {% endfor %}
+    </ul>
+  </section>
+  {% endif %}
+</main>
+</body>
+</html>

@@ -16,6 +16,9 @@ from datetime import datetime, date, timedelta
 from typing import Optional, List, Dict, Any
 
 
+PROGRAM_COHORT_CERTIFICATE_TIER = "program_cohort_completion"
+
+
 class CertificateService:
     """Certificate management and verification service."""
 
@@ -106,9 +109,10 @@ class CertificateService:
                         (email IS NOT NULL AND LOWER(email) = LOWER(?))
                         OR (? IS NOT NULL AND intern_id = ?)
                     )
+                    AND (tier IS NULL OR tier <> ?)
                     ORDER BY id DESC LIMIT 1
                     """,
-                    (clean_email or "", intern_id, intern_id)
+                    (clean_email or "", intern_id, intern_id, PROGRAM_COHORT_CERTIFICATE_TIER)
                 ).fetchone()
                 if row:
                     cert_id = row["cert_id"]
@@ -295,8 +299,9 @@ class CertificateService:
         if conn and (clean_email or intern_id):
             try:
                 cert_row = conn.execute(
-                    "SELECT cert_id FROM intern_certificates WHERE (email IS NOT NULL AND LOWER(email) = LOWER(?)) ORDER BY id DESC LIMIT 1",
-                    (clean_email or "",)
+                    """SELECT cert_id FROM intern_certificates WHERE LOWER(email) = LOWER(?)
+                       AND (tier IS NULL OR tier <> ?) ORDER BY id DESC LIMIT 1""",
+                    (clean_email or "", PROGRAM_COHORT_CERTIFICATE_TIER)
                 ).fetchone()
                 if cert_row and cert_row["cert_id"]:
                     cert_id = cert_row["cert_id"]

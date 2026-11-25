@@ -1,61 +1,45 @@
 import { NextResponse } from 'next/server';
-import crypto from 'crypto';
-import db from '@/lib/db';
+import { loadWebsiteOrder, reconcileWebsiteCapture } from '@/lib/website-payment-ledger';
+import { matchesPaymentSignature, WebsitePaymentError } from '@/lib/website-payment-contract';
 
 export async function POST(request: Request) {
+  const secret = process.env.RAZORPAY_WEBHOOK_SECRET?.trim();
+  if (!secret) return NextResponse.json({ error: 'The payment webhook is unavailable.' }, { status: 503 });
+
+  const body = Buffer.from(await request.arrayBuffer());
+  if (!matchesPaymentSignature(body, request.headers.get('x-razorpay-signature'), secret)) {
+    return NextResponse.json({ error: 'Invalid webhook signature.' }, { status: 400 });
+  }
+  let event;
   try {
-    const rawBody = await request.text();
-    const signature = request.headers.get('x-razorpay-signature');
-    
-    if (!signature) {
-      return NextResponse.json({ error: 'Missing signature' }, { status: 400 });
+    event = JSON.parse(body.toString('utf8'));
+  } catch {
+    return NextResponse.json({ error: 'Invalid webhook payload.' }, { status: 400 });
+  }
+  if (!event || typeof event !== 'object' || Array.isArray(event)) {
+    return NextResponse.json({ error: 'Invalid webhook payload.' }, { status: 400 });
+  }
+  if (event.event !== 'payment.captured' && event.event !== 'order.paid') {
+    return NextResponse.json({ status: 'ignored' });
+  }
+
+  const capture = event.payload?.payment?.entity;
+  if (!capture || typeof capture.id !== 'string' || typeof capture.order_id !== 'string') {
+    return NextResponse.json({ error: 'Captured payment details are missing.' }, { status: 400 });
+  }
+
+  try {
+    const order = await loadWebsiteOrder(capture.order_id);
+    await reconcileWebsiteCapture(order, capture.id, capture);
+    return NextResponse.json({ status: 'processed' });
+  } catch (error) {
+    if (error instanceof WebsitePaymentError && error.status === 404) {
+      // Accounts can deliver events for portal purchases to the website webhook.
+      return NextResponse.json({ status: 'unmatched' });
     }
-
-    const webhookSecret = process.env.RAZORPAY_WEBHOOK_SECRET;
-    if (!webhookSecret) {
-      return NextResponse.json({ error: 'Server misconfiguration: Webhook secret not found' }, { status: 500 });
+    if (error instanceof WebsitePaymentError) {
+      return NextResponse.json({ error: error.message }, { status: error.status });
     }
-
-    const expectedSignature = crypto
-      .createHmac('sha256', webhookSecret)
-      .update(rawBody)
-      .digest('hex');
-
-    // Timing-safe HMAC verification
-    const expBuf = Buffer.from(expectedSignature, 'utf-8');
-    const sigBuf = Buffer.from(signature, 'utf-8');
-    if (expBuf.length !== sigBuf.length || !crypto.timingSafeEqual(expBuf, sigBuf)) {
-      return NextResponse.json({ error: 'Invalid webhook signature' }, { status: 400 });
-    }
-
-    const event = JSON.parse(rawBody);
-
-    if (event.event === 'payment.captured' || event.event === 'order.paid') {
-      const paymentEntity = event.payload?.payment?.entity;
-      const orderId = paymentEntity?.order_id || event.payload?.order?.entity?.id;
-      
-      if (orderId) {
-        await db.enrollmentInquiry.updateMany({
-          where: { razorpayOrderId: orderId },
-          data: { status: 'paid', razorpayPaymentId: paymentEntity?.id }
-        });
-      }
-    } else if (event.event === 'payment.failed') {
-      const paymentEntity = event.payload?.payment?.entity;
-      const orderId = paymentEntity?.order_id;
-      
-      // State Guard: Stale payment.failed callback MUST NOT downgrade an already paid order
-      if (orderId) {
-        await db.enrollmentInquiry.updateMany({
-          where: { razorpayOrderId: orderId, status: { not: 'paid' } },
-          data: { status: 'failed' }
-        });
-      }
-    }
-
-    return NextResponse.json({ status: 'ok' }, { status: 200 });
-  } catch (err) {
-    console.error('Webhook processing error:', err);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: 'Payment could not be reconciled. Try again shortly.' }, { status: 503 });
   }
 }

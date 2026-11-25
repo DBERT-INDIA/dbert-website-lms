@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import db from '@/lib/db';
+import { getDb } from '@/lib/db';
 import fs from 'fs';
 import path from 'path';
 
@@ -44,7 +44,7 @@ async function isKnownDbertIntern(email: string): Promise<boolean> {
 
   // 2. Query PostgreSQL dbert_internship tables (intern_accounts & applications)
   try {
-    const result: any = await db.$queryRaw`
+    const result: any = await getDb().$queryRaw`
       SELECT 1 FROM dbert_internship.intern_accounts WHERE LOWER(email) = ${normEmail}
       UNION
       SELECT 1 FROM dbert_internship.applications WHERE LOWER(email) = ${normEmail}
@@ -76,8 +76,8 @@ export async function GET(
     const where = { projectSlug, status: 'approved' };
 
     const [totalCount, contributors] = await Promise.all([
-      db.projectContributor.count({ where }),
-      db.projectContributor.findMany({
+      getDb().projectContributor.count({ where }),
+      getDb().projectContributor.findMany({
         where,
         orderBy: [{ reviewedAt: 'desc' }, { createdAt: 'desc' }],
         skip: (page - 1) * PAGE_SIZE,
@@ -149,7 +149,7 @@ export async function POST(
     const status = isEnrolled ? 'approved' : 'pending';
     const reviewedAt = isEnrolled ? new Date() : null;
 
-    const contributor = await db.projectContributor.create({
+    const contributor = await getDb().projectContributor.create({
       data: {
         projectSlug,
         name: name.trim(),

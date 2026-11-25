@@ -13,6 +13,7 @@ Handles:
 import os
 import hmac
 import hashlib
+import re
 import requests
 from typing import Optional, Dict, Any, Tuple
 
@@ -142,6 +143,28 @@ def verify_payment_signature(
     ).hexdigest()
 
     return hmac.compare_digest(expected_sig, razorpay_signature.strip())
+
+
+def fetch_payment(payment_id: str) -> Dict[str, Any]:
+    """Get the provider's authoritative capture data for a checkout callback."""
+    key_id, key_secret, _ = get_razorpay_keys()
+    if not key_id or not key_secret:
+        raise RazorpayNotConfiguredError("Razorpay is unavailable.")
+    if not re.fullmatch(r"pay_[A-Za-z0-9_-]{1,80}", payment_id):
+        raise RazorpayAPIError("Invalid payment reference.")
+    try:
+        response = requests.get(
+            f"https://api.razorpay.com/v1/payments/{payment_id}",
+            auth=(key_id, key_secret), timeout=8, allow_redirects=False,
+        )
+        if response.status_code != 200:
+            raise RazorpayAPIError("The gateway could not confirm payment capture.")
+        payment = response.json()
+    except (requests.RequestException, ValueError) as error:
+        raise RazorpayAPIError("The gateway could not confirm payment capture.") from error
+    if not isinstance(payment, dict):
+        raise RazorpayAPIError("The gateway response is invalid.")
+    return payment
 
 
 def verify_webhook_signature(
