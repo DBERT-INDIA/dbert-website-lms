@@ -177,7 +177,8 @@ def _progress(conn, cohort, members, milestones, today):
         if time_field:
             query += f"""
                 AND SUBSTR(CAST({time_field} AS TEXT), 1, 10) >= ?
-                AND SUBSTR(CAST({time_field} AS TEXT), 1, 10) >= SUBSTR(m.enrolled_at, 1, 10)
+                AND REPLACE(SUBSTR(CAST({time_field} AS TEXT), 1, 19), 'T', ' ')
+                    >= REPLACE(SUBSTR(m.enrolled_at, 1, 19), 'T', ' ')
             """
             params.append(cohort["starts_on"])
         if len(members) == 1:

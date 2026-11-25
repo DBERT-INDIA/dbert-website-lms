@@ -12,6 +12,30 @@ API_DIR="$REPO_DIR/dbert-api-package"
 BACKUP_DIR="/var/www/backups"
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 
+# Generate one key for a first install. On existing installs, require the
+# operator to keep the website and portal keys in sync without rotating them.
+read_payment_sync_secret() {
+    if [ -f "$1" ]; then
+        sed -n 's/^[[:space:]]*INTERNAL_SYNC_SECRET[[:space:]]*=[[:space:]]*//p' "$1" |
+            tail -n 1 | sed -E "s/[[:space:]]+$//; s/^[\"'](.*)[\"']$/\1/"
+    fi
+}
+
+if [ ! -f "$PORTAL_DIR/.env" ] && [ ! -f "$WEBSITE_DIR/.env" ]; then
+    PAYMENT_SYNC_SECRET=$(openssl rand -hex 32)
+else
+    PAYMENT_SYNC_SECRET=$(read_payment_sync_secret "$PORTAL_DIR/.env")
+    WEBSITE_PAYMENT_SYNC_SECRET=$(read_payment_sync_secret "$WEBSITE_DIR/.env")
+    if [ ! -f "$PORTAL_DIR/.env" ]; then
+        PAYMENT_SYNC_SECRET=$WEBSITE_PAYMENT_SYNC_SECRET
+    fi
+    if [ -z "$PAYMENT_SYNC_SECRET" ] ||
+       { [ -f "$WEBSITE_DIR/.env" ] && [ "$PAYMENT_SYNC_SECRET" != "$WEBSITE_PAYMENT_SYNC_SECRET" ]; }; then
+        echo "[!] Set the same non-empty INTERNAL_SYNC_SECRET in the portal and website .env files before deploying." >&2
+        exit 1
+    fi
+fi
+
 echo "===================================================================="
 echo " Starting DBERT Production Deployment — $(date)"
 echo " Repository: $REPO_DIR"
@@ -80,9 +104,11 @@ cd "$PORTAL_DIR"
 
 if [ ! -f ".env" ]; then
     echo "[!] No .env found in apps/portal. Generating from .env.production.sample..."
-    cp .env.production.sample .env
+    (umask 077; cat .env.production.sample > .env)
     # Inject dynamically generated secure password
     sed -i "s|DBERT_SECURE_PASSWORD_123|$DB_PASS|g" .env
+    printf '\nINTERNAL_SYNC_SECRET=%s\n' "$PAYMENT_SYNC_SECRET" >> .env
+    sudo chown ubuntu:ubuntu .env
     echo "[!] IMPORTANT: Update remaining secrets in $PORTAL_DIR/.env if needed."
 fi
 
@@ -112,7 +138,7 @@ cd "$WEBSITE_DIR"
 
 if [ ! -f ".env" ]; then
     echo "[*] Generating .env for apps/website..."
-    cat << EOF > .env
+    (umask 077; cat << EOF > .env
 NEXT_PUBLIC_SITE_URL=https://dbert.in
 NEXT_PUBLIC_LMS_URL=https://lms.dbert.in
 NEXT_PUBLIC_GA_ID=G-MN7ME9X518
@@ -120,7 +146,11 @@ PORT=3001
 NODE_ENV=production
 DATABASE_URL=postgresql://dbert_user:${DB_PASS}@localhost:5432/dbert_lms
 JWT_SECRET=$(openssl rand -hex 32)
+INTERNAL_LMS_SYNC_URL=http://127.0.0.1:5001/api/internal/enrollment-sync
+INTERNAL_SYNC_SECRET=$PAYMENT_SYNC_SECRET
 EOF
+    )
+    sudo chown ubuntu:ubuntu .env
 fi
 
 if [ ! -d "node_modules" ]; then

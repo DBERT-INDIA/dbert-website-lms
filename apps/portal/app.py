@@ -2568,6 +2568,7 @@ def run_startup_reconciliation(conn):
                 if key in seen_ce:
                     primary_id = seen_ce[key]
                     conn.execute("UPDATE day_quiz_attempts SET enrollment_id=? WHERE enrollment_id=?", (primary_id, ce["id"]))
+                    conn.execute("UPDATE day_quiz_receipts SET enrollment_id=? WHERE enrollment_id=?", (primary_id, ce["id"]))
                     conn.execute("UPDATE course_subtopic_chats SET enrollment_id=? WHERE enrollment_id=?", (primary_id, ce["id"]))
                     conn.execute("DELETE FROM course_enrollments WHERE id=?", (ce["id"],))
                 else:
@@ -8420,6 +8421,53 @@ def course_quiz_page(course_id, day_number):
     )
 
 
+def _finalize_quiz_receipt(response, enrollment, target_email, day_number, attempt_key, *, replay=False):
+    completed = response["course_completed"]
+    if not response["passed"] or not target_email:
+        return response
+    if replay and (not completed or response.get("certificate_issued")):
+        return response
+
+    course_id = enrollment["course_id"]
+    issued = None
+    try:
+        with get_db() as conn:
+            course = conn.execute("SELECT title FROM courses WHERE id = ?", (course_id,)).fetchone()
+            course_title = course["title"] if course else f"Course #{course_id}"
+            if completed:
+                from services.certificate_service import CertificateService
+
+                # Grading is already durable. Serialize attempts to issue or recover the certificate.
+                conn.execute("UPDATE course_enrollments SET current_day = current_day WHERE id = ?", (enrollment["id"],))
+                issued = CertificateService.issue_course_completion_certificate(
+                    conn, enrollment["intern_id"], course_id, email=target_email,
+                )
+                if issued and issued.get("cert_id"):
+                    finalized = {
+                        **response,
+                        "certificate_issued": True,
+                        "cert_id": issued["cert_id"],
+                        "cert_url": issued.get("url") or f"/portal/certificate/{issued['cert_id']}",
+                    }
+                    conn.execute(
+                        "UPDATE day_quiz_receipts SET response_json = ? WHERE attempt_key = ?",
+                        (json.dumps(finalized), attempt_key),
+                    )
+                    conn.commit()
+                    response = finalized
+
+        from services.notifications.web_push_service import notify_quiz_passed_push, notify_course_completed_push
+
+        if response.get("certificate_issued"):
+            if not issued.get("already_issued"):
+                notify_course_completed_push(target_email, course_title, response["cert_id"])
+        elif not replay:
+            notify_quiz_passed_push(target_email, course_id, day_number, course_title)
+    except Exception as exc:
+        log_error("quiz-completion-delivery", exc)
+    return response
+
+
 @app.route("/courses/<int:course_id>/quiz/<int:day_number>/submit", methods=["POST"])
 def course_quiz_submit(course_id, day_number):
     intern = current_intern()
@@ -8449,6 +8497,7 @@ def course_quiz_submit(course_id, day_number):
         ).fetchone()
         if not enrollment:
             return jsonify({"status": "error", "message": "Not enrolled"}), 403
+        target_email = enrollment["email"] or intern.get("email")
 
         quiz = conn.execute(
             "SELECT * FROM course_day_quizzes WHERE course_id = ? AND day_number = ?",
@@ -8468,7 +8517,10 @@ def course_quiz_submit(course_id, day_number):
             conn.commit()
             if attempt.get("key") == attempt_key:
                 session.pop(session_key, None)
-            return jsonify(json.loads(receipt["response_json"]))
+            response = _finalize_quiz_receipt(
+                json.loads(receipt["response_json"]), enrollment, target_email, day_number, attempt_key, replay=True,
+            )
+            return jsonify(response)
 
         if attempt.get("key") != attempt_key or attempt.get("enrollment_id") != enrollment["id"]:
             conn.rollback()
@@ -8543,36 +8595,7 @@ def course_quiz_submit(course_id, day_number):
         conn.commit()
 
     session.pop(session_key, None)
-    target_email = enrollment["email"] or intern.get("email")
-    if passed and target_email:
-        try:
-            from services.certificate_service import CertificateService
-            from services.notifications.web_push_service import notify_quiz_passed_push, notify_course_completed_push
-
-            with get_db() as conn:
-                course = conn.execute("SELECT title FROM courses WHERE id = ?", (course_id,)).fetchone()
-                course_title = course["title"] if course else f"Course #{course_id}"
-                issued = CertificateService.issue_course_completion_certificate(
-                    conn, enrollment["intern_id"], course_id, email=target_email,
-                ) if completed else None
-                if issued and issued.get("cert_id"):
-                    response.update(
-                        certificate_issued=True, cert_id=issued["cert_id"],
-                        cert_url=issued.get("url") or f"/portal/certificate/{issued['cert_id']}",
-                    )
-                    conn.execute(
-                        "UPDATE day_quiz_receipts SET response_json = ? WHERE attempt_key = ?",
-                        (json.dumps(response), attempt_key),
-                    )
-                    conn.commit()
-            if response.get("certificate_issued"):
-                notify_course_completed_push(target_email, course_title, response["cert_id"])
-            else:
-                notify_quiz_passed_push(target_email, course_id, day_number, course_title)
-        except Exception as exc:
-            log_error("quiz-completion-delivery", exc)
-
-    return jsonify(response)
+    return jsonify(_finalize_quiz_receipt(response, enrollment, target_email, day_number, attempt_key))
 
 
 # â”€â”€ UP2.3: BYOK Gemini Key Resolver & Validation Route â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€

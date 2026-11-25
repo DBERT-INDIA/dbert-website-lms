@@ -59,6 +59,18 @@ npm run dev -- --hostname 127.0.0.1
 
 Open `http://127.0.0.1:3000`. Public pages can build without a database. For features that store form submissions or manage records, configure `DATABASE_URL` for a disposable PostgreSQL database and initialize its schema with `npx prisma db push` from `apps/website`. Set `LMS_INTERNAL_URL=http://127.0.0.1:5000` to use the local portal for résumé scans.
 
+### Enrollment payment claims
+
+The website sends deposit and balance claims to the Flask portal. Set the same randomly generated, server-only `INTERNAL_SYNC_SECRET` in both services. Set `INTERNAL_LMS_SYNC_URL` on the website to the portal's full `/api/internal/enrollment-sync` endpoint. The website's example points to the local portal on port 5000. For Vercel, use the HTTPS endpoint of the portal assigned to that deployment and set the secret in the same Vercel environment.
+
+Roll out the portal endpoint and configure both services before switching the website payment forms. The website acknowledges submissions after the portal returns a saved claim receipt.
+
+The unified EC2 installer generates a shared secret on fresh installs. Before upgrading an existing deployment, configure both services with the same secret. The installer checks the values before making changes.
+
+## Production architecture
+
+The [EC2 deployment guide](deploy/FIRST_TIME_EC2_DEPLOYMENT.md) covers infrastructure setup. Nginx routes `dbert.in` to the standalone Next.js website, `lms.dbert.in` to the Gunicorn-hosted Flask portal, and `api.dbert.in` to the FastAPI service. Production uses PostgreSQL. The [deployment directory](deploy) contains Nginx and systemd configuration. See the [engineering playbook](AGENTS.md) for the application lifecycle and production workflows.
+
 ## Demo walkthrough
 
 1. Open `/admin/program-cohorts` as an admin. Create a cohort with one seat, assign a mentor, and define a milestone.

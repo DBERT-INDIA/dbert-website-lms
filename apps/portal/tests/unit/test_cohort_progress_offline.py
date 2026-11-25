@@ -71,12 +71,12 @@ def portal(tmp_path):
                 (21, 2, 'riya@example.test', 6, NULL), (22, 3, 'anu@example.test', 5, NULL);
             INSERT INTO course_day_quizzes VALUES (25, 5), (26, 5), (27, 5), (28, 6);
             INSERT INTO day_quiz_attempts VALUES
-                (20, 25, 1, '2026-11-05'), (20, 25, 1, '2026-11-06'), (20, 26, 0, '2026-11-07'),
-                (20, 27, 1, '2026-11-03'), (21, 28, 1, '2026-11-09'), (22, 26, 1, '2026-11-10');
+                (20, 25, 1, '2026-11-05T09:01:00'), (20, 25, 1, '2026-11-06'), (20, 26, 0, '2026-11-07'),
+                (20, 27, 1, '2026-11-05T08:59:59'), (21, 28, 1, '2026-11-09'), (22, 26, 1, '2026-11-10');
             INSERT INTO project_submissions VALUES
                 (30, 20, 2, 5, 'pending', '2026-11-06'),
                 (31, 21, 2, 6, 'approved', '2026-11-08'),
-                (32, 20, 2, 5, 'approved', '2026-11-02');
+                (32, 20, 2, 5, 'approved', '2026-11-05 08:59:59');
             INSERT INTO course_chapters VALUES (40, 5), (41, 6);
             INSERT INTO course_subtopics VALUES (50, 40), (51, 40), (52, 41);
         """)
@@ -91,7 +91,7 @@ def portal(tmp_path):
                 (2, 50, "b", "Private question 2", "2026-11-08", "2026-11-08"),
                 (3, 51, "c", "Another learner", "2026-11-06", "2026-11-06"),
                 (2, 52, "d", "Other course", "2026-11-06", "2026-11-06"),
-                (2, 51, "e", "Earlier question", "2026-11-04", "2026-11-04"),
+                (2, 51, "e", "Earlier question", "2026-11-05T08:59:59", "2026-11-05T08:59:59"),
             ),
         )
 

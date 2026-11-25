@@ -62,6 +62,7 @@ const DOMAIN_OPTIONS = [
   'Digital Marketing & Business Branding',
   'Embedded Systems & IoT'
 ];
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export default function EnrollmentClient() {
   const searchParams = useSearchParams();
@@ -75,7 +76,6 @@ export default function EnrollmentClient() {
   const [lookupQuery, setLookupQuery] = useState(paramQuery);
   const [lookupLoading, setLookupLoading] = useState(false);
   const [lookupAlert, setLookupAlert] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
-  const [isAutofilled, setIsAutofilled] = useState(false);
 
   // Approved Candidate State & Countdown
   const [approvedRecord, setApprovedRecord] = useState<ApprovedRecord | null>(null);
@@ -176,20 +176,20 @@ export default function EnrollmentClient() {
           setApprovedRecord({
             submissionId: c.submissionId || 'DBERT-ENR-CONFIRMED',
             candidateName: c.holderName,
-            email: c.email || q,
+            email: c.email || '',
             phone: c.phone || '',
             college: c.college || '',
             domain: c.domain || 'Full Stack Web Development',
             certId: c.certId,
             internId: c.internId,
-            utrNumber: c.utrNumber || 'VERIFIED-UPI',
+            utrNumber: c.utrNumber || '',
             amountPaid: c.amountPaid || PRICING_CONFIG.balancePayable,
             batchStartDate: startDate,
             batchStartDisplay: displayDate
           });
           setLookupAlert({
             type: 'success',
-            text: `✓ Official Enrollment Approved for ${c.holderName}! Batch commences ${displayDate}.`
+            text: `Enrollment approved. Batch commences ${displayDate}.`
           });
           return;
         }
@@ -208,48 +208,32 @@ export default function EnrollmentClient() {
           return;
         }
 
-        // Check if previous balance submission was rejected
-        if (data.enrollmentStatus === 'REJECTED') {
-          setApprovedRecord(null);
-          setSubmissionResult(null);
-          setFullName(c.holderName || '');
-          if (c.email) setEmail(c.email);
-          if (c.phone) setPhone(c.phone);
-          if (c.college) setCollege(c.college);
-          if (c.domain) {
-            const matchOpt = DOMAIN_OPTIONS.find(d => d.toLowerCase() === c.domain?.toLowerCase());
-            setDomain(matchOpt || c.domain);
-          }
-          setCertId(c.certId || '');
-          setInternId(c.internId || '');
-          setIsAutofilled(true);
-          const reason = data.rejectionReason || 'Previous UTR could not be reconciled on the UPI settlement ledger.';
-          setLookupAlert({
-            type: 'error',
-            text: `⚠️ Previous submission unverified: ${reason} Please complete the ₹1,500 balance via QR code or 1-Tap UPI and enter your valid 12-digit UTR below.`
-          });
-          return;
-        }
-
-        // Unenrolled candidate: autofill form
         setApprovedRecord(null);
+        setSubmissionResult(null);
         setFullName(c.holderName || '');
-        if (c.email) setEmail(c.email);
-        if (c.phone) setPhone(c.phone);
-        if (c.college) setCollege(c.college);
+        const returnedEmail = c.email?.includes('***') ? '' : c.email;
+        const lookupEmail = EMAIL_PATTERN.test(q) && !q.includes('***') ? q : '';
+        setEmail(returnedEmail || lookupEmail);
+        setPhone(c.phone && !c.phone.includes('***') ? c.phone : '');
+        setCollege(c.college || '');
         if (c.domain) {
           const matchOpt = DOMAIN_OPTIONS.find(d => d.toLowerCase() === c.domain?.toLowerCase());
           setDomain(matchOpt || c.domain);
         }
         setCertId(c.certId || '');
         setInternId(c.internId || '');
-        setIsAutofilled(true);
-        setLookupAlert({
-          type: 'success',
-          text: `✓ Verified record loaded for ${c.holderName} (${c.certId}). Program Fee: ₹1,999.`
-        });
+        if (data.enrollmentStatus === 'REJECTED') {
+          setLookupAlert({
+            type: 'error',
+            text: 'The earlier payment claim was rejected. If you have a valid payment reference, enter it with your registration details.',
+          });
+        } else {
+          setLookupAlert({
+            type: 'success',
+            text: 'Candidate record found. Complete the remaining fields with your registration details.',
+          });
+        }
       } else {
-        setIsAutofilled(false);
         setApprovedRecord(null);
         setLookupAlert({
           type: 'error',
@@ -324,7 +308,7 @@ export default function EnrollmentClient() {
       setSubmitError('Please enter your full legal name.');
       return;
     }
-    if (!email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    if (!EMAIL_PATTERN.test(email.trim()) || email.includes('***')) {
       setSubmitError('Please enter a valid registered email address.');
       return;
     }
@@ -386,18 +370,18 @@ export default function EnrollmentClient() {
   const generateWhatsAppProofUrl = () => {
     if (!submissionResult) return '#';
     const text = [
-      `*Official DBERT Incubation Program Payment Proof (₹1,999)*`,
+      `*DBERT Incubation Balance Payment Claim*`,
       ``,
-      `Hello DBERT Admissions, I have completed the program enrollment payment of *₹1,999* for my technical internship & incubation program:`,
+      `Hello DBERT Admissions, I am sharing payment proof for my incubation balance claim.`,
       ``,
-      `• *Candidate Name:* ${submissionResult.candidateName}`,
+      ...(submissionResult.candidateName ? [`• *Candidate Name:* ${submissionResult.candidateName}`] : []),
       `• *Certificate ID:* ${submissionResult.certId || 'N/A'}`,
       `• *Domain Track:* ${submissionResult.domain}`,
-      `• *12-Digit UTR:* ${submissionResult.utrNumber}`,
+      ...(submissionResult.utrNumber ? [`• *Transaction Reference:* ${submissionResult.utrNumber}`] : []),
       `• *Submission Ref:* ${submissionResult.submissionId}`,
-      `• *Amount Paid:* ₹1,999 (Incubation Program Fee Paid in Full)`,
+      `• *Claimed Amount:* ${formatINR(submissionResult.amount)}`,
       ``,
-      `I am attaching my payment transaction screenshot below for instant verification & credential unlock.`
+      `I am attaching my payment transaction screenshot for review.`
     ].join('\n');
 
     return `https://wa.me/${PRICING_CONFIG.admissionsWhatsApp}?text=${encodeURIComponent(text)}`;
@@ -407,12 +391,9 @@ export default function EnrollmentClient() {
   if (approvedRecord) {
     const whatsappApprovedUrl = `https://wa.me/${PRICING_CONFIG.admissionsWhatsApp}?text=${encodeURIComponent(
       `*DBERT Approved Incubation Enrollment Confirmation*\n\n` +
-      `Hello DBERT Admissions, I checked my enrollment for *${approvedRecord.candidateName}* (Ref: ${approvedRecord.submissionId}).\n\n` +
-      `• Candidate: ${approvedRecord.candidateName}\n` +
-      `• Registered Email: ${approvedRecord.email}\n` +
+      `Hello DBERT Admissions, I checked my enrollment (Ref: ${approvedRecord.submissionId}).\n\n` +
       `• Domain Track: ${approvedRecord.domain}\n` +
-      `• Batch Kickoff: ${approvedRecord.batchStartDisplay} (06:00 PM IST)\n` +
-      `• Verified UTR: ${approvedRecord.utrNumber}\n\n` +
+      `• Batch Kickoff: ${approvedRecord.batchStartDisplay} (06:00 PM IST)\n\n` +
       `I see my enrollment is officially approved with seat confirmed. Ready for induction sprints!`
     )}`;
 
@@ -429,7 +410,7 @@ export default function EnrollmentClient() {
           </div>
 
           <h1 className={s.approvedTitle}>
-            Welcome to DBERT Technical Incubation, {approvedRecord.candidateName}!
+            Your DBERT Technical Incubation enrollment is approved
           </h1>
           <p className={s.approvedSubtitle}>
             Your ₹1,999 program payment has been verified and your seat is officially confirmed in the{' '}
@@ -477,14 +458,18 @@ export default function EnrollmentClient() {
                 APPROVED & SEAT CONFIRMED
               </span>
             </div>
-            <div className={s.receiptRow}>
-              <span className={s.receiptLabel}>Candidate Name</span>
-              <span className={s.receiptVal}>{approvedRecord.candidateName}</span>
-            </div>
-            <div className={s.receiptRow}>
-              <span className={s.receiptLabel}>Registered Email</span>
-              <span className={s.receiptVal} style={{ color: '#38BDF8' }}>{approvedRecord.email}</span>
-            </div>
+            {approvedRecord.candidateName && (
+              <div className={s.receiptRow}>
+                <span className={s.receiptLabel}>Candidate Name</span>
+                <span className={s.receiptVal}>{approvedRecord.candidateName}</span>
+              </div>
+            )}
+            {approvedRecord.email && (
+              <div className={s.receiptRow}>
+                <span className={s.receiptLabel}>Registered Email</span>
+                <span className={s.receiptVal} style={{ color: '#38BDF8' }}>{approvedRecord.email}</span>
+              </div>
+            )}
             {approvedRecord.phone && (
               <div className={s.receiptRow}>
                 <span className={s.receiptLabel}>WhatsApp Phone</span>
@@ -501,24 +486,30 @@ export default function EnrollmentClient() {
                 ₹1,999 Paid in Full (Incubation Program Fee Reconciled)
               </span>
             </div>
-            <div className={s.receiptRow}>
-              <span className={s.receiptLabel}>Verified 12-Digit UTR</span>
-              <span className={s.receiptVal} style={{ fontFamily: 'monospace', color: '#E2B96F' }}>
-                {approvedRecord.utrNumber}
-              </span>
-            </div>
-            <div className={s.receiptRow}>
-              <span className={s.receiptLabel}>Permanent Intern ID</span>
-              <span className={s.receiptVal} style={{ fontFamily: 'monospace', color: '#38BDF8' }}>
-                {approvedRecord.internId || 'DBERT-2026-INT-1412'}
-              </span>
-            </div>
-            <div className={s.receiptRow}>
-              <span className={s.receiptLabel}>Certificate Identifier</span>
-              <span className={s.receiptVal} style={{ fontFamily: 'monospace', color: '#38BDF8' }}>
-                {approvedRecord.certId || 'CERT-DBERT-2026-FSD-156'}
-              </span>
-            </div>
+            {approvedRecord.utrNumber && (
+              <div className={s.receiptRow}>
+                <span className={s.receiptLabel}>Verified Transaction Reference</span>
+                <span className={s.receiptVal} style={{ fontFamily: 'monospace', color: '#E2B96F' }}>
+                  {approvedRecord.utrNumber}
+                </span>
+              </div>
+            )}
+            {approvedRecord.internId && (
+              <div className={s.receiptRow}>
+                <span className={s.receiptLabel}>Permanent Intern ID</span>
+                <span className={s.receiptVal} style={{ fontFamily: 'monospace', color: '#38BDF8' }}>
+                  {approvedRecord.internId}
+                </span>
+              </div>
+            )}
+            {approvedRecord.certId && (
+              <div className={s.receiptRow}>
+                <span className={s.receiptLabel}>Certificate Identifier</span>
+                <span className={s.receiptVal} style={{ fontFamily: 'monospace', color: '#38BDF8' }}>
+                  {approvedRecord.certId}
+                </span>
+              </div>
+            )}
             <div className={s.receiptRow}>
               <span className={s.receiptLabel}>Official Batch Kickoff</span>
               <span className={s.receiptVal} style={{ color: '#F0F4F8', fontWeight: 700 }}>
@@ -614,10 +605,12 @@ export default function EnrollmentClient() {
               <span className={s.receiptLabel}>Submission Reference</span>
               <span className={s.receiptVal} style={{ color: '#E2B96F' }}>{submissionResult.submissionId}</span>
             </div>
-            <div className={s.receiptRow}>
-              <span className={s.receiptLabel}>Candidate Name</span>
-              <span className={s.receiptVal}>{submissionResult.candidateName}</span>
-            </div>
+            {submissionResult.candidateName && (
+              <div className={s.receiptRow}>
+                <span className={s.receiptLabel}>Candidate Name</span>
+                <span className={s.receiptVal}>{submissionResult.candidateName}</span>
+              </div>
+            )}
             {submissionResult.certId && (
               <div className={s.receiptRow}>
                 <span className={s.receiptLabel}>Certificate Identifier</span>
@@ -722,7 +715,7 @@ export default function EnrollmentClient() {
           <input
             type="text"
             className={s.lookupInput}
-            placeholder="e.g. bhargavi13032007@gmail.com, CERT-DBERT-2026-DA-057"
+            placeholder="e.g. learner@example.com or your certificate ID"
             value={lookupQuery}
             onChange={(e) => setLookupQuery(e.target.value)}
             onKeyDown={(e) => { if (e.key === 'Enter') handleLookup(); }}
