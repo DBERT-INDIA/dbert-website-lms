@@ -18,6 +18,7 @@ import {
   FELLOWSHIP_FEE,
   getRelatedTracks,
 } from '@/data/courses.config';
+import { GEO_CITIES } from '@/data/geo_domains.config';
 import { PRICING_CONFIG } from '@/config/pricing.config';
 import directoryData from '@/data/directory_candidates.json';
 import s from '@/app/learners/learners.module.css';
@@ -152,17 +153,18 @@ export default function FellowshipTrackTemplate({ track }: FellowshipTrackTempla
 
         {/* 4. Primary & Secondary CTAs */}
         <div className="stack-h gap-4 justify-center flex-wrap mt-8">
-          <a
-            href={applyUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href={`/enroll/1999?domain=${encodeURIComponent(track.name)}`}
             className="btn btn-primary btn-lg"
           >
-            Apply for Fellowship &rarr;
-          </a>
+            Enroll Now — {FELLOWSHIP_FEE.formattedTotal} (₹1,500 Balance if ₹499 Paid) &rarr;
+          </Link>
           <a href="#curriculum" className="btn btn-outline btn-lg">
-            Explore curriculum
+            Explore 8-Week Syllabus
           </a>
+          <Link href={`/learners/courses/${track.slug}/remote`} className="btn btn-outline btn-lg">
+            Remote &amp; City Hubs &rarr;
+          </Link>
         </div>
       </div>
 
@@ -313,16 +315,50 @@ export default function FellowshipTrackTemplate({ track }: FellowshipTrackTempla
         <div className="doclabel mb-2">§ 05 — FEE &amp; PLACEMENT POLICY</div>
         <h2 className="section-title mb-6">Transparent Fee &amp; Guarantee Terms</h2>
         <div className="grid gap-6 md:grid-cols-2">
-          <div className="card p-6 bg-card border border-line">
-            <span className="font-mono text-xs text-muted uppercase tracking-wider">Total Fellowship Program Fee</span>
+          <div className="card p-6 bg-card border border-accent/40" style={{ background: 'linear-gradient(135deg, rgba(245,158,11,0.08), rgba(15,23,42,0.9))' }}>
+            <span className="font-mono text-xs text-accent uppercase tracking-wider">₹1,999 Incubation · Tiered Value Ladder</span>
             <div className="text-3xl font-mono font-bold text-white mt-2 mb-2">
               {FELLOWSHIP_FEE.formattedTotal}{' '}
               <span className="text-sm text-muted font-normal">INR (2 Months · All Inclusive)</span>
             </div>
-            <p className="text-xs text-[var(--text-secondary)] mb-4">
+            <p className="text-xs text-[var(--text-secondary)] mb-3">
               {FELLOWSHIP_FEE.label} Candidates who have already paid the {FELLOWSHIP_FEE.formattedDeposit} caution deposit only complete the remaining {FELLOWSHIP_FEE.formattedBalance} balance via{' '}
               <Link href="/enroll/1999" className="text-accent underline">/enroll/1999</Link>.
             </p>
+            <ul className="text-xs text-[var(--text-primary)] space-y-1.5 mb-4">
+              <li>✅ <strong>1. Verified Certificate:</strong> Turnitin-scored 3-doc packet on <Link href="/verify" className="underline">/verify</Link></li>
+              <li>💰 <strong>2. ₹5,000+ Stipend Unlock:</strong> Released at Gate 1 (3 approved PRs + &ge;75% attendance)</li>
+              <li>🎯 <strong>3. 100% Placement Assistance:</strong> Round-1 screening waiver + Pre-Vetted Directory listing</li>
+            </ul>
+            <div className="flex flex-wrap gap-2 items-center mb-3">
+              <Link
+                href={`/enroll/1999?domain=${encodeURIComponent(track.name)}`}
+                className="btn btn-primary btn-sm"
+              >
+                Enroll Now — {FELLOWSHIP_FEE.formattedTotal} &rarr;
+              </Link>
+              <Link
+                href="/enroll/1999"
+                className="btn btn-outline btn-sm"
+              >
+                Pay {FELLOWSHIP_FEE.formattedBalance} Balance
+              </Link>
+            </div>
+            <div className="p-3 rounded-lg border border-line/70 bg-black/30 text-xs text-[var(--text-secondary)] mb-3">
+              <strong className="text-white">3 Two-Month DBERT Tracks Compared:</strong>{' '}
+              Beginner 0-to-1{' '}
+              <Link href={`/learners/launchpad?domain=${encodeURIComponent(track.slug)}`} className="text-accent underline">
+                Launchpad (₹7,999)
+              </Link>{' '}
+              &middot; Applied Intermediate{' '}
+              <Link href={`/learners/accelerate?domain=${encodeURIComponent(track.slug)}`} className="text-accent underline">
+                Accelerate (₹4,999)
+              </Link>{' '}
+              &middot; Production Client Repo{' '}
+              <a href="https://lms.dbert.in/program" target="_blank" rel="noopener noreferrer" className="text-emerald-400 underline">
+                Fellowship / LMS Program (₹1,999)
+              </a>.
+            </div>
             <p className="text-xs text-muted">
               Zero application fee for screening. Covered by our{' '}
               <Link href="/refund" className="underline">refund &amp; cancellation policy</Link> and{' '}
@@ -381,7 +417,7 @@ export default function FellowshipTrackTemplate({ track }: FellowshipTrackTempla
         </div>
       </div>
 
-      {/* 12. Regional Opportunities */}
+      {/* 12. Regional Opportunities & Multi-City Target Hubs */}
       {track.regionalOpportunities.length > 0 && (
         <RegionalOpportunityBento
           sectionNumber="§ 07"
@@ -393,6 +429,35 @@ export default function FellowshipTrackTemplate({ track }: FellowshipTrackTempla
           opportunities={track.regionalOpportunities}
         />
       )}
+
+      <div className="container pb-block">
+        <div className="card p-6 bg-card border border-line">
+          <div className="doclabel mb-2">§ 07B — MULTI-CITY COURSE &amp; INTERNSHIP HUBS (2027 COHORT)</div>
+          <h3 className="font-mono text-lg font-bold text-white mb-2">
+            {track.name} Course &amp; Internships Across All 18 Indian Tech Cities
+          </h3>
+          <p className="text-xs text-muted mb-4">
+            Target your preferred metro corridor or join 100% remotely. Every city track connects directly to localized sprint details and the ₹1,999 fast-track seat:
+          </p>
+          <div className="flex flex-wrap gap-2">
+            {Object.values(GEO_CITIES).map((city) => (
+              <Link
+                key={city.slug}
+                href={`/learners/courses/${track.slug}/${city.slug}`}
+                className="tag-chip text-xs font-mono hover:border-accent hover:text-accent transition-colors"
+              >
+                📍 {city.shortName} Course
+              </Link>
+            ))}
+          </div>
+          <div className="mt-4 pt-3 border-t border-line/50 text-xs text-muted">
+            Looking for open internship roles? Browse{' '}
+            <Link href={`/internships/${track.slug}`} className="text-accent underline">
+              {track.name} Internships across 18 cities &rarr;
+            </Link>
+          </div>
+        </div>
+      </div>
 
       {/* 13. FAQs */}
       <div className="container pad-block border-t border-line">
@@ -439,14 +504,12 @@ export default function FellowshipTrackTemplate({ track }: FellowshipTrackTempla
               Screening is 100% free with zero application fee. Submit your GitHub/application on the LMS portal, or message admissions on WhatsApp if you need guidance before applying.
             </p>
             <div className="stack-h gap-3 flex-wrap">
-              <a
-                href={applyUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href={`/enroll/1999?domain=${encodeURIComponent(track.name)}`}
                 className="btn btn-primary btn-lg"
               >
-                Apply on LMS Portal &rarr;
-              </a>
+                Enroll Now — {FELLOWSHIP_FEE.formattedTotal} &rarr;
+              </Link>
               <a
                 href={whatsappUrl}
                 target="_blank"
@@ -455,6 +518,14 @@ export default function FellowshipTrackTemplate({ track }: FellowshipTrackTempla
               >
                 <MessageSquare size={16} aria-hidden="true" />
                 <span>WhatsApp Admissions</span>
+              </a>
+              <a
+                href={applyUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs font-mono text-muted hover:text-accent underline ml-1"
+              >
+                External screening option (LMS) ↗
               </a>
             </div>
           </div>

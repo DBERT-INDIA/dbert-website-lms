@@ -414,7 +414,7 @@ class TestCSPActionDelegationResolution:
             "mentor_availability.html": {"staff": {"id": 1, "name": "Mentor"}, "slots": []},
             "messages_inbox.html": {"actor": {"role": "intern", "id": 1}, "threads": []},
             "messages_thread.html": {"conv_id": 1, "actor": {"sender_type": "intern", "role": "intern", "id": 1}, "messages": []},
-            "program.html": {"paid_amount": 9999, "SITE_ORIGIN": "https://lms.dbert.in"},
+            "program.html": {"paid_amount": 1999, "program_name": "fellowship", "SITE_ORIGIN": "https://lms.dbert.in"},
             "scraped_internship_detail.html": {"job": {"id": 1, "title": "Software Intern", "company_name": "Google", "domain": "AI", "location": "Remote", "URL": "https://example.com"}},
             "staff_project_queue.html": {"staff": {"id": 1, "name": "Staff"}, "submissions": []},
             "staff_task_queue.html": {"staff": {"id": 1, "name": "Staff"}, "tasks": []},

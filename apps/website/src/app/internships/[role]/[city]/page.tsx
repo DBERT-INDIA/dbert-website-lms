@@ -3,7 +3,13 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import HandNote from '@/components/ui/HandNote';
-import { GEO_CITIES, GEO_ROLES, generateCityHeadline } from '@/data/geo_domains.config';
+import {
+  GEO_CITIES,
+  GEO_ROLES,
+  buildGeoInternshipDescription,
+  buildGeoInternshipTitle,
+  generateCityHeadline,
+} from '@/data/geo_domains.config';
 import TrackLeadCaptureForm from '@/components/forms/TrackLeadCaptureForm';
 
 export async function generateStaticParams() {
@@ -37,9 +43,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
   }
 
-  const cityName = cityData.name;
-  const title = `${roleData.title} Internship in ${cityName} — 100% Guaranteed Production Internship`;
-  const description = `Apply for ${roleData.title} production internship in ${cityName}. Build live client codebases under senior review, secure 100% Guaranteed Production Internship with Dedicated Placement Assistance, and graduate with verifiable MSME credentials.`;
+  const title = buildGeoInternshipTitle(role, city);
+  const description = buildGeoInternshipDescription(role, city);
 
   return {
     title,
@@ -174,7 +179,7 @@ export default async function ProgrammaticInternshipPage({ params }: PageProps) 
       {/* Hero Header */}
       <div className="container page-head">
         <div className="doclabel">
-          § 01 — {cityName.toUpperCase()} REGIONAL SPRINT <span className="rev">cohort: 2026</span>
+          § 01 — {cityName.toUpperCase()} REGIONAL SPRINT <span className="rev">cohort: 2026/2027</span>
         </div>
         <div className="stack-h justify-center align-baseline gap-3 flex-wrap">
           <h1 className="page-title">
@@ -220,31 +225,35 @@ export default async function ProgrammaticInternshipPage({ params }: PageProps) 
               </p>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginBottom: 24 }}>
+                <Link
+                  href={`/enroll/1999?domain=${encodeURIComponent(roleData.title)}`}
+                  className="btn btn-primary btn-lg"
+                  style={{ textAlign: 'center' }}
+                >
+                  Confirm Fellowship Seat — ₹1,999 (₹1,500 Balance if ₹499 Paid) →
+                </Link>
                 <a
                   href={`https://lms.dbert.in/#signup?domain=${role}&next=/internships/${role}/${city}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="btn btn-primary btn-lg"
-                  style={{ textAlign: 'center' }}
-                >
-                  Apply on LMS (Track Auto-Selected) ↗
-                </a>
-                <Link 
-                  href={`/enroll/1999?domain=${encodeURIComponent(roleData.title)}`} 
                   className="btn btn-outline btn-lg"
                   style={{ textAlign: 'center', borderColor: '#f59e0b', color: '#fbbf24' }}
                 >
-                  Confirm Fellowship Seat (₹1,999 Program) →
-                </Link>
-                <a
-                  href={`https://lms.dbert.in/internships/${role}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn btn-outline btn-sm"
-                  style={{ textAlign: 'center', opacity: 0.8 }}
-                >
-                  Browse Pan-India Openings on LMS ↗
+                  Apply Free on LMS (Track Auto-Selected) ↗
                 </a>
+                <Link
+                  href={`/learners/courses/${role}`}
+                  className="btn btn-outline btn-sm"
+                  style={{ textAlign: 'center', opacity: 0.9 }}
+                >
+                  Inspect {roleData.title} Course Curriculum →
+                </Link>
+              </div>
+
+              {/* Tiered Value Ladder Highlight */}
+              <div style={{ padding: 16, background: 'rgba(245, 158, 11, 0.08)', border: '1px solid rgba(245, 158, 11, 0.3)', borderRadius: 8, fontSize: '0.8rem', color: '#e2e8f0', marginBottom: 14 }}>
+                <div style={{ fontWeight: 700, color: '#fbbf24', marginBottom: 4 }}>★ Tiered Value Ladder (Certificate → Stipend → Placement)</div>
+                <div>1. Verified 3-Doc Credential Packet &rarr; 2. ₹5,000+ Stipend Unlock at Gate 1 (3 approved PRs) &rarr; 3. Direct Round-1 Screening Waiver &amp; Placement Assistance.</div>
               </div>
 
               {/* Verified Trust Badges */}

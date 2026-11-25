@@ -62,18 +62,30 @@ def cohort_enroll(cohort_id):
 
 @enrollment_bp.route("/launchpad", methods=["GET"])
 def launchpad_checkout():
-    """Public landing page for DBERT Launchpad (2-month course track + AI tutor)."""
+    """Public landing page for DBERT Launchpad (2-month Beginner Foundation track, ₹7,999)."""
     from flask import render_template
-    from app import PAID_PROGRAM_AMOUNT, UPI_ID
-    return render_template("program.html", program_name="launchpad", title="DBERT Launchpad Program", paid_amount=PAID_PROGRAM_AMOUNT, upi_id=UPI_ID)
+    from app import UPI_ID
+    return render_template(
+        "program.html",
+        program_name="launchpad",
+        title="DBERT Launchpad Program",
+        paid_amount=7999,
+        upi_id=UPI_ID,
+    )
 
 
 @enrollment_bp.route("/accelerate", methods=["GET"])
 def accelerate_checkout():
-    """Public landing page for DBERT Accelerate (Live Project Sprints)."""
+    """Public landing page for DBERT Accelerate (2-month Applied Industrial Sprints, ₹4,999)."""
     from flask import render_template
-    from app import PAID_PROGRAM_AMOUNT, UPI_ID
-    return render_template("program.html", program_name="accelerate", title="DBERT Accelerate Sprints", paid_amount=PAID_PROGRAM_AMOUNT, upi_id=UPI_ID)
+    from app import UPI_ID
+    return render_template(
+        "program.html",
+        program_name="accelerate",
+        title="DBERT Accelerate Sprints",
+        paid_amount=4999,
+        upi_id=UPI_ID,
+    )
 
 
 @enrollment_bp.route("/internships/<page_slug>", methods=["GET"])

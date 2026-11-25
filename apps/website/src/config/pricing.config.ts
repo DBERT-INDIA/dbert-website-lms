@@ -6,11 +6,41 @@
  */
 
 export const PRICING_CONFIG = {
-  // Fee schedules (INR)
+  // Canonical 3-Program Tuition Schedule (INR) — All Programs Unified to 2 Months (8 Weeks)
+  launchpadFee: 7999,
+  accelerateFee: 4999,
+  fellowshipFee: 1999,
+  programDurationLabel: '2 Months (8 Weeks)',
+
+  // Fellowship (₹1,999) internal 2-step ledger & statutory verification
   cautionDeposit: 499,
   balancePayable: 1500,
   totalProgramFee: 1999,
   verificationFee: 299,
+
+  programs: {
+    launchpad: {
+      name: 'DBERT Launchpad',
+      level: 'Beginner · 0-to-1 Foundations',
+      duration: '2 Months (8 Weeks)',
+      fee: 7999,
+      href: '/learners/launchpad',
+    },
+    accelerate: {
+      name: 'DBERT Accelerate',
+      level: 'Intermediate · Applied Industrial Sprints',
+      duration: '2 Months (8 Weeks)',
+      fee: 4999,
+      href: '/learners/accelerate',
+    },
+    fellowship: {
+      name: 'DBERT Fellowship',
+      level: 'Production · Live Client Repo Internship',
+      duration: '2 Months (8 Weeks)',
+      fee: 1999,
+      href: '/learners/courses',
+    },
+  },
 
   // Payment coordinates
   merchantVpa: process.env.NEXT_PUBLIC_MERCHANT_VPA || 'Q652429146@ybl',

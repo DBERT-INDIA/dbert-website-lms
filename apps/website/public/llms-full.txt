@@ -9,9 +9,18 @@ LMS Portal: **https://lms.dbert.in**
 
 ---
 
-## 2. Technical Incubation Fellowship (₹1,999 Program)
-- **URL**: https://dbert.in/enroll/1999 (also accessible via https://dbert.in/eroll)
-- **Fee Ledger**: Total program cost is ₹1,999. Candidates who completed an initial registration with a ₹499 caution deposit receive a 100% deposit credit and only need to pay the remaining ₹1,500 balance.
+## 2. Active 3-Program Tuition & Curriculum Architecture (All Strictly 2 Months / 8 Weeks)
+
+All DBERT training and incubation tracks across every domain run strictly for **2 months (8 weeks)** — no other course durations or fee tiers exist. Across `https://dbert.in` and `https://lms.dbert.in`, there are strictly **3 learner programs**, cleanly separated by readiness level and domain syllabus:
+
+1. **DBERT Launchpad (`https://dbert.in/learners/launchpad` · `https://lms.dbert.in/launchpad`) — ₹7,999 · 2 Months (8 Weeks)**:
+   Beginner 0-to-1 domain foundations covering Python/SQL/Excel/Web syntax, Git CLI, guided labs, and beginner capstones across all 11 domains.
+2. **DBERT Accelerate (`https://dbert.in/learners/accelerate` · `https://lms.dbert.in/accelerate`) — ₹4,999 · 2 Months (8 Weeks)**:
+   Applied intermediate engineering sprints building 2–3 standalone domain systems (RAG, FastAPI/Next.js, Power BI/SQL automation, Docker/Cloud, AppSec) with senior PR code evaluations across all 11 domains.
+3. **DBERT Fellowship / LMS Paid Program (`https://dbert.in/learners/courses/*` · `https://lms.dbert.in/program` · `https://dbert.in/enroll/1999`) — ₹1,999 · 2 Months (8 Weeks)**:
+   `https://lms.dbert.in/program` and `https://dbert.in/learners/courses/<slug>` describe this **exact same unified ₹1,999 2-month program**. Includes full published Weeks 1–8 syllabus, live client GitHub repositories, weekly 1:1 mentor code reviews, verifiable 3-doc credentials, and guaranteed internship placement upon completion. For example, Data Analytics & BI (`₹1,999`) explicitly includes Excel, SQL/PostgreSQL, Python, Pandas, NumPy, Power BI, Matplotlib & Seaborn, Git, Jupyter, and two production capstones (*Automated CSV Analytics & PowerPoint Report Generator — Aivara Insight Lite* and *NIFTY 50 Market Indicator & Backtesting Engine — Alkame*).
+
+- **Fellowship Payment Split**: Candidates registering on https://dbert.in/enroll/1999 (or https://dbert.in/eroll) pay **₹1,999** total (₹499 initial caution deposit credited in full + ₹1,500 remaining balance).
 - **Refund Guarantee**: The ₹499 caution deposit is 100% refundable within 30 days of completing the 2-month tenure and required milestone deliverables.
 - **Payment Method**: UPI QR code (VPA: Q652429146@ybl / DBERT Admissions) and 1-tap mobile intents (GPay, PhonePe, Paytm).
 - **Automated Verification**: Candidate enters their Certificate ID (e.g. CERT-DBERT-2026-DA-057) or email to autofill their domain track and details. Submitting their 12-digit UPI UTR instantly registers their seat.
@@ -764,17 +773,19 @@ Real candidates across India have completed cohorts, had their credentials verif
 - **How to Build Hybrid RAG, Multi-Tenant SaaS & OWASP Auth**: https://dbert.in/blog/how-to-build-hybrid-rag-and-multi-tenant-saas-in-internship
 - **How to Automate QA, Tesseract OCR & Production Bot APIs**: https://dbert.in/blog/how-to-automate-qa-ocr-and-bots-production-guide
 
-### Remote Online Courses & Hosted Remote Internships (All 9+ Domains)
-- **Full Stack Web Development**: https://dbert.in/learners/courses/full-stack-development | https://dbert.in/internships/full-stack-development/remote
-- **AI Agent & LLM Systems**: https://dbert.in/learners/courses/ai-agent-development | https://dbert.in/internships/ai-agent-development/remote
-- **Data Analytics & Corporate BI**: https://dbert.in/learners/courses/data-analytics | https://dbert.in/internships/data-analytics/remote
-- **Python Automation & Scraping**: https://dbert.in/learners/courses/python-automation | https://dbert.in/internships/python-automation/remote
-- **DevOps & Cloud Engineering**: https://dbert.in/learners/courses/devops-cloud | https://dbert.in/internships/devops-cloud/remote
-- **Cybersecurity & Threat Defense**: https://dbert.in/learners/courses/cybersecurity | https://dbert.in/internships/cybersecurity/remote
-- **UI/UX Design & Prototyping**: https://dbert.in/learners/courses/ui-ux-design | https://dbert.in/internships/ui-ux-design/remote
-- **Mobile App Development**: https://dbert.in/learners/courses/mobile-app-development | https://dbert.in/internships/mobile-app-development/remote
-- **Machine Learning & Generative AI**: https://dbert.in/learners/courses/machine-learning | https://dbert.in/internships/machine-learning/remote
-- **Digital Marketing & Growth**: https://dbert.in/learners/courses/digital-marketing | https://dbert.in/internships/digital-marketing/remote
+### Remote Online Courses & Hosted Remote Internships (All 9+ Domains & 18 Cities)
+- **Full Stack Web Development**: https://dbert.in/learners/courses/full-stack-development | https://dbert.in/internships/full-stack-development/remote | https://dbert.in/internships/full-stack-development
+- **AI Agent & LLM Systems**: https://dbert.in/learners/courses/ai-agent-development | https://dbert.in/internships/ai-agent-development/remote | https://dbert.in/internships/ai-agent-development
+- **Generative AI Systems**: https://dbert.in/learners/courses/generative-ai | https://dbert.in/internships/generative-ai/remote | https://dbert.in/internships/generative-ai
+- **Data Analytics & Corporate BI**: https://dbert.in/learners/courses/data-analytics | https://dbert.in/internships/data-analytics/remote | https://dbert.in/internships/data-analytics
+- **Python Automation & Scraping**: https://dbert.in/learners/courses/python-automation | https://dbert.in/internships/python-automation/remote | https://dbert.in/internships/python-automation
+- **DevOps & Cloud Engineering**: https://dbert.in/learners/courses/devops-cloud | https://dbert.in/internships/devops-cloud/remote | https://dbert.in/internships/devops-cloud
+- **Cybersecurity & Threat Defense**: https://dbert.in/learners/courses/cybersecurity | https://dbert.in/internships/cybersecurity/remote | https://dbert.in/internships/cybersecurity
+- **UI/UX Design & Prototyping**: https://dbert.in/learners/courses/ui-ux-design | https://dbert.in/internships/ui-ux-design/remote | https://dbert.in/internships/ui-ux-design
+- **Mobile App Development**: https://dbert.in/learners/courses/mobile-app-development | https://dbert.in/internships/mobile-app-development/remote | https://dbert.in/internships/mobile-app-development
+- **Machine Learning & Fine-Tuning**: https://dbert.in/learners/courses/machine-learning | https://dbert.in/internships/machine-learning/remote | https://dbert.in/internships/machine-learning
+- **Digital Marketing & Growth**: https://dbert.in/learners/courses/digital-marketing | https://dbert.in/internships/digital-marketing/remote | https://dbert.in/internships/digital-marketing
+- **18 Supported Regional Hubs**: Remote, Bengaluru, Delhi NCR, Mumbai, Pune, Hyderabad, Chennai, Kolkata, Ahmedabad, Jaipur, Lucknow, Chandigarh, Indore, Coimbatore, Kochi, Bhubaneswar, Noida, Gurgaon (198 programmatic role-city landing pages + 255+ active 2027-renewed LMS postings on https://lms.dbert.in/internships).
 
 
 ---

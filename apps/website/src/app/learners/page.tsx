@@ -110,9 +110,9 @@ export default function LearnersLandingPage() {
       num: '02',
       tag: 'Industrial Training',
       title: 'DBERT Accelerate',
-      price: '₹4,999 / 3 months',
-      forText: 'For intermediate programmers, computer science graduates, and Launchpad track graduates.',
-      outcome: 'Build production-ready AI applications, implement RAG systems, connect APIs, and receive a verified completion certificate.',
+      price: '₹4,999 / 2 months',
+      forText: 'For intermediate programmers, computer science graduates, and Launchpad track graduates across all 11 domains.',
+      outcome: 'Build applied industry modules across your chosen domain (APIs, RAG, SQL/BI, Security, or DevOps) under senior PR review.',
       ctaText: 'Explore Accelerate',
       ctaHref: '/learners/accelerate',
       isFeatured: true
@@ -279,7 +279,7 @@ export default function LearnersLandingPage() {
                 <strong>Independently Verifiable Credentials:</strong> To eliminate credential fraud and guarantee recruiter trust, every accomplishment within the DBERT ecosystem is cryptographically recorded. Hiring managers can enter any certificate ID directly into our global <Link href="/verify">Certificate Verification Engine</Link> to audit explicit learning tracks, mentor signatures, and Git repository contributions without requiring third-party outreach.
               </p>
               <p>
-                <strong>Transparent Fee Structures &amp; EMI:</strong> We maintain complete fiscal clarity across our learning tracks. Launchpad tuition is fixed at ₹7,999; Accelerate at ₹4,999; and Fellowship onboarding at ₹1,999 (covering dedicated mentor review hours and certificate issuance). Flexible EMI installment structures remain accessible across all learning tiers.
+                <strong>Transparent 2-Month Fee Matrix (Zero Hidden Tiers):</strong> Every DBERT learner program across all domains runs strictly for <strong>2 months (8 weeks)</strong> with clear scope separation: <strong>Launchpad is ₹7,999</strong> (0-to-1 beginner foundations), <strong>Accelerate is ₹4,999</strong> (applied intermediate domain sprints), and <strong>Fellowship is ₹1,999</strong> (live client repository internship, 1:1 weekly mentor reviews, and verifiable 3-doc credentials; ₹499 caution deposit + ₹1,500 balance option available on <Link href="/enroll/1999">/enroll/1999</Link>).
               </p>
             </div>
           </div>

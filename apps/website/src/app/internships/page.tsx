@@ -15,7 +15,12 @@ export default function InternshipsHubPage() {
       desc: 'Build production web apps with React 19, Next.js App Router, TypeScript, and PostgreSQL with pgvector indexing.',
       openings: '1,420+ Live Openings',
       placement: '100% Guaranteed Production Internship with Dedicated Placement Assistance',
-      cities: 'Remote · Bengaluru · Delhi NCR · Mumbai'
+      citySlugs: [
+        { slug: 'remote', label: 'Remote' },
+        { slug: 'bengaluru', label: 'Bengaluru' },
+        { slug: 'delhi-ncr', label: 'Delhi NCR' },
+        { slug: 'mumbai', label: 'Mumbai' }
+      ]
     },
     {
       slug: 'ai-agent-development',
@@ -24,7 +29,12 @@ export default function InternshipsHubPage() {
       desc: 'Construct autonomous AI workflow agents with LangGraph, CrewAI tool-calling loops, and local vLLM / Ollama runtimes.',
       openings: '890+ Live Openings',
       placement: '100% Guaranteed Production Internship with Dedicated Placement Assistance',
-      cities: 'Remote · Bengaluru · Pune · Hyderabad'
+      citySlugs: [
+        { slug: 'remote', label: 'Remote' },
+        { slug: 'bengaluru', label: 'Bengaluru' },
+        { slug: 'pune', label: 'Pune' },
+        { slug: 'hyderabad', label: 'Hyderabad' }
+      ]
     },
     {
       slug: 'data-analytics',
@@ -33,7 +43,12 @@ export default function InternshipsHubPage() {
       desc: 'Engineer SQL query pipelines, programmatically normalise datasets with Pandas, and construct interactive Metabase/Power BI dashboards.',
       openings: '1,150+ Live Openings',
       placement: '100% Guaranteed Production Internship with Dedicated Placement Assistance',
-      cities: 'Remote · Delhi NCR · Mumbai · Bengaluru'
+      citySlugs: [
+        { slug: 'remote', label: 'Remote' },
+        { slug: 'delhi-ncr', label: 'Delhi NCR' },
+        { slug: 'mumbai', label: 'Mumbai' },
+        { slug: 'bengaluru', label: 'Bengaluru' }
+      ]
     },
     {
       slug: 'python-automation',
@@ -42,7 +57,12 @@ export default function InternshipsHubPage() {
       desc: 'Write concurrent Playwright scrapers, configure Celery/Redis task workers, and automate high-throughput data extraction.',
       openings: '740+ Live Openings',
       placement: '100% Guaranteed Production Internship with Dedicated Placement Assistance',
-      cities: 'Remote · Pune · Hyderabad · Chennai'
+      citySlugs: [
+        { slug: 'remote', label: 'Remote' },
+        { slug: 'pune', label: 'Pune' },
+        { slug: 'hyderabad', label: 'Hyderabad' },
+        { slug: 'chennai', label: 'Chennai' }
+      ]
     },
     {
       slug: 'devops-cloud',
@@ -51,7 +71,12 @@ export default function InternshipsHubPage() {
       desc: 'Deploy Docker microservices, configure Kubernetes clusters, build automated GitHub Actions CI/CD pipelines, and manage AWS EC2/VPC.',
       openings: '620+ Live Openings',
       placement: '100% Guaranteed Production Internship with Dedicated Placement Assistance',
-      cities: 'Remote · Bengaluru · Noida · Hyderabad'
+      citySlugs: [
+        { slug: 'remote', label: 'Remote' },
+        { slug: 'bengaluru', label: 'Bengaluru' },
+        { slug: 'noida', label: 'Noida' },
+        { slug: 'hyderabad', label: 'Hyderabad' }
+      ]
     },
     {
       slug: 'ui-ux-design',
@@ -60,7 +85,12 @@ export default function InternshipsHubPage() {
       desc: 'Design component libraries, auto-layout tokens, UX research journeys, and interactive high-fidelity prototypes in Figma.',
       openings: '580+ Live Openings',
       placement: '100% Guaranteed Production Internship with Dedicated Placement Assistance',
-      cities: 'Remote · Mumbai · Delhi · Bengaluru'
+      citySlugs: [
+        { slug: 'remote', label: 'Remote' },
+        { slug: 'mumbai', label: 'Mumbai' },
+        { slug: 'delhi-ncr', label: 'Delhi NCR' },
+        { slug: 'bengaluru', label: 'Bengaluru' }
+      ]
     },
     {
       slug: 'cybersecurity',
@@ -69,7 +99,12 @@ export default function InternshipsHubPage() {
       desc: 'Audit web endpoints for OWASP Top 10 vulnerabilities, conduct network pen-testing with Burp Suite, and implement SOC log pipelines.',
       openings: '490+ Live Openings',
       placement: '100% Guaranteed Production Internship with Dedicated Placement Assistance',
-      cities: 'Remote · Bengaluru · Hyderabad · Pune'
+      citySlugs: [
+        { slug: 'remote', label: 'Remote' },
+        { slug: 'bengaluru', label: 'Bengaluru' },
+        { slug: 'hyderabad', label: 'Hyderabad' },
+        { slug: 'pune', label: 'Pune' }
+      ]
     },
     {
       slug: 'mobile-app-development',
@@ -78,7 +113,12 @@ export default function InternshipsHubPage() {
       desc: 'Develop native-grade cross-platform apps with Flutter, Dart, Riverpod state management, and SQLite offline synchronization.',
       openings: '520+ Live Openings',
       placement: '100% Guaranteed Production Internship with Dedicated Placement Assistance',
-      cities: 'Remote · Delhi NCR · Chennai · Bengaluru'
+      citySlugs: [
+        { slug: 'remote', label: 'Remote' },
+        { slug: 'delhi-ncr', label: 'Delhi NCR' },
+        { slug: 'chennai', label: 'Chennai' },
+        { slug: 'bengaluru', label: 'Bengaluru' }
+      ]
     },
     {
       slug: 'generative-ai',
@@ -87,7 +127,26 @@ export default function InternshipsHubPage() {
       desc: 'Fine-tune open-weights LLMs with LoRA/QLoRA, construct dense vector search with Reciprocal Rank Fusion, and deploy vLLM.',
       openings: '680+ Live Openings',
       placement: '100% Guaranteed Production Internship with Dedicated Placement Assistance',
-      cities: 'Remote · Bengaluru · Hyderabad · Mumbai'
+      citySlugs: [
+        { slug: 'remote', label: 'Remote' },
+        { slug: 'bengaluru', label: 'Bengaluru' },
+        { slug: 'hyderabad', label: 'Hyderabad' },
+        { slug: 'mumbai', label: 'Mumbai' }
+      ]
+    },
+    {
+      slug: 'digital-marketing',
+      title: 'Digital Marketing & Growth',
+      badge: 'Growth Track',
+      desc: 'Execute technical SEO, schema optimization, GA4 funnel attribution, and high-intent conversion optimization across products.',
+      openings: '460+ Live Openings',
+      placement: '100% Guaranteed Production Internship with Dedicated Placement Assistance',
+      citySlugs: [
+        { slug: 'remote', label: 'Remote' },
+        { slug: 'bengaluru', label: 'Bengaluru' },
+        { slug: 'pune', label: 'Pune' },
+        { slug: 'delhi-ncr', label: 'Delhi NCR' }
+      ]
     }
   ];
 
@@ -196,18 +255,30 @@ export default function InternshipsHubPage() {
                   </p>
                 </div>
                 <div className="pt-4 border-t border-line/50 mt-auto">
-                  <div className="text-[11px] font-mono text-muted mb-3">
-                    📍 {domain.cities}
+                  <div className="flex flex-wrap gap-1.5 mb-3" aria-label={`${domain.title} city hubs`}>
+                    {domain.citySlugs.map((c) => (
+                      <Link
+                        key={c.slug}
+                        href={`/internships/${domain.slug}/${c.slug}`}
+                        className="tag-chip text-[11px] font-mono hover:border-accent hover:text-accent transition-colors"
+                      >
+                        📍 {c.label}
+                      </Link>
+                    ))}
+                    <Link
+                      href={`/internships/${domain.slug}`}
+                      className="text-[11px] font-mono text-accent hover:underline px-1.5 py-0.5"
+                    >
+                      All 18 Cities &rarr;
+                    </Link>
                   </div>
                   <div className="flex flex-col gap-2">
-                    <a
-                      href={`https://lms.dbert.in/apply?domain=${domain.slug}&next=/internships/${domain.slug}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <Link
+                      href={`/enroll/1999?domain=${encodeURIComponent(domain.title)}`}
                       className="btn btn-primary btn-sm text-center"
                     >
-                      Apply on LMS (Domain Auto-Selected) ↗
-                    </a>
+                      Fast-Track Seat (₹1,999 Program) &rarr;
+                    </Link>
                     <a
                       href={`https://lms.dbert.in/internships/${domain.slug}`}
                       target="_blank"
@@ -216,6 +287,12 @@ export default function InternshipsHubPage() {
                     >
                       View Live Postings on Portal ↗
                     </a>
+                    <Link
+                      href={`/learners/courses/${domain.slug}`}
+                      className="text-[11px] font-mono text-center text-muted hover:text-accent transition-colors pt-1"
+                    >
+                      Inspect 8-Week Course Syllabus &rarr;
+                    </Link>
                   </div>
                 </div>
               </div>

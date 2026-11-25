@@ -5,7 +5,12 @@ export const revalidate = 3600;
 import { seoConfig } from '@/data/seo.config';
 import { getBlogSlugs } from '@/lib/blog';
 import { getAllDomainSlugs } from '@/data/domains.config';
-import { getAllGeoInternshipRoutes } from '@/data/geo_domains.config';
+import {
+  getAllGeoInternshipRoutes,
+  getAllProgramCityRoutes,
+  GEO_ROLES,
+  GEO_CITIES,
+} from '@/data/geo_domains.config';
 import certificatesRegistry from '@/data/certificates_registry.json';
 
 /**
@@ -19,14 +24,23 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const getPriority = (route: string): number => {
     if (route === '') return 1.0;
+    if (route === '/enroll/1999') return 0.98;
     if (['/startups', '/ai-solutions', '/learners', '/labs', '/learners/courses', '/learners/fellowship', '/learners/jobs', '/internships', '/cohorts/aivara', '/verify/directory', '/hire/pre-vetted-engineers', '/fellows/verified', '/qa', '/about/team'].includes(route)) return 0.95;
     if (route.startsWith('/verify/directory/')) return 0.90;
-    if (['/verify', '/about/careers', '/labs/opensource', '/learners/accelerate', '/learners/launchpad'].includes(route)) return 0.9;
-    if (route.startsWith('/learners/courses/') || route.startsWith('/courses/')) return 0.9;
-    if (route.startsWith('/internships/')) return 0.85;
+    if (['/verify', '/about/careers', '/labs/opensource'].includes(route)) return 0.9;
+    if (route.startsWith('/learners/courses/')) {
+      return route.split('/').filter(Boolean).length === 3 ? 0.9 : 0.8;
+    }
+    if (route.startsWith('/learners/launchpad/') || route.startsWith('/learners/accelerate/')) {
+      return 0.75;
+    }
+    if (route.startsWith('/courses/')) return 0.9;
+    if (route.startsWith('/internships/')) {
+      return route.split('/').filter(Boolean).length === 2 ? 0.85 : 0.75;
+    }
     if (route.startsWith('/ai-solutions/products/')) return 0.9;
     if (route.startsWith('/startups/services/')) return 0.85;
-    if (['/enroll/1999', '/about/credentials', '/pricing'].includes(route)) return 0.85;
+    if (['/about/credentials', '/pricing'].includes(route)) return 0.85;
     if (route.startsWith('/blog/')) return 0.85;
     if (route.startsWith('/verify/')) return 0.8;
     if (['/privacy', '/terms', '/refund'].includes(route)) return 0.5;
@@ -36,10 +50,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
   };
 
   const getChangeFrequency = (route: string): 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' => {
-    if (route === '') return 'daily';
-    if (['/learners/jobs', '/learners/fellowship', '/cohorts/aivara', '/verify/directory', '/hire/pre-vetted-engineers', '/fellows/verified', '/qa', '/about/team'].includes(route) || route.startsWith('/verify/directory/')) return 'daily';
-    if (route.startsWith('/learners/courses') || route.startsWith('/courses/') || route.startsWith('/internships/') || route.startsWith('/blog/') || route.startsWith('/verify/')) return 'weekly';
-    if (['/startups', '/ai-solutions', '/learners', '/verify', '/enroll/1999', '/about/careers', '/labs/opensource'].includes(route)) return 'weekly';
+    if (route === '' || route === '/enroll/1999') return 'daily';
+    if (['/learners/jobs', '/learners/fellowship', '/cohorts/aivara', '/verify/directory', '/hire/pre-vetted-engineers', '/fellows/verified', '/qa', '/about/team', '/internships'].includes(route) || route.startsWith('/verify/directory/')) return 'daily';
+    if (
+      route.startsWith('/learners/courses') ||
+      route.startsWith('/learners/launchpad/') ||
+      route.startsWith('/learners/accelerate/') ||
+      route.startsWith('/courses/') ||
+      route.startsWith('/internships/') ||
+      route.startsWith('/blog/') ||
+      route.startsWith('/verify/')
+    ) return 'weekly';
+    if (['/startups', '/ai-solutions', '/learners', '/verify', '/about/careers', '/labs/opensource'].includes(route)) return 'weekly';
     if (['/privacy', '/terms', '/refund'].includes(route)) return 'yearly';
     return 'monthly';
   };
@@ -54,12 +76,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     (slug) => `/verify/directory/${slug}`
   );
 
-  // 3. Get programmatic geo-internship combinations across all 18 tech hubs
-  const geoInternshipRoutes = getAllGeoInternshipRoutes();
+  // 3. Get programmatic geo-internship combinations + role/city hub pages across all 18 tech hubs
+  const geoInternshipRoutes = [
+    ...Object.keys(GEO_ROLES).map((r) => `/internships/${r}`),
+    ...Object.keys(GEO_CITIES).map((c) => `/internships/${c}`),
+    ...getAllGeoInternshipRoutes(),
+  ];
 
-  // 4. Canonical course routes are already included from seoConfig (/learners/courses/*)
+  // 4. Canonical courses + 594 Program x City routes (/learners/{courses,launchpad,accelerate}/[slug]/[city])
   // Legacy /courses/* routes permanently redirect to /learners/courses/* and are excluded from sitemap.
-  const courseDomainRoutes: string[] = [];
+  const courseDomainRoutes: string[] = getAllProgramCityRoutes();
 
   // 5. Preserve all previously indexed routes from existing public/sitemap.xml
   const historicalRoutes: string[] = [];

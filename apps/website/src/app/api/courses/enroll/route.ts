@@ -11,12 +11,31 @@ interface CourseDepositSubmission {
   college?: string;
   domain: string;
   courseTitle?: string;
+  programType?: string;
   amountExpected: number;
   amountPaid: number;
   utrNumber: string;
   status: 'SUBMITTED' | 'VERIFIED';
   ipAddress?: string;
   userAgent?: string;
+}
+
+function resolveAuthoritativeCourseAmount(programType?: string, requestedAmount?: number): {
+  programType: string;
+  amount: number;
+  paymentType: string;
+} {
+  const key = (programType || '').toLowerCase().trim();
+  if (key === 'launchpad') {
+    return { programType: 'launchpad', amount: 7999, paymentType: 'launchpad' };
+  }
+  if (key === 'accelerate') {
+    return { programType: 'accelerate', amount: 4999, paymentType: 'accelerate' };
+  }
+  if (key === 'fellowship' && Number(requestedAmount) === 1999) {
+    return { programType: 'fellowship', amount: 1999, paymentType: 'paid_program' };
+  }
+  return { programType: key || 'fellowship_deposit', amount: 499, paymentType: 'deposit' };
 }
 
 function resolveCourseDataFilePath(): string {
@@ -43,9 +62,13 @@ export async function POST(request: NextRequest) {
       domain,
       track,
       courseTitle,
+      programType,
+      amountInr,
       utrNumber,
       utr
     } = body;
+
+    const resolvedFee = resolveAuthoritativeCourseAmount(programType, amountInr);
 
     const candidateName = (fullName || name || '').trim();
     const candidateEmail = (email || '').trim().toLowerCase();
@@ -79,8 +102,9 @@ export async function POST(request: NextRequest) {
       college: (college || '').trim(),
       domain: candidateDomain,
       courseTitle: (courseTitle || '').trim() || undefined,
-      amountExpected: 499,
-      amountPaid: 499,
+      programType: resolvedFee.programType,
+      amountExpected: resolvedFee.amount,
+      amountPaid: resolvedFee.amount,
       utrNumber: cleanUtr,
       status: 'SUBMITTED',
       ipAddress: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || undefined,
@@ -135,8 +159,8 @@ export async function POST(request: NextRequest) {
           phone: candidatePhone,
           college: (college || '').trim(),
           domain: candidateDomain,
-          amount: 499,
-          payment_type: 'deposit',
+          amount: resolvedFee.amount,
+          payment_type: resolvedFee.paymentType,
           utr: cleanUtr,
           submission_id: submissionId
         }),
@@ -153,9 +177,9 @@ export async function POST(request: NextRequest) {
       candidateName,
       domain: candidateDomain,
       utrNumber: cleanUtr,
-      amount: 499,
+      amount: resolvedFee.amount,
       redirectUrl: 'https://lms.dbert.in/portal',
-      message: 'Security deposit recorded! Your LMS account is confirmed.'
+      message: 'Enrollment & UTR recorded! Your LMS account confirmation is queued.'
     });
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err.message || 'Internal server error' }, { status: 500 });

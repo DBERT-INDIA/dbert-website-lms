@@ -701,6 +701,11 @@ CANONICAL_DOMAIN_MAP = {
     "machine learning": "AI Agent Development",
     "machine learning & ai": "AI Agent Development",
     "prompt engineering": "AI Agent Development",
+    "generative ai": "AI Agent Development",
+    "generative-ai": "AI Agent Development",
+    "generative ai systems": "AI Agent Development",
+    "genai": "AI Agent Development",
+    "llm": "AI Agent Development",
 
     # Data Analyst
     "data analyst": "Data Analyst",
@@ -6350,7 +6355,7 @@ def index():
 def program_page():
     """Phase 12.3 — public, indexable paid-program landing page (terms shown before any CTA)."""
     try:
-        return render_template("program.html", paid_amount=PAID_PROGRAM_AMOUNT, upi_id=UPI_ID)
+        return render_template("program.html", program_name="fellowship", title="DBERT Fellowship (Paid Program)", paid_amount=PAID_PROGRAM_AMOUNT, upi_id=UPI_ID)
     except Exception as e:
         log_error("/program", e)
         return _render_error(500, "Error Loading Program Details", "Unable to load program page. Please try again.")
@@ -6463,13 +6468,20 @@ def sitemap_xml():
             lm = (r["updated_at"] or "")[:10] or today
             pages.append((f"{SITE_ORIGIN}{_post_path(r)}", lm, "weekly", "0.7"))
         # T8: location landing pages, only once a (post_type, city) has >=3 live posts
-        # (thin pages stay noindex + out of the sitemap -- they light up as inventory lands).
+        # (thin/foreign/malformed city slugs stay out of the sitemap).
+        _excluded_city_slugs = {
+            "", "india", "pan-india", "zrich", "zurich", "mnchen", "munich",
+            "paris", "london", "berlin", "new-york", "san-francisco", "singapore", "dubai", "tokyo",
+        }
         for r in conn.execute(
             f"SELECT post_type, location, MAX(updated_at) AS lm FROM posts WHERE {_LIVE_SQL} "  # nosec B608
             "AND location != '' GROUP BY post_type, location HAVING COUNT(*) >= 3").fetchall():
+            city_slug = _city_slugify(r["location"])
+            if city_slug in _excluded_city_slugs or len(city_slug) < 3:
+                continue
             base = "/internships" if r["post_type"] == "internship" else "/jobs"
             lm = (r["lm"] or "")[:10] or today
-            pages.append((f"{SITE_ORIGIN}{base}/{_city_slugify(r['location'])}", lm, "weekly", "0.6"))
+            pages.append((f"{SITE_ORIGIN}{base}/{city_slug}", lm, "weekly", "0.6"))
         for r in conn.execute(
             "SELECT slug, updated_at FROM cvs WHERE is_public=1 AND slug IS NOT NULL").fetchall():
             lm = (r["updated_at"] or "")[:10] or today
@@ -15105,10 +15117,12 @@ if INDEXNOW_KEY:  # IndexNow ownership proof: host {key}.txt at the site root.
 
 # â”€â”€ public listings â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 def _city_slugify(city):
-    """T8: stable, readable slug for a free-text location string, e.g.
-    'Bangalore, India' -> 'bangalore-india'. Pure string transform (no DB), so it's
-    safe to call on both sides of a lookup."""
-    s = re.sub(r"[^a-z0-9\s]", "", (city or "").lower())
+    """T8: stable, readable ASCII slug for a free-text location string, e.g.
+    'Bangalore, India' -> 'bangalore-india'. Normalizes Unicode accents (NFKD)
+    so umlauts map cleanly instead of dropping characters."""
+    import unicodedata
+    norm = unicodedata.normalize("NFKD", city or "").encode("ascii", "ignore").decode("ascii").lower()
+    s = re.sub(r"[^a-z0-9\s]", "", norm)
     return re.sub(r"\s+", "-", s.strip())
 
 
@@ -15385,8 +15399,8 @@ def _render_listings(post_type, location_page=False, city=None, city_slug=None, 
                     if parsed:
                         stip_min = min(parsed)
                         stip_max = max(parsed)
-                    # Duration from dates
-                    dur_str = "Full Time" if post_type == "job" else "3 Months"
+                    # Duration from dates (all DBERT cohorts default to 2 Months; explicit external dates honored)
+                    dur_str = "Full Time" if post_type == "job" else "2 Months"
                     try:
                         if d.get("Start_Date") and d.get("End_Date"):
                             from datetime import datetime as _dt
@@ -15731,11 +15745,22 @@ def _resolve_city_slug(city_slug):
     return None
 
 
-@app.route("/jobs/<slug>")
-def jobs_by_city(slug):
+def _resolve_domain_slug(slug):
+    """Resolve canonical domain slugs AND synonyms (e.g. data-analytics, generative-ai, machine-learning)."""
     slug_domains = {s: d for d, s in DOMAIN_SLUGS.items()}
     if slug in slug_domains:
-        return _render_listings("job", domain_override=slug_domains[slug], domain_slug=slug)
+        return slug_domains[slug], slug
+    norm = normalize_domain_string(slug)
+    if norm and norm in DOMAIN_SLUGS:
+        return norm, DOMAIN_SLUGS[norm]
+    return None, None
+
+
+@app.route("/jobs/<slug>")
+def jobs_by_city(slug):
+    dom, d_slug = _resolve_domain_slug(slug)
+    if dom:
+        return _render_listings("job", domain_override=dom, domain_slug=d_slug)
     if slug in ("virtual-remote-jobs", "remote-jobs"):
         return _render_listings("job", location_page=True, city="Remote", city_slug=slug)
     city = _resolve_city_slug(slug)
@@ -15748,15 +15773,16 @@ def jobs_by_city(slug):
 @app.route("/internships/december-2026")
 @app.route("/internships/cohort-2026")
 @app.route("/internships/cohort-november-2026")
+@app.route("/internships/cohort-2027")
 def internships_monthly_cohort():
     return _render_listings("internship", location_page=True, city="Remote", city_slug="remote")
 
 
 @app.route("/internships/<slug>")
 def internships_by_city(slug):
-    slug_domains = {s: d for d, s in DOMAIN_SLUGS.items()}
-    if slug in slug_domains:
-        return _render_listings("internship", domain_override=slug_domains[slug], domain_slug=slug)
+    dom, d_slug = _resolve_domain_slug(slug)
+    if dom:
+        return _render_listings("internship", domain_override=dom, domain_slug=d_slug)
     if slug == "virtual-remote-internships":
         return _render_listings("internship", location_page=True, city="Remote", city_slug=slug)
     if slug == "paid-internships":
@@ -15765,7 +15791,7 @@ def internships_by_city(slug):
         return _render_listings("internship", domain_override="Data Analyst", domain_slug="data-analyst", location_page=True, city="Remote", city_slug=slug)
     if slug == "ai-automation-internship":
         return _render_listings("internship", domain_override="AI Agent Development", domain_slug="ai-agent-development", location_page=False, city_slug=slug)
-    if slug in ("november-2026", "december-2026", "cohort-2026", "cohort-november-2026", "remote-internships-2026"):
+    if slug in ("november-2026", "december-2026", "cohort-2026", "cohort-november-2026", "cohort-2027", "remote-internships-2026", "remote-internships-2027"):
         return _render_listings("internship", location_page=True, city="Remote", city_slug=slug)
     city = _resolve_city_slug(slug)
     if not city:
@@ -15775,58 +15801,58 @@ def internships_by_city(slug):
 
 @app.route("/jobs/<domain_slug>/<city_slug>")
 def jobs_by_domain_and_city(domain_slug, city_slug):
-    slug_domains = {s: d for d, s in DOMAIN_SLUGS.items()}
-    if domain_slug not in slug_domains:
+    dom, d_slug = _resolve_domain_slug(domain_slug)
+    if not dom:
         abort(404)
     city = _resolve_city_slug(city_slug)
     if not city:
         abort(404)
-    return _render_listings("job", domain_override=slug_domains[domain_slug], domain_slug=domain_slug, location_page=True, city=city, city_slug=city_slug)
+    return _render_listings("job", domain_override=dom, domain_slug=d_slug, location_page=True, city=city, city_slug=city_slug)
 
 
 @app.route("/internships/<domain_slug>/<city_slug>")
 def internships_by_domain_and_city(domain_slug, city_slug):
-    slug_domains = {s: d for d, s in DOMAIN_SLUGS.items()}
-    if domain_slug not in slug_domains:
+    dom, d_slug = _resolve_domain_slug(domain_slug)
+    if not dom:
         abort(404)
     city = _resolve_city_slug(city_slug)
     if not city:
         abort(404)
-    return _render_listings("internship", domain_override=slug_domains[domain_slug], domain_slug=domain_slug, location_page=True, city=city, city_slug=city_slug)
+    return _render_listings("internship", domain_override=dom, domain_slug=d_slug, location_page=True, city=city, city_slug=city_slug)
 
 
 @app.route("/jobs/work-from-home/<domain_slug>")
 @app.route("/jobs/remote/<domain_slug>")
 def jobs_remote_by_domain(domain_slug):
-    slug_domains = {s: d for d, s in DOMAIN_SLUGS.items()}
-    if domain_slug not in slug_domains:
+    dom, d_slug = _resolve_domain_slug(domain_slug)
+    if not dom:
         abort(404)
-    return _render_listings("job", domain_override=slug_domains[domain_slug], domain_slug=domain_slug, location_page=True, city="Remote", city_slug="remote")
+    return _render_listings("job", domain_override=dom, domain_slug=d_slug, location_page=True, city="Remote", city_slug="remote")
 
 
 @app.route("/internships/work-from-home/<domain_slug>")
 @app.route("/internships/remote/<domain_slug>")
 def internships_remote_by_domain(domain_slug):
-    slug_domains = {s: d for d, s in DOMAIN_SLUGS.items()}
-    if domain_slug not in slug_domains:
+    dom, d_slug = _resolve_domain_slug(domain_slug)
+    if not dom:
         abort(404)
-    return _render_listings("internship", domain_override=slug_domains[domain_slug], domain_slug=domain_slug, location_page=True, city="Remote", city_slug="remote")
+    return _render_listings("internship", domain_override=dom, domain_slug=d_slug, location_page=True, city="Remote", city_slug="remote")
 
 
 @app.route("/jobs/paid/<domain_slug>")
 def jobs_paid_by_domain(domain_slug):
-    slug_domains = {s: d for d, s in DOMAIN_SLUGS.items()}
-    if domain_slug not in slug_domains:
+    dom, d_slug = _resolve_domain_slug(domain_slug)
+    if not dom:
         abort(404)
-    return _render_listings("job", domain_override=slug_domains[domain_slug], domain_slug=domain_slug, location_page=False, city_slug=domain_slug, stipend_override="paid")
+    return _render_listings("job", domain_override=dom, domain_slug=d_slug, location_page=False, city_slug=d_slug, stipend_override="paid")
 
 
 @app.route("/internships/paid/<domain_slug>")
 def internships_paid_by_domain(domain_slug):
-    slug_domains = {s: d for d, s in DOMAIN_SLUGS.items()}
-    if domain_slug not in slug_domains:
+    dom, d_slug = _resolve_domain_slug(domain_slug)
+    if not dom:
         abort(404)
-    return _render_listings("internship", domain_override=slug_domains[domain_slug], domain_slug=domain_slug, location_page=False, city_slug=domain_slug, stipend_override="paid")
+    return _render_listings("internship", domain_override=dom, domain_slug=d_slug, location_page=False, city_slug=d_slug, stipend_override="paid")
 
 
 # â”€â”€ public detail (SEO + apply CTA + public comments) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -18547,6 +18573,17 @@ def enroll():
         if not valid:
             return jsonify({"status": "error", "message": err}), 400
 
+        req_prog = (clean_text(request.form.get("program_name")) or "fellowship").lower()
+        if req_prog == "launchpad":
+            enrolled_amount = 7999
+            enrolled_product = "launchpad"
+        elif req_prog == "accelerate":
+            enrolled_amount = 4999
+            enrolled_product = "accelerate"
+        else:
+            enrolled_amount = int(PAID_PROGRAM_AMOUNT)
+            enrolled_product = "paid_program"
+
         chosen_domain = clean_text(request.form.get("domain"))
         if chosen_domain and chosen_domain not in VALID_DOMAINS:
             return jsonify({"status": "error", "message": "Invalid domain."}), 400
@@ -19228,6 +19265,17 @@ def paid_enroll():
         if not valid:
             return jsonify({"status": "error", "message": err}), 400
 
+        req_prog = (clean_text(request.form.get("program_name")) or "fellowship").lower()
+        if req_prog == "launchpad":
+            enrolled_amount = 7999
+            enrolled_product = "launchpad"
+        elif req_prog == "accelerate":
+            enrolled_amount = 4999
+            enrolled_product = "accelerate"
+        else:
+            enrolled_amount = int(PAID_PROGRAM_AMOUNT)
+            enrolled_product = "paid_program"
+
         # Validate 12-digit UTR
         utr_raw = clean_text(request.form.get("utr", ""))
         utr = re.sub(r"\D", "", utr_raw)
@@ -19281,10 +19329,10 @@ def paid_enroll():
                 conn.execute("""
                     UPDATE enrollments SET application_id=?,timestamp=?,name=?,phone=?,city=?,college=?,course=?,
                     semester=?,year_of_passing=?,domain=?,joining_date=?,batch_label=?,payment_screenshot=?,
-                    payment_status='Pending Verification',admin_note=?,utr=?,product='paid_program',amount=?,updated_at=? WHERE LOWER(email)=LOWER(?)
+                    payment_status='Pending Verification',admin_note=?,utr=?,product=?,amount=?,updated_at=? WHERE LOWER(email)=LOWER(?)
                 """, (app_row["id"], now_str(), acct["name"], acct["phone"], acct["city"], acct["college"],
                       acct["course"], acct["semester"], acct["year_of_passing"], app_row["domain"],
-                      joining_date, batch_label, filename, f"UTR: {utr}", utr, PAID_PROGRAM_AMOUNT, now_str(), email))
+                      joining_date, batch_label, filename, f"UTR: {utr}", utr, enrolled_product, enrolled_amount, now_str(), email))
             else:
                 conn.execute("""
                     INSERT INTO enrollments
@@ -19295,7 +19343,7 @@ def paid_enroll():
                 """, (app_row["id"], now_str(), acct["name"], email, acct["phone"], acct["city"], acct["college"],
                       acct["course"], acct["semester"], acct["year_of_passing"], app_row["domain"],
                       joining_date, batch_label, filename, "Pending Verification",
-                      f"UTR: {utr}", utr, "paid_program", PAID_PROGRAM_AMOUNT, now_str(), now_str()))
+                      f"UTR: {utr}", utr, enrolled_product, enrolled_amount, now_str(), now_str()))
 
             conn.execute("UPDATE applications SET status=?,updated_at=? WHERE id=?",
                          (STATUS_PAID_ENROLLED, now_str(), app_row["id"]))
@@ -19307,8 +19355,8 @@ def paid_enroll():
             log_error("paid-enroll-email", em_err)
 
         return jsonify({"status": "success",
-                        "message": "Paid program enrollment submitted. We'll verify your payment shortly.",
-                        "amount": PAID_PROGRAM_AMOUNT,
+                        "message": "Program enrollment submitted. We'll verify your payment shortly.",
+                        "amount": enrolled_amount,
                         "utr": utr,
                         "redirect": "/program"})
     except Exception as e:
@@ -24198,7 +24246,7 @@ def scraped_internship_detail(job_id, slug=None):
     applied_count = len(comments)
 
     # Calculate actual duration from Start_Date and End_Date
-    duration_str = "3 Months"
+    duration_str = "2 Months"
     try:
         if job.get("Start_Date") and job.get("End_Date"):
             sd = datetime.strptime(job["Start_Date"][:10], "%Y-%m-%d")
@@ -24215,7 +24263,7 @@ def scraped_internship_detail(job_id, slug=None):
             else:
                 duration_str = f"{max(1, round(days / 30))} Months"
     except Exception:
-        duration_str = "3 Months"
+        duration_str = "2 Months"
 
     # Extract or infer working hours from actual listing text & work model
     raw_text = (job.get("Role", "") + " " + raw_desc).lower()

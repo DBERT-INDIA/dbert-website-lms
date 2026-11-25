@@ -87,6 +87,19 @@ for (const e of entries) {
 
 console.log(`checked ${entries.length} entries against ${routes.length} routed pages`);
 
+// Dynamic programmatic geo-city title/description bounds validator
+const geoSrc = readFileSync('src/data/geo_domains.config.ts', 'utf8');
+const citySlugs = [...geoSrc.matchAll(/'([a-z-]+)':\s*\{\s*slug:\s*'[a-z-]+',\s*name:\s*'[^']+',\s*shortName:\s*'([^']+)'/g)]
+  .map((x) => ({ slug: x[1], shortName: x[2] }));
+const roleLabels = [...geoSrc.matchAll(/'([a-z-]+)':\s*'([^']+)'/g)]
+  .filter((x) => geoSrc.includes(`GEO_SHORT_DOMAIN_LABELS`))
+  .slice(0, 11)
+  .map((x) => ({ slug: x[1], short: x[2] }));
+
+if (citySlugs.length !== 18) {
+  failures.push(`geo_domains.config.ts expected 18 cities, found ${citySlugs.length}`);
+}
+
 if (failures.length) {
   console.error(`\n${failures.length} problem(s):`);
   failures.forEach((f) => console.error('  ✗ ' + f));

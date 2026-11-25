@@ -53,7 +53,7 @@ export default function PricingPage() {
             itemOffered: {
               '@type': 'Course',
               name: 'DBERT Launchpad Program',
-              description: '3-Month foundational training in Python syntax, Git version controls, Bash commands, and Ollama local LLM execution.'
+              description: '2-Month (8-Week) beginner 0-to-1 foundation training across 11 technical domains including Python, SQL, Git, Bash, and core project workflows.'
             },
             price: '7999',
             priceCurrency: 'INR'
@@ -63,7 +63,7 @@ export default function PricingPage() {
             itemOffered: {
               '@type': 'Course',
               name: 'DBERT Accelerate Program',
-              description: '3-Month advanced training building 3 production AI agent modules, relational database indexing, and API connectivity.'
+              description: '2-Month (8-Week) applied intermediate industrial training across 11 domains building production modules under senior code reviews.'
             },
             price: '4999',
             priceCurrency: 'INR'
@@ -73,7 +73,7 @@ export default function PricingPage() {
             itemOffered: {
               '@type': 'Course',
               name: 'DBERT Fellowship (100% Guaranteed Production Internship)',
-              description: '2-Month immersive program with 100% Guaranteed Production Internship with Dedicated Placement Assistance working directly on live repositories.'
+              description: '2-Month (8-Week) production internship program across 11 tracks with weekly 1:1 mentor reviews, live venture GitHub repos, and placement assistance.'
             },
             price: '1999',
             priceCurrency: 'INR'
@@ -263,24 +263,24 @@ export default function PricingPage() {
             {[
               { 
                 title: 'DBERT Launchpad', 
-                feeLabel: 'Curriculum & Track Intake',
-                badge: 'Foundations',
-                duration: '2 Months (8 Sprints)', 
-                audience: 'Beginners & Career Switchers',
-                desc: 'Master Python fundamentals, Git collaboration, Linux terminal commands, and containerized local LLM tool chains.',
+                feeLabel: '₹7,999 Launchpad Program',
+                badge: 'Beginner Foundations',
+                duration: '2 Months (8 Weeks)', 
+                audience: 'Beginners & Non-CS Career Switchers',
+                desc: 'Domain-by-domain 0-to-1 curriculum covering core syntax, Git, SQL/Python/Web fundamentals, guided labs, and beginner capstones.',
                 href: '/learners/launchpad',
-                cta: 'Request Track Curriculum &rarr;'
+                cta: 'Explore Launchpad (₹7,999) &rarr;'
               },
               { 
                 title: 'DBERT Accelerate', 
-                feeLabel: 'Curriculum & Track Intake',
-                badge: 'Production Engineering',
-                duration: '2 Months (8 Sprints)', 
-                audience: 'Intermediate Developers & Students',
-                desc: 'Build and deploy 3 production AI agent workflows, pgvector semantic indexing, live REST API backends, and earn verifiable certs.',
+                feeLabel: '₹4,999 Accelerate Program',
+                badge: 'Applied Industrial Sprints',
+                duration: '2 Months (8 Weeks)', 
+                audience: 'Intermediate Developers & CS Graduates',
+                desc: 'Applied domain-specific architecture sprints across 11 tracks (RAG, APIs, BI, Cloud, Security) with senior PR code evaluations.',
                 href: '/learners/accelerate',
                 featured: true,
-                cta: 'Apply for Accelerate &rarr;'
+                cta: 'Explore Accelerate (₹4,999) &rarr;'
               },
               { 
                 title: 'DBERT Fellowship', 

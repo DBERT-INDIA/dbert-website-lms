@@ -197,6 +197,38 @@ export default function DynamicBlogReader() {
 
         <AdSenseSlot slotId="blog-post-bottom" />
 
+        <div
+          style={{
+            background: 'linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(20, 26, 35, 0.95) 100%)',
+            border: '1.5px solid rgba(226, 185, 111, 0.35)',
+            borderRadius: '16px',
+            padding: '1.5rem',
+            marginTop: '2rem',
+            marginBottom: '2rem',
+          }}
+        >
+          <div style={{ color: '#E2B96F', fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.4rem' }}>
+            ₹1,999 Technical Incubation · 2027 Cohort Open
+          </div>
+          <h3 style={{ color: '#fff', fontSize: '1.15rem', margin: '0 0 0.5rem', fontWeight: 700 }}>
+            Verified Certificate &rarr; ₹5,000+ Stipend &rarr; 100% Placement Assistance
+          </h3>
+          <p style={{ color: '#CBD5E1', fontSize: '0.875rem', lineHeight: 1.6, margin: '0 0 1rem' }}>
+            Want to publish your own verified production case study and earn direct Round-1 hiring waivers? Paid the ₹499 caution deposit? Only ₹1,500 balance is due.
+          </p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', alignItems: 'center' }}>
+            <Link href="/enroll/1999" className="btn btn-primary btn-sm">
+              Complete Enrollment (₹1,999) &rarr;
+            </Link>
+            <Link href="/learners/courses" className="btn btn-outline btn-sm">
+              Explore All 9+ Courses
+            </Link>
+            <Link href="/internships" className="btn btn-outline btn-sm">
+              Multi-City Internships
+            </Link>
+          </div>
+        </div>
+
         <AuthorBox
           name={post.author}
           role={post.authorRole}

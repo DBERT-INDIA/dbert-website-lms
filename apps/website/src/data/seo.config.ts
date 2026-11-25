@@ -300,15 +300,15 @@ export const seoConfig: Record<string, SeoEntry> = {
   },
   '/learners/launchpad': {
     keyword: 'AI course for beginners India 2 months',
-    title: '2-Month AI & Engineering Launchpad Across 9 Domains',
+    title: 'DBERT Launchpad (₹7,999 · 2 Months · 11 Domains)',
     description:
-      'An intensive AI course for beginners India 2 months with live GitHub sprints across 9 technical tracks, code reviews, and certified projects. Enrol today.',
+      '2-month beginner 0-to-1 course across 11 tech domains (₹7,999) with live GitHub sprints, syntax labs, 1:1 mentor reviews, and verified projects.',
   },
   '/learners/accelerate': {
-    keyword: 'AI engineering bootcamp India',
-    title: 'AI Engineering Program — RAG, Agents, Deploy',
+    keyword: 'AI engineering bootcamp India 2 months',
+    title: 'DBERT Accelerate (₹4,999 · 2 Months · 11 Tracks)',
     description:
-      'An AI engineering program in India where you ship RAG pipelines, agents and deployments under senior review. See the projects you will build and apply.',
+      '2-month applied engineering sprints across 11 tech domains (₹4,999): ship RAG pipelines, SQL/BI automation, APIs, and deployments with PR reviews.',
   },
   '/learners/fellowship': {
     keyword: 'paid AI internship India',

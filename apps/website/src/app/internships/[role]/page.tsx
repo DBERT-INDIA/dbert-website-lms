@@ -2,7 +2,14 @@ import React from 'react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { GEO_CITIES, GEO_ROLES, generateCityHeadline } from '@/data/geo_domains.config';
+import {
+  GEO_CITIES,
+  GEO_ROLES,
+  GEO_SHORT_DOMAIN_LABELS,
+  buildGeoInternshipDescription,
+  buildGeoInternshipTitle,
+  generateCityHeadline,
+} from '@/data/geo_domains.config';
 import TrackLeadCaptureForm from '@/components/forms/TrackLeadCaptureForm';
 import { MapPin, Briefcase, Award, ShieldCheck, CheckCircle2, ArrowRight, Building, GraduationCap, Banknote } from 'lucide-react';
 import s from '../../learners/learners.module.css';
@@ -23,8 +30,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   // Case 1: City Slug
   if (GEO_CITIES[slug]) {
     const city = GEO_CITIES[slug];
-    const title = `Engineering Internships in ${city.name} — 100% Guaranteed Production Internship`;
-    const description = `Explore verified engineering and AI production internships in ${city.name}. Commit upstream PRs on production repos, secure 100% Guaranteed Production Internship with Dedicated Placement Assistance, and get verified credentials.`;
+    const title = `Tech & AI Internships in ${city.shortName} (2027)`;
+    const description = `Apply for verified 2-month AI and software internships in ${city.shortName}. Ship client PRs with 1:1 mentor reviews, MSME credentials, and placement support.`;
     return {
       title,
       description,
@@ -40,9 +47,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   // Case 2: Role Slug
   if (GEO_ROLES[slug]) {
-    const role = GEO_ROLES[slug];
-    const title = `${role.title} Internships — 100% Guaranteed Production Internship`;
-    const description = `Apply for ${role.title} production internships. Build production codebases under senior architect review, secure 100% Guaranteed Production Internship with Dedicated Placement Assistance, and receive verifiable MSME credentials.`;
+    const roleShort = GEO_SHORT_DOMAIN_LABELS[slug] || GEO_ROLES[slug].title;
+    const title = `${roleShort} Internships in India (2027)`;
+    const description = `Apply for 2-month ${roleShort} production internships across 18 Indian cities and remote hubs. Ship live PRs with mentor reviews and verified MSME certs.`;
     return {
       title,
       description,
@@ -63,8 +70,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     const role = GEO_ROLES[rSlug];
     const city = GEO_CITIES[cSlug];
     if (role && city) {
-      const title = `${role.title} Internship in ${city.name} — 100% Guaranteed Production Internship`;
-      const description = `Apply for ${role.title} production internship in ${city.name}. Work on live production codebases, secure 100% Guaranteed Production Internship with Dedicated Placement Assistance, and earn verifiable credentials.`;
+      const title = buildGeoInternshipTitle(rSlug, cSlug);
+      const description = buildGeoInternshipDescription(rSlug, cSlug);
       return {
         title,
         description,
@@ -229,23 +236,84 @@ export default async function InternshipSlugDispatcher({ params }: PageProps) {
               </div>
             </div>
 
-            {/* Role Technical Highlights if Role is selected */}
+            {/* Role Technical Highlights & Multi-City Hubs if Role is selected */}
             {roleData && (
-              <div style={{ padding: 20, background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 10, marginBottom: 28 }}>
-                <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#ffffff', marginBottom: 8, display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <Briefcase size={16} style={{ color: '#10b981' }} /> Role Competencies & Skills Required
-                </h3>
-                <p style={{ fontSize: '0.85rem', color: '#cbd5e1', lineHeight: 1.5, marginBottom: 12 }}>
-                  {roleData.desc}
-                </p>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-                  {roleData.skills.map((s) => (
-                    <span key={s} style={{ fontSize: '0.75rem', fontFamily: 'monospace', background: 'rgba(56,189,248,0.1)', border: '1px solid rgba(56,189,248,0.25)', padding: '3px 8px', borderRadius: 4, color: '#7dd3fc' }}>
-                      {s}
-                    </span>
-                  ))}
+              <>
+                <div style={{ padding: 20, background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 10, marginBottom: 24 }}>
+                  <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#ffffff', marginBottom: 8, display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <Briefcase size={16} style={{ color: '#10b981' }} /> Role Competencies &amp; Skills Required
+                  </h3>
+                  <p style={{ fontSize: '0.85rem', color: '#cbd5e1', lineHeight: 1.5, marginBottom: 12 }}>
+                    {roleData.desc}
+                  </p>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+                    {roleData.skills.map((skill) => (
+                      <span key={skill} style={{ fontSize: '0.75rem', fontFamily: 'monospace', background: 'rgba(56,189,248,0.1)', border: '1px solid rgba(56,189,248,0.25)', padding: '3px 8px', borderRadius: 4, color: '#7dd3fc' }}>
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-              </div>
+
+                {/* ₹1,999 Tiered Value Ladder Fast-Track Card */}
+                <div style={{ padding: 20, background: 'linear-gradient(135deg, rgba(245,158,11,0.12), rgba(15,23,42,0.9))', border: '1.5px solid rgba(245,158,11,0.35)', borderRadius: 10, marginBottom: 24 }}>
+                  <div style={{ fontSize: '0.75rem', fontWeight: 800, color: '#fbbf24', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 6 }}>
+                    ₹1,999 Incubation Fast-Track · 2027 Cohort
+                  </div>
+                  <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#ffffff', marginBottom: 8 }}>
+                    Verified Certificate &rarr; ₹5,000+ Stipend &rarr; 100% Placement Assistance
+                  </h3>
+                  <ul style={{ fontSize: '0.82rem', color: '#e2e8f0', lineHeight: 1.6, margin: '0 0 14px 18px', padding: 0 }}>
+                    <li>Cryptographic 3-document packet &amp; Turnitin originality seal on <code>/verify</code></li>
+                    <li>Gate 1 ₹5,000+ stipend unlock upon shipping 3 approved PRs (&ge;75% attendance)</li>
+                    <li>Direct Round-1 screening waiver + Tab 1 placement in Pre-Vetted Directory</li>
+                  </ul>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, alignItems: 'center' }}>
+                    <Link
+                      href={`/enroll/1999?domain=${encodeURIComponent(roleData.title)}`}
+                      className="btn btn-primary btn-sm"
+                    >
+                      Enroll Now — ₹1,999 (₹1,500 if ₹499 paid) &rarr;
+                    </Link>
+                    <Link
+                      href={`/learners/courses/${roleData.slug}`}
+                      className="btn btn-outline btn-sm"
+                    >
+                      Inspect Full {roleData.title} Syllabus
+                    </Link>
+                  </div>
+                </div>
+
+                {/* All 18 Regional Hub City Pills */}
+                <div style={{ padding: 20, background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 10, marginBottom: 24 }}>
+                  <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#ffffff', marginBottom: 6, display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <MapPin size={16} style={{ color: '#38bdf8' }} /> {roleData.title} Across All 18 Indian Tech Hubs
+                  </h3>
+                  <p style={{ fontSize: '0.8rem', color: '#94a3b8', marginBottom: 12 }}>
+                    Select your preferred regional sprint corridor or remote hub for localized 2027 openings:
+                  </p>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
+                    {Object.values(GEO_CITIES).map((c) => (
+                      <Link
+                        key={c.slug}
+                        href={`/internships/${roleData.slug}/${c.slug}`}
+                        style={{
+                          fontSize: '0.76rem',
+                          fontFamily: 'monospace',
+                          padding: '5px 10px',
+                          borderRadius: 999,
+                          background: c.slug === cityData?.slug ? 'rgba(56,189,248,0.22)' : 'rgba(255,255,255,0.04)',
+                          border: c.slug === cityData?.slug ? '1px solid #38bdf8' : '1px solid rgba(255,255,255,0.12)',
+                          color: c.slug === cityData?.slug ? '#7dd3fc' : '#e2e8f0',
+                          textDecoration: 'none',
+                        }}
+                      >
+                        {c.name}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </>
             )}
 
             {/* Available Technical Tracks Grid if City is selected */}

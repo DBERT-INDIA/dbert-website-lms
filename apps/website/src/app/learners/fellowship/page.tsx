@@ -100,7 +100,7 @@ const jsonLd = {
         price: '1999',
         priceCurrency: 'INR',
         availability: 'https://schema.org/InStock',
-        url: 'https://lms.dbert.in/',
+        url: 'https://dbert.in/enroll/1999',
       },
     },
     {
@@ -401,14 +401,17 @@ export default function FellowshipProgramPage() {
             <Link href="/learners/accelerate">DBERT Accelerate</Link> or by passing the external code
             screening challenge. Bring code, not a CV.
           </p>
-          <a
-            href="https://lms.dbert.in"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn btn-primary btn-lg"
-          >
-            Apply for the AI Fellowship
-          </a>
+          <div className="flex flex-wrap gap-3">
+            <Link href="/enroll/1999" className="btn btn-primary btn-lg">
+              Confirm Fellowship Seat (₹1,999 · ₹1,500 if ₹499 Paid) &rarr;
+            </Link>
+            <Link
+              href="/learners/courses"
+              className="btn btn-outline btn-lg"
+            >
+              Explore All 11 Domain Syllabi &rarr;
+            </Link>
+          </div>
         </div>
       </div>
     </div>

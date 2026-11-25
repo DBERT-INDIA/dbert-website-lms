@@ -3,15 +3,16 @@ import { razorpay } from '@/lib/razorpay';
 import db from '@/lib/db';
 
 // Server-Authoritative Pricing Catalogue (Finding DBERT-007)
-// Prevents client-side tampering of order amounts via browser DevTools
+// Enforces canonical 3-program prices (Launchpad ₹7,999, Accelerate ₹4,999, Fellowship ₹1,999)
 const PROGRAM_CATALOGUE: Record<string, number> = {
-  'incubation_caution_deposit': 49900,  // ₹499
-  'caution_deposit': 49900,             // ₹499
-  'incubation_balance_1500': 150000,    // ₹1500
-  'incubation_full_1999': 199900,       // ₹1999
-  'certification_verification': 29900,  // ₹299
-  'fellowship': 49900,                  // ₹499
-  'launchpad': 49900                    // ₹499
+  'incubation_caution_deposit': 49900,  // ₹499 (Fellowship Step-1 Deposit)
+  'caution_deposit': 49900,             // ₹499 (Fellowship Step-1 Deposit)
+  'incubation_balance_1500': 150000,    // ₹1500 (Fellowship Balance after ₹499)
+  'incubation_full_1999': 199900,       // ₹1999 (DBERT Fellowship)
+  'fellowship': 199900,                 // ₹1999 (DBERT Fellowship)
+  'accelerate': 499900,                 // ₹4999 (DBERT Accelerate)
+  'launchpad': 799900,                  // ₹7999 (DBERT Launchpad)
+  'certification_verification': 29900,  // ₹299 (Statutory Verification Unlock)
 };
 
 function resolveServerAuthoritativeAmount(programName: string, requestedAmount?: number): number {
@@ -22,10 +23,18 @@ function resolveServerAuthoritativeAmount(programName: string, requestedAmount?:
     }
   }
   // If specific recognized amount in whole rupees was submitted, validate against allowed tiers
-  if (requestedAmount && (requestedAmount === 49900 || requestedAmount === 150000 || requestedAmount === 199900 || requestedAmount === 29900)) {
+  if (
+    requestedAmount &&
+    (requestedAmount === 49900 ||
+      requestedAmount === 150000 ||
+      requestedAmount === 199900 ||
+      requestedAmount === 29900 ||
+      requestedAmount === 499900 ||
+      requestedAmount === 799900)
+  ) {
     return requestedAmount;
   }
-  // Default fallback to caution deposit tier (49900 paise = ₹499)
+  // Default fallback to Fellowship caution deposit tier (49900 paise = ₹499)
   return 49900;
 }
 

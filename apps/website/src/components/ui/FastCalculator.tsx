@@ -71,10 +71,10 @@ export default function FastCalculator() {
               aria-label="Sprint duration in weeks"
             />
             <div className={styles.rangeTicks}>
-              <span>4 WEEKS (MVP)</span>
-              <span>8 WEEKS (BETA)</span>
-              <span>12 WEEKS (PROD)</span>
-              <span>16 WEEKS (SCALE)</span>
+              <span>2 SPRINTS (MVP)</span>
+              <span>4 SPRINTS (BETA)</span>
+              <span>6 SPRINTS (PROD)</span>
+              <span>8 SPRINTS (SCALE)</span>
             </div>
           </div>
 

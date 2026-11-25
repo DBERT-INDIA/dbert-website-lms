@@ -1,31 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-{# Title/description/canonical preserved byte-for-byte; this page is indexed and
-   carries Course structured data. #}
-{% set page_title_full = "Paid Program — 2 Months with Guaranteed Internship Placement | DBERT" %}
-{% set page_desc %}{{ PROGRAM_META_DESC | default("DBERT Paid Program: 2 months program with guaranteed internship placement with our hiring partners on completion.") }}{% endset %}
-{% set page_canonical = SITE_ORIGIN ~ "/program" %}
+{% set _prog_key = (program_name | default('fellowship')) | lower %}
+{% set _prog_title = title | default('DBERT Fellowship & Paid Program') %}
+{% if _prog_key == 'launchpad' %}
+  {% set _canonical_path = '/launchpad' %}
+  {% set _prog_scope = 'Beginner 0-to-1 Foundations Track (2 Months)' %}
+  {% set _website_compare = 'https://dbert.in/learners/launchpad' %}
+{% elif _prog_key == 'accelerate' %}
+  {% set _canonical_path = '/accelerate' %}
+  {% set _prog_scope = 'Applied Industrial Engineering Sprints (2 Months)' %}
+  {% set _website_compare = 'https://dbert.in/learners/accelerate' %}
+{% else %}
+  {% set _canonical_path = '/program' %}
+  {% set _prog_scope = '2 Months Paid Fellowship · Live Client Repositories & Placement' %}
+  {% set _website_compare = 'https://dbert.in/learners/courses' %}
+{% endif %}
+{% set page_title_full = _prog_title ~ " — 2 Months (₹" ~ (paid_amount | formatINR) ~ ") with Week-by-Week Syllabus | DBERT" %}
+{% set page_desc %}{{ PROGRAM_META_DESC | default(_prog_title ~ ": 2-month (8-week) hands-on program at ₹" ~ (paid_amount | formatINR) ~ " across 9 domains with full weekly syllabus, 1:1 mentor code reviews, live client repos, and guaranteed internship placement.") }}{% endset %}
+{% set page_canonical = SITE_ORIGIN ~ _canonical_path %}
 {% include "_head.html" %}
 
   <meta property="og:type" content="website"/>
   <meta property="og:site_name" content="DBERT"/>
-  <meta property="og:title" content="DBERT Paid Program — Guaranteed Placement Opportunity"/>
-  <meta property="og:description" content="Skip the wait. 2 months program with guaranteed internship placement with our hiring partners on completion + certification. ₹1,999 (all taxes included)."/>
-  <meta property="og:url" content="{{ SITE_ORIGIN }}/program"/>
+  <meta property="og:title" content="{{ _prog_title }} — 2 Months · ₹{{ paid_amount | formatINR }}"/>
+  <meta property="og:description" content="Unified 2-month (8-week) program across 9 domains with published weekly syllabi, 1:1 mentor sessions, client repo deliverables, and guaranteed internship placement. ₹{{ paid_amount | formatINR }} (all taxes included)."/>
+  <meta property="og:url" content="{{ SITE_ORIGIN }}{{ _canonical_path }}"/>
   {% if OG_IMAGE_URL %}<meta property="og:image" content="{{ OG_IMAGE_URL }}"/>{% endif %}
   <meta name="twitter:card" content="{% if OG_IMAGE_URL %}summary_large_image{% else %}summary{% endif %}"/>
-  <meta name="twitter:title" content="DBERT Paid Program — Guaranteed Placement Opportunity"/>
-  <meta name="twitter:description" content="2 months program with guaranteed internship placement with our hiring partners on completion + certification. ₹1,999 incl. taxes."/>
+  <meta name="twitter:title" content="{{ _prog_title }} — 2 Months · ₹{{ paid_amount | formatINR }}"/>
+  <meta name="twitter:description" content="2-month program with published week-by-week syllabus across 9 domains, 1:1 code reviews & guaranteed internship placement. ₹{{ paid_amount | formatINR }} incl. taxes."/>
   {% if OG_IMAGE_URL %}<meta name="twitter:image" content="{{ OG_IMAGE_URL }}"/>{% endif %}
+  <style nonce="{{ csp_nonce() }}">
+    .compare-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr)); gap:12px; margin-top:14px; }
+    .compare-box { background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.09); border-radius:10px; padding:14px; text-decoration:none; color:inherit; display:block; transition:border-color .2s ease; }
+    .compare-box:hover, .compare-box.active { border-color:var(--gold); background:rgba(226,185,111,0.07); }
+    .compare-tier { font-size:11px; text-transform:uppercase; letter-spacing:0.6px; color:var(--gold); font-weight:700; }
+    .compare-price { font-size:20px; font-weight:800; color:var(--tx-head); margin:4px 0; }
+    .compare-desc { font-size:12.5px; color:var(--tx-muted); line-height:1.5; margin:0; }
+    .syllabus-list { display:flex; flex-direction:column; gap:12px; margin-top:14px; }
+    .syllabus-card { background:rgba(255,255,255,0.025); border:1px solid rgba(255,255,255,0.1); border-radius:12px; overflow:hidden; }
+    .syllabus-card summary { cursor:pointer; padding:14px 16px; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px; font-weight:700; font-size:14.5px; color:var(--tx-head); list-style:none; }
+    .syllabus-card summary::-webkit-details-marker { display:none; }
+    .syllabus-card[open] summary { border-bottom:1px solid rgba(255,255,255,0.08); background:rgba(255,255,255,0.03); }
+    .syllabus-body { padding:16px; font-size:13px; color:var(--tx-muted); line-height:1.6; }
+    .stack-pills { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px; }
+    .stack-pill { font-size:11.5px; padding:4px 9px; border-radius:999px; background:rgba(16,185,129,0.12); color:#6ee7b7; border:1px solid rgba(16,185,129,0.28); font-weight:600; }
+    .week-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:10px; margin-bottom:12px; }
+    .week-box { background:rgba(0,0,0,0.25); border:1px solid rgba(255,255,255,0.07); border-radius:8px; padding:11px 12px; }
+    .week-tag { font-size:11px; font-weight:700; color:var(--gold); text-transform:uppercase; letter-spacing:0.5px; }
+    .week-box h5 { margin:4px 0 6px; font-size:13px; color:var(--tx-head); }
+    .week-box ul { margin:0; padding-left:16px; font-size:12px; color:var(--tx-muted); }
+    .capstone-note { background:rgba(226,185,111,0.08); border:1px solid rgba(226,185,111,0.24); border-radius:8px; padding:10px 12px; font-size:12.5px; color:var(--tx-head); display:flex; flex-wrap:wrap; justify-content:space-between; align-items:center; gap:8px; }
+    .capstone-note a { color:var(--gold); font-weight:600; text-decoration:underline; }
+    .jump-pills { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
+    .jump-pill { font-size:12px; padding:6px 11px; border-radius:999px; border:1px solid rgba(255,255,255,0.14); background:rgba(255,255,255,0.04); color:var(--tx-head); cursor:pointer; }
+    .jump-pill:hover { border-color:var(--gold); color:var(--gold); }
+  </style>
 <script nonce="{{ csp_nonce() }}" type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Course",
-    "name": "DBERT Paid Program — 2 Months with Guaranteed Internship Placement",
-    "description": "2 months program with hands-on training and production role, leading to a guaranteed internship placement with our hiring partners, Offer Letter and Certificate of Completion on completion.",
-    "provider": {"@type": "Organization", "name": "DBERT", "sameAs": "{{ SITE_ORIGIN }}"},
-    "offers": {"@type": "Offer", "price": "{{ paid_amount }}", "priceCurrency": "INR", "category": "Paid", "url": "{{ SITE_ORIGIN }}/program"},
+    "name": "{{ _prog_title }} — 2 Months (8 Weeks) Across 9 Domains",
+    "description": "2-month (8-week) structured technical program covering published week-by-week syllabi across 9 domains, weekly 1:1 mentor sessions, live client repositories, Offer Letter, and verified Certificate of Completion.",
+    "provider": {"@type": "Organization", "name": "DBERT", "sameAs": "https://dbert.in"},
+    "offers": {"@type": "Offer", "price": "{{ paid_amount }}", "priceCurrency": "INR", "category": "Paid", "url": "{{ SITE_ORIGIN }}{{ _canonical_path }}"},
     "hasCourseInstance": {"@type": "CourseInstance", "courseMode": "online", "courseWorkload": "P60D"}
   }
   </script>
@@ -36,6 +75,22 @@
     "mainEntity": [
       {
         "@type": "Question",
+        "name": "Is the full week-by-week syllabus on dbert.in/learners/courses included in the ₹1,999 Fellowship / Paid Program?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Both lms.dbert.in/program and dbert.in/learners/courses/* document the exact same 2-month (8-week) ₹1,999 DBERT Fellowship program across all domains, including weekly 1:1 mentor code reviews, GitHub repository capstones, and 3-doc verifiable credentials."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What are DBERT's three active 2-month programs and prices?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Every DBERT program runs exclusively for 2 months (8 weeks): DBERT Launchpad (Beginner 0-to-1 Foundations, ₹7,999), DBERT Accelerate (Applied Industrial Sprints, ₹4,999), and DBERT Fellowship / Paid Program (Live Client Production Internship, ₹1,999)."
+        }
+      },
+      {
+        "@type": "Question",
         "name": "Is placement guaranteed in the DBERT paid program?",
         "acceptedAnswer": {
           "@type": "Answer",
@@ -44,26 +99,10 @@
       },
       {
         "@type": "Question",
-        "name": "What is the fee for the DBERT paid program?",
+        "name": "What is the fee for this program?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "The program fee is Rs. 1,999 (all taxes included). This is a one-time committed seat fee and is non-refundable."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What domains are covered in the program?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "The program covers 9 specialized domains: AI Agent Development, Data Analyst, Full Stack Development, Python Automation, UI/UX Design, DevOps & Cloud, Mobile App Development, Cybersecurity, and Digital Marketing."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "What duration is the DBERT paid program?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "The program is 2 months long, covering comprehensive skills training and live production role delivery."
+          "text": "The fee for {{ _prog_title }} is Rs. {{ paid_amount | formatINR }} (all taxes included) for 2 months (8 weeks)."
         }
       }
     ]
@@ -73,46 +112,280 @@
 <body class="program">
   <div class="topbar">
     <div class="topbar-inner">
-      <a class="topbar-brand" href="/"><span class="brand-icon"><i class="fas fa-cube"></i></span><span class="brand-text"><h2>DBERT</h2><p>Paid Program</p></span></a>
+      <a class="topbar-brand" href="/"><span class="brand-icon"><i class="fas fa-cube"></i></span><span class="brand-text"><h2>DBERT</h2><p>{{ _prog_title }}</p></span></a>
       <a class="topbar-link" href="/">&larr; Internships</a>
     </div>
   </div>
 
   <div class="main">
     <div class="hero">
-      <span class="pill"><i class="fas fa-shield-halved"></i> 2 Months Program · Guaranteed Internship Placement</span>
-      <h1>Launch your career with a <span class="grad">guaranteed internship placement</span></h1>
-      <p>Skip the wait and the uncertainty. Secure your seat today and follow a proven path through a comprehensive 2-month program from training to live production delivery to a guaranteed internship placement with our hiring partners on completion + certification.</p>
+      <span class="pill"><i class="fas fa-shield-halved"></i> 2 Months (8 Weeks) Program &middot; {{ _prog_scope }}</span>
+      {% if _prog_key == 'launchpad' %}
+        <h1>Master 0-to-1 foundations with <span class="grad">DBERT Launchpad (₹7,999)</span></h1>
+        <p>A structured 2-month (8-week) beginner foundation track covering core coding syntax, Git, SQL/Python/Web fundamentals, guided labs, and weekly mentor office hours across your chosen domain.</p>
+      {% elif _prog_key == 'accelerate' %}
+        <h1>Ship applied architecture in <span class="grad">DBERT Accelerate (₹4,999)</span></h1>
+        <p>An intermediate 2-month (8-week) applied sprint track focused on production RAG, APIs, BI pipelines, cloud DevOps, and senior pull-request evaluations across your chosen domain.</p>
+      {% else %}
+        <h1>Launch your career with the <span class="grad">₹1,999 2-Month Fellowship</span></h1>
+        <p>One unified 2-month (8-week) ₹1,999 program matching the full domain syllabi published on <strong>dbert.in/learners/courses/*</strong> — combining structured weekly training, live client GitHub repos, 1:1 mentor code reviews, verifiable 3-doc credentials, and guaranteed internship placement upon completion.</p>
+      {% endif %}
     </div>
 
     <!-- Journey -->
     <div class="glass-card">
-      <div class="card-h"><i class="fas fa-route" style="color:var(--gold);"></i> Your journey</div>
+      <div class="card-h"><i class="fas fa-route" style="color:var(--gold);"></i> What is included in this 2-month (8-week) program</div>
       <ul class="journey">
-        <li><div class="ji"><i class="fas fa-graduation-cap"></i></div><div><h4>2 Months Structured Program</h4><p>Intensive curriculum spanning foundational mastery to live production delivery.</p></div></li>
-        <li><div class="ji"><i class="fas fa-laptop-code"></i></div><div><h4>Live Production Role</h4><p>Work directly on client repositories and live sprint tasks — real experience.</p></div></li>
-        <li><div class="ji"><i class="fas fa-user-tie"></i></div><div><h4>Mentor Sessions Throughout</h4><p>Dedicated 1:1 guidance and code reviews at every step of the program.</p></div></li>
-        <li><div class="ji"><i class="fas fa-handshake"></i></div><div><h4>Guaranteed Internship Placement</h4><p>Guaranteed internship placement with DBERT or one of our verified hiring partners on completion + certification.</p></div></li>
-        <li><div class="ji"><i class="fas fa-certificate"></i></div><div><h4>Offer Letter &amp; Verified Credentials</h4><p>Official Offer Letter and verifiable Certificate of Completion for academic and industry use.</p></div></li>
+        <li><div class="ji"><i class="fas fa-graduation-cap"></i></div><div><h4>8-Week Domain Syllabus Published In Writing</h4><p>Complete Weeks 1–8 module plan, tool stack, and capstone acceptance criteria published below and mirrored identically at <a href="{{ _website_compare }}" style="color:var(--gold);text-decoration:underline;">dbert.in</a>.</p></div></li>
+        <li><div class="ji"><i class="fas fa-laptop-code"></i></div><div><h4>Live Client GitHub Repositories</h4><p>Contribute verified pull requests to real venture repos (Aivara Insight Lite, Alkame NIFTY 50, Gayatri AI, DBERT Systems).</p></div></li>
+        <li><div class="ji"><i class="fas fa-user-tie"></i></div><div><h4>Weekly 1:1 Mentor Sessions &amp; Code Reviews</h4><p>Dedicated 1:1 architectural guidance, PR feedback, and individual evaluation throughout all 8 weeks.</p></div></li>
+        <li><div class="ji"><i class="fas fa-handshake"></i></div><div><h4>Guaranteed Internship Placement on Completion</h4><p>Guaranteed internship placement with DBERT or verified hiring partners upon completing sprint milestones and reviews.</p></div></li>
+        <li><div class="ji"><i class="fas fa-certificate"></i></div><div><h4>Offer Letter &amp; Cryptographically Verified Credentials</h4><p>Official Offer Letter, 9-dimension Evaluation Rubric, Turnitin Originality Seal, LOR, and Certificate on <a href="https://dbert.in/verify" style="color:var(--gold);text-decoration:underline;">dbert.in/verify</a>.</p></div></li>
       </ul>
     </div>
 
-    <!-- Price + domains -->
+    <!-- Clear 3-Program Parity Box -->
     <div class="glass-card">
-      <div class="price-row"><span class="price">&#8377;{{ paid_amount | formatINR }}</span><span class="price-sub">one-time &middot; all taxes included</span></div>
-      <p style="color:var(--tx-muted);font-size:13.5px;line-height:1.7;">No selection lottery, no waiting to be shortlisted — your place is confirmed the moment you enrol.</p>
-      <div style="margin-top:16px;">
-        <div class="field-label">Open across all 9 DBERT technical &amp; growth tracks</div>
-        <div class="domains">
-          <span class="domain-tag">&#129302; AI Agent Development</span>
-          <span class="domain-tag">&#128202; Data Analyst</span>
-          <span class="domain-tag">&#128187; Full Stack Development</span>
-          <span class="domain-tag">&#9881;&#65039; Python Automation</span>
-          <span class="domain-tag">&#127912; UI/UX Design</span>
-          <span class="domain-tag">&#9729;&#65039; DevOps &amp; Cloud</span>
-          <span class="domain-tag">&#128241; Mobile App Development</span>
-          <span class="domain-tag">&#128737;&#65039; Cybersecurity</span>
-          <span class="domain-tag">&#128227; Digital Marketing</span>
+      <div class="card-h"><i class="fas fa-layer-group" style="color:var(--gold);"></i> 3 Active Two-Month DBERT Programs Compared (Zero Ambiguity)</div>
+      <p style="color:var(--tx-muted);font-size:13px;line-height:1.65;margin-bottom:6px;">
+        All DBERT courses across every domain run exclusively for <strong>2 months (8 weeks)</strong>. There are only 3 program tiers across <strong>dbert.in</strong> and <strong>lms.dbert.in</strong>, separated clearly by skill level:
+      </p>
+      <div class="compare-grid">
+        <a href="https://dbert.in/learners/launchpad" class="compare-box {% if _prog_key == 'launchpad' %}active{% endif %}">
+          <div class="compare-tier">Tier 1 &middot; Beginner (0-to-1)</div>
+          <div class="compare-price">&#8377;7,999 &middot; 2 Months</div>
+          <p class="compare-desc"><strong>DBERT Launchpad:</strong> Zero-prior-code foundations in Python, Excel/SQL, Git &amp; core tooling with guided beginner projects.</p>
+        </a>
+        <a href="https://dbert.in/learners/accelerate" class="compare-box {% if _prog_key == 'accelerate' %}active{% endif %}">
+          <div class="compare-tier">Tier 2 &middot; Intermediate</div>
+          <div class="compare-price">&#8377;4,999 &middot; 2 Months</div>
+          <p class="compare-desc"><strong>DBERT Accelerate:</strong> Applied industrial sprints building standalone RAG, API, BI, or DevOps systems under senior PR review.</p>
+        </a>
+        <a href="https://dbert.in/learners/courses" class="compare-box {% if _prog_key == 'fellowship' %}active{% endif %}">
+          <div class="compare-tier">Tier 3 &middot; Production Fellowship</div>
+          <div class="compare-price">&#8377;1,999 &middot; 2 Months</div>
+          <p class="compare-desc"><strong>DBERT Fellowship (This LMS Paid Program):</strong> Same exact curriculum as <code>dbert.in/learners/courses/*</code> &mdash; live client repos, 1:1 reviews &amp; placement.</p>
+        </a>
+      </div>
+    </div>
+
+    <!-- Price + Week-by-Week Domain Syllabi -->
+    <div class="glass-card">
+      <div class="price-row"><span class="price">&#8377;{{ paid_amount | formatINR }}</span><span class="price-sub">2 Months (8 Weeks) &middot; one-time &middot; all taxes included</span></div>
+      <p style="color:var(--tx-muted);font-size:13.5px;line-height:1.7;">No selection lottery, no waiting to be shortlisted &mdash; your seat is confirmed the moment you enrol.</p>
+      {% if _prog_key == 'fellowship' %}
+      <p style="color:var(--tx-muted);font-size:12.5px;line-height:1.6;margin-top:6px;">Already paid the &#8377;499 caution deposit? Your deposit is credited in full &mdash; complete only the remaining <strong>&#8377;1,500 balance</strong> at <a href="https://dbert.in/enroll/1999" style="color:var(--gold);text-decoration:underline;">dbert.in/enroll/1999</a>.</p>
+      {% endif %}
+
+      <div style="margin-top:18px;">
+        <div class="field-label">Complete 8-Week Domain Syllabi &amp; Capstones (Included in &#8377;{{ paid_amount | formatINR }})</div>
+        <div class="jump-pills">
+          <button type="button" class="jump-pill" data-syllabus-target="syl-da">&#128202; Data Analytics &amp; BI</button>
+          <button type="button" class="jump-pill" data-syllabus-target="syl-ai">&#129302; AI Agent Development</button>
+          <button type="button" class="jump-pill" data-syllabus-target="syl-fsd">&#128187; Full Stack Web</button>
+          <button type="button" class="jump-pill" data-syllabus-target="syl-pa">&#9881;&#65039; Python Automation</button>
+          <button type="button" class="jump-pill" data-syllabus-target="syl-uiux">&#127912; UI/UX Design</button>
+          <button type="button" class="jump-pill" data-syllabus-target="syl-devops">&#9729;&#65039; DevOps &amp; Cloud</button>
+          <button type="button" class="jump-pill" data-syllabus-target="syl-mobile">&#128241; Mobile Apps</button>
+          <button type="button" class="jump-pill" data-syllabus-target="syl-sec">&#128737;&#65039; Cybersecurity</button>
+          <button type="button" class="jump-pill" data-syllabus-target="syl-dm">&#128227; Digital Marketing</button>
+        </div>
+
+        <div class="syllabus-list">
+          <!-- Data Analytics -->
+          <details class="syllabus-card" id="syl-da" open>
+            <summary>
+              <span>&#128202; Data Analytics &amp; BI &mdash; 2 Months (8 Weeks) Syllabus</span>
+              <span style="font-size:12px;color:var(--gold);">Full 8-Week Curriculum + 2 Capstones &#9662;</span>
+            </summary>
+            <div class="syllabus-body">
+              <div class="stack-pills">
+                <span class="stack-pill">Excel &amp; Business Data</span>
+                <span class="stack-pill">SQL &amp; PostgreSQL</span>
+                <span class="stack-pill">Python, Pandas &amp; NumPy</span>
+                <span class="stack-pill">Power BI &amp; Metabase</span>
+                <span class="stack-pill">Matplotlib &amp; Seaborn</span>
+                <span class="stack-pill">Git &amp; Jupyter</span>
+              </div>
+              <div class="week-grid">
+                <div class="week-box">
+                  <div class="week-tag">Weeks 1&ndash;2</div>
+                  <h5>Excel Business Modeling, SQL &amp; PostgreSQL</h5>
+                  <ul>
+                    <li>Spreadsheet KPI reconciliation &amp; pivot auditing</li>
+                    <li>PostgreSQL CTEs, joins, window functions &amp; cohorts</li>
+                    <li>First 1:1 mentor-reviewed SQL pull request in Git</li>
+                  </ul>
+                </div>
+                <div class="week-box">
+                  <div class="week-tag">Weeks 3&ndash;4</div>
+                  <h5>Python, Pandas, NumPy &amp; Visual EDA</h5>
+                  <ul>
+                    <li>Messy CSV schema sniffing &amp; vectorized Pandas/NumPy transforms</li>
+                    <li>Jupyter notebooks with Matplotlib &amp; Seaborn visuals</li>
+                    <li>Weekly 1:1 mentor code review on Aivara data ingestion</li>
+                  </ul>
+                </div>
+                <div class="week-box">
+                  <div class="week-tag">Weeks 5&ndash;6</div>
+                  <h5>Power BI Dashboards &amp; Automated Reporting</h5>
+                  <ul>
+                    <li>Interactive Power BI &amp; Metabase executive KPI dashboards</li>
+                    <li>Automated CSV Analytics &amp; PowerPoint (.pptx) report generator</li>
+                    <li>NIFTY 50 market indicator &amp; strategy backtesting workflows</li>
+                  </ul>
+                </div>
+                <div class="week-box">
+                  <div class="week-tag">Weeks 7&ndash;8</div>
+                  <h5>Dual Capstone Merge, Turnitin &amp; Placement</h5>
+                  <ul>
+                    <li>Senior evaluation across Aivara CSV-to-PPTX &amp; Alkame NIFTY 50</li>
+                    <li>Turnitin originality check &amp; 9-dimension rubric grading</li>
+                    <li>Offer letter, verified credentials &amp; partner placement</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="capstone-note">
+                <span><strong>2 Production Capstones Included:</strong> Automated CSV Analytics &amp; PowerPoint Report Generator (<em>Aivara Insight Lite</em>) + NIFTY 50 Market Indicator &amp; Backtesting Engine (<em>Alkame</em>).</span>
+                <a href="https://dbert.in/learners/courses/data-analytics" target="_blank" rel="noopener">View Data Analytics Course Page &rarr;</a>
+              </div>
+            </div>
+          </details>
+
+          <!-- AI Agent Development -->
+          <details class="syllabus-card" id="syl-ai" open>
+            <summary>
+              <span>&#129302; AI Agent Development &mdash; 2 Months (8 Weeks) Syllabus</span>
+              <span style="font-size:12px;color:var(--gold);">Weeks 1&ndash;8 + Production Agent Repo &#9662;</span>
+            </summary>
+            <div class="syllabus-body">
+              <div class="stack-pills">
+                <span class="stack-pill">LangGraph &amp; CrewAI</span>
+                <span class="stack-pill">Ollama &amp; vLLM</span>
+                <span class="stack-pill">FastAPI &amp; Pydantic</span>
+                <span class="stack-pill">PostgreSQL + pgvector</span>
+                <span class="stack-pill">Docker &amp; Git</span>
+              </div>
+              <div class="week-grid">
+                <div class="week-box"><div class="week-tag">Weeks 1&ndash;2</div><h5>Tool Contracts &amp; Async Loops</h5><ul><li>Pydantic tool schemas &amp; FastAPI streaming</li><li>Local Ollama/vLLM inference setup</li></ul></div>
+                <div class="week-box"><div class="week-tag">Weeks 3&ndash;4</div><h5>Agent Graphs &amp; Vector Memory</h5><ul><li>LangGraph checkpoints &amp; pgvector RAG</li><li>Human-in-the-loop permission gates</li></ul></div>
+                <div class="week-box"><div class="week-tag">Weeks 5&ndash;6</div><h5>Live Venture Repo Sprints</h5><ul><li>PR reviews on Gayatri AI &amp; DBERT Agent</li><li>Error recovery &amp; telemetry traces</li></ul></div>
+                <div class="week-box"><div class="week-tag">Weeks 7&ndash;8</div><h5>Benchmarking &amp; Credentials</h5><ul><li>Docker deployment &amp; latency benchmarks</li><li>Final audit &amp; placement dossier</li></ul></div>
+              </div>
+              <div class="capstone-note">
+                <span><strong>Capstone:</strong> Multi-agent state workflow PR merged on <em>DBERT Agent / Gayatri AI</em>.</span>
+                <a href="https://dbert.in/learners/courses/ai-agent-development" target="_blank" rel="noopener">View AI Agent Track &rarr;</a>
+              </div>
+            </div>
+          </details>
+
+          <!-- Full Stack -->
+          <details class="syllabus-card" id="syl-fsd">
+            <summary>
+              <span>&#128187; Full Stack Web Development &mdash; 2 Months (8 Weeks) Syllabus</span>
+              <span style="font-size:12px;color:var(--gold);">Weeks 1&ndash;8 &#9662;</span>
+            </summary>
+            <div class="syllabus-body">
+              <div class="stack-pills"><span class="stack-pill">Next.js &amp; TypeScript</span><span class="stack-pill">FastAPI / Node.js</span><span class="stack-pill">PostgreSQL</span><span class="stack-pill">Redis</span><span class="stack-pill">Docker &amp; Playwright</span></div>
+              <div class="week-grid">
+                <div class="week-box"><div class="week-tag">Weeks 1&ndash;2</div><h5>PostgreSQL Schemas &amp; REST APIs</h5><ul><li>Migrations, constraints &amp; typed endpoints</li></ul></div>
+                <div class="week-box"><div class="week-tag">Weeks 3&ndash;4</div><h5>Next.js SSR UI &amp; Auth Guards</h5><ul><li>RBAC sessions, mobile layouts &amp; forms</li></ul></div>
+                <div class="week-box"><div class="week-tag">Weeks 5&ndash;6</div><h5>Caching &amp; Client Feature PRs</h5><ul><li>Redis queues &amp; real venture repo tickets</li></ul></div>
+                <div class="week-box"><div class="week-tag">Weeks 7&ndash;8</div><h5>E2E Tests &amp; Production Release</h5><ul><li>Playwright checks, review &amp; certification</li></ul></div>
+              </div>
+              <div class="capstone-note"><span><strong>Capstone:</strong> Full-stack multi-tenant module on <em>Internship Portal / Intern Workbench</em>.</span><a href="https://dbert.in/learners/courses/full-stack-development" target="_blank" rel="noopener">View Full Stack Track &rarr;</a></div>
+            </div>
+          </details>
+
+          <!-- Python Automation -->
+          <details class="syllabus-card" id="syl-pa">
+            <summary><span>&#9881;&#65039; Python Automation &mdash; 2 Months (8 Weeks) Syllabus</span><span style="font-size:12px;color:var(--gold);">Weeks 1&ndash;8 &#9662;</span></summary>
+            <div class="syllabus-body">
+              <div class="stack-pills"><span class="stack-pill">Python Asyncio</span><span class="stack-pill">Playwright</span><span class="stack-pill">Tesseract OCR</span><span class="stack-pill">SQLite / Postgres</span><span class="stack-pill">Bot Webhooks</span></div>
+              <div class="week-grid">
+                <div class="week-box"><div class="week-tag">Weeks 1&ndash;2</div><h5>Async HTTP &amp; Data Parsers</h5><ul><li>Pydantic parsers &amp; retry backoff</li></ul></div>
+                <div class="week-box"><div class="week-tag">Weeks 3&ndash;4</div><h5>Playwright &amp; OCR Pipelines</h5><ul><li>Headless automation &amp; PDF extraction</li></ul></div>
+                <div class="week-box"><div class="week-tag">Weeks 5&ndash;6</div><h5>Dispatch Bots &amp; State Queues</h5><ul><li>Circuit breakers &amp; deduplication DBs</li></ul></div>
+                <div class="week-box"><div class="week-tag">Weeks 7&ndash;8</div><h5>Daemon Hardening &amp; Audit</h5><ul><li>PyTest suite, systemd run &amp; credentialing</li></ul></div>
+              </div>
+              <div class="capstone-note"><span><strong>Capstone:</strong> Automated recruitment &amp; notification daemon on <em>Gayatri HR Bot</em>.</span><a href="https://dbert.in/learners/courses/python-automation" target="_blank" rel="noopener">View Python Automation Track &rarr;</a></div>
+            </div>
+          </details>
+
+          <!-- UI/UX -->
+          <details class="syllabus-card" id="syl-uiux">
+            <summary><span>&#127912; UI/UX Design &mdash; 2 Months (8 Weeks) Syllabus</span><span style="font-size:12px;color:var(--gold);">Weeks 1&ndash;8 &#9662;</span></summary>
+            <div class="syllabus-body">
+              <div class="stack-pills"><span class="stack-pill">Figma Design Tokens</span><span class="stack-pill">WCAG AA Accessibility</span><span class="stack-pill">Responsive Prototypes</span><span class="stack-pill">Usability Testing</span></div>
+              <div class="week-grid">
+                <div class="week-box"><div class="week-tag">Weeks 1&ndash;2</div><h5>UX Flows &amp; Heuristics</h5><ul><li>Information architecture &amp; edge states</li></ul></div>
+                <div class="week-box"><div class="week-tag">Weeks 3&ndash;4</div><h5>Figma Tokens &amp; Components</h5><ul><li>Auto-layout libraries &amp; AA contrast</li></ul></div>
+                <div class="week-box"><div class="week-tag">Weeks 5&ndash;6</div><h5>Prototypes &amp; User Tests</h5><ul><li>Mobile-first flows &amp; iteration sprints</li></ul></div>
+                <div class="week-box"><div class="week-tag">Weeks 7&ndash;8</div><h5>Dev Handoff &amp; Portfolio</h5><ul><li>CSS spec handoff &amp; rubric verification</li></ul></div>
+              </div>
+              <div class="capstone-note"><span><strong>Capstone:</strong> Tokenized SaaS UI system on <em>DBERT Design System</em>.</span><a href="https://dbert.in/learners/courses/ui-ux-design" target="_blank" rel="noopener">View UI/UX Track &rarr;</a></div>
+            </div>
+          </details>
+
+          <!-- DevOps -->
+          <details class="syllabus-card" id="syl-devops">
+            <summary><span>&#9729;&#65039; DevOps &amp; Cloud &mdash; 2 Months (8 Weeks) Syllabus</span><span style="font-size:12px;color:var(--gold);">Weeks 1&ndash;8 &#9662;</span></summary>
+            <div class="syllabus-body">
+              <div class="stack-pills"><span class="stack-pill">Linux &amp; Nginx</span><span class="stack-pill">Docker Compose</span><span class="stack-pill">GitHub Actions</span><span class="stack-pill">TLS &amp; Monitoring</span></div>
+              <div class="week-grid">
+                <div class="week-box"><div class="week-tag">Weeks 1&ndash;2</div><h5>Linux, SSH &amp; Nginx Proxies</h5><ul><li>Firewall hardening, systemd &amp; SSL/TLS</li></ul></div>
+                <div class="week-box"><div class="week-tag">Weeks 3&ndash;4</div><h5>Multi-Stage Containers</h5><ul><li>Docker builds &amp; Postgres volume backups</li></ul></div>
+                <div class="week-box"><div class="week-tag">Weeks 5&ndash;6</div><h5>CI/CD &amp; Zero-Downtime Deploy</h5><ul><li>GitHub Actions build &amp; health checks</li></ul></div>
+                <div class="week-box"><div class="week-tag">Weeks 7&ndash;8</div><h5>Observability &amp; Audit</h5><ul><li>Log alerts, recovery drills &amp; certification</li></ul></div>
+              </div>
+              <div class="capstone-note"><span><strong>Capstone:</strong> Automated EC2 deployment &amp; CI pipeline on <em>DBERT Cloud</em>.</span><a href="https://dbert.in/learners/courses/devops-cloud" target="_blank" rel="noopener">View DevOps Track &rarr;</a></div>
+            </div>
+          </details>
+
+          <!-- Mobile -->
+          <details class="syllabus-card" id="syl-mobile">
+            <summary><span>&#128241; Mobile App Development &mdash; 2 Months (8 Weeks) Syllabus</span><span style="font-size:12px;color:var(--gold);">Weeks 1&ndash;8 &#9662;</span></summary>
+            <div class="syllabus-body">
+              <div class="stack-pills"><span class="stack-pill">React Native / Flutter</span><span class="stack-pill">Offline Sync</span><span class="stack-pill">Push Alerts</span><span class="stack-pill">Signed Builds</span></div>
+              <div class="week-grid">
+                <div class="week-box"><div class="week-tag">Weeks 1&ndash;2</div><h5>Typed Mobile Navigation</h5><ul><li>Auth stacks, deep links &amp; adaptive UI</li></ul></div>
+                <div class="week-box"><div class="week-tag">Weeks 3&ndash;4</div><h5>API Sync &amp; Local Persistence</h5><ul><li>Secure token storage &amp; offline queue</li></ul></div>
+                <div class="week-box"><div class="week-tag">Weeks 5&ndash;6</div><h5>Native Features &amp; Profiling</h5><ul><li>Push channels, camera &amp; FPS profiling</li></ul></div>
+                <div class="week-box"><div class="week-tag">Weeks 7&ndash;8</div><h5>Release Packaging &amp; Review</h5><ul><li>Signed APK/AAB build &amp; mentor audit</li></ul></div>
+              </div>
+              <div class="capstone-note"><span><strong>Capstone:</strong> Offline-first mobile module on <em>DBERT Mobile Workbench</em>.</span><a href="https://dbert.in/learners/courses/mobile-app-development" target="_blank" rel="noopener">View Mobile Track &rarr;</a></div>
+            </div>
+          </details>
+
+          <!-- Cybersecurity -->
+          <details class="syllabus-card" id="syl-sec">
+            <summary><span>&#128737;&#65039; Cybersecurity &mdash; 2 Months (8 Weeks) Syllabus</span><span style="font-size:12px;color:var(--gold);">Weeks 1&ndash;8 &#9662;</span></summary>
+            <div class="syllabus-body">
+              <div class="stack-pills"><span class="stack-pill">OWASP Top 10</span><span class="stack-pill">API &amp; Auth Pentesting</span><span class="stack-pill">SAST / DAST</span><span class="stack-pill">SOC Log Rules</span></div>
+              <div class="week-grid">
+                <div class="week-box"><div class="week-tag">Weeks 1&ndash;2</div><h5>Threat Modeling &amp; Recon</h5><ul><li>HTTP inspection &amp; BOLA/IDOR mapping</li></ul></div>
+                <div class="week-box"><div class="week-tag">Weeks 3&ndash;4</div><h5>OWASP Exploits &amp; Patches</h5><ul><li>SQLi/XSS/SSRF testing &amp; PR fixes</li></ul></div>
+                <div class="week-box"><div class="week-tag">Weeks 5&ndash;6</div><h5>CI Security &amp; SOC Rules</h5><ul><li>Secret scans &amp; Nginx anomaly alerts</li></ul></div>
+                <div class="week-box"><div class="week-tag">Weeks 7&ndash;8</div><h5>Security Audit Dossier</h5><ul><li>CVSS findings report &amp; LOR</li></ul></div>
+              </div>
+              <div class="capstone-note"><span><strong>Capstone:</strong> Verified AppSec audit &amp; remediation PRs on <em>DBERT SecOps</em>.</span><a href="https://dbert.in/learners/courses/cybersecurity" target="_blank" rel="noopener">View Cybersecurity Track &rarr;</a></div>
+            </div>
+          </details>
+
+          <!-- Digital Marketing -->
+          <details class="syllabus-card" id="syl-dm">
+            <summary><span>&#128227; Digital Marketing &amp; Growth &mdash; 2 Months (8 Weeks) Syllabus</span><span style="font-size:12px;color:var(--gold);">Weeks 1&ndash;8 &#9662;</span></summary>
+            <div class="syllabus-body">
+              <div class="stack-pills"><span class="stack-pill">Technical SEO</span><span class="stack-pill">Schema JSON-LD</span><span class="stack-pill">GA4 Attribution</span><span class="stack-pill">CRO Experiments</span></div>
+              <div class="week-grid">
+                <div class="week-box"><div class="week-tag">Weeks 1&ndash;2</div><h5>Technical SEO &amp; Schemas</h5><ul><li>Sitemaps, canonicals &amp; Course JSON-LD</li></ul></div>
+                <div class="week-box"><div class="week-tag">Weeks 3&ndash;4</div><h5>GA4 Events &amp; UTM Attribution</h5><ul><li>Conversion funnels &amp; CAC tracking</li></ul></div>
+                <div class="week-box"><div class="week-tag">Weeks 5&ndash;6</div><h5>Landing CRO &amp; Distribution</h5><ul><li>Messaging audits &amp; content pipelines</li></ul></div>
+                <div class="week-box"><div class="week-tag">Weeks 7&ndash;8</div><h5>Growth Audit &amp; Credentials</h5><ul><li>Channel ROI report &amp; verified dossier</li></ul></div>
+              </div>
+              <div class="capstone-note"><span><strong>Capstone:</strong> Full-funnel SEO &amp; GA4 attribution build on <em>DBERT Growth Suite</em>.</span><a href="https://dbert.in/learners/courses/digital-marketing" target="_blank" rel="noopener">View Digital Marketing Track &rarr;</a></div>
+            </div>
+          </details>
         </div>
       </div>
     </div>
@@ -120,26 +393,26 @@
     <!-- TERMS — always shown BEFORE any CTA -->
     <div class="glass-card terms-card">
       <div class="card-h" style="font-size:15px;color:var(--amber);"><i class="fas fa-circle-info"></i> Good to know before you enrol</div>
-      <p>Your placement, Offer Letter, and Certificate are <strong>guaranteed when you successfully complete the 2-month program</strong> — finish the program and your placement is assured.</p>
+      <p>Your placement, Offer Letter, and Certificate are <strong>guaranteed when you successfully complete the 2-month program</strong> &mdash; finish the program and your placement is assured.</p>
       <p>Enrolment is a committed seat, so the <strong>&#8377;{{ paid_amount | formatINR }} fee is non-refundable</strong>.</p>
-      <p>Open across all 9 DBERT domains: AI Agent Development, Data Analyst, Full Stack Development, Python Automation, UI/UX Design, DevOps &amp; Cloud, Mobile App Development, Cybersecurity, and Digital Marketing.</p>
+      <p>Open across all 9 core DBERT domains (and 11 specializations on <a href="https://dbert.in/learners/courses" style="color:var(--gold);text-decoration:underline;">dbert.in/learners/courses</a>): Data Analytics &amp; BI, AI Agent Development, Full Stack Development, Python Automation, UI/UX Design, DevOps &amp; Cloud, Mobile App Development, Cybersecurity, and Digital Marketing.</p>
       <p style="color:var(--tx-muted);">By enrolling you confirm you've read and accepted these terms.</p>
     </div>
 
     <!-- CTA / ENROL ZONE (auth-aware; filled by JS) -->
     <div class="glass-card" id="ctaZone">
-      <div id="ctaLoading" style="text-align:center;color:var(--tx-muted);font-size:13px;">Loading…</div>
+      <div id="ctaLoading" style="text-align:center;color:var(--tx-muted);font-size:13px;">Loading&hellip;</div>
 
       <!-- anonymous -->
       <div class="hidden" id="ctaAnon" style="text-align:center;">
         <div class="card-h" style="justify-content:center;">Ready to secure your seat?</div>
-        <p style="color:var(--tx-muted);font-size:13.5px;margin-bottom:18px;">Create your account to enrol in the paid program.</p>
-        <a class="btn-primary" id="anonCta" href="/#signup?plan=program1999"><i class="fas fa-rocket"></i> Sign up &amp; enrol</a>
+        <p style="color:var(--tx-muted);font-size:13.5px;margin-bottom:18px;">Create your account to enrol in {{ _prog_title }} (&#8377;{{ paid_amount | formatINR }} &middot; 2 Months).</p>
+        <a class="btn-primary" id="anonCta" href="/#signup?plan={{ _prog_key }}{{ paid_amount }}"><i class="fas fa-rocket"></i> Sign up &amp; enrol</a>
       </div>
 
       <!-- fallback interview notice (deprecated for paid program) -->
       <div class="hidden" id="ctaInterview">
-        <div class="info-banner"><i class="fas fa-robot"></i><span>The paid program opens right after you complete your short virtual interview. It only takes a few minutes.</span></div>
+        <div class="info-banner"><i class="fas fa-robot"></i><span>This track opens right after you complete your short virtual interview. It only takes a few minutes.</span></div>
         <div style="text-align:center;margin-top:16px;"><a class="btn-primary" href="/interview"><i class="fas fa-play"></i> Take my interview</a></div>
       </div>
 
@@ -200,7 +473,7 @@
         <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:16px;text-align:center;margin-bottom:18px;">
           <div style="margin-bottom:8px;font-size:12px;color:var(--tx-muted);text-transform:uppercase;letter-spacing:0.5px;font-weight:600;">Scan with GPay, PhonePe, Paytm, or any UPI App</div>
           <div style="display:inline-block;padding:8px;background:#ffffff;border-radius:12px;box-shadow:0 4px 14px rgba(0,0,0,0.3);margin-bottom:12px;">
-            <img src="/static/img/qrcode.jpeg" alt="DBERT Admissions UPI QR" style="width:160px;height:160px;display:block;border-radius:8px;" onerror="this.onerror=null;this.src='/static/qr.jpg';" />
+            <img id="paidQrImg" src="/static/img/qrcode.jpeg" alt="DBERT Admissions UPI QR" style="width:160px;height:160px;display:block;border-radius:8px;"/>
           </div>
           <div class="field-label" style="text-align:center;">Official Admissions UPI ID</div>
           <div class="upi-id-box" style="justify-content:center;max-width:320px;margin:0 auto 10px;"><span id="upiId">{{ upi_id }}</span><button type="button" data-act-click="copyUpi" aria-label="Copy UPI"><i class="fas fa-copy"></i></button></div>
@@ -208,7 +481,7 @@
             Amount: <strong style="color:var(--gold);font-size:15px;">&#8377;{{ paid_amount | formatINR }}</strong> <span style="font-size:11px;">(one-time &middot; all taxes included)</span>
           </div>
           <div style="margin-top:10px;">
-            <a href="upi://pay?pa={{ upi_id }}&pn=DBERT%20Admissions&am={{ paid_amount }}&cu=INR&tn=DBERT%20Paid%20Program%20Seat" class="btn-secondary" style="display:inline-flex;align-items:center;gap:6px;font-size:12px;padding:6px 14px;border-radius:20px;text-decoration:none;border-color:rgba(226,185,111,0.4);color:var(--gold);">
+            <a href="upi://pay?pa={{ upi_id }}&pn=DBERT%20Admissions&am={{ paid_amount }}&cu=INR&tn=DBERT%20Program%20Seat" class="btn-secondary" style="display:inline-flex;align-items:center;gap:6px;font-size:12px;padding:6px 14px;border-radius:20px;text-decoration:none;border-color:rgba(226,185,111,0.4);color:var(--gold);">
               <i class="fas fa-mobile-screen-button"></i> 1-Tap Mobile UPI App
             </a>
           </div>
@@ -227,7 +500,7 @@
 
         <div style="margin-bottom:14px;">
           <label class="field-label">Upload payment screenshot *</label>
-          <div class="file-wrap"><input type="file" id="paidFile" accept=".png,.jpg,.jpeg,.pdf" data-act-change="onPaidFile" data-arg-change='["$el"]'/><i class="fas fa-cloud-upload-alt"></i> <span id="paidFileName">Click or drop your payment proof (PNG, JPG, PDF · max 6MB)</span></div>
+          <div class="file-wrap"><input type="file" id="paidFile" accept=".png,.jpg,.jpeg,.pdf" data-act-change="onPaidFile" data-arg-change='["$el"]'/><i class="fas fa-cloud-upload-alt"></i> <span id="paidFileName">Click or drop your payment proof (PNG, JPG, PDF &middot; max 6MB)</span></div>
         </div>
 
         <label class="chk-row"><input type="checkbox" id="paidAgree"/><span>I confirm I've read and accepted the terms above, including that the &#8377;{{ paid_amount | formatINR }} fee is non-refundable and my placement is guaranteed on successful completion of the program.</span></label>
@@ -237,7 +510,7 @@
     </div>
 
     <div class="footer">
-      <a href="/">Internships</a> &middot; <a href="mailto:support@dbert.in">support@dbert.in</a>
+      <a href="/">Internships</a> &middot; <a href="https://dbert.in/learners/courses">Domain Syllabi</a> &middot; <a href="mailto:support@dbert.in">support@dbert.in</a>
       <p style="margin-top:8px;">&copy; 2026 DBERT. MSME Registered.</p>
     </div>
   </div>
@@ -245,7 +518,28 @@
   <script nonce="{{ csp_nonce() }}">
   dbertGA('paid_program_view', {});
   const PAID_AMOUNT = {{ paid_amount }};
+  const PROGRAM_KEY = "{{ _prog_key }}";
   let _paidFile = null, _enrollShown = false;
+
+  const qrImg = document.getElementById('paidQrImg');
+  if (qrImg) {
+    qrImg.addEventListener('error', function onQrErr() {
+      qrImg.removeEventListener('error', onQrErr);
+      qrImg.src = '/static/qr.jpg';
+    });
+  }
+
+  document.querySelectorAll('.jump-pill[data-syllabus-target]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetId = btn.getAttribute('data-syllabus-target');
+      const card = targetId ? document.getElementById(targetId) : null;
+      if (card) {
+        card.open = true;
+        card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
   function show(id){
     ['ctaLoading','ctaAnon','ctaInterview','ctaInfo','ctaApproved','ctaForm'].forEach(x=>{
       const el = document.getElementById(x);
@@ -265,7 +559,7 @@
     if(!me||me.status!=='success'){ show('ctaAnon'); return; }
 
     const enr=me.enrollment;
-    const isPaidProgram = !!(enr && (enr.product==='paid_program' || enr.amount===PAID_AMOUNT || (enr.admin_note && enr.admin_note.includes('UTR'))));
+    const isPaidProgram = !!(enr && (enr.product==='paid_program' || enr.product==='launchpad' || enr.product==='accelerate' || enr.amount===PAID_AMOUNT || (enr.admin_note && enr.admin_note.includes('UTR'))));
     const isRejectedPaid = !!(isPaidProgram && enr.payment_status==='Rejected');
     const isApprovedPaid = !!(isPaidProgram && (enr.payment_status==='Accepted' || enr.payment_status==='Verified' || enr.payment_status==='Approved'));
 
@@ -286,7 +580,7 @@
       document.getElementById('ctaInfoUtr').textContent = utr;
 
       const waMsg = encodeURIComponent(
-        `Hi Admissions Team, I have submitted my ₹1,999 payment for the DBERT Paid Program.\n\n` +
+        `Hi Admissions Team, I have submitted my ₹${PAID_AMOUNT} payment for the DBERT Program (${PROGRAM_KEY}).\n\n` +
         `• Name: ${internName}\n` +
         `• Email: ${internEmail}\n` +
         `• Track: ${domain}\n` +
@@ -335,10 +629,11 @@
     if(!_paidFile){err.querySelector('span').textContent='Please upload your payment screenshot.';err.classList.add('show');return;}
     if(!document.getElementById('paidAgree').checked){err.querySelector('span').textContent='Please confirm you accept the terms.';err.classList.add('show');return;}
 
-    const btn=document.getElementById('paidSubmit');btn.disabled=true;btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Submitting…';
+    const btn=document.getElementById('paidSubmit');btn.disabled=true;btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Submitting&hellip;';
     const fd=new FormData();
     fd.append('joining_date',jd);
     fd.append('utr', utrVal);
+    fd.append('program_name', PROGRAM_KEY);
     fd.append('payment_screenshot',_paidFile);
 
     try{

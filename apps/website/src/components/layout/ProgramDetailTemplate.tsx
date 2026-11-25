@@ -47,6 +47,8 @@ export interface ProgramDetailTemplateProps {
   headerSlot?: React.ReactNode;
   repoReference?: ProductionRepo;
   repoReferences?: ProductionRepo[];
+  programKey?: 'launchpad' | 'accelerate' | 'fellowship';
+  domainSlug?: string;
 }
 
 export default function ProgramDetailTemplate({
@@ -59,8 +61,17 @@ export default function ProgramDetailTemplate({
   curriculum,
   headerSlot,
   repoReference,
-  repoReferences
+  repoReferences,
+  programKey,
+  domainSlug
 }: ProgramDetailTemplateProps) {
+  const numericPrice = Number(price.replace(/[^0-9]/g, '')) || 1999;
+  const resolvedProgramKey: 'launchpad' | 'accelerate' | 'fellowship' =
+    programKey || (numericPrice === 7999 ? 'launchpad' : numericPrice === 4999 ? 'accelerate' : 'fellowship');
+  const isFellowship = resolvedProgramKey === 'fellowship';
+  const checkoutAmount = isFellowship ? 499 : numericPrice;
+  const formattedCheckoutAmount = isFellowship ? '₹499' : price;
+  const trackSlugParam = domainSlug ? `?domain=${encodeURIComponent(domainSlug)}` : '';
   const [step, setStep] = useState<'details' | 'payment'>('details');
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', college: '', utr: '' });
   const [loading, setLoading] = useState(false);
@@ -105,6 +116,8 @@ export default function ProgramDetailTemplate({
           college: formData.college.trim(),
           domain: title,
           courseTitle: title,
+          programType: resolvedProgramKey,
+          amountInr: checkoutAmount,
           utrNumber: cleanUtr
         })
       });
@@ -123,7 +136,7 @@ export default function ProgramDetailTemplate({
     }
   };
 
-  const upiDeepLink = `upi://pay?pa=Q652429146@ybl&pn=DBERT%20Admissions&am=499&cu=INR&tn=DBERT%20Course%20Seat`;
+  const upiDeepLink = `upi://pay?pa=Q652429146@ybl&pn=DBERT%20Admissions&am=${checkoutAmount}&cu=INR&tn=${encodeURIComponent(`DBERT-${resolvedProgramKey.toUpperCase()}-${checkoutAmount}`)}`;
 
   return (
     <div className="container py-xl">
@@ -139,9 +152,9 @@ export default function ProgramDetailTemplate({
         },
         "offers": {
           "@type": "Offer",
-          "price": "499",
+          "price": String(numericPrice),
           "priceCurrency": "INR",
-          "category": "Security Deposit"
+          "category": isFellowship ? "Fellowship Program Fee" : "Program Tuition Fee"
         }
       }) }} />
       
@@ -197,7 +210,9 @@ export default function ProgramDetailTemplate({
                 <div key={idx} className={s.curriculumBlock}>
                   <div className={s.blockHeader}>
                     <span className={s.periodBadge}>{item.period}</span>
-                    <span className={s.paceBadge}>4 Weekly Sprints &middot; Evaluated PR Review</span>
+                    <span className={s.paceBadge}>
+                      {item.period.includes('Month') ? '4 Weekly Sprints' : '2-Week Sprint'} &middot; Evaluated PR Review
+                    </span>
                   </div>
                   <h3 className={s.moduleTitle}>{item.title}</h3>
                   <ul className={s.topicList}>
@@ -270,19 +285,41 @@ export default function ProgramDetailTemplate({
         {/* Right Column: Sticky Sidebar with Details & Enrollment */}
         <aside className={s.stickySidebar} aria-label="Program Investment and Enrollment">
           <div className={s.sidebarCard}>
-            <span className={s.feeLabel}>Total Program Fee</span>
+            <span className={s.feeLabel}>Total Program Fee ({duration})</span>
             <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-              <strong className={s.feeValue} style={{ fontSize: '1.75rem', color: '#10B981' }}>₹1,999</strong>
+              <strong className={s.feeValue} style={{ fontSize: '1.75rem', color: '#10B981' }}>{price}</strong>
               <span style={{ fontSize: '12px', color: '#94A3B8' }}>(All inclusive)</span>
             </div>
-            <div style={{ background: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.3)', borderRadius: '8px', padding: '10px 12px', marginTop: '10px' }}>
-              <div style={{ fontSize: '11px', fontWeight: 800, color: '#FBBF24', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                Pay in 2 Steps
+            {isFellowship ? (
+              <div style={{ background: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.3)', borderRadius: '8px', padding: '10px 12px', marginTop: '10px' }}>
+                <div style={{ fontSize: '11px', fontWeight: 800, color: '#FBBF24', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                  Optional 2-Step Split
+                </div>
+                <div style={{ fontSize: '12.5px', color: '#F1F5F9', marginTop: '2px', lineHeight: '1.4' }}>
+                  <strong>₹499 Caution Deposit</strong> today to secure seat · <strong>₹1,500</strong> balance payable via <Link href="/enroll/1999" style={{ color: '#FBBF24', textDecoration: 'underline' }}>/enroll/1999</Link>.
+                </div>
               </div>
-              <div style={{ fontSize: '12.5px', color: '#F1F5F9', marginTop: '2px', lineHeight: '1.4' }}>
-                <strong>₹499 Security Deposit</strong> today to secure seat · <strong>₹1,500</strong> balance payable after batch kickoff within 7 days.
+            ) : (
+              <div style={{ background: 'rgba(16, 185, 129, 0.08)', border: '1px solid rgba(16, 185, 129, 0.25)', borderRadius: '8px', padding: '10px 12px', marginTop: '10px' }}>
+                <div style={{ fontSize: '11px', fontWeight: 800, color: '#34D399', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                  All Programs Unified to 2 Months
+                </div>
+                <div style={{ fontSize: '12px', color: '#E2E8F0', marginTop: '4px', lineHeight: '1.45' }}>
+                  <strong>Launchpad (₹7,999):</strong> 0-to-1 Beginner Foundations ·{' '}
+                  <strong>Accelerate (₹4,999):</strong> Applied Industrial Sprints ·{' '}
+                  <strong>Fellowship (₹1,999):</strong> Live Client Repo Internship.
+                  <div style={{ marginTop: '6px', display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+                    {resolvedProgramKey !== 'launchpad' && (
+                      <Link href={`/learners/launchpad${trackSlugParam}`} style={{ color: '#38BDF8', textDecoration: 'underline' }}>Launchpad (₹7,999)</Link>
+                    )}
+                    {resolvedProgramKey !== 'accelerate' && (
+                      <Link href={`/learners/accelerate${trackSlugParam}`} style={{ color: '#38BDF8', textDecoration: 'underline' }}>Accelerate (₹4,999)</Link>
+                    )}
+                    <Link href={domainSlug ? `/learners/courses/${domainSlug}` : '/learners/courses'} style={{ color: '#34D399', textDecoration: 'underline' }}>Fellowship (₹1,999)</Link>
+                  </div>
+                </div>
               </div>
-            </div>
+            )}
           </div>
 
           <div className={s.sidebarCard}>
@@ -320,7 +357,11 @@ export default function ProgramDetailTemplate({
             ) : step === 'details' ? (
               <form onSubmit={handleProceedToPayment} className={s.checkoutForm}>
                 <h3 className={s.checkoutTitle}>Secure Your Seat</h3>
-                <p className={s.checkoutCopy}>Reserve with ₹499 security deposit (credited in full).</p>
+                <p className={s.checkoutCopy}>
+                  {isFellowship
+                    ? 'Reserve with ₹499 caution deposit (credited in full toward ₹1,999).'
+                    : `Complete enrollment for ${title} (${price} · 2 Months).`}
+                </p>
                 
                 {errorMsg && <div className={s.error}>{errorMsg}</div>}
                 
@@ -365,7 +406,7 @@ export default function ProgramDetailTemplate({
                 />
                 
                 <button type="submit" className={`btn btn-primary btn-sm ${s.submit}`} style={{ background: 'linear-gradient(135deg, #F59E0B, #D97706)', color: '#0F172A', fontWeight: 800 }}>
-                  <span>Proceed to UPI QR (₹499)</span>
+                  <span>Proceed to UPI QR ({formattedCheckoutAmount})</span>
                   <ArrowRight size={14} style={{ marginLeft: '6px' }} />
                 </button>
               </form>
@@ -384,7 +425,7 @@ export default function ProgramDetailTemplate({
 
                 <div style={{ textAlign: 'center', background: '#0F172A', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '12px', padding: '14px', marginBottom: '12px' }}>
                   <div style={{ fontSize: '11px', color: '#94A3B8', textTransform: 'uppercase', fontWeight: 700 }}>Scan with any UPI App</div>
-                  <div style={{ fontSize: '20px', fontWeight: 800, color: '#34D399', margin: '4px 0 10px' }}>Pay ₹499</div>
+                  <div style={{ fontSize: '20px', fontWeight: 800, color: '#34D399', margin: '4px 0 10px' }}>Pay {formattedCheckoutAmount}</div>
                   
                   <div style={{ width: '160px', height: '160px', margin: '0 auto', background: '#FFFFFF', borderRadius: '8px', padding: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <Image
@@ -436,7 +477,7 @@ export default function ProgramDetailTemplate({
                   style={{ background: 'linear-gradient(135deg, #10B981, #059669)', color: '#FFFFFF', fontWeight: 800, marginTop: '8px' }}
                 >
                   <Lock size={13} style={{ marginRight: '6px' }} />
-                  {loading ? 'Verifying...' : 'Confirm Seat & Enroll (₹499)'}
+                  {loading ? 'Verifying...' : `Confirm Seat & Enroll (${formattedCheckoutAmount})`}
                 </button>
               </form>
             )}

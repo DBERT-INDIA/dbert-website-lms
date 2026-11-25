@@ -300,5 +300,26 @@
     ],
     "ctaText": "Inspect Verified Engineers in the Directory",
     "ctaUrl": "/verify/directory"
+  },
+  {
+    "id": "three-programs-2-month-price-parity",
+    "domain": "All Domains",
+    "domainSlug": "all-domains",
+    "question": "How do DBERT Launchpad (₹7,999), DBERT Accelerate (₹4,999), and the ₹1,999 Fellowship / Paid Program differ across domains?",
+    "shortAnswer": "All DBERT programs across every domain run exclusively for 2 months (8 weeks). Launchpad (₹7,999) teaches 0-to-1 beginner foundations, Accelerate (₹4,999) delivers applied intermediate industrial sprints, and Fellowship / LMS Paid Program (₹1,999) places ready builders on live client repos with full weekly syllabi published across both dbert.in/learners/courses and lms.dbert.in/program.",
+    "detailedMarkdown": "DBERT maintains strict price and curriculum clarity across all 11 technical domains with **only three 2-month (8-week) programs**:\n\n1. **DBERT Launchpad — ₹7,999 (2 Months)**: 0-to-1 beginner foundations (syntax, Git, Excel/SQL/Python basics, guided labs) at `/learners/launchpad`.\n2. **DBERT Accelerate — ₹4,999 (2 Months)**: Applied intermediate sprints (building 2–3 production systems per domain under PR reviews) at `/learners/accelerate`.\n3. **DBERT Fellowship / LMS Paid Program — ₹1,999 (2 Months)**: Identical across `https://dbert.in/learners/courses/*`, `https://lms.dbert.in/program`, and `https://dbert.in/enroll/1999` — live venture GitHub repo tickets (e.g. Aivara CSV-to-PPTX Report Generator & Alkame NIFTY 50 for Data Analytics using Excel, SQL/PostgreSQL, Python, Pandas, NumPy, Power BI, Matplotlib/Seaborn, Git & Jupyter), weekly 1:1 mentor code reviews, verifiable 3-doc credentials, and guaranteed internship placement on completion.",
+    "relatedBlogSlug": "dbert-1999-program-non-refundable-value-breakdown",
+    "relatedBlogTitle": "Is the ₹1,999 DBERT Incubation Worth It? Transparent Fee, Deliverables & Policy Breakdown",
+    "relatedCertId": "",
+    "author": "DBERT Admissions & Academic Council",
+    "tags": [
+      "Launchpad ₹7,999",
+      "Accelerate ₹4,999",
+      "Fellowship ₹1,999",
+      "2 Months",
+      "Curriculum"
+    ],
+    "ctaText": "Compare Tracks & Complete Enrollment",
+    "ctaUrl": "/learners"
   }
 ]

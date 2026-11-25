@@ -34,7 +34,7 @@ export default function CareersPage() {
       {
         '@type': 'JobPosting',
         title: 'Aivara Technologies Hiring Cohort Fellow',
-        description: '<p>Join our 3-month engineering sprint across 5 specialized domains: AI Agent Development, Full Stack, Python Automation, Data Analytics, and Data Engineering/ML.</p><p><strong>Requirements:</strong> Laptop with internet, 10 hours per week commitment, Python/JavaScript fundamentals.</p>',
+        description: '<p>Join our 2-month engineering sprint across 5 specialized domains: AI Agent Development, Full Stack, Python Automation, Data Analytics, and Data Engineering/ML.</p><p><strong>Requirements:</strong> Laptop with internet, 10 hours per week commitment, Python/JavaScript fundamentals.</p>',
         datePosted: '2026-10-01T00:00:00+05:30',
         validThrough: '2027-06-30T23:59:59+05:30',
         employmentType: 'INTERN',
@@ -84,7 +84,7 @@ export default function CareersPage() {
           </div>
           <h2 className="card-title">Aivara Technologies Hiring Cohort (2026)</h2>
           <p className={styles.bodyMuted}>
-            Join our 3-month engineering sprint across 5 specialized domains: AI Agent Development, Full Stack, Python Automation, Data Analytics, and Data Engineering/ML. Direct production repos, senior review rubrics, and placement tracks.
+            Join our 2-month engineering sprint across 5 specialized domains: AI Agent Development, Full Stack, Python Automation, Data Analytics, and Data Engineering/ML. Direct production repos, senior review rubrics, and placement tracks.
           </p>
           <div className="mt-4">
             <Link href="/cohorts/aivara" className="btn btn-primary inline-flex align-center gap-2">

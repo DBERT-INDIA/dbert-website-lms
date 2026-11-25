@@ -278,13 +278,13 @@ export default async function BlogPostPage({ params }: BlogPostProps) {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1rem', borderTop: '1px solid rgba(255, 255, 255, 0.08)', paddingTop: '1.25rem' }}>
             <div style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.08)', borderRadius: '12px', padding: '1.25rem' }}>
               <div style={{ color: '#38BDF8', fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '0.35rem' }}>
-                For Aspiring Engineers
+                For Aspiring Engineers &bull; ₹1,999 Incubation
               </div>
               <h4 style={{ color: '#fff', fontSize: '1.05rem', margin: '0 0 0.5rem', fontWeight: 700 }}>
-                Build Production Systems
+                Certificate &rarr; ₹5,000+ Stipend &rarr; Placement
               </h4>
               <p style={{ color: '#94A3B8', fontSize: '0.8125rem', lineHeight: '1.5', margin: '0 0 1rem' }}>
-                Join the next cohort, receive 1:1 mentorship from industry staff, and publish verified capstone case studies.
+                Ship 3 reviewed production PRs, unlock Gate 1 stipend eligibility, and receive a Round-1 screening waiver. Paid ₹499 deposit? Pay only ₹1,500 balance.
               </p>
               <TrackedLink
                 href="/enroll/1999"
@@ -292,7 +292,7 @@ export default async function BlogPostPage({ params }: BlogPostProps) {
                 eventParams={{ slug: meta.slug, destination: '/enroll/1999', label: 'apply_fellowship' }}
                 style={{ color: '#E2B96F', fontSize: '0.8125rem', fontWeight: 700, textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}
               >
-                Apply for Fellowship &rarr;
+                Enroll in ₹1,999 Incubation &rarr;
               </TrackedLink>
             </div>
 

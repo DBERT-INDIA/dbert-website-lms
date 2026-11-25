@@ -180,10 +180,10 @@ export default function CourseInteractiveShell({ course, domain, alumni = [] }: 
               onClick={() => setActiveTrack('course')}
             >
               <div className={s.trackTabTitle}>
-                <BookOpen size={15} style={{ color: '#38bdf8' }} /> 🎓 Structure 2: 3-Month Comprehensive Course
+                <BookOpen size={15} style={{ color: '#38bdf8' }} /> 🎓 Structure 2: 2-Month Applied Accelerate Track
               </div>
               <div className={s.trackTabSubtitle}>
-                Foundations to Enterprise Mastery · 12 Modules · Zero-Cost EMI
+                Applied Industrial Sprints · 8 Weeks · ₹4,999
               </div>
             </button>
           </div>
@@ -210,13 +210,13 @@ export default function CourseInteractiveShell({ course, domain, alumni = [] }: 
                   <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#ffffff', marginTop: 8 }}>
                     {activeTrack === 'fellowship' 
                       ? '2-Month Applied Engineering Fellowship' 
-                      : '3-Month Comprehensive Professional Course'}
+                      : '2-Month Applied Accelerate Sprint Track'}
                   </h2>
                 </div>
                 <div style={{ textAlign: 'right' }}>
                   <div style={{ fontSize: '0.75rem', color: '#94a3b8', textTransform: 'uppercase' }}>Program Investment</div>
                   <div style={{ fontSize: '1.35rem', fontWeight: 800, color: activeTrack === 'fellowship' ? '#10b981' : '#38bdf8', fontFamily: 'monospace' }}>
-                    {activeTrack === 'fellowship' ? '₹1,999 Total' : 'Flexible Monthly EMI'}
+                    {activeTrack === 'fellowship' ? '₹1,999 Total' : '₹4,999 Total'}
                   </div>
                 </div>
               </div>
@@ -224,14 +224,14 @@ export default function CourseInteractiveShell({ course, domain, alumni = [] }: 
               <p style={{ fontSize: '0.88rem', color: '#cbd5e1', lineHeight: 1.6, marginBottom: 16 }}>
                 {activeTrack === 'fellowship'
                   ? 'Designed for engineers with foundational syntax competence. Work directly on production codebases, receive senior pull-request evaluations, and secure 100% guaranteed production internship with dedicated placement assistance across internal DBERT portfolio ventures (Gayatri AI, Alkame, Aivara) or verified corporate hiring partners.'
-                  : 'An intensive, structured journey from foundational computer systems to large-scale enterprise deployment. Includes guided hands-on laboratories, live code walkthroughs, and guaranteed interview preparation sprints.'}
+                  : 'An intensive 2-month (8-week) applied engineering track covering intermediate domain architecture, live API & data pipelines, and evaluated code walkthroughs.'}
               </p>
 
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 12 }}>
                 <div style={{ padding: 12, background: 'rgba(255, 255, 255, 0.03)', borderRadius: 8, border: '1px solid rgba(255, 255, 255, 0.06)' }}>
                   <div style={{ fontSize: '0.72rem', color: '#94a3b8', textTransform: 'uppercase', fontWeight: 700 }}>Duration</div>
                   <div style={{ fontSize: '0.95rem', fontWeight: 700, color: '#ffffff', marginTop: 2 }}>
-                    {activeTrack === 'fellowship' ? '8 Weeks (2 Months)' : '12 Weeks (3 Months)'}
+                    8 Weeks (2 Months)
                   </div>
                 </div>
                 <div style={{ padding: 12, background: 'rgba(255, 255, 255, 0.03)', borderRadius: 8, border: '1px solid rgba(255, 255, 255, 0.06)' }}>
@@ -273,7 +273,7 @@ export default function CourseInteractiveShell({ course, domain, alumni = [] }: 
                 ) : (
                   <>
                     <BookOpen size={20} style={{ color: '#38bdf8' }} />
-                    <span>3-Month Comprehensive Syllabus</span>
+                    <span>2-Month Applied Syllabus</span>
                   </>
                 )}
               </div>
