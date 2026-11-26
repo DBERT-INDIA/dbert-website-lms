@@ -3,7 +3,7 @@
 
 .footer {
   border-top: 1px solid var(--border-subtle);
-  background: var(--surface-base);
+  background: linear-gradient(180deg, rgba(11, 17, 32, 0.6) 0%, var(--surface-base) 100%);
   padding: 64px 0 36px;
   position: relative;
   z-index: 10;

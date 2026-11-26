@@ -202,7 +202,7 @@ Portal: https://lms.dbert.in · Sovereign Registry: https://dbert.in
 ================================================================================
 STATUTORY REGULATORY & PRIVACY DISCLOSURE:
 This administrative communication is sent to registered applicants of DBERT.
-Digital Blinc Education Research and Technology (DBERT) is MSME registered under the Ministry of Micro, Small & Medium Enterprises, Govt. of India (UDYAM-UP-28-0098234).
+Digital Blinc Education Research and Technology (DBERT) is MSME registered under the Ministry of Micro, Small & Medium Enterprises, Govt. of India (UDYAM-UP-29-0109046).
 Registered Office: A-43, Sector 62, Noida, Gautam Buddha Nagar, Uttar Pradesh 201301, India.
 If you believe you have received this notice in error or wish to archive your applicant record, reply with 'WITHDRAW' to admissions@dbert.in.
 ================================================================================
@@ -321,7 +321,7 @@ If you believe you have received this notice in error or wish to archive your ap
     <!-- Official Disclaimers Footer -->
     <div style="background-color:#0E1626;padding:22px 26px;text-align:center;border-top:1px solid #1E2633;font-size:11px;color:#64748B;line-height:1.7;">
       <p style="margin:0 0 8px 0;">
-        <strong>STATUTORY REGULATORY &amp; PRIVACY DISCLOSURE:</strong> Digital Blinc Education Research and Technology (DBERT) is MSME registered under the Ministry of Micro, Small &amp; Medium Enterprises, Govt. of India (UDYAM-UP-28-0098234).
+        <strong>STATUTORY REGULATORY &amp; PRIVACY DISCLOSURE:</strong> Digital Blinc Education Research and Technology (DBERT) is MSME registered under the Ministry of Micro, Small &amp; Medium Enterprises, Govt. of India (UDYAM-UP-29-0109046).
       </p>
       <p style="margin:0 0 8px 0;">
         Registered Office: A-43, Sector 62, Noida, Gautam Buddha Nagar, Uttar Pradesh 201301, India.

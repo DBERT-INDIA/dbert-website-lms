@@ -281,11 +281,12 @@ export default function MegaMenu() {
             {navConfig.cta && (
               <a
                 href={navConfig.cta.href}
-                className="btn btn-primary btn-sm"
+                className={`btn btn-primary btn-sm ${styles.navCtaPill}`}
                 target={navConfig.cta.external ? '_blank' : undefined}
                 rel={navConfig.cta.external ? 'noopener noreferrer' : undefined}
                 onClick={() => trackEvent('incubation_apply_click', { location: 'navbar_cta' })}
               >
+                <span className={styles.ctaPulseDot} aria-hidden="true" />
                 <span>{navConfig.cta.label}</span>
                 <span className={styles.ctaArrow} aria-hidden="true">↗</span>
               </a>

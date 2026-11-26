@@ -65,10 +65,10 @@ export default function CoursesHubPage() {
             <div>
               <span className="doclabel text-xs text-accent">₹1,999 TECHNICAL INCUBATION · 2027 COHORT</span>
               <h2 className="text-xl font-bold font-mono text-white mt-1">
-                Verified Certificate &rarr; ₹5,000+ Stipend &rarr; 100% Placement Assistance
+                Verified Certificate &rarr; ₹5,000 Stipend (5,000 Coins) &rarr; 100% Placement Assistance
               </h2>
               <p className="text-xs text-[var(--text-secondary)] max-w-2xl mt-2 leading-relaxed">
-                Every track shares the same transparent {FELLOWSHIP_FEE.formattedTotal} total program fee (2 months, 1:1 PR code reviews, Turnitin-verified 3-doc credential packet, Gate 1 stipend eligibility, and Round-1 hiring waivers). Already paid the ₹499 caution deposit? Your deposit is credited in full — only {FELLOWSHIP_FEE.formattedBalance} balance due.
+                Every track shares the same transparent {FELLOWSHIP_FEE.formattedTotal} all-inclusive program fee (2 months, 1:1 mentor reviews, verified certificate, ₹5,000 stipend / 5,000 Coins via UPI unlocked after 2-month completion with 10 hrs/wk, 2 certifications, 75 tasks &amp; approved capstone + up to ₹18,000 Ambassador bonus, and Round-1 hiring waivers).
               </p>
             </div>
             <div className="flex flex-wrap gap-3 shrink-0">

@@ -281,10 +281,10 @@ export default async function BlogPostPage({ params }: BlogPostProps) {
                 For Aspiring Engineers &bull; ₹1,999 Incubation
               </div>
               <h4 style={{ color: '#fff', fontSize: '1.05rem', margin: '0 0 0.5rem', fontWeight: 700 }}>
-                Certificate &rarr; ₹5,000+ Stipend &rarr; Placement
+                Certificate &rarr; ₹5,000 Stipend (5,000 Coins) &rarr; Placement
               </h4>
               <p style={{ color: '#94A3B8', fontSize: '0.8125rem', lineHeight: '1.5', margin: '0 0 1rem' }}>
-                Ship 3 reviewed production PRs, unlock Gate 1 stipend eligibility, and receive a Round-1 screening waiver. Paid ₹499 deposit? Pay only ₹1,500 balance.
+                Unlock ₹5,000 (5,000 Coins via UPI) after 2-month completion (10 hrs/wk, 2 certifications, 75 tasks &amp; approved capstone) + up to ₹18,000 Ambassador bonus and Round-1 hiring waivers.
               </p>
               <TrackedLink
                 href="/enroll/1999"

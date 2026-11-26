@@ -26,7 +26,7 @@
       {% if not company.is_approved %}
       <div class="banner warn"><i class="fas fa-hourglass-half"></i> Your account is pending admin approval. You can draft posts now, but publishing is locked until you're approved.</div>
       {% else %}
-      <div class="banner ok"><i class="fas fa-circle-check"></i> Approved — you can publish up to 3 live posts at a time.</div>
+      <div class="banner ok"><i class="fas fa-circle-check"></i> Approved — you can publish up to {{ company.max_live_posts or 3 }} live posts at a time.</div>
       {% endif %}
 
       <!-- POSTS -->
@@ -37,7 +37,7 @@
             <div class="who">{{ company.email }}</div>
           </div>
           <div style="display:flex;gap:10px;align-items:center;">
-            <span class="counter">{{ live_count }} / 3 live</span>
+            <span class="counter">{{ live_count }} / {{ company.max_live_posts or 3 }} live</span>
             <a class="btn" href="/company/posts/new"><i class="fas fa-plus"></i> Create post</a>
           </div>
         </div>

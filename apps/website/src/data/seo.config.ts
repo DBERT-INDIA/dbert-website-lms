@@ -162,6 +162,12 @@ export const seoConfig: Record<string, SeoEntry> = {
     description:
       'How DBERT designed and shipped Gayatri AI, from data strategy through deployment, in exchange for equity rather than fees. Read the engineering case study.',
   },
+  '/startups/portfolio/dhanvee': {
+    keyword: 'Dhanvee DBERT fintech case study',
+    title: 'Dhanvee — People-First Fintech & Lending Beta Case Study',
+    description:
+      'How DBERT co-developed Dhanvee (dhanvee.info / dhanvee.online), a people-first P2P lending beta with an AI credit simulator and 4-track hiring pipeline on DBERT LMS.',
+  },
   '/startups/services': {
     keyword: 'startup incubation services India',
     title: 'Startup Incubation Services — What You Get',

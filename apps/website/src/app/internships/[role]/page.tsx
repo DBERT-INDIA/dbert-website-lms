@@ -261,19 +261,19 @@ export default async function InternshipSlugDispatcher({ params }: PageProps) {
                     ₹1,999 Incubation Fast-Track · 2027 Cohort
                   </div>
                   <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#ffffff', marginBottom: 8 }}>
-                    Verified Certificate &rarr; ₹5,000+ Stipend &rarr; 100% Placement Assistance
+                    Verified Certificate &rarr; ₹5,000 Stipend (5,000 Coins) &rarr; 100% Placement Assistance
                   </h3>
                   <ul style={{ fontSize: '0.82rem', color: '#e2e8f0', lineHeight: 1.6, margin: '0 0 14px 18px', padding: 0 }}>
-                    <li>Cryptographic 3-document packet &amp; Turnitin originality seal on <code>/verify</code></li>
-                    <li>Gate 1 ₹5,000+ stipend unlock upon shipping 3 approved PRs (&ge;75% attendance)</li>
-                    <li>Direct Round-1 screening waiver + Tab 1 placement in Pre-Vetted Directory</li>
+                    <li>Verified Certificate, Scorecard &amp; Recommendation Letter on <code>/verify</code></li>
+                    <li>₹5,000 Stipend (5,000 Coins via UPI): Unlocked after 2-month completion (10 hrs/wk, 2 certifications, 75 tasks &amp; approved capstone) + up to ₹18,000 Ambassador bonus</li>
+                    <li>Direct Round-1 screening waiver + Verified Graduate Directory listing</li>
                   </ul>
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, alignItems: 'center' }}>
                     <Link
                       href={`/enroll/1999?domain=${encodeURIComponent(roleData.title)}`}
                       className="btn btn-primary btn-sm"
                     >
-                      Enroll Now — ₹1,999 (₹1,500 if ₹499 paid) &rarr;
+                      Enroll Now — ₹1,999 &rarr;
                     </Link>
                     <Link
                       href={`/learners/courses/${roleData.slug}`}

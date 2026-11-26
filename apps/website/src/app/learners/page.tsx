@@ -176,6 +176,7 @@ export default function LearnersLandingPage() {
 
       {/* ══════════ SECTION 1: HERO (2-COLUMN GRID) ══════════ */}
       <section className="section-subpage-hero">
+        <div className="hero-glow" aria-hidden="true" />
         <div className="wrap subpage-hero-grid">
           <div>
             <div className="doclabel">
@@ -334,6 +335,14 @@ export default function LearnersLandingPage() {
       <section className="subpage-section">
         <div className="wrap">
           <div className={s.nextGrid}>
+            <div className={`card ${s.nextCard} border-accent/40`}>
+              <div className="flex justify-between items-center mb-1">
+                <h3 className="card-title-tight mb-0">Browse 3,200+ Live Internships</h3>
+                <span className="tag-chip text-[10px] font-mono text-emerald-400">Live Portal</span>
+              </div>
+              <p className={s.nextDesc}>Apply for verified startup internships across Mumbai, Bengaluru, Delhi NCR, and remote roles with 100% Guaranteed Production Internship with Dedicated Placement Assistance.</p>
+              <a href="https://lms.dbert.in/" target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-sm">Open Career Portal ↗</a>
+            </div>
             <div className={`card ${s.nextCard}`}>
               <h3 className="card-title-tight">Ace Your Technical Interviews</h3>
               <p className={s.nextDesc}>Practice rigorous system design mock screenings, refine recruiter-facing portfolios, and optimize your engineering presentation.</p>
@@ -343,14 +352,6 @@ export default function LearnersLandingPage() {
               <h3 className="card-title-tight">Explore AI Courses Index</h3>
               <p className={s.nextDesc}>Browse individual upskilling modules and domain technical certifications designed to complement your current specialization.</p>
               <Link href="/learners/courses" className="btn btn-outline btn-sm">View Courses Directory</Link>
-            </div>
-            <div className={`card ${s.nextCard} border-accent/40`}>
-              <div className="flex justify-between items-center mb-1">
-                <h3 className="card-title-tight mb-0">Browse 3,200+ Live Internships</h3>
-                <span className="tag-chip text-[10px] font-mono text-emerald-400">Live Portal</span>
-              </div>
-              <p className={s.nextDesc}>Apply for verified startup internships across Mumbai, Bengaluru, Delhi NCR, and remote roles with 100% Guaranteed Production Internship with Dedicated Placement Assistance.</p>
-              <a href="https://lms.dbert.in/" target="_blank" rel="noopener noreferrer" className="btn btn-primary btn-sm">Open Career Portal ↗</a>
             </div>
           </div>
         </div>

@@ -211,10 +211,10 @@ export default function DynamicBlogReader() {
             ₹1,999 Technical Incubation · 2027 Cohort Open
           </div>
           <h3 style={{ color: '#fff', fontSize: '1.15rem', margin: '0 0 0.5rem', fontWeight: 700 }}>
-            Verified Certificate &rarr; ₹5,000+ Stipend &rarr; 100% Placement Assistance
+            Verified Certificate &rarr; ₹5,000 Stipend (5,000 Coins) &rarr; 100% Placement Assistance
           </h3>
           <p style={{ color: '#CBD5E1', fontSize: '0.875rem', lineHeight: 1.6, margin: '0 0 1rem' }}>
-            Want to publish your own verified production case study and earn direct Round-1 hiring waivers? Paid the ₹499 caution deposit? Only ₹1,500 balance is due.
+            Unlock ₹5,000 (5,000 Coins via UPI) after 2-month completion (10 hrs/wk, 2 certifications, 75 tasks &amp; approved capstone) + up to ₹18,000 Ambassador bonus and Round-1 hiring waivers.
           </p>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem', alignItems: 'center' }}>
             <Link href="/enroll/1999" className="btn btn-primary btn-sm">

@@ -154,9 +154,11 @@ export default function TrackLeadCaptureForm({
   return (
     <div className={s.leadCard} id="apply-lead-form">
       <div className={s.leadHeader}>
-        <span className={s.leadBadge}>
-          <ShieldCheck size={13} /> Official Admissions Ingestion
-        </span>
+        <div style={{ marginBottom: 10 }}>
+          <span className={s.leadBadge}>
+            <ShieldCheck size={13} /> Admissions &amp; Syllabus
+          </span>
+        </div>
         <h3 className={s.leadTitle}>{title}</h3>
         <p className={s.leadSubtitle}>{subtitle}</p>
       </div>
@@ -276,7 +278,7 @@ export default function TrackLeadCaptureForm({
             'Submitting...'
           ) : (
             <>
-              Apply for Fellowship (100% Guaranteed Production Internship with Dedicated Placement Assistance) <ArrowRight size={16} />
+              Get Syllabus &amp; Apply <ArrowRight size={16} />
             </>
           )}
         </button>
@@ -285,18 +287,18 @@ export default function TrackLeadCaptureForm({
           href={`/enroll/1999?domain=${encodeURIComponent(formData.domain)}`}
           className={s.fastTrackLink}
         >
-          <Zap size={13} style={{ color: '#f59e0b' }} /> Direct Fellowship Seat Confirmation (₹1,999) →
+          <Zap size={13} style={{ color: '#f59e0b' }} /> Confirm Your Seat Now (₹1,999) →
         </Link>
 
         <div style={{ marginTop: 14, textAlign: 'center', fontSize: '0.8rem', color: '#94a3b8' }}>
-          Looking for direct internship recruitment?{' '}
+          Applying directly for an internship?{' '}
           <a
             href="https://lms.dbert.in/apply"
             target="_blank"
             rel="noopener noreferrer"
             style={{ color: '#38bdf8', textDecoration: 'underline', fontWeight: 600 }}
           >
-            Direct Internship Applicant Sign-up (LMS) →
+            Apply on the LMS Portal →
           </a>
         </div>
       </form>

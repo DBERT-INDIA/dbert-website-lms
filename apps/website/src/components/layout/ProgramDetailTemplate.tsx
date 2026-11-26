@@ -290,17 +290,7 @@ export default function ProgramDetailTemplate({
               <strong className={s.feeValue} style={{ fontSize: '1.75rem', color: '#10B981' }}>{price}</strong>
               <span style={{ fontSize: '12px', color: '#94A3B8' }}>(All inclusive)</span>
             </div>
-            {isFellowship ? (
-              <div style={{ background: 'rgba(245, 158, 11, 0.1)', border: '1px solid rgba(245, 158, 11, 0.3)', borderRadius: '8px', padding: '10px 12px', marginTop: '10px' }}>
-                <div style={{ fontSize: '11px', fontWeight: 800, color: '#FBBF24', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                  Optional 2-Step Split
-                </div>
-                <div style={{ fontSize: '12.5px', color: '#F1F5F9', marginTop: '2px', lineHeight: '1.4' }}>
-                  <strong>₹499 Caution Deposit</strong> today to secure seat · <strong>₹1,500</strong> balance payable via <Link href="/enroll/1999" style={{ color: '#FBBF24', textDecoration: 'underline' }}>/enroll/1999</Link>.
-                </div>
-              </div>
-            ) : (
-              <div style={{ background: 'rgba(16, 185, 129, 0.08)', border: '1px solid rgba(16, 185, 129, 0.25)', borderRadius: '8px', padding: '10px 12px', marginTop: '10px' }}>
+            <div style={{ background: 'rgba(16, 185, 129, 0.08)', border: '1px solid rgba(16, 185, 129, 0.25)', borderRadius: '8px', padding: '10px 12px', marginTop: '10px' }}>
                 <div style={{ fontSize: '11px', fontWeight: 800, color: '#34D399', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                   All Programs Unified to 2 Months
                 </div>
@@ -319,7 +309,6 @@ export default function ProgramDetailTemplate({
                   </div>
                 </div>
               </div>
-            )}
           </div>
 
           <div className={s.sidebarCard}>

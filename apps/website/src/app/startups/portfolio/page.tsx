@@ -51,6 +51,17 @@ export default function StartupsPortfolioPage() {
       contribution: 'DBERT co-developed open-source local orchestration modules, allowing schools to run multi-agent scripts on offline PC systems.',
       outcome: 'Launched offline agent simulators deployed across local schools, enabling students to learn prompt setups without API costs.',
       metrics: '10+ Schools Deployed | ₹0 API Costs | Open Source'
+    },
+    {
+      name: 'Dhanvee',
+      linkText: 'dhanvee.info',
+      url: 'https://dhanvee.info/',
+      slug: 'dhanvee',
+      sector: 'Fintech & People-First Lending',
+      challenge: 'Borrowers and retail lenders needed a transparent, jargon-free P2P lending beta with instant EMI clarity, explainable credit scoring, and a structured engineering & growth talent pipeline across 7 Indian tech hubs.',
+      contribution: 'DBERT co-architected the Next.js 15 + Drizzle ORM + PostgreSQL platform, built the interactive AI credit simulator and beta onboarding workflows, and integrated a 4-track internship pipeline with DBERT LMS.',
+      outcome: 'Shipped a full-stack fintech beta (dhanvee.info / dhanvee.online) with live borrower/lender journeys, 28 city-role landing pages, and active candidate sourcing on lms.dbert.in.',
+      metrics: '4 Live Role Tracks | 7 Hub Cities | AI Credit Simulator'
     }
   ];
 

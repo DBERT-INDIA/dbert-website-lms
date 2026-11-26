@@ -78,6 +78,58 @@ export default function JobBoardPage() {
       requirements: 'Python Pandas, prompt tuning, API orchestration, conversation memory state serialization.',
       desc: 'Develop interactive context-aware conversational bots connected to relational databases and live analytics feeds.',
       slug: 'conversational-ai-workflow-intern-remote-3'
+    },
+    {
+      id: 201,
+      title: 'AI Agent Developer — Dhanvee (Fintech Beta)',
+      company: 'Dhanvee (dhanvee.info)',
+      type: 'Hybrid / Remote · 7 Cities',
+      domain: 'AI Agent Development',
+      domainSlug: 'ai-agent-development',
+      salary: 'Performance-Based Incubation Internship (3 Months)',
+      requirements: 'LLM Orchestration, RAG & Vector Search, TypeScript / Python, Prompt Evaluation.',
+      desc: 'Build grounded, citation-enforced LLM agents and workflow automations for onboarding support, document triage, and compliance-safe Q&A at Dhanvee.',
+      slug: 'dhanvee-ai-agent-developer',
+      externalUrl: 'https://lms.dbert.in/internships/ai-agent-development'
+    },
+    {
+      id: 202,
+      title: 'Machine Learning Analyst — Dhanvee (Fintech Beta)',
+      company: 'Dhanvee (dhanvee.info)',
+      type: 'Hybrid / Remote · 7 Cities',
+      domain: 'Data Analyst',
+      domainSlug: 'data-analyst',
+      salary: 'Performance-Based Incubation Internship (3 Months)',
+      requirements: 'Python / Pandas, SQL, Scikit-Learn, SHAP / Explainable AI.',
+      desc: 'Analyze borrower/lender marketplace cohorts, build risk-explainability features, and evaluate credit-scoring prototypes with strict data hygiene.',
+      slug: 'dhanvee-machine-learning-analyst',
+      externalUrl: 'https://lms.dbert.in/internships/data-analyst'
+    },
+    {
+      id: 203,
+      title: 'Python Developer — Dhanvee (Fintech Beta)',
+      company: 'Dhanvee (dhanvee.info)',
+      type: 'Hybrid / Remote · 7 Cities',
+      domain: 'Python Automation',
+      domainSlug: 'python-automation',
+      salary: 'Performance-Based Incubation Internship (3 Months)',
+      requirements: 'Python 3.11+, FastAPI / REST APIs, PostgreSQL, Automated Testing.',
+      desc: 'Develop idempotent backend services, settlement reconciliation scripts, and automated data pipelines powering Dhanvee operations.',
+      slug: 'dhanvee-python-developer',
+      externalUrl: 'https://lms.dbert.in/internships/python-automation'
+    },
+    {
+      id: 204,
+      title: 'Business Development Partner — Dhanvee (Fintech Beta)',
+      company: 'Dhanvee (dhanvee.info)',
+      type: 'Hybrid / Remote · 7 Cities',
+      domain: 'Digital Marketing',
+      domainSlug: 'digital-marketing',
+      salary: 'Performance-Based Incubation Internship (3 Months)',
+      requirements: 'B2B/B2C Partnerships, Structured Communication, CRM & Funnel Tracking, Fintech Literacy.',
+      desc: 'Drive city-level borrower & lender community partnerships, campus outreach, and merchant/SME ecosystem onboarding for Dhanvee.',
+      slug: 'dhanvee-business-development-partner',
+      externalUrl: 'https://lms.dbert.in/internships/digital-marketing'
     }
   ];
 
@@ -280,7 +332,7 @@ export default function JobBoardPage() {
                 <span className={s.jobType}>{job.type}</span>
                 <div className="flex gap-2">
                   <a
-                    href={`https://lms.dbert.in/apply/${job.id}`}
+                    href={(job as { externalUrl?: string }).externalUrl || `https://lms.dbert.in/apply/${job.id}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="btn btn-primary btn-sm"

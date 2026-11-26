@@ -28,7 +28,7 @@ export default function PrivacyPage() {
             <span className="doclabel text-xs mb-1">§ 01 — SCOPE &amp; IDENTITY</span>
             <h2 className="card-title my-2">Registered Entity Overview</h2>
             <p className="body-copy">
-              At DBERT (Digital Blinc Education Research And Technology, registered MSME entity UDYAM-UP-28-0105315), we prioritize data privacy and operational security across our website (<code>dbert.in</code>), learning platforms, and verification registries.
+              At DBERT (Digital Blinc Education Research And Technology, registered MSME entity UDYAM-UP-29-0109046), we prioritize data privacy and operational security across our website (<code>dbert.in</code>), learning platforms, and verification registries.
             </p>
           </div>
 

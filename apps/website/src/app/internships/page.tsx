@@ -317,6 +317,9 @@ export default function InternshipsHubPage() {
               <Link href="/learners/fellowship" className="btn btn-outline btn-lg">
                 Inspect Fellowship Curriculum →
               </Link>
+              <Link href="/startups/portfolio/dhanvee" className="btn btn-outline btn-lg">
+                Explore Dhanvee Fintech Roles →
+              </Link>
             </div>
             <div className="mt-6 pt-5 border-t border-line/50 flex justify-center gap-4 flex-wrap text-xs">
               <Link href="/blog/inside-dbert-engineering-sprints-rag-saas-security-qa-ocr-bots" className="text-accent hover:underline">

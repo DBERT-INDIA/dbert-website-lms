@@ -86,6 +86,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {/* Authoritative LLM Knowledge Corpus Discovery */}
         <link rel="alternate" type="text/markdown" title="DBERT LLM Knowledge Corpus" href="/llms.txt" />
 
+        {/* Google AdSense */}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5714066818023852"
+          crossOrigin="anonymous"
+        />
+
         {/* GA4 Telemetry (G-MN7ME9X518) — loads seamlessly across static export */}
         <link rel="preconnect" href="https://www.googletagmanager.com" />
         <Script

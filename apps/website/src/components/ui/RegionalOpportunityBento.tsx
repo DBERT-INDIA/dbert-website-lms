@@ -39,9 +39,9 @@ export default function RegionalOpportunityBento({
     <section className={styles.section} aria-label={`${domainName} Regional Opportunities`}>
       <div className="container">
         <div className={styles.header}>
-          <span className={styles.doclabel}>
-            {sectionNumber} — INDUSTRY INTERNSHIPS &amp; REGIONAL HIRING HUBS · 2026 COHORT
-          </span>
+          <div className={styles.doclabel} style={{ display: 'block', marginBottom: 10 }}>
+            {sectionNumber ? `${sectionNumber} · ` : ''}OPEN ROLES &amp; HIRING HUBS · 2026 COHORT
+          </div>
           <h2 className={styles.title}>{title}</h2>
           <p className={styles.lede}>{description}</p>
         </div>
@@ -66,7 +66,7 @@ export default function RegionalOpportunityBento({
               <div>
                 <div className={styles.metaRow}>
                   <span className={styles.cityTag}>{opp.cityTag}</span>
-                  <span className={styles.stipendTag}>{opp.placement || opp.stipend || '100% Guaranteed Production Internship with Dedicated Placement Assistance'}</span>
+                  <span className={styles.stipendTag}>{opp.stipend || '100% Guaranteed Internship'}</span>
                 </div>
                 <h3 className={styles.roleTitle}>{opp.title}</h3>
                 <p className={styles.roleDesc}>{opp.roleDescription}</p>

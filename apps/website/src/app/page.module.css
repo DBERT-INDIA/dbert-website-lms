@@ -11,9 +11,11 @@
 
 .heroGrid {
   display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
+  grid-template-columns: 1.3fr 0.7fr;
   gap: 52px;
   align-items: center;
+  position: relative;
+  z-index: 1;
 }
 
 .badge {
@@ -100,6 +102,20 @@
   gap: 6px;
 }
 
+.trustChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-family: var(--font-m);
+  font-size: 0.72rem;
+  letter-spacing: 0.03em;
+}
+
 .heroTelemetryDot {
   width: 5px;
   height: 5px;
@@ -118,8 +134,9 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: var(--space-4);
-  background: var(--card);
+  background: linear-gradient(135deg, #0b1120 0%, #111827 100%);
   border: 1px solid var(--line);
+  border-top: 2px solid rgba(56, 189, 248, 0.4);
   border-radius: var(--r-md);
   padding: var(--space-5) var(--space-6);
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
@@ -154,7 +171,10 @@
   font-family: var(--font-d);
   font-size: 2.2rem;
   font-weight: 700;
-  color: var(--text);
+  background: linear-gradient(90deg, #38bdf8, #818cf8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   line-height: 1.1;
   letter-spacing: -0.02em;
 }
@@ -194,13 +214,10 @@
 
 /* ═══ CRAWLER PROSE / STUDIO PHILOSOPHY ═══ */
 .about {
-  max-width: 740px;
+  max-width: 760px;
   margin: 0 auto;
-  text-align: center;
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: var(--r-md);
-  padding: 44px 36px;
+  text-align: left;
+  padding: 24px 0;
 }
 
 .about h2 {
@@ -265,7 +282,7 @@
   padding: 110px 24px;
   position: relative;
   overflow: hidden;
-  background: var(--bg);
+  background: radial-gradient(ellipse at 50% 100%, rgba(56, 189, 248, 0.08) 0%, transparent 60%), var(--bg);
   border-top: 1px solid var(--line);
 }
 

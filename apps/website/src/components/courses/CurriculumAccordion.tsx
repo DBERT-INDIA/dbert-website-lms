@@ -44,7 +44,7 @@ export default function CurriculumAccordion({ trackId, modules }: CurriculumAcco
               aria-expanded={isOpen}
               aria-controls={panelId}
               onClick={() => toggle(idx, mod.period)}
-              className="w-full text-left p-5 flex items-center justify-between gap-4 hover:bg-white/[0.02] focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent transition-colors"
+              className="w-full text-left p-5 flex items-center justify-between gap-4 bg-transparent border-0 hover:bg-white/[0.02] focus-visible:outline focus-visible:outline-2 focus-visible:outline-accent transition-colors"
             >
               <div>
                 <div className="text-xs font-mono text-accent uppercase tracking-wider mb-1">

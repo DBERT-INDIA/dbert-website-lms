@@ -1,5 +1,7 @@
 {# Phase 12.5/12.6 — shared head include: GA4 + dbertGA() event helper + Organization JSON-LD.
    Included in the <head> of every page via {% include "_ga4.html" %}. #}
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5714066818023852"
+     crossorigin="anonymous"></script>
 {% if GA4_ID %}
 <script async src="https://www.googletagmanager.com/gtag/js?id={{ GA4_ID }}"></script>
 <script nonce="{{ csp_nonce() }}">
