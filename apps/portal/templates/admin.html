@@ -218,8 +218,8 @@
           </select>
           <select class="filter-select sm" id="enrProduct" aria-label="Filter enrollments by product type" data-act-change="applyEnrFilters" title="Product">
             <option value="all">All Products</option>
-            <option value="free_deposit">Free (&#8377;499)</option>
-            <option value="paid_program">Paid (&#8377;1,599)</option>
+            <option value="free_deposit">Security Deposit (&#8377;499)</option>
+            <option value="paid_program">Paid Fellowship (&#8377;1,999)</option>
           </select>
 
           <div class="filter-date-group">
@@ -711,8 +711,8 @@
           <div class="form-group"><label class="field-label" for="ee_batch_label">Batch Label</label><input type="text" id="ee_batch_label" class="field-input" placeholder="e.g. 2026-06-08 (Cohort 1)"/></div>
           <div class="form-group"><label class="field-label" for="ee_product">Product</label>
             <select id="ee_product" class="field-select">
-              <option value="free_deposit">Free Deposit (₹499)</option>
-              <option value="paid_program">Paid Program (₹1,599)</option>
+              <option value="free_deposit">Security Deposit (₹499)</option>
+              <option value="paid_program">Paid Fellowship (₹1,999)</option>
             </select>
           </div>
           <div class="form-group"><label class="field-label" for="ee_amount">Amount (₹)</label><input type="number" id="ee_amount" class="field-input"/></div>
@@ -866,7 +866,7 @@
     const paid=(r.product==='paid_program');
     const amt=r.amount!=null?('&#8377;'+r.amount):(paid?'&#8377;1999':'&#8377;499');
     const cls=paid?'badge-gold':'badge-muted';
-    const label=paid?'Paid Program':'Free Deposit';
+    const label=paid?'Paid Program':'Security Deposit';
     return `<span class="badge ${cls}">${label}</span> <span style="color:var(--tx-muted);font-size:11px;">${amt}</span>`;
   }
   function payBadge(s){

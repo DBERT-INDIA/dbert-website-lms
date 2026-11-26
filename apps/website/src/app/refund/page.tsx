@@ -22,15 +22,15 @@ export default function RefundPage() {
         </div>
 
         <div className="stack gap-6">
-          {/* Free Track & Assessment */}
+          {/* ₹499 Security Deposit Internship Track */}
           <div className="card card-lift">
             <div className="stack-h justify-between align-center mb-2">
-              <span className="doclabel text-xs">§ 01 — MERIT-BASED APPLICATION &amp; SCREENING</span>
-              <span className="badge badge-accent">100% Free Screening</span>
+              <span className="doclabel text-xs">§ 01 — LMS SELECTION &amp; SEAT TRACK</span>
+              <span className="badge badge-accent">₹499 Security Deposit</span>
             </div>
-            <h2 className="card-title my-2">1. Zero Application &amp; Screening Fees</h2>
+            <h2 className="card-title my-2">1. Security Deposit Internship Track (₹499)</h2>
             <p className="body-copy">
-              DBERT strictly guarantees that all candidate applications, technical evaluations, algorithmic screening stages, and initial sprint tracks carry <strong>zero application, assessment, or screening fees</strong>. No deposit or caution fee is required to apply or undertake evaluations.
+              DBERT does <strong>not</strong> offer a free or ₹0 cohort track. Candidates entering through the LMS cohort selection pipeline (<a href="https://lms.dbert.in" className="text-amber-400 hover:underline">lms.dbert.in</a>) confirm their seat under the <strong>₹499 Security Deposit Internship Track</strong>, which is credited in full if you enroll in the ₹1,999 Incubation Fellowship.
             </p>
           </div>
 

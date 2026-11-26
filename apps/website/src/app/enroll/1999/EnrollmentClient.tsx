@@ -767,8 +767,8 @@ export default function EnrollmentClient() {
             <span className={`${s.ledgerValue} ${s.ledgerPayable}`}>₹1,999</span>
           </div>
           <div className={s.ledgerItem}>
-            <span className={s.ledgerLabel}>Screening &amp; Assessment Fees:</span>
-            <span className={s.ledgerValue}>100% Free (Zero Fees)</span>
+            <span className={s.ledgerLabel}>Official DBERT Internship Tracks:</span>
+            <span className={s.ledgerValue}>₹499 Security Deposit Track · ₹1,999 Fellowship</span>
           </div>
           <p className={s.ledgerNote}>
             💡 <strong>Committed Program Enrollment:</strong> Covers 2 months of intensive engineering sprints, client repository assignments, 1:1 mentor code reviews, Turnitin originality evaluation, and verified credential issuance.

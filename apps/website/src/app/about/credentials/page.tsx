@@ -32,7 +32,7 @@ export default function CredentialsPage() {
           <p className="prose-sm mb-3">
             Fully registered under the Ministry of Micro, Small and Medium Enterprises, Government of India. 
             DBERT operates as the technology incubation, artificial intelligence solutions, and developer training division under 
-            the parent corporate enterprise <strong>Digital Blinc Education Research And Technology</strong> (Statutory Category: Micro Enterprise &middot; NIC: Computer Programming, Consultancy &amp; Educational Research).
+            the parent corporate enterprise <strong>Digital Blinc Education Research And Technology</strong> (MSME Udyam Registration: <code>UDYAM-UP-29-0109046</code> &middot; Statutory Category: Micro Enterprise &middot; NIC: Computer Programming, Consultancy &amp; Educational Research).
           </p>
           <div className="card p-3 bg-muted/20 border border-line/60 rounded text-xs text-muted mb-4">
             <strong>Statutory Distinction:</strong> MSME registration validates our legal enterprise status and commercial operations under Indian law. It establishes formal corporate compliance but does not constitute UGC or AICTE degree accreditation. Our credentials represent validated production software engineering experience, senior pull-request code reviews, and tangible codebase commits.
@@ -55,9 +55,9 @@ export default function CredentialsPage() {
         {/* Card 2: Candidate Protection & Advisory */}
         <div className="card card-lift">
           <div className="doclabel mb-1">§ CANDIDATE PROTECTION &amp; LEGAL ADVISORY</div>
-          <h2 className={styles.cardTitleTight}>Zero Application Fee Guarantee &amp; Entity Advisory</h2>
+          <h2 className={styles.cardTitleTight}>Transparent Program Tracks &amp; Entity Advisory</h2>
           <p className="prose-sm mb-3">
-            <strong>Zero Application Fee Guarantee:</strong> DBERT never charges any application, registration, screening, or interview fee for any candidate. Initial selection for our internship tracks is 100% free based solely on merit, GitHub code reviews, and technical challenge submissions.
+            <strong>Official Internship Tracks (No Free Track):</strong> DBERT operates exclusively two internship cohort tracks — the <strong>₹499 Security Deposit Track</strong> on <code>lms.dbert.in</code> and the <strong>₹1,999 Technical Incubation Fellowship</strong> (plus beginner <strong>Launchpad ₹7,999</strong> and intermediate <strong>Accelerate ₹4,999</strong> tracks).
           </p>
           <p className="prose-sm mb-3">
             <strong>Entity &amp; Identity Protection:</strong> DBERT operates exclusively under <em>Digital Blinc Education Research And Technology</em>. We have no legal relationship or affiliation with discontinued third-party operations or unofficial entities soliciting money under similar names. All official candidate correspondence originates strictly from <code>@dbert.in</code>, and official payments are made exclusively to verified merchant VPAs.

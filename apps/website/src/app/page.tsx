@@ -160,6 +160,7 @@ export default function HomePage() {
     <>
       {/* ══════════ HERO ══════════ */}
       <section className={styles.hero}>
+        <div className="hero-glow" aria-hidden="true" />
         <div className={`wrap ${styles.heroGrid}`}>
           <div>
             <div className={styles.badge}>
@@ -205,13 +206,21 @@ export default function HomePage() {
             </div>
 
             <div className={styles.heroTelemetry}>
-              <span className={styles.heroTelemetryItem}>
+              <span className={styles.trustChip}>
+                <span className={styles.heroTelemetryDot} />
+                MSME Registered
+              </span>
+              <span className={styles.trustChip}>
+                <span className={styles.heroTelemetryDot} />
+                100% IP Retained
+              </span>
+              <span className={styles.trustChip}>
                 <span className={styles.heroTelemetryDot} />
                 Delhi NCR Studio
               </span>
-              <span className={styles.heroTelemetryItem}>
+              <span className={styles.trustChip}>
                 <span className={styles.heroTelemetryDot} />
-                100% IP ownership retained
+                SOC2-ready VPC
               </span>
             </div>
           </div>
@@ -259,11 +268,13 @@ export default function HomePage() {
       {/* ══════════ AUDIENCE DOORS ══════════ */}
       <section className={styles.doorsSection} aria-labelledby="audience-heading">
         <div className="wrap">
-          {/* The design shows no heading here, but jumping h1 → h3 breaks the
-              document outline and fails axe's heading-order check. */}
-          <h2 id="audience-heading" className="sr-only">
-            Choose your path
-          </h2>
+          <Reveal className="section-head">
+            <div className="doclabel">00 / Choose Your Path</div>
+            <h2 id="audience-heading">One studio. Three doors in.</h2>
+            <p>
+              Whether you&apos;re building a startup, deploying enterprise AI, or learning to ship production code — DBERT was designed to serve all three.
+            </p>
+          </Reveal>
           <AudienceDoors doors={doors} />
         </div>
       </section>
@@ -559,7 +570,7 @@ export default function HomePage() {
           <span className={styles.trustDivider} aria-hidden="true">·</span>
           <span>5 Working Days Review Window</span>
           <span className={styles.trustDivider} aria-hidden="true">·</span>
-          <span>Zero Application Fee</span>
+          <span>Direct Technical Review</span>
           <span className={styles.trustDivider} aria-hidden="true">·</span>
           <span>Partner-Level Engineering Review</span>
         </Reveal>

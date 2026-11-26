@@ -35,18 +35,21 @@ export default function TermsPage() {
           <div className="card card-lift">
             <span className="doclabel text-xs mb-1">§ 02 — TRACK DEFINITIONS &amp; FEES</span>
             <h2 className="card-title my-2">2. Program Tracks &amp; Fee Ledger</h2>
+            <p className="body-copy mt-2">
+              DBERT does <strong>not</strong> offer a free or ₹0 internship track. All cohort internships operate strictly under two structured tracks:
+            </p>
             <ul className="list-disc list-inside space-y-2 text-sm text-neutral-300 mt-2">
               <li>
-                <strong>Free Internship Track:</strong> Merit-based application track. <strong>Zero application or screening fees.</strong> No caution deposit or upfront payment is required to participate in evaluations or milestones.
+                <strong>Security Deposit Internship Track (₹499):</strong> LMS cohort internship track (<a href="https://lms.dbert.in" className="text-amber-400 hover:underline">lms.dbert.in</a>). Admitted candidates confirm their cohort seat with a <strong>₹499 Security Deposit</strong> (100% credited if upgrading to the ₹1,999 Applied Fellowship).
               </li>
               <li>
-                <strong>Project Verification &amp; Credential Authentication:</strong> Statutory evaluation fee of <strong>₹299</strong> to verify engineering deliverables, Turnitin originality scores, and generate official 3-document credential packets (Certificate of Completion, Academic Evaluation, LOR).
+                <strong>Technical Incubation Fellowship Program (₹1,999):</strong> 2-month intensive engineering track with live client code repository assignments, 1:1 mentor code reviews, Turnitin originality evaluation, and guaranteed partner project placement. Total program fee is <strong>₹1,999</strong> (inclusive of taxes).
               </li>
               <li>
-                <strong>Incubation Program:</strong> 2-month intensive engineering track with live client code repository assignments, 1:1 mentor code reviews, Turnitin originality evaluation, and guaranteed partner project placement. Total program fee is <strong>₹1,999</strong> (inclusive of taxes).
+                <strong>Project Verification &amp; Credential Authentication (₹299):</strong> Statutory evaluation fee of <strong>₹299</strong> to verify engineering deliverables, Turnitin originality scores, and generate official 3-document credential packets (Certificate of Completion, Academic Evaluation, LOR).
               </li>
               <li>
-                <strong>Performance Milestones (LMS Direct Track):</strong> Performance-indexed internal bounties for candidates enrolled in the direct LMS internship appointment track are milestone-based and earned through verified pull requests and technical reports submitted via <a href="https://lms.dbert.in/stipend/tasks" className="text-amber-400 hover:underline">/stipend/tasks</a>, subject to AI screening and senior staff review.
+                <strong>Performance Milestones (LMS Track):</strong> Performance-indexed internal bounties are milestone-based and earned through verified pull requests and technical reports submitted via <a href="https://lms.dbert.in/stipend/tasks" className="text-amber-400 hover:underline">/stipend/tasks</a>, subject to AI screening and senior staff review.
               </li>
             </ul>
           </div>

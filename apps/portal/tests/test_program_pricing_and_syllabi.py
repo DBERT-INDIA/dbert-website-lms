@@ -301,3 +301,33 @@ def test_rejoin_enrollment_sync_inserts_fresh_cohort_and_clears_stage5b(app_clie
     assert me["is_paid_program_settled"] is True
     assert client.get("/tasks", follow_redirects=False).status_code == 200
 
+
+def test_lms_no_free_track_policy_across_llms_terms_home_and_stage0():
+    portal_app.app.testing = True
+    with portal_app.app.test_client() as client:
+        llms_resp = client.get("/llms.txt")
+        assert llms_resp.status_code == 200
+        llms_txt = llms_resp.get_data(as_text=True)
+        assert "NO FREE INTERNSHIP TRACK" in llms_txt
+        assert "₹499 Security Deposit Internship Track" in llms_txt
+        assert "₹1,999 Technical Incubation Fellowship" in llms_txt
+
+        home_resp = client.get("/")
+        assert home_resp.status_code == 200
+        home_html = home_resp.get_data(as_text=True)
+        assert "Free application" not in home_html
+        assert "Application and screening are 100% free" not in home_html
+        assert "₹499 Security Deposit" in home_html or "&#8377;499 Security Deposit" in home_html
+
+        terms_resp = client.get("/terms")
+        assert terms_resp.status_code == 200
+        terms_html = terms_resp.get_data(as_text=True)
+        assert "Free Internship Track" not in terms_html
+        assert "zero application or caution deposit" not in terms_html
+        assert "₹499" in terms_html
+
+    stage0 = portal_app.build_intern_next_action({"stage_num": 0, "domain": "AI Agent Development"})
+    assert "Free Track" not in stage0["heading"]
+    assert "free track" not in stage0["description"].lower()
+    assert "₹499 Selection Track" in stage0["heading"]
+

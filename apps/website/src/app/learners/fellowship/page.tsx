@@ -41,7 +41,7 @@ const faqs = [
   {
     question: 'Do I have to complete DBERT Accelerate first?',
     answer:
-      'No. There are two entry routes. The first is completing DBERT Accelerate, where mentors have evaluated your foundational code. The second is passing our external code screening challenge, open to any engineer regardless of academic background. Technical screening is 100% free with zero application fees.',
+      'No. There are two entry routes. The first is completing DBERT Accelerate, where mentors have evaluated your foundational code. The second is direct evaluation via our external code screening challenge, open to any engineer regardless of academic background. DBERT does not offer a free internship track; cohort participation uses either the ₹499 Security Deposit Track or the ₹1,999 Applied Fellowship.',
   },
   {
     question: 'Do you guarantee permanent corporate employment or jobs at the end?',
@@ -69,9 +69,9 @@ const faqs = [
       'Every graduate receives an official Certificate of Completion, Academic Project Evaluation, and Letter of Recommendation with a unique UUID. Recruiters can verify the credential instantly at dbert.in/verify or explore all graduates in our public Alphabetical Credential Directory at dbert.in/verify/directory.',
   },
   {
-    question: 'Where do I apply, and are there any application fees?',
+    question: 'Where do I apply, and what are the official internship track fees?',
     answer:
-      'Applications run through the DBERT portal at lms.dbert.in. There is strictly ZERO application fee. Selection is based purely on technical code review of your GitHub repositories or screening task submission.',
+      'DBERT does not have a free or ₹0 internship track. Candidates choose between two official tracks: the ₹499 Security Deposit Track administered through lms.dbert.in, or the ₹1,999 Technical Incubation Fellowship on dbert.in/enroll/1999. Selection is based on technical review of your GitHub repositories or screening task submission.',
   },
 ];
 
@@ -257,13 +257,13 @@ export default function FellowshipProgramPage() {
             <li><strong>DBERT Systems:</strong> Open-weights custom LLMs (e.g. <code>ollama run DBERT/DBERT_AI</code>) and developer infrastructure for reproducible agent workflows.</li>
           </ul>
 
-          <h3>Selection: merit-based with zero application fees</h3>
+          <h3>Selection &amp; Two Official Internship Tracks</h3>
           <p>
             The first route is completing{' '}
             <Link href="/learners/accelerate">DBERT Accelerate</Link>, which is how most fellows
             arrive — by then we have evaluated weeks of their code.
             The second is the external code screening challenge, open to anyone regardless of academic background.
-            There is strictly <strong>zero application fee</strong> for applying, screening, or interview evaluation.
+            DBERT offers <strong>no free internship track</strong> — admitted cohort interns join under either the <strong>₹499 Security Deposit Track</strong> on LMS or the <strong>₹1,999 Applied Fellowship</strong>.
           </p>
           <p>
             Either way, the application asks for code — a GitHub repository, a deployed application, or a screening
@@ -319,7 +319,7 @@ export default function FellowshipProgramPage() {
               <strong>✓ Internal &amp; External Venture Placement:</strong> Placements are executed directly into active venture projects or partner engineering teams based on technical domain fit. This is a real production internship assignment, not an unconditional full-time job offer.
             </p>
             <p>
-              <strong>✓ Fee &amp; Refund Terms:</strong> The ₹1,999 total program fee covers the full 2-month (8-week) fellowship (or ₹1,500 balance if you already paid the ₹499 caution deposit). Screening is 100% free with zero application fees. See our{' '}
+              <strong>✓ Fee &amp; Track Terms:</strong> DBERT offers no free internship track. Every internship cohort operates under either the <strong>₹499 Security Deposit Track</strong> on LMS or the <strong>₹1,999 Technical Incubation Fellowship</strong> (covering the 2-month program; ₹1,500 remaining balance if ₹499 caution deposit is already paid). See our{' '}
               <Link href="/refund">refund &amp; cancellation policy</Link> and{' '}
               <Link href="/terms">terms of service</Link> before payment.
             </p>
