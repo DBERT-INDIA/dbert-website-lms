@@ -210,29 +210,68 @@ def csp_nonce():
     return n
 
 
+def _parse_flexible_date(val):
+    """Parse date/datetime values stored in SQLite/PostgreSQL across legacy formats."""
+    from datetime import datetime, date
+
+    if not val:
+        return None
+    if isinstance(val, datetime):
+        return val.date()
+    if isinstance(val, date):
+        return val
+    raw = str(val).strip()
+    if not raw:
+        return None
+    for fmt in ("%Y-%m-%d", "%d %b %Y", "%d-%m-%Y", "%Y/%m/%d", "%d/%m/%Y"):
+        try:
+            sample = raw[:10] if fmt in ("%Y-%m-%d", "%d-%m-%Y", "%Y/%m/%d", "%d/%m/%Y") else raw[:11].strip()
+            return datetime.strptime(sample, fmt).date()
+        except ValueError:
+            continue
+    return None
+
+
 def compute_tenure_expiration(conn, intern_id: int, email: str) -> tuple[bool, str]:
     """
     Master Plan V2 Invariant 7:
     60-day sprint tenure + 5-day grace period from official batch_start_date / joining_date.
+    Exempts only stipend_verified == 1 accounts that have an upcoming/active scheduled
+    stipend_release_date >= today, and always evaluates the latest cohort grace window
+    so a fresh re-enrollment is never shadowed by a prior offer letter.
     Returns (is_tenure_expired, grace_end_display).
     """
-    from datetime import datetime, date, timedelta
+    from datetime import date, timedelta
 
     email = (email or "").strip().lower()
     today = date.today()
 
     try:
-        sv_row = conn.execute(
-            "SELECT stipend_verified FROM intern_accounts WHERE id = ? OR LOWER(email) = ? LIMIT 1",
-            (intern_id, email),
-        ).fetchone()
+        try:
+            sv_row = conn.execute(
+                "SELECT stipend_verified, stipend_release_date FROM intern_accounts WHERE id = ? OR LOWER(email) = ? LIMIT 1",
+                (intern_id, email),
+            ).fetchone()
+        except Exception:
+            try:
+                conn.rollback()
+            except Exception:
+                pass
+            sv_row = conn.execute(
+                "SELECT stipend_verified FROM intern_accounts WHERE id = ? OR LOWER(email) = ? LIMIT 1",
+                (intern_id, email),
+            ).fetchone()
         if sv_row and int(sv_row["stipend_verified"] or 0) == 1:
-            return False, ""
+            rel_date = _parse_flexible_date(sv_row.get("stipend_release_date") if hasattr(sv_row, "get") else None)
+            if rel_date is not None and rel_date >= today:
+                return False, ""
     except Exception:
         try:
             conn.rollback()
         except Exception:
             pass
+
+    grace_candidates = []
 
     try:
         ofr = conn.execute(
@@ -240,17 +279,9 @@ def compute_tenure_expiration(conn, intern_id: int, email: str) -> tuple[bool, s
             (email,),
         ).fetchone()
         if ofr and ofr["batch_end_date"]:
-            bed = str(ofr["batch_end_date"]).strip()
-            b_date = None
-            for fmt in ("%Y-%m-%d", "%d %b %Y", "%d-%m-%Y"):
-                try:
-                    b_date = datetime.strptime(bed[:10] if fmt == "%Y-%m-%d" else bed, fmt).date()
-                    break
-                except ValueError:
-                    continue
+            b_date = _parse_flexible_date(ofr["batch_end_date"])
             if b_date:
-                grace_end = b_date + timedelta(days=5)
-                return today > grace_end, grace_end.strftime("%d %b %Y")
+                grace_candidates.append(b_date + timedelta(days=5))
     except Exception:
         try:
             conn.rollback()
@@ -259,26 +290,22 @@ def compute_tenure_expiration(conn, intern_id: int, email: str) -> tuple[bool, s
 
     try:
         enr = conn.execute(
-            "SELECT joining_date FROM enrollments WHERE LOWER(email) = ? AND payment_status IN ('Verified', 'Accepted') ORDER BY id DESC LIMIT 1",
+            "SELECT joining_date FROM enrollments WHERE LOWER(email) = ? AND payment_status IN ('Verified', 'Accepted', 'Approved') AND joining_date IS NOT NULL ORDER BY id DESC LIMIT 1",
             (email,),
         ).fetchone()
         if enr and enr["joining_date"]:
-            j_str = str(enr["joining_date"]).strip()[:10]
-            j_dt = None
-            for fmt in ("%Y-%m-%d", "%d-%m-%Y", "%d/%m/%Y", "%Y/%m/%d"):
-                try:
-                    j_dt = datetime.strptime(j_str, fmt).date()
-                    break
-                except ValueError:
-                    continue
+            j_dt = _parse_flexible_date(enr["joining_date"])
             if j_dt:
-                grace_end = j_dt + timedelta(days=65)
-                return today > grace_end, grace_end.strftime("%d %b %Y")
+                grace_candidates.append(j_dt + timedelta(days=65))
     except Exception:
         try:
             conn.rollback()
         except Exception:
             pass
+
+    if grace_candidates:
+        grace_end = max(grace_candidates)
+        return today > grace_end, grace_end.strftime("%d %b %Y")
 
     return False, ""
 
@@ -441,7 +468,8 @@ CSP_ALLOW_INLINE = os.environ.get("CSP_ALLOW_INLINE", "0") == "1"
 
 _CSP_SCRIPT_ORIGINS = (
     "https://cdn.onesignal.com "
-    "https://challenges.cloudflare.com https://www.googletagmanager.com https://cdn.jsdelivr.net https://cdn.tailwindcss.com"
+    "https://challenges.cloudflare.com https://www.googletagmanager.com https://cdn.jsdelivr.net https://cdn.tailwindcss.com "
+    "https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.googleadservices.com https://*.doubleclick.net"
 )
 
 
@@ -460,8 +488,8 @@ def csp_policy_for(nonce):
         f"{style_src}; "
         "font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; "
         "img-src 'self' data: https:; "
-        "connect-src 'self' https://dbert.in https://lms.dbert.in https://onesignal.com https://*.onesignal.com https://api.onesignal.com https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com; "
-        "frame-src https://challenges.cloudflare.com; "
+        "connect-src 'self' https://dbert.in https://lms.dbert.in https://onesignal.com https://*.onesignal.com https://api.onesignal.com https://www.googletagmanager.com https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://pagead2.googlesyndication.com https://*.googlesyndication.com https://*.doubleclick.net; "
+        "frame-src https://challenges.cloudflare.com https://googleads.g.doubleclick.net https://*.googlesyndication.com https://www.google.com; "
         "worker-src 'self' https://cdn.onesignal.com; "
         "base-uri 'self'; form-action 'self'; frame-ancestors 'none'; "
         "object-src 'none'"
@@ -2141,7 +2169,7 @@ def get_intern_flow_state(conn, email):
     cert_row = None
     try:
         cert_row = conn.execute(
-            "SELECT course_title FROM intern_certificates WHERE LOWER(email)=? ORDER BY id DESC LIMIT 1", (email_clean,)
+            "SELECT cert_id, course_title FROM intern_certificates WHERE LOWER(email)=? ORDER BY id DESC LIMIT 1", (email_clean,)
         ).fetchone()
     except Exception:
         pass
@@ -2179,7 +2207,7 @@ def get_intern_flow_state(conn, email):
         (offer_row and offer_row.get("caution_deposit_status") == "VERIFIED")
     )
     has_paid_balance = bool(
-        enr and ((enr.get("amount_paid") or 0) >= 1999 or enr.get("balance_paid") == 1)
+        enr and (float(enr.get("amount_paid") or enr.get("amount") or 0) >= PAID_PROGRAM_AMOUNT or enr.get("balance_paid") == 1)
     )
 
     days_since_joining = 0
@@ -2215,6 +2243,11 @@ def get_intern_flow_state(conn, email):
         ))
     )
     if is_confirmed:
+        is_tenure_expired, grace_end_display = compute_tenure_expiration(
+            conn, acct["id"] if acct else 0, email_clean
+        )
+        latest_cert_id = cert_row.get("cert_id") if cert_row else None
+        rejoin_enroll_url = build_rejoin_enroll_url(acct, latest_cert_id)
         res = {
             "stage": STAGE_CONFIRMED,
             "stage_num": 5,
@@ -2223,6 +2256,9 @@ def get_intern_flow_state(conn, email):
             "domain": domain,
             "is_accepted": True,
             "can_upload_payment": False,
+            "is_tenure_expired": is_tenure_expired,
+            "grace_end_display": grace_end_display,
+            "rejoin_enroll_url": rejoin_enroll_url,
         }
         res.update(balance_flags)
         return res
@@ -2409,6 +2445,34 @@ def build_intern_next_action(flow_state, hours_logged=0.0, sprint_ctx=None):
     domain = flow_state.get("domain") or "Applied Engineering"
 
     if stage_num == 5:
+        # Stage 5B: Previous cohort tenure + 5-day grace period ended
+        if flow_state.get("is_tenure_expired"):
+            rejoin_url = flow_state.get("rejoin_enroll_url") or build_rejoin_enroll_url(flow_state.get("acct"))
+            grace_disp = flow_state.get("grace_end_display") or ""
+            ended_note = f" (grace window ended {grace_disp})" if grace_disp else ""
+            return {
+                "stage_badge": "Stage 5B: Previous Tenure Ended",
+                "heading": "Join a New 8-Week Cohort to Unlock Active Sprints",
+                "description": (
+                    f"Your previous 60-day sprint tenure and 5-day grace period have ended{ended_note}. "
+                    "Active sprint tasks, 1:1 mentorship, and stipend gates for that cohort are closed, while your earned certificates, coins, and self-paced courses remain accessible."
+                ),
+                "primary_cta_url": rejoin_url,
+                "primary_cta_label": "Join New Cohort (₹1,999) →",
+                "primary_cta_icon": "fa-rotate-right",
+                "primary_cta_type": "gold",
+                "secondary_cta_url": "/certificates",
+                "secondary_cta_label": "View Issued Certificates →",
+                "secondary_cta_icon": "fa-certificate",
+                "secondary_cta_type": "emerald",
+                "tertiary_cta_url": "/account/coins",
+                "tertiary_cta_label": "Coins & Payouts →",
+                "tertiary_cta_icon": "fa-coins",
+                "tertiary_cta_type": "blue",
+                "hours_target": 10,
+                "hours_logged": hours_logged,
+            }
+
         # Confirmed & Enrolled Fellow (Stage 5)
         # Evaluated purely on learning, attendance, stipend gates, and bounty tasks (No balance prompt)
         sprint_ctx = sprint_ctx or {}
@@ -3046,7 +3110,7 @@ def init_db():
             );
             CREATE TABLE IF NOT EXISTS enrollments (
                 id INTEGER PRIMARY KEY AUTOINCREMENT, application_id INTEGER, intern_id INTEGER,
-                timestamp TEXT DEFAULT (datetime('now','localtime')), name TEXT, email TEXT NOT NULL UNIQUE,
+                timestamp TEXT DEFAULT (datetime('now','localtime')), name TEXT, email TEXT NOT NULL,
                 phone TEXT, city TEXT, college TEXT, course TEXT, semester TEXT,
                 year_of_passing TEXT, domain TEXT,
                 joining_date TEXT,
@@ -3265,6 +3329,7 @@ def init_db():
                 password_hash TEXT,
                 is_approved   INTEGER DEFAULT 0,
                 is_active     INTEGER DEFAULT 1,
+                max_live_posts INTEGER DEFAULT 3,
                 created_at    TEXT DEFAULT (datetime('now','localtime')),
                 updated_at    TEXT DEFAULT (datetime('now','localtime'))
             );
@@ -4054,6 +4119,7 @@ def init_db():
         ensure_column(conn, "email_log", "provider", "TEXT")
         ensure_column(conn, "email_log", "message_id", "TEXT")
         ensure_column(conn, "email_log", "error_message", "TEXT")
+        ensure_column(conn, "companies", "max_live_posts", "INTEGER DEFAULT 3")
         # T5: interviews are now per (intern, post) -- gated on a prior application to that
         # post -- and carry anti-copy telemetry (informational only, never enforced).
         for col, defn in [
@@ -14363,6 +14429,7 @@ def company_post_publish(post_id):
                             "fields": missing}), 400
         # Atomic: the "< 3 live" guard and the flip are ONE statement, so two
         # concurrent publishes can never both pass (no race to 4). pitfall Â§9.
+        max_live = int(company.get("max_live_posts") or 3)
         now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         exp_str = (datetime.now() + timedelta(days=30)).strftime("%Y-%m-%d %H:%M:%S")
         cur = conn.execute(
@@ -14373,13 +14440,13 @@ def company_post_publish(post_id):
             "WHERE id=? AND company_id=? AND status!='published' AND ("
             "  SELECT COUNT(*) FROM posts p2 WHERE p2.company_id=? AND p2.status='published'"
             "    AND (p2.expires_at IS NULL OR p2.expires_at > ?)"
-            ") < 3",
-            (now_str, exp_str, now_str, post_id, company["id"], company["id"], now_str),
+            ") < ?",
+            (now_str, exp_str, now_str, post_id, company["id"], company["id"], now_str, max_live),
         )
         conn.commit()
     if cur.rowcount == 0:
         return jsonify({"status": "error",
-                        "message": "You already have 3 live posts. Unpublish one to free a slot."}), 409
+                        "message": f"You already have {max_live} live posts. Unpublish one to free a slot."}), 409
     # Â§7: instant-indexing URL_UPDATED (best-effort, never blocks publish).
     with get_db() as conn:
         p = conn.execute("SELECT id, post_type, slug, title FROM posts WHERE id=?", (post_id,)).fetchone()
@@ -17648,35 +17715,45 @@ def intern_me():
         sprint_ctx = _evaluate_intern_sprint_context(conn, acct["id"] if acct else None, acct_email, domain=norm_domain or "General") if flow_st and flow_st.get("stage_num") == 5 else None
         next_action = build_intern_next_action(flow_st, hours_logged=attendance_summary.get("hours", 0.0), sprint_ctx=sprint_ctx) if flow_st else None
 
-        # tenure expiration check for domain lock
-        tenure_expired = False
-        if safe_enr and safe_enr.get("joining_date"):
-            try:
-                j_dt = datetime.strptime(str(safe_enr["joining_date"])[:10], "%Y-%m-%d").date()
-                grace_end = j_dt + timedelta(days=65)  # 60-day tenure + 5-day grace
-                tenure_expired = date.today() > grace_end
-            except Exception:
-                pass
-        else:
-            try:
-                with get_db() as _c:
-                    _off = _c.execute(
-                        "SELECT batch_end_date FROM intern_offer_letters WHERE intern_id = ? OR LOWER(email) = LOWER(?) ORDER BY id DESC LIMIT 1",
-                        (acct["id"], acct["email"])
-                    ).fetchone()
-                    if _off and _off.get("batch_end_date"):
-                        _bed = str(_off.get("batch_end_date")).strip()
-                        _b_dt = None
-                        for _fmt in ("%Y-%m-%d", "%d %b %Y", "%Y-%m-%d %H:%M:%S", "%d/%m/%Y"):
-                            try:
-                                _b_dt = datetime.strptime(_bed[:11].strip(), _fmt).date()
-                                break
-                            except Exception:
-                                pass
-                        if _b_dt:
-                            tenure_expired = date.today() > (_b_dt + timedelta(days=5))
-            except Exception:
-                pass
+        tenure_expired, grace_end_display = compute_tenure_expiration(conn, acct["id"], acct_email)
+        latest_cert_id = None
+        try:
+            _cert_r = conn.execute(
+                "SELECT cert_id FROM intern_certificates WHERE LOWER(email)=? ORDER BY id DESC LIMIT 1",
+                (acct_email,),
+            ).fetchone()
+            if _cert_r:
+                latest_cert_id = _cert_r["cert_id"]
+        except Exception:
+            pass
+        rejoin_enroll_url = build_rejoin_enroll_url(row_to_dict(acct), latest_cert_id)
+
+        enr_dict = row_to_dict(enr) if enr else {}
+        enr_prod = (enr_dict.get("product") or "").strip().lower()
+        enr_status = (enr_dict.get("payment_status") or "").strip()
+        enr_amt = float(enr_dict.get("amount_paid") or enr_dict.get("amount") or 0)
+        is_approved_enr = enr_status in ("Accepted", "Verified", "Approved")
+        is_paid_program_settled = bool(
+            enr and is_approved_enr and (
+                enr_prod in ("paid_program", "launchpad", "accelerate")
+                or enr_amt >= float(PAID_PROGRAM_AMOUNT)
+                or enr_dict.get("balance_paid") == 1
+            )
+        )
+        has_caution_deposit_only = bool(
+            enr and is_approved_enr and not is_paid_program_settled and (
+                enr_prod == "free_deposit"
+                or enr_dict.get("deposit_paid") == 1
+                or (0 < enr_amt < float(PAID_PROGRAM_AMOUNT))
+            )
+        )
+        has_pending_paid_submission = bool(
+            enr and enr_status in ("Pending Verification", "Pending", "Submitted", "Under Review") and (
+                enr_prod in ("paid_program", "launchpad", "accelerate")
+                or enr_amt >= float(PAID_PROGRAM_AMOUNT)
+                or bool((enr_dict.get("utr") or enr_dict.get("utr_number") or "").strip())
+            )
+        )
 
         return jsonify({
             "status": overall_status,
@@ -17700,6 +17777,8 @@ def intern_me():
                 "learning_completion_pct": top_pct,
                 "signup_stage":     int(acct["signup_stage"] or 3),
                 "is_tenure_expired": tenure_expired,
+                "grace_end_display": grace_end_display,
+                "rejoin_enroll_url": rejoin_enroll_url,
                 "needs_academic_profile": needs_academic_profile,
             },
             "applications": safe_apps,
@@ -17711,6 +17790,11 @@ def intern_me():
                 if (safe_enr and safe_enr.get("joining_date")) else ""
             ),
             "reapply_info": reapply_info,
+            "grace_end_display": grace_end_display,
+            "rejoin_enroll_url": rejoin_enroll_url,
+            "is_paid_program_settled": is_paid_program_settled,
+            "has_caution_deposit_only": has_caution_deposit_only,
+            "has_pending_paid_submission": has_pending_paid_submission,
             "upi_id":       UPI_ID,
             "upi_amount":   UPI_AMOUNT,
             "paid_program_amount": PAID_PROGRAM_AMOUNT,
@@ -19204,11 +19288,20 @@ def paid_enroll_eligible(conn, email):
     ).fetchone()
 
     latest_enr = conn.execute(
-        "SELECT product, payment_status FROM enrollments WHERE LOWER(email)=LOWER(?) ORDER BY id DESC LIMIT 1",
+        "SELECT id, product, payment_status, amount, amount_paid, balance_paid FROM enrollments WHERE LOWER(email)=LOWER(?) ORDER BY id DESC LIMIT 1",
         (clean_email,),
     ).fetchone()
-    if latest_enr and latest_enr["product"] == "paid_program" and latest_enr["payment_status"] in ("Verified", "Approved", "Accepted"):
-        return False, "already_paid_enrolled", app_row
+    if latest_enr and latest_enr["payment_status"] in ("Verified", "Approved", "Accepted"):
+        _le = row_to_dict(latest_enr)
+        _settled = (
+            _le.get("product") in ("paid_program", "launchpad", "accelerate")
+            or float(_le.get("amount_paid") or _le.get("amount") or 0) >= float(PAID_PROGRAM_AMOUNT)
+            or _le.get("balance_paid") == 1
+        )
+        if _settled:
+            _exp, _ = compute_tenure_expiration(conn, 0, clean_email)
+            if not _exp:
+                return False, "already_paid_enrolled", app_row
 
     if not app_row:
         try:
@@ -19297,8 +19390,14 @@ def paid_enroll():
 
         with get_db() as conn:
             ensure_column(conn, "enrollments", "utr", "TEXT")
+            ensure_column(conn, "enrollments", "utr_number", "TEXT")
             ensure_column(conn, "enrollments", "product", "TEXT")
             ensure_column(conn, "enrollments", "amount", "INTEGER")
+            ensure_column(conn, "enrollments", "amount_paid", "INTEGER")
+            ensure_column(conn, "enrollments", "deposit_paid", "INTEGER")
+            ensure_column(conn, "enrollments", "balance_paid", "INTEGER")
+            ensure_column(conn, "enrollments", "submission_id", "TEXT")
+            ensure_column(conn, "enrollments", "intern_id", "INTEGER")
 
             acct = conn.execute(
                 "SELECT * FROM intern_accounts WHERE LOWER(email)=LOWER(?) AND is_active=1 LIMIT 1", (email,)
@@ -19324,26 +19423,31 @@ def paid_enroll():
             file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
             batch_label = make_batch_label(joining_date)
 
-            existing = conn.execute("SELECT * FROM enrollments WHERE LOWER(email)=LOWER(?) LIMIT 1", (email,)).fetchone()
-            if existing:
+            is_expired_cohort, _ = compute_tenure_expiration(conn, acct["id"], email)
+            existing = conn.execute("SELECT * FROM enrollments WHERE LOWER(email)=LOWER(?) ORDER BY id DESC LIMIT 1", (email,)).fetchone()
+            if existing and not is_expired_cohort:
                 conn.execute("""
                     UPDATE enrollments SET application_id=?,timestamp=?,name=?,phone=?,city=?,college=?,course=?,
                     semester=?,year_of_passing=?,domain=?,joining_date=?,batch_label=?,payment_screenshot=?,
-                    payment_status='Pending Verification',admin_note=?,utr=?,product=?,amount=?,updated_at=? WHERE LOWER(email)=LOWER(?)
+                    payment_status='Pending Verification',admin_note=?,utr=?,utr_number=?,product=?,amount=?,amount_paid=?,
+                    deposit_paid=1,balance_paid=?,updated_at=? WHERE id=?
                 """, (app_row["id"], now_str(), acct["name"], acct["phone"], acct["city"], acct["college"],
                       acct["course"], acct["semester"], acct["year_of_passing"], app_row["domain"],
-                      joining_date, batch_label, filename, f"UTR: {utr}", utr, enrolled_product, enrolled_amount, now_str(), email))
+                      joining_date, batch_label, filename, f"UTR: {utr}", utr, utr, enrolled_product,
+                      enrolled_amount, enrolled_amount, 1 if enrolled_amount >= int(PAID_PROGRAM_AMOUNT) else 0,
+                      now_str(), existing["id"]))
             else:
                 conn.execute("""
                     INSERT INTO enrollments
-                    (application_id,timestamp,name,email,phone,city,college,course,semester,
+                    (application_id,intern_id,timestamp,name,email,phone,city,college,course,semester,
                     year_of_passing,domain,joining_date,batch_label,payment_screenshot,payment_status,
-                    admin_note,utr,product,amount,created_at,updated_at)
-                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
-                """, (app_row["id"], now_str(), acct["name"], email, acct["phone"], acct["city"], acct["college"],
+                    admin_note,utr,utr_number,product,amount,amount_paid,deposit_paid,balance_paid,created_at,updated_at)
+                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+                """, (app_row["id"], acct["id"], now_str(), acct["name"], email, acct["phone"], acct["city"], acct["college"],
                       acct["course"], acct["semester"], acct["year_of_passing"], app_row["domain"],
                       joining_date, batch_label, filename, "Pending Verification",
-                      f"UTR: {utr}", utr, enrolled_product, enrolled_amount, now_str(), now_str()))
+                      f"UTR: {utr}", utr, utr, enrolled_product, enrolled_amount, enrolled_amount,
+                      1, 1 if enrolled_amount >= int(PAID_PROGRAM_AMOUNT) else 0, now_str(), now_str()))
 
             conn.execute("UPDATE applications SET status=?,updated_at=? WHERE id=?",
                          (STATUS_PAID_ENROLLED, now_str(), app_row["id"]))
@@ -24745,112 +24849,154 @@ def internal_enrollment_sync():
     payment_type = (data.get("payment_type") or "deposit").strip().lower()
     utr = (data.get("utr") or data.get("utrNumber") or data.get("utr_number") or "").strip()
     submission_id = (data.get("submission_id") or data.get("id") or "").strip()
+    remarks = (data.get("remarks") or "").strip()
+    explicit_rejoin = bool(data.get("rejoin")) or ("REJOIN" in remarks.upper())
+    explicit_domain_supplied = bool((data.get("domain") or data.get("track") or "").strip())
 
     if not email:
         return jsonify({"status": "error", "message": "Valid email is required."}), 400
 
-    # Normalize domain to valid track if possible
-    if domain not in VALID_DOMAINS:
-        for vd in VALID_DOMAINS:
-            if vd.lower() in domain.lower() or domain.lower() in vd.lower():
-                domain = vd
-                break
-        if domain not in VALID_DOMAINS:
-            domain = "Full Stack Web Development"
+    # Normalize domain to canonical VALID_DOMAINS track
+    domain = normalize_domain_string(domain) or "Full Stack Development"
 
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     try:
         with get_db() as conn:
+            ensure_column(conn, "enrollments", "utr", "TEXT")
+            ensure_column(conn, "enrollments", "utr_number", "TEXT")
+            ensure_column(conn, "enrollments", "product", "TEXT")
+            ensure_column(conn, "enrollments", "amount", "INTEGER")
+            ensure_column(conn, "enrollments", "amount_paid", "INTEGER")
+            ensure_column(conn, "enrollments", "deposit_paid", "INTEGER")
+            ensure_column(conn, "enrollments", "balance_paid", "INTEGER")
+            ensure_column(conn, "enrollments", "submission_id", "TEXT")
+            ensure_column(conn, "enrollments", "intern_id", "INTEGER")
+
+            is_balance = (payment_type == "balance" or amount >= 1500)
+
             # 1. Upsert intern_accounts
             acct = conn.execute(
                 "SELECT * FROM intern_accounts WHERE LOWER(email)=?", (email,)
             ).fetchone()
+            is_currently_expired = False
             if not acct:
                 import secrets
                 from werkzeug.security import generate_password_hash
                 rand_pwd = secrets.token_urlsafe(10)
                 pwd_hash = generate_password_hash(rand_pwd)
+                init_stage = 5 if is_balance else 3
                 conn.execute("""
                     INSERT INTO intern_accounts 
                     (name, email, phone, college, domain, password_hash, password_set, is_active, signup_stage, created_at, updated_at)
-                    VALUES (?, ?, ?, ?, ?, ?, 0, 1, 3, ?, ?)
+                    VALUES (?, ?, ?, ?, ?, ?, 0, 1, ?, ?, ?)
                 """, (
                     name or email.split("@")[0].title(),
-                    email, phone, college, domain, pwd_hash, now, now
+                    email, phone, college, domain, pwd_hash, init_stage, now, now
                 ))
                 conn.commit()
                 acct = conn.execute(
                     "SELECT * FROM intern_accounts WHERE LOWER(email)=?", (email,)
                 ).fetchone()
             else:
-                # Update existing profile fields if provided and previously empty
+                is_currently_expired, _ = compute_tenure_expiration(conn, acct["id"], email)
                 new_name = name or acct["name"]
                 new_phone = phone or acct["phone"]
                 new_college = college if (college and (not acct["college"] or acct["college"].lower() in ("pending profile", "none"))) else acct["college"]
-                new_domain = domain if (domain and not acct["domain"]) else acct["domain"]
+                if (explicit_rejoin or is_currently_expired) and explicit_domain_supplied:
+                    new_domain = domain
+                else:
+                    new_domain = domain if (domain and not acct["domain"]) else acct["domain"]
+                preserved_stage = max(int(acct.get("signup_stage") or 3), 5 if is_balance else 3)
                 conn.execute("""
                     UPDATE intern_accounts 
-                    SET name=?, phone=?, college=?, domain=?, is_active=1, signup_stage=3, updated_at=?
+                    SET name=?, phone=?, college=?, domain=?, is_active=1, signup_stage=?, updated_at=?
                     WHERE id=?
-                """, (new_name, new_phone, new_college, new_domain, now, acct["id"]))
+                """, (new_name, new_phone, new_college, new_domain, preserved_stage, now, acct["id"]))
                 conn.commit()
 
             intern_id = acct["id"]
 
-            # 2. Check and upsert enrollments
+            # 2. Check and upsert enrollments (insert fresh cohort row for new accounts or Stage 5B rejoins)
             enr = conn.execute(
                 "SELECT * FROM enrollments WHERE LOWER(email)=? ORDER BY id DESC LIMIT 1", (email,)
             ).fetchone()
-            is_balance = (payment_type == "balance" or amount >= 1500)
             is_deposit = (payment_type == "deposit" or (amount == 499 and not enr))
+            is_rejoin = explicit_rejoin or is_currently_expired
+            should_insert_new = (not enr) or is_rejoin
 
-            if enr:
-                cur_amount = float(enr.get("amount_paid") or 0)
-                new_amount = cur_amount + amount
-                deposit_flag = 1 if (enr.get("deposit_paid") == 1 or not is_balance) else 0
-                balance_flag = 1 if (is_balance or new_amount >= 1999) else (enr.get("balance_paid") or 0)
+            if not should_insert_new and enr:
+                cur_amount = float(enr.get("amount_paid") or enr.get("amount") or 0)
+                new_amount = max(int(cur_amount + amount), int(PAID_PROGRAM_AMOUNT) if is_balance else int(cur_amount + amount))
+                deposit_flag = 1 if (enr.get("deposit_paid") == 1 or not is_balance or is_deposit) else 0
+                balance_flag = 1 if (is_balance or new_amount >= int(PAID_PROGRAM_AMOUNT)) else (enr.get("balance_paid") or 0)
+                new_prod = "paid_program" if balance_flag == 1 else (enr.get("product") or "free_deposit")
+                utr_val = utr or enr.get("utr_number") or enr.get("utr")
 
                 conn.execute("""
                     UPDATE enrollments
                     SET payment_status='Accepted',
+                        product=?,
+                        amount=?,
                         amount_paid=?,
+                        utr=?,
                         utr_number=?,
                         deposit_paid=?,
                         balance_paid=?,
                         submission_id=COALESCE(?, submission_id),
+                        admin_note=COALESCE(NULLIF(admin_note, ''), ?),
                         updated_at=?
                     WHERE id=?
                 """, (
+                    new_prod,
                     int(new_amount),
-                    utr or enr.get("utr_number"),
+                    int(new_amount),
+                    utr_val,
+                    utr_val,
                     deposit_flag,
                     balance_flag,
                     submission_id or None,
+                    f"UTR: {utr_val}" if utr_val else "",
                     now,
                     enr["id"]
                 ))
             else:
-                # Create fresh enrollment
-                joining_date = (datetime.now() + timedelta(days=7)).strftime("%Y-%m-%d")
+                today_dt = date.today()
+                days_ahead = (7 - today_dt.weekday()) % 7
+                if days_ahead == 0:
+                    days_ahead = 7
+                joining_date = (today_dt + timedelta(days=days_ahead)).strftime("%Y-%m-%d")
+                batch_label = make_batch_label(joining_date)
+                settled_amt = max(int(amount), int(PAID_PROGRAM_AMOUNT)) if is_balance else int(amount)
+                new_prod = "paid_program" if (is_balance or settled_amt >= int(PAID_PROGRAM_AMOUNT)) else "free_deposit"
+                admin_note = f"REJOIN UTR: {utr}" if (is_rejoin and utr) else (f"UTR: {utr}" if utr else ("Rejoin cohort enrollment" if is_rejoin else ""))
                 conn.execute("""
                     INSERT INTO enrollments
-                    (intern_id, timestamp, name, email, phone, college, domain, joining_date,
-                     payment_status, amount_paid, utr_number, deposit_paid, balance_paid, submission_id, created_at, updated_at)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'Accepted', ?, ?, ?, ?, ?, ?, ?)
+                    (intern_id, timestamp, name, email, phone, college, domain, joining_date, batch_label,
+                     payment_status, product, amount, amount_paid, utr, utr_number, admin_note,
+                     deposit_paid, balance_paid, submission_id, created_at, updated_at)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'Accepted', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """, (
                     intern_id, now, name or acct["name"], email, phone or acct["phone"],
-                    college or acct["college"], domain or acct["domain"], joining_date,
-                    int(amount), utr, 1 if is_deposit else 0, 1 if is_balance else 0,
+                    college or acct["college"], acct["domain"] or domain, joining_date, batch_label,
+                    new_prod, settled_amt, settled_amt, utr or None, utr or None, admin_note,
+                    1 if (is_deposit or is_balance or is_rejoin) else 0,
+                    1 if (is_balance or settled_amt >= int(PAID_PROGRAM_AMOUNT)) else 0,
                     submission_id or None, now, now
                 ))
+
+                # Auto-enroll in updated domain courses if returning or domain switched
+                try:
+                    auto_enroll_intern_in_domain_courses(conn, intern_id, acct["domain"] or domain, email=email)
+                except Exception as _ae_err:
+                    log_error("internal_enrollment_sync_autoe", _ae_err)
 
             # 3. Update applications if exists
             conn.execute("""
                 UPDATE applications 
-                SET status='Accepted', updated_at=?
+                SET status='Accepted', domain=COALESCE(NULLIF(?, ''), domain), updated_at=?
                 WHERE LOWER(email)=?
-            """, (now, email))
+            """, (acct["domain"] or domain, now, email))
 
             # 4. Handle ₹299 verification sync
             if payment_type in ("verification_299", "verification") or int(amount) == 299:
@@ -24865,6 +25011,7 @@ def internal_enrollment_sync():
             "email": email,
             "payment_type": payment_type,
             "amount": amount,
+            "rejoin": is_rejoin,
             "message": "Payment and candidate status synchronized to LMS PostgreSQL."
         })
     except Exception as e:
@@ -24946,49 +25093,19 @@ def api_intern_profile_update():
 
     # Domain lock validation
     if new_domain and new_domain != current_domain:
-        batch_end = user.get("batch_end_date")
-        if not batch_end:
-            try:
-                with get_db() as conn:
-                    off = conn.execute(
-                        "SELECT batch_end_date FROM intern_offer_letters WHERE intern_id = ? OR LOWER(email) = LOWER(?) ORDER BY id DESC LIMIT 1",
-                        (user.get("id"), user.get("email"))
-                    ).fetchone()
-                    if off and off.get("batch_end_date"):
-                        batch_end = off.get("batch_end_date")
-                    else:
-                        enr = conn.execute(
-                            "SELECT joining_date FROM enrollments WHERE intern_id = ? OR LOWER(email) = LOWER(?) ORDER BY id DESC LIMIT 1",
-                            (user.get("id"), user.get("email"))
-                        ).fetchone()
-                        if enr and enr.get("joining_date"):
-                            j_dt = datetime.strptime(str(enr.get("joining_date"))[:10], "%Y-%m-%d").date()
-                            batch_end = j_dt + timedelta(days=60)
-            except Exception as _be_err:
-                log_error("profile-update-batch-end", _be_err)
-
         tenure_expired = False
-        if batch_end:
-            b_date = None
-            if isinstance(batch_end, datetime):
-                b_date = batch_end.date()
-            elif isinstance(batch_end, date):
-                b_date = batch_end
-            elif isinstance(batch_end, str):
-                for fmt in ("%Y-%m-%d", "%d %b %Y", "%Y-%m-%d %H:%M:%S", "%d/%m/%Y"):
+        try:
+            with get_db() as conn:
+                if getattr(conn, "dialect", "sqlite") == "postgres" or os.environ.get("DATABASE_URL"):
                     try:
-                        b_date = datetime.strptime(batch_end.strip()[:11].strip(), fmt).date()
-                        break
+                        conn.execute("SET search_path TO dbert_internship, public;")
                     except Exception:
                         pass
-                if not b_date:
-                    try:
-                        b_date = datetime.strptime(batch_end.strip()[:10], "%Y-%m-%d").date()
-                    except Exception:
-                        pass
-            if b_date:
-                grace_end = b_date + timedelta(days=5)
-                tenure_expired = date.today() > grace_end
+                tenure_expired, _ = compute_tenure_expiration(
+                    conn, user.get("id") or 0, user.get("email") or ""
+                )
+        except Exception as _be_err:
+            log_error("profile-update-batch-end", _be_err)
 
         if stage >= 5 and not tenure_expired:
             return jsonify({"error": "Track is locked during active cohort tenure."}), 403

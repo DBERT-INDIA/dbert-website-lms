@@ -5259,13 +5259,23 @@ body #ovSelected .sel-quote-title {
         }
       }
 
+      const isTenureExpired = Boolean((_intern && _intern.is_tenure_expired) || window._IS_TENURE_EXPIRED === true);
+      if (isTenureExpired) {
+        const subHeadEl = document.getElementById('wbSubHeading');
+        if (subHeadEl) subHeadEl.textContent = 'Previous 8-Week Cohort Ended · Credentials, Coins & Re-Enrollment Active';
+        const bTag = document.getElementById('wbBatchTag');
+        if (bTag) bTag.innerHTML = '<i class="fas fa-history"></i> Previous Cohort (' + escHtml((_enr && _enr.batch_label) || 'Ended') + ')';
+        const dTag = document.getElementById('wbDaysLeftTag');
+        if (dTag) dTag.innerHTML = '<i class="fas fa-hourglass-end"></i> Tenure Ended';
+      }
+
       // UAT #39: drop the redundant "You're in! … Learning unlocks at 6:00 PM" next-step
       // card for accepted interns — the welcome banner + #ovAccepted (countdown + Launch
       // Online Classes) already convey joining/unlock. Notifications live in their own tab now.
       document.getElementById('nextStepCard').classList.add('hidden');
       const sbEl = document.getElementById('overviewStepBar');
       if (sbEl) sbEl.classList.add('hidden');
-      if ((_intern && _intern.is_tenure_expired) || window._IS_TENURE_EXPIRED === true) {
+      if (isTenureExpired) {
         const wr = document.getElementById('welcomeRoadmapSection');
         if (wr) wr.style.display = 'none';
         const cEl = document.getElementById('ovExpiredCoinsVal');

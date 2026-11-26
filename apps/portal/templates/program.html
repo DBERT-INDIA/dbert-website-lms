@@ -464,6 +464,57 @@
         </div>
       </div>
 
+      <!-- stage 5B: previous cohort tenure ended -->
+      <div class="hidden" id="ctaTenureExpired">
+        <div style="background:rgba(245, 158, 11, 0.08);border:1px solid rgba(245, 158, 11, 0.35);border-radius:12px;padding:22px;text-align:left;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+            <div style="width:40px;height:40px;border-radius:50%;background:rgba(245,158,11,0.16);display:flex;align-items:center;justify-content:center;color:var(--amber);font-size:18px;"><i class="fas fa-hourglass-end"></i></div>
+            <div>
+              <h3 style="margin:0;font-size:16.5px;font-weight:700;color:var(--tx-head);">Previous Cohort Tenure Ended &middot; Stage 5B</h3>
+              <p id="ctaTenureSub" style="margin:2px 0 0;font-size:12.5px;color:var(--tx-muted);">Sprint tasks &amp; 1:1 mentorship for your previous cohort are closed</p>
+            </div>
+          </div>
+          <p style="color:var(--tx-muted);font-size:13.5px;line-height:1.6;margin-bottom:16px;">
+            Your 60-day sprint tenure and 5-day grace period for your previous batch have ended. Earned certificates, coins, and self-paced courses remain active. Enroll in a new 8-week cohort to unlock live production sprints and 1:1 mentor reviews.
+          </p>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <a id="ctaTenureRejoinBtn" class="btn-primary" href="https://dbert.in/enroll/1999?rejoin=1" style="width:100%;text-align:center;text-decoration:none;justify-content:center;">
+              <i class="fas fa-rotate-right" style="margin-right:6px;"></i> Join New Cohort (&#8377;{{ paid_amount | formatINR }}) &rarr;
+            </a>
+            <button type="button" id="ctaTenureOpenLmsFormBtn" class="btn-primary" style="width:100%;background:transparent;border:1px solid var(--border);color:var(--tx-head);text-align:center;justify-content:center;">
+              <i class="fas fa-calendar-plus" style="margin-right:6px;"></i> Enroll Directly on LMS Portal
+            </button>
+            <a class="btn-primary" href="/portal" style="width:100%;background:transparent;border:1px solid rgba(255,255,255,0.12);color:var(--tx-muted);text-align:center;text-decoration:none;justify-content:center;">
+              <i class="fas fa-certificate" style="margin-right:6px;"></i> View Issued Certificates &amp; Coins &rarr;
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- caution deposit verified (499 paid, 1500 balance remaining) -->
+      <div class="hidden" id="ctaDepositBalance">
+        <div style="background:rgba(59, 130, 246, 0.08);border:1px solid rgba(59, 130, 246, 0.35);border-radius:12px;padding:22px;text-align:left;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+            <div style="width:40px;height:40px;border-radius:50%;background:rgba(59,130,246,0.16);display:flex;align-items:center;justify-content:center;color:#60a5fa;font-size:18px;"><i class="fas fa-wallet"></i></div>
+            <div>
+              <h3 style="margin:0;font-size:16.5px;font-weight:700;color:var(--tx-head);">&#8377;499 Caution Deposit Active</h3>
+              <p style="margin:2px 0 0;font-size:12.5px;color:var(--tx-muted);">Complete remaining &#8377;1,500 balance to settle the &#8377;{{ paid_amount | formatINR }} Fellowship</p>
+            </div>
+          </div>
+          <p style="color:var(--tx-muted);font-size:13.5px;line-height:1.6;margin-bottom:16px;">
+            Your &#8377;499 caution deposit is already verified and credited in full. Complete the remaining &#8377;1,500 balance to confirm your full &#8377;1,999 program seat and official placement eligibility.
+          </p>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <a id="ctaDepositBalanceBtn" class="btn-primary" href="https://dbert.in/enroll/1999" style="width:100%;text-align:center;text-decoration:none;justify-content:center;">
+              <i class="fas fa-arrow-right" style="margin-right:6px;"></i> Complete &#8377;1,500 Balance on dbert.in &rarr;
+            </a>
+            <a class="btn-primary" href="/portal" style="width:100%;background:transparent;border:1px solid var(--border);color:var(--tx-head);text-align:center;text-decoration:none;justify-content:center;">
+              <i class="fas fa-rocket" style="margin-right:6px;"></i> Open My LMS Portal &rarr;
+            </a>
+          </div>
+        </div>
+      </div>
+
       <!-- eligible: enrol form -->
       <div class="hidden" id="ctaForm">
         <div class="card-h"><i class="fas fa-lock" style="color:var(--green);"></i> Confirm your seat &mdash; &#8377;{{ paid_amount | formatINR }}</div>
@@ -541,13 +592,29 @@
   });
 
   function show(id){
-    ['ctaLoading','ctaAnon','ctaInterview','ctaInfo','ctaApproved','ctaForm'].forEach(x=>{
+    ['ctaLoading','ctaAnon','ctaInterview','ctaInfo','ctaApproved','ctaTenureExpired','ctaDepositBalance','ctaForm'].forEach(x=>{
       const el = document.getElementById(x);
       if(el) el.classList.toggle('hidden', x!==id);
     });
   }
   function copyUpi(){const v=document.getElementById('upiId').textContent;navigator.clipboard.writeText(v).then(()=>{showToast('UPI ID copied: '+v,'gold');}).catch(()=>{});}
   function onPaidFile(inp){const f=inp.files[0];_paidFile=f||null;document.getElementById('paidFileName').textContent=f?f.name:'Click or drop your payment proof (PNG, JPG, PDF · max 6MB)';}
+
+  async function populateUpcomingMondays(){
+    try{
+      const mr=await fetch('/upcoming-mondays',{credentials:'include'});
+      const md=await mr.json();
+      const sel=document.getElementById('paidJoining');
+      if(!sel) return;
+      sel.innerHTML = '<option value="">-- Select --</option>';
+      (md.mondays||[]).forEach(d=>{
+        const o=document.createElement('option');
+        o.value=d;
+        o.textContent=d;
+        sel.appendChild(o);
+      });
+    }catch(e){}
+  }
 
   async function init(){
     let me;
@@ -558,22 +625,21 @@
     }catch(e){ show('ctaAnon'); return; }
     if(!me||me.status!=='success'){ show('ctaAnon'); return; }
 
-    const enr=me.enrollment;
-    const isPaidProgram = !!(enr && (enr.product==='paid_program' || enr.product==='launchpad' || enr.product==='accelerate' || enr.amount===PAID_AMOUNT || (enr.admin_note && enr.admin_note.includes('UTR'))));
-    const isRejectedPaid = !!(isPaidProgram && enr.payment_status==='Rejected');
-    const isApprovedPaid = !!(isPaidProgram && (enr.payment_status==='Accepted' || enr.payment_status==='Verified' || enr.payment_status==='Approved'));
+    const enr = me.enrollment;
+    const isTenureExpired = Boolean(me.intern && me.intern.is_tenure_expired);
+    const isPaidTierProduct = !!(enr && (enr.product==='paid_program' || enr.product==='launchpad' || enr.product==='accelerate'));
+    const enrAmount = Number((enr && (enr.amount_paid ?? enr.amount)) || 0);
+    const isApprovedStatus = !!(enr && (enr.payment_status==='Accepted' || enr.payment_status==='Verified' || enr.payment_status==='Approved'));
+    const isRejectedPaid = !!(enr && enr.payment_status==='Rejected' && (isPaidTierProduct || enrAmount >= PAID_AMOUNT));
+    const isPaidProgramSettled = Boolean(me.is_paid_program_settled || (isApprovedStatus && (isPaidTierProduct || enrAmount >= PAID_AMOUNT)));
+    const hasPendingPaid = Boolean(me.has_pending_paid_submission || (enr && !isRejectedPaid && !isApprovedStatus && (isPaidTierProduct || enrAmount >= PAID_AMOUNT)));
 
-    if(isApprovedPaid){
-      show('ctaApproved');
-      return;
-    }
-
-    if(isPaidProgram && !isRejectedPaid){
+    if(hasPendingPaid){
       const internName = (me.intern && me.intern.name) || 'Fellow';
       const internEmail = (me.intern && me.intern.email) || '';
       const domain = (me.intern && me.intern.domain) || (enr && enr.domain) || 'Applied Tech';
       const batch = (enr && (enr.batch_label || enr.joining_date)) || 'Upcoming Monday';
-      const utr = (enr && (enr.utr || (enr.admin_note ? enr.admin_note.replace('UTR: ', '') : ''))) || '-';
+      const utr = (enr && (enr.utr || enr.utr_number || (enr.admin_note ? enr.admin_note.replace(/^(REJOIN\s+)?UTR:\s*/i, '') : ''))) || '-';
 
       document.getElementById('ctaInfoDomain').textContent = domain;
       document.getElementById('ctaInfoBatch').textContent = batch;
@@ -593,23 +659,49 @@
       return;
     }
 
-    // Populate upcoming Mondays
-    try{
-      const mr=await fetch('/upcoming-mondays',{credentials:'include'});
-      const md=await mr.json();
-      const sel=document.getElementById('paidJoining');
-      sel.innerHTML = '<option value="">-- Select --</option>';
-      (md.mondays||[]).forEach(d=>{
-        const o=document.createElement('option');
-        o.value=d;
-        o.textContent=d;
-        sel.appendChild(o);
-      });
-    }catch(e){}
+    if(isTenureExpired){
+      const rejoinBtn = document.getElementById('ctaTenureRejoinBtn');
+      const rejoinUrl = me.rejoin_enroll_url || (me.intern && me.intern.rejoin_enroll_url);
+      if (rejoinBtn && rejoinUrl) rejoinBtn.href = rejoinUrl;
+      const graceDisp = me.grace_end_display || (me.intern && me.intern.grace_end_display);
+      const subEl = document.getElementById('ctaTenureSub');
+      if (subEl && graceDisp) {
+        subEl.textContent = 'Previous cohort grace window ended ' + graceDisp + ' · Re-enrollment active';
+      }
+      show('ctaTenureExpired');
+      return;
+    }
+
+    if(isApprovedStatus && isPaidProgramSettled){
+      show('ctaApproved');
+      return;
+    }
+
+    if(me.has_caution_deposit_only && !isRejectedPaid){
+      const depBtn = document.getElementById('ctaDepositBalanceBtn');
+      if (depBtn) {
+        const baseBalanceUrl = (me.rejoin_enroll_url || 'https://dbert.in/enroll/1999').replace('rejoin=1&', '').replace('?rejoin=1', '');
+        depBtn.href = baseBalanceUrl;
+      }
+      show('ctaDepositBalance');
+      return;
+    }
+
+    await populateUpcomingMondays();
 
     document.getElementById('paidRejectNote').classList.toggle('hidden', !isRejectedPaid);
     show('ctaForm');
     if(!_enrollShown){ dbertGA('paid_enroll_started',{}); _enrollShown=true; }
+  }
+
+  const openLmsRejoinBtn = document.getElementById('ctaTenureOpenLmsFormBtn');
+  if (openLmsRejoinBtn) {
+    openLmsRejoinBtn.addEventListener('click', async () => {
+      await populateUpcomingMondays();
+      document.getElementById('paidRejectNote').classList.add('hidden');
+      show('ctaForm');
+      if(!_enrollShown){ dbertGA('paid_enroll_started',{source:'stage5b_rejoin'}); _enrollShown=true; }
+    });
   }
 
   async function submitPaid(){

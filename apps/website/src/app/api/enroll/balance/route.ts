@@ -161,7 +161,9 @@ export async function POST(request: NextRequest) {
           amount: PRICING_CONFIG.balancePayable,
           payment_type: 'balance',
           utr: cleanUtr,
-          submission_id: submissionId
+          submission_id: submissionId,
+          remarks: (remarks || '').trim() || undefined,
+          rejoin: (remarks || '').toUpperCase().includes('REJOIN')
         }),
         signal: AbortSignal.timeout(5000)
       });
